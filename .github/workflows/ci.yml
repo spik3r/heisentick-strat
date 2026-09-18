@@ -1,0 +1,91 @@
+name: Go
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/ci.yml"
+      - "dsl/**"
+      - "engine/**"
+      - "marketdata/**"
+      - "contextcols/**"
+      - "data/**"
+      - "cmd/**"
+      - "dsl-conformance/**"
+      - "go.mod"
+      - "go.sum"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/ci.yml"
+      - "dsl/**"
+      - "engine/**"
+      - "marketdata/**"
+      - "contextcols/**"
+      - "data/**"
+      - "cmd/**"
+      - "dsl-conformance/**"
+      - "go.mod"
+      - "go.sum"
+
+jobs:
+  test:
+    name: Go checks
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_MODE == 'self-hosted' && '["self-hosted","linux"]' || '["ubuntu-24.04"]') }}
+    env:
+      CGO_ENABLED: "0"
+    steps:
+      - name: Report runner disk capacity
+        working-directory: ${{ github.workspace }}
+        run: |
+          echo "::group::Runner filesystem capacity"
+          df -hP "$RUNNER_TEMP" "$GITHUB_WORKSPACE" "$HOME"
+          df -iP "$RUNNER_TEMP" "$GITHUB_WORKSPACE" "$HOME"
+          echo "If free blocks or inodes are low, reclaim runner capacity before retrying this workload."
+          echo "::endgroup::"
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22.x"
+          cache: true
+          cache-dependency-path: go.mod
+
+      - name: gofmt
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            printf '%s\n' "$unformatted"
+            exit 1
+          fi
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: go test
+        run: go test ./...
+
+      - name: Build heisentick binary
+        run: go build -trimpath -o cmd/heisentick/heisentick ./cmd/heisentick
+
+      - name: Build dslwasm binary
+        run: GOOS=js GOARCH=wasm go build -trimpath -o cmd/dslwasm/dslwasm.wasm ./cmd/dslwasm
+
+      - name: Upload heisentick artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: heisentick-linux-amd64
+          path: |
+            cmd/heisentick/heisentick
+          if-no-files-found: error
+
+      - name: Upload dslwasm artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dslwasm-wasm
+          path: |
+            cmd/dslwasm/dslwasm.wasm
+          if-no-files-found: error
