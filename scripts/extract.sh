@@ -1,224 +1,319 @@
 #!/usr/bin/env bash
+# extract.sh — T-B2 mechanical extraction of the Strat language and Go engine
+# from heisentick into heisentick-strat.
+#
+# Usage:
+#   scripts/extract.sh <heisentick-clone>                        dry run: verify the
+#                                                                 source and print the plan
+#   scripts/extract.sh --apply <heisentick-clone> <dest> [opts]  copy, rewrite, validate
+#
+# Options (apply mode only):
+#   --fix-paths   also apply the fixture-path fixes listed in docs/extraction-plan.md
+#                 (the pure rewrite alone does not pass `go test ./...`)
+#   --skip-tests  stop after `go build ./...`
+#
+# The script never writes to <heisentick-clone>. Run it against a fresh clone
+# of https://github.com/spik3r/heisentick, not a working checkout, so the
+# source is exactly one commit. <dest> is the heisentick-strat checkout (or a
+# scratch directory for a rehearsal); the script refuses to overwrite any
+# target path that already exists there.
+#
+# Mapping and rewrite rules: docs/layout.md. Observed results: docs/extraction-plan.md.
+
 set -euo pipefail
 
-# extract.sh — dry-run extraction of heisentick Go tree + corpus into heisentick-strat.
-# Usage:
-#   ./scripts/extract.sh /path/to/heisentick          # dry-run (default)
-#   ./scripts/extract.sh /path/to/heisentick --apply   # execute for real
-#
-# This script:
-#   1. Copies go/ and dsl-conformance/ from heisentick into heisentick-strat.
-#   2. Rewrites Go import paths from backtester/go/* to github.com/spik3r/heisentick-strat/*.
-#   3. Rewrites go.mod module declaration.
-#   4. Runs gofmt, go build, go test in the destination.
-#   5. Prints a diff summary.
+MODULE="github.com/spik3r/heisentick-strat"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-
-APPLY=0
-SOURCE=""
-
-for arg in "$@"; do
-  case "$arg" in
-    --apply) APPLY=1 ;;
-    --help|-h)
-      echo "Usage: $0 <heisentick-checkout-path> [--apply]"
-      exit 0
-      ;;
-    *)
-      if [ -z "$SOURCE" ]; then
-        SOURCE="$arg"
-      else
-        echo "Error: unexpected argument '$arg'" >&2
-        exit 1
-      fi
-      ;;
-  esac
-done
-
-if [ -z "$SOURCE" ]; then
-  echo "Error: missing heisentick checkout path." >&2
-  echo "Usage: $0 <heisentick-checkout-path> [--apply]" >&2
-  exit 1
-fi
-
-if [ ! -d "$SOURCE/go" ]; then
-  echo "Error: $SOURCE/go does not exist." >&2
-  exit 1
-fi
-
-if [ ! -f "$SOURCE/go/go.mod" ]; then
-  echo "Error: $SOURCE/go/go.mod does not exist." >&2
-  exit 1
-fi
-
-echo "=== heisentick-strat extraction script ==="
-echo "Source: $SOURCE"
-echo "Destination: $REPO_ROOT"
-echo "Mode: $([ "$APPLY" -eq 1 ] && echo "APPLY (real)" || echo "DRY RUN (no changes written)")"
-echo ""
-
-# ── Step 1: Copy go/ tree ──────────────────────────────────────────────
-
-echo "Step 1: Copy go/ tree"
-
-GO_DEST="$REPO_ROOT"
-if [ "$APPLY" -eq 1 ]; then
-  # Copy individual packages to repo root (flat layout)
-  for pkg in dsl engine marketdata contextcols data; do
-    if [ -d "$SOURCE/go/$pkg" ]; then
-      echo "  Copying go/$pkg/ -> $GO_DEST/$pkg/"
-      cp -R "$SOURCE/go/$pkg" "$GO_DEST/$pkg"
-    fi
-  done
-
-  # Copy cmd/ tree
-  mkdir -p "$GO_DEST/cmd"
-  if [ -d "$SOURCE/go/cmd/btgo" ]; then
-    echo "  Copying go/cmd/btgo/ -> $GO_DEST/cmd/heisentick/"
-    cp -R "$SOURCE/go/cmd/btgo" "$GO_DEST/cmd/heisentick"
-  fi
-  if [ -d "$SOURCE/go/cmd/dslwasm" ]; then
-    echo "  Copying go/cmd/dslwasm/ -> $GO_DEST/cmd/dslwasm/"
-    cp -R "$SOURCE/go/cmd/dslwasm" "$GO_DEST/cmd/dslwasm"
-  fi
-
-  # Copy go.mod and go.sum
-  echo "  Copying go.mod, go.sum"
-  cp "$SOURCE/go/go.mod" "$GO_DEST/go.mod"
-  if [ -f "$SOURCE/go/go.sum" ]; then
-    cp "$SOURCE/go/go.sum" "$GO_DEST/go.sum"
-  fi
-else
-  echo "  [dry-run] Would copy go/ packages to $GO_DEST/"
-  echo "  [dry-run] Would copy go/cmd/btgo -> $GO_DEST/cmd/heisentick/"
-  echo "  [dry-run] Would copy go/cmd/dslwasm -> $GO_DEST/cmd/dslwasm/"
-  echo "  [dry-run] Would copy go.mod, go.sum"
-fi
-
-# ── Step 2: Copy dsl-conformance/ ──────────────────────────────────────
-
-echo ""
-echo "Step 2: Copy dsl-conformance/ -> dsl-conformance/"
-
-if [ -d "$SOURCE/dsl-conformance" ]; then
-  if [ "$APPLY" -eq 1 ]; then
-    cp -R "$SOURCE/dsl-conformance" "$REPO_ROOT/dsl-conformance"
-    echo "  Copied dsl-conformance/ -> dsl-conformance/"
-  else
-    echo "  [dry-run] Would copy dsl-conformance/ -> dsl-conformance/"
-  fi
-else
-  echo "  WARNING: $SOURCE/dsl-conformance not found, skipping."
-fi
-
-# ── Step 3: Rewrite Go import paths ────────────────────────────────────
-
-echo ""
-echo "Step 3: Rewrite Go import paths"
-
-REWRITE_RULES=(
-  's|"backtester/go/dsl"|"github.com/spik3r/heisentick-strat/dsl"|g'
-  's|"backtester/go/engine"|"github.com/spik3r/heisentick-strat/engine"|g'
-  's|"backtester/go/marketdata"|"github.com/spik3r/heisentick-strat/marketdata"|g'
-  's|"backtester/go/contextcols"|"github.com/spik3r/heisentick-strat/contextcols"|g'
-  's|"backtester/go/data"|"github.com/spik3r/heisentick-strat/data"|g'
-  's|"backtester/go/testsupport"|"github.com/spik3r/heisentick-strat/testsupport"|g'
-  's|^module backtester/go|module github.com/spik3r/heisentick-strat|g'
+# source dir -> destination dir (relative to each root). `go/dsl` and
+# `go/engine` are import-path facades and are not copied; see docs/layout.md.
+MAPPING=(
+  "go/native:engine"
+  "strat/implementations/server-runtime:dsl"
+  "go/marketdata:marketdata"
+  "go/contextcols:contextcols"
+  "go/data:data"
+  "go/testsupport:testsupport"
+  "go/cmd/heisentick:cmd/heisentick"
+  "go/cmd/dslwasm:cmd/dslwasm"
+  "go/cmd/enginewasm:cmd/enginewasm"
+  "strat/conformance:conformance"
+  "strat/specification:spec"
+  "strat/docs:spec"
+  "strat/examples:examples"
 )
 
-GO_FILES=$(find "$REPO_ROOT/dsl" "$REPO_ROOT/engine" "$REPO_ROOT/marketdata" \
-  "$REPO_ROOT/contextcols" "$REPO_ROOT/data" "$REPO_ROOT/cmd" \
-  -name '*.go' 2>/dev/null || true)
+# Files copied individually (the rest of their directory is dropped).
+SINGLE_FILES=(
+  "go/dsl/facade_contract_test.go:dsl/facade_contract_test.go"
+)
 
-MOD_COUNT=0
-for f in $GO_FILES; do
-  for rule in "${REWRITE_RULES[@]}"; do
-    if sed -i.bak "$rule" "$f" 2>/dev/null; then
-      true
+# Go import rewrites: old path -> new path (both without quotes).
+IMPORT_RULES=(
+  "heisentick/go/native:$MODULE/engine"
+  "heisentick/go/engine:$MODULE/engine"
+  "heisentick/go/dsl:$MODULE/dsl"
+  "heisentick/strat/implementations/server-runtime:$MODULE/dsl"
+  "heisentick/go/marketdata:$MODULE/marketdata"
+  "heisentick/go/contextcols:$MODULE/contextcols"
+  "heisentick/go/data:$MODULE/data"
+  "heisentick/go/testsupport:$MODULE/testsupport"
+)
+
+usage() {
+  sed -n '2,21p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+die() {
+  echo "error: $*" >&2
+  exit 1
+}
+
+verify_source() {
+  local src="$1"
+  [ -f "$src/go.mod" ] || die "$src/go.mod not found"
+  grep -q '^module heisentick$' "$src/go.mod" || die "$src/go.mod does not declare 'module heisentick' (stale checkout?)"
+  local entry from
+  for entry in "${MAPPING[@]}"; do
+    from="${entry%%:*}"
+    [ -d "$src/$from" ] || die "$src/$from not found"
+  done
+  for entry in "${SINGLE_FILES[@]}"; do
+    from="${entry%%:*}"
+    [ -f "$src/$from" ] || die "$src/$from not found"
+  done
+  [ -d "$src/go/dsl" ] || die "$src/go/dsl not found"
+  [ -d "$src/go/engine" ] || die "$src/go/engine not found"
+  if [ -d "$src/.git" ]; then
+    echo "source commit: $(git -C "$src" log -1 --format='%h %ad %s' --date=short)"
+  fi
+}
+
+count_files() {
+  find "$1" -type f | wc -l | tr -d ' '
+}
+
+print_plan() {
+  local src="$1"
+  echo
+  printf '%-45s %-22s %6s\n' "source" "destination" "files"
+  local entry from to
+  for entry in "${MAPPING[@]}"; do
+    from="${entry%%:*}"
+    to="${entry##*:}"
+    printf '%-45s %-22s %6s\n' "$from/" "$to/" "$(count_files "$src/$from")"
+  done
+  for entry in "${SINGLE_FILES[@]}"; do
+    from="${entry%%:*}"
+    to="${entry##*:}"
+    printf '%-45s %-22s %6s\n' "$from" "$to" 1
+  done
+  printf '%-45s %-22s %6s\n' "go/dsl/ (facade, rest)" "dropped" "$(( $(count_files "$src/go/dsl") - 1 ))"
+  printf '%-45s %-22s %6s\n' "go/engine/ (facade)" "dropped" "$(count_files "$src/go/engine")"
+  printf '%-45s %-22s %6s\n' "go.mod" "go.mod (module $MODULE)" 1
+  echo
+  echo "import lines in the source (facade files included):"
+  local rule old
+  for rule in "${IMPORT_RULES[@]}"; do
+    old="${rule%%:*}"
+    printf '  %-55s %s\n' "\"$old\"" "$(grep -rF --include='*.go' "\"$old\"" "$src/go" "$src/strat" | wc -l | tr -d ' ' || true)"
+  done
+}
+
+copy_tree() {
+  local src="$1" dest="$2"
+  local entry from to
+  for entry in "${MAPPING[@]}"; do
+    to="${entry##*:}"
+    # strat/specification and strat/docs both land in spec/; allow the second.
+    if [ -e "$dest/$to" ] && [ "$to" != "spec" ]; then
+      die "$dest/$to already exists; refusing to overwrite"
     fi
   done
-  MOD_COUNT=$((MOD_COUNT + 1))
-done
-
-# Rewrite go.mod
-if [ -f "$REPO_ROOT/go.mod" ]; then
-  for rule in "${REWRITE_RULES[@]}"; do
-    sed -i.bak "$rule" "$REPO_ROOT/go.mod" 2>/dev/null || true
+  [ -e "$dest/go.mod" ] && die "$dest/go.mod already exists; refusing to overwrite"
+  mkdir -p "$dest"
+  for entry in "${MAPPING[@]}"; do
+    from="${entry%%:*}"
+    to="${entry##*:}"
+    mkdir -p "$dest/$to"
+    cp -R "$src/$from/." "$dest/$to/"
   done
-fi
+  for entry in "${SINGLE_FILES[@]}"; do
+    from="${entry%%:*}"
+    to="${entry##*:}"
+    mkdir -p "$(dirname "$dest/$to")"
+    cp "$src/$from" "$dest/$to"
+  done
+  local goline
+  goline="$(grep -E '^go [0-9.]+$' "$src/go.mod")"
+  printf 'module %s\n\n%s\n' "$MODULE" "$goline" > "$dest/go.mod"
+  [ -f "$src/go.sum" ] && cp "$src/go.sum" "$dest/go.sum"
+  return 0
+}
 
-if [ "$APPLY" -eq 1 ]; then
-  echo "  Rewrote import paths in $MOD_COUNT Go files + go.mod"
-  # Clean up .bak files
-  find "$REPO_ROOT" -name '*.go.bak' -delete 2>/dev/null || true
-  find "$REPO_ROOT" -name 'go.mod.bak' -delete 2>/dev/null || true
-else
-  echo "  [dry-run] Would rewrite import paths in ~$MOD_COUNT Go files"
-  echo "  [dry-run] Would rewrite go.mod module declaration"
-fi
+rewrite_imports() {
+  local dest="$1"
+  local rule old new n
+  for rule in "${IMPORT_RULES[@]}"; do
+    old="${rule%%:*}"
+    new="${rule#*:}"
+    n="$(grep -rlF --include='*.go' "\"$old\"" "$dest" | wc -l | tr -d ' ' || true)"
+    if [ "$n" != "0" ]; then
+      grep -rlF --include='*.go' "\"$old\"" "$dest" | xargs perl -pi -e "s{\"\Q$old\E\"}{\"$new\"}g"
+    fi
+    printf '  %-75s %s files\n' "\"$old\" -> \"$new\"" "$n"
+  done
+  # The parser package is named after its new directory.
+  n="$(grep -lE '^package serverruntime$' "$dest"/dsl/*.go | wc -l | tr -d ' ' || true)"
+  perl -pi -e 's{^package serverruntime$}{package dsl}' "$dest"/dsl/*.go
+  printf '  %-75s %s files\n' "package serverruntime -> package dsl" "$n"
+  local left
+  left="$(grep -rnE --include='*.go' '"heisentick/' "$dest" || true)"
+  if [ -n "$left" ]; then
+    echo "unrewritten imports remain:" >&2
+    echo "$left" >&2
+    exit 1
+  fi
+}
 
-# ── Step 4: Validate ───────────────────────────────────────────────────
+# Fixture-path fixes. Each is a one-line change recorded in
+# docs/extraction-plan.md; none changes engine or parser behaviour.
+fix_paths() {
+  local src="$1" dest="$2"
+  echo "  testsupport/reporoot.go: repo marker go.mod only; corpus at conformance/"
+  perl -pi -e 's{isFile\(filepath\.Join\(dir, "package\.json"\)\) && isFile\(filepath\.Join\(dir, "go\.mod"\)\)}{isFile(filepath.Join(dir, "go.mod"))}; s{filepath\.Join\(MustRepoRoot\(\), "strat", "conformance"\)}{filepath.Join(MustRepoRoot(), "conformance")}' "$dest/testsupport/reporoot.go"
+  echo "  testsupport/reporoot_test.go: root is one level up; alternate cwd is cmd/"
+  perl -pi -e 's{filepath\.Join\(filepath\.Dir\(source\), "\.\.", "\.\."\)}{filepath.Join(filepath.Dir(source), "..")}; s{filepath\.Join\(wantRoot, "go"\)}{filepath.Join(wantRoot, "cmd")}; s{filepath\.Join\(wantRoot, "strat", "conformance"\)}{filepath.Join(wantRoot, "conformance")}g' "$dest/testsupport/reporoot_test.go"
+  echo "  cmd/enginewasm/bridge_test.go: corpus glob two levels up"
+  perl -pi -e 's{"\.\./\.\./\.\./strat/conformance/run/}{"../../conformance/run/}' "$dest/cmd/enginewasm/bridge_test.go"
+  echo "  dsl/contract_schemas_test.go: schemas under spec/"
+  perl -pi -e 's{filepath\.Join\(testsupport\.MustRepoRoot\(\), "strat", "specification", "schemas"\)}{filepath.Join(testsupport.MustRepoRoot(), "spec", "schemas")}' "$dest/dsl/contract_schemas_test.go"
+  echo "  engine/testdata/strategies: frozen copies of two archived .strat sources"
+  mkdir -p "$dest/engine/testdata/strategies"
+  cp "$src/strategies/source/dslRoundNumberConfluence.strat" "$src/strategies/source/dslFailedBreakoutLimitEntry.strat" "$dest/engine/testdata/strategies/"
+  perl -pi -e 's{filepath\.Join\("\.\.", "\.\.", "strategies", "source", }{filepath.Join("testdata", "strategies", }' "$dest/engine/sweep_rule_grade_test.go" "$dest/engine/limit_entry_test.go"
+}
 
-echo ""
-echo "Step 4: Validate (gofmt, go build, go test)"
-
-if [ "$APPLY" -eq 1 ]; then
-  echo ""
-  echo "--- gofmt ---"
-  UNFORMATTED=$(gofmt -l "$REPO_ROOT" 2>/dev/null || true)
-  if [ -n "$UNFORMATTED" ]; then
-    echo "Files needing gofmt:"
-    echo "$UNFORMATTED"
-    echo ""
-    echo "Running gofmt -w ..."
-    gofmt -w "$REPO_ROOT" 2>/dev/null || true
-    echo "Done. Files reformatted."
+validate() {
+  local dest="$1" skip_tests="$2"
+  local status=0
+  echo
+  echo "== gofmt -l"
+  local unformatted
+  unformatted="$(cd "$dest" && gofmt -l .)"
+  if [ -n "$unformatted" ]; then
+    echo "$unformatted"
+    echo "(running gofmt -w on the files above)"
+    (cd "$dest" && echo "$unformatted" | xargs gofmt -w)
   else
-    echo "All files already formatted."
+    echo "clean"
+  fi
+  echo
+  echo "== go vet ./..."
+  if (cd "$dest" && go vet ./...); then echo "ok"; else status=1; fi
+  echo
+  echo "== go build ./..."
+  if (cd "$dest" && go build ./...); then echo "ok"; else status=1; fi
+  if [ "$skip_tests" = "1" ]; then
+    return "$status"
+  fi
+  echo
+  echo "== go test ./..."
+  local log
+  log="$(mktemp -t extract-go-test)"
+  if (cd "$dest" && go test ./... > "$log" 2>&1); then
+    echo "ok"
+  else
+    status=1
+    echo "failures:"
+    grep -E '^(FAIL|--- FAIL|panic:)' "$log" | sed 's/^/  /' || true
+    echo "full log: $log"
+  fi
+  grep -E '^(ok|FAIL|\?)' "$log" | sed 's/^/  /'
+  return "$status"
+}
+
+diff_summary() {
+  local dest="$1"
+  echo
+  echo "== destination summary"
+  local entry to seen=""
+  for entry in "${MAPPING[@]}"; do
+    to="${entry##*:}"
+    case " $seen " in *" $to "*) continue ;; esac
+    seen="$seen $to"
+    printf '  %-22s %6s files %8s KB\n' "$to/" "$(count_files "$dest/$to")" "$(du -sk "$dest/$to" | cut -f1)"
+  done
+  printf '  %-22s %6s Go files\n' "total" "$(find "$dest" -name '*.go' | wc -l | tr -d ' ')"
+  if git -C "$dest" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    printf '  %-22s %6s paths\n' "git status --short" "$(git -C "$dest" status --short | wc -l | tr -d ' ')"
+  fi
+}
+
+main() {
+  local apply=0 fix=0 skip_tests=0 src="" dest=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --apply) apply=1 ;;
+      --fix-paths) fix=1 ;;
+      --skip-tests) skip_tests=1 ;;
+      -h|--help) usage; exit 0 ;;
+      -*) die "unknown option $1" ;;
+      *)
+        if [ -z "$src" ]; then src="$1"
+        elif [ -z "$dest" ]; then dest="$1"
+        else die "unexpected argument $1"; fi
+        ;;
+    esac
+    shift
+  done
+  [ -n "$src" ] || { usage; exit 1; }
+  src="$(cd "$src" && pwd)"
+
+  echo "== source: $src"
+  verify_source "$src"
+
+  if [ "$apply" = "0" ]; then
+    echo "mode: dry run (nothing written)"
+    print_plan "$src"
+    echo
+    echo "run with --apply <clone> <dest> to copy, rewrite and validate."
+    return 0
   fi
 
-  echo ""
-  echo "--- go vet ---"
-  (cd "$REPO_ROOT" && go vet ./... 2>&1) || echo "go vet failed (see above)"
+  [ -n "$dest" ] || die "--apply needs <dest>"
+  mkdir -p "$dest"
+  dest="$(cd "$dest" && pwd)"
+  case "$dest" in
+    "$src"|"$src"/*) die "dest must not be inside the source clone" ;;
+  esac
+  echo "== dest: $dest"
+  echo "mode: apply$([ "$fix" = "1" ] && echo ' + fix-paths')"
 
-  echo ""
-  echo "--- go build ---"
-  BUILD_OUTPUT=""
-  BUILD_OK=0
-  BUILD_OUTPUT=$(cd "$REPO_ROOT" && go build ./... 2>&1) && BUILD_OK=1 || true
-  if [ "$BUILD_OK" -eq 1 ]; then
-    echo "go build ./... PASSED"
-  else
-    echo "go build ./... FAILED:"
-    echo "$BUILD_OUTPUT"
+  echo
+  echo "== copy"
+  copy_tree "$src" "$dest"
+  print_plan "$src" | sed -n '2,$p'
+
+  echo
+  echo "== rewrite imports"
+  rewrite_imports "$dest"
+
+  if [ "$fix" = "1" ]; then
+    echo
+    echo "== fix paths"
+    fix_paths "$src" "$dest"
   fi
 
-  echo ""
-  echo "--- go test ---"
-  TEST_OUTPUT=""
-  TEST_OK=0
-  TEST_OUTPUT=$(cd "$REPO_ROOT" && go test ./... 2>&1) && TEST_OK=1 || true
-  if [ "$TEST_OK" -eq 1 ]; then
-    echo "go test ./... PASSED"
+  local status=0
+  validate "$dest" "$skip_tests" || status=$?
+  diff_summary "$dest"
+  echo
+  if [ "$status" = "0" ]; then
+    echo "== result: all checks passed"
   else
-    echo "go test ./... FAILED:"
-    echo "$TEST_OUTPUT"
+    echo "== result: checks failed (see above)"
   fi
+  return "$status"
+}
 
-  echo ""
-  echo "--- Diff summary ---"
-  cd "$REPO_ROOT"
-  echo "Files added:"
-  git diff --stat --cached 2>/dev/null || echo "(not a git repo or no staged changes)"
-  echo ""
-  echo "Files changed:"
-  git diff --stat 2>/dev/null || echo "(not a git repo or no unstaged changes)"
-else
-  echo "  [dry-run] Would run: gofmt -l, go vet ./..., go build ./..., go test ./..."
-  echo "  [dry-run] No validation performed (use --apply to execute)"
-fi
-
-echo ""
-echo "=== Extraction $([ "$APPLY" -eq 1 ] && echo "COMPLETE" || echo "DRY RUN COMPLETE") ==="
+main "$@"
