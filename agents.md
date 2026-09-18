@@ -1,58 +1,61 @@
 # Agent Instructions
 
 This file is the single source of truth for AI-agent instructions in this
-repository. Other harness files should point here instead of duplicating rules.
+repository. `claude.md` and `codex.md` point here.
 
 ## What this repo is
 
-`heisentick-strat` owns the Strat language and Go strategy engine: spec,
-docs, semantic fixtures, Go-authoritative conformance corpus and regen command,
-Go parser, engine, shared report and validation packages, market-data reader,
-context columns, `heisentick` CLI, and WASM build. Tagged releases.
+`heisentick-strat` owns the Strat language and its Go engine: spec, docs,
+conformance corpus (parse, run, semantic), Go parser, engine, market-data
+reader, context columns, `heisentick` CLI and the WASM builds. It ships
+tagged releases; `heisentick` and `heisentick-strategy-validation` pin them.
 
-Consumers (`heisentick`, `heisentick-strategy-validation`) pin a version tag.
+Until T-B2 lands the repo holds only the extraction plan and script. Read
+`docs/extraction-plan.md` before touching anything.
 
-## What this repo is NOT
+## What this repo is not
 
-- No app code (UI, backend routes, frontend, server)
-- No AWS infrastructure (Terraform, Lambda, Step Functions)
-- No strategy sources (`.strat` files live in the app's `engine/strategies/dsl/`)
-- No market data (candle files, manifests)
-- No deployment configuration
+No app code, no JavaScript compiler (stays in the app until M8), no
+strategies (`.strat` sources live in the app's `strategies/source/`), no
+market data, no infrastructure.
 
-## Release and adoption rule
+## Release and adoption
 
-Consumers pin tags. Semantic changes bump minor and are named in CHANGELOG.md.
-No floating versions (`latest`, branch refs). Each dependency bump is one
-consumer PR owned by that consumer's lane.
+Consumers pin tags and asset digests. A semantic change bumps the minor
+version and is named in `CHANGELOG.md`. No floating versions (`latest`,
+branch refs). Each dependency bump is one consumer PR owned by that
+consumer's lane. Cross-repo work lands producer → tagged release → consumer
+pin PR; never assume two PRs merge atomically.
 
-## Baseline Workflow
+## Working rules
 
-1. Start with `git status --short` and preserve user edits.
-2. Prefer small, coherent, validated changes.
-3. Run `go test ./...` and `gofmt -l` after changes.
-4. Commit coherent slices when the user asks for committed progress.
+- Start with `git status --short` and preserve user edits.
+- `codex/<short-topic>` branches; one ticket, one bounded write set, one PR.
+- Conformance goldens are read-only. A golden changes only in a reviewed
+  corpus-regeneration PR that says why. Parser-visible changes need a
+  fixture or golden in the same PR.
+- Engine semantics, schema changes and statistical definitions need an
+  independent review.
+- Commit messages explain the change. Run `git diff --check` first.
 
-## Validation Conventions
+## Validation
 
-- Always run `git diff --check` before committing.
-- Run `gofmt -l .` before committing.
-- Run `go vet ./...` before committing.
-- Run `go test ./...` before committing.
-- Conformance corpus must remain green: `go run ./scripts/checkConformanceCorpus.mjs`
+Before every commit that touches Go:
 
-## Repo Layout
+```sh
+gofmt -l .      # must print nothing
+go vet ./...
+go test ./...
+```
 
-- Root `*.md`: only `README.md`, `CHANGELOG.md`, and agent pointers
-  (`agents.md`, `claude.md`, `codex.md`).
-- `docs/`: reference material (layout, extraction plan, inventory).
-- `dsl/`: Go DSL parser.
-- `engine/`: Go strategy engine.
-- `marketdata/`: Go bar loader.
-- `contextcols/`: Go context column builder.
-- `data/`: Go fixture loader.
-- `cmd/`: CLI binaries (`heisentick`, `dslwasm`).
-- `dsl-conformance/`: machine-checked DSL corpus (parse + run + semantic goldens).
-- `spec/`: language spec schemas and manifest.
-- `tools/`: grammar manifest, phrase catalog, LSP, grammar tables.
-- `scripts/`: corpus regen, conformance check, extraction script.
+Workflow changes: keep `runs-on` exactly
+`${{ fromJSON(vars.CI_RUNNER_MODE == 'self-hosted' && '["self-hosted","linux"]' || '["ubuntu-24.04"]') }}`.
+Self-hosted runners are registered per repository; this repo has none yet.
+
+## Repo layout
+
+Root `*.md`: `README.md`, `CHANGELOG.md`, `agents.md`, `claude.md`,
+`codex.md` only. `docs/` holds this repo's own documents (extraction,
+layout). After T-B2: `spec/`, `dsl/`, `engine/`, `marketdata/`,
+`contextcols/`, `data/`, `testsupport/`, `cmd/`, `conformance/`,
+`examples/`; see `docs/layout.md`.
