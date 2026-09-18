@@ -9,8 +9,10 @@ on:
       - "marketdata/**"
       - "contextcols/**"
       - "data/**"
+      - "testsupport/**"
       - "cmd/**"
-      - "dsl-conformance/**"
+      - "conformance/**"
+      - "spec/**"
       - "go.mod"
       - "go.sum"
   push:
@@ -23,8 +25,10 @@ on:
       - "marketdata/**"
       - "contextcols/**"
       - "data/**"
+      - "testsupport/**"
       - "cmd/**"
-      - "dsl-conformance/**"
+      - "conformance/**"
+      - "spec/**"
       - "go.mod"
       - "go.sum"
 
@@ -71,21 +75,23 @@ jobs:
       - name: Build heisentick binary
         run: go build -trimpath -o cmd/heisentick/heisentick ./cmd/heisentick
 
-      - name: Build dslwasm binary
-        run: GOOS=js GOARCH=wasm go build -trimpath -o cmd/dslwasm/dslwasm.wasm ./cmd/dslwasm
+      - name: Build WASM targets
+        run: |
+          GOOS=js GOARCH=wasm go build -trimpath -o cmd/dslwasm/dslwasm.wasm ./cmd/dslwasm
+          GOOS=js GOARCH=wasm go build -trimpath -o cmd/enginewasm/enginewasm.wasm ./cmd/enginewasm
 
       - name: Upload heisentick artifact
         uses: actions/upload-artifact@v4
         with:
-          name: heisentick-linux-amd64
-          path: |
-            cmd/heisentick/heisentick
+          name: heisentick-${{ runner.os }}-${{ runner.arch }}
+          path: cmd/heisentick/heisentick
           if-no-files-found: error
 
-      - name: Upload dslwasm artifact
+      - name: Upload WASM artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dslwasm-wasm
+          name: wasm
           path: |
             cmd/dslwasm/dslwasm.wasm
+            cmd/enginewasm/enginewasm.wasm
           if-no-files-found: error
