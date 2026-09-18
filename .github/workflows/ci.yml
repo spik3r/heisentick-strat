@@ -39,6 +39,16 @@ jobs:
     env:
       CGO_ENABLED: "0"
     steps:
+      # Until the extraction (T-B2) lands there is no Go module here; the
+      # workflow is committed ahead of it so the first extracted push is
+      # checked. Every Go step is skipped while go.mod is absent.
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Detect the Go module
+        id: mod
+        run: echo "present=$([ -f go.mod ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
       - name: Report runner disk capacity
         working-directory: ${{ github.workspace }}
         run: |
@@ -48,10 +58,8 @@ jobs:
           echo "If free blocks or inodes are low, reclaim runner capacity before retrying this workload."
           echo "::endgroup::"
 
-      - name: Check out repository
-        uses: actions/checkout@v4
-
       - name: Set up Go
+        if: steps.mod.outputs.present == 'true'
         uses: actions/setup-go@v5
         with:
           go-version: "1.22.x"
@@ -59,6 +67,7 @@ jobs:
           cache-dependency-path: go.mod
 
       - name: gofmt
+        if: steps.mod.outputs.present == 'true'
         run: |
           unformatted="$(gofmt -l .)"
           if [ -n "$unformatted" ]; then
@@ -67,20 +76,25 @@ jobs:
           fi
 
       - name: go vet
+        if: steps.mod.outputs.present == 'true'
         run: go vet ./...
 
       - name: go test
+        if: steps.mod.outputs.present == 'true'
         run: go test ./...
 
       - name: Build heisentick binary
+        if: steps.mod.outputs.present == 'true'
         run: go build -trimpath -o cmd/heisentick/heisentick ./cmd/heisentick
 
       - name: Build WASM targets
+        if: steps.mod.outputs.present == 'true'
         run: |
           GOOS=js GOARCH=wasm go build -trimpath -o cmd/dslwasm/dslwasm.wasm ./cmd/dslwasm
           GOOS=js GOARCH=wasm go build -trimpath -o cmd/enginewasm/enginewasm.wasm ./cmd/enginewasm
 
       - name: Upload heisentick artifact
+        if: steps.mod.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: heisentick-${{ runner.os }}-${{ runner.arch }}
@@ -88,6 +102,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload WASM artifacts
+        if: steps.mod.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: wasm
