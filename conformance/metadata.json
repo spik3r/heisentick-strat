@@ -1,0 +1,21 @@
+{
+  "missingDeployedDsl": [
+    "dslDailySndRetestXauusdFourHour",
+    "dslInstitutionalLiquiditySweep",
+    "dslSessionBiasSeasonalConvergenceBalancedFifteen",
+    "vpAsiaLondonSweepContinuationFiveMinuteWideAsia",
+    "vpAsiaLondonSweepContinuationOneMinuteCloseEdgeLong"
+  ],
+  "notes": [
+    "dslInstitutionalLiquiditySweep is a deployed-book member on current origin/main but has no strategies/source/*.strat source; it is excluded from the Strat language corpus.",
+    "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
+  ],
+  "parseCases": 43,
+  "parseCategories": {
+    "deployed-book-dsl": 8,
+    "diagnostic": 9,
+    "setup-family": 26
+  },
+  "runCases": 32,
+  "schema": "dsl-conformance-metadata-v1"
+}

@@ -1,0 +1,48 @@
+dsl v6
+# Supply Demand CHOCH - XAUUSD
+strategy "Supply Demand CHOCH - XAUUSD" {
+  description "CHoCH-aware supply/demand test for XAUUSD with tighter source impulse and one-touch structure retest."
+}
+
+market conditions {
+  timeframes(1h, 4h)
+  sessions(london, ny)
+  day type in (trending, ranging)
+  movement below 0.95
+}
+
+setup {
+  type: supply demand
+  patterns(DBR, RBR, RBD, DBD)
+  base 2 to 5 candles
+  base body max 0.55 ATR
+  impulse at least 1.8 ATR within 4 candles
+  source at least 1 ATR within 4 candles
+  retest tolerance 0.35 ATR
+  retest within 36 candles
+  retest first touch
+  choch within 3 candles
+  choch lookback 5 candles
+}
+
+filters {
+  higher timeframe must agree
+}
+
+risk {
+  stop: beyond zone break + 0.2 ATR
+  stop size max 3 ATR
+}
+
+target {
+  target 1.2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 14 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

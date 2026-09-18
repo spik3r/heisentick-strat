@@ -1,0 +1,40 @@
+dsl v7
+strategy "Opening Range Breakout XAUUSD" {
+  description "Research-only XAUUSD intraday momentum probe. Freezes the first four candles of the London/NY trade window, then takes the first held breakout of that range."
+}
+
+market conditions {
+  slices(XAUUSD 5m, XAUUSD 15m)
+  sessions(london, ny)
+  day type in (trending, ranging, choppy)
+}
+
+setup {
+  type: opening range breakout
+  opening range first 4 candles in (london, ny)
+  break beyond range edge by 0.05 ATR
+  hold 1 candle
+}
+
+filters {
+  higher timeframe must agree
+}
+
+risk {
+  stop opposite range edge 0.25 ATR
+  stop size <= 3 ATR
+}
+
+target {
+  target 1 range
+}
+
+management {
+  move stop to breakeven after 0.75R plus 0.05 ATR
+  maxHoldCandles 18
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

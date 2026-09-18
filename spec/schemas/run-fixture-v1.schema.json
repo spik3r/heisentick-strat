@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "run-fixture-v1.schema.json",
+  "title": "Strat run fixture v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case",
+    "strategyId",
+    "symbol",
+    "timeframe",
+    "higherTimeframe",
+    "rangeMethod",
+    "costs",
+    "contextOptions",
+    "source",
+    "bars",
+    "htfBars"
+  ],
+  "properties": {
+    "schema": { "const": "dsl-conformance-run-fixture-v1" },
+    "case": { "type": "string", "minLength": 1 },
+    "strategyId": { "type": "string", "minLength": 1 },
+    "symbol": { "type": "string", "minLength": 1 },
+    "timeframe": { "type": "string", "minLength": 1 },
+    "higherTimeframe": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "string", "minLength": 1 }
+      ]
+    },
+    "rangeMethod": { "type": "string", "minLength": 1 },
+    "costs": { "$ref": "#/$defs/costs" },
+    "contextOptions": { "type": "object" },
+    "source": { "$ref": "#/$defs/source" },
+    "bars": { "$ref": "#/$defs/bars" },
+    "htfBars": { "$ref": "#/$defs/bars" }
+  },
+  "$defs": {
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["feePerUnit", "fillOn", "slippage", "startEquity"],
+      "properties": {
+        "feePerUnit": { "type": "number" },
+        "fillOn": { "type": "string", "minLength": 1 },
+        "slippage": { "type": "number" },
+        "startEquity": { "type": "number" }
+      }
+    },
+    "bar": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": { "type": "number" }
+    },
+    "bars": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/bar" }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bars", "htfBars"],
+      "properties": {
+        "bars": { "$ref": "#/$defs/sourceRef" },
+        "htfBars": {
+          "anyOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/sourceRef" }
+          ]
+        }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "barCount": { "type": "integer", "minimum": 0 },
+        "startIndex": { "type": "integer", "minimum": 0 },
+        "from": { "type": "number" },
+        "to": { "type": "number" },
+        "symbol": { "type": "string", "minLength": 1 },
+        "timeframe": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

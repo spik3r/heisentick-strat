@@ -1,0 +1,38 @@
+dsl v7
+strategy "Forward Tester Canary — XAUUSD 5m 3h ORB" {
+  description "Operational canary only. Every UTC day is split into eight fixed 3-hour windows; the first 15 minutes build the opening range, then one causal breakout may risk 10 pips for a 20-pip target until the slot closes."
+}
+
+market conditions {
+  slices(XAUUSD 5m)
+  trade window unrestricted
+  day type in (trending, ranging, choppy)
+  trendiness below 999
+}
+
+setup {
+  type: opening range breakout
+  opening range every 3 hours UTC
+  break beyond range edge
+  hold 1 candle
+}
+
+filters {
+  side both
+}
+
+risk {
+  stop 10 pips
+}
+
+target {
+  target 20 pips
+}
+
+management {
+  move stop to breakeven after 999R plus 0 ATR
+}
+
+execution {
+  risk: 200 USD
+}

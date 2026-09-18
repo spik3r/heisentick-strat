@@ -1,0 +1,31 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "sma-prefix-extension-b",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 6,
+      "entryT": 1767592800000,
+      "entry": 2020,
+      "exitIndex": 10,
+      "exitT": 1767607200000,
+      "exit": 2020,
+      "reason": "rule"
+    },
+    {
+      "side": "long",
+      "entryIndex": 14,
+      "entryT": 1767621600000,
+      "entry": 2020,
+      "exitIndex": 16,
+      "exitT": 1767628800000,
+      "exit": 2050,
+      "reason": "end-of-test"
+    }
+  ],
+  "notes": [
+    "Bars 0-10 are byte-identical to sma-prefix-extension-a; bars 11-16 are appended.",
+    "Trade 1 must be identical to the single trade of the prefix case: appending bars cannot change an earlier decision.",
+    "A second golden cross at the close of bar 13 (SMA2 2015 > SMA3 2010) enters at bar 14 open 2020 and is still open at bar 16."
+  ]
+}

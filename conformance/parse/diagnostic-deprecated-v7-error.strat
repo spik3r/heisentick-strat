@@ -1,0 +1,6 @@
+dsl v7
+strategy "Diagnostic Deprecated V7" { description "x" }
+market conditions { slices(XAUUSD 1h) sessions(london) day type in (ranging) }
+management {
+  maxHoldBars 20
+}

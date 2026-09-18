@@ -1,0 +1,44 @@
+dsl v7
+strategy "Close VWAP Magnet" {
+  description "Fade late-session XAUUSD VWAP extensions on range/choppy days, using tick-volume VWAP as the reversion target."
+}
+
+market conditions {
+  symbols(XAUUSD)
+  timeframes(15m)
+  sessions(london, ny)
+  session phase in (close)
+  day type in (ranging, choppy) strictly
+}
+
+setup {
+  type: vwap extension fade
+  distance from vwap at least 1.2 ATR
+  require range day
+  target vwap
+}
+
+filters {
+  tail rejection at least 0.35
+  close location at least 0.55
+}
+
+risk {
+  stop beyond last 5 candle extreme by 0.25 ATR
+  stop size <= 2 ATR
+}
+
+target {
+  target 1R
+  minimum reward: 0.4R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  maxHoldCandles 24
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

@@ -1,0 +1,16 @@
+dsl v7
+strategy "Keltner Reversion Runtime" { description "Runtime coverage for the Keltner band reclaim reversion family." }
+market conditions {
+  slices(XAUUSD 15m)
+}
+setup {
+  type: keltner reversion
+  ema length 20
+  distance 2 ATR
+  pierce at least 0.25 ATR
+  reclaim within 3 candles
+  target midline else 1R
+}
+execution {
+  risk: 200 USD
+}

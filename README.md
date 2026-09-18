@@ -5,17 +5,17 @@ conformance corpus (parse, run and semantic fixtures), Go parser, backtest
 engine, market-data reader, context columns, the `heisentick` CLI and the
 WASM builds. Consumers pin tagged releases.
 
-Status: pre-extraction. This repository holds the plan and the rehearsed
-script for moving the tree out of `spik3r/heisentick` (ticket T-B2 of the
-one-engine migration). No code has moved yet. See `docs/extraction-plan.md`.
+Extracted from `spik3r/heisentick` at commit `4db7c3aa` (2026-09-19,
+ticket T-B2 of the one-engine migration). `docs/extraction-plan.md` records
+how, and the app-side removal PR.
 
 ## What this repo is
 
 - `spec/`: the language specification (`dsl-spec.md`, one page per setup
   family), the grammar manifest and its schema, the parse/run/trade JSON
   schemas, getting-started and editor docs.
-- `dsl/`: the Go Strat parser (today `strat/implementations/server-runtime`).
-- `engine/`: the Go backtest engine (today `go/native`).
+- `dsl/`: the Go Strat parser.
+- `engine/`: the Go backtest engine.
 - `marketdata/`, `contextcols/`, `data/`: BTB1 decoding and column types,
   causal context columns, series path validation and loading.
 - `cmd/heisentick`: report and grid CLI. `cmd/dslwasm`, `cmd/enginewasm`:

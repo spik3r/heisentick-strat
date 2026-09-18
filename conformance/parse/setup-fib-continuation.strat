@@ -1,0 +1,40 @@
+dsl v7
+strategy "Fib Continuation XAUUSD" {
+  description "Research-only XAUUSD structured pullback continuation. Looks for an impulse leg, retrace into the fib zone, and directional confirmation."
+}
+
+market conditions {
+  slices(XAUUSD 15m, XAUUSD 1h, XAUUSD 4h)
+  sessions(asia, london, ny)
+  day type in (trending, ranging, choppy)
+}
+
+setup {
+  type: fib continuation
+  impulse at least 2 ATR
+  retrace into 0.5 to 0.618
+  confirm with close location 0.6
+}
+
+filters {
+  higher timeframe must agree
+}
+
+risk {
+  stop beyond 0.786 plus 0.25 ATR
+  stop size <= 3 ATR
+}
+
+target {
+  target fib extension 1.618
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  maxHoldCandles 24
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

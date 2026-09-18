@@ -1,0 +1,17 @@
+{
+  "case": "family-weekend-extreme-fade",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslWeekendExtremeFadeBtcusdtFourHour",
+  "symbol": "XAUUSD",
+  "timeframe": "4h",
+  "tradeCount": 0,
+  "trades": []
+}

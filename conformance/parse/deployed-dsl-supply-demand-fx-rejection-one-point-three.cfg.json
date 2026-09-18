@@ -1,0 +1,203 @@
+{
+  "case": "deployed-dsl-supply-demand-fx-rejection-one-point-three",
+  "category": "deployed-book-dsl",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 0,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0.5,
+      "offsetAtr": 0.05
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 12,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "trending",
+      "choppy"
+    ],
+    "description": "Trade demand-side supply/demand structure source leg compact base impulse departure and first-touch rejection retest with the target extended to the stable 1.3R management region.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "notAgainst",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 0.95,
+    "name": "FX Demand Rejection 1.3R",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 0,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "supplyDemand",
+    "slices": [
+      {
+        "symbol": "EURUSD",
+        "tf": "15m"
+      },
+      {
+        "symbol": "EURUSD",
+        "tf": "1h"
+      },
+      {
+        "symbol": "AUDUSD",
+        "tf": "15m"
+      },
+      {
+        "symbol": "AUDUSD",
+        "tf": "1h"
+      },
+      {
+        "symbol": "GBPUSD",
+        "tf": "15m"
+      }
+    ],
+    "stop": {
+      "extremeCandles": 0,
+      "maxAtr": 3,
+      "minAtr": 0.4,
+      "paddingAtr": 0.25
+    },
+    "supplyDemand": {
+      "impulseAtr": 1.5,
+      "impulseCandles": 6,
+      "invalidationAtr": 0.05,
+      "maxBaseBodyAtr": 0.4,
+      "maxBaseCandles": 5,
+      "maxRetests": 1,
+      "maxZoneAgeCandles": 96,
+      "maxZoneAtr": 0.7,
+      "minBaseCandles": 2,
+      "minSourceAtr": 0.2,
+      "minWaitCandles": 1,
+      "patterns": [
+        "DBR",
+        "RBR",
+        "RBD",
+        "DBD"
+      ],
+      "requireRejectionClose": 1,
+      "retestToleranceAtr": 0.21,
+      "sourceCandles": 4,
+      "zoneBounds": "wick"
+    },
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6,
+      "sdR": 1.3
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 1
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "any"
+    ],
+    "triggerExplicit": true,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Compiled config for deployed-book member dslSupplyDemandFxRejectionOnePointThree.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "engine/strategies/dsl/dslSupplyDemandFxRejectionOnePointThree.strat",
+  "warnings": []
+}

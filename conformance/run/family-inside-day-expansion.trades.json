@@ -1,0 +1,46 @@
+{
+  "case": "family-inside-day-expansion",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslInsideDayLondonFifteen",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 2666.635,
+      "entryIndex": 750,
+      "entryT": 1736405100000,
+      "exit": 2662.0442,
+      "exitIndex": 754,
+      "exitT": 1736408700000,
+      "initialSl": 2662.1042,
+      "initialTp": 2670.15164,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "PDH",
+        "levelPrice": 2662.898,
+        "rangeHi": 2662.898,
+        "rangeLo": 2642.035,
+        "setup": "insideDayExpansion",
+        "side": "long"
+      },
+      "pnl": -202.648538889377,
+      "points": -4.59079999999949,
+      "reason": "sl",
+      "side": "long",
+      "size": 44.1423148229938,
+      "sl": 2662.1042,
+      "tag": "DSL-IDE",
+      "tp": 2670.15164
+    }
+  ]
+}

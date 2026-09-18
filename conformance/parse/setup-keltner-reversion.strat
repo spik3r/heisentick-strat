@@ -1,0 +1,14 @@
+dsl v7
+strategy "Keltner Reversion" { description "Causal Keltner band reclaim reversion setup." }
+market conditions {
+  slices(EURUSD 15m)
+  trade window unrestricted
+}
+setup {
+  type: keltner reversion
+  ema length 20
+  distance 2 ATR
+  pierce at least 0.25 ATR
+  reclaim within 3 candles
+  target midline else 1R
+}

@@ -1,0 +1,38 @@
+dsl v7
+strategy "Triple Push Exhaustion XAUUSD" {
+  description "Research-only XAUUSD wedge/three-push exhaustion reversal. Fades a decelerating third push to a new extreme inside a channel."
+}
+
+market conditions {
+  slices(XAUUSD 1h, XAUUSD 4h)
+  sessions(asia, london, ny)
+  day type in (trending, ranging, choppy)
+}
+
+setup {
+  type: triple push exhaustion
+  lookback 60 candles
+  min separation 5
+  push decay 0.9
+  decel slope
+  near 1.5 ATR
+  confirm with close location 0.55
+}
+
+risk {
+  stop size <= 3.5 ATR
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 0.6R plus 0.05 ATR
+  maxHoldCandles 24
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

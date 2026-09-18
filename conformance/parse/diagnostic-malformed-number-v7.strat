@@ -1,0 +1,6 @@
+dsl v7
+strategy "Diagnostic Malformed Number" { description "x" }
+market conditions { slices(XAUUSD 1h) sessions(london) day type in (ranging) }
+risk {
+  stop beyond last nope candle extreme by 0.25 ATR
+}

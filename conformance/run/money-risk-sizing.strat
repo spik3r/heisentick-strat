@@ -1,0 +1,59 @@
+# Failed Breakout - Balanced
+strategy "Failed Breakout - Balanced" {
+  description "Balanced DSL copy: fade sweeps of fresh range edges near priority levels on 5m/15m."
+}
+
+market conditions {
+  timeframes(5m, 15m)
+  sessions(asia, london, ny)
+  day type in (ranging, choppy)
+}
+
+levels {
+  priority(WH, WL, PDH, PDL, AH, AL, LH, LL)
+  range edge must be within 1.5 ATR of level
+}
+
+filters {
+  range method: zone
+  range active within 8 candles
+  approach at least 3 candles toward level
+}
+
+triggers {
+  candle in (pin, engulf, outside)
+}
+
+entry {
+  when (
+    sweep(range.high, by 0.1 ATR)
+    and reclaim(range.high, within 3 candles)
+    and trigger()
+  ) then signal(sell, grade A)
+
+  when (
+    sweep(range.low, by 0.1 ATR)
+    and reclaim(range.low, within 3 candles)
+    and trigger()
+  ) then signal(buy, grade A)
+}
+
+risk {
+  stop beyond last 3 candle extreme by 0.25 ATR
+  stop size <= 1.5 ATR
+}
+
+target {
+  take profit: opposite range edge
+  minimum reward: 0.6R
+  fallback: 1R
+}
+
+management {
+  move stop to breakeven after 0.75R plus 0.02 ATR
+  wait 3 candles after trade
+}
+
+execution {
+  risk: 100 USD
+}

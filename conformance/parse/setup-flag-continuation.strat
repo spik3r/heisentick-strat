@@ -1,0 +1,44 @@
+dsl v6
+# Flag Continuation - 1h
+strategy "Flag Continuation 1h" {
+  description "After a fresh prior-day high/low break on a trending XAUUSD 1h chart, enter a shallow flag near the broken level on a continuation trigger candle. FX transfer lanes are retired from the promoted route."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(asia, london)
+  day type in (trending)
+}
+
+setup {
+  type: flag continuation
+  pole at least 1.5 ATR over 12 candles
+  pole net at least 0.25 of range
+  flag 3 to 10 candles
+  flag depth max 0.34 of pole
+  flag close position at least 0.45
+  break within 24 candles
+  level tolerance 0.5 ATR
+  movement between 0.5 and 0.75
+}
+
+filters {
+  higher timeframe must agree
+}
+
+risk {
+  stop beyond flag edge by 0.1 ATR min 0.5 ATR
+}
+
+target {
+  target 0.8R capped at pole
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

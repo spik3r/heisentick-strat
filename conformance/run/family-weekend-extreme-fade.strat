@@ -1,0 +1,16 @@
+dsl v7
+strategy "Weekend Extreme Fade conformance"
+market conditions {
+  slices(XAUUSD 4h)
+}
+setup {
+  type: weekend extreme fade
+  weekend range max 5 ATR
+  weekend close extreme 30 percent
+  stop ATR 0.75
+  target ATR 2
+  hold max 12 candles
+}
+execution {
+  risk 200 USD
+}

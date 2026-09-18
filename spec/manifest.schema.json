@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://backtester.local/schemas/dsl-grammar-manifest-v1.json",
+  "title": "DSL grammar surface manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "dslVersions",
+    "description",
+    "sections",
+    "families",
+    "aliases",
+    "directiveHeads",
+    "deprecations",
+    "snippets"
+  ],
+  "properties": {
+    "$schema": { "const": "./manifest.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "dslVersions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum", "maximum"],
+      "properties": {
+        "minimum": { "type": "integer", "minimum": 1 },
+        "maximum": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "description": { "type": "string", "minLength": 1 },
+    "sections": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/section" }
+    },
+    "families": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/family" }
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/alias" }
+    },
+    "directiveHeads": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/directiveHead" }
+    },
+    "deprecations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/deprecation" }
+    },
+    "snippets": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/snippet" }
+    }
+  },
+  "$defs": {
+    "stableId": {
+      "type": "string",
+      "pattern": "^[a-z][A-Za-z0-9]*(?:[.-][a-z0-9]+)*$"
+    },
+    "classification": {
+      "enum": ["shared", "js-only", "go-only"]
+    },
+    "versioned": {
+      "type": "object",
+      "required": ["since"],
+      "properties": {
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "classified": {
+      "type": "object",
+      "required": ["classification"],
+      "properties": {
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "spelling", "canonical", "classification", "since"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "spelling": { "type": "string", "minLength": 1 },
+        "canonical": { "type": "string", "minLength": 1 },
+        "goCanonical": { "type": "string", "minLength": 1 },
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 },
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "canonicalSpelling", "canonicalExample", "classification", "since"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "canonicalSpelling": { "type": "string", "minLength": 1 },
+        "canonicalExample": { "type": "string", "minLength": 1 },
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 },
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "alias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "spelling", "familyId", "classification", "since"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "source": {
+          "enum": ["js-setup-type", "go-inline-setup-type", "go-canonical-setup-type"]
+        },
+        "spelling": { "type": "string", "minLength": 1 },
+        "familyId": { "$ref": "#/$defs/stableId" },
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 },
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "directiveHead": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "spelling", "classification", "since"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "spelling": { "type": "string", "minLength": 1 },
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 },
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "deprecation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "spelling", "replacement", "classification", "since", "deprecatedSince"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "spelling": { "type": "string", "minLength": 1 },
+        "replacement": { "type": "string", "minLength": 1 },
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 },
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "snippet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "group", "label", "insert", "classification", "since"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stableId" },
+        "group": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "insert": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "classification": { "$ref": "#/$defs/classification" },
+        "reason": { "type": "string", "minLength": 1 },
+        "since": { "type": "integer", "minimum": 1 },
+        "deprecatedSince": { "type": "integer", "minimum": 1 },
+        "removedIn": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-position-crosses-session-end",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 48,
+      "entryT": 1767744000000,
+      "entry": 2020,
+      "initialSl": 1992.5,
+      "initialTp": 2047.5,
+      "exitIndex": 51,
+      "exitT": 1767754800000,
+      "exit": 2047.5,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "Bar 48 (2026-01-07 00:00 UTC = 10:00 UTC+10, inside asia 09-12 local) closes 2020 = +1.0% over bar 46: long entry 2020 at the close.",
+    "The asia window ends at 12:00 local = 02:00 UTC (bar 50). The position is not closed there: sessions gate entries only.",
+    "Bar 51 (03:00 UTC, outside every enabled window) high 2050 reaches the 2047.5 target: exit tp.",
+    "SPEC GAP: session windows undocumented (see pm-session-no-entry-outside-window); no forced exit at a window end is written, and none is assumed."
+  ]
+}

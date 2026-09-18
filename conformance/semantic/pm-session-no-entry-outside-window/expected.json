@@ -1,0 +1,24 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-session-no-entry-outside-window",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 47,
+      "entryT": 1767740400000,
+      "entry": 2025,
+      "initialSl": 1997.5,
+      "initialTp": 2052.5,
+      "exitIndex": 50,
+      "exitT": 1767751200000,
+      "exit": 2052.5,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "Bar 46 (2026-01-06 22:00 UTC = 08:00 UTC+10) closes 2020 = +1.0% over bar 44: a long signal, but 08:00 local is outside the asia window (09:00-12:00 local). No trade.",
+    "Bar 47 (23:00 UTC = 09:00 local, asia open) closes 2025 = +0.746% over bar 45 (2010): a new long signal inside the window. Entry 2025 at the bar 47 close.",
+    "Stop = lowest low of bars 45-47 (2000) - 2.5 = 1997.5 (bar 44 low is 2000 so the 3-candle window agrees whether or not it includes the signal bar). Target 2052.5; bar 50 high 2055 reaches it.",
+    "SPEC GAP: the session windows are not written in the spec; the fixture assumes the engine table (UTC+10: asia 09-12, mid 12-16, london 16-19, ny 21-24)."
+  ]
+}

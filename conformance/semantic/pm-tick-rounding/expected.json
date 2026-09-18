@@ -1,0 +1,23 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-tick-rounding",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 31,
+      "entryT": 1767682800000,
+      "entry": 2020,
+      "initialSl": 1994.875,
+      "initialTp": 2045.125,
+      "exitIndex": 34,
+      "exitT": 1767693600000,
+      "exit": 2045.125,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "Same bars and signal as pm-signal-close-entry; the stop padding is 0.0125 ATR = 0.125.",
+    "Stop = 1995 - 0.125 = 1994.875; distance 25.125; target = 2020 + 25.125 = 2045.125. Neither lies on a 0.01 or 0.1 tick.",
+    "SPEC GAP: the spec defines no tick size and no rounding rule. Expected values are the unrounded arithmetic. Half-up rounding to 0.01 gives 1994.88 / 2045.13; round-half-even gives 1994.88 / 2045.12. The rounding rule must be written into the spec before this case can be marked derived."
+  ]
+}

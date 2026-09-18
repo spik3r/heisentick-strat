@@ -1,0 +1,26 @@
+dsl v7
+strategy "Intra Hour Run Exhaustion conformance" {
+  description "Fade a steady three-candle intra-hour run rejected on the hour's final candle."
+}
+market conditions {
+  slices(XAUUSD 15m)
+}
+setup {
+  type: intra hour run exhaustion
+  run hour candles 4
+  run 3 candles
+  run size min 0.8 ATR
+  run atr length 14
+  exhaustion close location 35 percent
+  exhaustion require poke
+  exhaustion stop pad 0.25 ATR
+}
+target {
+  target 1.5R
+}
+management {
+  maxHoldCandles 8
+}
+execution {
+  risk 200 USD
+}

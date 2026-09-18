@@ -1,0 +1,39 @@
+dsl v6
+# Inside Day London - 15m
+strategy "Inside Day London 15m" {
+  description "London-only 15m inside-day expansion with a two-candle hold. Tiny sample; saved for visual review, not promotion."
+}
+
+market conditions {
+  timeframes(15m)
+  sessions(london)
+  day type in (trending, choppy)
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+setup {
+  type: inside day expansion
+  inside tolerance 0.05 ATR
+  hold 2 candles
+  stop inside range 0.35 ATR
+}
+
+filters {
+  higher timeframe must agree
+}
+
+target {
+  target 0.8R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

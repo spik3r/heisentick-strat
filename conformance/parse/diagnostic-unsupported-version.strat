@@ -1,0 +1,3 @@
+dsl v99
+strategy "Diagnostic Version" { description "x" }
+market conditions { slices(XAUUSD 1h) sessions(asia) day type in (ranging) }

@@ -1,0 +1,39 @@
+dsl v7
+strategy "Price Momentum Conformance" {
+  description "Fixture-only causal price-momentum family coverage."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(asia, mid, london, ny)
+  day type in (trending, ranging, choppy) or movement below 1.1
+}
+
+setup {
+  type: price momentum
+  lookback 20 candles
+  neutral zone 0.5 percent
+}
+
+filters {
+  higher timeframe must not oppose entry
+}
+
+risk {
+  stop beyond last 3 candle extreme by 0.25 ATR
+  stop size min 0.2 max 3
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 3 candles after trade
+  maxHoldCandles 24
+}
+
+execution {
+  risk 200 USD
+}

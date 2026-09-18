@@ -1,0 +1,2923 @@
+{
+  "$schema": "./manifest.schema.json",
+  "schemaVersion": 1,
+  "dslVersions": {
+    "minimum": 6,
+    "maximum": 7
+  },
+  "description": "Authored inventory of the current DSL language surface and source for generated passive parser tables.",
+  "sections": [
+    { "id": "section.strategy", "spelling": "strategy", "canonical": "strategy", "classification": "shared", "since": 6 },
+    { "id": "section.market", "spelling": "market", "canonical": "market", "classification": "shared", "since": 6 },
+    { "id": "section.market-conditions", "spelling": "market conditions", "canonical": "market", "classification": "shared", "since": 6 },
+    { "id": "section.conditions", "spelling": "conditions", "canonical": "market", "classification": "shared", "since": 6 },
+    { "id": "section.time", "spelling": "time", "canonical": "time", "goCanonical": "context", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "section.context", "spelling": "context", "canonical": "context", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "section.setup", "spelling": "setup", "canonical": "setup", "classification": "shared", "since": 6 },
+    { "id": "section.levels", "spelling": "levels", "canonical": "levels", "classification": "shared", "since": 6 },
+    { "id": "section.filters", "spelling": "filters", "canonical": "filters", "classification": "shared", "since": 6 },
+    { "id": "section.triggers", "spelling": "triggers", "canonical": "trigger", "classification": "shared", "since": 6 },
+    { "id": "section.entry", "spelling": "entry", "canonical": "entry", "classification": "shared", "since": 6 },
+    { "id": "section.risk", "spelling": "risk", "canonical": "risk", "classification": "shared", "since": 6 },
+    { "id": "section.target", "spelling": "target", "canonical": "target", "classification": "shared", "since": 6 },
+    { "id": "section.management", "spelling": "management", "canonical": "management", "classification": "shared", "since": 6 },
+    { "id": "section.execution", "spelling": "execution", "canonical": "execution", "classification": "shared", "since": 6 },
+    { "id": "section.grade", "spelling": "grade", "canonical": "grade", "classification": "shared", "since": 6 },
+    { "id": "section.volume-profile", "spelling": "volume profile", "canonical": "volume profile", "classification": "shared", "since": 6 },
+    { "id": "section.trigger-candles", "spelling": "triggerCandles", "canonical": "trigger", "classification": "shared", "since": 6 }
+  ],
+  "families": [
+    {
+      "id": "failedBreakout",
+      "canonicalSpelling": "failed breakout",
+      "canonicalExample": "type: failed breakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "flagContinuation",
+      "canonicalSpelling": "flag continuation",
+      "canonicalExample": "type: flag continuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "breakRetest",
+      "canonicalSpelling": "break retest",
+      "canonicalExample": "type: break retest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "openingRangeBreakout",
+      "canonicalSpelling": "opening range breakout",
+      "canonicalExample": "type: opening range breakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "sessionBreakHold",
+      "canonicalSpelling": "session break hold",
+      "canonicalExample": "type: session break hold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "channelBreakHold",
+      "canonicalSpelling": "channel break hold",
+      "canonicalExample": "type: channel break hold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "insideDayExpansion",
+      "canonicalSpelling": "inside day expansion",
+      "canonicalExample": "type: inside day expansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "dayOpenReclaim",
+      "canonicalSpelling": "day open reclaim",
+      "canonicalExample": "type: day open reclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "supplyDemand",
+      "canonicalSpelling": "supply demand",
+      "canonicalExample": "type: supply demand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "doubleTopBottom",
+      "canonicalSpelling": "double top bottom",
+      "canonicalExample": "type: double top bottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "rangeBreakFake",
+      "canonicalSpelling": "range break fake",
+      "canonicalExample": "type: range break fake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "trendPullback",
+      "canonicalSpelling": "trend pullback",
+      "canonicalExample": "type: trend pullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "dualEmaResumption",
+      "canonicalSpelling": "dual ema resumption",
+      "canonicalExample": "type: dual ema resumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "smaGoldenCross",
+      "canonicalSpelling": "sma golden cross",
+      "canonicalExample": "type: sma golden cross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "fibContinuation",
+      "canonicalSpelling": "fib continuation",
+      "canonicalExample": "type: fib continuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "triplePushExhaustion",
+      "canonicalSpelling": "triple push exhaustion",
+      "canonicalExample": "type: triple push exhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "vwapExtensionFade",
+      "canonicalSpelling": "vwap extension fade",
+      "canonicalExample": "type: vwap extension fade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "volumeAnomalyExhaustion",
+      "canonicalSpelling": "volume anomaly exhaustion",
+      "canonicalExample": "type: volume anomaly exhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "elderTripleScreen",
+      "canonicalSpelling": "elder triple screen",
+      "canonicalExample": "type: elder triple screen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "priceMomentum",
+      "canonicalSpelling": "price momentum",
+      "canonicalExample": "type: price momentum\n  lookback 20 candles\n  neutral zone 1 percent",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "dailyFlushFailure",
+      "canonicalSpelling": "daily flush failure",
+      "canonicalExample": "type: daily flush failure\n  flush range at least 1.25 ATR\n  flush close in bottom 25 percent",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "fairValueGap",
+      "canonicalSpelling": "fair value gap",
+      "canonicalExample": "type: fair value gap\n  gap minimum 0.1 ATR\n  displacement minimum 0.8 ATR\n  retest within 8 candles\n  entry at midpoint",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "weekendExtremeFade",
+      "canonicalSpelling": "weekend extreme fade",
+      "canonicalExample": "type: weekend extreme fade\n  weekend range max 5 ATR\n  weekend close extreme 27.5 percent\n  stop ATR 0.75\n  target ATR 2\n  hold max 12 candles",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "intraHourRunExhaustion",
+      "canonicalSpelling": "intra hour run exhaustion",
+      "canonicalExample": "type: intra hour run exhaustion\n  run hour candles 4\n  run 3 candles\n  run size min 0.8 ATR\n  run atr length 14\n  exhaustion close location 35 percent\n  exhaustion stop pad 0.25 ATR",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "keltnerReversion",
+      "canonicalSpelling": "keltner reversion",
+      "canonicalExample": "type: keltner reversion\n  ema length 20\n  distance 2 ATR\n  pierce at least 0.25 ATR\n  reclaim within 3 candles\n  target midline else 1R",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "keltnerExpansion",
+      "canonicalSpelling": "keltner expansion",
+      "canonicalExample": "type: keltner expansion\n  ema length 20\n  distance 2 ATR\n  pierce at least 0.25 ATR\n  target 1R",
+      "classification": "shared",
+      "since": 7
+    }
+  ],
+  "aliases": [
+    {
+      "id": "alias.js-setup-type.failed-breakout",
+      "source": "js-setup-type",
+      "spelling": "failed breakout",
+      "familyId": "failedBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.failedbreakout",
+      "source": "js-setup-type",
+      "spelling": "failedBreakout",
+      "familyId": "failedBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.flag-continuation",
+      "source": "js-setup-type",
+      "spelling": "flag continuation",
+      "familyId": "flagContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.flagcontinuation",
+      "source": "js-setup-type",
+      "spelling": "flagContinuation",
+      "familyId": "flagContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.break-retest",
+      "source": "js-setup-type",
+      "spelling": "break retest",
+      "familyId": "breakRetest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.breakretest",
+      "source": "js-setup-type",
+      "spelling": "breakRetest",
+      "familyId": "breakRetest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.opening-range-breakout",
+      "source": "js-setup-type",
+      "spelling": "opening range breakout",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.openingrangebreakout",
+      "source": "js-setup-type",
+      "spelling": "openingRangeBreakout",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.orb",
+      "source": "js-setup-type",
+      "spelling": "orb",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.session-break-hold",
+      "source": "js-setup-type",
+      "spelling": "session break hold",
+      "familyId": "sessionBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.sessionbreakhold",
+      "source": "js-setup-type",
+      "spelling": "sessionBreakHold",
+      "familyId": "sessionBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.channel-break-hold",
+      "source": "js-setup-type",
+      "spelling": "channel break hold",
+      "familyId": "channelBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.channelbreakhold",
+      "source": "js-setup-type",
+      "spelling": "channelBreakHold",
+      "familyId": "channelBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.inside-day-expansion",
+      "source": "js-setup-type",
+      "spelling": "inside day expansion",
+      "familyId": "insideDayExpansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.insidedayexpansion",
+      "source": "js-setup-type",
+      "spelling": "insideDayExpansion",
+      "familyId": "insideDayExpansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.day-open-reclaim",
+      "source": "js-setup-type",
+      "spelling": "day open reclaim",
+      "familyId": "dayOpenReclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.dayopenreclaim",
+      "source": "js-setup-type",
+      "spelling": "dayOpenReclaim",
+      "familyId": "dayOpenReclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.supply-demand",
+      "source": "js-setup-type",
+      "spelling": "supply demand",
+      "familyId": "supplyDemand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.supplydemand",
+      "source": "js-setup-type",
+      "spelling": "supplyDemand",
+      "familyId": "supplyDemand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.double-top-bottom",
+      "source": "js-setup-type",
+      "spelling": "double top bottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.doubletopbottom",
+      "source": "js-setup-type",
+      "spelling": "doubleTopBottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.double-top-bottom-2",
+      "source": "js-setup-type",
+      "spelling": "double top/bottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.range-break-fake",
+      "source": "js-setup-type",
+      "spelling": "range break fake",
+      "familyId": "rangeBreakFake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.rangebreakfake",
+      "source": "js-setup-type",
+      "spelling": "rangeBreakFake",
+      "familyId": "rangeBreakFake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.trend-pullback",
+      "source": "js-setup-type",
+      "spelling": "trend pullback",
+      "familyId": "trendPullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.trendpullback",
+      "source": "js-setup-type",
+      "spelling": "trendPullback",
+      "familyId": "trendPullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.dual-ema-resumption",
+      "source": "js-setup-type",
+      "spelling": "dual ema resumption",
+      "familyId": "dualEmaResumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.dualemaresumption",
+      "source": "js-setup-type",
+      "spelling": "dualEmaResumption",
+      "familyId": "dualEmaResumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.sma-golden-cross",
+      "source": "js-setup-type",
+      "spelling": "sma golden cross",
+      "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.smagoldencross",
+      "source": "js-setup-type",
+      "spelling": "smaGoldenCross",
+      "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.fib-continuation",
+      "source": "js-setup-type",
+      "spelling": "fib continuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.fibonacci-continuation",
+      "source": "js-setup-type",
+      "spelling": "fibonacci continuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.fibcontinuation",
+      "source": "js-setup-type",
+      "spelling": "fibContinuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.triple-push-exhaustion",
+      "source": "js-setup-type",
+      "spelling": "triple push exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.three-push-exhaustion",
+      "source": "js-setup-type",
+      "spelling": "three push exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.triplepushexhaustion",
+      "source": "js-setup-type",
+      "spelling": "triplePushExhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.wedge-exhaustion",
+      "source": "js-setup-type",
+      "spelling": "wedge exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.vwap-extension-fade",
+      "source": "js-setup-type",
+      "spelling": "vwap extension fade",
+      "familyId": "vwapExtensionFade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.vwapextensionfade",
+      "source": "js-setup-type",
+      "spelling": "vwapExtensionFade",
+      "familyId": "vwapExtensionFade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.volume-anomaly-exhaustion",
+      "source": "js-setup-type",
+      "spelling": "volume anomaly exhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.volumeanomalyexhaustion",
+      "source": "js-setup-type",
+      "spelling": "volumeAnomalyExhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.vpa-exhaustion",
+      "source": "js-setup-type",
+      "spelling": "vpa exhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.elder-triple-screen",
+      "source": "js-setup-type",
+      "spelling": "elder triple screen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.eldertriplescreen",
+      "source": "js-setup-type",
+      "spelling": "elderTripleScreen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.triple-screen",
+      "source": "js-setup-type",
+      "spelling": "triple screen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.js-setup-type.price-momentum",
+      "source": "js-setup-type",
+      "spelling": "price momentum",
+      "familyId": "priceMomentum",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.daily-flush-failure",
+      "source": "js-setup-type",
+      "spelling": "daily flush failure",
+      "familyId": "dailyFlushFailure",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.daily-flush-failure-camel",
+      "source": "js-setup-type",
+      "spelling": "dailyFlushFailure",
+      "familyId": "dailyFlushFailure",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.fair-value-gap",
+      "source": "js-setup-type",
+      "spelling": "fair value gap",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.fvg",
+      "source": "js-setup-type",
+      "spelling": "fvg",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.fair-value-gap-camel",
+      "source": "js-setup-type",
+      "spelling": "fairValueGap",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.weekend-extreme-fade",
+      "source": "js-setup-type",
+      "spelling": "weekend extreme fade",
+      "familyId": "weekendExtremeFade",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.weekend-extreme-fade-camel",
+      "source": "js-setup-type",
+      "spelling": "weekendExtremeFade",
+      "familyId": "weekendExtremeFade",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.intra-hour-run-exhaustion",
+      "source": "js-setup-type",
+      "spelling": "intra hour run exhaustion",
+      "familyId": "intraHourRunExhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.intra-hour-run-exhaustion-camel",
+      "source": "js-setup-type",
+      "spelling": "intraHourRunExhaustion",
+      "familyId": "intraHourRunExhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.volume-anomaly-exhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "volume anomaly exhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.volumeanomalyexhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "volumeanomalyexhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.opening-range-breakout",
+      "source": "go-inline-setup-type",
+      "spelling": "opening range breakout",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.openingrangebreakout",
+      "source": "go-inline-setup-type",
+      "spelling": "openingrangebreakout",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.triple-push-exhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "triple push exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.triplepushexhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "triplepushexhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.three-push-exhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "three push exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.vwap-extension-fade",
+      "source": "go-inline-setup-type",
+      "spelling": "vwap extension fade",
+      "familyId": "vwapExtensionFade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.vwapextensionfade",
+      "source": "go-inline-setup-type",
+      "spelling": "vwapextensionfade",
+      "familyId": "vwapExtensionFade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.inside-day-expansion",
+      "source": "go-inline-setup-type",
+      "spelling": "inside day expansion",
+      "familyId": "insideDayExpansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.insidedayexpansion",
+      "source": "go-inline-setup-type",
+      "spelling": "insidedayexpansion",
+      "familyId": "insideDayExpansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.elder-triple-screen",
+      "source": "go-inline-setup-type",
+      "spelling": "elder triple screen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.eldertriplescreen",
+      "source": "go-inline-setup-type",
+      "spelling": "eldertriplescreen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.price-momentum",
+      "source": "go-inline-setup-type",
+      "spelling": "price momentum",
+      "familyId": "priceMomentum",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.daily-flush-failure",
+      "source": "go-inline-setup-type",
+      "spelling": "daily flush failure",
+      "familyId": "dailyFlushFailure",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.daily-flush-failure-camel",
+      "source": "go-inline-setup-type",
+      "spelling": "dailyflushfailure",
+      "familyId": "dailyFlushFailure",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.fair-value-gap",
+      "source": "go-inline-setup-type",
+      "spelling": "fair value gap",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.fvg",
+      "source": "go-inline-setup-type",
+      "spelling": "fvg",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.fair-value-gap-camel",
+      "source": "go-inline-setup-type",
+      "spelling": "fairvaluegap",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.weekend-extreme-fade",
+      "source": "go-inline-setup-type",
+      "spelling": "weekend extreme fade",
+      "familyId": "weekendExtremeFade",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.weekend-extreme-fade-camel",
+      "source": "go-inline-setup-type",
+      "spelling": "weekendextremefade",
+      "familyId": "weekendExtremeFade",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.intra-hour-run-exhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "intra hour run exhaustion",
+      "familyId": "intraHourRunExhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.intra-hour-run-exhaustion-camel",
+      "source": "go-inline-setup-type",
+      "spelling": "intrahourrunexhaustion",
+      "familyId": "intraHourRunExhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.channel-break-hold",
+      "source": "go-inline-setup-type",
+      "spelling": "channel break hold",
+      "familyId": "channelBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.channelbreakhold",
+      "source": "go-inline-setup-type",
+      "spelling": "channelbreakhold",
+      "familyId": "channelBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.session-break-hold",
+      "source": "go-inline-setup-type",
+      "spelling": "session break hold",
+      "familyId": "sessionBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.sessionbreakhold",
+      "source": "go-inline-setup-type",
+      "spelling": "sessionbreakhold",
+      "familyId": "sessionBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.day-open-reclaim",
+      "source": "go-inline-setup-type",
+      "spelling": "day open reclaim",
+      "familyId": "dayOpenReclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.dayopenreclaim",
+      "source": "go-inline-setup-type",
+      "spelling": "dayopenreclaim",
+      "familyId": "dayOpenReclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.double-top-bottom",
+      "source": "go-inline-setup-type",
+      "spelling": "double top bottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.doubletopbottom",
+      "source": "go-inline-setup-type",
+      "spelling": "doubletopbottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.double-top-bottom-2",
+      "source": "go-inline-setup-type",
+      "spelling": "double top/bottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.flag-continuation",
+      "source": "go-inline-setup-type",
+      "spelling": "flag continuation",
+      "familyId": "flagContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.flagcontinuation",
+      "source": "go-inline-setup-type",
+      "spelling": "flagcontinuation",
+      "familyId": "flagContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.fibonacci-continuation",
+      "source": "go-inline-setup-type",
+      "spelling": "fibonacci continuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.fib-continuation",
+      "source": "go-inline-setup-type",
+      "spelling": "fib continuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.fibcontinuation",
+      "source": "go-inline-setup-type",
+      "spelling": "fibcontinuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.failed-breakout",
+      "source": "go-inline-setup-type",
+      "spelling": "failed breakout",
+      "familyId": "failedBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.failedbreakout",
+      "source": "go-inline-setup-type",
+      "spelling": "failedbreakout",
+      "familyId": "failedBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.range-break-fake",
+      "source": "go-inline-setup-type",
+      "spelling": "range break fake",
+      "familyId": "rangeBreakFake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.rangebreakfake",
+      "source": "go-inline-setup-type",
+      "spelling": "rangebreakfake",
+      "familyId": "rangeBreakFake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.trend-pullback",
+      "source": "go-inline-setup-type",
+      "spelling": "trend pullback",
+      "familyId": "trendPullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.trendpullback",
+      "source": "go-inline-setup-type",
+      "spelling": "trendpullback",
+      "familyId": "trendPullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.dual-ema-resumption",
+      "source": "go-inline-setup-type",
+      "spelling": "dual ema resumption",
+      "familyId": "dualEmaResumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.dualemaresumption",
+      "source": "go-inline-setup-type",
+      "spelling": "dualemaresumption",
+      "familyId": "dualEmaResumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.sma-golden-cross",
+      "source": "go-inline-setup-type",
+      "spelling": "sma golden cross",
+      "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.smagoldencross",
+      "source": "go-inline-setup-type",
+      "spelling": "smagoldencross",
+      "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.dual-ema-resumption",
+      "source": "go-canonical-setup-type",
+      "spelling": "dual ema resumption",
+      "familyId": "dualEmaResumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.dualemaresumption",
+      "source": "go-canonical-setup-type",
+      "spelling": "dualemaresumption",
+      "familyId": "dualEmaResumption",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.sma-golden-cross",
+      "source": "go-canonical-setup-type",
+      "spelling": "sma golden cross",
+      "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.smagoldencross",
+      "source": "go-canonical-setup-type",
+      "spelling": "smagoldencross",
+      "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.supply-demand",
+      "source": "go-inline-setup-type",
+      "spelling": "supply demand",
+      "familyId": "supplyDemand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.supplydemand",
+      "source": "go-inline-setup-type",
+      "spelling": "supplydemand",
+      "familyId": "supplyDemand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.break-retest",
+      "source": "go-inline-setup-type",
+      "spelling": "break retest",
+      "familyId": "breakRetest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.breakretest",
+      "source": "go-inline-setup-type",
+      "spelling": "breakretest",
+      "familyId": "breakRetest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.wedge-exhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "wedge exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.vpa-exhaustion",
+      "source": "go-inline-setup-type",
+      "spelling": "vpa exhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.triple-screen",
+      "source": "go-inline-setup-type",
+      "spelling": "triple screen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-inline-setup-type.orb",
+      "source": "go-inline-setup-type",
+      "spelling": "orb",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.flag-continuation",
+      "source": "go-canonical-setup-type",
+      "spelling": "flag continuation",
+      "familyId": "flagContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.session-break-hold",
+      "source": "go-canonical-setup-type",
+      "spelling": "session break hold",
+      "familyId": "sessionBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.trend-pullback",
+      "source": "go-canonical-setup-type",
+      "spelling": "trend pullback",
+      "familyId": "trendPullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.failed-breakout",
+      "source": "go-canonical-setup-type",
+      "spelling": "failed breakout",
+      "familyId": "failedBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.break-retest",
+      "source": "go-canonical-setup-type",
+      "spelling": "break retest",
+      "familyId": "breakRetest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.opening-range-breakout",
+      "source": "go-canonical-setup-type",
+      "spelling": "opening range breakout",
+      "familyId": "openingRangeBreakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.channel-break-hold",
+      "source": "go-canonical-setup-type",
+      "spelling": "channel break hold",
+      "familyId": "channelBreakHold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.inside-day-expansion",
+      "source": "go-canonical-setup-type",
+      "spelling": "inside day expansion",
+      "familyId": "insideDayExpansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.day-open-reclaim",
+      "source": "go-canonical-setup-type",
+      "spelling": "day open reclaim",
+      "familyId": "dayOpenReclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.supply-demand",
+      "source": "go-canonical-setup-type",
+      "spelling": "supply demand",
+      "familyId": "supplyDemand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.double-top-bottom",
+      "source": "go-canonical-setup-type",
+      "spelling": "double top bottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.double-top-bottom-2",
+      "source": "go-canonical-setup-type",
+      "spelling": "double top/bottom",
+      "familyId": "doubleTopBottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.range-break-fake",
+      "source": "go-canonical-setup-type",
+      "spelling": "range break fake",
+      "familyId": "rangeBreakFake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.fib-continuation",
+      "source": "go-canonical-setup-type",
+      "spelling": "fib continuation",
+      "familyId": "fibContinuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.triple-push-exhaustion",
+      "source": "go-canonical-setup-type",
+      "spelling": "triple push exhaustion",
+      "familyId": "triplePushExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.vwap-extension-fade",
+      "source": "go-canonical-setup-type",
+      "spelling": "vwap extension fade",
+      "familyId": "vwapExtensionFade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.volume-anomaly-exhaustion",
+      "source": "go-canonical-setup-type",
+      "spelling": "volume anomaly exhaustion",
+      "familyId": "volumeAnomalyExhaustion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.elder-triple-screen",
+      "source": "go-canonical-setup-type",
+      "spelling": "elder triple screen",
+      "familyId": "elderTripleScreen",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "alias.go-canonical-setup-type.price-momentum",
+      "source": "go-canonical-setup-type",
+      "spelling": "price momentum",
+      "familyId": "priceMomentum",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.daily-flush-failure",
+      "source": "go-canonical-setup-type",
+      "spelling": "daily flush failure",
+      "familyId": "dailyFlushFailure",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.daily-flush-failure-camel",
+      "source": "go-canonical-setup-type",
+      "spelling": "dailyflushfailure",
+      "familyId": "dailyFlushFailure",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.fair-value-gap",
+      "source": "go-canonical-setup-type",
+      "spelling": "fair value gap",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.fvg",
+      "source": "go-canonical-setup-type",
+      "spelling": "fvg",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.fair-value-gap-camel",
+      "source": "go-canonical-setup-type",
+      "spelling": "fairvaluegap",
+      "familyId": "fairValueGap",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.weekend-extreme-fade",
+      "source": "go-canonical-setup-type",
+      "spelling": "weekend extreme fade",
+      "familyId": "weekendExtremeFade",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.keltner-reversion",
+      "source": "js-setup-type",
+      "spelling": "keltner reversion",
+      "familyId": "keltnerReversion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.weekend-extreme-fade-camel",
+      "source": "go-canonical-setup-type",
+      "spelling": "weekendextremefade",
+      "familyId": "weekendExtremeFade",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.intra-hour-run-exhaustion",
+      "source": "go-canonical-setup-type",
+      "spelling": "intra hour run exhaustion",
+      "familyId": "intraHourRunExhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.intra-hour-run-exhaustion-camel",
+      "source": "go-canonical-setup-type",
+      "spelling": "intrahourrunexhaustion",
+      "familyId": "intraHourRunExhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.keltner-reversion-camel",
+      "source": "js-setup-type",
+      "spelling": "keltnerReversion",
+      "familyId": "keltnerReversion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.keltner-expansion",
+      "source": "js-setup-type",
+      "spelling": "keltner expansion",
+      "familyId": "keltnerExpansion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.keltner-expansion-camel",
+      "source": "js-setup-type",
+      "spelling": "keltnerExpansion",
+      "familyId": "keltnerExpansion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.keltner-reversion",
+      "source": "go-inline-setup-type",
+      "spelling": "keltner reversion",
+      "familyId": "keltnerReversion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.keltner-reversion-camel",
+      "source": "go-inline-setup-type",
+      "spelling": "keltnerreversion",
+      "familyId": "keltnerReversion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.keltner-expansion",
+      "source": "go-inline-setup-type",
+      "spelling": "keltner expansion",
+      "familyId": "keltnerExpansion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.keltner-expansion-camel",
+      "source": "go-inline-setup-type",
+      "spelling": "keltnerexpansion",
+      "familyId": "keltnerExpansion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.keltner-reversion",
+      "source": "go-canonical-setup-type",
+      "spelling": "keltner reversion",
+      "familyId": "keltnerReversion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.keltner-reversion-camel",
+      "source": "go-canonical-setup-type",
+      "spelling": "keltnerreversion",
+      "familyId": "keltnerReversion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.keltner-expansion",
+      "source": "go-canonical-setup-type",
+      "spelling": "keltner expansion",
+      "familyId": "keltnerExpansion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.keltner-expansion-camel",
+      "source": "go-canonical-setup-type",
+      "spelling": "keltnerexpansion",
+      "familyId": "keltnerExpansion",
+      "classification": "shared",
+      "since": 7
+    }
+  ],
+  "directiveHeads": [
+    {
+      "id": "directive.strategy",
+      "spelling": "strategy",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.name",
+      "spelling": "name",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.description",
+      "spelling": "description",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.riskusd",
+      "spelling": "riskUsd",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.risk",
+      "spelling": "risk",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.slices",
+      "spelling": "slices",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.timeframes",
+      "spelling": "timeframes",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.timeframe",
+      "spelling": "timeframe",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.sessions",
+      "spelling": "sessions",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.windows",
+      "spelling": "windows",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.session",
+      "spelling": "session",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.window",
+      "spelling": "window",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.room",
+      "spelling": "room",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.seasonality",
+      "spelling": "seasonality",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.micro",
+      "spelling": "micro",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.weekday",
+      "spelling": "weekday",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.hour",
+      "spelling": "hour",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.local",
+      "spelling": "local",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.new",
+      "spelling": "new",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.open",
+      "spelling": "open",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.prior",
+      "spelling": "prior",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.regime",
+      "spelling": "regime",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.day",
+      "spelling": "day",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.week",
+      "spelling": "week",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.weekend",
+      "spelling": "weekend",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.run",
+      "spelling": "run",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.exhaustion",
+      "spelling": "exhaustion",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.maxmovementer",
+      "spelling": "maxMovementEr",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.maxer",
+      "spelling": "maxEr",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.trendiness",
+      "spelling": "trendiness",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.ema",
+      "spelling": "ema",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.sma",
+      "spelling": "sma",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.trade",
+      "spelling": "trade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.range",
+      "spelling": "range",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.higher",
+      "spelling": "higher",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.activewithincandles",
+      "spelling": "activeWithinCandles",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.maxagebars",
+      "spelling": "maxAgeBars",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.priority",
+      "spelling": "priority",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.nearkeylevel",
+      "spelling": "nearKeyLevel",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.retrace",
+      "spelling": "retrace",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.channel",
+      "spelling": "channel",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.near",
+      "spelling": "near",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.withinatr",
+      "spelling": "withinAtr",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.entrytf",
+      "spelling": "entryTf",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.source",
+      "spelling": "source",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "directive.entry",
+      "spelling": "entry",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.sweep",
+      "spelling": "sweep",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.approachcandles",
+      "spelling": "approachCandles",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.approachbars",
+      "spelling": "approachBars",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.approach",
+      "spelling": "approach",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.trigger",
+      "spelling": "trigger",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.rejection",
+      "spelling": "rejection",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.candle",
+      "spelling": "candle",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.when",
+      "spelling": "when",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.stop",
+      "spelling": "stop",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.extremecandles",
+      "spelling": "extremeCandles",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.paddingatr",
+      "spelling": "paddingAtr",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.minatr",
+      "spelling": "minAtr",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.maxatr",
+      "spelling": "maxAtr",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.take",
+      "spelling": "take",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.target",
+      "spelling": "target",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.minr",
+      "spelling": "minR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.fallbackr",
+      "spelling": "fallbackR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.minimum",
+      "spelling": "minimum",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.fallback",
+      "spelling": "fallback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.breakeven",
+      "spelling": "breakeven",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.move",
+      "spelling": "move",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.partial",
+      "spelling": "partial",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.trail",
+      "spelling": "trail",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.cooldowncandles",
+      "spelling": "cooldownCandles",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.cooldownbars",
+      "spelling": "cooldownBars",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.wait",
+      "spelling": "wait",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.maxholdcandles",
+      "spelling": "maxHoldCandles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.maxholdbars",
+      "spelling": "maxHoldBars",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.stretch",
+      "spelling": "stretch",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.reclaim",
+      "spelling": "reclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.distance",
+      "spelling": "distance",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.require",
+      "spelling": "require",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.recent",
+      "spelling": "recent",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.side",
+      "spelling": "side",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.direction",
+      "spelling": "direction",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.tail",
+      "spelling": "tail",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.close",
+      "spelling": "close",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.grade",
+      "spelling": "grade",
+      "classification": "js-only",
+      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "since": 6
+    },
+    {
+      "id": "directive.context",
+      "spelling": "context",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.location",
+      "spelling": "location",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.choch",
+      "spelling": "choch",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.structure",
+      "spelling": "structure",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.pivot",
+      "spelling": "pivot",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.peak",
+      "spelling": "peak",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.neckline",
+      "spelling": "neckline",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.breakout",
+      "spelling": "breakout",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "directive.confirm",
+      "spelling": "confirm",
+      "classification": "shared",
+      "since": 6
+    }
+  ],
+  "deprecations": [
+    { "id": "deprecated.windows", "spelling": "windows", "replacement": "sessions", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.max-age-bars", "spelling": "maxAgeBars", "replacement": "range active within N candles", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.approach-bars", "spelling": "approachBars", "replacement": "approach at least N candles toward level", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.cooldown-bars", "spelling": "cooldownBars", "replacement": "wait N candles after trade", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.max-hold-bars", "spelling": "maxHoldBars", "replacement": "maxHoldCandles", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.reclaim-bars", "spelling": "reclaimBars", "replacement": "reclaim(..., within N candles)", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.sweep-atr", "spelling": "sweepAtr", "replacement": "sweep(..., by X ATR)", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.regime", "spelling": "regime", "replacement": "day type in (...)", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.opposite-range-edge", "spelling": "oppositeRangeEdge", "replacement": "take profit opposite range edge", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.at-r", "spelling": "atR", "replacement": "move stop to breakeven after X R plus Y ATR", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.offset-atr", "spelling": "offsetAtr", "replacement": "move stop to breakeven after X R plus Y ATR", "classification": "shared", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.unit-bar", "spelling": "bar", "replacement": "candle", "classification": "js-only", "reason": "JavaScript reports numeric unit aliases; Go does not currently diagnose them.", "since": 6, "deprecatedSince": 6 },
+    { "id": "deprecated.unit-bars", "spelling": "bars", "replacement": "candles", "classification": "js-only", "reason": "JavaScript reports numeric unit aliases; Go does not currently diagnose them.", "since": 6, "deprecatedSince": 6 }
+  ],
+  "snippets": [
+    {
+      "id": "snippet.sections.market-conditions",
+      "group": "Sections",
+      "label": "market conditions",
+      "insert": "market conditions {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.sections.setup",
+      "group": "Sections",
+      "label": "setup",
+      "insert": "setup {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.sections.levels",
+      "group": "Sections",
+      "label": "levels",
+      "insert": "levels {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.sections.filters",
+      "group": "Sections",
+      "label": "filters",
+      "insert": "filters {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.sections.risk",
+      "group": "Sections",
+      "label": "risk",
+      "insert": "risk {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.sections.target",
+      "group": "Sections",
+      "label": "target",
+      "insert": "target {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.sections.management",
+      "group": "Sections",
+      "label": "management",
+      "insert": "management {\n  \n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-flag-continuation",
+      "group": "Archetype",
+      "label": "type: flag continuation",
+      "insert": "type: flag continuation",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-break-retest",
+      "group": "Archetype",
+      "label": "type: break retest",
+      "insert": "type: break retest",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-session-break-hold",
+      "group": "Archetype",
+      "label": "type: session break hold",
+      "insert": "type: session break hold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-supply-demand",
+      "group": "Archetype",
+      "label": "type: supply demand",
+      "insert": "type: supply demand",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-day-open-reclaim",
+      "group": "Archetype",
+      "label": "type: day open reclaim",
+      "insert": "type: day open reclaim",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-inside-day-expansion",
+      "group": "Archetype",
+      "label": "type: inside day expansion",
+      "insert": "type: inside day expansion",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-channel-break-hold",
+      "group": "Archetype",
+      "label": "type: channel break hold",
+      "insert": "type: channel break hold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-trend-pullback",
+      "group": "Archetype",
+      "label": "type: trend pullback",
+      "insert": "type: trend pullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-range-break-fake",
+      "group": "Archetype",
+      "label": "type: range break fake",
+      "insert": "type: range break fake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-vwap-extension-fade",
+      "group": "Archetype",
+      "label": "type: vwap extension fade",
+      "insert": "type: vwap extension fade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.archetype.type-double-top-bottom",
+      "group": "Archetype",
+      "label": "type: double top bottom",
+      "insert": "type: double top bottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.timeframes",
+      "group": "Market / routing",
+      "label": "timeframes(…)",
+      "insert": "timeframes(15m, 1h)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.symbols",
+      "group": "Market / routing",
+      "label": "symbols(…)",
+      "insert": "symbols(EURUSD, AUDUSD)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.slices",
+      "group": "Market / routing",
+      "label": "slices(…)",
+      "insert": "slices(XAUUSD 1h, EURUSD 1h)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.slices-xauusd-1h-4h",
+      "group": "Market / routing",
+      "label": "slices(XAUUSD 1h/4h)",
+      "insert": "slices(XAUUSD 1h, XAUUSD 4h)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.sessions",
+      "group": "Market / routing",
+      "label": "sessions(…)",
+      "insert": "sessions(london, ny)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.trade-window-in",
+      "group": "Market / routing",
+      "label": "trade window in",
+      "insert": "trade window in (london.open, ny.open)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.trade-window-minutes",
+      "group": "Market / routing",
+      "label": "trade window minutes",
+      "insert": "trade window minutes 0 to 90",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.trade-window-unrestricted",
+      "group": "Market / routing",
+      "label": "trade window unrestricted",
+      "insert": "trade window unrestricted",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "snippet.market-routing.new-york-hour",
+      "group": "Market / routing",
+      "label": "New York hour",
+      "insert": "new york hour in (10)",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "snippet.market-routing.session-phase-in",
+      "group": "Market / routing",
+      "label": "session phase in",
+      "insert": "session phase in (close)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.session-phase-not-in",
+      "group": "Market / routing",
+      "label": "session phase not in",
+      "insert": "session phase not in (lunch)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.open-location-in",
+      "group": "Market / routing",
+      "label": "open location in",
+      "insert": "open location in (near PDH, near overnight.high)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.day-type-in-or-movement-below-0-4",
+      "group": "Market / routing",
+      "label": "day type in (…) or movement below 0.4",
+      "insert": "day type in (trending) or movement below 0.4",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.prior-day-type-in",
+      "group": "Market / routing",
+      "label": "prior day type in",
+      "insert": "prior day type in (wide, trend, range)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.prior-day-type-not-in",
+      "group": "Market / routing",
+      "label": "prior day type not in",
+      "insert": "prior day type not in (range)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.range-method-zone",
+      "group": "Market / routing",
+      "label": "range method: zone",
+      "insert": "range method: zone",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.higher-timeframe-must-agree",
+      "group": "Filters / risk / target",
+      "label": "higher timeframe must agree",
+      "insert": "higher timeframe must agree",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.source-timeframe",
+      "group": "Filters / risk / target",
+      "label": "source timeframe",
+      "insert": "source timeframe 4h",
+      "title": "Parser-only declaration; C4 owns context acquisition and runtime behavior.",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "snippet.filters-risk-target.side-long-only",
+      "group": "Filters / risk / target",
+      "label": "side: long only",
+      "insert": "side: long only",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.side-short-only",
+      "group": "Filters / risk / target",
+      "label": "side: short only",
+      "insert": "side: short only",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.trigger-any",
+      "group": "Filters / risk / target",
+      "label": "trigger any",
+      "insert": "trigger any",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.priority",
+      "group": "Filters / risk / target",
+      "label": "priority(…)",
+      "insert": "priority(PDH, PDL)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.ema-length-21",
+      "group": "Filters / risk / target",
+      "label": "ema length 21",
+      "insert": "ema length 21",
+      "title": "Enable the EMA the chart Indicators panel draws",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.ema-slope-window-5",
+      "group": "Filters / risk / target",
+      "label": "ema slope window 5",
+      "insert": "ema slope window 5",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.priority-ema-vwap",
+      "group": "Filters / risk / target",
+      "label": "priority(EMA, VWAP)",
+      "insert": "priority(EMA, VWAP)",
+      "title": "Use EMA / daily VWAP as levels (same as the chart indicators)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.tail-rejection-at-least",
+      "group": "Filters / risk / target",
+      "label": "tail rejection at least",
+      "insert": "tail rejection at least 0.35",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.close-location-at-least",
+      "group": "Filters / risk / target",
+      "label": "close location at least",
+      "insert": "close location at least 0.75",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.entry-distance-max",
+      "group": "Filters / risk / target",
+      "label": "entry distance max",
+      "insert": "entry distance max 0.6 ATR from level",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.target-1-5r",
+      "group": "Filters / risk / target",
+      "label": "target 1.5R",
+      "insert": "target 1.5R",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.target-2r",
+      "group": "Filters / risk / target",
+      "label": "target 2R",
+      "insert": "target 2R",
+      "title": "Let break-retest continuations run (2026-06-17 finding)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.target-1-618r",
+      "group": "Filters / risk / target",
+      "label": "target 1.618R",
+      "insert": "target 1.618R",
+      "title": "Fibonacci-ratio R target",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.risk-200-usd",
+      "group": "Filters / risk / target",
+      "label": "risk: 200 USD",
+      "insert": "risk: 200 USD",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.stop-size-1-5-atr",
+      "group": "Filters / risk / target",
+      "label": "stop size <= 1.5 ATR",
+      "insert": "stop size <= 1.5 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.filters-risk-target.stop-inside-range-0-5-atr",
+      "group": "Filters / risk / target",
+      "label": "stop inside range 0.5 ATR",
+      "insert": "stop inside range 0.5 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.management.breakeven-after-0-5r",
+      "group": "Management",
+      "label": "breakeven after 0.5R",
+      "insert": "move stop to breakeven after 0.5R plus 0.05 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.management.partial-50-at-1r-be",
+      "group": "Management",
+      "label": "partial 50% at 1R BE",
+      "insert": "partial 50% at 1R breakeven",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.management.wait-12-candles-after-trade",
+      "group": "Management",
+      "label": "wait 12 candles after trade",
+      "insert": "wait 12 candles after trade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.management.maxholdcandles-24",
+      "group": "Management",
+      "label": "maxHoldCandles 24",
+      "insert": "maxHoldCandles 24",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.type-range-break-fake",
+      "group": "Range fake / VWAP",
+      "label": "type: range break fake",
+      "insert": "type: range break fake",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.pierce-at-least-0-1-atr",
+      "group": "Range fake / VWAP",
+      "label": "pierce at least 0.1 ATR",
+      "insert": "pierce at least 0.1 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.reclaim-within-3-candles",
+      "group": "Range fake / VWAP",
+      "label": "reclaim within 3 candles",
+      "insert": "reclaim within 3 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.target-range-midpoint",
+      "group": "Range fake / VWAP",
+      "label": "target range midpoint",
+      "insert": "target range midpoint",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.type-vwap-extension-fade",
+      "group": "Range fake / VWAP",
+      "label": "type: vwap extension fade",
+      "insert": "type: vwap extension fade",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.distance-from-vwap",
+      "group": "Range fake / VWAP",
+      "label": "distance from vwap",
+      "insert": "distance from vwap at least 3 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.target-vwap",
+      "group": "Range fake / VWAP",
+      "label": "target vwap",
+      "insert": "target vwap",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.range-fake-vwap.require-range-day",
+      "group": "Range fake / VWAP",
+      "label": "require range day",
+      "insert": "require range day",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.first-pullback.first-pullback-only",
+      "group": "First pullback",
+      "label": "first pullback only",
+      "insert": "first pullback only",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.first-pullback.impulse-at-least-1-5-atr",
+      "group": "First pullback",
+      "label": "impulse at least 1.5 ATR",
+      "insert": "impulse at least 1.5 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.first-pullback.impulse-close-location",
+      "group": "First pullback",
+      "label": "impulse close location",
+      "insert": "impulse close location at least 0.75",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.first-pullback.pullback-volatility-contract",
+      "group": "First pullback",
+      "label": "pullback volatility contract",
+      "insert": "pullback volatility contract",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.first-pullback.avoid-lunch-breakouts",
+      "group": "First pullback",
+      "label": "avoid lunch breakouts",
+      "insert": "avoid lunch breakouts",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.grade.grade-block",
+      "group": "Grade",
+      "label": "grade block",
+      "insert": "grade {\n  context 2\n  location 3\n  trigger 2\n  risk_reward 2\n  require total >= 8\n}",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.grade.context-2",
+      "group": "Grade",
+      "label": "context 2",
+      "insert": "context 2",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.grade.location-3",
+      "group": "Grade",
+      "label": "location 3",
+      "insert": "location 3",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.grade.trigger-2",
+      "group": "Grade",
+      "label": "trigger 2",
+      "insert": "trigger 2",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.grade.risk-reward-2",
+      "group": "Grade",
+      "label": "risk_reward 2",
+      "insert": "risk_reward 2",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.grade.require-total-8",
+      "group": "Grade",
+      "label": "require total >= 8",
+      "insert": "require total >= 8",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.type-double-top-bottom",
+      "group": "Double top / bottom",
+      "label": "type: double top bottom",
+      "insert": "type: double top bottom",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.pivot-window-2",
+      "group": "Double top / bottom",
+      "label": "pivot window 2",
+      "insert": "pivot window 2",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.peak-gap-9-to-60-candles",
+      "group": "Double top / bottom",
+      "label": "peak gap 9 to 60 candles",
+      "insert": "peak gap 9 to 60 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.peak-difference-max-0-5-atr",
+      "group": "Double top / bottom",
+      "label": "peak difference max 0.5 ATR",
+      "insert": "peak difference max 0.5 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.neckline-touch-0-25-atr",
+      "group": "Double top / bottom",
+      "label": "neckline touch 0.25 ATR",
+      "insert": "neckline touch 0.25 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.neckline-depth-1-atr",
+      "group": "Double top / bottom",
+      "label": "neckline depth 1 ATR",
+      "insert": "neckline depth 1 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.confirm-within-12-candles",
+      "group": "Double top / bottom",
+      "label": "confirm within 12 candles",
+      "insert": "confirm within 12 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.double-top-bottom.choch-within-6-candles",
+      "group": "Double top / bottom",
+      "label": "choch within 6 candles",
+      "insert": "choch within 6 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.break-retest.break-within-18-candles",
+      "group": "Break-retest",
+      "label": "break within 18 candles",
+      "insert": "break within 18 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.break-retest.break-distance-at-least-1-atr",
+      "group": "Break-retest",
+      "label": "break distance at least 1 ATR",
+      "insert": "break distance at least 1 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.break-retest.retest-within-8-candles",
+      "group": "Break-retest",
+      "label": "retest within 8 candles",
+      "insert": "retest within 8 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.break-retest.retest-tolerance-0-4-atr",
+      "group": "Break-retest",
+      "label": "retest tolerance 0.4 ATR",
+      "insert": "retest tolerance 0.4 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.break-retest.displacement-at-least-1-atr",
+      "group": "Break-retest",
+      "label": "displacement at least 1 ATR",
+      "insert": "displacement at least 1 ATR",
+      "title": "Require a conviction hold bar (range >= X ATR)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.break-retest.target-fib-extension-1-272",
+      "group": "Break-retest",
+      "label": "target fib extension 1.272",
+      "insert": "target fib extension 1.272",
+      "title": "Measured-move target: project the break impulse by a fib ratio (research; R targets test better)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.type-trend-pullback",
+      "group": "Trend pullback",
+      "label": "type: trend pullback",
+      "insert": "type: trend pullback",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.ema-length-21",
+      "group": "Trend pullback",
+      "label": "ema length 21",
+      "insert": "ema length 21",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.ema-slope-window-5",
+      "group": "Trend pullback",
+      "label": "ema slope window 5",
+      "insert": "ema slope window 5",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.pullback-tag-0-25-atr",
+      "group": "Trend pullback",
+      "label": "pullback tag 0.25 ATR",
+      "insert": "pullback tag 0.25 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.pullback-within-6-candles",
+      "group": "Trend pullback",
+      "label": "pullback within 6 candles",
+      "insert": "pullback within 6 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.pullback-max-depth-0-5",
+      "group": "Trend pullback",
+      "label": "pullback max depth 0.5",
+      "insert": "pullback max depth 0.5",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.session-vwap-wick-touch",
+      "group": "Trend pullback",
+      "label": "pullback session VWAP wick touch",
+      "insert": "pullback session VWAP wick touch",
+      "title": "Use a causal VWAP range touch as the pullback location (requires the first-touch and reclaim phrases)",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "snippet.trend-pullback.first-session-vwap-touch-only",
+      "group": "Trend pullback",
+      "label": "pullback first session VWAP touch only",
+      "insert": "pullback first session VWAP touch only",
+      "title": "Admit only the first VWAP touch in each configured trade-window session",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "snippet.trend-pullback.reclaim-session-vwap-trend-side",
+      "group": "Trend pullback",
+      "label": "reclaim session VWAP on trend side",
+      "insert": "reclaim session VWAP on trend side",
+      "title": "Require the decision close to reclaim VWAP on the EMA-slope trend side",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "snippet.trend-pullback.trigger-any",
+      "group": "Trend pullback",
+      "label": "trigger any",
+      "insert": "trigger any",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.trend-pullback.stop-beyond-pullback-extreme",
+      "group": "Trend pullback",
+      "label": "stop beyond pullback extreme",
+      "insert": "stop beyond pullback extreme by 0.25 ATR min 0.5 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.channel-trendline.type-channel-break-hold",
+      "group": "Channel / trendline",
+      "label": "type: channel break hold",
+      "insert": "type: channel break hold",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.channel-trendline.channel-source-close",
+      "group": "Channel / trendline",
+      "label": "channel source close",
+      "insert": "channel source close",
+      "title": "Fit channel rails on close prices (line-chart trendlines) instead of wicks",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.channel-trendline.channel-min-width-0-8-atr",
+      "group": "Channel / trendline",
+      "label": "channel min width 0.8 ATR",
+      "insert": "channel min width 0.8 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.channel-trendline.channel-active-within-12-candles",
+      "group": "Channel / trendline",
+      "label": "channel active within 12 candles",
+      "insert": "channel active within 12 candles",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.channel-trendline.channel-width-between-2-and-3-atr",
+      "group": "Channel / trendline",
+      "label": "channel width between 2 and 3 ATR",
+      "insert": "channel width between 2 and 3 ATR",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.supply-demand.overlapping-zones-off",
+      "group": "Supply / demand",
+      "label": "overlapping zones off",
+      "insert": "overlapping zones off",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.supply-demand.retest-first-touch",
+      "group": "Supply / demand",
+      "label": "retest first touch",
+      "insert": "retest first touch",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.supply-demand.choch-within-3-candles",
+      "group": "Supply / demand",
+      "label": "choch within 3 candles",
+      "insert": "choch within 3 candles",
+      "classification": "shared",
+      "since": 6
+    }
+  ]
+}

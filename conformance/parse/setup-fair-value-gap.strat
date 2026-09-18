@@ -1,0 +1,14 @@
+dsl v7
+strategy "Fair Value Gap" { description "Causal three-candle fair value gap setup." }
+market conditions {
+  slices(EURUSD 15m)
+  trade window unrestricted
+}
+setup {
+  type: fair value gap
+  gap minimum 0.1 ATR
+  displacement minimum 0.8 ATR
+  retest within 8 candles
+  entry at midpoint
+}
+target 1.5R

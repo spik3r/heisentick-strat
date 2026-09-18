@@ -1,0 +1,12 @@
+dsl v7
+strategy "Starter" {
+  description "Minimal strategy: fade a failed breakout of prior-day levels."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: failed breakout
+}

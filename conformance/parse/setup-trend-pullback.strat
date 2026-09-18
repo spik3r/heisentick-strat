@@ -1,0 +1,43 @@
+dsl v7
+# Trend Pullback Continuation - XAUUSD 1h
+strategy "Trend Pullback Continuation - XAUUSD 1h" {
+  description "Join XAUUSD 1h long continuation when a controlled pullback tags a rising 21 EMA and resumes during Asia/London. Research copy; not promoted until the strict anti-overfit gate passes."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(asia, london)
+  day type in (trending)
+}
+
+setup {
+  type: trend pullback
+  ema length 21
+  ema slope window 5
+  pullback tag 0.25 ATR
+  pullback within 6 candles
+  pullback max depth 0.5
+  movement between 0.35 and 0.95
+}
+
+filters {
+  higher timeframe must agree
+  side: long only
+}
+
+risk {
+  stop beyond pullback extreme by 0.25 ATR min 0.5 ATR
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

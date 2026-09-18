@@ -1,0 +1,20 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "sma-end-of-test-open-position",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 6,
+      "entryT": 1767592800000,
+      "entry": 2020,
+      "exitIndex": 8,
+      "exitT": 1767600000000,
+      "exit": 2030,
+      "reason": "end-of-test"
+    }
+  ],
+  "notes": [
+    "Same entry as sma-cross-next-open-entry-exit; the data ends at bar 8 with the position open and no bearish cross.",
+    "The open position is reported once with reason \"end-of-test\" at the last bar close (2030). It is never reported as tp, sl or a rule exit."
+  ]
+}

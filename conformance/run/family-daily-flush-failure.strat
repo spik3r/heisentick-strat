@@ -1,0 +1,28 @@
+dsl v7
+# Daily Flush Failure - NAS100 / US500
+strategy "Daily Flush Failure Indices 1d" {
+  description "Long a failed downside extension after an unusually wide bearish daily flush on NAS100 or US500. Uses weekday-retained bars and next-weekday-open execution."
+}
+
+market conditions {
+  slices(NAS100 1d, US500 1d)
+}
+
+setup {
+  type: daily flush failure
+  flush range at least 1.25 ATR
+  flush close in bottom 25 percent
+}
+
+risk {
+  stop beyond last 2 candle extreme by 0.1 ATR
+  stop size min 0.5 max 3
+}
+
+management {
+  maxHoldCandles 10
+}
+
+execution {
+  risk 200 USD
+}

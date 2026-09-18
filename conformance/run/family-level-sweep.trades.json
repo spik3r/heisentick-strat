@@ -1,0 +1,54 @@
+{
+  "case": "family-level-sweep",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslFailedBreakoutBalanced",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 2649.735,
+      "entryIndex": 677,
+      "entryT": 1736335800000,
+      "exit": 2646.83053571429,
+      "exitIndex": 680,
+      "exitT": 1736338500000,
+      "initialSl": 2646.89053571429,
+      "initialTp": 2655.01146428571,
+      "meta": {
+        "approachHi": 2654.995,
+        "approachLo": 2647.454,
+        "edge": "low",
+        "grade": "A",
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "AL",
+        "levelPrice": 2645.095,
+        "rangeEnd": 677,
+        "rangeHi": 2655.01146428571,
+        "rangeLo": 2648.25453571429,
+        "rangeStart": 663,
+        "setup": "rangeSweepReclaim",
+        "setupAgeCandles": 0,
+        "side": "long",
+        "source": "range"
+      },
+      "pnl": -204.218720572537,
+      "points": -2.90446428571431,
+      "reason": "sl",
+      "side": "long",
+      "size": 70.3120095423422,
+      "sl": 2646.89053571429,
+      "tag": "DSL:AL:A",
+      "tp": 2655.01146428571
+    }
+  ]
+}

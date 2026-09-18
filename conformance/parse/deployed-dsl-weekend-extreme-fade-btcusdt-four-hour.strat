@@ -1,0 +1,21 @@
+dsl v7
+strategy "Weekend Extreme Fade BTCUSDT 4h" {
+  description "Research-only causal BTCUSDT 4h fade after a compressed weekend closes at a range extreme."
+}
+
+market conditions {
+  slices(BTCUSDT 4h)
+}
+
+setup {
+  type: weekend extreme fade
+  weekend range max 5 ATR
+  weekend close extreme 30 percent
+  stop ATR 0.75
+  target ATR 2
+  hold max 12 candles
+}
+
+execution {
+  risk 200 USD
+}
