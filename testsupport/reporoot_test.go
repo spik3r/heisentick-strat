@@ -12,7 +12,7 @@ func TestRepoRootAndConformanceRootIgnoreWorkingDirectory(t *testing.T) {
 	if !ok {
 		t.Fatal("locate repository-root test")
 	}
-	wantRoot, err := filepath.EvalSymlinks(filepath.Join(filepath.Dir(source), "..", ".."))
+	wantRoot, err := filepath.EvalSymlinks(filepath.Join(filepath.Dir(source), ".."))
 	if err != nil {
 		t.Fatalf("resolve expected repository root: %v", err)
 	}
@@ -38,7 +38,7 @@ func TestRepoRootAndConformanceRootIgnoreWorkingDirectory(t *testing.T) {
 			t.Errorf("restore working directory: %v", err)
 		}
 	})
-	if err := os.Chdir(filepath.Join(wantRoot, "go")); err != nil {
+	if err := os.Chdir(filepath.Join(wantRoot, "cmd")); err != nil {
 		t.Fatalf("change to alternate go working directory: %v", err)
 	}
 
@@ -55,8 +55,8 @@ func TestRepoRootAndConformanceRootIgnoreWorkingDirectory(t *testing.T) {
 	}
 
 	conformanceRoot := StratConformanceRoot()
-	if conformanceRoot != filepath.Join(wantRoot, "strat", "conformance") {
-		t.Fatalf("StratConformanceRoot() = %q, want %q", conformanceRoot, filepath.Join(wantRoot, "strat", "conformance"))
+	if conformanceRoot != filepath.Join(wantRoot, "conformance") {
+		t.Fatalf("StratConformanceRoot() = %q, want %q", conformanceRoot, filepath.Join(wantRoot, "conformance"))
 	}
 	fixture := filepath.Join(conformanceRoot, "parse", "setup-channel-break-hold.strat")
 	if _, err := os.Stat(fixture); err != nil {

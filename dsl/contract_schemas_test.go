@@ -18,7 +18,7 @@ import (
 type contractSchema map[string]any
 
 func contractSchemaRoot() string {
-	return filepath.Join(testsupport.MustRepoRoot(), "strat", "specification", "schemas")
+	return filepath.Join(testsupport.MustRepoRoot(), "spec", "schemas")
 }
 
 func loadContractSchema(t *testing.T, name string) (contractSchema, string) {

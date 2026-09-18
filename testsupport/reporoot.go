@@ -16,7 +16,7 @@ func RepoRoot() (string, error) {
 		return "", fmt.Errorf("locate repository-root helper")
 	}
 	for dir := filepath.Dir(source); ; dir = filepath.Dir(dir) {
-		if isFile(filepath.Join(dir, "package.json")) && isFile(filepath.Join(dir, "go.mod")) {
+		if isFile(filepath.Join(dir, "go.mod")) {
 			return dir, nil
 		}
 		parent := filepath.Dir(dir)
@@ -40,7 +40,7 @@ func MustRepoRoot() string {
 // StratConformanceRoot returns the canonical location of the shared parse and
 // run corpus used by the JavaScript and Go implementations.
 func StratConformanceRoot() string {
-	return filepath.Join(MustRepoRoot(), "strat", "conformance")
+	return filepath.Join(MustRepoRoot(), "conformance")
 }
 
 func isFile(path string) bool {

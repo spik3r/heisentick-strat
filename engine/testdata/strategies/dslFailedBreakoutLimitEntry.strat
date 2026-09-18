@@ -1,0 +1,62 @@
+dsl v6
+# Failed Breakout - 5m Limit Entry
+strategy "Failed Breakout - 5m Limit Entry" {
+  description "5m Early Breakeven variant entering on a resting limit at the swept range edge to remove entry slippage."
+}
+
+market conditions {
+  timeframes(5m)
+  sessions(london, ny)
+  day type in (ranging, choppy)
+}
+
+levels {
+  priority(WH, PDH, PDL, AH, AL, LH, LL)
+  range edge must be within 1.5 ATR of level
+}
+
+filters {
+  range method: zone
+  range active within 8 candles
+  approach at least 3 candles toward level
+}
+
+triggers {
+  candle in (pin, engulf, outside)
+}
+
+entry {
+  enter with limit at swept edge within 5 candles
+
+  when (
+    sweep(range.high, by 0.05 ATR)
+    and reclaim(range.high, within 3 candles)
+    and trigger()
+  ) then signal(sell, grade A)
+
+  when (
+    sweep(range.low, by 0.05 ATR)
+    and reclaim(range.low, within 3 candles)
+    and trigger()
+  ) then signal(buy, grade A)
+}
+
+risk {
+  stop beyond last 3 candle extreme by 0.35 ATR
+  stop size <= 1.5 ATR
+}
+
+target {
+  take profit: opposite range edge
+  minimum reward: 0.6R
+  fallback: 1R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.02 ATR
+  wait 3 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

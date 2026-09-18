@@ -1,0 +1,61 @@
+dsl v6
+# Round Number Confluence Reclaim
+strategy "Round Number Confluence Reclaim" {
+  description "Fade round-number sweeps only when the handle overlaps PDH/PDL/WH/WL structure."
+}
+
+market conditions {
+  timeframes(5m, 15m)
+  sessions(london, ny)
+  day type in (ranging, choppy)
+}
+
+levels {
+  priority(RN10, PDH, PDL, WH, WL)
+  range edge must be within 1 ATR of level
+  level must align with another level within 0.5 ATR
+}
+
+filters {
+  range method: zone
+  range active within 8 candles
+  approach at least 3 candles toward level
+}
+
+triggers {
+  candle in (pin, engulf, outside)
+}
+
+entry {
+  when (
+    sweep(range.high, by 0.05 ATR)
+    and reclaim(range.high, within 2 candles)
+    and trigger()
+  ) then signal(sell, grade B)
+
+  when (
+    sweep(range.low, by 0.05 ATR)
+    and reclaim(range.low, within 2 candles)
+    and trigger()
+  ) then signal(buy, grade B)
+}
+
+risk {
+  stop beyond last 3 candle extreme by 0.25 ATR
+  stop size <= 1.5 ATR
+}
+
+target {
+  take profit: opposite range edge
+  minimum reward: 0.6R
+  fallback: 1R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.02 ATR
+  wait 3 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

@@ -47,7 +47,7 @@ func TestLevelSweepRuleGradesFromConfig(t *testing.T) {
 }
 
 func TestArchivedRoundNumberConfluenceGradesReachEngineParams(t *testing.T) {
-	source, err := os.ReadFile(filepath.Join("..", "..", "strategies", "source", "dslRoundNumberConfluence.strat"))
+	source, err := os.ReadFile(filepath.Join("testdata", "strategies", "dslRoundNumberConfluence.strat"))
 	if err != nil {
 		t.Fatalf("read archived round-number strategy: %v", err)
 	}

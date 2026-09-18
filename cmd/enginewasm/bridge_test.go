@@ -11,7 +11,7 @@ import (
 
 // The string bridge must preserve the existing file-loader semantics.
 func TestBridgeMatchesFixtureLoader(t *testing.T) {
-	paths, err := filepath.Glob("../../../strat/conformance/run/deployed-*.fixture.json")
+	paths, err := filepath.Glob("../../conformance/run/deployed-*.fixture.json")
 	if err != nil || len(paths) != 4 {
 		t.Fatalf("fixtures: %v (%d)", err, len(paths))
 	}

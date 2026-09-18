@@ -43,7 +43,7 @@ func TestFailedBreakoutParsedLimitEntryQueuesAtSweptEdge(t *testing.T) {
 }
 
 func TestArchivedFailedBreakoutLimitEntryParams(t *testing.T) {
-	source, err := os.ReadFile(filepath.Join("..", "..", "strategies", "source", "dslFailedBreakoutLimitEntry.strat"))
+	source, err := os.ReadFile(filepath.Join("testdata", "strategies", "dslFailedBreakoutLimitEntry.strat"))
 	if err != nil {
 		t.Fatalf("read archived limit-entry DSL: %v", err)
 	}
