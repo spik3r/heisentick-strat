@@ -1,0 +1,174 @@
+{
+  "case": "setup-elder-triple-screen",
+  "category": "setup-family",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 1,
+      "offsetAtr": 0.05
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 20,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "trending",
+      "ranging"
+    ],
+    "description": "Multi-timeframe trend-following based on Alexander Elder's Triple Screen 4h trend direction 1h pullback to EMA momentum trigger candle with break entry.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {
+      "emaLen": 21,
+      "maxPullbackDepth": 0.6,
+      "pullbackAtr": 0.3,
+      "pullbackWithin": 8,
+      "trailAtr": 1.5,
+      "trailR": 1.5
+    },
+    "emaLen": 21,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "notAgainst",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 20,
+    "maxMovementEr": 0.8,
+    "name": "Elder Triple Screen - XAUUSD 1h",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 0,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "elderTripleScreen",
+    "slices": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "1h"
+      }
+    ],
+    "stop": {
+      "extremeCandles": 8,
+      "maxAtr": 3,
+      "minAtr": 0.5,
+      "paddingAtr": 0.3
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [
+      "XAUUSD"
+    ],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 2,
+      "minR": 0.6
+    },
+    "timeframes": [
+      "1h"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 1.5,
+      "triggerR": 1.5
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Representative compiled config for setup module elderTripleScreen.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "engine/strategies/dsl/dslElderTripleScreenXauusdOneHour.strat",
+  "warnings": []
+}

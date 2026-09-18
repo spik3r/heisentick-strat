@@ -1,0 +1,49 @@
+{
+  "case": "family-channel-break-hold",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslChannelBreakHoldFifteen",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 2031.655,
+      "entryIndex": 961,
+      "entryT": 1707308100000,
+      "exit": 2033.07486987319,
+      "exitIndex": 962,
+      "exitT": 1707309000000,
+      "initialSl": 2033.01486987319,
+      "initialTp": 2030.41513012681,
+      "meta": {
+        "channelDirection": "descending",
+        "channelEndIdx": 961,
+        "channelStartIdx": 889,
+        "channelWidthAtr": 2.29800285561209,
+        "edge": "low",
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "channel.low",
+        "levelPrice": 2032.39936987319,
+        "setup": "channelBreakHold",
+        "side": "short"
+      },
+      "pnl": -208.824373740907,
+      "points": -1.41986987318546,
+      "reason": "sl",
+      "side": "short",
+      "size": 147.072895681921,
+      "sl": 2033.01486987319,
+      "tag": "DSL-CBH:channel.low",
+      "tp": 2030.41513012681
+    }
+  ]
+}

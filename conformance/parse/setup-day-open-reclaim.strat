@@ -1,0 +1,49 @@
+dsl v6
+# Day Open Reclaim - NY 15m Short
+strategy "Day Open Reclaim NY 15m Short" {
+  description "Trade short day-open reclaims during NY after price stretches into a prior-day or weekly level. Tiny sample; saved for review."
+}
+
+market conditions {
+  timeframes(15m)
+  sessions(ny)
+  day type in (ranging, choppy)
+}
+
+levels {
+  priority(PDH, PDL, WH, WL)
+  recent extreme must be within 1.5 ATR of level
+}
+
+setup {
+  type: day open reclaim
+  stretch from day open at least 0.7 ATR
+  reclaim day open within 3 candles
+}
+
+triggers {
+  candle in (pin, engulf, outside)
+}
+
+filters {
+  higher timeframe must agree
+  side: short only
+}
+
+risk {
+  stop beyond last 5 candle extreme by 0.25 ATR
+  stop size <= 2 ATR
+}
+
+target {
+  target 1.2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

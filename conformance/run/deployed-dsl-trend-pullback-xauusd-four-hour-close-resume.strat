@@ -1,0 +1,48 @@
+dsl v7
+# Trend Pullback Continuation - XAUUSD 4h Close Resume
+strategy "Trend Pullback Continuation - XAUUSD 4h Close Resume" {
+  description "Join XAUUSD 4h long continuation when price tags a rising 21 EMA and closes back above it. Review candidate: clears strict/OOS/harsh/MC gates, but remains single-slice."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  sessions(asia, london, ny)
+  day type in (trending)
+  prior day type not in (range, none)
+}
+
+setup {
+  type: trend pullback
+  ema length 21
+  ema slope window 5
+  pullback tag 0.35 ATR
+  pullback within 6 candles
+  pullback max depth 0.5
+  movement between 0.35 and 0.95
+}
+
+filters {
+  higher timeframe must agree
+  side: long only
+}
+
+triggers {
+  trigger any
+}
+
+risk {
+  stop beyond pullback extreme by 0.25 ATR min 0.5 ATR
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

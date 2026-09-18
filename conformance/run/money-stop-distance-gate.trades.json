@@ -1,0 +1,17 @@
+{
+  "case": "money-stop-distance-gate",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslFailedBreakoutBalanced",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 0,
+  "trades": []
+}

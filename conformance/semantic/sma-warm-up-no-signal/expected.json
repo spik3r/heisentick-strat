@@ -1,0 +1,10 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "sma-warm-up-no-signal",
+  "trades": [],
+  "notes": [
+    "SMA4 is first defined at bar 3; a crossover needs SMA4 at bar 2 as well, so no signal can exist before bar 4.",
+    "From bar 3 on SMA2 is already above SMA4 and stays above, so there is never a crossover.",
+    "An implementation that averages a partial window would see SMA2 2010 < partial-SMA4 2016.67 at bar 2 and fire a false golden cross at bar 3 (entry bar 4 open 2040)."
+  ]
+}

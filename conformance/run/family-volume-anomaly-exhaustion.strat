@@ -1,0 +1,48 @@
+dsl v7
+strategy "VPA VWAP Exhaustion XAUUSD" {
+  description "Focused VPA exhaustion lane: high Dukascopy tick-volume anomaly reclaiming VWAP on XAUUSD 5m/15m, tested with Pepperstone spread presets."
+}
+
+market conditions {
+  symbols(XAUUSD)
+  timeframes(5m, 15m)
+  sessions(london, ny)
+  day type in (ranging, choppy)
+}
+
+levels {
+  priority(VWAP)
+  nearKeyLevel withinAtr 0.6
+}
+
+setup {
+  type: volume anomaly exhaustion
+  volume anomaly ratio at least 1.8
+  high effort narrow spread max 0.65 ATR
+  or rejection wick at least 0.45
+  anomaly lookback 3 candles
+  target vwap else 1R
+}
+
+filters {
+  close location at least 0.5
+}
+
+risk {
+  stop beyond last 5 candle extreme by 0.25 ATR
+  stop size between 0.4 and 2 ATR
+}
+
+target {
+  minimum reward: 0.5R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  maxHoldCandles 24
+  wait 8 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-gap-through-target",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 31,
+      "entryT": 1767682800000,
+      "entry": 2020,
+      "initialSl": 1992.5,
+      "initialTp": 2047.5,
+      "exitIndex": 32,
+      "exitT": 1767686400000,
+      "exit": 2047.5,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "Bars 0-29 are flat at 2000 (ROC 0). Bar 30 closes 2010 = +0.5% over bar 28, below the 0.6% threshold. Bar 31 closes 2020 = +1.0% over bar 29: long signal.",
+    "Every bar has a 10-point true range, so ATR = 10 under any length or smoothing once warmed up.",
+    "Stop = lowest low of the last 3 candles (1995, at bars 28-29) - 0.25 ATR = 1992.5; distance 27.5 is inside the 0.5-3 ATR bounds. Target = entry + 1R = 2047.5.",
+    "Bar 32 opens at 2060, 12.5 above the 2047.5 target.",
+    "SPEC GAP: no rule for a favourable gap through a target. Conservative reading: the exit is credited at the target level (2047.5), never better. The alternative reading (fill at the 2060 open) is listed in RATIONALE.md."
+  ]
+}

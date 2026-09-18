@@ -1,0 +1,40 @@
+dsl v6
+# PDH/PDL Break Retest
+strategy "PDH/PDL Break Retest" {
+  description "Join continuation only after price breaks PDH/PDL, retests the level, and holds on a trigger candle."
+}
+
+market conditions {
+  timeframes(15m, 1h)
+  sessions(london, ny)
+  day type in (trending) strictly
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+setup {
+  type: break retest
+  break within 12 candles
+  break distance at least 1 ATR
+  retest within 6 candles
+  retest tolerance 0.35 ATR
+}
+
+risk {
+  stop: beyond retest extreme + 0.25 ATR
+}
+
+target {
+  target 0.8R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

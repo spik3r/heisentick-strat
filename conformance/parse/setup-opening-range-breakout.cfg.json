@@ -1,0 +1,178 @@
+{
+  "case": "setup-opening-range-breakout",
+  "category": "setup-family",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 999,
+      "offsetAtr": 0
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 12,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "trending",
+      "ranging",
+      "choppy"
+    ],
+    "description": "Operational canary only. Every UTC day is split into eight fixed 3-hour windows; the first 15 minutes build the opening range then one causal breakout may risk 10 pips for a 20-pip target until the slot closes.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 999,
+    "name": "Forward Tester Canary — XAUUSD 5m 3h ORB",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {
+      "breakBufferAtr": 0,
+      "firstCandles": 0,
+      "firstMinutes": 15,
+      "holdCandles": 1,
+      "utcSlotMinutes": 180
+    },
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 0,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "openingRangeBreakout",
+    "slices": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "5m"
+      }
+    ],
+    "stop": {
+      "extremeCandles": 0,
+      "maxAtr": 3,
+      "minAtr": 0.4,
+      "paddingAtr": 0.25,
+      "pips": 10,
+      "type": "pips"
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6,
+      "orbR": 1,
+      "pips": 20
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowMode": "unrestricted",
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 1
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Representative compiled config for setup module openingRangeBreakout.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "engine/strategies/dsl/dslForwardTesterCanaryOrbXauusdFiveMinute.strat",
+  "warnings": []
+}

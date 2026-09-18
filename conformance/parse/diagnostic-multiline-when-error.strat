@@ -1,0 +1,6 @@
+dsl v6
+strategy "Diagnostic When" { description "x" }
+market conditions { slices(XAUUSD 1h) sessions(asia) day type in (ranging) }
+when price sweeps bogus.high
+  by 0.25 within 3
+  then signal short

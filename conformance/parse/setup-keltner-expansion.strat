@@ -1,0 +1,13 @@
+dsl v7
+strategy "Keltner Expansion" { description "Causal Keltner band expansion hold setup." }
+market conditions {
+  slices(EURUSD 15m)
+  trade window unrestricted
+}
+setup {
+  type: keltner expansion
+  ema length 20
+  distance 2 ATR
+  pierce at least 0.25 ATR
+  target 1R
+}

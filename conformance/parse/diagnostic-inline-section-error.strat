@@ -1,0 +1,5 @@
+dsl v6
+strategy "Diagnostic Inline" { description "x" }
+market conditions { slices(XAUUSD 1h) sessions(asia) day type in (ranging) }
+filters { channel width wat }
+setup { type: channel break hold }

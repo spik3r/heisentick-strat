@@ -1,0 +1,96 @@
+{
+  "symbols": [
+    "XAUUSD"
+  ],
+  "tfs": [
+    "5m"
+  ],
+  "strategy": "CLI Range Fake",
+  "range": "pivot",
+  "bars": 80,
+  "sets": {
+    "riskUsd": [
+      100,
+      200
+    ]
+  },
+  "variants": [
+    {
+      "index": 0,
+      "params": {
+        "riskUsd": 100
+      },
+      "costs": [
+        {
+          "label": "raw",
+          "slippage": 0,
+          "trades": 0,
+          "winRate": 0,
+          "pf": 0,
+          "net": 0,
+          "expectancy": 0,
+          "dd": 0
+        },
+        {
+          "label": "realistic",
+          "slippage": 0.06,
+          "trades": 0,
+          "winRate": 0,
+          "pf": 0,
+          "net": 0,
+          "expectancy": 0,
+          "dd": 0
+        },
+        {
+          "label": "harsh",
+          "slippage": 0.12,
+          "trades": 0,
+          "winRate": 0,
+          "pf": 0,
+          "net": 0,
+          "expectancy": 0,
+          "dd": 0
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "params": {
+        "riskUsd": 200
+      },
+      "costs": [
+        {
+          "label": "raw",
+          "slippage": 0,
+          "trades": 0,
+          "winRate": 0,
+          "pf": 0,
+          "net": 0,
+          "expectancy": 0,
+          "dd": 0
+        },
+        {
+          "label": "realistic",
+          "slippage": 0.06,
+          "trades": 0,
+          "winRate": 0,
+          "pf": 0,
+          "net": 0,
+          "expectancy": 0,
+          "dd": 0
+        },
+        {
+          "label": "harsh",
+          "slippage": 0.12,
+          "trades": 0,
+          "winRate": 0,
+          "pf": 0,
+          "net": 0,
+          "expectancy": 0,
+          "dd": 0
+        }
+      ]
+    }
+  ],
+  "warnings": []
+}

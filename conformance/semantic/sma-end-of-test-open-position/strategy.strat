@@ -1,0 +1,18 @@
+dsl v7
+strategy "Semantic SMA end of test" {
+  description "Semantic fixture: SMA 2/3 long-only crossover, plain (stopless) translation."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: sma golden cross
+  sma fast 2
+  sma slow 3
+}
+
+filters {
+  side long only
+}

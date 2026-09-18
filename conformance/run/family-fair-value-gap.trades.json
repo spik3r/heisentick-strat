@@ -1,0 +1,53 @@
+{
+  "case": "family-fair-value-gap",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "4h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "fvg-runtime",
+  "symbol": "EURUSD",
+  "timeframe": "1h",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 103,
+      "entryIndex": 25,
+      "entryT": 1704157200000,
+      "exit": 106.641785714286,
+      "exitIndex": 25,
+      "exitT": 1704157200000,
+      "initialSl": 100.532142857143,
+      "initialTp": 106.701785714286,
+      "meta": {
+        "displacementBody": 4,
+        "entryReference": "midpoint",
+        "formationAtr": 1.76428571428571,
+        "formationIndex": 23,
+        "gapAgeCandles": 1,
+        "gapId": "long:23",
+        "gapLower": 101,
+        "gapUpper": 105,
+        "gapWidth": 4,
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelPrice": 103,
+        "setup": "fairValueGap",
+        "setupAgeCandles": 1,
+        "side": "long"
+      },
+      "pnl": 295.137481910274,
+      "points": 3.6417857142857,
+      "reason": "tp",
+      "side": "long",
+      "size": 81.041968162084,
+      "sl": 100.532142857143,
+      "tag": "DSL-FVG",
+      "tp": 106.701785714286
+    }
+  ]
+}

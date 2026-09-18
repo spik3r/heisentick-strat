@@ -1,0 +1,24 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-missing-candle",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 31,
+      "entryT": 1767686400000,
+      "entry": 2020,
+      "initialSl": 1992.5,
+      "initialTp": 2047.5,
+      "exitIndex": 34,
+      "exitT": 1767697200000,
+      "exit": 2047.5,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "The candle at T0+30h is absent: index 30 carries T0+31h and index 31 carries T0+32h. No synthetic bar is inserted.",
+    "`lookback 2 candles` counts bars, not hours: index 31 (T0+32h) closes 2020 against index 29 (T0+29h) close 2000 = +1.0%: long signal, entry 2020 at index 31.",
+    "A time-based reading (close two hours earlier) would find no candle at T0+30h, skip index 31 and enter at index 32 (2030). That reading is rejected by the family spec wording \"exactly N bars earlier\".",
+    "Stop 1992.5 and target 2047.5 as in pm-signal-close-entry; index 34 (T0+35h) high 2050 reaches the target."
+  ]
+}

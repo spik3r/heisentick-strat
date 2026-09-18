@@ -1,0 +1,37 @@
+dsl v6
+# Session Expansion NY
+strategy "Session Expansion NY" {
+  description "Trade NY session continuation after price breaks and holds outside previous session extremes."
+}
+
+market conditions {
+  timeframes(15m)
+  sessions(ny)
+}
+
+levels {
+  priority(AH, LH, LL, AL)
+}
+
+setup {
+  type: session break hold
+  hold 3 candles
+  stop inside range 0.5 ATR
+}
+
+filters {
+  higher timeframe must agree
+}
+
+target {
+  target 1.15R
+}
+
+management {
+  move stop to breakeven after 0.75R plus 0.02 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

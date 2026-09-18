@@ -1,0 +1,74 @@
+{
+  "case": "family-day-open-reclaim",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslDayOpenReclaim",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 2,
+  "trades": [
+    {
+      "entry": 1849.958,
+      "entryIndex": 300,
+      "entryT": 1654522200000,
+      "exit": 1843.92697142857,
+      "exitIndex": 306,
+      "exitT": 1654527600000,
+      "initialSl": 1855.14385714286,
+      "initialTp": 1843.86697142857,
+      "meta": {
+        "dayOpen": 1851.468,
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "PDH",
+        "levelPrice": 1853.113,
+        "setup": "dayOpenReclaim",
+        "side": "short",
+        "stretchedExtreme": 1854.483
+      },
+      "pnl": 232.595245310053,
+      "points": 6.03102857142858,
+      "reason": "tp",
+      "side": "short",
+      "size": 38.5664306768419,
+      "sl": 1849.81752142857,
+      "tag": "DSL-DOR:PDH",
+      "tp": 1843.86697142857
+    },
+    {
+      "entry": 1740.75,
+      "entryIndex": 2483,
+      "entryT": 1657282500000,
+      "exit": 1734.45520714286,
+      "exitIndex": 2484,
+      "exitT": 1657283400000,
+      "initialSl": 1746.15566071429,
+      "initialTp": 1734.39520714286,
+      "meta": {
+        "dayOpen": 1741.738,
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "PDH",
+        "levelPrice": 1749.014,
+        "setup": "dayOpenReclaim",
+        "side": "short",
+        "stretchedExtreme": 1745.474
+      },
+      "pnl": 232.896335521302,
+      "points": 6.29479285714297,
+      "reason": "tp",
+      "side": "short",
+      "size": 36.9982524932531,
+      "sl": 1746.15566071429,
+      "tag": "DSL-DOR:PDH",
+      "tp": 1734.39520714286
+    }
+  ]
+}

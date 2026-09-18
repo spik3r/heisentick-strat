@@ -1,0 +1,262 @@
+{
+  "symbols": [
+    "XAUUSD"
+  ],
+  "tfs": [
+    "15m"
+  ],
+  "strategy": "dslFailedBreakoutBalanced",
+  "generatedAt": "<generatedAt>",
+  "range": "zone",
+  "bars": 1800,
+  "primaryCost": {
+    "index": 1,
+    "label": "realistic"
+  },
+  "slices": [
+    {
+      "symbol": "XAUUSD",
+      "tf": "15m",
+      "range": "zone",
+      "bars": 1800,
+      "htf": null,
+      "costs": [
+        {
+          "label": "raw",
+          "slippage": 0,
+          "trades": 1,
+          "winRate": 0,
+          "pf": 0,
+          "net": -100,
+          "expectancy": -100,
+          "dd": 1
+        },
+        {
+          "label": "realistic",
+          "slippage": 0.06,
+          "trades": 1,
+          "winRate": 0,
+          "pf": 0,
+          "net": -102.109360286268,
+          "expectancy": -102.109360286268,
+          "dd": 1.0210936028626747
+        },
+        {
+          "label": "harsh",
+          "slippage": 0.12,
+          "trades": 1,
+          "winRate": 0,
+          "pf": 0,
+          "net": -104.131570857666,
+          "expectancy": -104.131570857666,
+          "dd": 1.0413157085766578
+        }
+      ],
+      "trades": [
+        {
+          "entry": 2649.735,
+          "entryIndex": 677,
+          "entryT": 1736335800000,
+          "exit": 2646.83053571429,
+          "exitIndex": 680,
+          "exitT": 1736338500000,
+          "initialSl": 2646.89053571429,
+          "initialTp": 2655.01146428571,
+          "meta": {
+            "approachHi": 2654.995,
+            "approachLo": 2647.454,
+            "edge": "low",
+            "grade": "A",
+            "gradeRequired": 0,
+            "gradeScore": 0,
+            "levelKey": "AL",
+            "levelPrice": 2645.095,
+            "rangeEnd": 677,
+            "rangeHi": 2655.01146428571,
+            "rangeLo": 2648.25453571429,
+            "rangeStart": 663,
+            "setup": "rangeSweepReclaim",
+            "setupAgeCandles": 0,
+            "side": "long",
+            "source": "range"
+          },
+          "pnl": -102.109360286268,
+          "points": -2.90446428571431,
+          "reason": "sl",
+          "side": "long",
+          "size": 35.1560047711711,
+          "sl": 2646.89053571429,
+          "tag": "DSL:AL:A",
+          "tp": 2655.01146428571,
+          "reportSymbol": "XAUUSD",
+          "reportTf": "15m",
+          "reportRange": "zone",
+          "reportSlice": "XAUUSD 15m",
+          "reportSessionPhase": "close",
+          "reportPreviousOutcome": "first trade",
+          "reportOpenLocation": "nearPDC",
+          "reportPriorDayType": "trend",
+          "reportLocalHour": 21,
+          "reportLocalWeekday": "Wed",
+          "reportEntryMonth": "2025-01",
+          "reportMfeR": 0.4605436625029846,
+          "reportMaeR": 1.4276853537593641,
+          "reportTimeToMfeBars": 1,
+          "reportPostExitMfeR": 7.275346851663035,
+          "reportPostExitMaeR": 0
+        }
+      ]
+    }
+  ],
+  "costs": [
+    {
+      "label": "raw",
+      "slippage": 0,
+      "trades": 1,
+      "winRate": 0,
+      "pf": 0,
+      "net": -100,
+      "expectancy": -100,
+      "dd": 1
+    },
+    {
+      "label": "realistic",
+      "slippage": 0.06,
+      "trades": 1,
+      "winRate": 0,
+      "pf": 0,
+      "net": -102.109360286268,
+      "expectancy": -102.109360286268,
+      "dd": 1.0210936028626747
+    },
+    {
+      "label": "harsh",
+      "slippage": 0.12,
+      "trades": 1,
+      "winRate": 0,
+      "pf": 0,
+      "net": -104.131570857666,
+      "expectancy": -104.131570857666,
+      "dd": 1.0413157085766578
+    }
+  ],
+  "warnings": [],
+  "activeSessions": [
+    "asia",
+    "london",
+    "ny"
+  ],
+  "strategyTypeTags": {
+    "sessionBiasFilterCount": 0,
+    "seasonalityFilterCount": 0,
+    "vpaFilterCount": 0
+  },
+  "tradeSchema": "btgo-report-trades-v1",
+  "evidenceEnvelope": {
+    "schema": "xauusd-backtester/evidence-envelope",
+    "schemaVersion": 1,
+    "artifact": "strategy-report",
+    "source": "cli",
+    "generatedAt": "<generatedAt>",
+    "strategy": {
+      "id": "dslFailedBreakoutBalanced",
+      "name": "Golden Risk Sizing",
+      "params": null
+    },
+    "route": {
+      "symbol": "XAUUSD",
+      "tf": "15m",
+      "symbols": [
+        "XAUUSD"
+      ],
+      "tfs": [
+        "15m"
+      ],
+      "rangeMethod": "zone",
+      "rangeRequest": "zone",
+      "routeMode": "explicit",
+      "forceRoute": false,
+      "routeState": null
+    },
+    "costs": {
+      "label": "realistic",
+      "slippage": 0.06,
+      "commission": 0,
+      "primaryCostIndex": 1,
+      "primaryCostLabel": "realistic",
+      "costLabels": [
+        "raw",
+        "realistic",
+        "harsh"
+      ]
+    },
+    "summary": {
+      "trades": 1,
+      "winRatePct": 0,
+      "profitFactor": 0,
+      "netPnl": -102.109360286268,
+      "expectancyPnl": -102.109360286268,
+      "maxDrawdownPnl": null,
+      "maxDrawdownPct": 1.0210936028626747,
+      "returnPct": null
+    },
+    "diagnostics": {
+      "warnings": [],
+      "filterSummary": null,
+      "strategyTypeTags": {
+        "sessionBiasFilterCount": 0,
+        "seasonalityFilterCount": 0,
+        "vpaFilterCount": 0
+      }
+    },
+    "commands": null,
+    "checks": null,
+    "aggregate": {
+      "kind": "strategy-report",
+      "routeSliceCount": 1,
+      "activeRouteSliceCount": 1,
+      "bars": 1800,
+      "symbols": [
+        "XAUUSD"
+      ],
+      "tfs": [
+        "15m"
+      ],
+      "rangeMethods": [
+        "zone"
+      ],
+      "costLabels": [
+        "raw",
+        "realistic",
+        "harsh"
+      ],
+      "primaryCostIndex": 1,
+      "primaryCostLabel": "realistic"
+    },
+    "rows": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "15m",
+        "rangeMethod": "zone",
+        "bars": 1800,
+        "htf": null,
+        "status": "ok",
+        "costs": {
+          "label": "realistic",
+          "slippage": 0.06,
+          "commission": 0
+        },
+        "summary": {
+          "trades": 1,
+          "winRatePct": 0,
+          "profitFactor": 0,
+          "netPnl": -102.109360286268,
+          "expectancyPnl": -102.109360286268,
+          "maxDrawdownPnl": null,
+          "maxDrawdownPct": 1.0210936028626747,
+          "returnPct": null
+        }
+      }
+    ]
+  }
+}

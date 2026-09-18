@@ -1,0 +1,9 @@
+dsl v7
+strategy "Source Timeframe" { description "x" }
+market conditions { slices(XAUUSD 15m) sessions(london) day type in (ranging) }
+setup {
+  type: supply demand
+  source timeframe 4h
+  source at least 1.2 ATR within 3 candles
+}
+entryTf 15m

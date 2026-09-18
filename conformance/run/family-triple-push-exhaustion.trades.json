@@ -1,0 +1,80 @@
+{
+  "case": "family-triple-push-exhaustion",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "4h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslTriplePushExhaustionXauusd",
+  "symbol": "XAUUSD",
+  "timeframe": "1h",
+  "tradeCount": 2,
+  "trades": [
+    {
+      "entry": 1833.468,
+      "entryIndex": 913,
+      "entryT": 1655809200000,
+      "exit": 1836.99846428571,
+      "exitIndex": 914,
+      "exitT": 1655812800000,
+      "initialSl": 1831.58276785714,
+      "initialTp": 1837.05846428571,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "leg2": 7.80999999999995,
+        "leg3": 9.8599999999999,
+        "push1": 891,
+        "push2": 898,
+        "push3": 909,
+        "pushDecayRatio": 1.26248399487836,
+        "setup": "triplePushExhaustion",
+        "side": "long",
+        "thirdPushPrice": 1832.468
+      },
+      "pnl": 374.538944616541,
+      "points": 3.53046428571406,
+      "reason": "tp",
+      "side": "long",
+      "size": 106.087730764507,
+      "sl": 1831.58276785714,
+      "tag": "DSL-TPE",
+      "tp": 1837.05846428571
+    },
+    {
+      "entry": 1754.144,
+      "entryIndex": 1897,
+      "entryT": 1660896000000,
+      "exit": 1750.87628571429,
+      "exitIndex": 1899,
+      "exitT": 1660903200000,
+      "initialSl": 1750.93628571429,
+      "initialTp": 1760.37942857143,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "leg2": 17.076,
+        "leg3": 9.49000000000001,
+        "push1": 1872,
+        "push2": 1883,
+        "push3": 1893,
+        "pushDecayRatio": 0.555750761302413,
+        "setup": "triplePushExhaustion",
+        "side": "long",
+        "thirdPushPrice": 1751.654
+      },
+      "pnl": -203.740981562302,
+      "points": -3.26771428571419,
+      "reason": "sl",
+      "side": "long",
+      "size": 62.3496927050867,
+      "sl": 1750.93628571429,
+      "tag": "DSL-TPE",
+      "tp": 1760.37942857143
+    }
+  ]
+}

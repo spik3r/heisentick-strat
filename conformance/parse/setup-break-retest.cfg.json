@@ -1,0 +1,165 @@
+{
+  "case": "setup-break-retest",
+  "category": "setup-family",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakRetest": {
+      "freshBreakBars": 12,
+      "levelTolerance": 0.35,
+      "minBreakAtr": 1,
+      "retestBars": 6
+    },
+    "breakeven": {
+      "atR": 0.5,
+      "offsetAtr": 0.05
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 12,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": -1,
+    "dayTypes": [
+      "trending"
+    ],
+    "description": "Join continuation only after price breaks PDH/PDL retests the level and holds on a trigger candle.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL"
+    ],
+    "levelPriorityExplicit": true,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 0.8,
+    "name": "PDH/PDL Break Retest",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 0,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "breakRetest",
+    "slices": [],
+    "stop": {
+      "extremeCandles": 0,
+      "maxAtr": null,
+      "minAtr": 0.4,
+      "paddingAtr": 0.25
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "brR": 0.8,
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6
+    },
+    "timeframes": [
+      "15m",
+      "1h"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 1
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Representative compiled config for setup module breakRetest.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "engine/strategies/dsl/dslBreakRetestPdhPdl.strat",
+  "warnings": []
+}

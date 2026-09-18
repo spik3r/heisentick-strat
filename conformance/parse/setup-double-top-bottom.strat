@@ -1,0 +1,44 @@
+dsl v6
+# Double Top / Bottom Reversal
+strategy "Double Top Bottom Reversal" {
+  description "Research copy for double tops and double bottoms: confirm two similar pivots, wait for neckline break, then trade the reversal."
+}
+
+market conditions {
+  timeframes(15m, 1h, 4h)
+  sessions(london, ny)
+  day type in (ranging, choppy, trending)
+  movement below 0.95
+}
+
+setup {
+  type: double top bottom
+  pivot window 2
+  peak gap 5 to 72 candles
+  peak difference max 0.5 ATR
+  neckline touch 0.25 ATR
+  breakout buffer 0.05 ATR
+  confirm within 12 candles
+}
+
+filters {
+  higher timeframe must agree
+}
+
+risk {
+  stop: beyond pattern extreme + 0.35 ATR
+  stop size <= 3 ATR
+}
+
+target {
+  target 1R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

@@ -1,0 +1,4 @@
+dsl v6
+strategy "Diagnostic Spec Level" { description "x" }
+market conditions { slices(XAUUSD 1h) sessions(asia) day type in (ranging) }
+levels { priority(NOTALEVEL) }

@@ -1,0 +1,19 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "sma-prefix-extension-a",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 6,
+      "entryT": 1767592800000,
+      "entry": 2020,
+      "exitIndex": 10,
+      "exitT": 1767607200000,
+      "exit": 2020,
+      "reason": "rule"
+    }
+  ],
+  "notes": [
+    "Base series for the append-invariance pair. Identical bars to sma-cross-next-open-entry-exit."
+  ]
+}

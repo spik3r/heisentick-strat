@@ -1,0 +1,22 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "sma-cross-next-open-entry-exit",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 6,
+      "entryT": 1767592800000,
+      "entry": 2020,
+      "exitIndex": 10,
+      "exitT": 1767607200000,
+      "exit": 2020,
+      "reason": "rule"
+    }
+  ],
+  "notes": [
+    "Golden cross is first true at the close of bar 5 (SMA2 2015 > SMA3 2010 after SMA2 2005 < SMA3 2006.67 at bar 4).",
+    "The family enters at the next bar open: bar 6 open = 2020, not the bar 5 close.",
+    "Bearish cross at the close of bar 9 (SMA2 2025 < SMA3 2030); the long close fills at bar 10 open = 2020.",
+    "reason \"rule\" = family close rule (SMA bearish cross), not tp/sl."
+  ]
+}

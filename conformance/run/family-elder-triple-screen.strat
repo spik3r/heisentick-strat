@@ -1,0 +1,41 @@
+dsl v7
+# Elder Triple Screen - XAUUSD 1h
+strategy "Elder Triple Screen - XAUUSD 1h" {
+  description "Multi-timeframe trend-following based on Alexander Elder's Triple Screen: 4h trend direction, 1h pullback to EMA, momentum trigger candle with break entry."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(london, ny)
+  day type in (trending, ranging)
+}
+
+setup {
+  type: elder triple screen
+  ema length 21
+  pullback tag 0.3
+  pullback within 8
+  pullback max depth 0.6
+}
+
+filters {
+  higher timeframe must agree
+}
+
+risk {
+  stop beyond pullback extreme by 0.3 ATR min 0.5 ATR
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 1R plus 0.05 ATR
+  trail 1.5 ATR after 1.5R
+  wait 20 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

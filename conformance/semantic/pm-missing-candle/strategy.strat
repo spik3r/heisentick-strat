@@ -1,0 +1,43 @@
+dsl v7
+strategy "Semantic momentum missing candle" {
+  description "Semantic fixture: 2-candle close-to-close momentum, long only, 1R target, no breakeven."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  trade window unrestricted
+  day type in (trending, ranging, choppy) or movement below 1.1
+  movement below 1.1
+}
+
+setup {
+  type: price momentum
+  lookback 2 candles
+  neutral zone 0.6 percent
+}
+
+filters {
+  side long only
+}
+
+trigger {
+  candle in (any)
+}
+
+risk {
+  stop beyond last 3 candle extreme by 0.25 ATR
+  stop size min 0.5 max 3
+}
+
+target {
+  target 1R
+}
+
+management {
+  breakeven off
+  wait 12 candles after trade
+}
+
+execution {
+  risk 200 USD
+}

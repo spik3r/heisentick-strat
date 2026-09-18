@@ -1,0 +1,15 @@
+dsl v7
+strategy "Keltner Expansion Runtime" { description "Runtime coverage for the Keltner band expansion hold family." }
+market conditions {
+  slices(XAUUSD 15m)
+}
+setup {
+  type: keltner expansion
+  ema length 20
+  distance 2 ATR
+  pierce at least 0.25 ATR
+  target 1R
+}
+execution {
+  risk: 200 USD
+}

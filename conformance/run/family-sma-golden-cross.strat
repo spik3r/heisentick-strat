@@ -1,0 +1,18 @@
+dsl v7
+strategy "SMA Golden Cross XAUUSD Daily" {
+  description "Long-only Pine-style SMA 50/200 golden cross with a bearish-cross close."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+
+setup {
+  type: sma golden cross
+  sma fast 50
+  sma slow 200
+}
+
+filters {
+  side long only
+}

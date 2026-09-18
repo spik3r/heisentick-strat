@@ -1,0 +1,50 @@
+dsl v7
+strategy "Spec Worked Example" {
+  description "Documentation example: sweep-and-reclaim at prior-day levels."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(london, ny)
+  day type in (trending) or movement below 0.6
+}
+
+levels {
+  priority(PDH, PDL)
+  near within 1.2
+}
+
+filters {
+  range active within 10 candles
+  higher timeframe must not oppose entry
+  side both
+}
+
+trigger {
+  candle in (pin, engulf)
+}
+
+entry {
+  when price sweeps range.high by 0.3 within 3 then signal short
+  enter at market
+}
+
+risk {
+  stop beyond last 3 candle extreme by 0.25 ATR
+  stop size min 0.2 max 1.4
+}
+
+target {
+  take profit opposite range edge
+  minimum reward 0.8
+  fallback 1
+}
+
+management {
+  move stop to breakeven after 0.75 R plus 0.05 ATR
+  wait 4 candles after trade
+}
+
+execution {
+  risk 200 USD
+}

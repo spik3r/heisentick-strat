@@ -1,0 +1,25 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-htf-unclosed-bar-no-lookahead",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 42,
+      "entryT": 1767722400000,
+      "entry": 2015,
+      "initialSl": 1989.5,
+      "initialTp": 2040.5,
+      "exitIndex": 45,
+      "exitT": 1767733200000,
+      "exit": 2040.5,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "4h candle #8 (bars 32-35, T0+32h..36h) is bearish by every reading: open 2000, close 1980, lower high and lower low than #7.",
+    "Bar 37 (T0+37h) closes 2000 = +1.01% over bar 35: long signal. The last COMPLETED 4h candle is #8 (bearish, opposes long) so the signal is rejected. The forming candle #9 (open 1980, so far up) must not be consulted.",
+    "4h candle #9 (bars 36-39) completes at T0+40h as a bullish candle (open 1980, close 2000, higher high 2005 and higher low 1980 than #8).",
+    "Bar 42 (T0+42h) closes 2015 = +1.0025% over bar 40 (1995): long signal with #9 completed and bullish: admitted. Entry 2015 at the close.",
+    "Stop = lowest low of bars 40-42 (1992, bar 40) - 2.5 = 1989.5 (bars 39-41 give the same 1992); distance 25.5; target 2040.5; bar 45 high 2045 reaches it."
+  ]
+}

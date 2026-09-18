@@ -1,0 +1,40 @@
+dsl v6
+# Channel Break-Hold - 15m
+strategy "Channel Break-Hold 15m" {
+  description "Join continuation after price closes and holds outside a causal channel rail. Research copy; not promoted yet."
+}
+
+market conditions {
+  timeframes(15m)
+  sessions(london, ny)
+  day type in (trending, choppy)
+  maxMovementEr 1
+}
+
+setup {
+  type: channel break hold
+  hold 2 candles
+  stop inside channel 0.5 ATR
+}
+
+filters {
+  channel active within 12 candles
+  side: both
+}
+
+triggers {
+  candle in (any)
+}
+
+target {
+  target 1R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}
