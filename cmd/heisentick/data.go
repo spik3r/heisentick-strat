@@ -10,19 +10,8 @@ import (
 	"github.com/spik3r/heisentick-strat/data"
 	"github.com/spik3r/heisentick-strat/dsl"
 	"github.com/spik3r/heisentick-strat/marketdata"
+	"github.com/spik3r/heisentick-strat/report"
 )
-
-type loadedRoute struct {
-	Symbol          string
-	TF              string
-	SourceTimeframe string
-	Range           string
-	Series          marketdata.Series
-	SourceSeries    marketdata.Series
-	HigherTimeframe string
-	HTFSeries       marketdata.Series
-	SourceHTFSeries marketdata.Series
-}
 
 func loadDSLFile(path string) (dsl.ParseResult, error) {
 	raw, err := os.ReadFile(path)
@@ -39,44 +28,44 @@ func loadDSLFile(path string) (dsl.ParseResult, error) {
 	return parsed, nil
 }
 
-func loadRoute(flags flagSet, cfg dsl.Config) (loadedRoute, error) {
+func loadRoute(flags flagSet, cfg dsl.Config) (report.Route, error) {
 	symbol, err := flags.required("symbol")
 	if err != nil {
-		return loadedRoute{}, err
+		return report.Route{}, err
 	}
 	tf, err := flags.required("tf")
 	if err != nil {
-		return loadedRoute{}, err
+		return report.Route{}, err
 	}
 	rangeMethod := flags.one("range", "zone")
 	if err := validateRangeMethod(rangeMethod); err != nil {
-		return loadedRoute{}, err
+		return report.Route{}, err
 	}
 	root, err := dataRoot(flags)
 	if err != nil {
-		return loadedRoute{}, err
+		return report.Route{}, err
 	}
 	series, err := data.Load(root, symbol, tf)
 	if err != nil {
-		return loadedRoute{}, err
+		return report.Route{}, err
 	}
-	sourceTf := resolvedSourceTimeframe(tf, cfg)
+	sourceTf := report.ResolveSourceTimeframe(tf, cfg)
 	sourceSeries := series
 	if sourceTf != tf {
 		sourceSeries, err = data.Load(root, symbol, sourceTf)
 		if err != nil {
-			return loadedRoute{}, fmt.Errorf("load source timeframe %s for %s %s: %w", sourceTf, symbol, tf, err)
+			return report.Route{}, fmt.Errorf("load source timeframe %s for %s %s: %w", sourceTf, symbol, tf, err)
 		}
 	}
-	htf := resolvedHigherTimeframe(sourceTf, cfg)
+	htf := report.ResolveHigherTimeframe(sourceTf, cfg)
 	var htfSeries marketdata.Series
 	if htf != "" {
 		htfSeries, err = data.Load(root, symbol, htf)
 		if err != nil {
-			return loadedRoute{}, fmt.Errorf("load higher timeframe %s for %s %s: %w", htf, symbol, tf, err)
+			return report.Route{}, fmt.Errorf("load higher timeframe %s for %s %s: %w", htf, symbol, tf, err)
 		}
 	}
-	return loadedRoute{
+	return report.Route{
 		Symbol:          symbol,
 		TF:              tf,
 		SourceTimeframe: sourceTf,
@@ -87,25 +76,6 @@ func loadRoute(flags flagSet, cfg dsl.Config) (loadedRoute, error) {
 		HTFSeries:       htfSeries,
 		SourceHTFSeries: htfSeries,
 	}, nil
-}
-
-func resolvedHigherTimeframe(tf string, cfg dsl.Config) string {
-	htf, ok := cfg["htf"].(map[string]any)
-	if !ok {
-		return ""
-	}
-	if mode, _ := htf["mode"].(string); mode != "notAgainst" {
-		return ""
-	}
-	requested, _ := htf["timeframe"].(string)
-	return dsl.ResolveHigherTimeframe(tf, requested)
-}
-
-func resolvedSourceTimeframe(tf string, cfg dsl.Config) string {
-	if source, _ := cfg["sourceTimeframe"].(string); source != "" {
-		return source
-	}
-	return tf
 }
 
 func dataRoot(flags flagSet) (string, error) {
@@ -138,27 +108,7 @@ func findRepoRoot() (string, error) {
 	}
 }
 
-func strategyID(parsed dsl.ParseResult, dslFile string, requested ...string) string {
-	requestedID := ""
-	if len(requested) > 0 {
-		requestedID = requested[0]
-	}
-	if requestedID = strings.TrimSpace(requestedID); requestedID != "" {
-		return requestedID
-	}
-	if name, _ := parsed.Config["name"].(string); strings.TrimSpace(name) != "" {
-		return strings.TrimSpace(name)
-	}
-	base := filepath.Base(dslFile)
+func fileBaseName(path string) string {
+	base := filepath.Base(path)
 	return strings.TrimSuffix(base, filepath.Ext(base))
-}
-
-func strategyDisplayName(parsed dsl.ParseResult, fallback, requested string) string {
-	if requested = strings.TrimSpace(requested); requested != "" {
-		return requested
-	}
-	if name, _ := parsed.Config["name"].(string); strings.TrimSpace(name) != "" {
-		return strings.TrimSpace(name)
-	}
-	return fallback
 }

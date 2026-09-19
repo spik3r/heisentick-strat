@@ -60,5 +60,5 @@ Self-hosted runners are registered per repository; this repo has none yet.
 Root `*.md`: `README.md`, `CHANGELOG.md`, `agents.md`, `claude.md`,
 `codex.md` only. `docs/` holds this repo's own documents (extraction,
 layout). After T-B2: `spec/`, `dsl/`, `engine/`, `marketdata/`,
-`contextcols/`, `data/`, `testsupport/`, `cmd/`, `conformance/`,
+`contextcols/`, `data/`, `report/`, `testsupport/`, `cmd/`, `conformance/`,
 `examples/`; see `docs/layout.md`.

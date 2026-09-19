@@ -34,7 +34,7 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
-  heisentick report --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot [--slippage=<points>] [--slippage-bps=<basis-points>] [--include-trades=1] [--json-only=1] [--memprofile=<path>]
+  heisentick report --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot [--slippage=<points>] [--slippage-bps=<basis-points>] [--include-trades=1] [--evidence=1] [--holdout-from=<epoch-ms>] [--json-only=1] [--memprofile=<path>]
   heisentick grid --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot --set <param>=<v1,v2,...> [--json-only=1]
 `
 }

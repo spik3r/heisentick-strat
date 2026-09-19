@@ -11,6 +11,7 @@ import (
 
 	"github.com/spik3r/heisentick-strat/dsl"
 	"github.com/spik3r/heisentick-strat/engine"
+	"github.com/spik3r/heisentick-strat/report"
 )
 
 type gridVariantSpec struct {
@@ -44,11 +45,12 @@ func runGrid(args []string, out io.Writer) error {
 	if len(sets) == 0 {
 		return fmt.Errorf("missing --set <param>=<v1,v2,...>")
 	}
-	modes, _, err := costModes(route.Symbol, flags.one("slippage", ""))
+	slippage, err := parseSlippageFlag(flags.one("slippage", ""))
 	if err != nil {
 		return err
 	}
-	id := strategyID(parsed, dslFile)
+	modes, _ := report.CostModes(route.Symbol, slippage)
+	id := report.StrategyID(parsed.Config, fileBaseName(dslFile), "")
 	variants := expandVariants(sets)
 	specs, groups, groupOrder, err := buildGridVariantSpecs(parsed.Config, route, id, variants)
 	if err != nil {
@@ -94,7 +96,7 @@ func runGrid(args []string, out io.Writer) error {
 		go func() {
 			defer wg.Done()
 			defer func() { <-workers }()
-			rows, err := runCostRowsFromShared(sharedContexts[spec.key], spec.cfg, modes)
+			rows, err := report.RunCostRowsFromShared(sharedContexts[spec.key], spec.cfg, modes)
 			if err != nil {
 				variantErrors[spec.index] = fmt.Errorf("variant %d: %w", spec.index, err)
 				return
@@ -119,16 +121,16 @@ func runGrid(args []string, out io.Writer) error {
 		HTF:      htf,
 		Sets:     sets,
 		Variants: outVariants,
-		Warnings: routeWarnings(parsed.Config, route),
+		Warnings: report.RouteWarnings(parsed.Config, route),
 	}
 	if boolFlag(flags.one("json-only", "0")) {
-		return writeJSON(out, payload)
+		return report.WriteJSON(out, payload)
 	}
 	for _, variant := range payload.Variants {
 		fmt.Fprintf(out, "variant %d %v\n", variant.Index, variant.Params)
 		printCostTable(out, variant.Costs)
 	}
-	return writeJSON(out, payload)
+	return report.WriteJSON(out, payload)
 }
 
 func firstGridVariantError(variantErrors []error) error {
@@ -140,7 +142,7 @@ func firstGridVariantError(variantErrors []error) error {
 	return nil
 }
 
-func buildGridVariantSpecs(base dsl.Config, route loadedRoute, strategy string, variants []map[string]float64) ([]gridVariantSpec, map[string][]int, []string, error) {
+func buildGridVariantSpecs(base dsl.Config, route report.Route, strategy string, variants []map[string]float64) ([]gridVariantSpec, map[string][]int, []string, error) {
 	specs := make([]gridVariantSpec, len(variants))
 	groups := make(map[string][]int)
 	groupOrder := make([]string, 0, len(variants))

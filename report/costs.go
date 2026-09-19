@@ -1,4 +1,4 @@
-package main
+package report
 
 import (
 	"fmt"
@@ -10,30 +10,45 @@ import (
 	"github.com/spik3r/heisentick-strat/engine"
 )
 
-type costMode struct {
+// CostMode is one execution-cost scenario the report runs. Slip is the
+// per-fill slippage in price points; Bps is slippage in basis points of the
+// fill price. The engine models no spread, commission or financing, and every
+// run starts at the engine's default equity (10000) with fills on the close.
+type CostMode struct {
 	Label   string
 	Slip    float64
 	Bps     float64
 	Primary bool
 }
 
-func costModes(symbol string, slippageRaw string) ([]costMode, primaryCost, error) {
-	if slippageRaw != "" {
-		slip, err := parseFloatFlag("slippage", slippageRaw)
-		if err != nil {
-			return nil, primaryCost{}, err
-		}
-		label := "slip " + trimFloat(slip)
-		return []costMode{{Label: label, Slip: slip, Primary: true}}, primaryCost{Index: 0, Label: label}, nil
+// CostModes returns the cost rows for a symbol. With an explicit slippage it
+// is one primary row labelled "slip <x>"; otherwise the instrument's raw,
+// realistic and harsh checks, with realistic primary.
+func CostModes(symbol string, slippage *float64) ([]CostMode, PrimaryCost) {
+	if slippage != nil {
+		label := "slip " + trimFloat(*slippage)
+		return []CostMode{{Label: label, Slip: *slippage, Primary: true}}, PrimaryCost{Index: 0, Label: label}
 	}
 	checks := instrumentCostChecks(symbol)
 	bpsChecks := instrumentCostBpsChecks(symbol)
-	modes := []costMode{
+	modes := []CostMode{
 		{Label: "raw", Slip: checks[0], Bps: bpsChecks[0]},
 		{Label: "realistic", Slip: checks[1], Bps: bpsChecks[1], Primary: true},
 		{Label: "harsh", Slip: checks[2], Bps: bpsChecks[2]},
 	}
-	return modes, primaryCost{Index: 1, Label: "realistic"}, nil
+	return modes, PrimaryCost{Index: 1, Label: "realistic"}
+}
+
+// ParseSlippageBps parses a basis-point override; "" means none.
+func ParseSlippageBps(raw string) (*float64, error) {
+	if raw == "" {
+		return nil, nil
+	}
+	value, err := strconv.ParseFloat(raw, 64)
+	if err != nil || value < 0 || math.IsInf(value, 0) || math.IsNaN(value) {
+		return nil, fmt.Errorf("invalid slippage-bps: %s", raw)
+	}
+	return &value, nil
 }
 
 func instrumentCostBpsChecks(symbol string) [3]float64 {
@@ -64,7 +79,12 @@ func instrumentCostChecks(symbol string) [3]float64 {
 	}
 }
 
-func summarize(label string, slippage float64, result engine.RunResult, bps ...float64) (costRow, error) {
+// summarize builds one cost row from a run. Units: net and expectancy are in
+// the account currency the engine's pnl uses; winRate is a percentage; dd is
+// the largest peak-to-trough equity drop as a percentage of the final peak,
+// over an equity curve that starts at the run's start equity and applies
+// trades in entry-time order.
+func summarize(label string, slippage float64, result engine.RunResult, bps ...float64) (CostRow, error) {
 	trades := append([]engine.Trade(nil), result.Trades...)
 	sort.SliceStable(trades, func(i, j int) bool {
 		return trades[i].EntryT < trades[j].EntryT
@@ -104,28 +124,28 @@ func summarize(label string, slippage float64, result engine.RunResult, bps ...f
 		{name: "maxDrawdown", value: maxDD},
 	} {
 		if err := validateSummaryField(field.name, field.value); err != nil {
-			return costRow{}, err
+			return CostRow{}, err
 		}
 	}
 
 	count := len(trades)
 	net := grossWin - grossLoss
 	if err := validateSummaryField("net", net); err != nil {
-		return costRow{}, err
+		return CostRow{}, err
 	}
 	winRate := 0.0
 	if count > 0 {
 		winRate = (float64(wins) / float64(count)) * 100
 	}
 	if err := validateSummaryField("winRate", winRate); err != nil {
-		return costRow{}, err
+		return CostRow{}, err
 	}
 
 	pf := new(float64)
 	if grossLoss > 0 {
 		*pf = grossWin / grossLoss
 		if err := validateSummaryField("profitFactor", *pf); err != nil {
-			return costRow{}, err
+			return CostRow{}, err
 		}
 	} else if grossWin > 0 {
 		pf = nil
@@ -136,21 +156,21 @@ func summarize(label string, slippage float64, result engine.RunResult, bps ...f
 		expectancy = net / float64(count)
 	}
 	if err := validateSummaryField("expectancy", expectancy); err != nil {
-		return costRow{}, err
+		return CostRow{}, err
 	}
 	dd := 0.0
 	if peak > 0 {
 		dd = (maxDD / peak) * 100
 	}
 	if err := validateSummaryField("drawdown", dd); err != nil {
-		return costRow{}, err
+		return CostRow{}, err
 	}
 
 	var slippageBps float64
 	if len(bps) > 0 {
 		slippageBps = bps[0]
 	}
-	return costRow{
+	return CostRow{
 		Label:       label,
 		Slippage:    slippage,
 		SlippageBps: slippageBps,

@@ -1,4 +1,4 @@
-package main
+package report
 
 import (
 	"encoding/json"
@@ -232,14 +232,14 @@ func TestSummarizeRejectsNonFiniteDerivedFieldsInStableOrder(t *testing.T) {
 			if err == nil || err.Error() != tt.want {
 				t.Fatalf("summarize error = %v, want %q", err, tt.want)
 			}
-			if row != (costRow{}) {
+			if row != (CostRow{}) {
 				t.Fatalf("summarize returned partial row on error: %+v", row)
 			}
 		})
 	}
 }
 
-func mustSummarize(t *testing.T, label string, slippage float64, result engine.RunResult) costRow {
+func mustSummarize(t *testing.T, label string, slippage float64, result engine.RunResult) CostRow {
 	t.Helper()
 	row, err := summarize(label, slippage, result)
 	if err != nil {
