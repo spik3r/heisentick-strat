@@ -1,0 +1,12 @@
+{
+  "input": {
+    "pnls": [],
+    "startEquity": 10000,
+    "iters": 1000,
+    "seed": 12345
+  },
+  "expected": {
+    "trades": 0,
+    "warning": "no trades"
+  }
+}

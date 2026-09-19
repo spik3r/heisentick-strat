@@ -11,6 +11,19 @@ version and is named here.
   stop level. Entry-bar handling is unchanged; slippage still applies on top.
   Matches `conformance/semantic/pm-gap-through-stop`. No `conformance/run`
   golden changes. Spec §7 now states the stop and target gap-fill rules.
+- `montecarlo/`: new package porting heisentick
+  `scripts/strategy/monteCarlo.mjs`. `montecarlo.Run(Input) (Result, error)`
+  takes the realised per-trade P&L stream, a start equity, a `Method`
+  (`Permutation`, `Bootstrap`, `Both`), an iteration count and a uint32
+  seed, and returns the script's block: `realized` (net, maxDD),
+  `orderShuffleMaxDD` and `bootstrapMaxDD` (p50, p95, p99, worst) and
+  `bootstrapNet` (p5, p50, p95, probNetLeZero). Same mulberry32 stream,
+  shuffle, bootstrap index and nearest-rank percentile as the script, so
+  the numbers match bit for bit; `montecarlo/testdata/` fixtures written by
+  the JS oracle in `testdata/gen/oracle.mjs` are the contract. An empty
+  stream returns `trades: 0, warning: "no trades"`; zero iterations, an
+  unknown method, a non-positive start equity or a non-finite P&L value
+  are errors. CI now runs on `montecarlo/**` changes.
 
 ## [0.2.1] — 2026-09-19
 
