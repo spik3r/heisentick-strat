@@ -335,6 +335,12 @@ Risk (stop):
   (defaults min 0, max 1.5; bare `extremeCandles/paddingAtr/minAtr/maxAtr N`
   are accepted inside `risk`).
 
+Stop fills: a bar whose range reaches the stop fills at the stop level. On a
+bar after the entry bar, a bar that opens beyond the stop fills at the open
+instead (`min(stop, open)` for longs, `max(stop, open)` for shorts), because
+the stop level never traded. Slippage applies on top of either fill. A bar
+that opens beyond the target fills at the target level, never better.
+
 Target:
 
 - `target <N>R` — R-multiple target (routed to the active setup family).

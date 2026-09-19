@@ -1,10 +1,6 @@
 package engine
 
-import (
-	"math"
-
-	"github.com/spik3r/heisentick-strat/dsl"
-)
+import "github.com/spik3r/heisentick-strat/dsl"
 
 func (b *broker) applyPreHandlerTrail(i int) {
 	if !b.hasPosition {
@@ -37,7 +33,10 @@ func (b *broker) resolveIntrabarExit(i int) {
 		return
 	}
 	pos := &b.position
-	if !pos.NoStop && pos.GapAwareStop && ((pos.Side == sideLong && b.series.O[i] <= pos.SL) || (pos.Side == sideShort && b.series.O[i] >= pos.SL)) {
+	// A carried stop that the bar opens beyond fills at the open: the stop
+	// level never traded. GapAwareStop families apply this on the entry bar too.
+	gapFill := pos.GapAwareStop || pos.EntryIndex < i
+	if !pos.NoStop && gapFill && ((pos.Side == sideLong && b.series.O[i] <= pos.SL) || (pos.Side == sideShort && b.series.O[i] >= pos.SL)) {
 		b.closePosition(b.series.O[i], i, "sl")
 		return
 	}
@@ -46,15 +45,7 @@ func (b *broker) resolveIntrabarExit(i int) {
 	hitTP := !pos.NoTarget && ((pos.Side == sideLong && b.series.H[i] >= pos.TP) ||
 		(pos.Side == sideShort && b.series.L[i] <= pos.TP))
 	if hitSL {
-		fill := pos.SL
-		if pos.GapAwareStop {
-			if pos.Side == sideLong {
-				fill = math.Min(b.series.O[i], pos.SL)
-			} else {
-				fill = math.Max(b.series.O[i], pos.SL)
-			}
-		}
-		b.closePosition(fill, i, "sl")
+		b.closePosition(pos.SL, i, "sl")
 		return
 	}
 	if hitTP {
