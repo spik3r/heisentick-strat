@@ -1,4 +1,4 @@
-package main
+package report
 
 import (
 	"bytes"
@@ -41,9 +41,9 @@ func TestReportExcursionTreatsZeroDistanceInitialStopAsAuthoritative(t *testing.
 		t.Fatalf("annotated trade changed input fields: got %#v want %#v", got.Trade, trade)
 	}
 
-	payload := reportPayload{TradeSchema: reportTradesSchema, Slices: []sliceRow{{Trades: &annotated}}}
+	payload := Document{TradeSchema: TradesSchema, Slices: []Slice{{Trades: &annotated}}}
 	var out bytes.Buffer
-	if err := writeJSON(&out, payload); err != nil {
+	if err := WriteJSON(&out, payload); err != nil {
 		t.Fatalf("write annotated report JSON: %v", err)
 	}
 	var raw struct {
