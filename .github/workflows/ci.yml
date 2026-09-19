@@ -83,6 +83,12 @@ jobs:
         if: steps.mod.outputs.present == 'true'
         run: go test ./...
 
+      # The Go engine generates the corpus. This fails when a golden and the
+      # engine disagree, so neither can change without the other.
+      - name: conformance check
+        if: steps.mod.outputs.present == 'true'
+        run: go run ./cmd/conformance check
+
       - name: Build heisentick binary
         if: steps.mod.outputs.present == 'true'
         run: go build -trimpath -o cmd/heisentick/heisentick ./cmd/heisentick

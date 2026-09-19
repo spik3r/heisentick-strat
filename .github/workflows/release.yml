@@ -33,13 +33,27 @@ jobs:
           GOOS=js GOARCH=wasm go build -trimpath -o dslwasm.wasm ./cmd/dslwasm
           GOOS=js GOARCH=wasm go build -trimpath -o enginewasm.wasm ./cmd/enginewasm
 
+      # The JS glue the Go toolchain ships for running its WASM builds. It
+      # must come from the same toolchain as the .wasm files, so it is a
+      # release asset rather than something consumers copy from a Go install.
+      # Go 1.22 keeps it under misc/wasm; newer toolchains under lib/wasm.
+      - name: Copy wasm_exec.js
+        run: |
+          goroot="$(go env GOROOT)"
+          if [ -f "$goroot/misc/wasm/wasm_exec.js" ]; then
+            cp "$goroot/misc/wasm/wasm_exec.js" wasm_exec.js
+          else
+            cp "$goroot/lib/wasm/wasm_exec.js" wasm_exec.js
+          fi
+
       # Consumers unpack this instead of importing the Go module: the corpus,
-      # the semantic fixtures, the spec manifest and schemas, and the spec docs.
+      # the semantic fixtures, the spec manifest and schemas, the spec docs
+      # and the example programs.
       - name: Build conformance archive
-        run: tar czf conformance.tar.gz conformance/ spec/
+        run: tar czf conformance.tar.gz conformance/ spec/ examples/
 
       - name: Write checksums
-        run: sha256sum heisentick-linux-arm64 heisentick-linux-amd64 heisentick-darwin-arm64 dslwasm.wasm enginewasm.wasm conformance.tar.gz > SHA256SUMS
+        run: sha256sum heisentick-linux-arm64 heisentick-linux-amd64 heisentick-darwin-arm64 dslwasm.wasm enginewasm.wasm wasm_exec.js conformance.tar.gz > SHA256SUMS
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -51,5 +65,6 @@ jobs:
             heisentick-darwin-arm64
             dslwasm.wasm
             enginewasm.wasm
+            wasm_exec.js
             conformance.tar.gz
             SHA256SUMS

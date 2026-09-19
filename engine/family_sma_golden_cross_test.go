@@ -32,7 +32,7 @@ func TestSMAGoldenCrossMatchesCommittedConformanceFixture(t *testing.T) {
 	if err != nil {
 		t.Fatalf("read expected trades: %v", err)
 	}
-	if got, want := canonicalJSON(conformanceResult(result)), canonicalRawJSON(t, expected); got != want {
+	if got, want := canonicalJSON(ConformanceProjection(result)), canonicalRawJSON(t, expected); got != want {
 		t.Fatalf("trade mismatch\nfirst diff: %s\n got: %s\nwant: %s", firstDiff(got, want), got, want)
 	}
 }

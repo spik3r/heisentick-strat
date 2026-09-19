@@ -57,7 +57,7 @@ func TestRunConformance(t *testing.T) {
 			if err != nil {
 				t.Fatalf("read expected trades: %v", err)
 			}
-			if got, want := canonicalJSON(conformanceResult(result)), canonicalRawJSON(t, expected); got != want {
+			if got, want := canonicalJSON(ConformanceProjection(result)), canonicalRawJSON(t, expected); got != want {
 				t.Fatalf("trade mismatch\nfirst diff: %s\n got: %s\nwant: %s", firstDiff(got, want), got, want)
 			}
 			passed++
@@ -75,26 +75,13 @@ func TestRunConformance(t *testing.T) {
 	t.Logf("run-conformance scoreboard: pass=%d (%s), skipped=%d explicit TODO", passed, strings.Join(implementedRunCases, ", "), skipped)
 }
 
-func conformanceResult(result RunResult) RunResult {
-	if result.Trades == nil {
-		return result
-	}
-	trades := make([]Trade, len(result.Trades))
-	copy(trades, result.Trades)
-	result.Trades = trades
-	for i := range result.Trades {
-		result.Trades[i].Partial = false
-	}
-	return result
-}
-
 func TestConformanceResultPreservesTradeSliceShapeAndOnlyClearsPartial(t *testing.T) {
-	nilResult := conformanceResult(RunResult{})
+	nilResult := ConformanceProjection(RunResult{})
 	if nilResult.Trades != nil {
 		t.Fatalf("nil trades projected as %#v, want nil", nilResult.Trades)
 	}
 
-	emptyResult := conformanceResult(RunResult{Trades: []Trade{}})
+	emptyResult := ConformanceProjection(RunResult{Trades: []Trade{}})
 	if emptyResult.Trades == nil || len(emptyResult.Trades) != 0 {
 		t.Fatalf("empty trades projected as %#v, want nonnil empty slice", emptyResult.Trades)
 	}
@@ -120,7 +107,7 @@ func TestConformanceResultPreservesTradeSliceShapeAndOnlyClearsPartial(t *testin
 		TP:         104,
 	}
 	source := RunResult{Case: "partial", Trades: []Trade{trade}}
-	projected := conformanceResult(source)
+	projected := ConformanceProjection(source)
 	if !reflect.DeepEqual(source.Trades[0], trade) {
 		t.Fatalf("conformance projection mutated source trade: got %#v, want %#v", source.Trades[0], trade)
 	}
@@ -146,50 +133,6 @@ func TestRunResultSerializesAbsentHigherTimeframeAsNull(t *testing.T) {
 	if payload["higherTimeframe"] != nil {
 		t.Fatalf("higherTimeframe = %#v, want null", payload["higherTimeframe"])
 	}
-}
-
-var implementedRunCases = []string{
-	stage1RunCase,
-	"family-range-break-fake",
-	"family-opening-range-breakout",
-	"family-inside-day-expansion",
-	"family-day-open-reclaim",
-	"family-daily-flush-failure",
-	"deployed-dsl-session-expansion-ny",
-	"deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
-	"family-break-retest",
-	"family-supply-demand",
-	"family-double-top-bottom",
-	"deployed-dsl-dual-ema-resumption-xauusd-four-hour",
-	"family-fib-continuation",
-	"family-channel-break-hold",
-	"family-level-sweep",
-	"family-triple-push-exhaustion",
-	"family-vwap-extension-fade",
-	"family-volume-anomaly-exhaustion",
-	"family-elder-triple-screen",
-	"family-elder-triple-screen-trail-override",
-	"family-price-momentum",
-	"family-price-momentum-guarded",
-	"family-fair-value-gap",
-	"family-weekend-extreme-fade",
-	"family-intra-hour-run-exhaustion",
-	"family-sma-golden-cross",
-	"family-sma-golden-cross-protected",
-	"family-keltner-reversion",
-	"family-keltner-expansion",
-	"money-risk-sizing",
-	"money-partial-exit",
-	"money-stop-distance-gate",
-}
-
-func runCaseImplemented(caseName string) bool {
-	for _, implemented := range implementedRunCases {
-		if caseName == implemented {
-			return true
-		}
-	}
-	return false
 }
 
 func runFixtureDir() string {
