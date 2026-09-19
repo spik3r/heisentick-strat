@@ -1,0 +1,28 @@
+{
+  "id": "one-year-concentration",
+  "trades": 260,
+  "pf": 1.55,
+  "net": 4500,
+  "posSlicePct": 100,
+  "bestSlicePct": 89,
+  "posYears": "3/4",
+  "worstYearPf": "0.45",
+  "recentYearNet": 250,
+  "completedYears": 4,
+  "worstCompletedYearPf": "0.45",
+  "partialYear": null,
+  "partialYearNet": null,
+  "recentFrom": "2023-01-01",
+  "recentPf": "1.12",
+  "recentDeltaPf": "-0.43",
+  "harshPf": "1.30",
+  "costDeltaPf": "0.25",
+  "warnings": [
+    "best slice 89% of net",
+    "blow-up year PF 0.45"
+  ],
+  "warningCodes": [
+    "best-slice-concentration",
+    "blow-up-year"
+  ]
+}

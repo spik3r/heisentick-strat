@@ -1,0 +1,26 @@
+{
+  "id": "insufficient-trades",
+  "trades": 42,
+  "pf": 0,
+  "net": 800,
+  "posSlicePct": 100,
+  "bestSlicePct": 63,
+  "posYears": "1/1",
+  "worstYearPf": "-",
+  "recentYearNet": 800,
+  "completedYears": 0,
+  "worstCompletedYearPf": "0.00",
+  "partialYear": 2025,
+  "partialYearNet": 800,
+  "recentFrom": "2024-03-01",
+  "recentPf": "-",
+  "recentDeltaPf": "-",
+  "harshPf": "-",
+  "costDeltaPf": "-",
+  "warnings": [
+    "thin sample (42t < 150)"
+  ],
+  "warningCodes": [
+    "thin-sample"
+  ]
+}

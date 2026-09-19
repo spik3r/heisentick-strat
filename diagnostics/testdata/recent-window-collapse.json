@@ -1,0 +1,43 @@
+{
+  "recentFrom": "2024-03-01",
+  "minTrades": 150,
+  "full": {
+    "symbols": ["XAUUSD"], "tfs": ["15m"], "strategy": "recent-window-collapse", "generatedAt": "2025-06-30T00:00:00Z", "range": "zone", "bars": 28000,
+    "primaryCost": { "index": 0, "label": "realistic" },
+    "costs": [ { "label": "realistic", "slippage": 0.06, "trades": 210, "winRate": 45, "pf": 1.6, "net": 3100, "expectancy": 14.8, "dd": 9 } ],
+    "slices": [
+      { "symbol": "XAUUSD", "tf": "15m", "range": "zone", "bars": 20000, "htf": null, "costs": [
+        { "label": "realistic", "slippage": 0.06, "trades": 140, "winRate": 45, "pf": 1.6, "net": 1900, "expectancy": 13.6, "dd": 9 } ] },
+      { "symbol": "XAUUSD", "tf": "1h", "range": "zone", "bars": 8000, "htf": null, "costs": [
+        { "label": "realistic", "slippage": 0.06, "trades": 70, "winRate": 45, "pf": 1.6, "net": 1200, "expectancy": 17.1, "dd": 9 } ] }
+    ],
+    "warnings": [], "activeSessions": [], "strategyTypeTags": { "sessionBiasFilterCount": 0, "seasonalityFilterCount": 0, "vpaFilterCount": 0 },
+    "groupings": { "session": [], "side": [], "exitReason": [], "year": [
+      { "key": "2022", "trades": 70, "winRate": 0.5, "profitFactor": 2.1, "net": 2200, "expectancy": 31.4 },
+      { "key": "2023", "trades": 60, "winRate": 0.48, "profitFactor": 1.7, "net": 1300, "expectancy": 21.7 },
+      { "key": "2024", "trades": 50, "winRate": 0.4, "profitFactor": 0.8, "net": -300, "expectancy": -6 },
+      { "key": "2025", "trades": 30, "winRate": 0.4, "profitFactor": 0.9, "net": -100, "expectancy": -3.3 }
+    ] },
+    "dateBounds": { "firstT": 1641006000000, "lastT": 1751241600000, "bars": 28000 }
+  },
+  "recent": {
+    "symbols": ["XAUUSD"], "tfs": ["15m"], "strategy": "recent-window-collapse", "generatedAt": "2025-06-30T00:00:00Z", "range": "zone", "bars": 9000,
+    "primaryCost": { "index": 0, "label": "realistic" },
+    "costs": [ { "label": "realistic", "slippage": 0.06, "trades": 55, "winRate": 40, "pf": 0.9, "net": -260, "expectancy": -4.7, "dd": 11 } ],
+    "slices": [ { "symbol": "XAUUSD", "tf": "15m", "range": "zone", "bars": 9000, "htf": null, "costs": [
+      { "label": "realistic", "slippage": 0.06, "trades": 55, "winRate": 40, "pf": 0.9, "net": -260, "expectancy": -4.7, "dd": 11 } ] } ],
+    "warnings": [], "activeSessions": [], "strategyTypeTags": { "sessionBiasFilterCount": 0, "seasonalityFilterCount": 0, "vpaFilterCount": 0 },
+    "groupings": { "session": [], "side": [], "exitReason": [], "year": [] },
+    "dateBounds": { "firstT": 1709251200000, "lastT": 1751241600000, "bars": 9000 }
+  },
+  "harsh": {
+    "symbols": ["XAUUSD"], "tfs": ["15m"], "strategy": "recent-window-collapse", "generatedAt": "2025-06-30T00:00:00Z", "range": "zone", "bars": 28000,
+    "primaryCost": { "index": 0, "label": "harsh" },
+    "costs": [ { "label": "harsh", "slippage": 0.12, "trades": 210, "winRate": 43, "pf": 1.25, "net": 1100, "expectancy": 5.2, "dd": 13 } ],
+    "slices": [ { "symbol": "XAUUSD", "tf": "15m", "range": "zone", "bars": 28000, "htf": null, "costs": [
+      { "label": "harsh", "slippage": 0.12, "trades": 210, "winRate": 43, "pf": 1.25, "net": 1100, "expectancy": 5.2, "dd": 13 } ] } ],
+    "warnings": [], "activeSessions": [], "strategyTypeTags": { "sessionBiasFilterCount": 0, "seasonalityFilterCount": 0, "vpaFilterCount": 0 },
+    "groupings": { "session": [], "side": [], "exitReason": [], "year": [] },
+    "dateBounds": { "firstT": 1641006000000, "lastT": 1751241600000, "bars": 28000 }
+  }
+}

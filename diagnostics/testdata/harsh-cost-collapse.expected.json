@@ -1,0 +1,26 @@
+{
+  "id": "harsh-cost-collapse",
+  "trades": 320,
+  "pf": 1.18,
+  "net": 950,
+  "posSlicePct": 100,
+  "bestSlicePct": 63,
+  "posYears": "4/4",
+  "worstYearPf": "1.10",
+  "recentYearNet": 120,
+  "completedYears": 3,
+  "worstCompletedYearPf": "1.15",
+  "partialYear": 2025,
+  "partialYearNet": 120,
+  "recentFrom": "2024-03-01",
+  "recentPf": "1.16",
+  "recentDeltaPf": "-0.02",
+  "harshPf": "0.93",
+  "costDeltaPf": "0.25",
+  "warnings": [
+    "harsh cost flips negative"
+  ],
+  "warningCodes": [
+    "harsh-cost-negative"
+  ]
+}
