@@ -6,7 +6,11 @@ version and is named here.
 
 ## [Unreleased]
 
-Nothing yet.
+- Engine: a carried stop that the bar opens beyond fills at the open
+  (`min(stop, open)` for longs, `max(stop, open)` for shorts), not at the
+  stop level. Entry-bar handling is unchanged; slippage still applies on top.
+  Matches `conformance/semantic/pm-gap-through-stop`. No `conformance/run`
+  golden changes. Spec §7 now states the stop and target gap-fill rules.
 
 ## [0.2.1] — 2026-09-19
 
