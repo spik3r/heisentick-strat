@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+Nothing yet.
+
+## [0.3.0] — 2026-09-20
+
+Minor bump: the engine changed a fill rule (gap through a carried stop).
+
 - `diagnostics/`: `Evaluate(Input) Result` derives the overfit metrics and
   warnings the app's `scripts/strategy/overfitReport.mjs` computes from
   three passes (full-history realistic, recent window, full-history
