@@ -1,0 +1,37 @@
+{
+  "input": {
+    "pnls": [
+      250
+    ],
+    "startEquity": 10000,
+    "iters": 100,
+    "seed": 7
+  },
+  "expected": {
+    "trades": 1,
+    "iters": 100,
+    "seed": 7,
+    "realized": {
+      "net": 250,
+      "maxDD": 0
+    },
+    "orderShuffleMaxDD": {
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "worst": 0
+    },
+    "bootstrapMaxDD": {
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "worst": 0
+    },
+    "bootstrapNet": {
+      "p5": 250,
+      "p50": 250,
+      "p95": 250,
+      "probNetLeZero": 0
+    }
+  }
+}
