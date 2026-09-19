@@ -22,6 +22,10 @@ how, and the app-side removal PR.
   runs a loaded route per cost row and returns the CLI's JSON document plus
   the headline, groupings (session, side, exit reason, year), date bounds
   and holdout split. The CLI and the report Lambda both call it.
+- `diagnostics/`: overfit metrics and warnings from three report passes
+  (full-history realistic, recent window, full-history harsh). Pure
+  functions over `report.Document`; `diagnostics/testdata/` fixes the
+  numbers and the JS derivation they were checked against.
 - `cmd/heisentick`: report and grid CLI, a thin adapter over `report/`.
   `cmd/dslwasm`, `cmd/enginewasm`:
   the parser and full-engine WASM builds. `cmd/conformance`: generates and

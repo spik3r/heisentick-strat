@@ -1,0 +1,28 @@
+{
+  "id": "recent-window-collapse",
+  "trades": 210,
+  "pf": 1.6,
+  "net": 3100,
+  "posSlicePct": 100,
+  "bestSlicePct": 61,
+  "posYears": "2/4",
+  "worstYearPf": "0.80",
+  "recentYearNet": -100,
+  "completedYears": 3,
+  "worstCompletedYearPf": "0.80",
+  "partialYear": 2025,
+  "partialYearNet": -100,
+  "recentFrom": "2024-03-01",
+  "recentPf": "0.90",
+  "recentDeltaPf": "-0.70",
+  "harshPf": "1.25",
+  "costDeltaPf": "0.35",
+  "warnings": [
+    "recent year (2024) negative",
+    "recent-window PF 0.90 << full 1.60 (from 2024-03-01)"
+  ],
+  "warningCodes": [
+    "recent-year-negative",
+    "recent-window-pf-drop"
+  ]
+}

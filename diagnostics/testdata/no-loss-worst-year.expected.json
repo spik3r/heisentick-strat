@@ -1,0 +1,26 @@
+{
+  "id": "no-loss-worst-year",
+  "trades": 130,
+  "pf": 2.05,
+  "net": 2400,
+  "posSlicePct": 100,
+  "bestSlicePct": 63,
+  "posYears": "3/3",
+  "worstYearPf": "-",
+  "recentYearNet": 1200,
+  "completedYears": 3,
+  "worstCompletedYearPf": "-",
+  "partialYear": null,
+  "partialYearNet": null,
+  "recentFrom": "2023-01-01",
+  "recentPf": "2.20",
+  "recentDeltaPf": "0.15",
+  "harshPf": "1.70",
+  "costDeltaPf": "0.35",
+  "warnings": [
+    "blow-up year PF 0.00"
+  ],
+  "warningCodes": [
+    "blow-up-year"
+  ]
+}

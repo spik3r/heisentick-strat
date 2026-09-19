@@ -1,0 +1,22 @@
+{
+  "id": "healthy",
+  "trades": 240,
+  "pf": 1.62,
+  "net": 5400,
+  "posSlicePct": 100,
+  "bestSlicePct": 48,
+  "posYears": "4/4",
+  "worstYearPf": "1.40",
+  "recentYearNet": 1000,
+  "completedYears": 3,
+  "worstCompletedYearPf": "1.50",
+  "partialYear": 2025,
+  "partialYearNet": 1000,
+  "recentFrom": "2024-03-01",
+  "recentPf": "1.50",
+  "recentDeltaPf": "-0.12",
+  "harshPf": "1.20",
+  "costDeltaPf": "0.42",
+  "warnings": [],
+  "warningCodes": []
+}
