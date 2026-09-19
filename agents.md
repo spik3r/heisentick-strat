@@ -31,9 +31,11 @@ pin PR; never assume two PRs merge atomically.
 
 - Start with `git status --short` and preserve user edits.
 - `codex/<short-topic>` branches; one ticket, one bounded write set, one PR.
-- Conformance goldens are read-only. A golden changes only in a reviewed
-  corpus-regeneration PR that says why. Parser-visible changes need a
-  fixture or golden in the same PR.
+- The Go engine generates the conformance goldens
+  (`go run ./cmd/conformance regen`); JS and WASM conform to them. A golden
+  changes only in a reviewed corpus-regeneration PR that names the fixture or
+  bug behind each changed file (`conformance/README.md`). Parser-visible
+  changes need a fixture or golden in the same PR.
 - Engine semantics, schema changes and statistical definitions need an
   independent review.
 - Commit messages explain the change. Run `git diff --check` first.
@@ -46,6 +48,7 @@ Before every commit that touches Go:
 gofmt -l .      # must print nothing
 go vet ./...
 go test ./...
+go run ./cmd/conformance check   # goldens match the engine
 ```
 
 Workflow changes: keep `runs-on` exactly

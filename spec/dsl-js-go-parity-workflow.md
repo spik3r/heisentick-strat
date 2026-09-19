@@ -45,8 +45,8 @@ When one side changes, inspect every file in its row.
 | Pattern setup phrases | `strat/implementations/browser-runtime/compiler/parseSetups/patternPhrases.js` | `strat/implementations/server-runtime/parser_setup_phrases.go` |
 | Fade/exhaustion setup phrases | `strat/implementations/browser-runtime/compiler/parseSetups/fadePhrases.js` | `strat/implementations/server-runtime/parser_setup_phrases.go` |
 | Stop, target, partial, breakeven, trail, hold, and risk lowering | `strat/implementations/browser-runtime/compiler/parseRiskManagement.js`, `compile/managementLowering.js` | `strat/implementations/server-runtime/parser_management.go`, `parser.go` |
-| Parse corpus adapter and assertions | `scripts/build/buildConformanceCorpus.mjs`, `scripts/checks/checkConformanceCorpus.mjs` | `strat/implementations/server-runtime/conformance_fixtures_test.go`, `conformance_test.go` |
-| Run corpus execution | `engine/dsl/spec/runtime*.js`, `scripts/build/buildConformanceCorpus.mjs`, `scripts/checks/checkConformanceCorpus.mjs` | `go/native/conformance_test.go` and the relevant `go/native/*.go` family/runtime files |
+| Parse corpus: Go generates, JS checks | `scripts/checks/checkConformanceCorpus.mjs` (conformer) | `cmd/conformance` (generator), `dsl/conformance_fixtures_test.go`, `dsl/conformance_test.go` |
+| Run corpus: Go generates, JS checks | `engine/dsl/spec/runtime*.js`, `scripts/checks/checkConformanceCorpus.mjs` (conformer) | `cmd/conformance` (generator), `engine/conformance_test.go` and the relevant `engine/*.go` family/runtime files |
 | Context-column reference generation | `engine/dsl` context builders used by `scripts/data/dumpContextColumns.mjs` | `go/contextcols/*.go`, `go/contextcols/parity_test.go` |
 
 The `compile/` phase split is intentionally asymmetric with Go: level
@@ -82,42 +82,28 @@ corpus regeneration, but the parity gates still guard that claim.
 
 ## Corpus regeneration and review
 
-Start from a clean branch containing only the intended parser/runtime source
-and fixture-source edits. From the repository root run:
+The Go engine in `heisentick-strat` generates the parse and run goldens; the
+JavaScript runtime conforms to them. Start from a clean branch containing
+only the intended parser/engine source and fixture edits. From the
+`heisentick-strat` repository root run:
 
 ```bash
-node scripts/build/buildConformanceCorpus.mjs --regen
-```
-
-For a parser-only change, regenerate only `strat/conformance/parse/` and its
-metadata count; this deliberately leaves `strat/conformance/run/` untouched:
-
-```bash
-node scripts/build/buildConformanceCorpus.mjs --regen --parse-only
-```
-
-If the full source bars are outside the worktree, point the generator at them:
-
-```bash
-CONFORMANCE_SOURCE_DATA_DIR=/absolute/path/to/source \
-  node scripts/build/buildConformanceCorpus.mjs --regen
-```
-
-Without that environment variable, existing committed run fixtures are reused
-where supported. After regeneration:
-
-```bash
-git status --short -- strat/conformance
-git diff --stat -- strat/conformance
-git diff -- strat/conformance/metadata.json strat/conformance/parse strat/conformance/run
+go run ./cmd/conformance check    # which goldens differ, and where
+go run ./cmd/conformance regen    # rewrite parse and run goldens and metadata.json
+git status --short -- conformance
+git diff -- conformance/metadata.json conformance/parse conformance/run
 ```
 
 Review every changed golden. Parse diffs must correspond to intended config or
 diagnostic changes. Run diffs must correspond to intended execution changes;
 unexpected trade, price, size, stop, target, reason, or timestamp changes are a
-stop signal. Include the reviewed generated diff and the matching JS/Go source
-changes in one narrow pull request. `--regen` is an explicit reviewed operation,
-not a repair command for a failing parity test.
+stop signal. Include the reviewed generated diff and the matching Go source
+change in one narrow pull request whose body names the fixture or bug behind
+each changed file. `regen` is an explicit reviewed operation, not a repair
+command for a failing parity test, and it is never run from the JavaScript
+side: a JS mismatch is a JS bug, a Go bug or an unresolved semantic, fixed at
+the source. The app picks the new goldens up through a tagged release and a
+`strat-release.json` bump. `conformance/README.md` has the full rule.
 
 ## Validation
 
