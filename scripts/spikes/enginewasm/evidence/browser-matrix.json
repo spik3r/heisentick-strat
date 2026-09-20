@@ -1,0 +1,300 @@
+{
+  "schema": "enginewasm-browser-matrix-v1",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "engineCommit": "2a1795a1da8ccaef8dcbcbb403371618c0f39d46",
+    "harnessPath": "scripts/spikes/enginewasm/browser-matrix.mjs",
+    "harnessSha256": "eecc485b0d8dfb73d5998d2764666e84a9f01463dd5f1a77b89392e64e034918",
+    "goVersion": "go version go1.27.0 darwin/arm64",
+    "playwrightVersion": "1.57.0"
+  },
+  "artifact": {
+    "sha256": "0a4a2b398d9c95e7a2508aebeefdf96c9232524321f2c5a5b483fdd27fd9bfb2",
+    "wasmExecSha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14"
+  },
+  "fixtures": [
+    {
+      "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+      "fixture": "deployed-dsl-dual-ema-resumption-xauusd-four-hour.fixture.json",
+      "source": "deployed-dsl-dual-ema-resumption-xauusd-four-hour.strat",
+      "expected": "expected/deployed-dsl-dual-ema-resumption-xauusd-four-hour.native.json",
+      "fixtureSha256": "ebad09b3b157430af1a63e679dbe46baf914be7cc47a236f0ef51d644e71bd4d",
+      "sourceSha256": "4e8bb75a05c83606efde7a478368754789810703134b560dd3bf8966e4b013ef",
+      "nativeOutputSha256": "946b13b0f2bf022628597d4bed79e93e0119ee687989dbd30e13fe272fd47d35",
+      "goldenTradesSha256": "4508e09808dfa9260327c922a15cabc98563d4a8722afd2966c7b1c53e50a752",
+      "columnar": {
+        "supported": true
+      }
+    },
+    {
+      "case": "deployed-dsl-flag-continuation-one-four-hour-review",
+      "fixture": "deployed-dsl-flag-continuation-one-four-hour-review.fixture.json",
+      "source": "deployed-dsl-flag-continuation-one-four-hour-review.strat",
+      "expected": "expected/deployed-dsl-flag-continuation-one-four-hour-review.native.json",
+      "fixtureSha256": "6e9f9a0078f0e591e2875121c98e96843717cbc0c16899bbfc065619a4f7547d",
+      "sourceSha256": "62c44732809b9e5fa37b84c47cbaa82a3cd36f5233754f17d8a2142b6a83f128",
+      "nativeOutputSha256": "bcbeb81a8e32cbceb76e234008bfb4c25f630f063eb2c2c841c0a180fd7f61dc",
+      "goldenTradesSha256": "616ba5fea98f55288c94c00dd8608d72f1526de663e3f6c6baea6ebe97fee4a7",
+      "columnar": {
+        "supported": false,
+        "reason": "fixture requires higher timeframe 4h"
+      }
+    },
+    {
+      "case": "deployed-dsl-session-expansion-ny",
+      "fixture": "deployed-dsl-session-expansion-ny.fixture.json",
+      "source": "deployed-dsl-session-expansion-ny.strat",
+      "expected": "expected/deployed-dsl-session-expansion-ny.native.json",
+      "fixtureSha256": "8abc7966d2e21c9948e1b8aaee083ee0ee36cbfadb79db817605e63eb2ddfa3e",
+      "sourceSha256": "54f1688848a1cb99dfcc20465d5b8ae92e808de4b2ad9ec07eb9639869e4cf60",
+      "nativeOutputSha256": "b35786a3798cdbf9d0e0200dcb1ee4f10414cadcbb11c77e1f389cf680d59b46",
+      "goldenTradesSha256": "103b03e9a4e7654ddb2d99549c9a65773025c1c2e71b2d6a69388dd9d2a979db",
+      "columnar": {
+        "supported": false,
+        "reason": "fixture requires higher timeframe 1h"
+      }
+    },
+    {
+      "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+      "fixture": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume.fixture.json",
+      "source": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume.strat",
+      "expected": "expected/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume.native.json",
+      "fixtureSha256": "865cef66601589cc756809f401710c9d3b5ae9b905aca018bee1fb97bede84eb",
+      "sourceSha256": "a54fac17c88fb65f697a1ea9a8188d62ab287aa3a463c46654a7373123f9a729",
+      "nativeOutputSha256": "4d62a12ebd1f064e25f41648ab11e3158dbbade4c0d26027e0db85f7a748d9e3",
+      "goldenTradesSha256": "bbf5e76c8e8dc716cf1a792c2f8b2d0d7494340dff6ba0d2d5421ec0350883b8",
+      "columnar": {
+        "supported": false,
+        "reason": "fixture requires higher timeframe 1d"
+      }
+    }
+  ],
+  "browsers": [
+    {
+      "name": "chromium",
+      "version": "143.0.7499.4",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.7499.4 Safari/537.36",
+      "cases": [
+        {
+          "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 117.90000003576279,
+            "tradeCount": 65
+          },
+          "columnar": {
+            "status": "verified",
+            "completeTradeEquality": true,
+            "tradeCount": 65,
+            "wallMs": 58.19999998807907,
+            "malformed": {
+              "mismatchedLengthRejected": true,
+              "nonFloat64Rejected": true,
+              "unknownMetadataRejected": true,
+              "invalidSourceRejected": true
+            },
+            "timings": {
+              "copyInMs": 0.5,
+              "adapterMs": 1.3,
+              "engineMs": 54.8,
+              "packMs": 0.8,
+              "copyOutMs": 0
+            }
+          }
+        },
+        {
+          "case": "deployed-dsl-flag-continuation-one-four-hour-review",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 19.5,
+            "tradeCount": 17
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 4h",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        },
+        {
+          "case": "deployed-dsl-session-expansion-ny",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 30.299999952316284,
+            "tradeCount": 6
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 1h",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        },
+        {
+          "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 24.399999976158142,
+            "tradeCount": 16
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 1d",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        }
+      ]
+    },
+    {
+      "name": "firefox",
+      "version": "144.0.2",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0",
+      "cases": [
+        {
+          "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 578,
+            "tradeCount": 65
+          },
+          "columnar": {
+            "status": "verified",
+            "completeTradeEquality": true,
+            "tradeCount": 65,
+            "wallMs": 521,
+            "malformed": {
+              "mismatchedLengthRejected": true,
+              "nonFloat64Rejected": true,
+              "unknownMetadataRejected": true,
+              "invalidSourceRejected": true
+            },
+            "timings": {
+              "copyInMs": 1,
+              "adapterMs": 2.999,
+              "engineMs": 511,
+              "packMs": 4,
+              "copyOutMs": 0
+            }
+          }
+        },
+        {
+          "case": "deployed-dsl-flag-continuation-one-four-hour-review",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 135,
+            "tradeCount": 17
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 4h",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        },
+        {
+          "case": "deployed-dsl-session-expansion-ny",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 281,
+            "tradeCount": 6
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 1h",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        },
+        {
+          "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 229,
+            "tradeCount": 16
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 1d",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        }
+      ]
+    },
+    {
+      "name": "webkit",
+      "version": "26.0",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15",
+      "cases": [
+        {
+          "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 154,
+            "tradeCount": 65
+          },
+          "columnar": {
+            "status": "verified",
+            "completeTradeEquality": true,
+            "tradeCount": 65,
+            "wallMs": 67,
+            "malformed": {
+              "mismatchedLengthRejected": true,
+              "nonFloat64Rejected": true,
+              "unknownMetadataRejected": true,
+              "invalidSourceRejected": true
+            },
+            "timings": {
+              "copyInMs": 1,
+              "adapterMs": 0.999,
+              "engineMs": 63,
+              "packMs": 0.999,
+              "copyOutMs": 0
+            }
+          }
+        },
+        {
+          "case": "deployed-dsl-flag-continuation-one-four-hour-review",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 33,
+            "tradeCount": 17
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 4h",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        },
+        {
+          "case": "deployed-dsl-session-expansion-ny",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 50.99999999999994,
+            "tradeCount": 6
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 1h",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        },
+        {
+          "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+          "jsonBridge": {
+            "completeNativeEquality": true,
+            "wallMs": 27.999999999999943,
+            "tradeCount": 16
+          },
+          "columnar": {
+            "status": "unsupported",
+            "reason": "fixture requires higher timeframe 1d",
+            "rejection": "column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported"
+          }
+        }
+      ]
+    }
+  ],
+  "reproducibleCommands": {
+    "installPlaywright": "npm install --prefix /tmp/heisentick-enginewasm-playwright playwright@1.57.0",
+    "installBrowsers": "npx --prefix /tmp/heisentick-enginewasm-playwright playwright install chromium firefox webkit",
+    "runMatrix": "ENGINEWASM_PLAYWRIGHT_PACKAGE=/tmp/heisentick-enginewasm-playwright/node_modules/playwright node scripts/spikes/enginewasm/browser-matrix.mjs --output scripts/spikes/enginewasm/evidence/browser-matrix.json"
+  },
+  "timingNote": "Wall timings are browser smoke observations. The deployed fixtures are synthetic conformance inputs and do not establish real-market performance.",
+  "largerBenchmarkData": "A larger benchmark needs a separately supplied, read-only public or user-provided market-data file with its source, date range, bar count, and SHA-256 recorded. This harness neither fetches AWS data nor assumes private local data."
+}
