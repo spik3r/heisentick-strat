@@ -142,6 +142,8 @@ type broker struct {
 	dualBestClose          float64
 	dualExitPending        bool
 	sma                    smaGoldenCrossState
+	execution              ExecutionBounds
+	windowed               bool
 }
 
 func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTrend []int8, ema []float64, emaSlope []float64, params flagParams, fixture RunFixture, trades []Trade) {
@@ -222,6 +224,37 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.dualHasPositionEntry = false
 	b.dualExitPending = false
 	b.sma = smaGoldenCrossState{}
+	b.windowed = false
+	b.execution = ExecutionBounds{}
+}
+
+func (b *broker) setExecutionWindow(window ExecutionBounds) {
+	b.execution = window
+	b.windowed = true
+}
+
+func (b *broker) executionStart() int {
+	if !b.windowed {
+		return 0
+	}
+	return b.execution.TradeStart
+}
+
+func (b *broker) executionEnd() int {
+	if !b.windowed {
+		return b.series.Len() - 1
+	}
+	return b.execution.TradeEnd
+}
+
+func (b *broker) executionIndexAllowed(index int) bool {
+	return index >= b.executionStart() && index <= b.executionEnd()
+}
+
+func (b *broker) clearExecutionOrders() {
+	b.pendingOrders = b.pendingOrders[:0]
+	b.pendingExits = b.pendingExits[:0]
+	b.limitOrders = b.limitOrders[:0]
 }
 
 func (b *broker) run() []Trade {
@@ -229,16 +262,26 @@ func (b *broker) run() []Trade {
 		return trades
 	}
 	n := b.series.Len()
-	for i := 0; i < n; i++ {
+	end := b.executionEnd()
+	if end >= n {
+		end = n - 1
+	}
+	for i := 0; i <= end; i++ {
+		if b.windowed && i < b.executionStart() {
+			b.clearExecutionOrders()
+		}
 		b.fillPendingExits(i)
 		b.fillPending(i)
 		b.fillLimits(i)
 		b.closeExpiredWindowPosition(i)
 		b.resolveIntrabarExit(i)
 		b.onBar(i)
+		if b.windowed && i < b.executionStart() {
+			b.clearExecutionOrders()
+		}
 	}
-	if n > 0 && b.hasPosition {
-		b.closePosition(b.series.C[n-1], n-1, "eod")
+	if n > 0 && end >= 0 && b.hasPosition {
+		b.closePosition(b.series.C[end], end, "eod")
 	}
 	return b.trades
 }
@@ -262,7 +305,14 @@ func (b *broker) runScheduled(entries []ScheduledEntry, orders []order) []Trade 
 			byChart[entry.ChartIndex] = append(byChart[entry.ChartIndex], orders[index])
 		}
 	}
-	for i := 0; i < b.series.Len(); i++ {
+	end := b.executionEnd()
+	if end >= b.series.Len() {
+		end = b.series.Len() - 1
+	}
+	for i := 0; i <= end; i++ {
+		if b.windowed && i < b.executionStart() {
+			b.clearExecutionOrders()
+		}
 		b.fillPending(i)
 		b.fillLimits(i)
 		b.closeExpiredWindowPosition(i)
@@ -270,9 +320,12 @@ func (b *broker) runScheduled(entries []ScheduledEntry, orders []order) []Trade 
 		for _, captured := range byChart[i] {
 			b.dispatchCaptured(i, captured)
 		}
+		if b.windowed && i < b.executionStart() {
+			b.clearExecutionOrders()
+		}
 	}
-	if b.series.Len() > 0 && b.hasPosition {
-		b.closePosition(b.series.C[b.series.Len()-1], b.series.Len()-1, "eod")
+	if end >= 0 && b.hasPosition {
+		b.closePosition(b.series.C[end], end, "eod")
 	}
 	return b.trades
 }
@@ -317,6 +370,9 @@ func (b *broker) fillLimits(i int) {
 
 func (b *broker) enter(i int, side side, setup flagSetup) {
 	if b.hasPosition || len(b.pendingOrders) > 0 || len(b.limitOrders) > 0 {
+		return
+	}
+	if b.windowed && !b.executionIndexAllowed(i) {
 		return
 	}
 	if !b.guardedEntryAllowed(i) || !b.marketNonSessionGatesOK(i) || !b.guardedCandleQualityOK(i, side) {
@@ -379,6 +435,9 @@ func (b *broker) enterLimit(i int, limit float64, setup setupPlan, expireBars in
 	if b.hasPosition || len(b.pendingOrders) > 0 || len(b.limitOrders) > 0 {
 		return false
 	}
+	if b.windowed && !b.executionIndexAllowed(i) {
+		return false
+	}
 	if !b.guardedEntryAllowed(i) || !b.guardedCandleQualityOK(i, setup.Side) {
 		return false
 	}
@@ -415,6 +474,9 @@ func (b *broker) guardedEntryAllowed(i int) bool {
 }
 
 func (b *broker) openPosition(s side, fillPrice float64, ord order, index int) {
+	if b.windowed && !b.executionIndexAllowed(index) {
+		return
+	}
 	sign := float64(s)
 	px := fillPrice
 	if !ord.NoSlip {

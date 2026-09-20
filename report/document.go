@@ -3,10 +3,10 @@
 // list, the evidence envelope, and the M2 statistics (headline, groupings,
 // date bounds, holdout split).
 //
-// The engine runs every bar it is given and closes an open position at the
-// last bar (exit reason "eod"); it models slippage only, with fills on the
-// close and a start equity of 10000. Trimming the series to a date window
-// and supplying warm-up history is the caller's job.
+// The engine can prepare context bars before a separate inclusive tradable
+// interval, then closes an open position at that interval's final bar (exit
+// reason "eod"). It models slippage only, with fills on the close and a
+// start equity of 10000.
 package report
 
 import (
@@ -129,7 +129,8 @@ type Document struct {
 	// Groupings splits the primary cost's trades by session, side, exit
 	// reason and entry year.
 	Groupings *Groupings `json:"groupings,omitempty"`
-	// DateBounds is the span of entry bars the engine ran.
+	// DateBounds is the span of tradable entry bars the engine ran. Context bars
+	// supplied before the execution window are excluded.
 	DateBounds *DateBounds `json:"dateBounds,omitempty"`
 	// Holdout is set only when the request named a holdout boundary.
 	Holdout *Holdout `json:"holdout,omitempty"`

@@ -20,6 +20,10 @@ func isWeekdayTimestamp(timestamp float64) bool {
 }
 
 func (b *broker) runDailyFlushFailure() []Trade {
+	end := b.executionEnd()
+	if end >= b.series.Len() {
+		end = b.series.Len() - 1
+	}
 	retained := make([]int, 0, b.series.Len())
 	atr := make([]float64, 0, b.series.Len())
 	for i, timestamp := range b.series.T {
@@ -50,7 +54,20 @@ func (b *broker) runDailyFlushFailure() []Trade {
 	pendingFlushCloseLocation := 0.0
 	exitPending := false
 	survivedBars := 0
+	start := b.executionStart()
 	for retainedIndex, rawIndex := range retained {
+		if rawIndex > end {
+			break
+		}
+		// The retained ATR history above remains causal context, but a pending
+		// setup formed before the tradable window must not enter on its first
+		// bar. Reset execution state at the boundary while preserving that
+		// indicator history.
+		if rawIndex < start {
+			hasEntryPending = false
+			exitPending = false
+			continue
+		}
 		exitedThisBar := false
 		if exitPending && b.hasPosition {
 			b.closePosition(b.series.O[rawIndex], rawIndex, "time")
@@ -117,9 +134,8 @@ func (b *broker) runDailyFlushFailure() []Trade {
 				-b.params.StopBufferATR*pendingATR
 		}
 	}
-	if b.series.Len() > 0 && b.hasPosition {
-		last := b.series.Len() - 1
-		b.closePosition(b.series.C[last], last, "eod")
+	if end >= 0 && b.hasPosition {
+		b.closePosition(b.series.C[end], end, "eod")
 	}
 	return b.trades
 }

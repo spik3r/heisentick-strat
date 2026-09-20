@@ -14,6 +14,10 @@ const intraHourMillis = 60 * 60 * 1000
 // same-direction run inside a clock hour when the hour's final candle closes
 // back against that run.
 func (b *broker) runIntraHourRunExhaustion() []Trade {
+	end := b.executionEnd()
+	if end >= b.series.Len() {
+		end = b.series.Len() - 1
+	}
 	p := b.params.IntraHourRunExhaustion
 	atrLen := p.ATRLength
 	if atrLen < 1 {
@@ -34,7 +38,7 @@ func (b *broker) runIntraHourRunExhaustion() []Trade {
 
 	trueRanges := make([]float64, b.series.Len())
 	atrs := make([]float64, b.series.Len())
-	for i := range b.series.T {
+	for i := 0; i <= end; i++ {
 		previousClose := b.series.C[i]
 		if i > 0 {
 			previousClose = b.series.C[i-1]
@@ -52,7 +56,7 @@ func (b *broker) runIntraHourRunExhaustion() []Trade {
 		atrs[i] = sum / float64(atrLen)
 	}
 
-	for i := range b.series.T {
+	for i := b.executionStart(); i <= end; i++ {
 		if b.hasPosition && i > b.position.EntryIndex {
 			pos := b.position
 			if (pos.Side == sideLong && b.series.L[i] <= pos.SL) || (pos.Side == sideShort && b.series.H[i] >= pos.SL) {
@@ -156,9 +160,8 @@ func (b *broker) runIntraHourRunExhaustion() []Trade {
 			},
 		}, i)
 	}
-	if b.hasPosition && b.series.Len() > 0 {
-		last := b.series.Len() - 1
-		b.closePosition(b.series.C[last], last, "eod")
+	if b.hasPosition && end >= 0 {
+		b.closePosition(b.series.C[end], end, "eod")
 	}
 	return b.trades
 }

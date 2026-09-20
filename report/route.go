@@ -12,11 +12,11 @@ import (
 // Callers load the bars; ResolveSourceTimeframe and ResolveHigherTimeframe
 // say which extra series a configuration needs.
 //
-// The engine has no execution window: it runs every bar it is given and
-// liquidates an open position at the last bar's close (exit reason "eod").
-// Trimming the series to a date window, and supplying warm-up history before
-// it, is the caller's job. DateBounds in the Document reports the bars that
-// were actually run.
+// Request.ExecutionWindow can keep the leading context bars in this series
+// while declaring a separate [TradeFromT, TradeToT) tradable interval. The engine
+// prepares indicators over the supplied context and only opens, manages, and
+// liquidates positions inside that interval. With no window it runs every bar
+// and liquidates at the final bar's close.
 type Route struct {
 	Symbol          string
 	TF              string

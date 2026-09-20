@@ -14,7 +14,11 @@ const defaultStartEquity = 10000
 // runCostRows prepares the route once and runs it per cost mode. The trades
 // of the primary row are returned alongside the rows; tradeContext asks the
 // engine for the per-trade context columns the annotated trade list needs.
-func runCostRows(cfg dsl.Config, route Route, strategy string, modes []CostMode, primaryIndex int, bps *float64, tradeContext bool) ([]CostRow, []engine.Trade, *engine.PreparedRun, error) {
+func runCostRows(cfg dsl.Config, route Route, strategy string, modes []CostMode, primaryIndex int, bps *float64, tradeContext bool, executionWindows ...*engine.ExecutionWindow) ([]CostRow, []engine.Trade, *engine.PreparedRun, error) {
+	var executionWindow *engine.ExecutionWindow
+	if len(executionWindows) > 0 {
+		executionWindow = executionWindows[0]
+	}
 	prepared, err := engine.PrepareRun(engine.RunRequest{
 		Config:             cfg,
 		Series:             route.Series,
@@ -28,6 +32,7 @@ func runCostRows(cfg dsl.Config, route Route, strategy string, modes []CostMode,
 		HigherTimeframe:    route.HigherTimeframe,
 		RangeMethod:        route.Range,
 		ReportTradeContext: tradeContext,
+		ExecutionWindow:    executionWindow,
 		Costs:              engine.Costs{FillOn: "close", StartEquity: defaultStartEquity},
 	})
 	if err != nil {
