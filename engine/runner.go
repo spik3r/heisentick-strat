@@ -76,14 +76,14 @@ func sourceEntryConfig(cfg dsl.Config, fixture RunFixture) bool {
 }
 
 func runSourceEntryFixture(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series) (RunResult, error) {
-	trades, err := runSourceEntrySeries(fixture, cfg, params, chart, source, sourceHTF)
+	trades, err := runSourceEntrySeries(fixture, cfg, params, chart, source, sourceHTF, ExecutionBounds{TradeEnd: chart.Len() - 1}, false)
 	if err != nil {
 		return RunResult{}, err
 	}
 	return checkedResultEnvelope(fixture, trades)
 }
 
-func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series) ([]Trade, error) {
+func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed bool) ([]Trade, error) {
 	sourceFixture := fixture
 	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
 	sourceFixture.SourceTimeframe = ""
@@ -103,6 +103,9 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 	chartHTFTrend := projectSourceInt8(chart, source, sourceHTFTrend)
 	var chartBroker broker
 	chartBroker.reset(chart, chartCols, chartHTFTrend, nil, nil, params, fixture, nil)
+	if windowed {
+		chartBroker.setExecutionWindow(execution)
+	}
 	trades := chartBroker.runScheduled(entries, orders)
 	return trades, nil
 }

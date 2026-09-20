@@ -7,6 +7,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/spik3r/heisentick-strat/engine"
 )
 
 func TestBuildProducesStatisticsConsistentWithThePrimaryRow(t *testing.T) {
@@ -94,6 +96,35 @@ func TestBuildOmitsHoldoutAndTradesUnlessRequested(t *testing.T) {
 	}
 	if document.Headline == nil || document.Headline.FirstTradeT == nil {
 		t.Fatalf("headline trade times need the primary trades even without IncludeTrades: %+v", document.Headline)
+	}
+}
+
+func TestBuildExecutionWindowReportsTradableBoundsAfterContextWarmup(t *testing.T) {
+	cfg, route, strategy := loadConformanceCase(t, "money-risk-sizing")
+	from := int64(route.Series.T[route.Series.Len()/2])
+	step := int64(route.Series.T[1] - route.Series.T[0])
+	to := int64(route.Series.T[route.Series.Len()-1]) + step
+	document, err := Build(context.Background(), Request{
+		Config: cfg, Route: route, StrategyID: strategy,
+		ExecutionWindow: &engine.ExecutionWindow{TradeFromT: &from, TradeToT: &to},
+	})
+	if err != nil {
+		t.Fatalf("Build window: %v", err)
+	}
+	wantBars := route.Series.Len() - route.Series.Len()/2
+	if document.DateBounds == nil || document.DateBounds.FirstT != from || document.DateBounds.LastT != to-step || document.DateBounds.Bars != wantBars {
+		t.Fatalf("date bounds = %+v, want %d..%d/%d bars", document.DateBounds, from, to-step, wantBars)
+	}
+	if document.Bars != wantBars || document.Slices[0].Bars != wantBars {
+		t.Fatalf("document bars = %d/%d, want %d", document.Bars, document.Slices[0].Bars, wantBars)
+	}
+	for _, row := range document.Costs {
+		if row.SlippageBps == 0 {
+			continue
+		}
+		if row.Net == 0 && row.Trades > 0 {
+			t.Fatalf("cost row lost PnL in window: %+v", row)
+		}
 	}
 }
 

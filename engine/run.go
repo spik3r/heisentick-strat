@@ -26,7 +26,11 @@ type RunRequest struct {
 	HigherTimeframe    string
 	RangeMethod        string
 	ReportTradeContext bool
-	Costs              Costs
+	// ExecutionWindow keeps context bars available to indicators while
+	// restricting trade entry, management, and liquidation to the declared
+	// half-open trade interval [TradeFromT, TradeToT).
+	ExecutionWindow *ExecutionWindow
+	Costs           Costs
 }
 
 // PreparedRun holds context columns and derived setup state for repeated runs
@@ -46,6 +50,8 @@ type PreparedRun struct {
 	c5SourceHTF marketdata.Series
 	c5Config    dsl.Config
 	c5          bool
+	execution   ExecutionBounds
+	windowed    bool
 }
 
 // ReportTradeContext exposes the canonical context labels for one executed
@@ -74,6 +80,8 @@ type SharedRunContext struct {
 	htfTrend     []int8
 	fixture      RunFixture
 	options      contextcols.Options
+	execution    ExecutionBounds
+	windowed     bool
 }
 
 // SharedContextKey returns a stable key for the context columns a request needs.
@@ -84,13 +92,19 @@ func SharedContextKey(request RunRequest) (string, error) {
 	if _, _, err := sourceSeriesForRequest(request); err != nil {
 		return "", err
 	}
+	execution, err := ResolveExecutionWindow(request.Series, request.ExecutionWindow)
+	if err != nil {
+		return "", err
+	}
 	fixture := fixtureFromRequest(request)
 	options := contextOptions(fixture, request.Config)
 	options.NeedReportTradeContext = request.ReportTradeContext
 	identity := struct {
 		Options         contextcols.Options
 		SourceTimeframe string
-	}{Options: options, SourceTimeframe: fixture.SourceTimeframe}
+		Execution       ExecutionBounds
+		Windowed        bool
+	}{Options: options, SourceTimeframe: fixture.SourceTimeframe, Execution: execution, Windowed: request.ExecutionWindow != nil}
 	raw, err := json.Marshal(identity)
 	if err != nil {
 		return "", err
@@ -117,6 +131,10 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 	fixture := fixtureFromRequest(request)
 	options := contextOptions(fixture, request.Config)
 	options.NeedReportTradeContext = request.ReportTradeContext
+	execution, err := ResolveExecutionWindow(series, request.ExecutionWindow)
+	if err != nil {
+		return nil, err
+	}
 	return &SharedRunContext{
 		series:       series,
 		sourceSeries: sourceSeries,
@@ -124,6 +142,8 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 		htfTrend:     projectSourceInt8(series, sourceSeries, computeHTFTrend(sourceSeries, sourceHTFSeries)),
 		fixture:      fixture,
 		options:      options,
+		execution:    execution,
+		windowed:     request.ExecutionWindow != nil,
 	}, nil
 }
 
@@ -163,15 +183,17 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 		emaSlope = projectSourceFloat64(s.series, s.sourceSeries, emaSlope)
 	}
 	return &PreparedRun{
-		series:   s.series,
-		cols:     s.cols,
-		htfTrend: s.htfTrend,
-		ema:      ema,
-		emaSlope: emaSlope,
-		params:   params,
-		fixture:  s.fixture,
-		offRoute: !RouteAllowed(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series),
-		trades:   make([]Trade, 0, 32),
+		series:    s.series,
+		cols:      s.cols,
+		htfTrend:  s.htfTrend,
+		ema:       ema,
+		emaSlope:  emaSlope,
+		params:    params,
+		fixture:   s.fixture,
+		offRoute:  !RouteAllowed(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series),
+		trades:    make([]Trade, 0, 32),
+		execution: s.execution,
+		windowed:  s.windowed,
 	}, nil
 }
 
@@ -189,12 +211,18 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 			return nil, errors.New("XAUUSD source-entry execution requires source market series")
 		}
 		fixture := fixtureFromRequest(request)
+		execution, err := ResolveExecutionWindow(request.Series, request.ExecutionWindow)
+		if err != nil {
+			return nil, err
+		}
 		return &PreparedRun{
 			series: request.Series, params: paramsFromConfig(request.Config), fixture: fixture,
 			c5Source: source, c5SourceHTF: sourceHTF,
-			c5Config: request.Config,
-			c5:       true,
-			trades:   make([]Trade, 0, 32),
+			c5Config:  request.Config,
+			c5:        true,
+			trades:    make([]Trade, 0, 32),
+			execution: execution,
+			windowed:  request.ExecutionWindow != nil,
 		}, nil
 	}
 	shared, err := PrepareSharedRunContext(request)
@@ -379,7 +407,7 @@ func (r *PreparedRun) runRaw(costs Costs) []Trade {
 			return r.trades
 		}
 		r.fixture.Costs = costs.normalized()
-		trades, err := runSourceEntrySeries(r.fixture, r.c5Config, r.params, r.series, r.c5Source, r.c5SourceHTF)
+		trades, err := runSourceEntrySeries(r.fixture, r.c5Config, r.params, r.series, r.c5Source, r.c5SourceHTF, r.execution, r.windowed)
 		if err != nil {
 			r.trades = r.trades[:0]
 			return r.trades
@@ -388,6 +416,9 @@ func (r *PreparedRun) runRaw(costs Costs) []Trade {
 		return r.trades
 	}
 	r.broker.reset(r.series, r.cols, r.htfTrend, r.ema, r.emaSlope, r.params, r.fixture, r.trades)
+	if r.windowed {
+		r.broker.setExecutionWindow(r.execution)
+	}
 	r.trades = r.broker.run()
 	return r.trades
 }

@@ -14,6 +14,10 @@ import (
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
+// ExecutionWindow is the report-facing name for the engine execution
+// boundary contract.
+type ExecutionWindow = engine.ExecutionWindow
+
 // Request describes one report run.
 type Request struct {
 	// Config is the parsed strategy (dsl.Parse(...).Config).
@@ -35,6 +39,11 @@ type Request struct {
 	// HoldoutFromT splits the primary trades at this entry time (ms, UTC):
 	// entryT >= HoldoutFromT is holdout, the rest in-sample.
 	HoldoutFromT *int64
+	// ExecutionWindow keeps route context bars available to indicators while
+	// restricting entries, management, and liquidation to its trade interval.
+	// TradeFromT is inclusive and TradeToT is exclusive. A nil window preserves
+	// the legacy all-route run.
+	ExecutionWindow *ExecutionWindow
 	// GeneratedAt stamps the document; zero means time.Now().
 	GeneratedAt time.Time
 }
@@ -65,6 +74,10 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if route.SourceTimeframe == "" {
 		route.SourceTimeframe = ResolveSourceTimeframe(route.TF, request.Config)
 	}
+	execution, err := engine.ResolveExecutionWindow(route.Series, request.ExecutionWindow)
+	if err != nil {
+		return Document{}, err
+	}
 	if request.SlippageBps != nil {
 		bps := *request.SlippageBps
 		if bps < 0 || math.IsInf(bps, 0) || math.IsNaN(bps) {
@@ -80,7 +93,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if generatedAt.IsZero() {
 		generatedAt = time.Now()
 	}
-	rows, trades, prepared, err := runCostRows(request.Config, route, request.StrategyID, modes, primary.Index, request.SlippageBps, request.IncludeTrades)
+	rows, trades, prepared, err := runCostRows(request.Config, route, request.StrategyID, modes, primary.Index, request.SlippageBps, request.IncludeTrades, request.ExecutionWindow)
 	if err != nil {
 		return Document{}, err
 	}
@@ -92,7 +105,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 		Symbol:                      route.Symbol,
 		TF:                          route.TF,
 		Range:                       route.Range,
-		Bars:                        route.Series.Len(),
+		Bars:                        execution.TradeEnd - execution.TradeStart + 1,
 		HTF:                         htf,
 		sourceEntryReportProvenance: reportSourceEntryProvenance(request.Config, route),
 		Costs:                       rows,
@@ -103,7 +116,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 		Strategy:         request.StrategyID,
 		GeneratedAt:      generatedAt.UTC().Format(time.RFC3339Nano),
 		Range:            route.Range,
-		Bars:             route.Series.Len(),
+		Bars:             execution.TradeEnd - execution.TradeStart + 1,
 		PrimaryCost:      primary,
 		Slices:           []Slice{slice},
 		Costs:            rows,
@@ -128,7 +141,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	document.Headline = &headline
 	groupings := groupTrades(trades)
 	document.Groupings = &groupings
-	bounds := dateBounds(route.Series)
+	bounds := dateBounds(marketdata.Series{T: route.Series.T[execution.TradeStart : execution.TradeEnd+1]})
 	document.DateBounds = &bounds
 	if request.HoldoutFromT != nil {
 		holdout, err := splitHoldout(trades, *request.HoldoutFromT)
