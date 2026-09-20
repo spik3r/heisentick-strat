@@ -70,7 +70,9 @@ function prepareArtifacts(directory) {
   const goRoot = command('go', ['env', 'GOROOT']).trim();
   // A native build must be used for expected results. The browser JSON bridge
   // is deliberately not its own oracle.
-  const wasmBuild = spawnSync('go', ['build', '-trimpath', '-o', wasmPath, './cmd/enginewasm'], {
+  // The artifact is evidence, not a release. Exclude VCS stamping so its hash
+  // is stable when only the harness or recorded evidence changes.
+  const wasmBuild = spawnSync('go', ['build', '-trimpath', '-buildvcs=false', '-o', wasmPath, './cmd/enginewasm'], {
     cwd: repoRoot,
     encoding: 'utf8',
     env: { ...process.env, GOOS: 'js', GOARCH: 'wasm' },

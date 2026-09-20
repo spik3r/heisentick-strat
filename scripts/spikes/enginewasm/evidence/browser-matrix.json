@@ -2,14 +2,14 @@
   "schema": "enginewasm-browser-matrix-v1",
   "source": {
     "repository": "spik3r/heisentick-strat",
-    "engineCommit": "2632bbdff6803ed8395cd2d78d866a10e7c95282",
+    "engineCommit": "2a1795a1da8ccaef8dcbcbb403371618c0f39d46",
     "harnessPath": "scripts/spikes/enginewasm/browser-matrix.mjs",
-    "harnessSha256": "4e6c37d45e4322f821f78f6eb9f32c7887f21b727143ad5a19284a53015fc9b6",
+    "harnessSha256": "eecc485b0d8dfb73d5998d2764666e84a9f01463dd5f1a77b89392e64e034918",
     "goVersion": "go version go1.27.0 darwin/arm64",
     "playwrightVersion": "1.57.0"
   },
   "artifact": {
-    "sha256": "010e06821f01eea670480c3106e7e2fe912351ac00289d8a929d8791a7c9149c",
+    "sha256": "0a4a2b398d9c95e7a2508aebeefdf96c9232524321f2c5a5b483fdd27fd9bfb2",
     "wasmExecSha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14"
   },
   "fixtures": [
@@ -79,14 +79,14 @@
           "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 128.69999998807907,
+            "wallMs": 117.90000003576279,
             "tradeCount": 65
           },
           "columnar": {
             "status": "verified",
             "completeTradeEquality": true,
             "tradeCount": 65,
-            "wallMs": 62.60000002384186,
+            "wallMs": 58.19999998807907,
             "malformed": {
               "mismatchedLengthRejected": true,
               "nonFloat64Rejected": true,
@@ -94,11 +94,11 @@
               "invalidSourceRejected": true
             },
             "timings": {
-              "engineMs": 58.5,
-              "packMs": 1.299,
-              "copyOutMs": 0.30000001192092896,
-              "copyInMs": 0.40000003576278687,
-              "adapterMs": 1.299
+              "copyInMs": 0.5,
+              "adapterMs": 1.3,
+              "engineMs": 54.8,
+              "packMs": 0.8,
+              "copyOutMs": 0
             }
           }
         },
@@ -106,7 +106,7 @@
           "case": "deployed-dsl-flag-continuation-one-four-hour-review",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 22.80000001192093,
+            "wallMs": 19.5,
             "tradeCount": 17
           },
           "columnar": {
@@ -119,7 +119,7 @@
           "case": "deployed-dsl-session-expansion-ny",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 30.900000035762787,
+            "wallMs": 30.299999952316284,
             "tradeCount": 6
           },
           "columnar": {
@@ -132,7 +132,7 @@
           "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 23.399999976158142,
+            "wallMs": 24.399999976158142,
             "tradeCount": 16
           },
           "columnar": {
@@ -152,14 +152,14 @@
           "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 693,
+            "wallMs": 578,
             "tradeCount": 65
           },
           "columnar": {
             "status": "verified",
             "completeTradeEquality": true,
             "tradeCount": 65,
-            "wallMs": 524,
+            "wallMs": 521,
             "malformed": {
               "mismatchedLengthRejected": true,
               "nonFloat64Rejected": true,
@@ -167,11 +167,11 @@
               "invalidSourceRejected": true
             },
             "timings": {
-              "packMs": 3,
-              "copyOutMs": 0,
-              "copyInMs": 0,
-              "adapterMs": 3,
-              "engineMs": 516.999
+              "copyInMs": 1,
+              "adapterMs": 2.999,
+              "engineMs": 511,
+              "packMs": 4,
+              "copyOutMs": 0
             }
           }
         },
@@ -179,7 +179,7 @@
           "case": "deployed-dsl-flag-continuation-one-four-hour-review",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 121,
+            "wallMs": 135,
             "tradeCount": 17
           },
           "columnar": {
@@ -192,7 +192,7 @@
           "case": "deployed-dsl-session-expansion-ny",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 268,
+            "wallMs": 281,
             "tradeCount": 6
           },
           "columnar": {
@@ -205,7 +205,7 @@
           "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 199,
+            "wallMs": 229,
             "tradeCount": 16
           },
           "columnar": {
@@ -225,14 +225,14 @@
           "case": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 147,
+            "wallMs": 154,
             "tradeCount": 65
           },
           "columnar": {
             "status": "verified",
             "completeTradeEquality": true,
             "tradeCount": 65,
-            "wallMs": 57,
+            "wallMs": 67,
             "malformed": {
               "mismatchedLengthRejected": true,
               "nonFloat64Rejected": true,
@@ -240,11 +240,11 @@
               "invalidSourceRejected": true
             },
             "timings": {
-              "packMs": 0.999,
-              "copyOutMs": 1,
               "copyInMs": 1,
               "adapterMs": 0.999,
-              "engineMs": 53
+              "engineMs": 63,
+              "packMs": 0.999,
+              "copyOutMs": 0
             }
           }
         },
@@ -252,7 +252,7 @@
           "case": "deployed-dsl-flag-continuation-one-four-hour-review",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 21,
+            "wallMs": 33,
             "tradeCount": 17
           },
           "columnar": {
@@ -265,7 +265,7 @@
           "case": "deployed-dsl-session-expansion-ny",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 30.999999999999943,
+            "wallMs": 50.99999999999994,
             "tradeCount": 6
           },
           "columnar": {
@@ -278,7 +278,7 @@
           "case": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
           "jsonBridge": {
             "completeNativeEquality": true,
-            "wallMs": 23.000000000000057,
+            "wallMs": 27.999999999999943,
             "tradeCount": 16
           },
           "columnar": {
