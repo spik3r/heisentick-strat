@@ -3,6 +3,15 @@
 This file is the single source of truth for AI-agent instructions in this
 repository. `claude.md` and `codex.md` point here.
 
+## Central backlog
+
+Use [heisentick-backlog](https://github.com/spik3r/heisentick-backlog) as the source of truth for planned work.
+Read its `AGENTS.md`, find or create the relevant task, and claim ownership
+in that task before non-trivial parallel work. Keep task state and acceptance
+criteria there; link implementation PRs back to it. Do not create a second
+local backlog or claims ledger. Keep code-specific instructions and runbooks
+in this repository.
+
 ## What this repo is
 
 `heisentick-strat` owns the Strat language and its Go engine: spec, docs,

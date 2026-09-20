@@ -9,6 +9,12 @@ Extracted from `spik3r/heisentick` at commit `4db7c3aa` (2026-09-19,
 ticket T-B2 of the one-engine migration). `docs/extraction-plan.md` records
 how, and the app-side removal PR.
 
+## Planning
+
+Plans, task ownership, dependencies and completion criteria live in the
+[central Heisentick backlog](https://github.com/spik3r/heisentick-backlog). Link implementation PRs to the
+corresponding task there. This repository keeps its code, tests and runbooks.
+
 ## What this repo is
 
 - `spec/`: the language specification (`dsl-spec.md`, one page per setup
