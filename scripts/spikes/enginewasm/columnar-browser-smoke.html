@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><title>Columnar bridge smoke</title><pre id="result">Running browser WASM bridge check…</pre><script src="wasm_exec.js"></script><script type="module">
+const result=document.querySelector('#result');
+try {
+  const go=new Go(); const {instance}=await WebAssembly.instantiateStreaming(fetch('engine.wasm'),go.importObject); void go.run(instance);
+  const fixture=await (await fetch('fixture.json')).json(); const source=await (await fetch('strategy.strat')).text();
+  const columns=Array.from({length:6},(_,i)=>new Float64Array(fixture.bars.map(bar=>bar[i])));
+  const meta={schema:'enginewasm-columnar-v1',case:fixture.case,symbol:fixture.symbol,timeframe:fixture.timeframe,rangeMethod:fixture.rangeMethod,costs:fixture.costs};
+  const output=engineRunColumns(JSON.stringify(meta),source,...columns); if(!output.ok) throw Error(output.error);
+  const native=JSON.parse(engineRunFixture(JSON.stringify(fixture),source)); if(native.error) throw Error(native.error);
+  const text=JSON.parse(output.stringsJSON); if(!text.length) throw Error('Expected nonempty trades');
+  const fields=['entry','entryIndex','entryT','exit','exitIndex','exitT','initialSl','initialTp','pnl','points','size','sl','tp'];
+  const trades=text.map((stringFields,index)=>{const trade={}; for(let i=0;i<13;i++) trade[fields[i]]=output.trades[index*13+i]; for(const key of ['side','reason','tag','meta']) trade[key]=stringFields[key]; if(stringFields.noStop) trade.sl=trade.initialSl=null; if(stringFields.noTarget) trade.tp=trade.initialTp=null; if(stringFields.partial) trade.partial=true; return trade;});
+  const stable=value=>JSON.stringify(value,(_,item)=>item&&typeof item==='object'&&!Array.isArray(item)?Object.fromEntries(Object.entries(item).sort(([a],[b])=>a.localeCompare(b))):item);
+  if(stable(trades)!==stable(native.trades)) throw Error('Columnar trade reconstruction differs from JSON bridge');
+  const bad=engineRunColumns(JSON.stringify(meta),source,...columns.map((column,index)=>index===2?column.subarray(1):column)); if(bad.ok) throw Error('Mismatched column accepted');
+  result.textContent=JSON.stringify({status:'PASS',case:fixture.case,trades:trades.length,exactTradeEquality:true,mismatchedLengthRejected:true},null,2);
+} catch(error) { result.textContent='FAIL: '+error.stack; }
+</script>
