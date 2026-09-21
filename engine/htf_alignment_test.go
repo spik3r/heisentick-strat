@@ -1,18 +1,19 @@
 package engine
 
 import (
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/spik3r/heisentick-strat/marketdata"
+	"github.com/spik3r/heisentick-strat/testsupport"
 )
 
 const htfHour = float64(60 * 60 * 1000)
 const htfQuarter = float64(15 * 60 * 1000)
 
 // buildHTFBars returns 1h HTF bars whose close is flat at 100 except an upward
-// jump on the bar opening at 24h and a downward drop on the bar opening at 25h.
-// With biasBars=24 this makes the 24h bar read `up` and the 25h bar read `down`,
-// so a projection can be identified by its directional outcome. When dropIndex
+// candle opening at 24h and a downward candle opening at 25h. When dropIndex
 // is >= 0 that HTF bar is omitted, leaving a source gap at its boundary.
 func buildHTFBars(dropIndex int) []marketdata.Bar {
 	bars := make([]marketdata.Bar, 0, 26)
@@ -20,14 +21,16 @@ func buildHTFBars(dropIndex int) []marketdata.Bar {
 		if i == dropIndex {
 			continue
 		}
-		c := 100.0
+		o, c := 100.0, 100.0
 		if i == 24 {
+			o = 100
 			c = 200
 		}
 		if i == 25 {
+			o = 200
 			c = 0
 		}
-		bars = append(bars, marketdata.Bar{T: float64(i) * htfHour, O: c, H: c + 1, L: c - 1, C: c, V: 1})
+		bars = append(bars, marketdata.Bar{T: float64(i) * htfHour, O: o, H: max(o, c) + 1, L: min(o, c) - 1, C: c, V: 1})
 	}
 	return bars
 }
@@ -67,9 +70,56 @@ func TestRunnerHTFProjectionIsCausalCompletedBar(t *testing.T) {
 	if got := at(25, 45); got != trendDown {
 		t.Fatalf("25:45 primary = %d, want trendDown (just-closed 25h HTF bar)", got)
 	}
-	// Before the 24h bar closes there is no completed directional bar.
-	if got := at(24, 30); got != htfUnavailable {
-		t.Fatalf("24:30 primary = %d, want htfUnavailable (no completed 24h bar yet)", got)
+	// The 23h candle is already complete at this point, so its flat direction
+	// is available even though the 24h candle is still forming.
+	if got := at(24, 30); got != trendFlat {
+		t.Fatalf("24:30 primary = %d, want trendFlat (last completed candle is flat)", got)
+	}
+}
+
+func TestRunnerHTFDirectionUsesLastCompletedCandle(t *testing.T) {
+	htf := marketdata.SeriesFromBars([]marketdata.Bar{
+		{T: 0, O: 100, H: 105, L: 99, C: 101, V: 1},
+		{T: htfHour, O: 101, H: 102, L: 98, C: 100, V: 1},
+		{T: 2 * htfHour, O: 100, H: 101, L: 99, C: 100, V: 1},
+	})
+	primary := contiguousPrimary(0, 3.25)
+	trend := computeHTFTrend(primary, htf)
+
+	if got := trend[3]; got != trendUp { // 00:45 closes at 01:00
+		t.Fatalf("first completed HTF candle = %d, want trendUp", got)
+	}
+	if got := trend[4]; got != trendUp { // 01:00 is inside the down candle
+		t.Fatalf("forming HTF candle = %d, want prior trendUp", got)
+	}
+	if got := trend[7]; got != trendDown { // 01:45 closes at 02:00
+		t.Fatalf("second completed HTF candle = %d, want trendDown", got)
+	}
+	if got := trend[11]; got != trendFlat { // 02:45 closes at 03:00
+		t.Fatalf("flat completed HTF candle = %d, want trendFlat", got)
+	}
+}
+
+func TestRunnerHTFUnclosedBarFixtureKeepsCausalTradeBoundary(t *testing.T) {
+	dir := filepath.Join(testsupport.StratConformanceRoot(), "semantic", "pm-htf-unclosed-bar-no-lookahead")
+	fixture, err := LoadRunFixture(filepath.Join(dir, "fixture.json"))
+	if err != nil {
+		t.Fatalf("load fixture: %v", err)
+	}
+	source, err := os.ReadFile(filepath.Join(dir, "strategy.strat"))
+	if err != nil {
+		t.Fatalf("read strategy: %v", err)
+	}
+	result, err := RunFixtureCase(fixture, string(source))
+	if err != nil {
+		t.Fatalf("run fixture: %v", err)
+	}
+	if len(result.Trades) != 1 {
+		t.Fatalf("trades = %d, want 1: %+v", len(result.Trades), result.Trades)
+	}
+	trade := result.Trades[0]
+	if trade.EntryIndex != 42 || trade.ExitIndex != 45 || trade.Reason != "tp" {
+		t.Fatalf("trade boundary = %d -> %d (%s), want 42 -> 45 (tp)", trade.EntryIndex, trade.ExitIndex, trade.Reason)
 	}
 }
 

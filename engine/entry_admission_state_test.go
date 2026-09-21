@@ -30,7 +30,7 @@ func TestRejectedAdmissionRecordsFamilyCooldownAttempt(t *testing.T) {
 			lastState: func(b *broker) (bool, int) {
 				return b.hasORBEntry, b.orbLastEntry
 			},
-			wantLast: 1681,
+			wantLast: 1753,
 		},
 		{
 			name:     "inside day expansion",
@@ -74,8 +74,8 @@ func TestRejectedAdmissionRecordsFamilyCooldownAttempt(t *testing.T) {
 func TestFlagRejectedMarketGateRecordsCooldownAttempt(t *testing.T) {
 	fixture, cfg := loadEntryAttemptCase(t, "deployed-dsl-flag-continuation-one-four-hour-review")
 	baseline := newPreparedRunner(fixture, cfg)
-	if trades := baseline.RunPrepared(); len(trades) != 17 {
-		t.Fatalf("baseline flag trades = %d, want 17", len(trades))
+	if trades := baseline.RunPrepared(); len(trades) != 18 {
+		t.Fatalf("baseline flag trades = %d, want 18", len(trades))
 	}
 
 	// Flag setup detection requires ER >= 0.5 in this fixture. A negative
@@ -185,6 +185,7 @@ func loadEntryAttemptCase(t *testing.T, caseName string) (RunFixture, dsl.Config
 	if err != nil {
 		t.Fatalf("load fixture: %v", err)
 	}
+	fixture = flatHTFForUnrelatedTest(fixture)
 	source, err := os.ReadFile(filepath.Join(runDir, caseName+".strat"))
 	if err != nil {
 		t.Fatalf("read DSL: %v", err)

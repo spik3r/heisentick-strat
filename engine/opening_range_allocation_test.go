@@ -31,8 +31,8 @@ func TestOpeningRangeMinuteModeIgnoresInactiveCandleCountAcrossRunPaths(t *testi
 	if err != nil {
 		t.Fatalf("run reviewed fixture: %v", err)
 	}
-	if reviewed.TradeCount != 12 || len(reviewed.Trades) != 12 {
-		t.Fatalf("reviewed fixture trades = %d/%d, want 12/12", reviewed.TradeCount, len(reviewed.Trades))
+	if reviewed.TradeCount != 21 || len(reviewed.Trades) != 21 {
+		t.Fatalf("reviewed fixture trades = %d/%d, want 21/21", reviewed.TradeCount, len(reviewed.Trades))
 	}
 
 	minuteConfig := cloneTestConfig(t, reviewedConfig)

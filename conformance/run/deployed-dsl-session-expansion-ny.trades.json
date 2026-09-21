@@ -12,34 +12,8 @@
   "strategyId": "dslSessionExpansionNY",
   "symbol": "XAUUSD",
   "timeframe": "15m",
-  "tradeCount": 6,
+  "tradeCount": 5,
   "trades": [
-    {
-      "entry": 1901.225,
-      "entryIndex": 126,
-      "entryT": 1603200600000,
-      "exit": 1898.17781785714,
-      "exitIndex": 128,
-      "exitT": 1603202400000,
-      "initialSl": 1904.03907142857,
-      "initialTp": 1898.11781785714,
-      "meta": {
-        "gradeRequired": 0,
-        "gradeScore": 0,
-        "levelKey": "LL",
-        "levelPrice": 1902.715,
-        "setup": "sessionBreakHold",
-        "side": "short"
-      },
-      "pnl": 216.567505139999,
-      "points": 3.04718214285708,
-      "reason": "tp",
-      "side": "short",
-      "size": 71.0714013757451,
-      "sl": 1904.03907142857,
-      "tag": "DSL-SBH:LL",
-      "tp": 1898.11781785714
-    },
     {
       "entry": 1879.278,
       "entryIndex": 857,

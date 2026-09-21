@@ -21,7 +21,7 @@ func TestDayOpenLevelPriorityPresenceAcrossCheckedExecutionPaths(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run reviewed baseline: %v", err)
 	}
-	assertDayOpenPriorityTrades(t, baseline, []int{300, 2483})
+	assertDayOpenPriorityTrades(t, baseline, []int{300, 483, 2483})
 	shared, err := PrepareSharedRunContext(baselineRequest)
 	if err != nil {
 		t.Fatalf("prepare reviewed shared context: %v", err)
@@ -38,10 +38,10 @@ func TestDayOpenLevelPriorityPresenceAcrossCheckedExecutionPaths(t *testing.T) {
 		want         []int
 		wantBaseline bool
 	}{
-		{name: "missing defaults", want: []int{300, 2483}, wantBaseline: true},
-		{name: "full list", present: true, priority: []any{"PDH", "PDL", "WH", "WL"}, want: []int{300, 2483}, wantBaseline: true},
-		{name: "PDH only", present: true, priority: []any{"PDH"}, want: []int{300, 2483}, wantBaseline: true},
-		{name: "mixed retains exact PDH", present: true, priority: []any{1, "PDH", namedString("PDL"), true}, want: []int{300, 2483}, wantBaseline: true},
+		{name: "missing defaults", want: []int{300, 483, 2483}, wantBaseline: true},
+		{name: "full list", present: true, priority: []any{"PDH", "PDL", "WH", "WL"}, want: []int{300, 483, 2483}, wantBaseline: true},
+		{name: "PDH only", present: true, priority: []any{"PDH"}, want: []int{300, 483, 2483}, wantBaseline: true},
+		{name: "mixed retains exact PDH", present: true, priority: []any{1, "PDH", namedString("PDL"), true}, want: []int{300, 483, 2483}, wantBaseline: true},
 		{name: "explicit empty", present: true, priority: []any{}, want: []int{}},
 		{name: "nonexplicit empty", present: true, priority: []any{}, setExplicit: true, explicit: false, want: []int{}},
 		{name: "nil", present: true, priority: nil, want: []int{}},

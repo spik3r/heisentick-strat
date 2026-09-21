@@ -90,13 +90,10 @@ only from a decision strictly later than T0 + 41h still admits bar 42.
 
 ## Spec gaps and assumptions
 
-- SPEC GAP: "direction" of a completed HTF candle is not defined (single
-  candle close vs open? close vs a prior close? a multi-candle bias with a
-  threshold?). The fixture makes #8 bearish and #9 bullish under all
-  single-candle and two-candle readings. A reading that needs a long HTF
-  history (for example a 24-candle bias) fails closed on this 12-candle
-  series and reports no trade; that reading must be written into the spec
-  before this case can be marked derived.
-- SPEC GAP: the exact availability instant of a completed HTF candle
-  (decision close ≥ HTF close vs strictly after). The admitted signal is two
-  hours clear of the boundary so both readings agree.
+- D19 direction rule: a completed HTF candle is up when close > open, down when
+  close < open, and flat when close == open. The first completed candle is
+  available; direction has no multi-candle warm-up. Indicator warm-up is a
+  separate concern.
+- Availability rule: a primary decision close at or after the HTF close may
+  use that completed candle. The boundary is covered by the engine alignment
+  test; the forming candle is never consulted.

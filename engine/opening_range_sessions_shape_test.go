@@ -22,16 +22,16 @@ func TestOpeningRangeSessionsRawOverrideAcrossCheckedExecutionPaths(t *testing.T
 	if err != nil {
 		t.Fatalf("run reviewed baseline: %v", err)
 	}
-	baselineEntries := []int{35, 223, 294, 844, 1053, 1123, 1146, 1237, 1324, 1421, 1479, 1681}
-	baselineSessions := []string{"ny", "ny", "london", "london", "ny", "london", "ny", "ny", "ny", "ny", "london", "ny"}
+	baselineEntries := []int{35, 223, 294, 315, 383, 404, 844, 863, 937, 1031, 1053, 1123, 1142, 1231, 1305, 1324, 1421, 1479, 1589, 1681, 1753}
+	baselineSessions := []string{"ny", "ny", "london", "ny", "london", "ny", "london", "ny", "london", "london", "ny", "london", "ny", "ny", "london", "ny", "ny", "london", "ny", "ny", "london"}
 	assertOpeningRangeSessionTrades(t, baseline, baselineEntries, baselineSessions)
 	shared, err := PrepareSharedRunContext(baselineRequest)
 	if err != nil {
 		t.Fatalf("prepare reviewed shared context: %v", err)
 	}
 
-	nyEntries := []int{35, 223, 1053, 1146, 1237, 1324, 1421, 1681}
-	londonEntries := []int{294, 844, 1123, 1479}
+	nyEntries := []int{35, 223, 315, 404, 863, 1053, 1142, 1231, 1324, 1421, 1589, 1681}
+	londonEntries := []int{294, 383, 844, 937, 1031, 1123, 1305, 1479, 1753}
 	tests := []struct {
 		name         string
 		reviewed     bool
