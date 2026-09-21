@@ -53,7 +53,8 @@ type order struct {
 
 type pendingExit struct {
 	PositionEntryIndex, Index int
-	Reason                    string
+	// Rule is the strategy-rule identity; the close reports reason "rule".
+	Rule string
 }
 
 type broker struct {
@@ -281,7 +282,7 @@ func (b *broker) run() []Trade {
 		}
 	}
 	if n > 0 && end >= 0 && b.hasPosition {
-		b.closePosition(b.series.C[end], end, "eod")
+		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
 }
@@ -325,7 +326,7 @@ func (b *broker) runScheduled(entries []ScheduledEntry, orders []order) []Trade 
 		}
 	}
 	if end >= 0 && b.hasPosition {
-		b.closePosition(b.series.C[end], end, "eod")
+		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
 }
@@ -520,7 +521,10 @@ func (b *broker) openPosition(s side, fillPrice float64, ord order, index int) {
 	b.realized -= b.costs.FeePerUnit * size
 }
 
-func (b *broker) closePosition(exitPrice float64, index int, reason string) {
+// closePosition records one closed trade. reason is the D-20 reason
+// category; rule carries the strategy-rule identity and must be non-empty
+// only for reason "rule".
+func (b *broker) closePosition(exitPrice float64, index int, reason, rule string) {
 	pos := b.position
 	sign := float64(pos.Side)
 	px := exitPrice - sign*b.slippageAt(exitPrice)
@@ -544,6 +548,7 @@ func (b *broker) closePosition(exitPrice float64, index int, reason string) {
 		Points:     points,
 		PnL:        pnl,
 		Reason:     reason,
+		Rule:       rule,
 		Tag:        pos.Tag,
 		NoTarget:   pos.NoTarget,
 		NoStop:     pos.NoStop,

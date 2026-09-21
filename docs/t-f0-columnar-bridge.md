@@ -12,9 +12,9 @@ The final local WASM artifact SHA-256 is
 `engineRunColumns(metaJSON, source, t, o, h, l, c, v)` accepts six equal-size
 `Float64Array` columns. Each input is copied once into a Go-owned
 `[]float64`; the native byte view is used only for the WASM copy. Output has a
-fixed 13-float record per trade plus JSON carrying side, reason, tag, metadata
-and nullable stop/target state, so it can reconstruct the complete native
-trade record.
+fixed 13-float record per trade plus JSON carrying side, reason, optional rule
+identity, tag, metadata and nullable stop/target state, so it can reconstruct
+the complete native trade record.
 
 The interface rejects source-timeframe, higher-timeframe, and precomputed
 context inputs. It is therefore a single chart-series measurement, not an
@@ -58,7 +58,7 @@ a D-11 performance pass.
 
 One IAB Chrome 153/macOS browser smoke served the final WASM artifact and the
 existing `pm-signal-close-entry` semantic fixture. It reconstructed all 13
-numeric fields plus side, reason, tag, and metadata and matched the JSON
+numeric fields plus side, reason, rule identity, tag, and metadata and matched the JSON
 fixture bridge exactly for its one nonempty trade; a mismatched input column
 was rejected. [The harness](../scripts/spikes/enginewasm/columnar-browser-smoke.html)
 expects `engine.wasm`, `wasm_exec.js`, `fixture.json`, and `strategy.strat` in

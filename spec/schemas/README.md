@@ -5,6 +5,10 @@ under `strat/conformance/`. They are conformance records for parser and run
 parity, not generic runtime API schemas and not a replacement for the
 implementation-owned parser config types.
 
+Trade records may carry the optional `rule` field when `reason` is `rule`.
+It preserves the specific strategy close identity while `reason` remains the
+stable category used by report consumers.
+
 The schemas intentionally leave `cfg`, `contextOptions`, and setup-specific
 trade `meta` as opaque objects. Add a field only when the current JS and Go
 outputs already expose it at this boundary. A contract change needs a new

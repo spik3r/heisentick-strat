@@ -15,7 +15,7 @@ func TestMaxHoldCandlesPreservesFractionalJSThreshold(t *testing.T) {
 		wantExitIndex int
 		wantReason    string
 	}{
-		{name: "zero remains disabled", maxHold: 0, wantExitIndex: 2, wantReason: "eod"},
+		{name: "zero remains disabled", maxHold: 0, wantExitIndex: 2, wantReason: ReasonEndOfTest},
 		{name: "fraction below one exits after one elapsed bar", maxHold: 0.4, wantExitIndex: 1, wantReason: "time"},
 		{name: "one keeps integer behavior", maxHold: 1, wantExitIndex: 1, wantReason: "time"},
 		{name: "fraction above one exits after two elapsed bars", maxHold: 1.4, wantExitIndex: 2, wantReason: "time"},

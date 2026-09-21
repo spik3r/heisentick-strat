@@ -149,7 +149,7 @@ func TestApplyPartialManagementSkipsZeroSizedPositionBeforeEndOfDataClose(t *tes
 		t.Fatalf("zero-sized final-bar trades = %+v, want one ordinary end-of-data close", trades)
 	}
 	trade := trades[0]
-	if trade.Partial || trade.Reason != "eod" || trade.Size != 0 || trade.PnL != 0 {
+	if trade.Partial || trade.Reason != ReasonEndOfTest || trade.Size != 0 || trade.PnL != 0 {
 		t.Fatalf("zero-sized final trade = %+v, want unmarked zero-sized eod close", trade)
 	}
 	if b.hasPosition || b.position.Size != 0 || b.position.PartialTaken {
@@ -210,7 +210,7 @@ func TestApplyPartialManagementMarksNegativeSizedPositionWithoutReducingIt(t *te
 				trade := trades[0]
 				wantPoints := (104.9 - 100.1)
 				wantPnL := wantPoints*-10 - 0.2*-10
-				if trade.Partial || trade.Reason != "eod" || trade.Side != "long" || trade.Size != -10 ||
+				if trade.Partial || trade.Reason != ReasonEndOfTest || trade.Side != "long" || trade.Size != -10 ||
 					math.Abs(trade.Entry-100.1) > 1e-12 || math.Abs(trade.Exit-104.9) > 1e-12 ||
 					math.Abs(trade.Points-wantPoints) > 1e-12 || math.Abs(trade.PnL-wantPnL) > 1e-12 ||
 					trade.EntryIndex != 0 || trade.ExitIndex != 1 || trade.EntryT != 1000 || trade.ExitT != 2000 ||

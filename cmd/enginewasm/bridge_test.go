@@ -119,7 +119,7 @@ func TestColumnRunRejectsUnsupportedInputs(t *testing.T) {
 }
 
 func TestColumnTradeTransportRetainsNonemptyTradeFields(t *testing.T) {
-	want := native.Trade{Entry: 1, EntryIndex: 2, EntryT: 3, Exit: 4, ExitIndex: 5, ExitT: 6, InitialSL: 7, InitialTP: 8, PnL: 9, Points: 10, Size: 11, SL: 12, TP: 13, Side: "long", Reason: "target", Tag: "A", Meta: native.TradeMeta{"window": "london"}, Partial: true, NoStop: true}
+	want := native.Trade{Entry: 1, EntryIndex: 2, EntryT: 3, Exit: 4, ExitIndex: 5, ExitT: 6, InitialSL: 7, InitialTP: 8, PnL: 9, Points: 10, Size: 11, SL: 12, TP: 13, Side: "long", Reason: native.ReasonRule, Rule: "sma-bearish-cross", Tag: "A", Meta: native.TradeMeta{"window": "london"}, Partial: true, NoStop: true}
 	result := native.RunResult{Trades: []native.Trade{want}}
 	values, stringsJSON, _, err := packColumnResult(result)
 	if err != nil {
@@ -132,7 +132,7 @@ func TestColumnTradeTransportRetainsNonemptyTradeFields(t *testing.T) {
 	if err := json.Unmarshal([]byte(stringsJSON), &text); err != nil {
 		t.Fatal(err)
 	}
-	if len(text) != 1 || text[0].Side != "long" || text[0].Reason != "target" || text[0].Tag != "A" || text[0].Meta["window"] != "london" || !text[0].Partial || !text[0].NoStop {
+	if len(text) != 1 || text[0].Side != "long" || text[0].Reason != native.ReasonRule || text[0].Rule != "sma-bearish-cross" || text[0].Tag != "A" || text[0].Meta["window"] != "london" || !text[0].Partial || !text[0].NoStop {
 		t.Fatalf("typed trade text lost fields: %#v", text)
 	}
 	got := reconstructColumnTrade(values, text[0])
@@ -142,7 +142,7 @@ func TestColumnTradeTransportRetainsNonemptyTradeFields(t *testing.T) {
 }
 
 func reconstructColumnTrade(values []float64, text columnTradeText) native.Trade {
-	return native.Trade{Entry: values[0], EntryIndex: int(values[1]), EntryT: values[2], Exit: values[3], ExitIndex: int(values[4]), ExitT: values[5], InitialSL: values[6], InitialTP: values[7], PnL: values[8], Points: values[9], Size: values[10], SL: values[11], TP: values[12], Side: text.Side, Reason: text.Reason, Tag: text.Tag, Meta: text.Meta, Partial: text.Partial, NoStop: text.NoStop, NoTarget: text.NoTarget}
+	return native.Trade{Entry: values[0], EntryIndex: int(values[1]), EntryT: values[2], Exit: values[3], ExitIndex: int(values[4]), ExitT: values[5], InitialSL: values[6], InitialTP: values[7], PnL: values[8], Points: values[9], Size: values[10], SL: values[11], TP: values[12], Side: text.Side, Reason: text.Reason, Rule: text.Rule, Tag: text.Tag, Meta: text.Meta, Partial: text.Partial, NoStop: text.NoStop, NoTarget: text.NoTarget}
 }
 
 func barsToColumns(bars []marketdata.Bar) [6][]float64 {

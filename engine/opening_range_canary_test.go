@@ -162,8 +162,8 @@ func TestOpeningRangeCanaryBoundaryClosePrecedesBracket(t *testing.T) {
 		t.Fatalf("trades = %+v, want one boundary close", b.trades)
 	}
 	got := b.trades[0]
-	if got.Reason != "window-close" || got.Exit != 100 || got.ExitT != 180*60_000 {
-		t.Fatalf("trade = %+v, want boundary/open close before target", got)
+	if got.Reason != ReasonRule || got.Rule != "window-close" || got.Exit != 100 || got.ExitT != 180*60_000 {
+		t.Fatalf("trade = %+v, want rule/window-close boundary/open close before target", got)
 	}
 }
 

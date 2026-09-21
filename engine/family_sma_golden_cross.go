@@ -93,7 +93,7 @@ func (b *broker) onSMAGoldenCrossBar(i int) {
 			b.pendingExits = append(b.pendingExits, pendingExit{
 				PositionEntryIndex: b.position.EntryIndex,
 				Index:              i + 1,
-				Reason:             "sma-bearish-cross",
+				Rule:               "sma-bearish-cross",
 			})
 		}
 		return

@@ -60,11 +60,11 @@ func (b *broker) runIntraHourRunExhaustion() []Trade {
 		if b.hasPosition && i > b.position.EntryIndex {
 			pos := b.position
 			if (pos.Side == sideLong && b.series.L[i] <= pos.SL) || (pos.Side == sideShort && b.series.H[i] >= pos.SL) {
-				b.closePosition(pos.SL, i, "sl")
+				b.closePosition(pos.SL, i, "sl", "")
 			} else if (!pos.NoTarget && pos.Side == sideLong && b.series.H[i] >= pos.TP) || (!pos.NoTarget && pos.Side == sideShort && b.series.L[i] <= pos.TP) {
-				b.closePosition(pos.TP, i, "tp")
+				b.closePosition(pos.TP, i, "tp", "")
 			} else if i-pos.EntryIndex >= maxHold {
-				b.closePosition(b.series.C[i], i, "time")
+				b.closePosition(b.series.C[i], i, "time", "")
 			}
 		}
 		if b.hasPosition || atrs[i] == 0 {
@@ -161,7 +161,7 @@ func (b *broker) runIntraHourRunExhaustion() []Trade {
 		}, i)
 	}
 	if b.hasPosition && end >= 0 {
-		b.closePosition(b.series.C[end], end, "eod")
+		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
 }

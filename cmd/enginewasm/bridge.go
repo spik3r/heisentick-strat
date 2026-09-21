@@ -73,6 +73,7 @@ type columnTimings struct {
 type columnTradeText struct {
 	Side     string           `json:"side"`
 	Reason   string           `json:"reason"`
+	Rule     string           `json:"rule,omitempty"`
 	Tag      string           `json:"tag"`
 	Meta     native.TradeMeta `json:"meta"`
 	Partial  bool             `json:"partial"`
@@ -149,7 +150,7 @@ func packColumnResult(result native.RunResult) ([]float64, string, string, error
 	text := make([]columnTradeText, 0, len(result.Trades))
 	for _, trade := range result.Trades {
 		values = append(values, trade.Entry, float64(trade.EntryIndex), trade.EntryT, trade.Exit, float64(trade.ExitIndex), trade.ExitT, trade.InitialSL, trade.InitialTP, trade.PnL, trade.Points, trade.Size, trade.SL, trade.TP)
-		text = append(text, columnTradeText{Side: trade.Side, Reason: trade.Reason, Tag: trade.Tag, Meta: trade.Meta, Partial: trade.Partial, NoStop: trade.NoStop, NoTarget: trade.NoTarget})
+		text = append(text, columnTradeText{Side: trade.Side, Reason: trade.Reason, Rule: trade.Rule, Tag: trade.Tag, Meta: trade.Meta, Partial: trade.Partial, NoStop: trade.NoStop, NoTarget: trade.NoTarget})
 	}
 	stringsJSON, err := json.Marshal(text)
 	if err != nil {

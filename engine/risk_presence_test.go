@@ -72,7 +72,7 @@ func TestOpenPositionSizePresenceFlowsThroughEndOfDataCosts(t *testing.T) {
 			trade := trades[0]
 			wantPnL := 3.8 * tt.wantSize
 			wantRealized := 3.6 * tt.wantSize
-			if trade.Reason != "eod" || trade.Partial || trade.Size != tt.wantSize ||
+			if trade.Reason != ReasonEndOfTest || trade.Partial || trade.Size != tt.wantSize ||
 				trade.Entry != 100.5 || trade.Exit != 104.5 || trade.Points != 4 ||
 				math.Abs(trade.PnL-wantPnL) > 1e-12 {
 				t.Fatalf("end-of-data trade = %+v, want size=%v entry=100.5 exit=104.5 points=4 pnl=%v", trade, tt.wantSize, wantPnL)

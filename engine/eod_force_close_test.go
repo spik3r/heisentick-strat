@@ -62,7 +62,7 @@ func TestRunForceClosesOpenPositionAtEndOfData(t *testing.T) {
 		},
 		PnL:    28.1248038169273,
 		Points: 0.799999999999727,
-		Reason: "eod",
+		Reason: ReasonEndOfTest,
 		Side:   "long",
 		Size:   35.1560047711711,
 		SL:     2646.89053571429,
@@ -126,7 +126,7 @@ func TestRunFinalBarPendingFillAppliesPartialBeforeEndOfDataClose(t *testing.T) 
 	if !partial.Partial || partial.Reason != "partial" || partial.Size != 5 || partial.Exit != 105 || partial.ExitIndex != 0 || partial.ExitT != 1000 {
 		t.Fatalf("partial trade = %+v, want size-5 final-bar partial", partial)
 	}
-	if eod.Partial || eod.Reason != "eod" || eod.Size != 5 || eod.Exit != 105 || eod.ExitIndex != 0 || eod.ExitT != 1000 {
+	if eod.Partial || eod.Reason != ReasonEndOfTest || eod.Size != 5 || eod.Exit != 105 || eod.ExitIndex != 0 || eod.ExitT != 1000 {
 		t.Fatalf("eod trade = %+v, want size-5 final-bar remainder", eod)
 	}
 	for _, trade := range trades {

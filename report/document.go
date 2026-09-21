@@ -5,7 +5,7 @@
 //
 // The engine can prepare context bars before a separate inclusive tradable
 // interval, then closes an open position at that interval's final bar (exit
-// reason "eod"). It models slippage only, with fills on the close and a
+// reason "end-of-test"). It models slippage only, with fills on the close and a
 // start equity of 10000.
 package report
 
