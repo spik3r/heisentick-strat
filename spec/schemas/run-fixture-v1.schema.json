@@ -44,7 +44,7 @@
       "required": ["feePerUnit", "fillOn", "slippage", "startEquity"],
       "properties": {
         "feePerUnit": { "type": "number" },
-        "fillOn": { "type": "string", "minLength": 1 },
+        "fillOn": { "enum": ["close", "open", "nextOpen"] },
         "slippage": { "type": "number" },
         "startEquity": { "type": "number" }
       }

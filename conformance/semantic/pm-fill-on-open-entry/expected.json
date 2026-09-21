@@ -20,6 +20,6 @@
     "Every bar has a 10-point true range, so ATR = 10 under any length or smoothing once warmed up.",
     "Stop = lowest low of the last 3 candles (1995, at bars 28-29) - 0.25 ATR = 1992.5; distance 27.5 is inside the 0.5-3 ATR bounds. Target = entry + 1R = 2047.5.",
     "With fillOn=open the market order raised at the bar 31 close fills at the next bar open: entry bar 32 at 2020 (bar 32 opens at the bar 31 close).",
-    "SPEC GAP: fillOn is undocumented. Order parameters are read as fixed at signal time, so the stop stays 1992.5 and the target 2047.5."
+    "The stop and target are captured at signal time: 1992.5 and 2047.5. Fill-relative distances are a separate explicit order form."
   ]
 }

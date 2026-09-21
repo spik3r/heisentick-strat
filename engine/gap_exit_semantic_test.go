@@ -33,6 +33,16 @@ func TestGapThroughTargetFillsAtTarget(t *testing.T) {
 	}
 }
 
+func TestFillOnOpenSemanticFixtureUsesNextBarOpen(t *testing.T) {
+	trade := runSemanticCase(t, "pm-fill-on-open-entry")
+	if trade.EntryIndex != 32 || trade.EntryT != 1767686400000 || trade.Entry != 2020 {
+		t.Fatalf("entry = %v @ %d (%v), want 2020 @ 32 (1767686400000)", trade.Entry, trade.EntryIndex, trade.EntryT)
+	}
+	if trade.InitialSL != 1992.5 || trade.InitialTP != 2047.5 || trade.ExitIndex != 34 || trade.Exit != 2047.5 || trade.Reason != "tp" {
+		t.Fatalf("trade = %+v, want signal-time brackets and target exit", trade)
+	}
+}
+
 func runSemanticCase(t *testing.T, name string) Trade {
 	t.Helper()
 	dir := filepath.Join(testsupport.StratConformanceRoot(), "semantic", name)

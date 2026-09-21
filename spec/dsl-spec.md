@@ -382,6 +382,16 @@ Execution:
 
 - `risk 200 USD` / `riskUsd 200` — fixed risk per trade in account currency
   (default 200). Position size = risk / stop distance.
+- Run fixtures select the market-order fill mode in `costs.fillOn`: `close`
+  (the default) fills a market order on the signal bar's close; `open` queues
+  that signal-close order for the next bar's open; `nextOpen` is the explicit
+  next-open spelling retained for existing callers and family rules. A queued
+  order whose next bar is outside the available data is discarded and never
+  becomes a final-bar trade.
+- Stops and targets are captured from the signal when the order is raised. A
+  caller that declares fill-relative distances may instead anchor those
+  brackets to the eventual fill price. Neither mode reads a future bar while
+  deciding the signal or its protection.
 
 ## 8. `grade` — signal quality scoring
 
