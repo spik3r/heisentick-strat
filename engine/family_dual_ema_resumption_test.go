@@ -16,11 +16,11 @@ func TestDualEMAPendingExitPrecedesIntrabarStop(t *testing.T) {
 		costs: Costs{Slippage: 0.06},
 	}
 	b.openPosition(sideLong, 383, order{SL: 378.077, Size: 1, HasSize: true, NoTarget: true}, 0)
-	b.pendingExits = append(b.pendingExits, pendingExit{PositionEntryIndex: 0, Index: 1, Reason: "slow-ema"})
+	b.pendingExits = append(b.pendingExits, pendingExit{PositionEntryIndex: 0, Index: 1, Rule: "slow-ema"})
 	b.fillPendingExits(1)
 	b.resolveIntrabarExit(1)
-	if len(b.trades) != 1 || b.trades[0].Reason != "slow-ema" || b.trades[0].Exit != 381.057 {
-		t.Fatalf("trade = %+v, want slow-ema at slipped open 381.057", b.trades)
+	if len(b.trades) != 1 || b.trades[0].Reason != ReasonRule || b.trades[0].Rule != "slow-ema" || b.trades[0].Exit != 381.057 {
+		t.Fatalf("trade = %+v, want rule/slow-ema at slipped open 381.057", b.trades)
 	}
 }
 

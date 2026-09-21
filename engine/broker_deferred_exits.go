@@ -23,7 +23,7 @@ func (b *broker) fillPendingExits(i int) {
 		}
 		b.pendingExits = append(b.pendingExits[:k], b.pendingExits[k+1:]...)
 		if b.hasPosition && b.position.EntryIndex == pending.PositionEntryIndex {
-			b.closePosition(b.series.O[i], i, pending.Reason)
+			b.closePosition(b.series.O[i], i, ReasonRule, pending.Rule)
 		}
 	}
 }
@@ -37,7 +37,7 @@ func (b *broker) resolveIntrabarExit(i int) {
 	// level never traded. GapAwareStop families apply this on the entry bar too.
 	gapFill := pos.GapAwareStop || pos.EntryIndex < i
 	if !pos.NoStop && gapFill && ((pos.Side == sideLong && b.series.O[i] <= pos.SL) || (pos.Side == sideShort && b.series.O[i] >= pos.SL)) {
-		b.closePosition(b.series.O[i], i, "sl")
+		b.closePosition(b.series.O[i], i, "sl", "")
 		return
 	}
 	hitSL := !pos.NoStop && ((pos.Side == sideLong && b.series.L[i] <= pos.SL) ||
@@ -45,10 +45,10 @@ func (b *broker) resolveIntrabarExit(i int) {
 	hitTP := !pos.NoTarget && ((pos.Side == sideLong && b.series.H[i] >= pos.TP) ||
 		(pos.Side == sideShort && b.series.L[i] <= pos.TP))
 	if hitSL {
-		b.closePosition(pos.SL, i, "sl")
+		b.closePosition(pos.SL, i, "sl", "")
 		return
 	}
 	if hitTP {
-		b.closePosition(pos.TP, i, "tp")
+		b.closePosition(pos.TP, i, "tp", "")
 	}
 }

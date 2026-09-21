@@ -44,7 +44,9 @@ sizing or costs. A no-trade case has `trades: []` and says why in `notes`.
 
 Exit-reason vocabulary: `tp`, `sl`, `eod` (an end-of-day flatten), `time`
 (`maxHoldCandles`), `end-of-test` (position still open on the last bar) and
-`rule` (a family close rule such as the SMA bearish cross). `end-of-test` is
+`rule` (a family close rule such as the SMA bearish cross). A `rule` trade also
+carries its specific identity in the optional `rule` field, such as
+`sma-bearish-cross`; other reason categories omit that field. `end-of-test` is
 never spelled `eod`, `tp` or `sl`.
 
 Conventions: XAUUSD 1h, T0 = 2026-01-05T00:00Z, bar `k` opens at T0 + k h,

@@ -72,6 +72,7 @@
         "pnl": { "type": "number" },
         "points": { "type": "number" },
         "reason": { "type": "string", "minLength": 1 },
+        "rule": { "type": "string", "minLength": 1 },
         "side": { "type": "string", "enum": ["long", "short"] },
         "size": { "type": "number" },
         "sl": { "anyOf": [{ "type": "null" }, { "type": "number" }] },

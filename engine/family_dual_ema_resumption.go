@@ -40,7 +40,7 @@ func (b *broker) onDualEMAResumptionBar(i int) {
 		b.dualBestClose = math.Max(b.dualBestClose, close)
 		b.tightenStop(b.dualBestClose - p.TrailATR*b.dualATR)
 		if close < b.dualSlow && !b.dualExitPending {
-			b.pendingExits = append(b.pendingExits, pendingExit{PositionEntryIndex: b.position.EntryIndex, Index: i + 1, Reason: "slow-ema"})
+			b.pendingExits = append(b.pendingExits, pendingExit{PositionEntryIndex: b.position.EntryIndex, Index: i + 1, Rule: "slow-ema"})
 			b.dualExitPending = true
 		}
 		return

@@ -26,7 +26,7 @@ func (b *broker) onOpeningRangeBreakoutBar(i int) {
 		if b.params.ORBUTCSlotMinutes > 0 {
 			progress, _ := utcSlotProgress(b.series.T[i], b.params.ORBUTCSlotMinutes)
 			if key, ok := b.position.Meta["slotKey"].(string); ok && key != progress.Key {
-				b.closePosition(b.series.C[i], i, "window-close")
+				b.closePosition(b.series.C[i], i, ReasonRule, "window-close")
 				return
 			}
 		}

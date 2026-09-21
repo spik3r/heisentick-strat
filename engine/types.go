@@ -66,6 +66,18 @@ type RunResult struct {
 	Trades          []Trade `json:"trades"`
 }
 
+const (
+	// ReasonEndOfTest reports the final-data liquidation: a position still
+	// open on the last bar, closed at the last bar's close (decision D-20).
+	// It is never spelled "eod"; that word stays reserved for a true
+	// end-of-day flatten, which no current engine path produces.
+	ReasonEndOfTest = "end-of-test"
+	// ReasonRule reports a strategy close rule (D-20). The specific rule
+	// identity (for example "sma-bearish-cross") is carried separately in
+	// Trade.Rule.
+	ReasonRule = "rule"
+)
+
 // Trade is the stable JSON trade record emitted by the JS broker.
 type Trade struct {
 	Entry      float64   `json:"entry"`
@@ -81,13 +93,17 @@ type Trade struct {
 	PnL        float64   `json:"pnl"`
 	Points     float64   `json:"points"`
 	Reason     string    `json:"reason"`
-	Side       string    `json:"side"`
-	Size       float64   `json:"size"`
-	SL         float64   `json:"sl"`
-	Tag        string    `json:"tag"`
-	TP         float64   `json:"tp"`
-	NoTarget   bool      `json:"-"`
-	NoStop     bool      `json:"-"`
+	// Rule is the strategy-rule identity behind a Reason "rule" exit, for
+	// example "sma-bearish-cross", "slow-ema" or "window-close". Empty for
+	// every other reason, and omitted from the JSON then.
+	Rule     string  `json:"rule,omitempty"`
+	Side     string  `json:"side"`
+	Size     float64 `json:"size"`
+	SL       float64 `json:"sl"`
+	Tag      string  `json:"tag"`
+	TP       float64 `json:"tp"`
+	NoTarget bool    `json:"-"`
+	NoStop   bool    `json:"-"`
 }
 
 // MarshalJSON adapts absent stops and targets. Ordinary run results retain the

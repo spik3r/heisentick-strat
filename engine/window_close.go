@@ -9,7 +9,7 @@ func (b *broker) closeExpiredWindowPosition(i int) {
 	}
 	slotEnd, ok := numericMetaValue(b.position.Meta["slotEnd"])
 	if ok && b.series.T[i] >= slotEnd {
-		b.closePosition(b.series.O[i], i, "window-close")
+		b.closePosition(b.series.O[i], i, ReasonRule, "window-close")
 	}
 }
 

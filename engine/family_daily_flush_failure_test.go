@@ -181,7 +181,7 @@ func TestDailyFlushFailureOpenAtEndUsesGenericFinalRawClose(t *testing.T) {
 	}
 	runner := broker{series: series, costs: Costs{StartEquity: 10_000}, params: dailyFlushFailureTestParams(3)}
 	trade := runner.run()[0]
-	if trade.Reason != "eod" || trade.ExitIndex != series.Len()-1 || trade.Exit != series.C[series.Len()-1] {
+	if trade.Reason != ReasonEndOfTest || trade.ExitIndex != series.Len()-1 || trade.Exit != series.C[series.Len()-1] {
 		t.Fatalf("open-at-end trade = %+v", trade)
 	}
 }

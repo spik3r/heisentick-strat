@@ -70,7 +70,7 @@ func (b *broker) runDailyFlushFailure() []Trade {
 		}
 		exitedThisBar := false
 		if exitPending && b.hasPosition {
-			b.closePosition(b.series.O[rawIndex], rawIndex, "time")
+			b.closePosition(b.series.O[rawIndex], rawIndex, "time", "")
 			exitPending = false
 			exitedThisBar = true
 		}
@@ -99,7 +99,7 @@ func (b *broker) runDailyFlushFailure() []Trade {
 		if b.hasPosition {
 			if b.series.L[rawIndex] <= b.position.SL {
 				exit := math.Min(b.series.O[rawIndex], b.position.SL)
-				b.closePosition(exit, rawIndex, "sl")
+				b.closePosition(exit, rawIndex, "sl", "")
 				exitPending = false
 				exitedThisBar = true
 			} else {
@@ -135,7 +135,7 @@ func (b *broker) runDailyFlushFailure() []Trade {
 		}
 	}
 	if end >= 0 && b.hasPosition {
-		b.closePosition(b.series.C[end], end, "eod")
+		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
 }

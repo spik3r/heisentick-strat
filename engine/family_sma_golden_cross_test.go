@@ -93,8 +93,8 @@ func TestSMAGoldenCrossQueuesFixedSizeNextOpenTradesWithoutBrackets(t *testing.T
 	if trade.Side != "long" || trade.Size != 1 || trade.EntryIndex != 4 || trade.Entry != 5 {
 		t.Fatalf("entry = %+v, want long size 1 at next-open index 4 price 5", trade)
 	}
-	if trade.ExitIndex != 6 || trade.Exit != 6 || trade.Reason != "sma-bearish-cross" {
-		t.Fatalf("exit = %+v, want bearish-cross next-open exit at index 6 price 6", trade)
+	if trade.ExitIndex != 6 || trade.Exit != 6 || trade.Reason != ReasonRule || trade.Rule != "sma-bearish-cross" {
+		t.Fatalf("exit = %+v, want rule/bearish-cross next-open exit at index 6 price 6", trade)
 	}
 	if !trade.NoStop || !trade.NoTarget {
 		t.Fatalf("bracket flags = stop %v target %v, want both absent", trade.NoStop, trade.NoTarget)
@@ -160,8 +160,8 @@ func TestSMAGoldenCrossProtectedVariantUsesCurrentBarWilderATR(t *testing.T) {
 		t.Fatalf("protected trades = %+v, want one bearish-cross trade", trades)
 	}
 	trade := trades[0]
-	if trade.Entry != 5 || trade.EntryIndex != 4 || trade.Exit != 6 || trade.ExitIndex != 6 || trade.Reason != "sma-bearish-cross" {
-		t.Fatalf("protected execution = %+v, want next-open entry/exit", trade)
+	if trade.Entry != 5 || trade.EntryIndex != 4 || trade.Exit != 6 || trade.ExitIndex != 6 || trade.Reason != ReasonRule || trade.Rule != "sma-bearish-cross" {
+		t.Fatalf("protected execution = %+v, want rule identity and next-open entry/exit", trade)
 	}
 	if math.Abs(trade.InitialSL-8.0/9.0) > 1e-12 || math.Abs(trade.InitialTP-67.0/6.0) > 1e-12 ||
 		math.Abs(trade.SL-8.0/9.0) > 1e-12 || math.Abs(trade.TP-67.0/6.0) > 1e-12 {
