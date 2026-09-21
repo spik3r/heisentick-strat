@@ -300,25 +300,23 @@ func inferSeriesDurationMs(s marketdata.Series) float64 {
 	return dur
 }
 
-// computeHTFTrend mirrors the JS causal completed-bar projection
-// (plans/2026-07-15-causal-mtf-semantics-roadmap.md). A nil result means HTF
-// was not requested for the run; otherwise index i holds trendUp/trendDown/
-// trendFlat for the completed HTF bar projected at the primary bar's close, or
-// htfUnavailable (0) when no completed bar is available (warmup or a source gap).
+// computeHTFTrend mirrors the causal completed-bar projection. A nil result
+// means HTF was not requested for the run; otherwise index i holds
+// trendUp/trendDown/trendFlat for the completed HTF bar projected at the
+// primary bar's close, or htfUnavailable (0) when no completed bar is
+// available (before the first close or across a source gap). Direction is the
+// completed candle's close versus its open; indicator warmup is independent.
 func computeHTFTrend(series marketdata.Series, htf marketdata.Series) []int8 {
 	n := series.Len()
 	if n == 0 || htf.Len() == 0 {
 		return nil
 	}
 	out := make([]int8, n) // 0 == htfUnavailable
-	const biasBars = 24
-	const biasATR = 0.5
 	primaryDur := inferSeriesDurationMs(series)
 	htfDur := inferSeriesDurationMs(htf)
 	if primaryDur <= 0 || htfDur <= 0 {
 		return out
 	}
-	atr := contextcols.ComputeATR(htf, 14)
 	p := -1
 	for i := 0; i < n; i++ {
 		decision := series.T[i] + primaryDur // primary bar close
@@ -340,15 +338,10 @@ func computeHTFTrend(series marketdata.Series, htf marketdata.Series) []int8 {
 				continue
 			}
 		}
-		if p < biasBars {
-			continue
-		}
-		delta := htf.C[p] - htf.C[p-biasBars]
-		threshold := atr[p] * biasATR
 		switch {
-		case delta > threshold:
+		case htf.C[p] > htf.O[p]:
 			out[i] = trendUp
-		case delta < -threshold:
+		case htf.C[p] < htf.O[p]:
 			out[i] = trendDown
 		default:
 			out[i] = trendFlat

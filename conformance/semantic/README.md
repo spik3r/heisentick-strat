@@ -85,7 +85,7 @@ it is information, not a verdict.
 | `pm-missing-candle` | Missing candle inside a session: `lookback N candles` counts bars, no synthetic fill | `priceMomentum.md` Purpose ("exactly N bars earlier"); `dsl-spec.md` §2 | derived | match |
 | `pm-session-no-entry-outside-window` | Signal outside every enabled session is rejected; next in-window signal trades | `dsl-spec.md` §4 sessions, §10 gate order | spec-gap | match |
 | `pm-position-crosses-session-end` | Session end does not close an open position; target hit after the window | `dsl-spec.md` §4, §7 (`maxHoldCandles` is the only time exit), §10 | spec-gap | match |
-| `pm-htf-unclosed-bar-no-lookahead` | HTF guard reads only completed 4h candles; signal inside a forming candle judged by the last closed one | `dsl-spec.md` §10 causality, §6 HTF gate; `priceMomentum.md` HTF guard | spec-gap | mismatch: JS 0 trades (`spec-gap`: JS derives HTF direction from a 24-candle close delta vs 0.5 ATR and fails closed with fewer than 25 completed 4h candles; none of that is in the spec) |
+| `pm-htf-unclosed-bar-no-lookahead` | HTF guard reads only completed 4h candles; signal inside a forming candle judged by the last closed one | `dsl-spec.md` §10 causality, §6 HTF gate; `priceMomentum.md` HTF guard | derived | mismatch: JS 0 trades pending the D19 consumer adoption; Go uses the specified last-completed-candle close/open direction |
 
 Semantics required by the ticket and where they are covered: order timing
 (`sma-cross-next-open-entry-exit`, `pm-signal-close-entry`,
@@ -116,18 +116,14 @@ look-ahead, worst fill) in the meantime.
    the UTC+10 anchor are only in engine code. Also unstated: sessions gate
    entries only. `pm-session-no-entry-outside-window`,
    `pm-position-crosses-session-end`.
-6. **HTF direction.** "Opposing direction" of a completed HTF candle is not
-   defined (single candle, close delta over N candles, threshold). The
-   availability instant of a completed HTF candle is defined only for the
-   `source timeframe` pair (§6). `pm-htf-unclosed-bar-no-lookahead`.
-7. **End-of-test liquidation.** No reason name and no liquidation price.
+6. **End-of-test liquidation.** No reason name and no liquidation price.
    `sma-end-of-test-open-position`, `sma-prefix-extension-b`.
-8. **Exit-reason vocabulary.** No canonical set; this README defines one for
+7. **Exit-reason vocabulary.** No canonical set; this README defines one for
    the fixtures.
-9. **ATR definition for `by X ATR`** (length, smoothing) and whether "last N
+8. **ATR definition for `by X ATR`** (length, smoothing) and whether "last N
    candles" includes the signal candle. Every `pm-*` case neutralises both
    by construction (constant true range; shared 3-candle low).
-10. **Default gates on families.** `dsl-spec.md` §10 applies day-type and
+9. **Default gates on families.** `dsl-spec.md` §10 applies day-type and
     movement-efficiency gates to every signal, while `smaGoldenCross.md`
     says the family has "no … session … semantics". Day-type and movement
     efficiency are themselves undefined. The `pm-*` cases neutralise them

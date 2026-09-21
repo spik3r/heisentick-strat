@@ -46,7 +46,11 @@ trade held through that boundary has no residual wait after exit.
 
 `higher timeframe must not oppose entry` is the family-specific HTF guard.
 Missing HTF context fails closed, an opposing completed direction rejects the
-entry, and a genuinely flat completed HTF state permits either side.
+entry, and a genuinely flat completed HTF state permits either side. A
+completed candle is up when close > open, down when close < open, and flat when
+close == open. Direction is available from the first completed HTF candle; it
+does not use a multi-candle direction warm-up. Indicator warm-up is separate.
+Forming candles and stale intraday projections fail closed.
 
 ## Example
 

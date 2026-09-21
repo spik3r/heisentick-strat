@@ -276,6 +276,11 @@ Structure filters:
   (`higher time frame` with a space is accepted). Supported timeframe tokens
   include `4h`, `daily`, and `weekly`; otherwise the HTF is chosen
   automatically per chart timeframe.
+- A completed HTF candle is `up` when its close is above its open, `down` when
+  its close is below its open, and `flat` when they are equal. The most recent
+  completed candle is available from its close onward; there is no separate
+  direction-history warm-up. Indicator warm-up remains independent. A forming
+  candle and a stale intraday projection are unavailable.
 - `source timeframe <tf>` — v7-only, explicit source declaration for setup or
   filter evaluation. It is accepted only in `setup {}` or `filters {}`, where
   `<tf>` is exactly one of `1m 5m 15m 30m 1h 4h 1d`. Omitting it leaves the
