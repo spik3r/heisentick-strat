@@ -6,12 +6,23 @@ version and is named here.
 
 ## [Unreleased]
 
-Minor bump planned for the D-18 execution semantics:
+Nothing yet.
 
-- Engine and semantic fixtures now treat `costs.fillOn: open` as a market
-  order raised at a signal close and filled at the next bar's open. The
-  explicit `nextOpen` spelling remains supported; final-bar pending entries
-  never manufacture a trade.
+## [0.4.0] — 2026-09-21
+
+Minor bump: D-18, D-19 and D-20 adopt reviewed engine and execution semantics.
+
+- **D-18:** `costs.fillOn: open` treats a market order raised at a signal
+  close as a next-bar-open fill. The explicit `nextOpen` spelling remains
+  supported; signal-time stops handle worse-open gaps, fill-relative brackets
+  stay anchored to the eventual fill, and a final-bar pending order never
+  becomes a phantom trade.
+- **D-19:** A completed higher-timeframe candle is classified from its own
+  open and close (`up`, `down` or `flat`). The last completed candle becomes
+  available from its close; forming and stale projections remain unavailable.
+- **D-20:** Exit reasons use the canonical `tp`, `sl`, `partial`, `time`,
+  `end-of-test` and `rule` categories. Rule exits carry their strategy-rule
+  identity in the separate `rule` field.
 
 ## [0.3.0] — 2026-09-20
 
