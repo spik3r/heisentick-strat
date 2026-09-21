@@ -199,6 +199,7 @@ func loadSupplyDemandTriggerCase(t *testing.T) (RunFixture, string) {
 	if err != nil {
 		t.Fatalf("load fixture: %v", err)
 	}
+	fixture = flatHTFForUnrelatedTest(fixture)
 	source, err := os.ReadFile(filepath.Join(runFixtureDir(), caseName+".strat"))
 	if err != nil {
 		t.Fatalf("read DSL source: %v", err)

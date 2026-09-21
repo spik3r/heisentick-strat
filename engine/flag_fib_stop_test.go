@@ -104,8 +104,8 @@ func TestPublicRunConsumesFlagFibStopConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run compiled config: %v", err)
 	}
-	if result.TradeCount != 17 || len(result.Trades) != 17 {
-		t.Fatalf("fib-stop trades = %d/%d, want JavaScript parity count 17", result.TradeCount, len(result.Trades))
+	if result.TradeCount != 18 || len(result.Trades) != 18 {
+		t.Fatalf("fib-stop trades = %d/%d, want D19 isolated-fixture count 18", result.TradeCount, len(result.Trades))
 	}
 	first := result.Trades[0]
 	if first.EntryIndex != 66 || math.Abs(first.InitialSL-1901.6747757142857) > 1e-9 || math.Abs(first.InitialTP-1924.8543714285713) > 1e-9 {
