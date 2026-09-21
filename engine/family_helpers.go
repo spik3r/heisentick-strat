@@ -510,9 +510,8 @@ func (b *broker) enterSetup(i int, setup setupPlan) bool {
 		b.capturedEntries = append(b.capturedEntries, ord)
 		return true
 	}
-	if b.costs.FillOn == "nextOpen" {
-		ord.Index = i + 1
-		b.pendingOrders = append(b.pendingOrders, ord)
+	if b.costs.fillsMarketAtNextOpen() {
+		b.queueMarketAtNextOpen(&ord, i)
 		return true
 	}
 	b.openPosition(setup.Side, b.series.C[i], ord, i)

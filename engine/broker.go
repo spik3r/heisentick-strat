@@ -402,12 +402,19 @@ func (b *broker) enter(i int, side side, setup flagSetup) {
 		b.capturedEntries = append(b.capturedEntries, ord)
 		return
 	}
-	if b.costs.FillOn == "nextOpen" {
-		ord.Index = i + 1
-		b.pendingOrders = append(b.pendingOrders, ord)
+	if b.costs.fillsMarketAtNextOpen() {
+		b.queueMarketAtNextOpen(&ord, i)
 		return
 	}
 	b.openPosition(side, b.series.C[i], ord, i)
+}
+
+func (b *broker) queueMarketAtNextOpen(ord *order, signalIndex int) {
+	ord.Index = signalIndex + 1
+	if !ord.NoStop {
+		ord.GapAwareStop = true
+	}
+	b.pendingOrders = append(b.pendingOrders, *ord)
 }
 
 func (b *broker) dispatchCaptured(i int, captured order) {
@@ -424,9 +431,8 @@ func (b *broker) dispatchCaptured(i int, captured order) {
 		b.limitOrders = append(b.limitOrders, captured)
 		return
 	}
-	if b.costs.FillOn == "nextOpen" {
-		captured.Index = i + 1
-		b.pendingOrders = append(b.pendingOrders, captured)
+	if b.costs.fillsMarketAtNextOpen() {
+		b.queueMarketAtNextOpen(&captured, i)
 		return
 	}
 	b.openPosition(captured.Side, b.series.C[i], captured, i)

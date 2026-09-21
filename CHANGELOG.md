@@ -6,7 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
-Nothing yet.
+Minor bump planned for the D-18 execution semantics:
+
+- Engine and semantic fixtures now treat `costs.fillOn: open` as a market
+  order raised at a signal close and filled at the next bar's open. The
+  explicit `nextOpen` spelling remains supported; final-bar pending entries
+  never manufacture a trade.
 
 ## [0.3.0] — 2026-09-20
 

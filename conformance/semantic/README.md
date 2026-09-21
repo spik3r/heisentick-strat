@@ -79,7 +79,7 @@ it is information, not a verdict.
 | `sma-prefix-extension-a` | Append invariance, base series | `dsl-spec.md` §10 causality | derived | match |
 | `sma-prefix-extension-b` | Append invariance: strict prefix extension of `-a`; trade 1 identical, new trade 2 open at end | `dsl-spec.md` §10 causality; `smaGoldenCross.md` | spec-gap | mismatch: trade 2 reason `eod` vs `end-of-test` (same naming gap; trade 1 identical to `-a`) |
 | `pm-signal-close-entry` | `enter at market` fills at the signal close with `fillOn: close`; extreme stop, 1R target | `dsl-spec.md` §6 entry, §7 risk/target; `priceMomentum.md` Purpose + shared phrases | derived | match |
-| `pm-fill-on-open-entry` | `fillOn: open` defers the market fill to the next bar open | `dsl-spec.md` §6; `conformance/README.md` run fixtures | spec-gap | mismatch: JS entryIndex 31 (`spec-gap`: `fillOn` undocumented; JS ignores it for signal-close market entries) |
+| `pm-fill-on-open-entry` | `fillOn: open` defers the market fill to the next bar open | `dsl-spec.md` §6–7; `conformance/README.md` run fixtures | derived | mismatch: JS entryIndex 31 (consumer adoption pending) |
 | `pm-same-bar-stop-and-target` | Same bar touches stop and target: deterministic rule, conservative = stop wins | `dsl-spec.md` §7; `priceMomentum.md` shared phrases | spec-gap | match |
 | `pm-gap-through-stop` | Gap through the stop fills at the worse open, not the level | `dsl-spec-families/dailyFlushFailure.md` Phrases | spec-gap | mismatch: JS exit 1992.5 (`js-bug?`: fills at the stop level on a bar that opened at 1980, against the only written gap rule) |
 | `pm-gap-through-target` | Gap through the target credited at the level, never better | `dsl-spec.md` §7; `dailyFlushFailure.md` (stop rule only) | spec-gap | match |
@@ -106,26 +106,24 @@ Each item is a decision the spec must make before the case can move to
 `derived`. The fixture takes the most conservative reading (no trade, no
 look-ahead, worst fill) in the meantime.
 
-1. **Fill model / `fillOn`.** Not defined anywhere in `strat/docs/`. Needed
-   by `pm-fill-on-open-entry` (and implicitly every case).
-2. **Same-bar stop and target.** No ambiguity rule. `pm-same-bar-stop-and-target`.
-3. **Gap fills.** The "worse open" rule exists only in
+1. **Same-bar stop and target.** No ambiguity rule. `pm-same-bar-stop-and-target`.
+2. **Gap fills.** The "worse open" rule exists only in
    `dailyFlushFailure.md`; nothing for shared stops or for targets.
    `pm-gap-through-stop`, `pm-gap-through-target`.
-4. **Tick size and rounding.** No per-instrument tick, no rounding rule
+3. **Tick size and rounding.** No per-instrument tick, no rounding rule
    (the plan asks for a banker's-rounding-free rule). `pm-tick-rounding`.
-5. **Session hours.** `sessions(...)` names four sessions but their hours and
+4. **Session hours.** `sessions(...)` names four sessions but their hours and
    the UTC+10 anchor are only in engine code. Also unstated: sessions gate
    entries only. `pm-session-no-entry-outside-window`,
    `pm-position-crosses-session-end`.
-6. **End-of-test liquidation.** No reason name and no liquidation price.
+5. **End-of-test liquidation.** No reason name and no liquidation price.
    `sma-end-of-test-open-position`, `sma-prefix-extension-b`.
-7. **Exit-reason vocabulary.** No canonical set; this README defines one for
+6. **Exit-reason vocabulary.** No canonical set; this README defines one for
    the fixtures.
-8. **ATR definition for `by X ATR`** (length, smoothing) and whether "last N
+7. **ATR definition for `by X ATR`** (length, smoothing) and whether "last N
    candles" includes the signal candle. Every `pm-*` case neutralises both
    by construction (constant true range; shared 3-candle low).
-9. **Default gates on families.** `dsl-spec.md` §10 applies day-type and
+8. **Default gates on families.** `dsl-spec.md` §10 applies day-type and
     movement-efficiency gates to every signal, while `smaGoldenCross.md`
     says the family has "no … session … semantics". Day-type and movement
     efficiency are themselves undefined. The `pm-*` cases neutralise them

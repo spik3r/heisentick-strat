@@ -31,6 +31,13 @@ func (c Costs) normalized() Costs {
 	return c
 }
 
+// fillsMarketAtNextOpen reports the two explicit next-open market-fill
+// spellings. `open` is the run-fixture spelling adopted by D-18; `nextOpen`
+// remains supported for existing callers and family rules.
+func (c Costs) fillsMarketAtNextOpen() bool {
+	return c.FillOn == "open" || c.FillOn == "nextOpen"
+}
+
 // RunFixture is the language-agnostic fixture shape under strat/conformance/run.
 type RunFixture struct {
 	Schema           string           `json:"schema"`
