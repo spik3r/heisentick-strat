@@ -6,7 +6,7 @@ import (
 )
 
 func (b *broker) onTrendPullbackBar(i int) {
-	inWindow := inSetupTradeWindow(b.series.T[i], b.params, 0)
+	inWindow := inTrendPullbackSetupWindow(b.series.T[i], b.params)
 	if inWindow {
 		b.updateTrendPullbackSessionVWAPTouch(i)
 	}
@@ -63,6 +63,15 @@ func (b *broker) onTrendPullbackBar(i int) {
 		b.tpbAttemptsShort = 0
 		break
 	}
+}
+
+func inTrendPullbackSetupWindow(t float64, p flagParams) bool {
+	// Keep the legacy Mid discovery window used by the JavaScript runtime.
+	// VWAP-touch discovery instead follows the explicitly configured sessions.
+	if p.TPBVWAPTouch == "" {
+		p.UseMidWindow = true
+	}
+	return inSetupTradeWindow(t, p, 0)
 }
 
 func (b *broker) trendPullbackSetup(i int, s side) (setupPlan, bool) {

@@ -67,3 +67,14 @@ func TestSetupMidWindowRequiresEnabledSession(t *testing.T) {
 		t.Fatal("setup window rejected unrestricted session")
 	}
 }
+
+func TestTrendPullbackKeepsLegacyMidDiscoveryWithoutVWAPTouch(t *testing.T) {
+	// 03:00 UTC is 13:00 in the engine's UTC+10 session clock.
+	const midSession = float64(3 * 60 * 60 * 1000)
+	if !inTrendPullbackSetupWindow(midSession, flagParams{}) {
+		t.Fatal("legacy trend-pullback setup rejected its Mid discovery window")
+	}
+	if inTrendPullbackSetupWindow(midSession, flagParams{TPBVWAPTouch: "wick"}) {
+		t.Fatal("VWAP-touch trend-pullback setup accepted disabled Mid session")
+	}
+}
