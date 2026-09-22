@@ -8,6 +8,15 @@ version and is named here.
 
 Nothing yet.
 
+## [0.4.1] — 2026-09-23
+
+Patch release: report JSON now preserves an absent stop as `null`.
+
+- `report.Trade` serializes `initialSl` and `sl` as `null` when the engine
+  marks the trade `NoStop`, matching the run-conformance representation.
+- A genuine numeric zero stop remains numeric when `NoStop` is false.
+- Parser, engine, corpus and trade economics are unchanged.
+
 ## [0.4.0] — 2026-09-21
 
 Minor bump: D-18, D-19 and D-20 adopt reviewed engine and execution semantics.
