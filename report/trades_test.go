@@ -106,12 +106,30 @@ func TestReportTradeJSONFieldFidelity(t *testing.T) {
 	}
 }
 
-func TestReportTradeNoTargetNullDoesNotChangeLegacyZero(t *testing.T) {
-	for name, trade := range map[string]Trade{
-		"no-target":   {Trade: engine.Trade{NoTarget: true}},
-		"legacy-zero": {Trade: engine.Trade{}},
+func TestReportTradeAbsentBracketsAreNullWithoutChangingNumericZero(t *testing.T) {
+	for name, test := range map[string]struct {
+		trade         Trade
+		wantSL        any
+		wantInitialSL any
+		wantTP        any
+		wantInitialTP any
+	}{
+		"no-stop": {
+			trade:  Trade{Trade: engine.Trade{NoStop: true}},
+			wantTP: float64(0), wantInitialTP: float64(0),
+		},
+		"no-target": {
+			trade:  Trade{Trade: engine.Trade{NoTarget: true}},
+			wantSL: float64(0), wantInitialSL: float64(0),
+		},
+		"no-brackets": {trade: Trade{Trade: engine.Trade{NoStop: true, NoTarget: true}}},
+		"numeric-zero": {
+			trade:  Trade{Trade: engine.Trade{}},
+			wantSL: float64(0), wantInitialSL: float64(0),
+			wantTP: float64(0), wantInitialTP: float64(0),
+		},
 	} {
-		raw, err := json.Marshal(trade)
+		raw, err := json.Marshal(test.trade)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -119,12 +137,10 @@ func TestReportTradeNoTargetNullDoesNotChangeLegacyZero(t *testing.T) {
 		if err := json.Unmarshal(raw, &decoded); err != nil {
 			t.Fatal(err)
 		}
-		if name == "no-target" {
-			if decoded["tp"] != nil || decoded["initialTp"] != nil {
-				t.Fatalf("%s = %#v", name, decoded)
-			}
-		} else if decoded["tp"] != float64(0) || decoded["initialTp"] != float64(0) {
-			t.Fatalf("%s = %#v", name, decoded)
+		if decoded["sl"] != test.wantSL || decoded["initialSl"] != test.wantInitialSL ||
+			decoded["tp"] != test.wantTP || decoded["initialTp"] != test.wantInitialTP {
+			t.Fatalf("%s brackets = sl %#v initialSl %#v tp %#v initialTp %#v", name,
+				decoded["sl"], decoded["initialSl"], decoded["tp"], decoded["initialTp"])
 		}
 	}
 }
