@@ -12,7 +12,7 @@
   "strategyId": "dslDoubleTopBottomReversal",
   "symbol": "XAUUSD",
   "timeframe": "1h",
-  "tradeCount": 11,
+  "tradeCount": 13,
   "trades": [
     {
       "entry": 1844.948,
@@ -103,6 +103,36 @@
       "sl": 1849.6226,
       "tag": "DSL-DTB:doubleTop",
       "tp": 1826.6354
+    },
+    {
+      "entry": 1842.658,
+      "entryIndex": 887,
+      "entryT": 1655704800000,
+      "exit": 1832.189825,
+      "exitIndex": 913,
+      "exitT": 1655809200000,
+      "initialSl": 1832.249825,
+      "initialTp": 1852.946175,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "leftIdx": 877,
+        "leftPrice": 1833.714,
+        "neckline": 1841.968,
+        "pattern": "doubleBottom",
+        "rightIdx": 883,
+        "rightPrice": 1834.998,
+        "setup": "doubleTopBottom",
+        "side": "long"
+      },
+      "pnl": -201.152939876586,
+      "points": -10.468175,
+      "reason": "sl",
+      "side": "long",
+      "size": 19.2156646097898,
+      "sl": 1832.249825,
+      "tag": "DSL-DTB:doubleBottom",
+      "tp": 1852.946175
     },
     {
       "entry": 1829.228,
@@ -283,6 +313,36 @@
       "sl": 1729.462375,
       "tag": "DSL-DTB:doubleTop",
       "tp": 1708.733625
+    },
+    {
+      "entry": 1769.344,
+      "entryIndex": 1579,
+      "entryT": 1659355200000,
+      "exit": 1769.52591428571,
+      "exitIndex": 1597,
+      "exitT": 1659423600000,
+      "initialSl": 1756.641225,
+      "initialTp": 1781.926775,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "leftIdx": 1567,
+        "leftPrice": 1760.338,
+        "neckline": 1765.734,
+        "pattern": "doubleBottom",
+        "rightIdx": 1572,
+        "rightPrice": 1758.208,
+        "setup": "doubleTopBottom",
+        "side": "long"
+      },
+      "pnl": 2.86416606945107,
+      "points": 0.181914285714356,
+      "reason": "sl",
+      "side": "long",
+      "size": 15.7445912408903,
+      "sl": 1769.58591428571,
+      "tag": "DSL-DTB:doubleBottom",
+      "tp": 1781.926775
     },
     {
       "entry": 1777.718,

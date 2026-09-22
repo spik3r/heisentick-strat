@@ -32,8 +32,8 @@ func TestRunFixtureCaseHonorsAllowedSessionPhase(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run baseline fixture: %v", err)
 	}
-	if baseline.TradeCount != 13 {
-		t.Fatalf("baseline trade count = %d, want reviewed fixture count 13", baseline.TradeCount)
+	if baseline.TradeCount != 14 {
+		t.Fatalf("baseline trade count = %d, want reviewed fixture count 14", baseline.TradeCount)
 	}
 
 	result, err := RunFixtureCase(fixture, withOpenPhase)

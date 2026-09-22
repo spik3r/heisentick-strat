@@ -8,6 +8,20 @@ version and is named here.
 
 Nothing yet.
 
+## [0.5.0] — 2026-09-23
+
+Minor bump: disabled Mid sessions no longer consume setup cooldown state in
+families using the shared session gate.
+
+- Setup discovery now checks `UseMidWindow` before recording
+  an attempt. A later setup in an enabled session may therefore enter where
+  the previous disabled-session attempt had suppressed it.
+- Reviewed run goldens change from 13 to 14 trades for break-retest and from
+  11 to 13 for double-top-bottom. Trend-pullback retains its documented legacy
+  Mid discovery path when VWAP-touch is off.
+- Consumers must carry the explicit Mid session flag into both family setup
+  gates to match the Go corpus. Historical reports keep their release identity.
+
 ## [0.4.1] — 2026-09-23
 
 Patch release: report JSON now preserves an absent stop as `null`.

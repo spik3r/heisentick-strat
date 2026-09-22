@@ -26,8 +26,8 @@ func TestRunFixtureCaseHonorsTypedDayTheme(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run baseline fixture: %v", err)
 	}
-	if baseline.TradeCount != 13 || len(baseline.Trades) != 13 {
-		t.Fatalf("baseline trades = %d/%d, want reviewed fixture count 13", baseline.TradeCount, len(baseline.Trades))
+	if baseline.TradeCount != 14 || len(baseline.Trades) != 14 {
+		t.Fatalf("baseline trades = %d/%d, want reviewed fixture count 14", baseline.TradeCount, len(baseline.Trades))
 	}
 
 	mutated := strings.Replace(string(source), "  day type", "  day theme in (stand_aside)\n  day type", 1)

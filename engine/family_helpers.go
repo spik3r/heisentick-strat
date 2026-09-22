@@ -133,7 +133,7 @@ func inSetupTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
 	if p.UseAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft {
 		return true
 	}
-	if h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft {
+	if p.UseMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft {
 		return true
 	}
 	if p.UseLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft {

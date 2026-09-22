@@ -141,7 +141,7 @@ func TestVWAPExtensionFadeSessionPhaseExecutionPrecedence(t *testing.T) {
 		t.Fatalf("run reviewed baseline: %v", err)
 	}
 	closeEntries := []int{20, 39, 311, 389, 479, 583, 775, 847, 861, 1044, 1124, 1142, 1238, 1420, 1771}
-	middleEntries := []int{107, 195, 839, 933, 1306, 1751}
+	middleEntries := []int{107, 195, 839, 933, 1306, 1474, 1751}
 	assertVWAPExtensionFadePhaseTrades(t, baseline, closeEntries, "close")
 	shared, err := PrepareSharedRunContext(baselineRequest)
 	if err != nil {

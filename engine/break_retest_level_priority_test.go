@@ -17,8 +17,8 @@ func TestBreakRetestLevelPriorityFallbackAcrossCheckedExecutionPaths(t *testing.
 	if err != nil {
 		t.Fatalf("run reviewed baseline: %v", err)
 	}
-	baselineEntries := []int{315, 389, 590, 756, 933, 1074, 1412, 1442, 1580, 1649, 1695, 1987, 2475}
-	baselineKeys := []string{"PDL", "PDH", "PDL", "PDL", "PDL", "PDL", "PDL", "PDH", "PDH", "PDH", "PDH", "PDH", "PDL"}
+	baselineEntries := []int{315, 389, 590, 756, 933, 1074, 1093, 1412, 1442, 1580, 1649, 1695, 1987, 2475}
+	baselineKeys := []string{"PDL", "PDH", "PDL", "PDL", "PDL", "PDL", "PDL", "PDL", "PDH", "PDH", "PDH", "PDH", "PDH", "PDL"}
 	assertBreakRetestPriorityTrades(t, baseline, baselineEntries, baselineKeys)
 	shared, err := PrepareSharedRunContext(baselineRequest)
 	if err != nil {
@@ -45,8 +45,8 @@ func TestBreakRetestLevelPriorityFallbackAcrossCheckedExecutionPaths(t *testing.
 			priority:    []any{"WH"},
 			setExplicit: true,
 			explicit:    true,
-			wantEntries: []int{315, 590, 756, 933, 1074, 1412, 1580, 1642, 2475},
-			wantKeys:    []string{"PDL", "PDL", "PDL", "PDL", "PDL", "PDL", "WH", "WH", "PDL"},
+			wantEntries: []int{315, 430, 590, 756, 933, 1074, 1093, 1412, 1580, 1642, 2475},
+			wantKeys:    []string{"PDL", "WH", "PDL", "PDL", "PDL", "PDL", "PDL", "PDL", "WH", "WH", "PDL"},
 		},
 		{name: "explicit empty falls back", present: true, priority: []any{}, setExplicit: true, explicit: true, wantEntries: baselineEntries, wantKeys: baselineKeys, wantBaseline: true},
 		{name: "explicit malformed scalar falls back", present: true, priority: "PDH", setExplicit: true, explicit: true, wantEntries: baselineEntries, wantKeys: baselineKeys, wantBaseline: true},
@@ -58,8 +58,8 @@ func TestBreakRetestLevelPriorityFallbackAcrossCheckedExecutionPaths(t *testing.
 			priority:    []any{"WH", "PDH", "WL", "PDL"},
 			setExplicit: true,
 			explicit:    true,
-			wantEntries: []int{250, 275, 315, 389, 590, 756, 933, 1074, 1442, 1580, 1642, 1695, 1987, 2034, 2475},
-			wantKeys:    []string{"WL", "WL", "PDL", "PDH", "PDL", "PDL", "PDL", "WL", "PDH", "WH", "WH", "PDH", "PDH", "WL", "WL"},
+			wantEntries: []int{250, 275, 315, 389, 590, 756, 933, 1074, 1093, 1297, 1412, 1442, 1580, 1642, 1695, 1987, 2034, 2475},
+			wantKeys:    []string{"WL", "WL", "PDL", "PDH", "PDL", "PDL", "PDL", "WL", "PDL", "WL", "PDL", "PDH", "WH", "WH", "PDH", "PDH", "WL", "WL"},
 		},
 		{
 			name:        "explicit order prefers prior day first",
@@ -67,8 +67,8 @@ func TestBreakRetestLevelPriorityFallbackAcrossCheckedExecutionPaths(t *testing.
 			priority:    []any{"PDH", "WH", "PDL", "WL"},
 			setExplicit: true,
 			explicit:    true,
-			wantEntries: []int{250, 275, 315, 389, 590, 756, 933, 1074, 1442, 1580, 1642, 1695, 1987, 2034, 2475},
-			wantKeys:    []string{"WL", "WL", "PDL", "PDH", "PDL", "PDL", "PDL", "PDL", "PDH", "PDH", "WH", "PDH", "PDH", "WL", "PDL"},
+			wantEntries: []int{250, 275, 315, 389, 590, 756, 933, 1074, 1093, 1297, 1412, 1442, 1580, 1642, 1695, 1987, 2034, 2475},
+			wantKeys:    []string{"WL", "WL", "PDL", "PDH", "PDL", "PDL", "PDL", "PDL", "PDL", "WL", "PDL", "PDH", "PDH", "WH", "PDH", "PDH", "WL", "PDL"},
 		},
 	}
 

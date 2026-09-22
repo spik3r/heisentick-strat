@@ -26,8 +26,8 @@ func TestPreparedRunRunOwnsResultsAcrossCostReruns(t *testing.T) {
 	lowCosts := Costs{FillOn: "close", StartEquity: 10_000}
 	highCosts := Costs{FeePerUnit: 0.25, Slippage: 0.1, FillOn: "close", StartEquity: 20_000}
 	low := prepared.Run(lowCosts)
-	if low.TradeCount != 13 || len(low.Trades) != 13 {
-		t.Fatalf("low-cost trades = %d/%d, want reviewed fixture count 13", low.TradeCount, len(low.Trades))
+	if low.TradeCount != 14 || len(low.Trades) != 14 {
+		t.Fatalf("low-cost trades = %d/%d, want reviewed fixture count 14", low.TradeCount, len(low.Trades))
 	}
 	if low.Costs != lowCosts.normalized() {
 		t.Fatalf("low-cost envelope = %+v, want %+v", low.Costs, lowCosts.normalized())

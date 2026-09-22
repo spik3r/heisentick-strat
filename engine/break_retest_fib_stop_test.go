@@ -90,8 +90,8 @@ func TestPublicRunConsumesBreakRetestFibStopConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run compiled config: %v", err)
 	}
-	if result.TradeCount != 14 || len(result.Trades) != 14 {
-		t.Fatalf("fib-stop trades = %d/%d, want JavaScript parity count 14", result.TradeCount, len(result.Trades))
+	if result.TradeCount != 15 || len(result.Trades) != 15 {
+		t.Fatalf("fib-stop trades = %d/%d, want JavaScript parity count 15", result.TradeCount, len(result.Trades))
 	}
 	first := result.Trades[0]
 	if first.EntryIndex != 315 || math.Abs(first.InitialSL-1802.1697664285714) > 1e-9 || math.Abs(first.InitialTP-1774.50084285714) > 1e-9 {

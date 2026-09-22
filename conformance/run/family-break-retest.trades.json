@@ -12,7 +12,7 @@
   "strategyId": "dslBreakRetestPdhPdl",
   "symbol": "XAUUSD",
   "timeframe": "1h",
-  "tradeCount": 13,
+  "tradeCount": 14,
   "trades": [
     {
       "entry": 1792.748,
@@ -181,6 +181,34 @@
       "sl": 1818.55773214286,
       "tag": "DSL-BR",
       "tp": 1794.61821428571
+    },
+    {
+      "entry": 1794.549,
+      "entryIndex": 1093,
+      "entryT": 1656658800000,
+      "exit": 1784.49911428571,
+      "exitIndex": 1098,
+      "exitT": 1656676800000,
+      "initialSl": 1807.32135714286,
+      "initialTp": 1784.43911428571,
+      "meta": {
+        "breakExtreme": 1792.292,
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "PDL",
+        "levelPrice": 1802.618,
+        "retestExtreme": 1806.428,
+        "setup": "breakRetest",
+        "side": "short"
+      },
+      "pnl": 157.369318785551,
+      "points": 10.0498857142861,
+      "reason": "tp",
+      "side": "short",
+      "size": 15.6588167526967,
+      "sl": 1807.32135714286,
+      "tag": "DSL-BR",
+      "tp": 1784.43911428571
     },
     {
       "entry": 1689.274,

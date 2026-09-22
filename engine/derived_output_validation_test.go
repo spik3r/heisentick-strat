@@ -195,8 +195,8 @@ func TestCheckedRunPathsRejectOverflowAndPreserveLegacyMasking(t *testing.T) {
 	if err != nil {
 		t.Fatalf("valid RunFixtureCase: %v", err)
 	}
-	if validLegacy.TradeCount != 13 || len(validLegacy.Trades) != 13 {
-		t.Fatalf("reviewed trades = %d/%d, want 13/13", validLegacy.TradeCount, len(validLegacy.Trades))
+	if validLegacy.TradeCount != 14 || len(validLegacy.Trades) != 14 {
+		t.Fatalf("reviewed trades = %d/%d, want 14/14", validLegacy.TradeCount, len(validLegacy.Trades))
 	}
 	if !reflect.DeepEqual(validChecked, validLegacy) || !reflect.DeepEqual(validDirect, validLegacy) {
 		t.Fatalf("valid legacy/checked/direct results differ\nlegacy: %s\nchecked: %s\ndirect: %s", canonicalJSON(validLegacy), canonicalJSON(validChecked), canonicalJSON(validDirect))
@@ -209,8 +209,8 @@ func TestCheckedRunPathsRejectOverflowAndPreserveLegacyMasking(t *testing.T) {
 	overflowCosts := fixture.Costs
 	overflowCosts.FeePerUnit = math.MaxFloat64
 	legacyOverflow := prepared.Run(overflowCosts)
-	if legacyOverflow.TradeCount != 13 || legacyOverflow.Trades[0].PnL != 0 {
-		t.Fatalf("legacy overflow result = %d trades, first pnl %v; want 13 and masked zero", legacyOverflow.TradeCount, legacyOverflow.Trades[0].PnL)
+	if legacyOverflow.TradeCount != 14 || legacyOverflow.Trades[0].PnL != 0 {
+		t.Fatalf("legacy overflow result = %d trades, first pnl %v; want 14 and masked zero", legacyOverflow.TradeCount, legacyOverflow.Trades[0].PnL)
 	}
 	wantOverflow := "run result trade 0 pnl contains non-finite value"
 	if _, err := prepared.RunChecked(overflowCosts); err == nil || err.Error() != wantOverflow {
