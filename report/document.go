@@ -95,14 +95,33 @@ type Trade struct {
 
 func (trade Trade) MarshalJSON() ([]byte, error) {
 	type reportTradeAlias Trade
-	if !trade.NoTarget {
-		return json.Marshal(reportTradeAlias(trade))
-	}
-	return json.Marshal(struct {
+	type noTargetTrade struct {
 		reportTradeAlias
 		InitialTP any `json:"initialTp"`
 		TP        any `json:"tp"`
-	}{reportTradeAlias: reportTradeAlias(trade), InitialTP: nil, TP: nil})
+	}
+	type noStopTrade struct {
+		reportTradeAlias
+		InitialSL any `json:"initialSl"`
+		SL        any `json:"sl"`
+	}
+	type noBracketTrade struct {
+		reportTradeAlias
+		InitialSL any `json:"initialSl"`
+		InitialTP any `json:"initialTp"`
+		SL        any `json:"sl"`
+		TP        any `json:"tp"`
+	}
+	switch {
+	case trade.NoStop && trade.NoTarget:
+		return json.Marshal(noBracketTrade{reportTradeAlias: reportTradeAlias(trade)})
+	case trade.NoStop:
+		return json.Marshal(noStopTrade{reportTradeAlias: reportTradeAlias(trade)})
+	case trade.NoTarget:
+		return json.Marshal(noTargetTrade{reportTradeAlias: reportTradeAlias(trade)})
+	default:
+		return json.Marshal(reportTradeAlias(trade))
+	}
 }
 
 // Document is the report. The fields through EvidenceEnvelope are the CLI's
