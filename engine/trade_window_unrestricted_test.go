@@ -53,3 +53,17 @@ func TestTradeWindowDefaultStillUsesSessionWindows(t *testing.T) {
 		t.Fatal("default entry admission accepted an out-of-session timestamp")
 	}
 }
+
+func TestSetupMidWindowRequiresEnabledSession(t *testing.T) {
+	// 03:00 UTC is 13:00 in the engine's UTC+10 session clock.
+	const midSession = float64(3 * 60 * 60 * 1000)
+	if inSetupTradeWindow(midSession, flagParams{}, 0) {
+		t.Fatal("setup window accepted disabled mid session")
+	}
+	if !inSetupTradeWindow(midSession, flagParams{UseMidWindow: true}, 0) {
+		t.Fatal("setup window rejected enabled mid session")
+	}
+	if !inSetupTradeWindow(midSession, flagParams{TradeWindowUnrestricted: true}, 0) {
+		t.Fatal("setup window rejected unrestricted session")
+	}
+}

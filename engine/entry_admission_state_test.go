@@ -98,13 +98,12 @@ func TestFlagRejectedMarketGateRecordsCooldownAttempt(t *testing.T) {
 	}
 }
 
-func TestDisabledMidWindowDiscoversThenRejectsFamilySetup(t *testing.T) {
+func TestDisabledWindowsDoNotDiscoverFamilySetup(t *testing.T) {
 	tests := []struct {
 		name      string
 		caseName  string
 		shiftHour int
 		lastState func(*broker) (bool, int)
-		wantLast  int
 	}{
 		{
 			name:     "range break fake",
@@ -112,7 +111,6 @@ func TestDisabledMidWindowDiscoversThenRejectsFamilySetup(t *testing.T) {
 			lastState: func(b *broker) (bool, int) {
 				return b.hasRBFEntry, b.rbfLastEntry
 			},
-			wantLast: 2577,
 		},
 		{
 			name:      "inside day expansion",
@@ -121,7 +119,6 @@ func TestDisabledMidWindowDiscoversThenRejectsFamilySetup(t *testing.T) {
 			lastState: func(b *broker) (bool, int) {
 				return b.hasIDEEntry, b.ideLastEntry
 			},
-			wantLast: 1156,
 		},
 		{
 			name:      "day open reclaim",
@@ -130,7 +127,6 @@ func TestDisabledMidWindowDiscoversThenRejectsFamilySetup(t *testing.T) {
 			lastState: func(b *broker) (bool, int) {
 				return b.hasDOREntry, b.dorLastEntry
 			},
-			wantLast: 2303,
 		},
 	}
 
@@ -148,18 +144,11 @@ func TestDisabledMidWindowDiscoversThenRejectsFamilySetup(t *testing.T) {
 				t.Fatalf("disabled-session run produced %d trades, want 0", len(trades))
 			}
 			hasAttempt, last := tt.lastState(&runner.broker)
-			if !hasAttempt {
-				t.Fatal("MID setup was not discovered before final admission rejection")
+			if hasAttempt {
+				t.Fatalf("disabled-session setup consumed cooldown at bar %d", last)
 			}
-			if last != tt.wantLast {
-				t.Fatalf("last MID cooldown attempt = %d, want %d", last, tt.wantLast)
-			}
-			at := runner.series.T[last]
-			if !inSetupTradeWindow(at, runner.params, 0) {
-				t.Fatal("setup-local window rejected the recorded MID attempt")
-			}
-			if inFlagTradeWindow(at, runner.params, 0) {
-				t.Fatal("final admission window accepted disabled MID")
+			if last != 0 {
+				t.Fatalf("disabled-session setup recorded cooldown index %d, want 0", last)
 			}
 		})
 	}
