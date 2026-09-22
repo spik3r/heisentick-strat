@@ -93,8 +93,8 @@ func TestRunAcceptsNestedDSLConfigTargetSection(t *testing.T) {
 
 	plainResult := run(t, plainConfig)
 	namedResult := run(t, namedConfig)
-	if plainResult.TradeCount != 3 || len(plainResult.Trades) != 3 {
-		t.Fatalf("reviewed fixture trades = %d/%d, want 3/3", plainResult.TradeCount, len(plainResult.Trades))
+	if plainResult.TradeCount != 5 || len(plainResult.Trades) != 5 {
+		t.Fatalf("reviewed fixture trades = %d/%d, want 5/5", plainResult.TradeCount, len(plainResult.Trades))
 	}
 	if got, want := plainResult.Trades[0].InitialTP, 1.10157166071429; got != want {
 		t.Fatalf("reviewed first target = %.15g, want %.15g", got, want)

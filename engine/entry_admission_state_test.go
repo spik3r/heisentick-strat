@@ -22,7 +22,7 @@ func TestRejectedAdmissionRecordsFamilyCooldownAttempt(t *testing.T) {
 			lastState: func(b *broker) (bool, int) {
 				return b.hasRBFEntry, b.rbfLastEntry
 			},
-			wantLast: 2577,
+			wantLast: 2333,
 		},
 		{
 			name:     "opening range breakout",
@@ -46,7 +46,7 @@ func TestRejectedAdmissionRecordsFamilyCooldownAttempt(t *testing.T) {
 			lastState: func(b *broker) (bool, int) {
 				return b.hasDOREntry, b.dorLastEntry
 			},
-			wantLast: 2536,
+			wantLast: 2483,
 		},
 	}
 

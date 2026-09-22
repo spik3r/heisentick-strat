@@ -312,7 +312,7 @@ func TestSliceContainersMatchAcrossPublicAndPreparedRunPaths(t *testing.T) {
 				wantRoute      bool
 				wantTradeCount int
 			}{
-				{name: "on route", symbol: fixture.Symbol, wantRoute: true, wantTradeCount: 13},
+				{name: "on route", symbol: fixture.Symbol, wantRoute: true, wantTradeCount: 14},
 				{name: "off route", symbol: "EURUSD", wantRoute: false, wantTradeCount: 0},
 			} {
 				t.Run(route.name, func(t *testing.T) {

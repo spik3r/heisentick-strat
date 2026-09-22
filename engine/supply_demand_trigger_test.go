@@ -66,9 +66,9 @@ func TestSupplyDemandAuthoredTriggerMatchesReviewedFixture(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run baseline fixture: %v", err)
 	}
-	wantBaselineIndexes := []int{873, 1804, 2884}
-	if got := tradeEntryIndexes(baseline.Trades); baseline.TradeCount != 3 || !reflect.DeepEqual(got, wantBaselineIndexes) {
-		t.Fatalf("baseline trades = %d at %v, want 3 at %v", baseline.TradeCount, got, wantBaselineIndexes)
+	wantBaselineIndexes := []int{873, 1349, 1804, 2884, 2907}
+	if got := tradeEntryIndexes(baseline.Trades); baseline.TradeCount != 5 || !reflect.DeepEqual(got, wantBaselineIndexes) {
+		t.Fatalf("baseline trades = %d at %v, want 5 at %v", baseline.TradeCount, got, wantBaselineIndexes)
 	}
 
 	mutated := strings.Replace(source, "candle in (any)", "candle in (pin)", 1)

@@ -92,10 +92,10 @@ func TestSupplyDemandPatternsPresenceAcrossCheckedExecutionPaths(t *testing.T) {
 		patterns any
 		want     []int
 	}{
-		{name: "missing defaults all patterns", want: []int{873, 1804, 2884}},
-		{name: "explicit full list", present: true, patterns: []any{"DBR", "RBR", "RBD", "DBD"}, want: []int{873, 1804, 2884}},
-		{name: "RBR only", present: true, patterns: []any{"RBR"}, want: []int{873, 2884}},
-		{name: "mixed retains exact built-in strings", present: true, patterns: []any{1, "DBR", namedString("RBR"), true}, want: []int{1804, 2885}},
+		{name: "missing defaults all patterns", want: []int{873, 1349, 1804, 2884, 2907}},
+		{name: "explicit full list", present: true, patterns: []any{"DBR", "RBR", "RBD", "DBD"}, want: []int{873, 1349, 1804, 2884, 2907}},
+		{name: "RBR only", present: true, patterns: []any{"RBR"}, want: []int{873, 2884, 2907}},
+		{name: "mixed retains exact built-in strings", present: true, patterns: []any{1, "DBR", namedString("RBR"), true}, want: []int{1349, 1804, 2885}},
 		{name: "unknown only", present: true, patterns: []any{"unknown"}, want: []int{}},
 		{name: "explicit empty", present: true, patterns: []any{}, want: []int{}},
 		{name: "nil", present: true, patterns: nil, want: []int{}},

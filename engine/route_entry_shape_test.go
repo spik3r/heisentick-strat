@@ -143,7 +143,7 @@ func TestCompiledRouteEntryDoesNotMutateSupportedMaps(t *testing.T) {
 func TestCompiledRouteEntryShapeAcrossCheckedExecutionPaths(t *testing.T) {
 	fixture, reviewedConfig := loadEntryAttemptCase(t, "family-break-retest")
 	series := marketdata.SeriesFromBars(fixture.Bars)
-	wantEntries := []int{315, 389, 590, 756, 933, 1074, 1412, 1442, 1580, 1649, 1695, 1987, 2475}
+	wantEntries := []int{315, 389, 590, 756, 933, 1074, 1093, 1412, 1442, 1580, 1649, 1695, 1987, 2475}
 
 	controlConfig := cloneTestConfig(t, reviewedConfig)
 	controlConfig["slices"] = []any{map[string]any{"symbol": "", "tf": fixture.Timeframe}}

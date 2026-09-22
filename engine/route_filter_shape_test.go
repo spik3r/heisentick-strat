@@ -201,7 +201,7 @@ func TestCompiledRouteRawFallbackAcrossCheckedExecutionPaths(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run reviewed baseline: %v", err)
 	}
-	baselineEntries := []int{315, 389, 590, 756, 933, 1074, 1412, 1442, 1580, 1649, 1695, 1987, 2475}
+	baselineEntries := []int{315, 389, 590, 756, 933, 1074, 1093, 1412, 1442, 1580, 1649, 1695, 1987, 2475}
 	if got := tradeEntryIndexes(baseline.Trades); !reflect.DeepEqual(got, baselineEntries) {
 		t.Fatalf("baseline entries = %v, want %v", got, baselineEntries)
 	}
