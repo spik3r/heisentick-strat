@@ -10,10 +10,10 @@ Nothing yet.
 
 ## [0.5.0] — 2026-09-23
 
-Minor bump: disabled Mid sessions no longer consume setup cooldown state for
-break-retest and double-top-bottom families.
+Minor bump: disabled Mid sessions no longer consume setup cooldown state in
+families using the shared session gate.
 
-- Setup discovery for these families now checks `UseMidWindow` before recording
+- Setup discovery now checks `UseMidWindow` before recording
   an attempt. A later setup in an enabled session may therefore enter where
   the previous disabled-session attempt had suppressed it.
 - Reviewed run goldens change from 13 to 14 trades for break-retest and from
