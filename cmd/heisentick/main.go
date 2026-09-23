@@ -20,6 +20,8 @@ func run(args []string, out io.Writer) error {
 	switch args[0] {
 	case "report":
 		return runReport(args[1:], out)
+	case "forward-prefix":
+		return runForwardPrefix(args[1:], out)
 	case "grid":
 		return runGrid(args[1:], out)
 	case "-h", "--help", "help":
@@ -35,7 +37,10 @@ func usageText() string {
 
 Usage:
   heisentick report --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot [--slippage=<points>] [--slippage-bps=<basis-points>] [--include-trades=1] [--evidence=1] [--holdout-from=<epoch-ms>] [--json-only=1] [--memprofile=<path>]
+  heisentick forward-prefix --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> [--range=zone|pivot] [--slippage=<points>] [--slippage-bps=<basis-points>] [--data-root=<path>]
   heisentick grid --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot --set <param>=<v1,v2,...> [--json-only=1]
+
+forward-prefix always writes one JSON envelope for the loaded data prefix. It preserves open positions and does not support checkpoint resume yet.
 `
 }
 
