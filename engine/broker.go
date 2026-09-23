@@ -266,12 +266,19 @@ func (b *broker) runWithFinalization(liquidateAtEnd bool) []Trade {
 	if trades, handled := b.runSpecialSetup(); handled {
 		return trades
 	}
+	return b.runRangeWithFinalization(0, liquidateAtEnd)
+}
+
+func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trade {
 	n := b.series.Len()
 	end := b.executionEnd()
 	if end >= n {
 		end = n - 1
 	}
-	for i := 0; i <= end; i++ {
+	if start < 0 {
+		start = 0
+	}
+	for i := start; i <= end; i++ {
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
 		}
