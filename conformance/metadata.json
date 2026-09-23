@@ -2,6 +2,7 @@
   "goRun": {
     "implemented": [
       "deployed-dsl-close-vwap-extreme-magnet-defensive",
+      "deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
       "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
       "deployed-dsl-flag-continuation-one-four-hour-review",
       "deployed-dsl-session-expansion-ny",
@@ -55,6 +56,6 @@
     "diagnostic": 9,
     "setup-family": 26
   },
-  "runCases": 34,
+  "runCases": 35,
   "schema": "dsl-conformance-metadata-v1"
 }
