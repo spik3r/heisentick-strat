@@ -1,12 +1,12 @@
 {
   "schema": "enginewasm-real-data-browser-benchmark-v1",
-  "generatedAt": "2026-09-23T04:56:25.556Z",
+  "generatedAt": "2026-09-23T05:21:14.255Z",
   "source": {
     "repository": "spik3r/heisentick-strat",
     "release": "v0.6.1",
     "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
     "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
-    "harnessSha256": "2ac1c80b79ef923e0fd491532c5d7ca598502934f94da9b320db36af6d2cd12a",
+    "harnessSha256": "1a51a137de0d46371c37be1ca50f66dcdaa068329439263dd3b2e4b4b97bac3b",
     "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
     "appCommit": "ad722ca2a29d5334fcbfdf3115780ff59f71942c"
   },
@@ -46,18 +46,94 @@
     "node": "v26.0.0",
     "playwright": "1.57.0"
   },
-  "repeats": 1,
+  "repeats": 20,
   "cellTimeoutMs": 900000,
   "native": [
     {
       "size": 386207,
       "status": "measured",
       "tradeCount": 10177,
-      "tradeDigest": "fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc",
+      "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
       "runs": [
         {
           "repeat": 1,
-          "wallMs": 2519.4945000000002
+          "wallMs": 2500.617084
+        },
+        {
+          "repeat": 2,
+          "wallMs": 2498.9997919999996
+        },
+        {
+          "repeat": 3,
+          "wallMs": 2656.3488749999997
+        },
+        {
+          "repeat": 4,
+          "wallMs": 2543.1783750000013
+        },
+        {
+          "repeat": 5,
+          "wallMs": 2526.2150409999995
+        },
+        {
+          "repeat": 6,
+          "wallMs": 2507.158125
+        },
+        {
+          "repeat": 7,
+          "wallMs": 2513.6082499999975
+        },
+        {
+          "repeat": 8,
+          "wallMs": 2520.4730830000008
+        },
+        {
+          "repeat": 9,
+          "wallMs": 2511.7137920000023
+        },
+        {
+          "repeat": 10,
+          "wallMs": 2558.8160000000025
+        },
+        {
+          "repeat": 11,
+          "wallMs": 2507.2044590000005
+        },
+        {
+          "repeat": 12,
+          "wallMs": 2526.7220419999976
+        },
+        {
+          "repeat": 13,
+          "wallMs": 2513.1095829999977
+        },
+        {
+          "repeat": 14,
+          "wallMs": 2548.20925
+        },
+        {
+          "repeat": 15,
+          "wallMs": 2525.5645000000004
+        },
+        {
+          "repeat": 16,
+          "wallMs": 2544.8135420000035
+        },
+        {
+          "repeat": 17,
+          "wallMs": 2517.2965420000037
+        },
+        {
+          "repeat": 18,
+          "wallMs": 2499.674500000001
+        },
+        {
+          "repeat": 19,
+          "wallMs": 2504.9068750000006
+        },
+        {
+          "repeat": 20,
+          "wallMs": 2501.839874999998
         }
       ]
     }
@@ -71,116 +147,302 @@
           "size": 386207,
           "status": "measured",
           "tradeCount": 10177,
-          "tradeDigest": "fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc",
-          "jsTradeDigest": "e46725260609839419cbc00fa88aee60d4fa8fc97b39e27f8e9464478e6ffab7",
-          "exactWasmJsTradeEquality": false,
-          "wasmJsFirstDifference": "$.5438.exit: 2049.445 !== 2049.4449999999997",
-          "wasmJsFirstDifferenceTrades": {
-            "index": 5438,
-            "wasm": {
-              "entry": 2047.445,
-              "entryIndex": 207064,
-              "entryT": 1701422700000,
-              "exit": 2049.445,
-              "exitIndex": 207066,
-              "exitT": 1701423300000,
-              "initialSl": 2046.445,
-              "initialTp": 2049.445,
-              "meta": {
-                "forwardBracketAnchor": "entry-fill",
-                "forwardExitAt": "2023-12-01T12:00:00.000Z",
-                "forwardExitReason": "window-close",
-                "forwardStopDistance": 1,
-                "forwardTargetDistance": 2,
-                "gradeRequired": 0,
-                "gradeScore": 0,
-                "rangeEnd": 207061,
-                "rangeHi": 2046.705,
-                "rangeLo": 2044.758,
-                "rangeStart": 207059,
-                "session": "utc:1701421200000",
-                "setup": "openingRangeBreakout",
-                "side": "long",
-                "slotEnd": 1701432000000,
-                "slotKey": "utc:1701421200000",
-                "slotMinutes": 180,
-                "slotStart": 1701421200000
-              },
-              "partial": false,
-              "pnl": 400,
-              "points": 2,
-              "reason": "tp",
-              "side": "long",
-              "size": 200,
-              "sl": 2046.445,
-              "tag": "DSL-ORB:utc:1701421200000",
-              "tp": 2049.445
-            },
-            "js": {
-              "entry": 2047.445,
-              "entryIndex": 207064,
-              "entryT": 1701422700000,
-              "exit": 2049.4449999999997,
-              "exitIndex": 207066,
-              "exitT": 1701423300000,
-              "initialSl": 2046.445,
-              "initialTp": 2049.4449999999997,
-              "meta": {
-                "forwardBracketAnchor": "entry-fill",
-                "forwardExitAt": "2023-12-01T12:00:00.000Z",
-                "forwardExitReason": "window-close",
-                "forwardStopDistance": 1,
-                "forwardTargetDistance": 2,
-                "gradeRequired": 0,
-                "gradeScore": 0,
-                "rangeEnd": 207061,
-                "rangeHi": 2046.705,
-                "rangeLo": 2044.758,
-                "rangeStart": 207059,
-                "session": "utc:1701421200000",
-                "setup": "openingRangeBreakout",
-                "side": "long",
-                "slotEnd": 1701432000000,
-                "slotKey": "utc:1701421200000",
-                "slotMinutes": 180,
-                "slotStart": 1701421200000
-              },
-              "partial": false,
-              "pnl": 400,
-              "points": 2,
-              "reason": "tp",
-              "side": "long",
-              "size": 200,
-              "sl": 2046.445,
-              "tag": "DSL-ORB:utc:1701421200000",
-              "tp": 2049.4449999999997
-            }
-          },
+          "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "jsTradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "wasmJsFirstDifferenceTrades": null,
           "runs": [
             {
               "repeat": 1,
-              "wasmWallMs": 5343,
+              "wasmWallMs": 5390.000000000001,
               "wasm": {
-                "engineMs": 5203,
-                "packMs": 121.999,
-                "copyOutMs": 1,
-                "copyInMs": 8,
-                "adapterMs": 4.999
+                "copyInMs": 6,
+                "adapterMs": 5,
+                "engineMs": 5248.999,
+                "packMs": 124.999,
+                "copyOutMs": 1
               },
-              "jsContextMs": 11971,
-              "jsRunMs": 2176,
-              "jsTotalMs": 14147
+              "jsContextMs": 12067,
+              "jsRunMs": 1910,
+              "jsTotalMs": 13977
+            },
+            {
+              "repeat": 2,
+              "wasmWallMs": 6774,
+              "wasm": {
+                "copyInMs": 17,
+                "adapterMs": 8,
+                "engineMs": 6512.999,
+                "packMs": 168,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 32555,
+              "jsRunMs": 3057,
+              "jsTotalMs": 35612
+            },
+            {
+              "repeat": 3,
+              "wasmWallMs": 7037.000000000007,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 9,
+                "adapterMs": 9.999,
+                "engineMs": 6860.999,
+                "packMs": 126
+              },
+              "jsContextMs": 11430,
+              "jsRunMs": 2273,
+              "jsTotalMs": 13703
+            },
+            {
+              "repeat": 4,
+              "wasmWallMs": 6758,
+              "wasm": {
+                "copyOutMs": 1,
+                "copyInMs": 17,
+                "adapterMs": 4,
+                "engineMs": 6554.999,
+                "packMs": 163
+              },
+              "jsContextMs": 19772,
+              "jsRunMs": 6427,
+              "jsTotalMs": 26199
+            },
+            {
+              "repeat": 5,
+              "wasmWallMs": 7831,
+              "wasm": {
+                "engineMs": 7397.999,
+                "packMs": 258,
+                "copyOutMs": 1,
+                "copyInMs": 101,
+                "adapterMs": 16
+              },
+              "jsContextMs": 12306,
+              "jsRunMs": 3143,
+              "jsTotalMs": 15449
+            },
+            {
+              "repeat": 6,
+              "wasmWallMs": 5897,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 19,
+                "adapterMs": 3.999,
+                "engineMs": 5751,
+                "packMs": 118
+              },
+              "jsContextMs": 55054,
+              "jsRunMs": 5882.000000000029,
+              "jsTotalMs": 60936.00000000003
+            },
+            {
+              "repeat": 7,
+              "wasmWallMs": 10660,
+              "wasm": {
+                "copyInMs": 36.999999999970896,
+                "adapterMs": 23,
+                "engineMs": 10188.999,
+                "packMs": 335,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 11613,
+              "jsRunMs": 7727,
+              "jsTotalMs": 19340
+            },
+            {
+              "repeat": 8,
+              "wasmWallMs": 5935,
+              "wasm": {
+                "copyOutMs": 1,
+                "copyInMs": 7,
+                "adapterMs": 3,
+                "engineMs": 5676.999,
+                "packMs": 214
+              },
+              "jsContextMs": 11906,
+              "jsRunMs": 3672,
+              "jsTotalMs": 15578
+            },
+            {
+              "repeat": 9,
+              "wasmWallMs": 6796.000000000058,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 8,
+                "adapterMs": 1.999,
+                "engineMs": 6664.999,
+                "packMs": 116
+              },
+              "jsContextMs": 13141.000000000058,
+              "jsRunMs": 4368.999999999942,
+              "jsTotalMs": 17510
+            },
+            {
+              "repeat": 10,
+              "wasmWallMs": 8492,
+              "wasm": {
+                "copyOutMs": 1,
+                "copyInMs": 84,
+                "adapterMs": 32.999,
+                "engineMs": 8096.999,
+                "packMs": 244.999
+              },
+              "jsContextMs": 71940,
+              "jsRunMs": 5905.000000000058,
+              "jsTotalMs": 77845.00000000006
+            },
+            {
+              "repeat": 11,
+              "wasmWallMs": 9739,
+              "wasm": {
+                "copyInMs": 103,
+                "adapterMs": 36.999,
+                "engineMs": 9184,
+                "packMs": 328,
+                "copyOutMs": 0.9999999999417923
+              },
+              "jsContextMs": 13460,
+              "jsRunMs": 3282,
+              "jsTotalMs": 16742
+            },
+            {
+              "repeat": 12,
+              "wasmWallMs": 6680,
+              "wasm": {
+                "copyInMs": 7,
+                "adapterMs": 4,
+                "engineMs": 6404,
+                "packMs": 231,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 11831.999999999942,
+              "jsRunMs": 2327,
+              "jsTotalMs": 14158.999999999942
+            },
+            {
+              "repeat": 13,
+              "wasmWallMs": 6885,
+              "wasm": {
+                "packMs": 244.999,
+                "copyOutMs": 0,
+                "copyInMs": 8,
+                "adapterMs": 2.999,
+                "engineMs": 6595
+              },
+              "jsContextMs": 12282,
+              "jsRunMs": 2637,
+              "jsTotalMs": 14919
+            },
+            {
+              "repeat": 14,
+              "wasmWallMs": 6082,
+              "wasm": {
+                "copyInMs": 7,
+                "adapterMs": 4,
+                "engineMs": 5793.999,
+                "packMs": 242,
+                "copyOutMs": 1
+              },
+              "jsContextMs": 11783,
+              "jsRunMs": 2203.0000000001164,
+              "jsTotalMs": 13986.000000000116
+            },
+            {
+              "repeat": 15,
+              "wasmWallMs": 6269,
+              "wasm": {
+                "copyInMs": 11,
+                "adapterMs": 8.999,
+                "engineMs": 5970,
+                "packMs": 240.999,
+                "copyOutMs": 1
+              },
+              "jsContextMs": 38185,
+              "jsRunMs": 4427,
+              "jsTotalMs": 42612
+            },
+            {
+              "repeat": 16,
+              "wasmWallMs": 8384,
+              "wasm": {
+                "copyInMs": 142,
+                "adapterMs": 22.999,
+                "engineMs": 7965,
+                "packMs": 209.999,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 11517,
+              "jsRunMs": 3189,
+              "jsTotalMs": 14706
+            },
+            {
+              "repeat": 17,
+              "wasmWallMs": 7313.999999999884,
+              "wasm": {
+                "copyInMs": 6,
+                "adapterMs": 1.999,
+                "engineMs": 6994,
+                "packMs": 282,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 11548,
+              "jsRunMs": 2289,
+              "jsTotalMs": 13837
+            },
+            {
+              "repeat": 18,
+              "wasmWallMs": 5270.000000000116,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 7,
+                "adapterMs": 2,
+                "engineMs": 5142.999,
+                "packMs": 114
+              },
+              "jsContextMs": 13047,
+              "jsRunMs": 3747,
+              "jsTotalMs": 16794
+            },
+            {
+              "repeat": 19,
+              "wasmWallMs": 7718,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 134,
+                "adapterMs": 7,
+                "engineMs": 7282,
+                "packMs": 246.999
+              },
+              "jsContextMs": 61041,
+              "jsRunMs": 4310,
+              "jsTotalMs": 65351
+            },
+            {
+              "repeat": 20,
+              "wasmWallMs": 9040,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 48.999999999883585,
+                "adapterMs": 20,
+                "engineMs": 8538,
+                "packMs": 361.999
+              },
+              "jsContextMs": 13544,
+              "jsRunMs": 3545,
+              "jsTotalMs": 17089
             }
           ],
           "exactNativeParity": true,
           "timings": {
-            "assetFetchMs": 6,
+            "assetFetchMs": 8,
             "assetBytes": 5838695,
-            "compileMs": 12,
+            "compileMs": 16,
             "instantiateMs": 1,
-            "runtimeReadyMs": 6,
-            "jsModuleAndParseMs": 64,
-            "dataFetchMs": 13,
+            "runtimeReadyMs": 8,
+            "jsModuleAndParseMs": 76,
+            "dataFetchMs": 19,
             "dataDecodeMs": 0
           },
           "memory": {
@@ -202,7 +464,7 @@
   },
   "limitations": [
     "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
-    "1 local repeat does not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.",
+    "Each cell requested 20 local repeats; completed results and timeouts are recorded per cell and do not establish production shadow reliability.",
     "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
   ]
 }

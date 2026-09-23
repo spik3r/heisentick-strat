@@ -91,24 +91,24 @@ application code or establish exact full-data parity.
 
 ## Full-data parity rerun after the scan fix
 
-After the application fix merged as `ad722ca2`, one published-artifact full
-cell completed in each of WebKit and Chromium. Native and WASM agreed on 10,177
-trades with digest
-`fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc`.
-JavaScript produced digest
-`e46725260609839419cbc00fa88aee60d4fa8fc97b39e27f8e9464478e6ffab7`
-in both browsers.
+After the application fix merged as `ad722ca2`, the first harness run reported
+trade 5,438 as `2049.445` from native/WASM and `2049.4449999999997` from
+JavaScript. This was a harness defect. Go's result envelope intentionally
+serializes every number to 15 significant digits, and the application's
+existing conformance serializer applies the same rule to JavaScript before
+byte-for-byte comparison. The browser harness had applied a separate rule only
+to P&L and points. No engine arithmetic or approved price/tick semantic differed.
 
-The first JSON-significant difference is trade 5,438: native/WASM record
-`exit` and `tp` as `2049.445`; JavaScript records both as
-`2049.4449999999997`. The surrounding entry, stop, size, P&L, reason, indices,
-timestamps and metadata agree. WebKit took 5.343 seconds for WASM and 14.147
-seconds for JavaScript context plus engine work. Chromium took 5.918 seconds
-for WASM and 10.568 seconds for JavaScript context plus engine work.
+With the established result serialization applied to every number, WebKit
+completed 20 full-data repeats with exact native/WASM/JavaScript equality for
+all 10,177 trades. The shared digest was
+`04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f`.
+Median WASM time was 6.885 seconds; median JavaScript context plus engine time
+was 16.794 seconds. The slowest JavaScript repeat took 77.845 seconds.
 
-This browser-independent exact price mismatch fails the parity gate. Repeats
-and Firefox were not run because the task required exact equality before those
-resource-heavy cells. D-11 remains open.
+Chromium completed one exact full-data comparison with the same trade count and
+digest. Its 20-repeat cell then reached the 15-minute cap before returning a
+result. Firefox was not started after that bounded failure. D-11 remains open.
 
 ## Evidence files
 
@@ -118,6 +118,7 @@ resource-heavy cells. D-11 remains open.
 - `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-js-fixed-candidate.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-webkit.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-chromium.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-chromium-20-repeat.json`
 
-HT-036 remains open for exact full-data parity, at least 20 comparisons per
-required cell, Firefox coverage and production shadow reliability evidence.
+HT-036 remains open for 20 completed Chromium comparisons, Firefox coverage
+and production shadow reliability evidence.

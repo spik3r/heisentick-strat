@@ -58,8 +58,16 @@ function canonical(value) {
   if (value && typeof value === 'object') {
     return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonical(value[key])]));
   }
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value)) return null;
+    const rounded = Number(value.toPrecision(15));
+    return Object.is(rounded, -0) ? 0 : rounded;
+  }
   return value;
 }
+
+assert.equal(canonical(2047.445 + 2), 2049.445,
+  'result comparison must use the established 15-significant-digit serialization contract');
 
 function comparableTrade(trade) {
   const fields = ['entry', 'entryIndex', 'entryT', 'exit', 'exitIndex', 'exitT', 'initialSl', 'initialTp', 'pnl', 'points', 'size', 'sl', 'tp', 'side', 'reason', 'rule', 'tag', 'meta', 'partial'];
@@ -68,8 +76,6 @@ function comparableTrade(trade) {
     if (field in trade) out[field] = trade[field];
   }
   out.partial = out.partial || false;
-  out.pnl = Math.round(out.pnl * 1e9) / 1e9;
-  out.points = Math.round(out.points * 1e9) / 1e9;
   return canonical(out);
 }
 
@@ -189,6 +195,11 @@ const browserFunction = async ({ baseURL, size, repeats, stratRelease }) => {
   const canonical = (value) => {
     if (Array.isArray(value)) return value.map(canonical);
     if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonical(value[key])]));
+    if (typeof value === 'number') {
+      if (!Number.isFinite(value)) return null;
+      const rounded = Number(value.toPrecision(15));
+      return Object.is(rounded, -0) ? 0 : rounded;
+    }
     return value;
   };
   const comparableTrade = (trade) => {
@@ -196,8 +207,6 @@ const browserFunction = async ({ baseURL, size, repeats, stratRelease }) => {
     const out = {};
     for (const field of fields) if (field in trade) out[field] = trade[field];
     out.partial = out.partial || false;
-    out.pnl = Math.round(out.pnl * 1e9) / 1e9;
-    out.points = Math.round(out.points * 1e9) / 1e9;
     return canonical(out);
   };
   const digest = async (trades) => {
@@ -347,7 +356,7 @@ try {
     native: nativeCases,
     browsers,
     reliability: {},
-    limitations: ['Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.', `${repeats} local ${repeats === 1 ? 'repeat does' : 'repeats do'} not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.`, 'The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency.'],
+    limitations: ['Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.', `Each cell requested ${repeats} local ${repeats === 1 ? 'repeat' : 'repeats'}; completed results and timeouts are recorded per cell and do not establish production shadow reliability.`, 'The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency.'],
   };
   const persistEvidence = () => {
     evidence.generatedAt = new Date().toISOString();
