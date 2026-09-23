@@ -68,10 +68,33 @@ full call. The call completed, but that memory level remains material evidence
 for D-11 budget review. The result isolates the released OOM fix; it does not
 explain or waive the combined-cell timeouts.
 
+## Combined timeout isolation
+
+A follow-up WebKit diagnostic applied separate two-minute caps to JavaScript
+setup/transfer, context construction, engine execution and normalization. On
+app main `dea45b7b`, setup took 83 ms and context construction took 9.687
+seconds. The JavaScript engine phase then exceeded its two-minute cap;
+normalization never began. Published v0.6.1 WASM had already completed the same
+full input in 6.691 seconds, so neither WASM nor transfer/normalization caused
+the combined-cell timeout.
+
+The JavaScript opening-range-breakout implementation had the same contiguous
+UTC-slot reverse-scan defect fixed in Go. At the first bar of a new slot it
+read all 50,000 older bars instead of stopping at the immediately different
+slot key. A one-line candidate fix reduced that regression from 50,000 indexed
+bar reads to one. Against the same app commit plus that diff, full WebKit setup
+took 78 ms, context construction 9.755 seconds, engine execution 1.722 seconds
+and normalization 64 ms, returning 10,177 trades.
+
+Those candidate timings prove the timeout cause but do not qualify unmerged
+application code or establish exact full-data parity.
+
 ## Evidence files
 
 - `scripts/spikes/enginewasm/evidence/v0.6.1-real-data-webkit-chromium.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-wasm-only.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-js-main-baseline.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-js-fixed-candidate.json`
 
 HT-036 remains open for exact full-data parity, at least 20 comparisons per
 required cell, Firefox coverage and production shadow reliability evidence.

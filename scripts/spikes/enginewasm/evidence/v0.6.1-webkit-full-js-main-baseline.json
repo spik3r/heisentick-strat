@@ -1,0 +1,45 @@
+{
+  "schema": "enginewasm-webkit-full-js-diagnostic-v1",
+  "generatedAt": "2026-09-23T04:24:12.933Z",
+  "status": "incomplete",
+  "release": "v0.6.1",
+  "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+  "appCommit": "dea45b7b266337efce35dd81d5864b685c71fb1b",
+  "appWorkingTreeDiffSha256": null,
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "count": 386207,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04"
+  },
+  "environment": {
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "phaseTimeoutMs": 120000,
+  "phases": {
+    "setup": {
+      "status": "measured",
+      "elapsedMs": 83,
+      "dataBytes": 18537952,
+      "columnBytes": 18537936
+    },
+    "context": {
+      "status": "measured",
+      "elapsedMs": 9687,
+      "bars": 386207
+    },
+    "engine": {
+      "status": "timed-out",
+      "error": {
+        "name": "Error",
+        "message": "engine exceeded 120000 ms timeout"
+      }
+    }
+  },
+  "events": [],
+  "browser": {
+    "name": "webkit",
+    "version": "26.0"
+  }
+}
