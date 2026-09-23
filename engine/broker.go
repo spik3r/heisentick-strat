@@ -259,6 +259,10 @@ func (b *broker) clearExecutionOrders() {
 }
 
 func (b *broker) run() []Trade {
+	return b.runWithFinalization(true)
+}
+
+func (b *broker) runWithFinalization(liquidateAtEnd bool) []Trade {
 	if trades, handled := b.runSpecialSetup(); handled {
 		return trades
 	}
@@ -281,7 +285,7 @@ func (b *broker) run() []Trade {
 			b.clearExecutionOrders()
 		}
 	}
-	if n > 0 && end >= 0 && b.hasPosition {
+	if liquidateAtEnd && n > 0 && end >= 0 && b.hasPosition {
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
@@ -300,6 +304,10 @@ func (b *broker) runCapturedSource() []order {
 }
 
 func (b *broker) runScheduled(entries []ScheduledEntry, orders []order) []Trade {
+	return b.runScheduledWithFinalization(entries, orders, true)
+}
+
+func (b *broker) runScheduledWithFinalization(entries []ScheduledEntry, orders []order, liquidateAtEnd bool) []Trade {
 	byChart := make(map[int][]order, len(entries))
 	for index, entry := range entries {
 		if index < len(orders) {
@@ -325,7 +333,7 @@ func (b *broker) runScheduled(entries []ScheduledEntry, orders []order) []Trade 
 			b.clearExecutionOrders()
 		}
 	}
-	if end >= 0 && b.hasPosition {
+	if liquidateAtEnd && end >= 0 && b.hasPosition {
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
