@@ -1,6 +1,6 @@
 {
   "schema": "enginewasm-real-data-browser-benchmark-v1",
-  "generatedAt": "2026-09-23T05:39:53.024Z",
+  "generatedAt": "2026-09-23T05:37:48.149Z",
   "source": {
     "repository": "spik3r/heisentick-strat",
     "release": "v0.6.1",
@@ -46,7 +46,7 @@
     "node": "v26.0.0",
     "playwright": "1.57.0"
   },
-  "repeats": 1,
+  "repeats": 20,
   "cellTimeoutMs": 900000,
   "native": [
     {
@@ -57,7 +57,83 @@
       "runs": [
         {
           "repeat": 1,
-          "wallMs": 2598.91275
+          "wallMs": 2562.024625
+        },
+        {
+          "repeat": 2,
+          "wallMs": 2524.170709
+        },
+        {
+          "repeat": 3,
+          "wallMs": 2532.251625
+        },
+        {
+          "repeat": 4,
+          "wallMs": 2521.3128340000003
+        },
+        {
+          "repeat": 5,
+          "wallMs": 2540.446
+        },
+        {
+          "repeat": 6,
+          "wallMs": 2551.8372500000005
+        },
+        {
+          "repeat": 7,
+          "wallMs": 2525.9995419999996
+        },
+        {
+          "repeat": 8,
+          "wallMs": 2531.214915999997
+        },
+        {
+          "repeat": 9,
+          "wallMs": 2565.713458000002
+        },
+        {
+          "repeat": 10,
+          "wallMs": 2572.8177920000016
+        },
+        {
+          "repeat": 11,
+          "wallMs": 2538.231208000001
+        },
+        {
+          "repeat": 12,
+          "wallMs": 2550.9433339999996
+        },
+        {
+          "repeat": 13,
+          "wallMs": 2543.270166000002
+        },
+        {
+          "repeat": 14,
+          "wallMs": 2567.5817499999976
+        },
+        {
+          "repeat": 15,
+          "wallMs": 2557.572957999997
+        },
+        {
+          "repeat": 16,
+          "wallMs": 2575.9337090000045
+        },
+        {
+          "repeat": 17,
+          "wallMs": 2522.7628330000007
+        },
+        {
+          "repeat": 18,
+          "wallMs": 2535.690625000003
+        },
+        {
+          "repeat": 19,
+          "wallMs": 2571.593249999998
+        },
+        {
+          "repeat": 20,
+          "wallMs": 2530.091124999999
         }
       ]
     }
@@ -65,68 +141,27 @@
   "browsers": [
     {
       "name": "chromium",
-      "status": "measured",
+      "status": "incomplete",
       "cases": [
         {
           "size": 386207,
-          "status": "measured",
-          "tradeCount": 10177,
-          "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
-          "jsTradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
-          "exactWasmJsTradeEquality": true,
-          "wasmJsFirstDifference": null,
-          "wasmJsFirstDifferenceTrades": null,
-          "runs": [
-            {
-              "repeat": 1,
-              "wasmWallMs": 6275.100000023842,
-              "wasm": {
-                "copyInMs": 18,
-                "adapterMs": 10.4,
-                "engineMs": 6095.099,
-                "packMs": 134.8,
-                "copyOutMs": 0.20000004768371582
-              },
-              "jsContextMs": 9430.899999976158,
-              "jsRunMs": 1630,
-              "jsTotalMs": 11060.899999976158
-            }
-          ],
-          "exactNativeParity": true,
-          "timings": {
-            "assetFetchMs": 8,
-            "assetBytes": 5838695,
-            "compileMs": 5.399999976158142,
-            "instantiateMs": 0.5999999046325684,
-            "runtimeReadyMs": 14.5,
-            "jsModuleAndParseMs": 51.300000071525574,
-            "dataFetchMs": 15.699999928474426,
-            "dataDecodeMs": 0.10000002384185791
-          },
-          "memory": {
-            "performanceMemory": {
-              "jsHeapSizeLimit": 3760000000,
-              "totalJSHeapSize": 3760000000,
-              "usedJSHeapSize": 3760000000
-            },
-            "chromiumCDP": {}
-          }
+          "status": "timed-out",
+          "reason": "cell exceeded 900000 ms timeout"
         }
       ],
-      "version": "143.0.7499.4",
-      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.7499.4 Safari/537.36"
+      "version": "143.0.7499.4"
     }
   ],
   "reliability": {
     "attemptedCells": 1,
-    "measuredCells": 1,
+    "measuredCells": 0,
     "failedCells": 0,
-    "timedOutCells": 0,
+    "timedOutCells": 1,
     "unavailableBrowsers": 0
   },
   "limitations": [
     "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
-    "Each cell requested 1 local repeat; completed results and timeouts are recorded per cell and do not establish production shadow reliability.",
+    "Each cell requested 20 local repeats; completed results and timeouts are recorded per cell and do not establish production shadow reliability.",
     "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
   ]
 }
