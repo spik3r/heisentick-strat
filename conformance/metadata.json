@@ -4,6 +4,7 @@
       "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
       "deployed-dsl-flag-continuation-one-four-hour-review",
       "deployed-dsl-session-expansion-ny",
+      "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
       "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
       "family-break-retest",
       "family-channel-break-hold",
@@ -53,6 +54,6 @@
     "diagnostic": 9,
     "setup-family": 26
   },
-  "runCases": 32,
+  "runCases": 33,
   "schema": "dsl-conformance-metadata-v1"
 }

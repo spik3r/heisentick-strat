@@ -32,6 +32,7 @@ var implementedRunCases = []string{
 	"family-intra-hour-run-exhaustion",
 	"family-sma-golden-cross",
 	"family-sma-golden-cross-protected",
+	"deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
 	"family-keltner-reversion",
 	"family-keltner-expansion",
 	"money-risk-sizing",

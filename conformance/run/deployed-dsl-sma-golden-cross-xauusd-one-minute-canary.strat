@@ -1,0 +1,21 @@
+dsl v7
+strategy "SMA Golden Cross XAUUSD 1m Execution Test" {
+  description "Execution test: long SMA 50/200 cross with a 2 ATR stop, 3 ATR target, and bearish-cross exit."
+}
+
+market conditions {
+  slices(XAUUSD 1m)
+}
+
+setup {
+  type: sma golden cross
+  sma fast 50
+  sma slow 200
+  sma atr 14
+  sma stop 2 ATR
+  sma target 3 ATR
+}
+
+filters {
+  side long only
+}
