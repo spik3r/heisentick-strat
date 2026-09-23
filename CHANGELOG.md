@@ -8,6 +8,26 @@ version and is named here.
 
 Nothing yet.
 
+## [0.6.0] — 2026-09-23
+
+Minor bump: the engine and CLI add the first opt-in native Forward prefix
+contract. Existing report, grid and no-checkpoint prefix behavior is unchanged.
+
+- `engine.RunPrefix` preserves an open position at the end of supplied data,
+  returns stable lifecycle IDs for open and closed rows, and reports a digest
+  binding the complete replay input. C5 and special-family paths fail typed
+  instead of falling back to report liquidation.
+- `engine.RunPrefixResumable` adds an opaque, versioned checkpoint for
+  opening-range-breakout routes. It restores open and pending state, emits
+  closed-trade deltas, rejects changed input/config/state and leaves every
+  unsupported family or route closed. Callers still supply the complete
+  extended bar prefix.
+- `heisentick forward-prefix` emits one JSON result without a synthetic
+  end-of-test close. Optional checkpoint input/output flags publish a synced
+  `0600` successor candidate without replacing an existing file. The caller
+  advances its durable pointer only after exit 0 and complete stdout capture.
+- Existing `report` and `grid` JSON and liquidation semantics are unchanged.
+
 ## [0.5.0] — 2026-09-23
 
 Minor bump: disabled Mid sessions no longer consume setup cooldown state in
