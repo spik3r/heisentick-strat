@@ -6,6 +6,34 @@ import (
 	"github.com/spik3r/heisentick-strat/dsl"
 )
 
+func validatePrefixOutput(costs Costs, trades []Trade, positions []OpenPositionSnapshot) error {
+	if err := validateDerivedOutput(costs, trades); err != nil {
+		return err
+	}
+	for i, position := range positions {
+		for _, field := range []struct {
+			name  string
+			value float64
+		}{
+			{name: "entry", value: position.Entry},
+			{name: "entryT", value: position.EntryT},
+			{name: "initialSl", value: position.InitialSL},
+			{name: "initialTp", value: position.InitialTP},
+			{name: "sl", value: position.SL},
+			{name: "tp", value: position.TP},
+			{name: "size", value: position.Size},
+		} {
+			if !isFiniteDerivedOutput(field.value) {
+				return fmt.Errorf("prefix result open position %d %s contains non-finite value", i, field.name)
+			}
+		}
+		if err := validateDerivedOutput(Costs{}, []Trade{{Meta: position.Meta}}); err != nil {
+			return fmt.Errorf("prefix result open position %d metadata is invalid: %w", i, err)
+		}
+	}
+	return nil
+}
+
 // PrefixUnsupportedError reports an engine path that does not yet implement
 // preserved-open prefix execution. Callers must not fall back to report
 // liquidation when this error is returned.
@@ -101,5 +129,9 @@ func RunPrefix(request RunRequest) (PrefixResult, error) {
 		prepared.broker.setExecutionWindow(prepared.execution)
 	}
 	trades := prepared.broker.runWithFinalization(false)
-	return PrefixResult{Trades: append([]Trade(nil), trades...), OpenPositions: prepared.broker.openPositionSnapshot()}, nil
+	positions := prepared.broker.openPositionSnapshot()
+	if err := validatePrefixOutput(prepared.fixture.Costs, trades, positions); err != nil {
+		return PrefixResult{}, err
+	}
+	return PrefixResult{Trades: append([]Trade{}, trades...), OpenPositions: positions}, nil
 }

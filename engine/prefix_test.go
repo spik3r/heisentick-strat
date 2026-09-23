@@ -2,6 +2,7 @@ package engine
 
 import (
 	"errors"
+	"math"
 	"os"
 	"path/filepath"
 	"testing"
@@ -41,7 +42,7 @@ func TestRunPrefixPreservesOpenPositionAndLaterClosesOnce(t *testing.T) {
 	if err != nil {
 		t.Fatalf("run open prefix: %v", err)
 	}
-	if len(open.Trades) != 0 || len(open.OpenPositions) != 1 {
+	if open.Trades == nil || len(open.Trades) != 0 || len(open.OpenPositions) != 1 {
 		t.Fatalf("open prefix = trades %+v positions %+v, want one preserved position and no synthetic close", open.Trades, open.OpenPositions)
 	}
 	position := open.OpenPositions[0]
@@ -99,5 +100,28 @@ func TestRunPrefixRejectsUnsupportedEnginePaths(t *testing.T) {
 	_, err = RunPrefix(c5)
 	if !errors.As(err, &unsupported) || unsupported.Path != "source-entry C5" {
 		t.Fatalf("C5 prefix error = %#v, want typed unsupported path", err)
+	}
+}
+
+func TestPrefixOutputRejectsNonFiniteClosedAndOpenState(t *testing.T) {
+	finiteTrade := Trade{
+		Entry: 1, EntryT: 2, Exit: 3, ExitT: 4, InitialSL: 0, InitialTP: 0,
+		PnL: 5, Points: 6, Size: 7, SL: 0, TP: 0, NoStop: true, NoTarget: true,
+	}
+	if err := validatePrefixOutput(Costs{}, []Trade{finiteTrade}, []OpenPositionSnapshot{{
+		Entry: 1, EntryT: 2, InitialSL: 0, InitialTP: 0, SL: 0, TP: 0, Size: 1,
+		NoStop: true, NoTarget: true,
+	}}); err != nil {
+		t.Fatalf("absent brackets use finite zero values plus flags: %v", err)
+	}
+
+	badTrade := finiteTrade
+	badTrade.Meta = TradeMeta{"metric": math.Inf(1)}
+	if err := validatePrefixOutput(Costs{}, []Trade{badTrade}, nil); err == nil {
+		t.Fatal("non-finite closed trade metadata was accepted")
+	}
+	badPosition := OpenPositionSnapshot{Entry: 1, EntryT: 2, InitialSL: 0, InitialTP: 0, SL: 0, TP: math.NaN(), Size: 1}
+	if err := validatePrefixOutput(Costs{}, nil, []OpenPositionSnapshot{badPosition}); err == nil {
+		t.Fatal("non-finite open position field was accepted")
 	}
 }
