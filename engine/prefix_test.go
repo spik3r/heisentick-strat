@@ -46,7 +46,7 @@ func TestRunPrefixPreservesOpenPositionAndLaterClosesOnce(t *testing.T) {
 		t.Fatalf("open prefix = trades %+v positions %+v, want one preserved position and no synthetic close", open.Trades, open.OpenPositions)
 	}
 	position := open.OpenPositions[0]
-	if position.EntryT != 1736335800000 || position.EntryIndex != 677 || position.Side != "long" {
+	if position.PositionID == "" || position.EntryT != 1736335800000 || position.EntryIndex != 677 || position.Side != "long" {
 		t.Fatalf("open position = %+v, want reviewed fixture entry", position)
 	}
 
@@ -58,9 +58,13 @@ func TestRunPrefixPreservesOpenPositionAndLaterClosesOnce(t *testing.T) {
 		t.Fatalf("extended prefix positions = %+v, want closed", closed.OpenPositions)
 	}
 	matches := 0
-	for _, trade := range closed.Trades {
+	for _, closedTrade := range closed.Trades {
+		trade := closedTrade.Trade
 		if trade.EntryT == position.EntryT && trade.EntryIndex == position.EntryIndex && trade.Side == position.Side {
 			matches++
+			if closedTrade.PositionID != position.PositionID {
+				t.Fatalf("closed position id = %q, want open id %q", closedTrade.PositionID, position.PositionID)
+			}
 			if trade.Reason == ReasonEndOfTest {
 				t.Fatalf("extended prefix synthesized end-of-test close: %+v", trade)
 			}
@@ -68,6 +72,42 @@ func TestRunPrefixPreservesOpenPositionAndLaterClosesOnce(t *testing.T) {
 	}
 	if matches != 1 {
 		t.Fatalf("extended prefix matching closes = %d in %+v, want exactly one", matches, closed.Trades)
+	}
+}
+
+func TestPrefixIdentityAndInputBindingDomains(t *testing.T) {
+	base := moneyRiskSizingPrefixRequest(t, 679)
+	result, err := RunPrefix(base)
+	if err != nil {
+		t.Fatalf("base prefix: %v", err)
+	}
+	positionID := result.OpenPositions[0].PositionID
+	otherID, err := prefixPositionID(base.StrategyID, base.Symbol, base.Timeframe, result.OpenPositions[0].EntryT+1, result.OpenPositions[0].EntryIndex+1, result.OpenPositions[0].Side)
+	if err != nil || otherID == positionID {
+		t.Fatalf("new entry id = %q / %v, want different from %q", otherID, err, positionID)
+	}
+
+	variants := []RunRequest{base, base, base}
+	variants[0].Costs.Slippage += 0.01
+	variants[1].Series.C = append([]float64(nil), base.Series.C...)
+	variants[1].Series.C[0] += 0.01
+	variants[2].Config = dsl.Config{}
+	for key, value := range base.Config {
+		variants[2].Config[key] = value
+	}
+	variants[2].Config["description"] = "digest-only-change"
+	for i, variant := range variants {
+		digest, err := prefixCheckpointDigest(variant)
+		if err != nil {
+			t.Fatalf("variant %d digest: %v", i, err)
+		}
+		if digest == result.CheckpointDigest {
+			t.Fatalf("variant %d digest did not change", i)
+		}
+		gotID, err := prefixPositionID(variant.StrategyID, variant.Symbol, variant.Timeframe, result.OpenPositions[0].EntryT, result.OpenPositions[0].EntryIndex, result.OpenPositions[0].Side)
+		if err != nil || gotID != positionID {
+			t.Fatalf("variant %d position id = %q / %v, want %q", i, gotID, err, positionID)
+		}
 	}
 }
 
