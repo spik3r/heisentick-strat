@@ -125,7 +125,7 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	case "sessions":
 		p.parseSessions(tokens[1:])
 	case "trade":
-		p.parseTradeWindow(tokens)
+		p.parseTradeWindow(line, tokens)
 	case "new":
 		p.parseNewYorkHour(tokens)
 	case "session":

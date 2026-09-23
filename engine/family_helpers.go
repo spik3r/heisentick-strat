@@ -2,6 +2,7 @@ package engine
 
 import (
 	"math"
+	"strings"
 
 	"github.com/spik3r/heisentick-strat/contextcols"
 	"github.com/spik3r/heisentick-strat/dsl"
@@ -107,6 +108,48 @@ func tradeWindowProgress(t float64, allowed map[string]bool) (windowProgress, bo
 	return windowProgress{}, false
 }
 
+func tradeWindowSegmentMatches(part string, minutesFromStart int) bool {
+	switch part {
+	case "", "all", "full":
+		return true
+	case "open", "first":
+		return minutesFromStart >= 0 && minutesFromStart < 60
+	case "middle", "second":
+		return minutesFromStart >= 60 && minutesFromStart < 120
+	case "close", "third":
+		return minutesFromStart >= 120 && minutesFromStart < 180
+	default:
+		return false
+	}
+}
+
+func inSegmentedTradeWindow(t float64, p flagParams, allowed map[string]bool) bool {
+	if len(p.TradeWindowSegments) == 0 && !p.TradeWindowMinuteRangeSet {
+		return true
+	}
+	progress, ok := tradeWindowProgress(t, allowed)
+	if !ok {
+		return false
+	}
+	if p.TradeWindowMinuteRangeSet && (float64(progress.MinutesFromStart) < p.TradeWindowMinuteFrom || float64(progress.MinutesFromStart) >= p.TradeWindowMinuteTo) {
+		return false
+	}
+	if len(p.TradeWindowSegments) == 0 {
+		return true
+	}
+	for _, raw := range p.TradeWindowSegments {
+		parts := strings.SplitN(strings.ToLower(raw), ".", 2)
+		part := "all"
+		if len(parts) == 2 {
+			part = parts[1]
+		}
+		if parts[0] == progress.Key && tradeWindowSegmentMatches(part, progress.MinutesFromStart) {
+			return true
+		}
+	}
+	return false
+}
+
 func allowedWindows(p flagParams) map[string]bool {
 	return map[string]bool{
 		"asia":   p.UseAsiaWindow,
@@ -130,19 +173,11 @@ func inSetupTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
 		return true
 	}
 	h := contextcols.LocalHour(int64(t))
-	if p.UseAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.UseMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.UseLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.UseNYWindow && h >= 21 && h < 24 && (24-h)*60 >= minMinutesLeft {
-		return true
-	}
-	return false
+	inside := p.UseAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft ||
+		p.UseMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft ||
+		p.UseLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft ||
+		p.UseNYWindow && h >= 21 && h < 24 && (24-h)*60 >= minMinutesLeft
+	return inside && inSegmentedTradeWindow(t, p, allowedWindows(p))
 }
 
 func openingAllowedWindows(p flagParams) map[string]bool {

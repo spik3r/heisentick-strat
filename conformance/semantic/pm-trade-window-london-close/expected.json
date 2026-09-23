@@ -1,0 +1,24 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "pm-trade-window-london-close",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 47,
+      "entryT": 1767772800000,
+      "entry": 2025,
+      "initialSl": 1997.5,
+      "initialTp": 2052.5,
+      "exitIndex": 50,
+      "exitT": 1767783600000,
+      "exit": 2052.5,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "Bar 46 (2026-01-07 07:00 UTC = 17:00 fixed UTC+10) is in london.middle and its long signal is rejected by trade window in (london.close).",
+    "Bar 47 (08:00 UTC = 18:00 fixed UTC+10) is the first bar of london.close, so its long signal is admitted at the 2025 close.",
+    "london.close is the half-open third hour [18:00, 19:00). Focused boundary tests also pin the four-hour mid window: 15:00-16:00 matches only mid.all.",
+    "Stop = 1997.5 and target = 2052.5; bar 50 reaches the target after entry gates have admitted the trade."
+  ]
+}

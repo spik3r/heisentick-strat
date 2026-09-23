@@ -7,19 +7,11 @@ func inFlagTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
 		return true
 	}
 	h := contextcols.LocalHour(int64(t))
-	if p.UseAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.UseMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.UseLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.UseNYWindow && h >= 21 && h < 24 && (24-h)*60 >= minMinutesLeft {
-		return true
-	}
-	return false
+	inside := p.UseAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft ||
+		p.UseMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft ||
+		p.UseLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft ||
+		p.UseNYWindow && h >= 21 && h < 24 && (24-h)*60 >= minMinutesLeft
+	return inside && inSegmentedTradeWindow(t, p, allowedWindows(p))
 }
 
 func inAdmittedTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
@@ -27,17 +19,10 @@ func inAdmittedTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool
 		return true
 	}
 	h := contextcols.LocalHour(int64(t))
-	if p.AdmitAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.AdmitMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.AdmitLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft {
-		return true
-	}
-	if p.AdmitNYWindow && h >= 21 && h < 24 && (24-h)*60 >= minMinutesLeft {
-		return true
-	}
-	return false
+	allowed := map[string]bool{"asia": p.AdmitAsiaWindow, "mid": p.AdmitMidWindow, "london": p.AdmitLondonWindow, "ny": p.AdmitNYWindow}
+	inside := p.AdmitAsiaWindow && h >= 9 && h < 12 && (12-h)*60 >= minMinutesLeft ||
+		p.AdmitMidWindow && h >= 12 && h < 16 && (16-h)*60 >= minMinutesLeft ||
+		p.AdmitLondonWindow && h >= 16 && h < 19 && (19-h)*60 >= minMinutesLeft ||
+		p.AdmitNYWindow && h >= 21 && h < 24 && (24-h)*60 >= minMinutesLeft
+	return inside && inSegmentedTradeWindow(t, p, allowed)
 }

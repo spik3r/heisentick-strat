@@ -163,15 +163,21 @@ Time gates:
   deprecated `windows(...)` values win regardless of whether they appear before
   or after `type:`. `windows(...)` is the *deprecated* spelling.
 - `trade window minutes A to B` — minutes since session-window open,
-  increasing range required.
+  increasing range required. The interval is half-open: `A <= minute < B`.
 - `trade window unrestricted` — research-only override that removes the
   engine's fixed UTC+10 trade-window gate. Other filters, including any
   explicit `local hour` filter, still apply; use it only when the study maps a
   session in another timezone explicitly.
 - `trade window in (london.open, ny.open, …)` — window segments
-  `<window>.<part>` with window ∈ {asia, london, ny} and part ∈
+  `<window>.<part>` with window ∈ {asia, mid, london, ny} and part ∈
   {open, middle, close, all} (aliases: first/second/third/full;
   `london_open`/`london-open` normalize to `london.open`).
+  Compatibility uses a fixed UTC+10 clock: asia 09:00–12:00, mid
+  12:00–16:00, London 16:00–19:00 and NY 21:00–24:00. `.open`, `.middle`
+  and `.close` are the first, second and third half-open 60-minute parts.
+  Because mid lasts four hours, 15:00–16:00 matches only `mid.all`. The
+  segment and minute gates intersect and still respect `sessions(...)`.
+  A DST-aware clock would be a separate versioned semantic change.
 - `local weekday in (Mon, Tue)` / `local weekday not in (Fri)` — allow/block
   by local weekday (`weekday …` also accepted).
 - `local hour in (…)` / `not in (…)` — allow/block local hours 0–23.

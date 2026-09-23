@@ -86,6 +86,7 @@ it is information, not a verdict.
 | `pm-tick-rounding` | Stop/target between ticks: unrounded values until the spec defines tick size and rounding | `dsl-spec.md` §2, §7; plan "Correctness" determinism | spec-gap | match (JS does not round either) |
 | `pm-missing-candle` | Missing candle inside a session: `lookback N candles` counts bars, no synthetic fill | `priceMomentum.md` Purpose ("exactly N bars earlier"); `dsl-spec.md` §2 | derived | match |
 | `pm-session-no-entry-outside-window` | Signal outside every enabled session is rejected; next in-window signal trades | `dsl-spec.md` §4 sessions, §10 gate order | spec-gap | match |
+| `pm-trade-window-london-close` | Fixed UTC+10 segmented admission; London middle is rejected and London close is admitted; focused tests pin the fourth-mid-hour rule | `dsl-spec.md` §4 trade windows | derived | match |
 | `pm-position-crosses-session-end` | Session end does not close an open position; target hit after the window | `dsl-spec.md` §4, §7 (`maxHoldCandles` is the only time exit), §10 | spec-gap | match |
 | `pm-htf-unclosed-bar-no-lookahead` | HTF guard reads only completed 4h candles; signal inside a forming candle judged by the last closed one | `dsl-spec.md` §10 causality, §6 HTF gate; `priceMomentum.md` HTF guard | derived | mismatch: JS 0 trades pending the D19 consumer adoption; Go uses the specified last-completed-candle close/open direction |
 

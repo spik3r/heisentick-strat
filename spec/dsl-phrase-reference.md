@@ -32,8 +32,8 @@ file is compiled by the doc-fence tests.
 | Phrase | Parameters | Description | Example |
 | --- | --- | --- | --- |
 | `sessions(...)` | `asia`, `mid`, `london`, `ny` | Enables trading sessions. | `sessions(london, ny)` |
-| `trade window in (...)` | `<session>.<part>` | Restricts to session window segments. | `trade window in (london.open, ny.open)` |
-| `trade window minutes A to B` | minutes | Restricts minutes from the active window open. | `trade window minutes 0 to 90` |
+| `trade window in (...)` | `<session>.<part>` | Restricts fixed UTC+10 windows to half-open 60-minute parts; the fourth `mid` hour matches only `mid.all`. | `trade window in (london.open, ny.open)` |
+| `trade window minutes A to B` | minutes | Restricts minutes from the active window open to the half-open interval `[A, B)`. | `trade window minutes 0 to 90` |
 | `local weekday in (...)` / `not in (...)` | weekdays | Allows or blocks local weekdays. | `local weekday not in (Fri)` |
 | `local hour in (...)` / `not in (...)` | hours | Allows or blocks local hours. | `local hour in (7, 8, 9)` |
 | `session phase in (...)` / `not in (...)` | phases | Allows or blocks named session phases. | `session phase not in (lunch)` |
