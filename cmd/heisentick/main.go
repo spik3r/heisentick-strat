@@ -37,10 +37,10 @@ func usageText() string {
 
 Usage:
   heisentick report --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot [--slippage=<points>] [--slippage-bps=<basis-points>] [--include-trades=1] [--evidence=1] [--holdout-from=<epoch-ms>] [--json-only=1] [--memprofile=<path>]
-  heisentick forward-prefix --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> [--range=zone|pivot] [--slippage=<points>] [--slippage-bps=<basis-points>] [--data-root=<path>]
+  heisentick forward-prefix --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> [--range=zone|pivot] [--slippage=<points>] [--slippage-bps=<basis-points>] [--data-root=<path>] [--checkpoint-out=<new-path>] [--checkpoint-in=<prior-path> --checkpoint-out=<new-path>]
   heisentick grid --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot --set <param>=<v1,v2,...> [--json-only=1]
 
-forward-prefix always writes one JSON envelope for the loaded data prefix. It preserves open positions and does not support checkpoint resume yet.
+forward-prefix always writes one JSON envelope for the loaded data prefix. Without checkpoint flags it preserves the existing full-replay behavior. Checkpoint mode supports reviewed ORB routes only, still requires the complete extended bar prefix, and writes the opaque successor to a new candidate file. Input and output paths must differ and an existing output is never replaced. Advance a durable checkpoint pointer only after exit 0 and complete stdout JSON capture; stdout and the candidate-file rename cannot be atomic together.
 `
 }
 
