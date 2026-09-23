@@ -1,0 +1,135 @@
+{
+  "schema": "enginewasm-real-data-browser-benchmark-v1",
+  "generatedAt": "2026-09-23T06:09:16.292Z",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "release": "v0.6.1",
+    "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+    "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
+    "harnessSha256": "c6bc2264b2bcdf93af39b9549e204c57297c631f7c31d8b9680f7e2af314307c",
+    "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
+    "appCommit": "e2f859d4ea160915b1bc30912d67b7bb33ad6e08"
+  },
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 5838695,
+      "brotliBytes": 1129655,
+      "sha256": "82c48fd89fcd63668277e504f175c628b27ad1285027142c4045d5825098d271"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    },
+    "native": {
+      "label": "heisentick-darwin-arm64",
+      "sha256": "8238a2fb311ec8fae41382ef70c4061cc73a324a128f67b38090f3a47527e2b1",
+      "versionMetadata": "heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=27d02fe0929441ea3b99bc67a65fdd0e63f5db24\n\tbuild\tvcs.time=2026-09-23T03:27:23Z\n\tbuild\tvcs.modified=true"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
+    "count": 386207,
+    "measuredSizes": [
+      386207
+    ]
+  },
+  "environment": {
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "logicalCPUs": 10,
+    "totalMemoryBytes": 17179869184,
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "repeats": 1,
+  "cellTimeoutMs": 900000,
+  "native": [
+    {
+      "size": 386207,
+      "status": "measured",
+      "tradeCount": 10177,
+      "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 2803.69475
+        }
+      ]
+    }
+  ],
+  "browsers": [
+    {
+      "name": "firefox",
+      "status": "measured",
+      "cases": [
+        {
+          "size": 386207,
+          "status": "measured",
+          "tradeCount": 10177,
+          "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "jsTradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "wasmJsFirstDifferenceTrades": null,
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 58758,
+              "wasm": {
+                "copyOutMs": 0,
+                "copyInMs": 10,
+                "adapterMs": 3,
+                "engineMs": 57634.999,
+                "packMs": 997
+              },
+              "jsContextMs": 15047,
+              "jsRunMs": 2273,
+              "jsTotalMs": 17320
+            }
+          ],
+          "completedRepeats": 1,
+          "setupTimings": [
+            {
+              "repeat": 1,
+              "assetFetchMs": 16,
+              "assetBytes": 5838695,
+              "compileMs": 121,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 2,
+              "jsModuleAndParseMs": 65,
+              "dataFetchMs": 20,
+              "dataDecodeMs": 0
+            }
+          ],
+          "memorySamples": [
+            {
+              "repeat": 1,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            }
+          ],
+          "exactNativeParity": true
+        }
+      ],
+      "version": "144.0.2",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0"
+    }
+  ],
+  "reliability": {
+    "attemptedCells": 1,
+    "measuredCells": 1,
+    "failedCells": 0,
+    "timedOutCells": 0,
+    "unavailableBrowsers": 0
+  },
+  "limitations": [
+    "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
+    "Each cell requested 1 local repeat; completed results and timeouts are recorded per cell and do not establish production shadow reliability.",
+    "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
+  ]
+}
