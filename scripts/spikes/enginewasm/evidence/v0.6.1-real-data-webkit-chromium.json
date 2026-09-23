@@ -1,0 +1,274 @@
+{
+  "schema": "enginewasm-real-data-browser-benchmark-v1",
+  "generatedAt": "2026-09-23T04:06:31.325Z",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "release": "v0.6.1",
+    "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+    "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
+    "harnessSha256": "648ff420f369ca56e8d05f6a57e9a9c7af190f0d9d6830258357ba57cd570647",
+    "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
+    "appCommit": "d224b9a5613ecbdf8226cb2d2391147279295d9a"
+  },
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 5838695,
+      "brotliBytes": 1129655,
+      "sha256": "82c48fd89fcd63668277e504f175c628b27ad1285027142c4045d5825098d271"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    },
+    "native": {
+      "label": "heisentick-darwin-arm64",
+      "sha256": "8238a2fb311ec8fae41382ef70c4061cc73a324a128f67b38090f3a47527e2b1",
+      "versionMetadata": "heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=27d02fe0929441ea3b99bc67a65fdd0e63f5db24\n\tbuild\tvcs.time=2026-09-23T03:27:23Z\n\tbuild\tvcs.modified=true"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
+    "count": 386207,
+    "measuredSizes": [
+      50000,
+      386207
+    ]
+  },
+  "environment": {
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "logicalCPUs": 10,
+    "totalMemoryBytes": 17179869184,
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "repeats": 3,
+  "cellTimeoutMs": 900000,
+  "native": [
+    {
+      "size": 50000,
+      "status": "measured",
+      "tradeCount": 1297,
+      "tradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 846.277917
+        },
+        {
+          "repeat": 2,
+          "wallMs": 322.55162500000006
+        },
+        {
+          "repeat": 3,
+          "wallMs": 326.01133400000003
+        }
+      ]
+    },
+    {
+      "size": 386207,
+      "status": "measured",
+      "tradeCount": 10177,
+      "tradeDigest": "fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 2550.0615840000005
+        },
+        {
+          "repeat": 2,
+          "wallMs": 2502.130083
+        },
+        {
+          "repeat": 3,
+          "wallMs": 2576.954208
+        }
+      ]
+    }
+  ],
+  "browsers": [
+    {
+      "name": "webkit",
+      "status": "incomplete",
+      "cases": [
+        {
+          "size": 50000,
+          "status": "measured",
+          "tradeCount": 1297,
+          "tradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+          "jsTradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 792,
+              "wasm": {
+                "copyOutMs": 1,
+                "copyInMs": 1,
+                "adapterMs": 5,
+                "engineMs": 758.999,
+                "packMs": 22
+              },
+              "jsContextMs": 1141,
+              "jsRunMs": 6031.000000000001,
+              "jsTotalMs": 7172.000000000001
+            },
+            {
+              "repeat": 2,
+              "wasmWallMs": 825,
+              "wasm": {
+                "copyInMs": 1,
+                "adapterMs": 3,
+                "engineMs": 799,
+                "packMs": 17.999,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 1412,
+              "jsRunMs": 6220,
+              "jsTotalMs": 7632
+            },
+            {
+              "repeat": 3,
+              "wasmWallMs": 881,
+              "wasm": {
+                "copyInMs": 8,
+                "adapterMs": 2,
+                "engineMs": 832.999,
+                "packMs": 31,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 1560.0000000000036,
+              "jsRunMs": 7517.999999999996,
+              "jsTotalMs": 9078
+            }
+          ],
+          "exactNativeParity": true,
+          "timings": {
+            "assetFetchMs": 9,
+            "assetBytes": 5838695,
+            "compileMs": 28,
+            "instantiateMs": 2,
+            "runtimeReadyMs": 21,
+            "jsModuleAndParseMs": 60,
+            "dataFetchMs": 27,
+            "dataDecodeMs": 0
+          },
+          "memory": {
+            "performanceMemory": null,
+            "chromiumCDP": null
+          }
+        },
+        {
+          "size": 386207,
+          "status": "timed-out",
+          "reason": "cell exceeded 900000 ms timeout"
+        }
+      ],
+      "version": "26.0",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
+    },
+    {
+      "name": "chromium",
+      "status": "incomplete",
+      "cases": [
+        {
+          "size": 50000,
+          "status": "measured",
+          "tradeCount": 1297,
+          "tradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+          "jsTradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 875,
+              "wasm": {
+                "copyInMs": 0.5,
+                "adapterMs": 10.399,
+                "engineMs": 841.2,
+                "packMs": 21.1,
+                "copyOutMs": 0.10000002384185791
+              },
+              "jsContextMs": 994.4000000953674,
+              "jsRunMs": 4081.7999999523163,
+              "jsTotalMs": 5076.200000047684
+            },
+            {
+              "repeat": 2,
+              "wasmWallMs": 761.5,
+              "wasm": {
+                "copyInMs": 0.19999992847442627,
+                "adapterMs": 0.699,
+                "engineMs": 744.8,
+                "packMs": 15.3,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 899.1000000238419,
+              "jsRunMs": 3933.100000023842,
+              "jsTotalMs": 4832.200000047684
+            },
+            {
+              "repeat": 3,
+              "wasmWallMs": 889.1000000238419,
+              "wasm": {
+                "copyInMs": 0.19999992847442627,
+                "adapterMs": 0.699,
+                "engineMs": 821.9,
+                "packMs": 15.099,
+                "copyOutMs": 0.10000002384185791
+              },
+              "jsContextMs": 942.1999999284744,
+              "jsRunMs": 3964.8000000715256,
+              "jsTotalMs": 4907
+            }
+          ],
+          "exactNativeParity": true,
+          "timings": {
+            "assetFetchMs": 10,
+            "assetBytes": 5838695,
+            "compileMs": 5.299999952316284,
+            "instantiateMs": 0.5999999046325684,
+            "runtimeReadyMs": 15.800000071525574,
+            "jsModuleAndParseMs": 73.69999992847443,
+            "dataFetchMs": 23,
+            "dataDecodeMs": 0.10000002384185791
+          },
+          "memory": {
+            "performanceMemory": {
+              "jsHeapSizeLimit": 3760000000,
+              "totalJSHeapSize": 1360000000,
+              "usedJSHeapSize": 842000000
+            },
+            "chromiumCDP": {}
+          }
+        },
+        {
+          "size": 386207,
+          "status": "timed-out",
+          "reason": "cell exceeded 900000 ms timeout"
+        }
+      ],
+      "version": "143.0.7499.4",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.7499.4 Safari/537.36"
+    }
+  ],
+  "reliability": {
+    "attemptedCells": 4,
+    "measuredCells": 2,
+    "failedCells": 0,
+    "timedOutCells": 2,
+    "unavailableBrowsers": 0
+  },
+  "limitations": [
+    "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
+    "Three local repeats per cell estimate timing spread; they do not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.",
+    "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
+  ]
+}
