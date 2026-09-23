@@ -4,8 +4,8 @@ import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
-import { cpus, hostname, platform, release, tmpdir, totalmem } from 'node:os';
-import { dirname, extname, join, relative, resolve } from 'node:path';
+import { cpus, platform, release, tmpdir, totalmem } from 'node:os';
+import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { brotliCompressSync } from 'node:zlib';
@@ -323,14 +323,19 @@ try {
   }
   server = await serve(artifactRoot);
   const wasm = readFileSync(wasmPath);
+  const nativeVersionMetadata = spawnSync('go', ['version', '-m', nativePath], { encoding: 'utf8' }).stdout
+    .trim()
+    .split('\n')
+    .map((line, index) => index === 0 ? line.replace(nativePath, basename(nativePath)) : line)
+    .join('\n');
   const browsers = requestedBrowsers.map((name) => ({ name, status: 'pending', cases: [] }));
   const evidence = {
     schema: 'enginewasm-real-data-browser-benchmark-v1',
     generatedAt: new Date().toISOString(),
     source: { repository: 'spik3r/heisentick-strat', release: stratRelease, releaseCommit, harnessPath: relative(repoRoot, scriptPath), harnessSha256: sha256(readFileSync(scriptPath)), strategySha256: sha256(source), appCommit: spawnSync('git', ['rev-parse', 'HEAD'], { cwd: appRoot, encoding: 'utf8' }).stdout.trim() },
-    artifacts: { wasm: { path: wasmPath, bytes: wasm.length, brotliBytes: brotliCompressSync(wasm).length, sha256: sha256(wasm) }, wasmExec: { sha256: sha256(readFileSync(wasmExecPath)) }, native: { sha256: sha256(readFileSync(nativePath)), versionMetadata: spawnSync('go', ['version', '-m', nativePath], { encoding: 'utf8' }).stdout.trim() } },
-    input: { path: dataPath, bytes: statSync(dataPath).size, sha256: sha256(data), count, measuredSizes: sizes },
-    environment: { hostname: hostname(), platform: platform(), release: release(), architecture: process.arch, cpu: cpus()[0]?.model || null, logicalCPUs: cpus().length, totalMemoryBytes: totalmem(), node: process.version, playwright: playwrightVersion },
+    artifacts: { wasm: { label: basename(wasmPath), bytes: wasm.length, brotliBytes: brotliCompressSync(wasm).length, sha256: sha256(wasm) }, wasmExec: { label: basename(wasmExecPath), sha256: sha256(readFileSync(wasmExecPath)) }, native: { label: basename(nativePath), sha256: sha256(readFileSync(nativePath)), versionMetadata: nativeVersionMetadata } },
+    input: { label: `XAUUSD/${basename(dataPath)}`, bytes: statSync(dataPath).size, sha256: sha256(data), count, measuredSizes: sizes },
+    environment: { platform: platform(), release: release(), architecture: process.arch, cpu: cpus()[0]?.model || null, logicalCPUs: cpus().length, totalMemoryBytes: totalmem(), node: process.version, playwright: playwrightVersion },
     repeats, cellTimeoutMs,
     native: nativeCases,
     browsers,

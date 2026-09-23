@@ -12,21 +12,22 @@
   },
   "artifacts": {
     "wasm": {
-      "path": "/private/tmp/heisentick-strat-v050-tf0/enginewasm.wasm",
       "bytes": 5827444,
       "brotliBytes": 1127743,
-      "sha256": "3f0f2b9efabcfc785e0ea6c550113a7840a20ac8c31f2cd5085fe5371e3740b9"
+      "sha256": "3f0f2b9efabcfc785e0ea6c550113a7840a20ac8c31f2cd5085fe5371e3740b9",
+      "label": "enginewasm.wasm"
     },
     "wasmExec": {
-      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229",
+      "label": "wasm_exec.js"
     },
     "native": {
       "sha256": "495ea1d15a1350d0e52617204e970a584d7da830bb4681a23870847642b05a3c",
-      "versionMetadata": "/private/tmp/heisentick-strat-v050-tf0/heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=ff2964f3bdaa1230d6d0ed956a494cd43e6b049a\n\tbuild\tvcs.time=2026-09-22T23:56:00Z\n\tbuild\tvcs.modified=true"
+      "versionMetadata": "heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=ff2964f3bdaa1230d6d0ed956a494cd43e6b049a\n\tbuild\tvcs.time=2026-09-22T23:56:00Z\n\tbuild\tvcs.modified=true",
+      "label": "heisentick-darwin-arm64"
     }
   },
   "input": {
-    "path": "/private/tmp/claude-501/-Users-kaitait-code-heisentick/e1438cd8-cd9e-4f1b-8681-7f1741de1c31/scratchpad/sample-data/data-sample/XAUUSD/5m.bin",
     "bytes": 18537952,
     "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
     "count": 386207,
@@ -34,10 +35,10 @@
       50000,
       200000,
       386207
-    ]
+    ],
+    "label": "XAUUSD/5m.bin"
   },
   "environment": {
-    "hostname": "MacBook-Pro-M4.local",
     "platform": "darwin",
     "release": "25.5.0",
     "architecture": "arm64",
