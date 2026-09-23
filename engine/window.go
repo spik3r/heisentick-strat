@@ -10,7 +10,9 @@ import (
 // from the bars on which the strategy may open or manage trades. The supplied
 // market series must begin at ContextFromT when it is set. TradeFromT is the
 // first inclusive entry-series timestamp and TradeToT is the exclusive upper
-// endpoint. A TradeToT one bar beyond the last supplied bar is valid.
+// endpoint. A TradeToT one bar beyond the last supplied bar is valid. A caller
+// that has independently proved a trailing market gap may explicitly admit a
+// later endpoint with AllowGapfulTradeToT.
 //
 // A nil window preserves the historical behaviour: every supplied bar is
 // tradable and the final supplied bar is the liquidation bar.
@@ -18,6 +20,11 @@ type ExecutionWindow struct {
 	ContextFromT *int64
 	TradeFromT   *int64
 	TradeToT     *int64
+	// AllowGapfulTradeToT admits an exclusive endpoint after the final
+	// supplied bar when the caller has independently verified that the source
+	// contains no entry bars before that endpoint. It does not admit a missing
+	// endpoint inside the supplied series.
+	AllowGapfulTradeToT bool
 }
 
 // ExecutionBounds are the resolved inclusive indexes for an
@@ -32,8 +39,10 @@ type ExecutionBounds struct {
 // ResolveExecutionWindow validates and resolves a window against the entry
 // series. TradeFromT and ContextFromT must identify existing bars exactly.
 // TradeToT must identify an existing bar (which is excluded) or the exact
-// next-bar timestamp after the last supplied bar. Callers must not silently
-// round a requested boundary to a nearby bar.
+// next-bar timestamp after the last supplied bar. AllowGapfulTradeToT also
+// admits an endpoint after the last supplied bar; the caller owns proof that
+// the omitted interval contains no entry bars. Callers must not silently round
+// a requested boundary to a nearby bar.
 func ResolveExecutionWindow(series marketdata.Series, window *ExecutionWindow) (ExecutionBounds, error) {
 	n := series.Len()
 	if n == 0 {
@@ -83,14 +92,18 @@ func ResolveExecutionWindow(series marketdata.Series, window *ExecutionWindow) (
 			}
 		}
 		if !found {
-			if n < 2 {
+			last := int64(series.T[n-1])
+			if window.AllowGapfulTradeToT && endpoint > last {
+				tradeEnd = n - 1
+			} else if n < 2 {
 				return ExecutionBounds{}, fmt.Errorf("execution window tradeToT exclusive timestamp %d is absent from market series", endpoint)
+			} else {
+				step := int64(series.T[n-1] - series.T[n-2])
+				if step <= 0 || last+step != endpoint {
+					return ExecutionBounds{}, fmt.Errorf("execution window tradeToT exclusive timestamp %d is absent from market series and is not the next bar after the supplied series", endpoint)
+				}
+				tradeEnd = n - 1
 			}
-			step := int64(series.T[n-1] - series.T[n-2])
-			if step <= 0 || int64(series.T[n-1])+step != endpoint {
-				return ExecutionBounds{}, fmt.Errorf("execution window tradeToT exclusive timestamp %d is absent from market series and is not the next bar after the supplied series", endpoint)
-			}
-			tradeEnd = n - 1
 		}
 	}
 	if tradeStart < contextStart {
