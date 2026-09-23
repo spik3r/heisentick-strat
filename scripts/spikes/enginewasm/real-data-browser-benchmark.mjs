@@ -234,6 +234,7 @@ const browserFunction = async ({ baseURL, size, repeats, stratRelease }) => {
     let expectedDigest;
     let jsTradeDigest;
     let wasmJsFirstDifference = null;
+    let wasmJsFirstDifferenceTrades = null;
     let tradeCount;
     for (let repeat = 0; repeat < repeats; repeat++) {
       const wasmStart = performance.now();
@@ -251,9 +252,15 @@ const browserFunction = async ({ baseURL, size, repeats, stratRelease }) => {
       const jsRunMs = performance.now() - jsStart;
       const [wasmDigest, jsDigest] = await Promise.all([digest(wasmTrades), digest(js.trades)]);
       if (wasmDigest !== jsDigest) {
-        const normalizedWasm = wasmTrades.map(comparableTrade);
-        const normalizedJS = js.trades.map(comparableTrade);
+        // Compare the same JSON value that is hashed. This removes JavaScript-only
+        // distinctions such as -0 versus 0 that JSON.stringify does not preserve.
+        const normalizedWasm = JSON.parse(JSON.stringify(wasmTrades.map(comparableTrade)));
+        const normalizedJS = JSON.parse(JSON.stringify(js.trades.map(comparableTrade)));
         wasmJsFirstDifference ??= firstDifference(normalizedWasm, normalizedJS);
+        if (!wasmJsFirstDifferenceTrades) {
+          const index = normalizedWasm.findIndex((trade, tradeIndex) => firstDifference(trade, normalizedJS[tradeIndex]));
+          wasmJsFirstDifferenceTrades = { index, wasm: normalizedWasm[index] ?? null, js: normalizedJS[index] ?? null };
+        }
       }
       expectedDigest ??= wasmDigest;
       jsTradeDigest ??= jsDigest;
@@ -262,7 +269,7 @@ const browserFunction = async ({ baseURL, size, repeats, stratRelease }) => {
       if (jsDigest !== jsTradeDigest) throw new Error(`${size}: JavaScript repeat output changed`);
       runs.push({ repeat: repeat + 1, wasmWallMs, wasm: wasm.timings, jsContextMs, jsRunMs, jsTotalMs: jsContextMs + jsRunMs });
     }
-  const measuredCase = { size, status: 'measured', tradeCount, tradeDigest: expectedDigest, jsTradeDigest, exactWasmJsTradeEquality: expectedDigest === jsTradeDigest, wasmJsFirstDifference, runs };
+  const measuredCase = { size, status: 'measured', tradeCount, tradeDigest: expectedDigest, jsTradeDigest, exactWasmJsTradeEquality: expectedDigest === jsTradeDigest, wasmJsFirstDifference, wasmJsFirstDifferenceTrades, runs };
   return { timings, inputCount: count, measuredCase, memory: { performanceMemory: globalThis.performance.memory ? { jsHeapSizeLimit: performance.memory.jsHeapSizeLimit, totalJSHeapSize: performance.memory.totalJSHeapSize, usedJSHeapSize: performance.memory.usedJSHeapSize } : null } };
 };
 
@@ -340,7 +347,7 @@ try {
     native: nativeCases,
     browsers,
     reliability: {},
-    limitations: ['Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.', 'Three local repeats per cell estimate timing spread; they do not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.', 'The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency.'],
+    limitations: ['Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.', `${repeats} local ${repeats === 1 ? 'repeat does' : 'repeats do'} not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.`, 'The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency.'],
   };
   const persistEvidence = () => {
     evidence.generatedAt = new Date().toISOString();
