@@ -181,10 +181,78 @@ func (p *parser) parseSessions(tokens []string) {
 	p.setUserSessions(sessions)
 }
 
-func (p *parser) parseTradeWindow(tokens []string) {
-	if len(tokens) >= 3 && strings.EqualFold(tokens[1], "window") && strings.EqualFold(tokens[2], "unrestricted") {
-		p.config["tradeWindowMode"] = "unrestricted"
+func (p *parser) parseTradeWindow(line logicalLine, tokens []string) {
+	if len(tokens) < 3 || !strings.EqualFold(tokens[1], "window") {
+		return
 	}
+	if strings.EqualFold(tokens[2], "unrestricted") {
+		p.config["tradeWindowMode"] = "unrestricted"
+		return
+	}
+	if strings.EqualFold(tokens[2], "minutes") {
+		if len(tokens) != 6 || !strings.EqualFold(tokens[4], "to") {
+			p.err(line, "trade window minutes must use an increasing range, e.g. trade window minutes 0 to 90", "")
+			return
+		}
+		from, fromErr := strconv.ParseFloat(tokens[3], 64)
+		to, toErr := strconv.ParseFloat(tokens[5], 64)
+		if fromErr != nil || toErr != nil || from < 0 || to <= from {
+			p.err(line, "trade window minutes must use an increasing range, e.g. trade window minutes 0 to 90", "")
+			return
+		}
+		p.config["tradeWindowMinuteRange"] = map[string]any{"from": from, "to": to}
+		return
+	}
+	if !strings.EqualFold(tokens[2], "in") {
+		if strings.EqualFold(tokens[2], "minute") {
+			p.err(line, "trade window minutes must use the plural form and an increasing range, e.g. trade window minutes 0 to 90", "")
+		}
+		return
+	}
+	segments := make([]any, 0, len(tokens)-3)
+	seen := map[string]bool{}
+	for index := 3; index < len(tokens); index++ {
+		segment := normalizeTradeWindowSegment(tokens[index])
+		if segment == "" && index+1 < len(tokens) {
+			segment = normalizeTradeWindowSegment(tokens[index] + "." + tokens[index+1])
+			if segment != "" {
+				index++
+			}
+		}
+		if segment == "" {
+			p.err(line, fmt.Sprintf("trade window segment %q must be one of asia/mid/london/ny plus .open/.middle/.close/.all", tokens[index]), "")
+			continue
+		}
+		if seen[segment] {
+			continue
+		}
+		seen[segment] = true
+		segments = append(segments, segment)
+	}
+	if len(segments) > 0 {
+		p.config["tradeWindowSegments"] = segments
+	}
+}
+
+func normalizeTradeWindowSegment(raw string) string {
+	value := strings.ToLower(strings.TrimSpace(raw))
+	value = strings.ReplaceAll(value, "_", ".")
+	value = strings.ReplaceAll(value, "-", ".")
+	parts := strings.Split(value, ".")
+	if len(parts) != 2 {
+		return ""
+	}
+	validWindow := map[string]bool{"asia": true, "mid": true, "london": true, "ny": true}
+	aliases := map[string]string{"first": "open", "second": "middle", "third": "close", "full": "all"}
+	part := parts[1]
+	if alias := aliases[part]; alias != "" {
+		part = alias
+	}
+	validPart := map[string]bool{"open": true, "middle": true, "close": true, "all": true}
+	if !validWindow[parts[0]] || !validPart[part] {
+		return ""
+	}
+	return parts[0] + "." + part
 }
 
 func (p *parser) parseNewYorkHour(tokens []string) {

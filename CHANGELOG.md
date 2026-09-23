@@ -6,7 +6,10 @@ version and is named here.
 
 ## [Unreleased]
 
-Nothing yet.
+- Fixed Go parsing and entry admission for `trade window in (...)` and
+  `trade window minutes A to B` so they preserve the JavaScript compatibility
+  rule. Windows remain fixed at UTC+10; named parts are half-open 60-minute
+  thirds, and the fourth `mid` hour matches only `mid.all`.
 
 ## [0.7.0] — 2026-09-23
 

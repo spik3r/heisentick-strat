@@ -9,6 +9,10 @@ import (
 type flagParams struct {
 	SetupType                  string
 	TradeWindowUnrestricted    bool
+	TradeWindowSegments        []string
+	TradeWindowMinuteFrom      float64
+	TradeWindowMinuteTo        float64
+	TradeWindowMinuteRangeSet  bool
 	NewYorkHours               []int
 	BlockedNewYorkHours        []int
 	EntryMode                  string
@@ -186,6 +190,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 	keltner := mapValue(cfg, "keltnerReversion")
 	fairValueGap := mapValue(cfg, "fairValueGap")
 	trigger := mapValue(cfg, "trigger")
+	tradeWindowMinuteRange := mapValue(cfg, "tradeWindowMinuteRange")
 	entryMode := mapValue(cfg, "entryMode")
 	rangeCfg := mapValue(cfg, "range")
 	channel := mapValue(cfg, "channel")
@@ -218,6 +223,10 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 	p := flagParams{
 		SetupType:                  setupType,
 		TradeWindowUnrestricted:    stringValue(cfg, "tradeWindowMode", "") == "unrestricted",
+		TradeWindowSegments:        stringSliceValue(cfg["tradeWindowSegments"]),
+		TradeWindowMinuteFrom:      numberValue(tradeWindowMinuteRange, "from", 0),
+		TradeWindowMinuteTo:        numberValue(tradeWindowMinuteRange, "to", 0),
+		TradeWindowMinuteRangeSet:  len(tradeWindowMinuteRange) > 0,
 		NewYorkHours:               intSliceValue(cfg, "newYorkHours"),
 		BlockedNewYorkHours:        intSliceValue(cfg, "blockedNewYorkHours"),
 		EntryMode:                  normalizedEntryMode(stringValue(entryMode, "type", "market")),
