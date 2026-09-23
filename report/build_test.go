@@ -128,6 +128,32 @@ func TestBuildExecutionWindowReportsTradableBoundsAfterContextWarmup(t *testing.
 	}
 }
 
+func TestBuildExecutionWindowAllowsVerifiedGapBeforeExclusiveEnd(t *testing.T) {
+	cfg, route, strategy := loadConformanceCase(t, "money-risk-sizing")
+	from := int64(route.Series.T[route.Series.Len()/2])
+	step := int64(route.Series.T[1] - route.Series.T[0])
+	last := int64(route.Series.T[route.Series.Len()-1])
+	to := last + 3*step
+
+	strict := Request{
+		Config: cfg, Route: route, StrategyID: strategy,
+		ExecutionWindow: &engine.ExecutionWindow{TradeFromT: &from, TradeToT: &to},
+	}
+	if _, err := Build(context.Background(), strict); err == nil {
+		t.Fatal("Build accepted a gapful exclusive endpoint without source proof")
+	}
+
+	strict.ExecutionWindow.AllowGapfulTradeToT = true
+	document, err := Build(context.Background(), strict)
+	if err != nil {
+		t.Fatalf("Build verified gapful window: %v", err)
+	}
+	wantBars := route.Series.Len() - route.Series.Len()/2
+	if document.DateBounds == nil || document.DateBounds.FirstT != from || document.DateBounds.LastT != last || document.DateBounds.Bars != wantBars {
+		t.Fatalf("date bounds = %+v, want supplied bars %d..%d/%d inside requested [%d,%d)", document.DateBounds, from, last, wantBars, from, to)
+	}
+}
+
 func TestBuildRejectsBadRequests(t *testing.T) {
 	cfg, route, strategy := loadConformanceCase(t, "money-risk-sizing")
 	cases := map[string]Request{

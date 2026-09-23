@@ -75,6 +75,34 @@ func TestResolveExecutionWindowRejectsNonExactOrReversedBounds(t *testing.T) {
 	}
 }
 
+func TestResolveExecutionWindowRequiresOptInForGapfulExclusiveEnd(t *testing.T) {
+	series := marketdata.Series{
+		T: []float64{10, 20, 30},
+		O: []float64{1, 1, 1}, H: []float64{2, 2, 2},
+		L: []float64{0, 0, 0}, C: []float64{1, 1, 1},
+	}
+	from, gapfulEnd := int64(10), int64(50)
+	strict := &ExecutionWindow{TradeFromT: &from, TradeToT: &gapfulEnd}
+	if _, err := ResolveExecutionWindow(series, strict); err == nil {
+		t.Fatal("gapful exclusive endpoint was accepted without explicit source proof")
+	}
+
+	verified := &ExecutionWindow{TradeFromT: &from, TradeToT: &gapfulEnd, AllowGapfulTradeToT: true}
+	bounds, err := ResolveExecutionWindow(series, verified)
+	if err != nil {
+		t.Fatalf("verified gapful exclusive endpoint: %v", err)
+	}
+	if bounds.TradeStart != 0 || bounds.TradeEnd != 2 {
+		t.Fatalf("bounds = %+v, want all supplied bars inside [10,50)", bounds)
+	}
+
+	missingInside := int64(25)
+	verified.TradeToT = &missingInside
+	if _, err := ResolveExecutionWindow(series, verified); err == nil {
+		t.Fatal("missing endpoint inside supplied series was accepted")
+	}
+}
+
 func TestSharedContextKeySeparatesExecutionWindows(t *testing.T) {
 	series := marketdata.Series{
 		T: []float64{0, 1, 2, 3},
