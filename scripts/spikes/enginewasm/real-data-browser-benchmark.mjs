@@ -347,7 +347,7 @@ try {
     native: nativeCases,
     browsers,
     reliability: {},
-    limitations: ['Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.', 'Three local repeats per cell estimate timing spread; they do not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.', 'The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency.'],
+    limitations: ['Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.', `${repeats} local ${repeats === 1 ? 'repeat does' : 'repeats do'} not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.`, 'The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency.'],
   };
   const persistEvidence = () => {
     evidence.generatedAt = new Date().toISOString();
