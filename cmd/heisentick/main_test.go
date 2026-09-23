@@ -161,6 +161,9 @@ func TestReportRouteWarningMatchesEvidenceEnvelope(t *testing.T) {
 	if len(payload.Warnings) != 1 || !strings.Contains(payload.Warnings[0], "route EURUSD 5m is excluded") {
 		t.Fatalf("report warnings = %#v, want one excluded-route warning", payload.Warnings)
 	}
+	if payload.Slices[0].Costs[0].Trades != 0 {
+		t.Fatalf("declared off-route report trades = %d, want zero", payload.Slices[0].Costs[0].Trades)
+	}
 	if payload.EvidenceEnvelope == nil {
 		t.Fatal("excluded-route report omitted evidence envelope")
 	}

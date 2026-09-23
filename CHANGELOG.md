@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+- Minor bump (next `0.9.0`): add opt-in transfer route runs to the report and
+  grid CLI. Declared-route gating stays the default. Transfer runs bypass only
+  the strategy's declared symbol/timeframe route allowlist, mark evidence with
+  `routeMode: transfer` and `forceRoute: true`, and warn that off-route results
+  are exploratory. The registered strategy source is not rewritten.
+
 - Fixed Go parsing and entry admission for `trade window in (...)` and
   `trade window minutes A to B` so they preserve the JavaScript compatibility
   rule. Windows remain fixed at UTC+10; named parts are half-open 60-minute
