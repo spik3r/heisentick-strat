@@ -22,6 +22,9 @@ type ExecutionWindow = engine.ExecutionWindow
 type Request struct {
 	// Config is the parsed strategy (dsl.Parse(...).Config).
 	Config dsl.Config
+	// RouteMode is "declared" (the default) or "transfer". Transfer runs
+	// evaluate an explicitly requested route outside the strategy allowlist.
+	RouteMode string
 	// Route is the loaded entry series and its companions; see Route for
 	// the window and warm-up contract.
 	Route Route
@@ -61,6 +64,12 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if request.Config == nil {
 		return Document{}, errors.New("report: strategy config is required")
 	}
+	if request.RouteMode == "" {
+		request.RouteMode = "declared"
+	}
+	if request.RouteMode != "declared" && request.RouteMode != "transfer" {
+		return Document{}, fmt.Errorf("report: invalid route mode %q: expected declared or transfer", request.RouteMode)
+	}
 	if request.StrategyID == "" {
 		return Document{}, errors.New("report: strategy id is required")
 	}
@@ -93,7 +102,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if generatedAt.IsZero() {
 		generatedAt = time.Now()
 	}
-	rows, trades, prepared, err := runCostRows(request.Config, route, request.StrategyID, modes, primary.Index, request.SlippageBps, request.IncludeTrades, request.ExecutionWindow)
+	rows, trades, prepared, err := runCostRows(request.Config, route, request.StrategyID, modes, primary.Index, request.SlippageBps, request.IncludeTrades, request.ExecutionWindow, request.RouteMode == "transfer")
 	if err != nil {
 		return Document{}, err
 	}
@@ -120,7 +129,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 		PrimaryCost:      primary,
 		Slices:           []Slice{slice},
 		Costs:            rows,
-		Warnings:         RouteWarnings(request.Config, route),
+		Warnings:         RouteWarningsForMode(request.Config, route, request.RouteMode),
 		ActiveSessions:   activeSessions(request.Config),
 		StrategyTypeTags: strategyTypeTags(request.Config),
 	}
@@ -136,7 +145,11 @@ func Build(ctx context.Context, request Request) (Document, error) {
 		}
 		document.Slices[0].Trades = &reportTrades
 	}
-	document.EvidenceEnvelope = buildReportEvidenceEnvelope(document, request.StrategyID, displayName, document.GeneratedAt)
+	envelopeRouteMode := "explicit"
+	if request.RouteMode == "transfer" {
+		envelopeRouteMode = "transfer"
+	}
+	document.EvidenceEnvelope = buildReportEvidenceEnvelope(document, request.StrategyID, displayName, document.GeneratedAt, envelopeRouteMode)
 	headline := headlineFromRow(rows[primary.Index], trades)
 	document.Headline = &headline
 	groupings := groupTrades(trades)
@@ -187,8 +200,18 @@ func reportSourceEntryProvenance(cfg dsl.Config, route Route) sourceEntryReportP
 // says the strategy's market conditions exclude the route. The result is
 // never nil so the JSON is [] rather than null.
 func RouteWarnings(cfg dsl.Config, route Route) []string {
+	return RouteWarningsForMode(cfg, route, "declared")
+}
+
+// RouteWarningsForMode describes when a route is being evaluated outside the
+// strategy's declared market conditions.
+func RouteWarningsForMode(cfg dsl.Config, route Route, routeMode string) []string {
 	warnings := []string{}
-	if !engine.RouteAllowed(cfg, route.Symbol, route.TF, route.Series) {
+	if routeMode == "transfer" && !engine.RouteAllowed(cfg, route.Symbol, route.TF, route.Series) {
+		warnings = append(warnings, fmt.Sprintf(
+			"transfer route %s %s is outside the strategy's declared slices()/symbols()/timeframes() market conditions; results are exploratory and do not change declared-route eligibility",
+			route.Symbol, route.TF))
+	} else if routeMode != "transfer" && !engine.RouteAllowed(cfg, route.Symbol, route.TF, route.Series) {
 		warnings = append(warnings, fmt.Sprintf(
 			"route %s %s is excluded by the strategy's slices()/symbols()/timeframes() market conditions; zero trades (matches JS gating)",
 			route.Symbol, route.TF))
@@ -196,7 +219,7 @@ func RouteWarnings(cfg dsl.Config, route Route) []string {
 	return warnings
 }
 
-func buildReportEvidenceEnvelope(payload Document, strategy, displayName, generatedAt string) *reportEvidenceEnvelope {
+func buildReportEvidenceEnvelope(payload Document, strategy, displayName, generatedAt, routeMode string) *reportEvidenceEnvelope {
 	primary := payload.Costs[payload.PrimaryCost.Index]
 	slice := payload.Slices[0]
 	labels := make([]string, len(payload.Costs))
@@ -220,8 +243,8 @@ func buildReportEvidenceEnvelope(payload Document, strategy, displayName, genera
 			TFs:          append([]string(nil), payload.TFs...),
 			RangeMethod:  slice.Range,
 			RangeRequest: payload.Range,
-			RouteMode:    "explicit",
-			ForceRoute:   false,
+			RouteMode:    routeMode,
+			ForceRoute:   routeMode == "transfer",
 		},
 		Costs: reportEvidenceCosts{
 			Label:            primary.Label,

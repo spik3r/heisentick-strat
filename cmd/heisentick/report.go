@@ -39,6 +39,10 @@ func runReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	routeMode := flags.one("route-mode", "declared")
+	if routeMode != "declared" && routeMode != "transfer" {
+		return fmt.Errorf("invalid --route-mode %q: expected declared or transfer", routeMode)
+	}
 	slippage, err := parseSlippageFlag(flags.one("slippage", ""))
 	if err != nil {
 		return err
@@ -54,6 +58,7 @@ func runReport(args []string, out io.Writer) error {
 	id := report.StrategyID(parsed.Config, fileBaseName(dslFile), flags.one("dsl-id", ""))
 	document, err := report.Build(context.Background(), report.Request{
 		Config:        parsed.Config,
+		RouteMode:     routeMode,
 		Route:         route,
 		StrategyID:    id,
 		StrategyName:  report.StrategyDisplayName(parsed.Config, id, flags.one("dsl-name", "")),

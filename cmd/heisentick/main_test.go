@@ -169,6 +169,58 @@ func TestReportRouteWarningMatchesEvidenceEnvelope(t *testing.T) {
 	}
 }
 
+func TestReportTransferRouteRunsOffRouteAndMarksEvidence(t *testing.T) {
+	dslFile, dataRoot := writeCLIInputs(t)
+	sourcePath := filepath.Join(dataRoot, "XAUUSD", "5m.bin")
+	series, err := os.ReadFile(sourcePath)
+	if err != nil {
+		t.Fatalf("read CLI market series: %v", err)
+	}
+	excludedDir := filepath.Join(dataRoot, "EURUSD")
+	if err := os.MkdirAll(excludedDir, 0o755); err != nil {
+		t.Fatalf("mkdir transfer route: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(excludedDir, "4h.bin"), series, 0o644); err != nil {
+		t.Fatalf("write transfer-route market series: %v", err)
+	}
+	originalSource, err := os.ReadFile(dslFile)
+	if err != nil {
+		t.Fatalf("read strategy source: %v", err)
+	}
+	var out bytes.Buffer
+	if err := run([]string{
+		"report", "--dsl-file=" + dslFile, "--dsl-id=cli-transfer-route",
+		"--symbol=EURUSD", "--tf=4h", "--range=zone", "--route-mode=transfer",
+		"--json-only=1", "--data-root=" + dataRoot,
+	}, &out); err != nil {
+		t.Fatalf("run transfer report: %v", err)
+	}
+	var payload report.Document
+	if err := json.Unmarshal(out.Bytes(), &payload); err != nil {
+		t.Fatalf("decode transfer report JSON: %v\n%s", err, out.String())
+	}
+	if len(payload.Warnings) != 1 || !strings.Contains(payload.Warnings[0], "transfer route EURUSD 4h") {
+		t.Fatalf("transfer warnings = %#v", payload.Warnings)
+	}
+	if payload.Slices[0].Costs[0].Trades == 0 {
+		t.Fatal("transfer report produced zero trades; route gate was not bypassed")
+	}
+	route := payload.EvidenceEnvelope.Route
+	if route.RouteMode != "transfer" || !route.ForceRoute {
+		t.Fatalf("transfer evidence route = mode %q force %v", route.RouteMode, route.ForceRoute)
+	}
+	if !reflect.DeepEqual(payload.EvidenceEnvelope.Diagnostics.Warnings, payload.Warnings) {
+		t.Fatalf("evidence warnings = %#v, want top-level %#v", payload.EvidenceEnvelope.Diagnostics.Warnings, payload.Warnings)
+	}
+	afterSource, err := os.ReadFile(dslFile)
+	if err != nil {
+		t.Fatalf("reread strategy source: %v", err)
+	}
+	if !bytes.Equal(originalSource, afterSource) {
+		t.Fatal("transfer report changed registered strategy source bytes")
+	}
+}
+
 func TestReportIncludeTradesSerializesPrimaryCostExecutions(t *testing.T) {
 	dslFile, dataRoot, expected := writeConformanceCLIInputs(t, "family-range-break-fake")
 	var out bytes.Buffer

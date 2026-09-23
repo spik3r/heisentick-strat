@@ -38,6 +38,10 @@ func runGrid(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	routeMode := flags.one("route-mode", "declared")
+	if routeMode != "declared" && routeMode != "transfer" {
+		return fmt.Errorf("invalid --route-mode %q: expected declared or transfer", routeMode)
+	}
 	sets, err := parseSets(flags.all("set"))
 	if err != nil {
 		return err
@@ -71,6 +75,7 @@ func runGrid(args []string, out io.Writer) error {
 			SourceTimeframe: route.SourceTimeframe,
 			HigherTimeframe: route.HigherTimeframe,
 			RangeMethod:     route.Range,
+			ForceRoute:      routeMode == "transfer",
 			Costs:           engine.Costs{FillOn: "close", StartEquity: 10000},
 		})
 		if err != nil {
@@ -109,19 +114,25 @@ func runGrid(args []string, out io.Writer) error {
 		return err
 	}
 	var htf *string
+	gridRouteMode := ""
+	if routeMode == "transfer" {
+		gridRouteMode = "transfer"
+	}
 	if route.HigherTimeframe != "" {
 		htf = &route.HigherTimeframe
 	}
 	payload := gridPayload{
-		Symbols:  []string{route.Symbol},
-		TFs:      []string{route.TF},
-		Strategy: id,
-		Range:    route.Range,
-		Bars:     route.Series.Len(),
-		HTF:      htf,
-		Sets:     sets,
-		Variants: outVariants,
-		Warnings: report.RouteWarnings(parsed.Config, route),
+		Symbols:    []string{route.Symbol},
+		TFs:        []string{route.TF},
+		Strategy:   id,
+		Range:      route.Range,
+		Bars:       route.Series.Len(),
+		HTF:        htf,
+		Sets:       sets,
+		Variants:   outVariants,
+		Warnings:   report.RouteWarningsForMode(parsed.Config, route, routeMode),
+		RouteMode:  gridRouteMode,
+		ForceRoute: routeMode == "transfer",
 	}
 	if boolFlag(flags.one("json-only", "0")) {
 		return report.WriteJSON(out, payload)
