@@ -9,14 +9,16 @@ type gridVariant struct {
 }
 
 type gridPayload struct {
-	Symbols  []string             `json:"symbols"`
-	TFs      []string             `json:"tfs"`
-	Strategy string               `json:"strategy"`
-	Range    string               `json:"range"`
-	Bars     int                  `json:"bars"`
-	HTF      *string              `json:"htf,omitempty"`
-	Sets     map[string][]float64 `json:"sets"`
-	Variants []gridVariant        `json:"variants"`
-	Warnings []string             `json:"warnings"`
-	Options  map[string]string    `json:"options,omitempty"`
+	Symbols    []string             `json:"symbols"`
+	TFs        []string             `json:"tfs"`
+	Strategy   string               `json:"strategy"`
+	Range      string               `json:"range"`
+	Bars       int                  `json:"bars"`
+	HTF        *string              `json:"htf,omitempty"`
+	Sets       map[string][]float64 `json:"sets"`
+	Variants   []gridVariant        `json:"variants"`
+	Warnings   []string             `json:"warnings"`
+	RouteMode  string               `json:"routeMode,omitempty"`
+	ForceRoute bool                 `json:"forceRoute,omitempty"`
+	Options    map[string]string    `json:"options,omitempty"`
 }

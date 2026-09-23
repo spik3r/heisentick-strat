@@ -26,6 +26,9 @@ type RunRequest struct {
 	HigherTimeframe    string
 	RangeMethod        string
 	ReportTradeContext bool
+	// ForceRoute permits an explicit transfer run outside the declared route
+	// allowlist without changing the strategy config.
+	ForceRoute bool
 	// ExecutionWindow keeps context bars available to indicators while
 	// restricting trade entry, management, and liquidation to the declared
 	// half-open trade interval [TradeFromT, TradeToT).
@@ -82,6 +85,7 @@ type SharedRunContext struct {
 	options      contextcols.Options
 	execution    ExecutionBounds
 	windowed     bool
+	forceRoute   bool
 }
 
 // SharedContextKey returns a stable key for the context columns a request needs.
@@ -144,6 +148,7 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 		options:      options,
 		execution:    execution,
 		windowed:     request.ExecutionWindow != nil,
+		forceRoute:   request.ForceRoute,
 	}, nil
 }
 
@@ -190,7 +195,7 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 		emaSlope:  emaSlope,
 		params:    params,
 		fixture:   s.fixture,
-		offRoute:  !RouteAllowed(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series),
+		offRoute:  !s.forceRoute && !RouteAllowed(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series),
 		trades:    make([]Trade, 0, 32),
 		execution: s.execution,
 		windowed:  s.windowed,
