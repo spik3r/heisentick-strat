@@ -1,0 +1,212 @@
+{
+  "schema": "enginewasm-real-data-browser-benchmark-v1",
+  "generatedAt": "2026-09-23T04:57:28.127Z",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "release": "v0.6.1",
+    "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+    "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
+    "harnessSha256": "2ac1c80b79ef923e0fd491532c5d7ca598502934f94da9b320db36af6d2cd12a",
+    "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
+    "appCommit": "ad722ca2a29d5334fcbfdf3115780ff59f71942c"
+  },
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 5838695,
+      "brotliBytes": 1129655,
+      "sha256": "82c48fd89fcd63668277e504f175c628b27ad1285027142c4045d5825098d271"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    },
+    "native": {
+      "label": "heisentick-darwin-arm64",
+      "sha256": "8238a2fb311ec8fae41382ef70c4061cc73a324a128f67b38090f3a47527e2b1",
+      "versionMetadata": "heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=27d02fe0929441ea3b99bc67a65fdd0e63f5db24\n\tbuild\tvcs.time=2026-09-23T03:27:23Z\n\tbuild\tvcs.modified=true"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
+    "count": 386207,
+    "measuredSizes": [
+      386207
+    ]
+  },
+  "environment": {
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "logicalCPUs": 10,
+    "totalMemoryBytes": 17179869184,
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "repeats": 1,
+  "cellTimeoutMs": 900000,
+  "native": [
+    {
+      "size": 386207,
+      "status": "measured",
+      "tradeCount": 10177,
+      "tradeDigest": "fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 2565.291875
+        }
+      ]
+    }
+  ],
+  "browsers": [
+    {
+      "name": "chromium",
+      "status": "measured",
+      "cases": [
+        {
+          "size": 386207,
+          "status": "measured",
+          "tradeCount": 10177,
+          "tradeDigest": "fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc",
+          "jsTradeDigest": "e46725260609839419cbc00fa88aee60d4fa8fc97b39e27f8e9464478e6ffab7",
+          "exactWasmJsTradeEquality": false,
+          "wasmJsFirstDifference": "$.5438.exit: 2049.445 !== 2049.4449999999997",
+          "wasmJsFirstDifferenceTrades": {
+            "index": 5438,
+            "wasm": {
+              "entry": 2047.445,
+              "entryIndex": 207064,
+              "entryT": 1701422700000,
+              "exit": 2049.445,
+              "exitIndex": 207066,
+              "exitT": 1701423300000,
+              "initialSl": 2046.445,
+              "initialTp": 2049.445,
+              "meta": {
+                "forwardBracketAnchor": "entry-fill",
+                "forwardExitAt": "2023-12-01T12:00:00.000Z",
+                "forwardExitReason": "window-close",
+                "forwardStopDistance": 1,
+                "forwardTargetDistance": 2,
+                "gradeRequired": 0,
+                "gradeScore": 0,
+                "rangeEnd": 207061,
+                "rangeHi": 2046.705,
+                "rangeLo": 2044.758,
+                "rangeStart": 207059,
+                "session": "utc:1701421200000",
+                "setup": "openingRangeBreakout",
+                "side": "long",
+                "slotEnd": 1701432000000,
+                "slotKey": "utc:1701421200000",
+                "slotMinutes": 180,
+                "slotStart": 1701421200000
+              },
+              "partial": false,
+              "pnl": 400,
+              "points": 2,
+              "reason": "tp",
+              "side": "long",
+              "size": 200,
+              "sl": 2046.445,
+              "tag": "DSL-ORB:utc:1701421200000",
+              "tp": 2049.445
+            },
+            "js": {
+              "entry": 2047.445,
+              "entryIndex": 207064,
+              "entryT": 1701422700000,
+              "exit": 2049.4449999999997,
+              "exitIndex": 207066,
+              "exitT": 1701423300000,
+              "initialSl": 2046.445,
+              "initialTp": 2049.4449999999997,
+              "meta": {
+                "forwardBracketAnchor": "entry-fill",
+                "forwardExitAt": "2023-12-01T12:00:00.000Z",
+                "forwardExitReason": "window-close",
+                "forwardStopDistance": 1,
+                "forwardTargetDistance": 2,
+                "gradeRequired": 0,
+                "gradeScore": 0,
+                "rangeEnd": 207061,
+                "rangeHi": 2046.705,
+                "rangeLo": 2044.758,
+                "rangeStart": 207059,
+                "session": "utc:1701421200000",
+                "setup": "openingRangeBreakout",
+                "side": "long",
+                "slotEnd": 1701432000000,
+                "slotKey": "utc:1701421200000",
+                "slotMinutes": 180,
+                "slotStart": 1701421200000
+              },
+              "partial": false,
+              "pnl": 400,
+              "points": 2,
+              "reason": "tp",
+              "side": "long",
+              "size": 200,
+              "sl": 2046.445,
+              "tag": "DSL-ORB:utc:1701421200000",
+              "tp": 2049.4449999999997
+            }
+          },
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 5918.200000047684,
+              "wasm": {
+                "copyInMs": 17.399999976158142,
+                "adapterMs": 10.5,
+                "engineMs": 5752.2,
+                "packMs": 129.199,
+                "copyOutMs": 0.19999992847442627
+              },
+              "jsContextMs": 8949.5,
+              "jsRunMs": 1618.1000000238419,
+              "jsTotalMs": 10567.600000023842
+            }
+          ],
+          "exactNativeParity": true,
+          "timings": {
+            "assetFetchMs": 8.599999904632568,
+            "assetBytes": 5838695,
+            "compileMs": 5.700000047683716,
+            "instantiateMs": 0.3999999761581421,
+            "runtimeReadyMs": 15.100000023841858,
+            "jsModuleAndParseMs": 49.799999952316284,
+            "dataFetchMs": 15.799999952316284,
+            "dataDecodeMs": 0
+          },
+          "memory": {
+            "performanceMemory": {
+              "jsHeapSizeLimit": 3760000000,
+              "totalJSHeapSize": 3760000000,
+              "usedJSHeapSize": 3760000000
+            },
+            "chromiumCDP": {}
+          }
+        }
+      ],
+      "version": "143.0.7499.4",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.7499.4 Safari/537.36"
+    }
+  ],
+  "reliability": {
+    "attemptedCells": 1,
+    "measuredCells": 1,
+    "failedCells": 0,
+    "timedOutCells": 0,
+    "unavailableBrowsers": 0
+  },
+  "limitations": [
+    "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
+    "Three local repeats per cell estimate timing spread; they do not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.",
+    "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
+  ]
+}

@@ -89,12 +89,35 @@ and normalization 64 ms, returning 10,177 trades.
 Those candidate timings prove the timeout cause but do not qualify unmerged
 application code or establish exact full-data parity.
 
+## Full-data parity rerun after the scan fix
+
+After the application fix merged as `ad722ca2`, one published-artifact full
+cell completed in each of WebKit and Chromium. Native and WASM agreed on 10,177
+trades with digest
+`fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc`.
+JavaScript produced digest
+`e46725260609839419cbc00fa88aee60d4fa8fc97b39e27f8e9464478e6ffab7`
+in both browsers.
+
+The first JSON-significant difference is trade 5,438: native/WASM record
+`exit` and `tp` as `2049.445`; JavaScript records both as
+`2049.4449999999997`. The surrounding entry, stop, size, P&L, reason, indices,
+timestamps and metadata agree. WebKit took 5.343 seconds for WASM and 14.147
+seconds for JavaScript context plus engine work. Chromium took 5.918 seconds
+for WASM and 10.568 seconds for JavaScript context plus engine work.
+
+This browser-independent exact price mismatch fails the parity gate. Repeats
+and Firefox were not run because the task required exact equality before those
+resource-heavy cells. D-11 remains open.
+
 ## Evidence files
 
 - `scripts/spikes/enginewasm/evidence/v0.6.1-real-data-webkit-chromium.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-wasm-only.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-js-main-baseline.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-webkit-full-js-fixed-candidate.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-webkit.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-chromium.json`
 
 HT-036 remains open for exact full-data parity, at least 20 comparisons per
 required cell, Firefox coverage and production shadow reliability evidence.
