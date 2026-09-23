@@ -1,0 +1,77 @@
+{
+  "schema": "enginewasm-webkit-full-diagnostic-v1",
+  "generatedAt": "2026-09-23T03:18:18.874Z",
+  "status": "bridge-returned",
+  "release": "v0.6.0-local-candidate",
+  "releaseCommit": "3b76bb2b69aa-plus-utc-slot-boundary-fix",
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 7583061,
+      "sha256": "47d4de1db3d51c22749040140b660043e6ca4cb4f7e2f3e0d68e4cacabd44d14"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "bytes": 16992,
+      "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "count": 386207,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04"
+  },
+  "environment": {
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "cellTimeoutMs": 900000,
+  "events": [
+    {
+      "elapsedMs": 5676,
+      "type": "page-close",
+      "detail": {}
+    }
+  ],
+  "browser": {
+    "name": "webkit",
+    "version": "26.0"
+  },
+  "setup": {
+    "marks": {
+      "start": 39,
+      "wasmFetched": 49,
+      "wasmCompiled": 67,
+      "wasmInstantiated": 68,
+      "runtimeReady": 78,
+      "dataFetched": 107,
+      "dataDecoded": 108
+    },
+    "wasmBytes": 7583061,
+    "dataBytes": 18537952,
+    "columnBytes": 18537936,
+    "wasmMemoryBytes": 5242880,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
+  },
+  "bridge": {
+    "classification": "bridge-returned",
+    "elapsedMs": 5468,
+    "before": {
+      "wasmMemoryBytes": 5242880,
+      "goRunState": "pending",
+      "goExitCode": null
+    },
+    "after": {
+      "wasmMemoryBytes": 1530462208,
+      "goRunState": "pending",
+      "goRunError": null,
+      "goExitCode": null
+    },
+    "value": {
+      "ok": true,
+      "tradeValues": 132301,
+      "stringsBytes": 5780867
+    }
+  }
+}

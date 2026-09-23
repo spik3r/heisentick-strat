@@ -130,7 +130,7 @@ func (b *broker) sameWindowBars(i int, progress windowProgress, allowed map[stri
 		}
 		p, ok := progressFor(b.series.T[j], progress, allowed)
 		if !ok || p.Key != progress.Key {
-			if len(out) > 0 {
+			if progress.utcSlot || len(out) > 0 {
 				break
 			}
 			continue
