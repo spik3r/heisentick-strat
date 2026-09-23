@@ -87,6 +87,30 @@ func TestUTCSlotProgressUsesContiguousThreeHourBoundaries(t *testing.T) {
 	}
 }
 
+func TestOpeningRangeUTCSlotBoundaryDoesNotScanOlderSlots(t *testing.T) {
+	const priorBars = 50_000
+	const slotMinutes = 180
+	times := make([]float64, priorBars+1)
+	for i := 0; i < priorBars; i++ {
+		times[i] = float64(i * 5 * 60_000)
+	}
+	times[priorBars] = float64(priorBars * slotMinutes * 60_000)
+	b := broker{series: marketdata.Series{T: times}}
+	progress, ok := utcSlotProgress(times[priorBars], slotMinutes)
+	if !ok {
+		t.Fatal("UTC slot progress was rejected")
+	}
+
+	allocations := testing.AllocsPerRun(1, func() {
+		if bars := b.sameWindowBars(priorBars, progress, nil); len(bars) != 0 {
+			t.Fatalf("same-window bars = %v, want none at a slot boundary", bars)
+		}
+	})
+	if allocations > 10 {
+		t.Fatalf("allocations = %v, want at most 10 without scanning older slots", allocations)
+	}
+}
+
 func TestOpeningRangeCanaryRejectsFixedPipsOutsideORB(t *testing.T) {
 	parsed, err := dsl.Parse(`dsl v7
 strategy "not orb" {

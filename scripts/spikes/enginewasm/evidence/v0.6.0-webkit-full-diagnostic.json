@@ -1,0 +1,1089 @@
+{
+  "schema": "enginewasm-webkit-full-diagnostic-v1",
+  "generatedAt": "2026-09-23T03:15:22.326Z",
+  "status": "bridge-returned-undefined",
+  "release": "v0.6.0",
+  "releaseCommit": "38ca44c52723f62ad7cc264143b2500cd79dcc08",
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 5838670,
+      "sha256": "61ff907ae801cda62ec7cf64554b1efd3acce9181888f0cafd76823e27361bfb"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "bytes": 16687,
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "count": 386207,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04"
+  },
+  "environment": {
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "cellTimeoutMs": 900000,
+  "events": [
+    {
+      "elapsedMs": 327785,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime: out of memory: cannot allocate 4194304-byte block (2256273408 in use)"
+      }
+    },
+    {
+      "elapsedMs": 327785,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "fatal error: out of memory"
+      }
+    },
+    {
+      "elapsedMs": 327785,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 6 gp=0x1400a80 m=0 mp=0x2397e0 [running]:"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.throw({0x4684c, 0xd})"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/panic.go:1023 +0x3 fp=0x14d5608 sp=0x14d55e0 pc=0x12530003"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.(*mcache).refill(0x1230108, 0x7)"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mcache.go:184 +0x25 fp=0x14d5658 sp=0x14d5608 pc=0x110a0025"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.(*mcache).nextFree(0x1230108, 0x7)"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/malloc.go:948 +0xa fp=0x14d5690 sp=0x14d5658 pc=0x10bd000a"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.mallocgc(0x11, 0x0, 0x0)"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/malloc.go:1149 +0x95 fp=0x14d5718 sp=0x14d5690 pc=0x10be0095"
+      }
+    },
+    {
+      "elapsedMs": 327787,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.slicebytetostring(0x0, 0x1484000, 0x11)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/string.go:112 +0xb fp=0x14d5748 sp=0x14d5718 pc=0x134c000b"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "fmt.Sprintf({0x44105, 0x6}, {0x14d57e0, 0x1, 0x1})"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tfmt/print.go:240 +0x6 fp=0x14d5798 sp=0x14d5748 pc=0x16fa0006"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.utcSlotProgress(0x4277938c97f40000, 0xb4)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/family_opening_range_breakout.go:153 +0x15 fp=0x14d57f8 sp=0x14d5798 pc=0x1a240015"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.progressFor(0x4277938c97f40000, {{0xfebd22e8, 0x11}, 0x0, 0x1, 0xb4, 0x194f6cfc880}, 0x14d7020)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/family_opening_range_breakout.go:158 +0xa fp=0x14d5968 sp=0x14d57f8 pc=0x1a25000a"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).sameWindowBars(0x16f25cf8, 0x4731d, {{0xfebd22e8, 0x11}, 0x0, 0x1, 0xb4, 0x194f6cfc880}, 0x14d7020)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/family_opening_range_breakout.go:131 +0x20 fp=0x14d5a78 sp=0x14d5968 pc=0x1a230020"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).openingRangeFor(0x16f25cf8, 0x4731d)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/family_opening_range_breakout.go:75 +0x3e fp=0x14d7178 sp=0x14d5a78 pc=0x1a22003e"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).onOpeningRangeBreakoutBar(0x16f25cf8, 0x4731d)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/family_opening_range_breakout.go:42 +0x8 fp=0x14d7d70 sp=0x14d7178 pc=0x1a210008"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).onBar(0x16f25cf8, 0x4731d)"
+      }
+    },
+    {
+      "elapsedMs": 327788,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/broker_dispatch.go:11 +0x5e fp=0x14d7da0 sp=0x14d7d70 pc=0x19c8005e"
+      }
+    },
+    {
+      "elapsedMs": 327789,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).runRangeWithFinalization(0x16f25cf8, 0x0, 0x1)"
+      }
+    },
+    {
+      "elapsedMs": 327789,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/broker.go:290 +0x24 fp=0x14d7f18 sp=0x14d7da0 pc=0x19bb0024"
+      }
+    },
+    {
+      "elapsedMs": 327789,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).runWithFinalization(0x16f25cf8, 0x1)"
+      }
+    },
+    {
+      "elapsedMs": 327789,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/broker.go:269 +0x5 fp=0x14d7f50 sp=0x14d7f18 pc=0x19ba0005"
+      }
+    },
+    {
+      "elapsedMs": 327789,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*broker).run(...)"
+      }
+    },
+    {
+      "elapsedMs": 327789,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/broker.go:262"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*PreparedRun).runRaw(0x16f24008, {0x0, {0x140c8a0, 0x5}, 0x0, 0x0, 0x40c3880000000000})"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/run.go:422 +0x2e fp=0x14dc740 sp=0x14d7f50 pc=0x1a6d002e"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.(*PreparedRun).RunChecked(0x16f24008, {0x0, {0x140c8a0, 0x5}, 0x0, 0x0, 0x40c3880000000000})"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/run.go:436 +0x2 fp=0x14dcbd0 sp=0x14dc740 pc=0x1a6e0002"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "github.com/spik3r/heisentick-strat/engine.Run({0x1430780, {{0x1500000, 0x5e49f, 0x5e49f}, {0x1c00000, 0x5e49f, 0x5e49f}, {0x2400000, 0x5e49f, 0x5e49f}, ...}, ...})"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/engine/run.go:446 +0x5 fp=0x14dcf98 sp=0x14dcbd0 pc=0x1a6f0005"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "main.runColumns({0x148e0c0, 0xc0}, {0x1490200, 0x1e6}, {{0x1500000, 0x5e49f, 0x5e49f}, {0x1c00000, 0x5e49f, 0x5e49f}, ...})"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/cmd/enginewasm/bridge.go:128 +0x3b fp=0x14dda40 sp=0x14dcf98 pc=0x1aa8003b"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "main.main.func2({{}, 0x7ff8000100000005, 0x140c520}, {0x146c100, 0x8, 0x8})"
+      }
+    },
+    {
+      "elapsedMs": 327790,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/cmd/enginewasm/main_wasm.go:39 +0x41 fp=0x14dde80 sp=0x14dda40 pc=0x1aae0041"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "syscall/js.handleEvent()"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tsyscall/js/func.go:100 +0x23 fp=0x14ddf60 sp=0x14dde80 pc=0x16590023"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.handleEvent()"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/lock_js.go:289 +0x16 fp=0x14ddfe0 sp=0x14ddf60 pc=0x10b70016"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x14ddfe8 sp=0x14ddfe0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327791,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "created by runtime.beforeIdle"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/lock_js.go:238 +0x1e"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 1 gp=0x14001c0 m=nil [select (no cases), 5 minutes]:"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gopark(0x0, 0x0, 0xa, 0x1, 0x1)"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:402 +0x25 fp=0x1445ec8 sp=0x1445ea0 pc=0x127b0025"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.block()"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/select.go:103 +0x2 fp=0x1445ef0 sp=0x1445ec8 pc=0x13220002"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "main.main()"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\tgithub.com/spik3r/heisentick-strat/cmd/enginewasm/main_wasm.go:51 +0x6 fp=0x1445f68 sp=0x1445ef0 pc=0x1aaa0006"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.main()"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:271 +0x41 fp=0x1445fe0 sp=0x1445f68 pc=0x12750041"
+      }
+    },
+    {
+      "elapsedMs": 327792,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327793,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x1445fe8 sp=0x1445fe0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327794,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 2 gp=0x1400380 m=nil [force gc (idle), 5 minutes]:"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gopark(0x52718, 0x238b90, 0x11, 0xa, 0x1)"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:402 +0x25 fp=0x142cfb0 sp=0x142cf88 pc=0x127b0025"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goparkunlock(...)"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:408"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.forcegchelper()"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:326 +0x1b fp=0x142cfe0 sp=0x142cfb0 pc=0x1278001b"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x142cfe8 sp=0x142cfe0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "created by runtime.init.5 in goroutine 1"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:314 +0x2"
+      }
+    },
+    {
+      "elapsedMs": 327795,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 3 gp=0x1400540 m=nil [runnable]:"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gopark(0x52718, 0x238dc0, 0xc, 0x9, 0x1)"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:402 +0x25 fp=0x142d790 sp=0x142d768 pc=0x127b0025"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goparkunlock(...)"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:408"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.bgsweep(0x1432000)"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgcsweep.go:278 +0xc fp=0x142d7d0 sp=0x142d790 pc=0x11a5000c"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gcenable.gowrap1()"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgc.go:203 +0x2 fp=0x142d7e0 sp=0x142d7d0 pc=0x112c0002"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x142d7e8 sp=0x142d7e0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327796,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "created by runtime.gcenable in goroutine 1"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgc.go:203 +0x6"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 4 gp=0x1400700 m=nil [runnable]:"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gopark(0x52718, 0x2390a0, 0xd, 0xa, 0x2)"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:402 +0x25 fp=0x142df80 sp=0x142df58 pc=0x127b0025"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goparkunlock(...)"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:408"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.(*scavengerState).park(0x2390a0)"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgcscavenge.go:425 +0xc fp=0x142dfa8 sp=0x142df80 pc=0x1183000c"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.bgscavenge(0x1432000)"
+      }
+    },
+    {
+      "elapsedMs": 327797,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgcscavenge.go:653 +0x4 fp=0x142dfd0 sp=0x142dfa8 pc=0x11880004"
+      }
+    },
+    {
+      "elapsedMs": 327799,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gcenable.gowrap2()"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgc.go:204 +0x2 fp=0x142dfe0 sp=0x142dfd0 pc=0x112b0002"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x142dfe8 sp=0x142dfe0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "created by runtime.gcenable in goroutine 1"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgc.go:204 +0xa"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 5 gp=0x14008c0 m=nil [finalizer wait, 5 minutes]:"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gopark(0x524a0, 0x286788, 0x10, 0xa, 0x1)"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:402 +0x25 fp=0x142e710 sp=0x142e6e8 pc=0x127b0025"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.runfinq()"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mfinal.go:194 +0x1c fp=0x142e7e0 sp=0x142e710 pc=0x1122001c"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x142e7e8 sp=0x142e7e0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327800,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "created by runtime.createfing in goroutine 1"
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mfinal.go:164 +0xc"
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": ""
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "goroutine 7 gp=0x1400c40 m=nil [GC worker (idle), 5 minutes]:"
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gopark(0x524c0, 0x1482100, 0x1a, 0xa, 0x0)"
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/proc.go:402 +0x25 fp=0x142c748 sp=0x142c720 pc=0x127b0025"
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.gcBgMarkWorker()"
+      }
+    },
+    {
+      "elapsedMs": 327801,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgc.go:1310 +0x1f fp=0x142c7e0 sp=0x142c748 pc=0x113d001f"
+      }
+    },
+    {
+      "elapsedMs": 327802,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "runtime.goexit({})"
+      }
+    },
+    {
+      "elapsedMs": 327802,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/asm_wasm.s:434 +0x1 fp=0x142c7e8 sp=0x142c7e0 pc=0x14ad0001"
+      }
+    },
+    {
+      "elapsedMs": 327802,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "created by runtime.gcBgMarkStartWorkers in goroutine 6"
+      }
+    },
+    {
+      "elapsedMs": 327802,
+      "type": "console",
+      "detail": {
+        "level": "log",
+        "text": "\truntime/mgc.go:1234 +0x3"
+      }
+    },
+    {
+      "elapsedMs": 327802,
+      "type": "console",
+      "detail": {
+        "level": "warning",
+        "text": "exit code: 2"
+      }
+    },
+    {
+      "elapsedMs": 327812,
+      "type": "page-close",
+      "detail": {}
+    }
+  ],
+  "browser": {
+    "name": "webkit",
+    "version": "26.0"
+  },
+  "setup": {
+    "marks": {
+      "start": 39,
+      "wasmFetched": 47,
+      "wasmCompiled": 65,
+      "wasmInstantiated": 67,
+      "runtimeReady": 75,
+      "dataFetched": 93,
+      "dataDecoded": 94
+    },
+    "wasmBytes": 5838670,
+    "dataBytes": 18537952,
+    "columnBytes": 18537936,
+    "wasmMemoryBytes": 27787264,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
+  },
+  "bridge": {
+    "classification": "bridge-returned-undefined",
+    "elapsedMs": 327590,
+    "before": {
+      "wasmMemoryBytes": 27787264,
+      "goRunState": "pending",
+      "goExitCode": null
+    },
+    "after": {
+      "wasmMemoryBytes": 4293394432,
+      "goRunState": "pending",
+      "goRunError": null,
+      "goExitCode": 2
+    },
+    "value": null
+  }
+}
