@@ -63,6 +63,9 @@ func checkpointUnsupportedPath(prepared *PreparedRun, request RunRequest) string
 	if path := prefixUnsupportedPath(prepared); path != "" {
 		return path
 	}
+	if prepared.offRoute {
+		return "off-route request"
+	}
 	if prepared.params.SetupType != string(dsl.FamilyOpeningRangeBreakout) {
 		return "ordinary family " + prepared.params.SetupType
 	}

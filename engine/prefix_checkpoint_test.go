@@ -176,6 +176,11 @@ func TestRunPrefixResumableRejectsTamperedCheckpoint(t *testing.T) {
 	if !errors.As(err, &invalid) || invalid.Reason != "state digest mismatch" {
 		t.Fatalf("state-tampered checkpoint error = %#v, want state digest rejection", err)
 	}
+
+	_, _, err = RunPrefixResumable(openingRangeCheckpointRequest(t, 1800, "close"), checkpoint[:len(checkpoint)/2])
+	if !errors.As(err, &invalid) || invalid.Reason != "malformed envelope" {
+		t.Fatalf("truncated checkpoint error = %#v, want malformed-envelope rejection", err)
+	}
 }
 
 func TestRunPrefixResumableRejectsEveryUnsupportedPath(t *testing.T) {
@@ -187,6 +192,7 @@ func TestRunPrefixResumableRejectsEveryUnsupportedPath(t *testing.T) {
 	}{
 		{name: "ordinary family", edit: func(r *RunRequest) { r.Config["setupType"] = string(dsl.FamilyFailedBreakout) }, path: "ordinary family failedBreakout"},
 		{name: "special family", edit: func(r *RunRequest) { r.Config["setupType"] = string(dsl.FamilyDailyFlushFailure) }, path: "special family dailyFlushFailure"},
+		{name: "off route", edit: func(r *RunRequest) { r.Timeframe = "4h" }, path: "off-route request"},
 		{name: "execution window", edit: func(r *RunRequest) { r.ExecutionWindow = &ExecutionWindow{} }, path: "bounded execution window"},
 	}
 	for _, tc := range tests {
