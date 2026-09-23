@@ -1,0 +1,861 @@
+{
+  "schema": "enginewasm-real-data-browser-benchmark-v1",
+  "generatedAt": "2026-09-23T06:16:42.732Z",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "release": "v0.6.1",
+    "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+    "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
+    "harnessSha256": "c6bc2264b2bcdf93af39b9549e204c57297c631f7c31d8b9680f7e2af314307c",
+    "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
+    "appCommit": "e2f859d4ea160915b1bc30912d67b7bb33ad6e08"
+  },
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 5838695,
+      "brotliBytes": 1129655,
+      "sha256": "82c48fd89fcd63668277e504f175c628b27ad1285027142c4045d5825098d271"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    },
+    "native": {
+      "label": "heisentick-darwin-arm64",
+      "sha256": "8238a2fb311ec8fae41382ef70c4061cc73a324a128f67b38090f3a47527e2b1",
+      "versionMetadata": "heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=27d02fe0929441ea3b99bc67a65fdd0e63f5db24\n\tbuild\tvcs.time=2026-09-23T03:27:23Z\n\tbuild\tvcs.modified=true"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
+    "count": 386207,
+    "measuredSizes": [
+      386207
+    ]
+  },
+  "environment": {
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "logicalCPUs": 10,
+    "totalMemoryBytes": 17179869184,
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "repeats": 20,
+  "cellTimeoutMs": 900000,
+  "native": [
+    {
+      "size": 386207,
+      "status": "measured",
+      "tradeCount": 10177,
+      "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 2581.853291
+        },
+        {
+          "repeat": 2,
+          "wallMs": 2521.997167
+        },
+        {
+          "repeat": 3,
+          "wallMs": 2711.8387089999997
+        },
+        {
+          "repeat": 4,
+          "wallMs": 2797.603665999999
+        },
+        {
+          "repeat": 5,
+          "wallMs": 2576.548500000001
+        },
+        {
+          "repeat": 6,
+          "wallMs": 2626.939125000001
+        },
+        {
+          "repeat": 7,
+          "wallMs": 2557.5572089999987
+        },
+        {
+          "repeat": 8,
+          "wallMs": 2535.091625000001
+        },
+        {
+          "repeat": 9,
+          "wallMs": 2564.9020420000015
+        },
+        {
+          "repeat": 10,
+          "wallMs": 2541.8983750000007
+        },
+        {
+          "repeat": 11,
+          "wallMs": 2561.5621659999997
+        },
+        {
+          "repeat": 12,
+          "wallMs": 2550.9554590000007
+        },
+        {
+          "repeat": 13,
+          "wallMs": 2542.1763750000027
+        },
+        {
+          "repeat": 14,
+          "wallMs": 2532.552208000001
+        },
+        {
+          "repeat": 15,
+          "wallMs": 2548.7310419999994
+        },
+        {
+          "repeat": 16,
+          "wallMs": 2586.8523330000025
+        },
+        {
+          "repeat": 17,
+          "wallMs": 2533.1151660000032
+        },
+        {
+          "repeat": 18,
+          "wallMs": 2634.3774589999957
+        },
+        {
+          "repeat": 19,
+          "wallMs": 2582.1895000000004
+        },
+        {
+          "repeat": 20,
+          "wallMs": 2554.122374999999
+        }
+      ]
+    }
+  ],
+  "browsers": [
+    {
+      "name": "chromium",
+      "status": "measured",
+      "cases": [
+        {
+          "size": 386207,
+          "status": "measured",
+          "tradeCount": 10177,
+          "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "jsTradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "wasmJsFirstDifferenceTrades": null,
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 6110.5,
+              "wasm": {
+                "copyOutMs": 0.19999992847442627,
+                "copyInMs": 15.199999928474426,
+                "adapterMs": 10.2,
+                "engineMs": 5935.3,
+                "packMs": 133.899
+              },
+              "jsContextMs": 9757.699999928474,
+              "jsRunMs": 1625.1000000238419,
+              "jsTotalMs": 11382.799999952316
+            },
+            {
+              "repeat": 2,
+              "wasmWallMs": 6121.299999952316,
+              "wasm": {
+                "engineMs": 5957.099,
+                "packMs": 131,
+                "copyOutMs": 0.20000004768371582,
+                "copyInMs": 7.899999976158142,
+                "adapterMs": 10
+              },
+              "jsContextMs": 9367.5,
+              "jsRunMs": 1628.1999999284744,
+              "jsTotalMs": 10995.699999928474
+            },
+            {
+              "repeat": 3,
+              "wasmWallMs": 6122.899999976158,
+              "wasm": {
+                "copyInMs": 8.300000071525574,
+                "adapterMs": 10.099,
+                "engineMs": 5954.4,
+                "packMs": 132.499,
+                "copyOutMs": 0.10000002384185791
+              },
+              "jsContextMs": 9219.200000047684,
+              "jsRunMs": 1667.1000000238419,
+              "jsTotalMs": 10886.300000071526
+            },
+            {
+              "repeat": 4,
+              "wasmWallMs": 6160.100000023842,
+              "wasm": {
+                "adapterMs": 10.299,
+                "engineMs": 5993.7,
+                "packMs": 133.199,
+                "copyOutMs": 0.30000007152557373,
+                "copyInMs": 7.199999928474426
+              },
+              "jsContextMs": 9149,
+              "jsRunMs": 1652.5,
+              "jsTotalMs": 10801.5
+            },
+            {
+              "repeat": 5,
+              "wasmWallMs": 6032.400000095367,
+              "wasm": {
+                "copyInMs": 8.399999976158142,
+                "adapterMs": 10.2,
+                "engineMs": 5873.199,
+                "packMs": 129.2,
+                "copyOutMs": 0.19999992847442627
+              },
+              "jsContextMs": 9232.799999952316,
+              "jsRunMs": 1629.3999999761581,
+              "jsTotalMs": 10862.199999928474
+            },
+            {
+              "repeat": 6,
+              "wasmWallMs": 5967.400000095367,
+              "wasm": {
+                "adapterMs": 10.199,
+                "engineMs": 5808,
+                "packMs": 131,
+                "copyOutMs": 0.10000002384185791,
+                "copyInMs": 8.199999928474426
+              },
+              "jsContextMs": 9027.600000023842,
+              "jsRunMs": 1671.6999999284744,
+              "jsTotalMs": 10699.299999952316
+            },
+            {
+              "repeat": 7,
+              "wasmWallMs": 6122.799999952316,
+              "wasm": {
+                "copyInMs": 7,
+                "adapterMs": 10.099,
+                "engineMs": 5961.1,
+                "packMs": 127.599,
+                "copyOutMs": 0.20000004768371582
+              },
+              "jsContextMs": 9374.099999904633,
+              "jsRunMs": 1635.6000000238419,
+              "jsTotalMs": 11009.699999928474
+            },
+            {
+              "repeat": 8,
+              "wasmWallMs": 5975.900000095367,
+              "wasm": {
+                "copyInMs": 8.5,
+                "adapterMs": 10.3,
+                "engineMs": 5814.799,
+                "packMs": 131.8,
+                "copyOutMs": 0.20000004768371582
+              },
+              "jsContextMs": 9113.899999976158,
+              "jsRunMs": 1627.5,
+              "jsTotalMs": 10741.399999976158
+            },
+            {
+              "repeat": 9,
+              "wasmWallMs": 6066.5,
+              "wasm": {
+                "copyInMs": 8.600000023841858,
+                "adapterMs": 10.299,
+                "engineMs": 5906.7,
+                "packMs": 130.4,
+                "copyOutMs": 0.20000004768371582
+              },
+              "jsContextMs": 9313.5,
+              "jsRunMs": 1627.6999999284744,
+              "jsTotalMs": 10941.199999928474
+            },
+            {
+              "repeat": 10,
+              "wasmWallMs": 6090.399999976158,
+              "wasm": {
+                "copyOutMs": 0.10000002384185791,
+                "copyInMs": 7.799999952316284,
+                "adapterMs": 11,
+                "engineMs": 5925.099,
+                "packMs": 127.699
+              },
+              "jsContextMs": 9239.300000071526,
+              "jsRunMs": 1644.6000000238419,
+              "jsTotalMs": 10883.900000095367
+            },
+            {
+              "repeat": 11,
+              "wasmWallMs": 5990.600000023842,
+              "wasm": {
+                "copyOutMs": 0.30000007152557373,
+                "copyInMs": 8.600000023841858,
+                "adapterMs": 10,
+                "engineMs": 5832.399,
+                "packMs": 129.4
+              },
+              "jsContextMs": 9114.799999952316,
+              "jsRunMs": 1631.6000000238419,
+              "jsTotalMs": 10746.399999976158
+            },
+            {
+              "repeat": 12,
+              "wasmWallMs": 6118.600000023842,
+              "wasm": {
+                "copyInMs": 8.200000047683716,
+                "adapterMs": 9.8,
+                "engineMs": 5952.699,
+                "packMs": 130.599,
+                "copyOutMs": 0.19999992847442627
+              },
+              "jsContextMs": 9435.100000023842,
+              "jsRunMs": 1624.5,
+              "jsTotalMs": 11059.600000023842
+            },
+            {
+              "repeat": 13,
+              "wasmWallMs": 6063.100000023842,
+              "wasm": {
+                "packMs": 130,
+                "copyOutMs": 0.20000004768371582,
+                "copyInMs": 8.200000047683716,
+                "adapterMs": 9.999,
+                "engineMs": 5900.4
+              },
+              "jsContextMs": 9366.899999976158,
+              "jsRunMs": 1630.4000000953674,
+              "jsTotalMs": 10997.300000071526
+            },
+            {
+              "repeat": 14,
+              "wasmWallMs": 6006.100000023842,
+              "wasm": {
+                "engineMs": 5849.9,
+                "packMs": 126.699,
+                "copyOutMs": 0.10000002384185791,
+                "copyInMs": 7.200000047683716,
+                "adapterMs": 10.299
+              },
+              "jsContextMs": 9072.699999928474,
+              "jsRunMs": 1651.7000000476837,
+              "jsTotalMs": 10724.399999976158
+            },
+            {
+              "repeat": 15,
+              "wasmWallMs": 6124.899999976158,
+              "wasm": {
+                "packMs": 130.2,
+                "copyOutMs": 0.2999999523162842,
+                "copyInMs": 8,
+                "adapterMs": 9.999,
+                "engineMs": 5960.299
+              },
+              "jsContextMs": 9203.399999976158,
+              "jsRunMs": 1629.8999999761581,
+              "jsTotalMs": 10833.299999952316
+            },
+            {
+              "repeat": 16,
+              "wasmWallMs": 6406.700000047684,
+              "wasm": {
+                "adapterMs": 10.099,
+                "engineMs": 6111.899,
+                "packMs": 242.6,
+                "copyOutMs": 0.30000007152557373,
+                "copyInMs": 7.800000071525574
+              },
+              "jsContextMs": 9333.700000047684,
+              "jsRunMs": 1634.2999999523163,
+              "jsTotalMs": 10968
+            },
+            {
+              "repeat": 17,
+              "wasmWallMs": 6061.900000095367,
+              "wasm": {
+                "copyInMs": 8,
+                "adapterMs": 10.199,
+                "engineMs": 5900.3,
+                "packMs": 129,
+                "copyOutMs": 0.30000007152557373
+              },
+              "jsContextMs": 9309.799999952316,
+              "jsRunMs": 1635.6000000238419,
+              "jsTotalMs": 10945.399999976158
+            },
+            {
+              "repeat": 18,
+              "wasmWallMs": 5973.300000071526,
+              "wasm": {
+                "packMs": 130.799,
+                "copyOutMs": 0.09999990463256836,
+                "copyInMs": 7.900000095367432,
+                "adapterMs": 9.8,
+                "engineMs": 5814.899
+              },
+              "jsContextMs": 9193.299999952316,
+              "jsRunMs": 1642.6000000238419,
+              "jsTotalMs": 10835.899999976158
+            },
+            {
+              "repeat": 19,
+              "wasmWallMs": 6032.5,
+              "wasm": {
+                "copyOutMs": 0.10000002384185791,
+                "copyInMs": 8.100000023841858,
+                "adapterMs": 10.1,
+                "engineMs": 5873.299,
+                "packMs": 127.399
+              },
+              "jsContextMs": 9149.400000095367,
+              "jsRunMs": 1623,
+              "jsTotalMs": 10772.400000095367
+            },
+            {
+              "repeat": 20,
+              "wasmWallMs": 6083.100000023842,
+              "wasm": {
+                "copyOutMs": 0.19999992847442627,
+                "copyInMs": 6.899999976158142,
+                "adapterMs": 10.1,
+                "engineMs": 5920.599,
+                "packMs": 129.799
+              },
+              "jsContextMs": 9212.899999976158,
+              "jsRunMs": 1623.1000000238419,
+              "jsTotalMs": 10836
+            }
+          ],
+          "completedRepeats": 20,
+          "setupTimings": [
+            {
+              "repeat": 1,
+              "assetFetchMs": 8.600000023841858,
+              "assetBytes": 5838695,
+              "compileMs": 6.399999976158142,
+              "instantiateMs": 0.9000000953674316,
+              "runtimeReadyMs": 15,
+              "jsModuleAndParseMs": 50.299999952316284,
+              "dataFetchMs": 18.100000023841858,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 2,
+              "assetFetchMs": 7.400000095367432,
+              "assetBytes": 5838695,
+              "compileMs": 4.099999904632568,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11,
+              "jsModuleAndParseMs": 45.5,
+              "dataFetchMs": 20.600000023841858,
+              "dataDecodeMs": 0.10000002384185791
+            },
+            {
+              "repeat": 3,
+              "assetFetchMs": 7.199999928474426,
+              "assetBytes": 5838695,
+              "compileMs": 3.4000000953674316,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.399999976158142,
+              "jsModuleAndParseMs": 41.40000009536743,
+              "dataFetchMs": 20.09999990463257,
+              "dataDecodeMs": 0.10000002384185791
+            },
+            {
+              "repeat": 4,
+              "assetFetchMs": 7.900000095367432,
+              "assetBytes": 5838695,
+              "compileMs": 3.1999999284744263,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.199999928474426,
+              "jsModuleAndParseMs": 39.60000002384186,
+              "dataFetchMs": 20.200000047683716,
+              "dataDecodeMs": 0.09999990463256836
+            },
+            {
+              "repeat": 5,
+              "assetFetchMs": 8,
+              "assetBytes": 5838695,
+              "compileMs": 3.299999952316284,
+              "instantiateMs": 0.3999999761581421,
+              "runtimeReadyMs": 11.200000047683716,
+              "jsModuleAndParseMs": 40,
+              "dataFetchMs": 19.100000023841858,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 6,
+              "assetFetchMs": 7.200000047683716,
+              "assetBytes": 5838695,
+              "compileMs": 3.1999999284744263,
+              "instantiateMs": 0.3999999761581421,
+              "runtimeReadyMs": 10.899999976158142,
+              "jsModuleAndParseMs": 36.300000071525574,
+              "dataFetchMs": 18,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 7,
+              "assetFetchMs": 7.399999976158142,
+              "assetBytes": 5838695,
+              "compileMs": 3.600000023841858,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.5,
+              "jsModuleAndParseMs": 39.299999952316284,
+              "dataFetchMs": 19.399999976158142,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 8,
+              "assetFetchMs": 7.700000047683716,
+              "assetBytes": 5838695,
+              "compileMs": 3.5,
+              "instantiateMs": 0.3999999761581421,
+              "runtimeReadyMs": 11.899999976158142,
+              "jsModuleAndParseMs": 38.60000002384186,
+              "dataFetchMs": 20.100000023841858,
+              "dataDecodeMs": 0.09999990463256836
+            },
+            {
+              "repeat": 9,
+              "assetFetchMs": 7.600000023841858,
+              "assetBytes": 5838695,
+              "compileMs": 3.5999999046325684,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.600000023841858,
+              "jsModuleAndParseMs": 39.39999997615814,
+              "dataFetchMs": 19.600000023841858,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 10,
+              "assetFetchMs": 7.600000023841858,
+              "assetBytes": 5838695,
+              "compileMs": 3.1999999284744263,
+              "instantiateMs": 0.6000000238418579,
+              "runtimeReadyMs": 11.5,
+              "jsModuleAndParseMs": 36.59999990463257,
+              "dataFetchMs": 18.90000009536743,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 11,
+              "assetFetchMs": 7.699999928474426,
+              "assetBytes": 5838695,
+              "compileMs": 3,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.200000047683716,
+              "jsModuleAndParseMs": 37.699999928474426,
+              "dataFetchMs": 18.5,
+              "dataDecodeMs": 0.10000002384185791
+            },
+            {
+              "repeat": 12,
+              "assetFetchMs": 6.899999976158142,
+              "assetBytes": 5838695,
+              "compileMs": 3.600000023841858,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11,
+              "jsModuleAndParseMs": 36.199999928474426,
+              "dataFetchMs": 18.5,
+              "dataDecodeMs": 0.10000002384185791
+            },
+            {
+              "repeat": 13,
+              "assetFetchMs": 7.199999928474426,
+              "assetBytes": 5838695,
+              "compileMs": 3.4000000953674316,
+              "instantiateMs": 0.6000000238418579,
+              "runtimeReadyMs": 11.700000047683716,
+              "jsModuleAndParseMs": 39.89999997615814,
+              "dataFetchMs": 19.199999928474426,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 14,
+              "assetFetchMs": 7.399999976158142,
+              "assetBytes": 5838695,
+              "compileMs": 3.3000000715255737,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.300000071525574,
+              "jsModuleAndParseMs": 41.299999952316284,
+              "dataFetchMs": 18.600000023841858,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 15,
+              "assetFetchMs": 8.199999928474426,
+              "assetBytes": 5838695,
+              "compileMs": 3.3000000715255737,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.400000095367432,
+              "jsModuleAndParseMs": 39.5,
+              "dataFetchMs": 18.799999952316284,
+              "dataDecodeMs": 0.10000002384185791
+            },
+            {
+              "repeat": 16,
+              "assetFetchMs": 7.100000023841858,
+              "assetBytes": 5838695,
+              "compileMs": 3.600000023841858,
+              "instantiateMs": 0.40000009536743164,
+              "runtimeReadyMs": 11.099999904632568,
+              "jsModuleAndParseMs": 40.200000047683716,
+              "dataFetchMs": 19.299999952316284,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 17,
+              "assetFetchMs": 7.799999952316284,
+              "assetBytes": 5838695,
+              "compileMs": 3.399999976158142,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.5,
+              "jsModuleAndParseMs": 41.10000002384186,
+              "dataFetchMs": 20.200000047683716,
+              "dataDecodeMs": 0.09999990463256836
+            },
+            {
+              "repeat": 18,
+              "assetFetchMs": 7.200000047683716,
+              "assetBytes": 5838695,
+              "compileMs": 3.5,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11.199999928474426,
+              "jsModuleAndParseMs": 40,
+              "dataFetchMs": 17.899999976158142,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 19,
+              "assetFetchMs": 7,
+              "assetBytes": 5838695,
+              "compileMs": 3.299999952316284,
+              "instantiateMs": 0.5,
+              "runtimeReadyMs": 11,
+              "jsModuleAndParseMs": 37.5,
+              "dataFetchMs": 18.5,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 20,
+              "assetFetchMs": 7.399999976158142,
+              "assetBytes": 5838695,
+              "compileMs": 3.4000000953674316,
+              "instantiateMs": 0.3999999761581421,
+              "runtimeReadyMs": 11.700000047683716,
+              "jsModuleAndParseMs": 40.39999997615814,
+              "dataFetchMs": 21,
+              "dataDecodeMs": 0
+            }
+          ],
+          "memorySamples": [
+            {
+              "repeat": 1,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 2,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 3,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 4,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 5,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 6,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 7,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 8,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 9,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 10,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 11,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 12,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 13,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 14,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 15,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 16,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 17,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 18,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 19,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            },
+            {
+              "repeat": 20,
+              "performanceMemory": {
+                "jsHeapSizeLimit": 3760000000,
+                "totalJSHeapSize": 3760000000,
+                "usedJSHeapSize": 3760000000
+              },
+              "chromiumCDP": {}
+            }
+          ],
+          "exactNativeParity": true
+        }
+      ],
+      "version": "143.0.7499.4",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/143.0.7499.4 Safari/537.36"
+    }
+  ],
+  "reliability": {
+    "attemptedCells": 1,
+    "measuredCells": 1,
+    "failedCells": 0,
+    "timedOutCells": 0,
+    "unavailableBrowsers": 0
+  },
+  "limitations": [
+    "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
+    "Each cell requested 20 local repeats; completed results and timeouts are recorded per cell and do not establish production shadow reliability.",
+    "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
+  ]
+}

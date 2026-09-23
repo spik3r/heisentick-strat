@@ -1,0 +1,441 @@
+{
+  "schema": "enginewasm-real-data-browser-benchmark-v1",
+  "generatedAt": "2026-09-23T06:30:22.965Z",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "release": "v0.6.1",
+    "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+    "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
+    "harnessSha256": "c6bc2264b2bcdf93af39b9549e204c57297c631f7c31d8b9680f7e2af314307c",
+    "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
+    "appCommit": "e2f859d4ea160915b1bc30912d67b7bb33ad6e08"
+  },
+  "artifacts": {
+    "wasm": {
+      "label": "enginewasm.wasm",
+      "bytes": 5838695,
+      "brotliBytes": 1129655,
+      "sha256": "82c48fd89fcd63668277e504f175c628b27ad1285027142c4045d5825098d271"
+    },
+    "wasmExec": {
+      "label": "wasm_exec.js",
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    },
+    "native": {
+      "label": "heisentick-darwin-arm64",
+      "sha256": "8238a2fb311ec8fae41382ef70c4061cc73a324a128f67b38090f3a47527e2b1",
+      "versionMetadata": "heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=27d02fe0929441ea3b99bc67a65fdd0e63f5db24\n\tbuild\tvcs.time=2026-09-23T03:27:23Z\n\tbuild\tvcs.modified=true"
+    }
+  },
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
+    "count": 386207,
+    "measuredSizes": [
+      386207
+    ]
+  },
+  "environment": {
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "logicalCPUs": 10,
+    "totalMemoryBytes": 17179869184,
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "repeats": 10,
+  "cellTimeoutMs": 900000,
+  "native": [
+    {
+      "size": 386207,
+      "status": "measured",
+      "tradeCount": 10177,
+      "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 2652.2242920000003
+        },
+        {
+          "repeat": 2,
+          "wallMs": 2580.2978749999997
+        },
+        {
+          "repeat": 3,
+          "wallMs": 2576.9183749999993
+        },
+        {
+          "repeat": 4,
+          "wallMs": 2550.6607920000006
+        },
+        {
+          "repeat": 5,
+          "wallMs": 2537.1977499999994
+        },
+        {
+          "repeat": 6,
+          "wallMs": 2605.216042
+        },
+        {
+          "repeat": 7,
+          "wallMs": 2522.056708
+        },
+        {
+          "repeat": 8,
+          "wallMs": 2530.5442500000026
+        },
+        {
+          "repeat": 9,
+          "wallMs": 2544.104625
+        },
+        {
+          "repeat": 10,
+          "wallMs": 2547.8648749999993
+        }
+      ]
+    }
+  ],
+  "browsers": [
+    {
+      "name": "firefox",
+      "status": "measured",
+      "cases": [
+        {
+          "size": 386207,
+          "status": "measured",
+          "tradeCount": 10177,
+          "tradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "jsTradeDigest": "04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "wasmJsFirstDifferenceTrades": null,
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 55503,
+              "wasm": {
+                "copyInMs": 9,
+                "adapterMs": 3,
+                "engineMs": 54463,
+                "packMs": 968,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 14276,
+              "jsRunMs": 2361,
+              "jsTotalMs": 16637
+            },
+            {
+              "repeat": 2,
+              "wasmWallMs": 53232,
+              "wasm": {
+                "engineMs": 52271,
+                "packMs": 933.999,
+                "copyOutMs": 1,
+                "copyInMs": 9,
+                "adapterMs": 3
+              },
+              "jsContextMs": 14367,
+              "jsRunMs": 2715,
+              "jsTotalMs": 17082
+            },
+            {
+              "repeat": 3,
+              "wasmWallMs": 56363,
+              "wasm": {
+                "packMs": 976.999,
+                "copyOutMs": 1,
+                "copyInMs": 13,
+                "adapterMs": 4,
+                "engineMs": 55255
+              },
+              "jsContextMs": 13835,
+              "jsRunMs": 2653,
+              "jsTotalMs": 16488
+            },
+            {
+              "repeat": 4,
+              "wasmWallMs": 57608,
+              "wasm": {
+                "copyInMs": 7,
+                "adapterMs": 3,
+                "engineMs": 56500,
+                "packMs": 981.999,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 14042,
+              "jsRunMs": 2412,
+              "jsTotalMs": 16454
+            },
+            {
+              "repeat": 5,
+              "wasmWallMs": 55527,
+              "wasm": {
+                "copyInMs": 10,
+                "adapterMs": 3,
+                "engineMs": 54476.999,
+                "packMs": 972.999,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 14157,
+              "jsRunMs": 2878,
+              "jsTotalMs": 17035
+            },
+            {
+              "repeat": 6,
+              "wasmWallMs": 56928,
+              "wasm": {
+                "adapterMs": 4,
+                "engineMs": 55813,
+                "packMs": 968,
+                "copyOutMs": 1,
+                "copyInMs": 8
+              },
+              "jsContextMs": 13864,
+              "jsRunMs": 2403,
+              "jsTotalMs": 16267
+            },
+            {
+              "repeat": 7,
+              "wasmWallMs": 55721,
+              "wasm": {
+                "adapterMs": 3,
+                "engineMs": 54680,
+                "packMs": 956,
+                "copyOutMs": 0,
+                "copyInMs": 8
+              },
+              "jsContextMs": 13756,
+              "jsRunMs": 2715,
+              "jsTotalMs": 16471
+            },
+            {
+              "repeat": 8,
+              "wasmWallMs": 59279,
+              "wasm": {
+                "copyInMs": 8,
+                "adapterMs": 3,
+                "engineMs": 57044,
+                "packMs": 2062,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 15622,
+              "jsRunMs": 2390,
+              "jsTotalMs": 18012
+            },
+            {
+              "repeat": 9,
+              "wasmWallMs": 55117,
+              "wasm": {
+                "copyInMs": 8,
+                "adapterMs": 4,
+                "engineMs": 54060.999,
+                "packMs": 983,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 14452,
+              "jsRunMs": 3149,
+              "jsTotalMs": 17601
+            },
+            {
+              "repeat": 10,
+              "wasmWallMs": 56313,
+              "wasm": {
+                "copyInMs": 8,
+                "adapterMs": 2.999,
+                "engineMs": 55275,
+                "packMs": 967,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 13763,
+              "jsRunMs": 2714,
+              "jsTotalMs": 16477
+            }
+          ],
+          "completedRepeats": 10,
+          "setupTimings": [
+            {
+              "repeat": 1,
+              "assetFetchMs": 12,
+              "assetBytes": 5838695,
+              "compileMs": 118,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 3,
+              "jsModuleAndParseMs": 60,
+              "dataFetchMs": 16,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 2,
+              "assetFetchMs": 13,
+              "assetBytes": 5838695,
+              "compileMs": 110,
+              "instantiateMs": 2,
+              "runtimeReadyMs": 3,
+              "jsModuleAndParseMs": 58,
+              "dataFetchMs": 16,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 3,
+              "assetFetchMs": 9,
+              "assetBytes": 5838695,
+              "compileMs": 110,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 2,
+              "jsModuleAndParseMs": 54,
+              "dataFetchMs": 18,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 4,
+              "assetFetchMs": 8,
+              "assetBytes": 5838695,
+              "compileMs": 105,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 2,
+              "jsModuleAndParseMs": 54,
+              "dataFetchMs": 16,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 5,
+              "assetFetchMs": 11,
+              "assetBytes": 5838695,
+              "compileMs": 115,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 2,
+              "jsModuleAndParseMs": 68,
+              "dataFetchMs": 18,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 6,
+              "assetFetchMs": 9,
+              "assetBytes": 5838695,
+              "compileMs": 108,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 3,
+              "jsModuleAndParseMs": 62,
+              "dataFetchMs": 16,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 7,
+              "assetFetchMs": 10,
+              "assetBytes": 5838695,
+              "compileMs": 114,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 3,
+              "jsModuleAndParseMs": 68,
+              "dataFetchMs": 18,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 8,
+              "assetFetchMs": 10,
+              "assetBytes": 5838695,
+              "compileMs": 105,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 2,
+              "jsModuleAndParseMs": 53,
+              "dataFetchMs": 16,
+              "dataDecodeMs": 1
+            },
+            {
+              "repeat": 9,
+              "assetFetchMs": 10,
+              "assetBytes": 5838695,
+              "compileMs": 120,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 2,
+              "jsModuleAndParseMs": 62,
+              "dataFetchMs": 17,
+              "dataDecodeMs": 0
+            },
+            {
+              "repeat": 10,
+              "assetFetchMs": 11,
+              "assetBytes": 5838695,
+              "compileMs": 104,
+              "instantiateMs": 1,
+              "runtimeReadyMs": 3,
+              "jsModuleAndParseMs": 52,
+              "dataFetchMs": 17,
+              "dataDecodeMs": 0
+            }
+          ],
+          "memorySamples": [
+            {
+              "repeat": 1,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 2,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 3,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 4,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 5,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 6,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 7,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 8,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 9,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            },
+            {
+              "repeat": 10,
+              "performanceMemory": null,
+              "chromiumCDP": null
+            }
+          ],
+          "exactNativeParity": true
+        }
+      ],
+      "version": "144.0.2",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:144.0) Gecko/20100101 Firefox/144.0"
+    }
+  ],
+  "reliability": {
+    "attemptedCells": 1,
+    "measuredCells": 1,
+    "failedCells": 0,
+    "timedOutCells": 0,
+    "unavailableBrowsers": 0
+  },
+  "limitations": [
+    "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
+    "Each cell requested 10 local repeats; completed results and timeouts are recorded per cell and do not establish production shadow reliability.",
+    "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
+  ]
+}

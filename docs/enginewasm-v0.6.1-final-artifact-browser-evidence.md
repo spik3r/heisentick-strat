@@ -110,6 +110,33 @@ Chromium completed one exact full-data comparison with the same trade count and
 digest. Its 20-repeat cell then reached the 15-minute cap before returning a
 result. Firefox was not started after that bounded failure. D-11 remains open.
 
+## Fresh-page repeat isolation
+
+The first Chromium repeat cell kept the published WASM runtime and each full
+JavaScript context in one page. It reached the cap without returning any of
+its completed comparisons. The harness now opens a fresh page per repeat,
+keeps one aggregate deadline and persists each completed comparison before it
+starts the next. A two-repeat 50k Chromium smoke checked this lifecycle before
+the full runs.
+
+Chromium then completed 20 of 20 full-data comparisons with exact
+native/WASM/JavaScript equality for 10,177 trades and digest
+`04dae09057ce56544da6ca7de6c4678eeb46feb404a593b47484d89b9eca620f`.
+WASM wall time ranged from 5.967 to 6.407 seconds, with a 6.083-second median.
+JavaScript context plus engine time ranged from 10.699 to 11.383 seconds, with
+a 10.884-second median.
+
+Firefox 144.0.2 completed 10 of 10 exact full-data comparisons with the same
+trade count and digest. Twenty repeats were not attempted because the first
+Firefox WASM call took 58.758 seconds and could not fit 20 comparisons inside
+the 15-minute cell cap. Across 10 repeats, WASM ranged from 53.232 to 59.279
+seconds, with a 56.313-second median. JavaScript context plus engine time ranged
+from 16.267 to 18.012 seconds, with a 16.637-second median.
+
+Fresh pages prevent cross-repeat heap retention, but they do not reduce the
+material per-run WASM linear-memory observation recorded above. Local browser
+repeats also do not establish production shadow reliability. D-11 remains open.
+
 ## Evidence files
 
 - `scripts/spikes/enginewasm/evidence/v0.6.1-real-data-webkit-chromium.json`
@@ -119,6 +146,9 @@ result. Firefox was not started after that bounded failure. D-11 remains open.
 - `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-webkit.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-chromium.json`
 - `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-chromium-20-repeat.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-chromium-isolated-20.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-firefox.json`
+- `scripts/spikes/enginewasm/evidence/v0.6.1-full-parity-firefox-isolated-10.json`
 
-HT-036 remains open for 20 completed Chromium comparisons, Firefox coverage
-and production shadow reliability evidence.
+HT-036 remains open for production shadow reliability evidence and the D-11
+memory decision.

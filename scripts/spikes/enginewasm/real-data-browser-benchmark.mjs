@@ -282,34 +282,64 @@ const browserFunction = async ({ baseURL, size, repeats, stratRelease }) => {
   return { timings, inputCount: count, measuredCase, memory: { performanceMemory: globalThis.performance.memory ? { jsHeapSizeLimit: performance.memory.jsHeapSizeLimit, totalJSHeapSize: performance.memory.totalJSHeapSize, usedJSHeapSize: performance.memory.usedJSHeapSize } : null } };
 };
 
-async function runBrowserCell(name, browserType, baseURL, size) {
+async function runBrowserCell(name, browserType, baseURL, size, onProgress = () => {}) {
   let browser;
+  const completedRuns = [];
+  const memorySamples = [];
+  const setupTimings = [];
+  let measuredCase = null;
+  let version = null;
+  let userAgent = null;
   try {
     browser = await browserType.launch({ headless: true });
+    version = browser.version();
   } catch (error) {
     return { name, status: 'unavailable', reason: error.message };
   }
   try {
-    const page = await browser.newPage();
-    page.setDefaultTimeout(30 * 60 * 1000);
-    await page.goto(`${baseURL}/artifact/index.html`);
-    await page.addScriptTag({ url: `${baseURL}/artifact/wasm_exec.js` });
-    await page.evaluate(({ source, dataName }) => { globalThis.__tf0Source = source; globalThis.__tf0DataName = dataName; }, { source, dataName: dataPath.split('/').at(-1) });
-    let timeoutId;
-    const timeout = new Promise((_, reject) => {
-      timeoutId = setTimeout(() => reject(new Error(`cell exceeded ${cellTimeoutMs} ms timeout`)), cellTimeoutMs);
-    });
-    const measured = await Promise.race([page.evaluate(browserFunction, { baseURL, size, repeats, stratRelease }), timeout]).finally(() => clearTimeout(timeoutId));
-    let chromiumMetrics = null;
-    if (name === 'chromium') {
-      const session = await page.context().newCDPSession(page);
-      const metrics = await session.send('Performance.getMetrics');
-      chromiumMetrics = Object.fromEntries(metrics.metrics.filter(({ name: metric }) => ['JSHeapUsedSize', 'JSHeapTotalSize'].includes(metric)).map(({ name: metric, value }) => [metric, value]));
+    const deadline = Date.now() + cellTimeoutMs;
+    for (let repeat = 0; repeat < repeats; repeat++) {
+      const page = await browser.newPage();
+      try {
+        page.setDefaultTimeout(30 * 60 * 1000);
+        await page.goto(`${baseURL}/artifact/index.html`);
+        await page.addScriptTag({ url: `${baseURL}/artifact/wasm_exec.js` });
+        await page.evaluate(({ source, dataName }) => { globalThis.__tf0Source = source; globalThis.__tf0DataName = dataName; }, { source, dataName: dataPath.split('/').at(-1) });
+        const remainingMs = deadline - Date.now();
+        if (remainingMs <= 0) throw new Error(`cell exceeded ${cellTimeoutMs} ms timeout`);
+        let timeoutId;
+        const timeout = new Promise((_, reject) => {
+          timeoutId = setTimeout(() => reject(new Error(`cell exceeded ${cellTimeoutMs} ms timeout`)), remainingMs);
+        });
+        const measured = await Promise.race([page.evaluate(browserFunction, { baseURL, size, repeats: 1, stratRelease }), timeout]).finally(() => clearTimeout(timeoutId));
+        userAgent ??= await page.evaluate(() => navigator.userAgent);
+        let chromiumMetrics = null;
+        if (name === 'chromium') {
+          const session = await page.context().newCDPSession(page);
+          const metrics = await session.send('Performance.getMetrics');
+          chromiumMetrics = Object.fromEntries(metrics.metrics.filter(({ name: metric }) => ['JSHeapUsedSize', 'JSHeapTotalSize'].includes(metric)).map(({ name: metric, value }) => [metric, value]));
+        }
+        const current = measured.measuredCase;
+        measuredCase ??= { ...current, runs: [], completedRepeats: 0 };
+        assert.equal(current.tradeCount, measuredCase.tradeCount, `${name} ${size}: repeat trade count changed`);
+        assert.equal(current.tradeDigest, measuredCase.tradeDigest, `${name} ${size}: repeat WASM digest changed`);
+        assert.equal(current.jsTradeDigest, measuredCase.jsTradeDigest, `${name} ${size}: repeat JavaScript digest changed`);
+        completedRuns.push({ ...current.runs[0], repeat: repeat + 1 });
+        setupTimings.push({ repeat: repeat + 1, ...measured.timings });
+        memorySamples.push({ repeat: repeat + 1, ...measured.memory, chromiumCDP: chromiumMetrics });
+        measuredCase = { ...measuredCase, runs: [...completedRuns], completedRepeats: completedRuns.length,
+          setupTimings: [...setupTimings], memorySamples: [...memorySamples] };
+        onProgress({ ...measuredCase, status: 'running' });
+      } finally {
+        await page.close().catch(() => {});
+      }
     }
-    return { status: 'measured', version: browser.version(), userAgent: await page.evaluate(() => navigator.userAgent), timings: measured.timings, memory: { ...measured.memory, chromiumCDP: chromiumMetrics }, case: measured.measuredCase };
+    return { status: 'measured', version, userAgent, case: { ...measuredCase, status: 'measured' } };
   } catch (error) {
     const timedOut = String(error?.message || error).includes('cell exceeded');
-    return { status: timedOut ? 'timed-out' : 'failed', version: browser.version(), reason: error.stack || error.message, case: { size, status: timedOut ? 'timed-out' : 'failed', reason: error.message } };
+    return { status: timedOut ? 'timed-out' : 'failed', version, userAgent, reason: error.stack || error.message,
+      case: { ...(measuredCase || { size }), runs: [...completedRuns], completedRepeats: completedRuns.length,
+        setupTimings: [...setupTimings], memorySamples: [...memorySamples], status: timedOut ? 'timed-out' : 'failed', reason: error.message } };
   } finally {
     await browser.close();
   }
@@ -384,7 +414,10 @@ try {
     for (const size of sizes) {
       browser.cases.push({ size, status: 'pending' });
       persistEvidence();
-      const result = await runBrowserCell(browser.name, browserType, server.baseURL, size);
+      const result = await runBrowserCell(browser.name, browserType, server.baseURL, size, (partial) => {
+        browser.cases[browser.cases.length - 1] = partial;
+        persistEvidence();
+      });
       browser.version ??= result.version;
       browser.userAgent ??= result.userAgent;
       browser.cases[browser.cases.length - 1] = result.case;
@@ -393,8 +426,6 @@ try {
         assert.equal(result.case.tradeCount, native.tradeCount, `${browser.name} ${size}: native trade count differs`);
         assert.equal(result.case.tradeDigest, native.tradeDigest, `${browser.name} ${size}: native trade digest differs`);
         result.case.exactNativeParity = true;
-        result.case.timings = result.timings;
-        result.case.memory = result.memory;
       }
       persistEvidence();
     }
