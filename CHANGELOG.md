@@ -8,6 +8,15 @@ version and is named here.
 
 Nothing yet.
 
+## [0.7.0] — 2026-09-23
+
+- Added the exact `dslSmaGoldenCrossXauusdOneMinuteCanary` source and an
+  `XAUUSD 1m` Go run golden with 13 trades. The fixture reuses the reviewed
+  OHLCV values from `family-sma-golden-cross-protected` with deterministic
+  one-minute closed-bar timestamps. It proves execution and serialization for
+  a test-only report route; it is not economic, promotion, Forward, or live-use
+  evidence.
+
 ## [0.6.1] — 2026-09-23
 
 Patch release: opening-range-breakout UTC-slot scans stop at the first older
