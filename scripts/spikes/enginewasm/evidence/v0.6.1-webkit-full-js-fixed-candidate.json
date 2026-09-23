@@ -1,0 +1,48 @@
+{
+  "schema": "enginewasm-webkit-full-js-diagnostic-v1",
+  "generatedAt": "2026-09-23T04:20:19.037Z",
+  "status": "measured",
+  "release": "v0.6.1",
+  "releaseCommit": "27d02fe0929441ea3b99bc67a65fdd0e63f5db24",
+  "appCommit": "dea45b7b266337efce35dd81d5864b685c71fb1b",
+  "input": {
+    "label": "XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "count": 386207,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04"
+  },
+  "environment": {
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "phaseTimeoutMs": 120000,
+  "phases": {
+    "setup": {
+      "status": "measured",
+      "elapsedMs": 78,
+      "dataBytes": 18537952,
+      "columnBytes": 18537936
+    },
+    "context": {
+      "status": "measured",
+      "elapsedMs": 9755,
+      "bars": 386207
+    },
+    "engine": {
+      "status": "measured",
+      "elapsedMs": 1722,
+      "tradeCount": 10177
+    },
+    "normalization": {
+      "status": "measured",
+      "elapsedMs": 64,
+      "bytes": 7900442
+    }
+  },
+  "events": [],
+  "browser": {
+    "name": "webkit",
+    "version": "26.0"
+  },
+  "appWorkingTreeDiffSha256": "5457775ebb8ae346af0b52a3b20e2e01e4c435532ddbe6b1508c0b8ab172e30a"
+}
