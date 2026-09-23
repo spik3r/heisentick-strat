@@ -8,6 +8,12 @@ version and is named here.
 
 Nothing yet.
 
+## [0.6.1] — 2026-09-23
+
+Patch release: opening-range-breakout UTC-slot scans stop at the first older
+slot boundary. This preserves selected bars while preventing full-history
+rescans at each boundary that exhausted browser WASM memory on long inputs.
+
 ## [0.6.0] — 2026-09-23
 
 Minor bump: the engine and CLI add the first opt-in native Forward prefix
