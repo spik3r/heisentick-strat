@@ -121,6 +121,9 @@ func RunPrefix(request RunRequest) (PrefixResult, error) {
 		return PrefixResult{}, &PrefixUnsupportedError{Path: path}
 	}
 	prepared.fixture.Costs = request.Costs.normalized()
+	if err := validateDerivedOutput(prepared.fixture.Costs, nil); err != nil {
+		return PrefixResult{}, err
+	}
 	if prepared.offRoute {
 		return PrefixResult{Trades: []Trade{}, OpenPositions: []OpenPositionSnapshot{}}, nil
 	}

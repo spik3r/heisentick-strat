@@ -125,3 +125,21 @@ func TestPrefixOutputRejectsNonFiniteClosedAndOpenState(t *testing.T) {
 		t.Fatal("non-finite open position field was accepted")
 	}
 }
+
+func TestRunPrefixValidatesCostsBeforeOffRouteReturn(t *testing.T) {
+	request := moneyRiskSizingPrefixRequest(t, 679)
+	request.Timeframe = "4h"
+	request.Costs.FeePerUnit = math.NaN()
+	if _, err := RunPrefix(request); err == nil || err.Error() != "run result costs.feePerUnit contains non-finite value" {
+		t.Fatalf("off-route prefix cost error = %v, want checked non-finite rejection", err)
+	}
+
+	request.Costs.FeePerUnit = 0
+	result, err := RunPrefix(request)
+	if err != nil {
+		t.Fatalf("valid off-route prefix: %v", err)
+	}
+	if result.Trades == nil || result.OpenPositions == nil || len(result.Trades) != 0 || len(result.OpenPositions) != 0 {
+		t.Fatalf("off-route prefix = %#v, want non-nil empty arrays", result)
+	}
+}
