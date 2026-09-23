@@ -1,0 +1,214 @@
+{
+  "schema": "enginewasm-real-data-browser-benchmark-v1",
+  "generatedAt": "2026-09-23T02:55:15.780Z",
+  "source": {
+    "repository": "spik3r/heisentick-strat",
+    "release": "v0.5.0",
+    "releaseCommit": "ff2964f3bdaa1230d6d0ed956a494cd43e6b049a",
+    "harnessPath": "scripts/spikes/enginewasm/real-data-browser-benchmark.mjs",
+    "harnessSha256": "566522dc166032de82d62c0c50496ec66feda2f07bd0adda1e39e792ebd64872",
+    "strategySha256": "fbf2a6b224a820dbafaac914df22b0e729f393994ff6196945c851848fb8c3f7",
+    "appCommit": "0b30bec37d51487570deecd81616ae0d6bb7ed28"
+  },
+  "artifacts": {
+    "wasm": {
+      "path": "/private/tmp/heisentick-strat-v050-tf0/enginewasm.wasm",
+      "bytes": 5827444,
+      "brotliBytes": 1127743,
+      "sha256": "3f0f2b9efabcfc785e0ea6c550113a7840a20ac8c31f2cd5085fe5371e3740b9"
+    },
+    "wasmExec": {
+      "sha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+    },
+    "native": {
+      "sha256": "495ea1d15a1350d0e52617204e970a584d7da830bb4681a23870847642b05a3c",
+      "versionMetadata": "/private/tmp/heisentick-strat-v050-tf0/heisentick-darwin-arm64: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/cmd/heisentick\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=darwin\n\tbuild\tvcs=git\n\tbuild\tvcs.revision=ff2964f3bdaa1230d6d0ed956a494cd43e6b049a\n\tbuild\tvcs.time=2026-09-22T23:56:00Z\n\tbuild\tvcs.modified=true"
+    }
+  },
+  "input": {
+    "path": "/private/tmp/claude-501/-Users-kaitait-code-heisentick/e1438cd8-cd9e-4f1b-8681-7f1741de1c31/scratchpad/sample-data/data-sample/XAUUSD/5m.bin",
+    "bytes": 18537952,
+    "sha256": "3074ac6b47d7ade4104cc8325298f3953ab84b4a61f759031de265e3429c3e04",
+    "count": 386207,
+    "measuredSizes": [
+      50000,
+      200000,
+      386207
+    ]
+  },
+  "environment": {
+    "hostname": "MacBook-Pro-M4.local",
+    "platform": "darwin",
+    "release": "25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M4",
+    "logicalCPUs": 10,
+    "totalMemoryBytes": 17179869184,
+    "node": "v26.0.0",
+    "playwright": "1.57.0"
+  },
+  "repeats": 3,
+  "cellTimeoutMs": 900000,
+  "native": [
+    {
+      "size": 50000,
+      "status": "measured",
+      "tradeCount": 1297,
+      "tradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 2256.5006660000004
+        },
+        {
+          "repeat": 2,
+          "wallMs": 2273.447
+        },
+        {
+          "repeat": 3,
+          "wallMs": 2362.1360829999994
+        }
+      ]
+    },
+    {
+      "size": 200000,
+      "status": "measured",
+      "tradeCount": 5244,
+      "tradeDigest": "487b1cba130b0436c59acaa6cbc5042be09de90118c56ff2e73b8ebce9d29b8e",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 32750.901749999997
+        },
+        {
+          "repeat": 2,
+          "wallMs": 32586.898624999994
+        },
+        {
+          "repeat": 3,
+          "wallMs": 32598.927250000008
+        }
+      ]
+    },
+    {
+      "size": 386207,
+      "status": "measured",
+      "tradeCount": 10177,
+      "tradeDigest": "fbe2c738c4eac9d048766414746f66d94fee81bb01d8b1d5dc0337c477de86dc",
+      "runs": [
+        {
+          "repeat": 1,
+          "wallMs": 119530.15
+        },
+        {
+          "repeat": 2,
+          "wallMs": 120355.843334
+        },
+        {
+          "repeat": 3,
+          "wallMs": 119879.75216699997
+        }
+      ]
+    }
+  ],
+  "browsers": [
+    {
+      "name": "webkit",
+      "status": "incomplete",
+      "cases": [
+        {
+          "size": 50000,
+          "status": "measured",
+          "tradeCount": 1297,
+          "tradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+          "jsTradeDigest": "a416f690384b35d2bb566d5cc271773fa5f594f81201974a89665c26df672c60",
+          "exactWasmJsTradeEquality": true,
+          "wasmJsFirstDifference": null,
+          "runs": [
+            {
+              "repeat": 1,
+              "wasmWallMs": 10300,
+              "wasm": {
+                "engineMs": 10262,
+                "packMs": 22,
+                "copyOutMs": 1,
+                "copyInMs": 3,
+                "adapterMs": 5.999
+              },
+              "jsContextMs": 1085,
+              "jsRunMs": 4932,
+              "jsTotalMs": 6017
+            },
+            {
+              "repeat": 2,
+              "wasmWallMs": 10545,
+              "wasm": {
+                "copyOutMs": 1.000000000003638,
+                "copyInMs": 2,
+                "adapterMs": 7,
+                "engineMs": 10501.999,
+                "packMs": 27
+              },
+              "jsContextMs": 1359,
+              "jsRunMs": 5644,
+              "jsTotalMs": 7003
+            },
+            {
+              "repeat": 3,
+              "wasmWallMs": 10530,
+              "wasm": {
+                "copyInMs": 1,
+                "adapterMs": 2,
+                "engineMs": 10495,
+                "packMs": 24,
+                "copyOutMs": 0
+              },
+              "jsContextMs": 1491,
+              "jsRunMs": 6674,
+              "jsTotalMs": 8165
+            }
+          ],
+          "exactNativeParity": true,
+          "timings": {
+            "assetFetchMs": 14.000000000000014,
+            "assetBytes": 5827444,
+            "compileMs": 23.999999999999986,
+            "instantiateMs": 2,
+            "runtimeReadyMs": 11,
+            "jsModuleAndParseMs": 72,
+            "dataFetchMs": 34,
+            "dataDecodeMs": 0
+          },
+          "memory": {
+            "performanceMemory": null,
+            "chromiumCDP": null
+          }
+        },
+        {
+          "size": 200000,
+          "status": "timed-out",
+          "reason": "cell exceeded 900000 ms timeout"
+        },
+        {
+          "size": 386207,
+          "status": "failed",
+          "reason": "page.evaluate: TypeError: undefined is not an object (evaluating 'wasm.ok')"
+        }
+      ],
+      "version": "26.0",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
+    }
+  ],
+  "reliability": {
+    "attemptedCells": 3,
+    "measuredCells": 1,
+    "failedCells": 1,
+    "timedOutCells": 1,
+    "unavailableBrowsers": 0
+  },
+  "limitations": [
+    "Browser heap metrics cover JavaScript/WASM page heap only where exposed; Firefox and WebKit do not expose comparable process RSS through Playwright.",
+    "Three local repeats per cell estimate timing spread; they do not satisfy D-11 shadow telemetry reliability requirements or the minimum 20 production comparisons per cell.",
+    "The columnar bridge supports a single chart-timeframe series and this benchmark strategy has no source or higher-timeframe dependency."
+  ]
+}
