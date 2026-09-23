@@ -1,0 +1,51 @@
+{
+  "case": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslCloseVwapExtremeMagnetNoNyClose",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 2627.975,
+      "entryIndex": 479,
+      "entryT": 1736150400000,
+      "exit": 2628.04591071429,
+      "exitIndex": 481,
+      "exitT": 1736152200000,
+      "initialSl": 2624.37651785714,
+      "initialTp": 2636.82065712947,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "VWAP",
+        "levelPrice": 2636.82065712947,
+        "regime": "choppy",
+        "sessionPhase": "close",
+        "setup": "vwapExtensionFade",
+        "setupAgeCandles": 0,
+        "side": "long",
+        "targetMode": "vwap",
+        "targetR": 2.51680148999635,
+        "vwap": 2636.82065712947,
+        "vwapDistanceAtr": -3.38113084237466
+      },
+      "pnl": 3.94114582040786,
+      "points": 0.0709107142856737,
+      "reason": "sl",
+      "side": "long",
+      "size": 55.5789891571308,
+      "sl": 2628.10591071429,
+      "tag": "DSL-VEF:VWAP",
+      "tp": 2636.82065712947
+    }
+  ]
+}

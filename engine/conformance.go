@@ -23,6 +23,7 @@ var implementedRunCases = []string{
 	"family-triple-push-exhaustion",
 	"family-vwap-extension-fade",
 	"deployed-dsl-close-vwap-extreme-magnet-defensive",
+	"deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
 	"family-volume-anomaly-exhaustion",
 	"family-elder-triple-screen",
 	"family-elder-triple-screen-trail-override",
