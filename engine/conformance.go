@@ -22,6 +22,7 @@ var implementedRunCases = []string{
 	"family-level-sweep",
 	"family-triple-push-exhaustion",
 	"family-vwap-extension-fade",
+	"deployed-dsl-close-vwap-extreme-magnet-defensive",
 	"family-volume-anomaly-exhaustion",
 	"family-elder-triple-screen",
 	"family-elder-triple-screen-trail-override",
