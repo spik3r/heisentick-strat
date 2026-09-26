@@ -1,13 +1,16 @@
 {
   "goRun": {
     "implemented": [
+      "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
       "deployed-dsl-close-vwap-extreme-magnet-defensive",
       "deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
       "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
       "deployed-dsl-flag-continuation-one-four-hour-review",
       "deployed-dsl-session-expansion-ny",
       "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+      "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
       "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+      "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
       "family-break-retest",
       "family-channel-break-hold",
       "family-daily-flush-failure",
@@ -57,6 +60,6 @@
     "diagnostic": 15,
     "setup-family": 27
   },
-  "runCases": 36,
+  "runCases": 39,
   "schema": "dsl-conformance-metadata-v1"
 }
