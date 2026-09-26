@@ -1,0 +1,45 @@
+{
+  "case": "family-named-level-sweep",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-named-level-sweep",
+  "symbol": "XAUUSD",
+  "timeframe": "4h",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 101,
+      "entryIndex": 10,
+      "entryT": 1704211200000,
+      "exit": 104.5,
+      "exitIndex": 11,
+      "exitT": 1704225600000,
+      "initialSl": 94,
+      "initialTp": 104.5,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "PDL",
+        "levelPrice": 95,
+        "mode": "sweep",
+        "setup": "namedLevelSweep",
+        "side": "long"
+      },
+      "pnl": 100,
+      "points": 3.5,
+      "reason": "tp",
+      "side": "long",
+      "size": 28.5714285714286,
+      "sl": 94,
+      "tag": "DSL-NLS:PDL",
+      "tp": 104.5
+    }
+  ]
+}

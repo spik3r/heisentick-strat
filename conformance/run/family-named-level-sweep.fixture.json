@@ -1,0 +1,40 @@
+{
+  "schema": "dsl-conformance-run-fixture-v1",
+  "case": "family-named-level-sweep",
+  "strategyId": "family-named-level-sweep",
+  "symbol": "XAUUSD",
+  "timeframe": "4h",
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "source": {
+    "bars": {
+      "kind": "synthetic-named-level-sweep"
+    },
+    "htfBars": {
+      "kind": "synthetic-named-level-sweep-unused"
+    }
+  },
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "contextOptions": {},
+  "htfBars": [],
+  "bars": [
+    [1704067200000, 100, 101, 99, 100, 1],
+    [1704081600000, 100, 101, 99, 100, 1],
+    [1704096000000, 100, 101, 99, 100, 1],
+    [1704110400000, 100, 101, 99, 100, 1],
+    [1704124800000, 100, 101, 99, 100, 1],
+    [1704139200000, 100, 101, 95, 100, 1],
+    [1704153600000, 100, 101, 99, 100, 1],
+    [1704168000000, 100, 101, 99, 100, 1],
+    [1704182400000, 100, 101, 99, 100, 1],
+    [1704196800000, 100, 101, 99, 100, 1],
+    [1704211200000, 100, 101, 94, 101, 1],
+    [1704225600000, 101, 105, 100, 104, 1],
+    [1704240000000, 104, 105, 103, 104, 1]
+  ]
+}

@@ -1,0 +1,52 @@
+dsl v7
+# Named Level Sweep - combined sweep/test forms
+strategy "Named Level Sweep Combined" {
+  description "Parse-conformance pin: both sweeps/tests entry phrase forms, the reclaim-margin clause, and prior day range at least, in one setup."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  sessions(london, ny)
+  prior day type in (range, outside)
+  prior day range at least 0.5 ATR
+}
+
+levels {
+  priority(PDL, PDH, WH, WL)
+}
+
+filters {
+  side both
+}
+
+trigger {
+  no confirmation candle
+}
+
+setup {
+  type: named level sweep
+}
+
+entry {
+  when price tests PDL within 0.35 ATR and closes above it then signal long
+  when price sweeps WH by at least 0.1 ATR and closes back below it by at least 0.15 ATR within 2 candles then signal short
+}
+
+risk {
+  stop below the signal candle and the level by 0.15 ATR
+  stop above the signal candle and the level by 0.2 ATR
+  stop size min 0.4 max 4.0
+}
+
+target {
+  target 4.0R
+}
+
+management {
+  move stop to breakeven after 0.75R plus 0.05 ATR
+  wait 4 candles after trade
+}
+
+execution {
+  risk 200 USD
+}

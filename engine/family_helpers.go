@@ -33,6 +33,7 @@ type dailySeenSets struct {
 	ls  dailySeenSet
 	vef dailySeenSet
 	vae dailySeenSet
+	nls dailySeenSet
 }
 
 func (s *dailySeenSets) reset() {
@@ -47,6 +48,7 @@ func (s *dailySeenSets) reset() {
 		ls:  dailySeenSet{day: math.MinInt64},
 		vef: dailySeenSet{day: math.MinInt64},
 		vae: dailySeenSet{day: math.MinInt64},
+		nls: dailySeenSet{day: math.MinInt64},
 	}
 }
 
@@ -222,6 +224,15 @@ func (b *broker) marketNonSessionGatesOK(i int) bool {
 	}
 	if finiteOrZero(b.cols.ER[i]) > b.params.MaxMovementER {
 		return false
+	}
+	if b.params.PriorDayMinRangeATR > 0 {
+		atr := finiteOrZero(b.cols.ATR[i])
+		if atr == 0 || !isFinite(b.cols.PriorDayH[i]) || !isFinite(b.cols.PriorDayL[i]) {
+			return false
+		}
+		if b.cols.PriorDayH[i]-b.cols.PriorDayL[i] < atr*b.params.PriorDayMinRangeATR {
+			return false
+		}
 	}
 	return true
 }

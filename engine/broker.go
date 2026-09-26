@@ -110,6 +110,8 @@ type broker struct {
 	hasCBHLast             bool
 	lsLastEntry            int
 	hasLSEntry             bool
+	nlsLastEntry           int
+	hasNLSEntry            bool
 	tpeHighs               []tpePivot
 	tpeLows                []tpePivot
 	tpeLastConfirmed       int
@@ -199,6 +201,8 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.hasCBHLast = false
 	b.lsLastEntry = 0
 	b.hasLSEntry = false
+	b.nlsLastEntry = 0
+	b.hasNLSEntry = false
 	b.tpeHighs = b.tpeHighs[:0]
 	b.tpeLows = b.tpeLows[:0]
 	b.tpeLastConfirmed = -1

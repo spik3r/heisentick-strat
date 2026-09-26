@@ -1,0 +1,199 @@
+{
+  "case": "setup-named-level-sweep",
+  "category": "setup-family",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0.75,
+      "offsetAtr": 0.05
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 4,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "ranging",
+      "choppy"
+    ],
+    "description": "Parse-conformance pin both sweeps/tests entry phrase forms the reclaim-margin clause and prior day range at least in one setup.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDL",
+      "PDH",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": true,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 0.8,
+    "name": "Named Level Sweep Combined",
+    "namedLevelSweep": {
+      "rules": {
+        "PDL": {
+          "level": "PDL",
+          "mode": "test",
+          "reclaimAtr": 0,
+          "reclaimCandles": 1,
+          "side": "long",
+          "sweepAtr": 0.35
+        },
+        "WH": {
+          "level": "WH",
+          "mode": "sweep",
+          "reclaimAtr": 0.15,
+          "reclaimCandles": 2,
+          "side": "short",
+          "sweepAtr": 0.1
+        }
+      },
+      "stop": {
+        "long": {
+          "paddingAtr": 0.15
+        },
+        "short": {
+          "paddingAtr": 0.2
+        }
+      }
+    },
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": 0.5
+    },
+    "priorDayTypes": [
+      "range",
+      "outside"
+    ],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 0,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "namedLevelSweep",
+    "slices": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "4h"
+      }
+    ],
+    "stop": {
+      "extremeCandles": 0,
+      "maxAtr": 4,
+      "minAtr": 0.4,
+      "paddingAtr": 0
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6,
+      "nlsR": 4
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 1
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "any"
+    ],
+    "triggerExplicit": true,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Representative compiled config for the named level sweep family: both sweeps/tests entry phrase forms, the reclaim-margin clause, and prior day range at least.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "spec/dsl-spec-families/namedLevelSweep.md (combined example)",
+  "warnings": []
+}

@@ -2,6 +2,7 @@ package dsl
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -315,6 +316,15 @@ func (p *parser) parseDay(tokens []string) {
 }
 
 func (p *parser) parsePriorDay(tokens []string) {
+	if len(tokens) >= 2 && strings.EqualFold(tokens[0], "day") && strings.EqualFold(tokens[1], "range") {
+		value := firstNumber(tokens, 2, math.NaN())
+		if !math.IsNaN(value) {
+			priorDay := copyMap(p.config["priorDay"])
+			priorDay["minRangeAtr"] = value
+			p.config["priorDay"] = priorDay
+		}
+		return
+	}
 	if len(tokens) < 3 || !strings.EqualFold(tokens[0], "day") || !strings.EqualFold(tokens[1], "type") {
 		return
 	}
@@ -460,7 +470,24 @@ func (p *parser) parseTrigger(tokens []string) {
 	}
 }
 
+// parseNoConfirmationCandle handles `no confirmation candle` — a clearer
+// synonym for `candle in (any)` / `trigger any` for a setup whose original
+// has no candle-shape requirement at all, rather than "accepts any shape".
+// Shared trigger vocabulary, not family-locked (spec §2.4).
+func (p *parser) parseNoConfirmationCandle(line logicalLine, tokens []string) {
+	if len(tokens) >= 3 && strings.EqualFold(tokens[1], "confirmation") && strings.EqualFold(tokens[2], "candle") {
+		p.config["triggerCandles"] = []any{"any"}
+		p.config["triggerExplicit"] = true
+		return
+	}
+	p.unknownDirective(line, tokens[0])
+}
+
 func (p *parser) parseWhen(line logicalLine, tokens []string) {
+	if p.config["setupType"] == string(FamilyNamedLevelSweep) {
+		p.parseNamedLevelSweepWhen(line, tokens)
+		return
+	}
 	if !containsLower(tokens, "range.high") && !containsLower(tokens, "range.low") &&
 		!containsLower(tokens, "channel.high") && !containsLower(tokens, "channel.low") {
 		p.err(line, "when rule must sweep range.high/range.low or channel.high/channel.low", "")

@@ -90,6 +90,7 @@ func (p *parser) parse() {
 		p.apply(line, tokens)
 	}
 	p.validateLevels()
+	p.validateNamedLevelSweep()
 	p.validateEntryTimeframe()
 	p.validatePriceMomentum()
 	p.validateDailyFlushFailure()
@@ -242,6 +243,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseBreakout(tokens)
 	case "confirm":
 		p.parseConfirm(tokens)
+	case "no":
+		p.parseNoConfirmationCandle(line, tokens)
 	case "impulse", "departure":
 		p.parseImpulse(tokens)
 	case "retrace":
@@ -421,6 +424,16 @@ func (p *parser) setNumber(key string, value float64) {
 	p.config[key] = value
 }
 
+// knownLevelsList is the shared, human-readable rundown of every level key
+// the runtime can resolve (levelResolver.js's keyLevel / family_level_sweep.go's
+// keyLevel). Every "unknown level" diagnostic — priority(...) and a named
+// level sweep entry rule alike — reuses this exact list.
+const knownLevelsList = "PDH, PDL, PDO, PDC, DO, DH, DL, WH, WL, AH, AL, LH, LL, NH, NL, range.high, range.low, CAM_R3, CAM_R4, CAM_S3, CAM_S4, channel.high, channel.low, VWAP, EMA, POC, VAH, VAL, RN<step> (round numbers), or a defined S/R/TL name"
+
+func unknownLevelMessage(context string, level string) string {
+	return fmt.Sprintf("unknown level %q in %s — known: %s", level, context, knownLevelsList)
+}
+
 func (p *parser) validateLevels() {
 	levels, ok := p.config["levelPriority"].([]any)
 	if !ok {
@@ -429,7 +442,7 @@ func (p *parser) validateLevels() {
 	for _, raw := range levels {
 		level, _ := raw.(string)
 		if !isKnownLevel(level) {
-			p.errorAt(nil, nil, fmt.Sprintf("unknown level %q in priority(...) — known: PDH, PDL, PDO, PDC, DO, DH, DL, WH, WL, AH, AL, LH, LL, NH, NL, range.high, range.low, CAM_R3, CAM_R4, CAM_S3, CAM_S4, channel.high, channel.low, VWAP, EMA, POC, VAH, VAL, RN<step> (round numbers), or a defined S/R/TL name", level), "")
+			p.errorAt(nil, nil, unknownLevelMessage("priority(...)", level), "")
 		}
 	}
 }
@@ -459,6 +472,21 @@ func (p *parser) warn(line logicalLine, message string, suggestion string) {
 		Message:    message,
 		Line:       &lineNo,
 		Column:     &col,
+		Suggestion: suggestion,
+	})
+}
+
+func (p *parser) warnAt(line *int, col *int, message string, suggestion string) {
+	if line != nil {
+		p.warnings = append(p.warnings, fmt.Sprintf("line %d: %s", *line, message))
+	} else {
+		p.warnings = append(p.warnings, message)
+	}
+	p.diagnostics = append(p.diagnostics, Diagnostic{
+		Severity:   DiagnosticWarning,
+		Message:    message,
+		Line:       line,
+		Column:     col,
 		Suggestion: suggestion,
 	})
 }
@@ -524,6 +552,7 @@ func defaultConfig() Config {
 		"openingRangeBreakout":  map[string]any{},
 		"priceMomentum":         map[string]any{},
 		"partial":               map[string]any{"enabled": 0, "fraction": 0, "moveBreakeven": 0, "triggerR": 1},
+		"priorDay":              map[string]any{"minRangeAtr": nil},
 		"priorDayTypes":         []any{},
 		"range":                 map[string]any{"activeWithinCandles": 8, "method": nil},
 		"rangeBreakFake":        map[string]any{},

@@ -38,6 +38,8 @@ func setupTargetKey(raw any) string {
 		return "fvgR"
 	case string(FamilyIntraHourRunExhaustion):
 		return "ihreR"
+	case string(FamilyNamedLevelSweep):
+		return "nlsR"
 	default:
 		return ""
 	}

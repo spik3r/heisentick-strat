@@ -1,0 +1,3 @@
+dsl v7
+strategy "Diagnostic NLS No Entry Rule" { description "x" }
+setup { type: named level sweep }

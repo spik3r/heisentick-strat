@@ -1,0 +1,43 @@
+dsl v7
+strategy "Named Level Sweep Synthetic" {
+  description "Synthetic conformance fixture: a clean PDL sweep-and-reclaim long."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  day type in (ranging, choppy, trending)
+  movement below 1.5
+}
+
+levels {
+  priority(PDL)
+}
+
+filters {
+  side long only
+  trade window unrestricted
+}
+
+trigger {
+  no confirmation candle
+}
+
+setup {
+  type: named level sweep
+}
+
+entry {
+  when price sweeps PDL and closes back above it then signal long
+}
+
+risk {
+  stop below the signal candle and the level by 0 ATR
+}
+
+target {
+  target 0.5R
+}
+
+execution {
+  risk 200 USD
+}

@@ -208,6 +208,13 @@
       "canonicalExample": "type: keltner expansion\n  ema length 20\n  distance 2 ATR\n  pierce at least 0.25 ATR\n  target 1R",
       "classification": "shared",
       "since": 7
+    },
+    {
+      "id": "namedLevelSweep",
+      "canonicalSpelling": "named level sweep",
+      "canonicalExample": "type: named level sweep",
+      "classification": "shared",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1442,6 +1449,46 @@
       "familyId": "keltnerExpansion",
       "classification": "shared",
       "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.named-level-sweep",
+      "source": "js-setup-type",
+      "spelling": "named level sweep",
+      "familyId": "namedLevelSweep",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.namedlevelsweep-camel",
+      "source": "js-setup-type",
+      "spelling": "namedLevelSweep",
+      "familyId": "namedLevelSweep",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.named-level-sweep",
+      "source": "go-inline-setup-type",
+      "spelling": "named level sweep",
+      "familyId": "namedLevelSweep",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.namedlevelsweep",
+      "source": "go-inline-setup-type",
+      "spelling": "namedlevelsweep",
+      "familyId": "namedLevelSweep",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.named-level-sweep",
+      "source": "go-canonical-setup-type",
+      "spelling": "named level sweep",
+      "familyId": "namedLevelSweep",
+      "classification": "shared",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2026,6 +2073,12 @@
       "spelling": "confirm",
       "classification": "shared",
       "since": 6
+    },
+    {
+      "id": "directive.no",
+      "spelling": "no",
+      "classification": "shared",
+      "since": 7
     }
   ],
   "deprecations": [

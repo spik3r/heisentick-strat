@@ -85,6 +85,9 @@
       "lookbackBars": 20,
       "thresholdPct": 0.5
     },
+    "priorDay": {
+      "minRangeAtr": null
+    },
     "priorDayTypes": [],
     "range": {
       "activeWithinCandles": 8,

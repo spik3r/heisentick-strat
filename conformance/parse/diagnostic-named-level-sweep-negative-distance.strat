@@ -1,0 +1,4 @@
+dsl v7
+strategy "Diagnostic NLS Negative Distance" { description "x" }
+setup { type: named level sweep }
+entry { when price sweeps PDH by at least -0.1 ATR and closes back below it then signal short }

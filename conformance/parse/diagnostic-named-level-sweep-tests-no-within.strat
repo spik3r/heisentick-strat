@@ -1,0 +1,4 @@
+dsl v7
+strategy "Diagnostic NLS Tests No Within" { description "x" }
+setup { type: named level sweep }
+entry { when price tests PDL and closes above it then signal long }

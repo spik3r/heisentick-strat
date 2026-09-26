@@ -37,6 +37,7 @@ var implementedRunCases = []string{
 	"deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
 	"family-keltner-reversion",
 	"family-keltner-expansion",
+	"family-named-level-sweep",
 	"money-risk-sizing",
 	"money-partial-exit",
 	"money-stop-distance-gate",

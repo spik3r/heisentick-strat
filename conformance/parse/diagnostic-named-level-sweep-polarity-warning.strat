@@ -1,0 +1,4 @@
+dsl v7
+strategy "Diagnostic NLS Polarity Warning" { description "x" }
+setup { type: named level sweep }
+entry { when price sweeps PDH and closes back above it then signal long }

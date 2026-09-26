@@ -73,6 +73,7 @@ var parserDirectiveHandlerBindings = map[string]string{
 	"directive.weekend":        "parser.apply:parseWeekendExtremeFade",
 	"directive.run":            "parser.apply:parseIntraHourRunExhaustionRun",
 	"directive.exhaustion":     "parser.apply:parseIntraHourRunExhaustionExhaustion",
+	"directive.no":             "parser.apply:parseNoConfirmationCandle",
 }
 
 var parserFamilyHandlerBindings = map[string]string{
@@ -102,4 +103,5 @@ var parserFamilyHandlerBindings = map[string]string{
 	"intraHourRunExhaustion":  "parser.parseSetupType",
 	"keltnerReversion":        "parser.parseSetupType",
 	"keltnerExpansion":        "parser.parseSetupType",
+	"namedLevelSweep":         "parser.parseSetupType",
 }

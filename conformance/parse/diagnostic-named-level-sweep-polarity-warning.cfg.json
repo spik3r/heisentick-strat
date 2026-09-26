@@ -1,0 +1,187 @@
+{
+  "case": "diagnostic-named-level-sweep-polarity-warning",
+  "category": "diagnostic",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0.75,
+      "offsetAtr": 0.05
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 12,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "ranging",
+      "choppy"
+    ],
+    "description": "x",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 0.8,
+    "name": "Diagnostic NLS Polarity Warning",
+    "namedLevelSweep": {
+      "rules": {
+        "PDH": {
+          "level": "PDH",
+          "mode": "sweep",
+          "reclaimAtr": 0,
+          "reclaimCandles": 1,
+          "side": "long",
+          "sweepAtr": null
+        }
+      },
+      "stop": {}
+    },
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": null
+    },
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 1,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "namedLevelSweep",
+    "slices": [],
+    "stop": {
+      "extremeCandles": 0,
+      "maxAtr": null,
+      "minAtr": 0,
+      "paddingAtr": 0
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6,
+      "nlsR": 1
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 1
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Named level sweep compile diagnostic: polarity warning.",
+  "diagnostics": [
+    {
+      "col": 9,
+      "line": 4,
+      "message": "PDH is a high-type level; 'then signal long' trades against its default polarity — confirm this is intended",
+      "severity": "warning"
+    }
+  ],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "generated diagnostic fixture",
+  "warnings": [
+    "line 4: PDH is a high-type level; 'then signal long' trades against its default polarity — confirm this is intended"
+  ]
+}
