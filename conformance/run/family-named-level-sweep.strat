@@ -32,6 +32,7 @@ entry {
 
 risk {
   stop below the signal candle and the level by 0 ATR
+  stop size min 0 max 10
 }
 
 target {

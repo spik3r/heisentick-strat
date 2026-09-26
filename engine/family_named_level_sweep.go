@@ -15,14 +15,15 @@ import (
 // `keyLevel` resolver `failed breakout` already uses), followed by a close
 // back on the level's origin side.
 //
-// This is the family's Phase A/B boundary implementation: the geometry, the
-// unified stop formula, and the one-signal-per-level-per-day dedup are
-// implemented (mirroring the JS engine's engine/dsl/setups/namedLevelSweep.js
-// phrase-for-phrase). Deliberately out of scope here, left for a follow-up
-// pass: HTF-trend agreement gating specific to this family (the shared
-// `marketGatesOK` non-session gates — sessions, prior day type/range, day
-// type/ER — already apply, since every family shares them) and a dedicated
-// trigger-candle path beyond the shared `triggerOK`.
+// Phase B (heisentick-backlog plan §5): the geometry, the unified stop
+// formula, the one-signal-per-level-per-day dedup, HTF-trend agreement
+// (b.htfAllows, shared with every other family) and the shared stop size
+// min/max bounds (stopOK, same b.params.MinStopATR/MaxStopATR every other
+// family enforces) are all implemented here, mirroring the JS engine's
+// engine/dsl/setups/namedLevelSweep.js phrase-for-phrase. Sessions, prior
+// day type/range and day type/ER already apply generically through
+// marketGatesOK, and the confirmation-candle check through the shared
+// triggerOK.
 
 type namedLevelSweepRule struct {
 	Level          string
@@ -127,6 +128,9 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 		if s == sideShort && !p.AllowShort {
 			continue
 		}
+		if !b.htfAllows(i, s) {
+			continue
+		}
 		setup, ok := b.namedLevelSweepSetup(i, rule, atr)
 		if !ok {
 			continue
@@ -157,6 +161,9 @@ func (b *broker) namedLevelSweepSetup(i int, rule namedLevelSweepRule, atr float
 	}
 	entry := b.series.C[i]
 	stop := b.namedLevelSweepStop(i, level.Price, rule.Side, atr)
+	if !stopOK(entry, stop, atr, b.params.MinStopATR, b.params.MaxStopATR) {
+		return setupPlan{}, false
+	}
 	risk := math.Abs(entry - stop)
 	if risk <= 0 {
 		return setupPlan{}, false
