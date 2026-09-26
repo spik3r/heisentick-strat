@@ -8,6 +8,7 @@
       "deployed-dsl-session-expansion-ny",
       "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
       "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+      "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
       "family-break-retest",
       "family-channel-break-hold",
       "family-daily-flush-failure",
@@ -57,6 +58,6 @@
     "diagnostic": 15,
     "setup-family": 27
   },
-  "runCases": 36,
+  "runCases": 37,
   "schema": "dsl-conformance-metadata-v1"
 }

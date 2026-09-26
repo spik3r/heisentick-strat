@@ -93,9 +93,9 @@ func (b *broker) runWeekendExtremeFade() []Trade {
 			TP:      entry + direction*b.params.WeekendExtremeFade.TargetATR*atr,
 			RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-WEF",
 			Meta: TradeMeta{
-				"setup": "weekendExtremeFade", "side": s.String(),
-				"entryIndex": float64(i), "weekendRangeAtr": rangeSize / atrs[i],
-				"weekendCloseLocation": location, "signalAtr": atr,
+				"setup": "weekendExtremeFade", "entryIndex": float64(i),
+				"weekendRangeAtr":      diagnosticNumber(rangeSize / atrs[i]),
+				"weekendCloseLocation": diagnosticNumber(location), "signalAtr": diagnosticNumber(atr),
 			},
 		}, i)
 	}

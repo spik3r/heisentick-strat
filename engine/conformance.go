@@ -31,6 +31,7 @@ var implementedRunCases = []string{
 	"family-price-momentum-guarded",
 	"family-fair-value-gap",
 	"family-weekend-extreme-fade",
+	"deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
 	"family-intra-hour-run-exhaustion",
 	"family-sma-golden-cross",
 	"family-sma-golden-cross-protected",

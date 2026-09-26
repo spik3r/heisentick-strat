@@ -6,6 +6,8 @@ version and is named here.
 
 ## [Unreleased]
 
+- Minor bump (next `0.11.0`): add a whole-strategy Go run golden for `dslWeekendExtremeFadeBtcusdtFourHour` on BTCUSDT 4h, backed by 3,803 real Binance bars. Go now serializes the strategy diagnostics with the same precision and metadata shape as the JS runtime; all 31 fixture trades match exactly. This is conformance evidence, not a performance promotion.
+
 ## [0.10.0] — 2026-09-26
 
 - Minor bump: new DSL setup family `named level sweep` (HT-054 Phase A,
