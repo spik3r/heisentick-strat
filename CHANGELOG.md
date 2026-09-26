@@ -6,16 +6,43 @@ version and is named here.
 
 ## [Unreleased]
 
-- Minor bump (next `0.9.0`): add opt-in transfer route runs to the report and
-  grid CLI. Declared-route gating stays the default. Transfer runs bypass only
-  the strategy's declared symbol/timeframe route allowlist, mark evidence with
-  `routeMode: transfer` and `forceRoute: true`, and warn that off-route results
-  are exploratory. The registered strategy source is not rewritten.
+## [0.10.0] — 2026-09-26
+
+- Minor bump: new DSL setup family `named level sweep` (HT-054 Phase A,
+  #46). Sweep and reclaim of a named level (`PDH/PDL`, `WH/WL`, `AH/AL`,
+  `LH/LL`, …) rather than a detected range or channel:
+  `when price sweeps <LEVEL> [by at least X ATR] and closes back above|below it`
+  and `when price tests <LEVEL> within X ATR and closes above|below it`, each
+  with optional `by at least Y ATR` and `within N candles`. New shared
+  phrases: `stop below|above the signal candle and the level by X ATR`,
+  `trigger { no confirmation candle }` (a clearer synonym for
+  `candle in (any)`), and `prior day range at least X ATR`. Six new
+  diagnostics with conformance fixtures. Existing `.cfg.json` goldens gain
+  the new shared default `"priorDay": {"minRangeAtr": null}`; no other
+  output changes. The runtime is minimal (sweep/test geometry, stop, one
+  signal per level per day); full runtime and strategy ports follow.
+- `report`: every trade carries a stable `signalId`, and
+  `--include-trades=1 --trade-export=1` writes a `trade-export.v1` document
+  (heisentick-contracts `v0.7.0`) with strategy, engine and data-file
+  digests (#45).
+
+## [0.9.0] — 2026-09-24
+
+- Added opt-in transfer route runs to the report and grid CLI (#44).
+  Declared-route gating stays the default. Transfer runs bypass only the
+  strategy's declared symbol/timeframe route allowlist, mark evidence with
+  `routeMode: transfer` and `forceRoute: true`, and warn that off-route
+  results are exploratory. The registered strategy source is not rewritten.
+
+## [0.8.0] — 2026-09-23
 
 - Fixed Go parsing and entry admission for `trade window in (...)` and
   `trade window minutes A to B` so they preserve the JavaScript compatibility
-  rule. Windows remain fixed at UTC+10; named parts are half-open 60-minute
-  thirds, and the fourth `mid` hour matches only `mid.all`.
+  rule (#41). Windows remain fixed at UTC+10; named parts are half-open
+  60-minute thirds, and the fourth `mid` hour matches only `mid.all`.
+- Also in this release: defensive VWAP (#40) and No NY Close (#42) strategy
+  goldens, admission of verified gapful execution ends (#43), and isolated
+  full-data browser reliability repeats (#39).
 
 ## [0.7.0] — 2026-09-23
 
