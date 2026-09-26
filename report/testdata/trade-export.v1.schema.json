@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trade-export.v1.schema.json",
+  "title": "Trade export",
+  "description": "Per-trade export produced by heisentick-strat's Go engine (`report --json-only --include-trades --trade-export=1`), formalising the existing report.Trade / btgo-report-trades-v1 shape (and heisentick-strategy-validation's heisentick/trade-list persistence of it) into a versioned contract, plus the strategy/engine/data provenance envelope and the stable signalId that shape was missing. The Go engine (heisentick-strat) is the sole producer: it is the deterministic, canonical execution for a DSL strategy (see heisentick-backlog plan 2026-09-26-meta-labeling-existing-strategies.md §2.2), and this document is the input to offline meta-labeling research (heisentick-ml). Trades from more than one route (symbol/timeframe) may be combined into a single export; every trade carries its own symbol/tf so a combined export remains unambiguous, and `routes` lists every distinct route contributing trades.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "version", "strategy", "engine", "dataSha256", "runConfig", "routes", "generatedAt", "trades"],
+  "properties": {
+    "schema": { "const": "heisentick/trade-export" },
+    "version": { "const": 1 },
+    "strategy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sourceCommit"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Strategy id, e.g. dslDualEmaResumptionXauusdFourHour." },
+        "sourceCommit": { "$ref": "common.v1.schema.json#/$defs/sha256Hex", "description": "sha256 of the .strat source file's bytes the trades were produced from (the module-byte-pinning convention already used by forward approvals). Doubles as the signalId's strategy-version component." },
+        "stratDigest": { "type": "string", "minLength": 1, "maxLength": 200, "description": "heisentick-strat build/release identity the trades were produced with, when distinct from engine.release." }
+      }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo", "release"],
+      "properties": {
+        "repo": { "const": "heisentick-strat" },
+        "release": { "type": "string", "minLength": 1, "maxLength": 200, "description": "Tagged release (vX.Y.Z) or commit the export ran with." }
+      }
+    },
+    "dataSha256": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "sha256"],
+        "properties": {
+          "file": { "type": "string", "minLength": 1, "maxLength": 1024, "description": "Path or filename of the bar data consumed (e.g. \"XAUUSD/4h.bin\"), as reported by the loader." },
+          "sha256": { "$ref": "common.v1.schema.json#/$defs/sha256Hex" }
+        }
+      }
+    },
+    "runConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["costMode", "slippage"],
+      "properties": {
+        "costMode": { "$ref": "common.v1.schema.json#/$defs/costMode" },
+        "slippage": { "type": "number", "minimum": 0 },
+        "slippageBps": { "type": "number", "minimum": 0 },
+        "riskUsd": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["symbol", "tf"],
+        "properties": {
+          "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
+          "tf": { "$ref": "common.v1.schema.json#/$defs/timeframe" }
+        }
+      }
+    },
+    "generatedAt": { "$ref": "common.v1.schema.json#/$defs/epochMs" },
+    "trades": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tradeExportTrade" }
+    }
+  },
+  "$defs": {
+    "tradeExportTrade": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "signalId", "symbol", "tf", "side",
+        "entryTs", "entryPrice", "exitTs", "exitPrice",
+        "initialSl", "initialTp", "rNetGross", "rNetAfterCosts",
+        "exitReason", "mfeR", "maeR", "timeToMfeBars",
+        "postExitMfeR", "postExitMaeR", "costModelId"
+      ],
+      "properties": {
+        "signalId": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{32}$",
+          "description": "sha256(strategyId|strategyVersion(=strategy.sourceCommit)|symbol|tf|signalBarTs|side), truncated to the first 32 hex characters (128 bits). Identifies the closed decision bar that produced the entry, stable across independent runs of the same source/data and changed by a change to any input."
+        },
+        "symbol": { "$ref": "common.v1.schema.json#/$defs/symbol" },
+        "tf": { "$ref": "common.v1.schema.json#/$defs/timeframe" },
+        "side": { "type": "string", "enum": ["long", "short"] },
+        "entryTs": { "$ref": "common.v1.schema.json#/$defs/epochMs" },
+        "entryPrice": { "type": "number" },
+        "exitTs": { "$ref": "common.v1.schema.json#/$defs/epochMs" },
+        "exitPrice": { "type": "number" },
+        "initialSl": { "anyOf": [{ "type": "number" }, { "type": "null" }], "description": "null when the trade had no stop (NoStop)." },
+        "initialTp": { "anyOf": [{ "type": "number" }, { "type": "null" }], "description": "null when the trade had no target (NoTarget)." },
+        "rNetGross": { "anyOf": [{ "type": "number" }, { "type": "null" }], "description": "Price move / initial risk distance, before commission; null when initial risk distance is zero or unknown." },
+        "rNetAfterCosts": { "$ref": "common.v1.schema.json#/$defs/nullableMetric", "description": "Realized PnL / (initial risk distance * size), after slippage and commission; null when initial risk distance is zero or unknown." },
+        "exitReason": { "type": "string", "enum": ["rule", "sl", "tp", "time", "partial", "end-of-test"] },
+        "exitRule": { "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }], "description": "The strategy-rule identity behind a rule exit (e.g. \"sma-bearish-cross\"); null for every other exitReason." },
+        "mfeR": { "$ref": "common.v1.schema.json#/$defs/nullableMetric", "description": "Maximum favourable excursion in R; null when the engine could not compute it (e.g. zero initial risk)." },
+        "maeR": { "$ref": "common.v1.schema.json#/$defs/nullableMetric" },
+        "timeToMfeBars": { "anyOf": [{ "type": "integer", "minimum": 0 }, { "type": "null" }] },
+        "postExitMfeR": { "$ref": "common.v1.schema.json#/$defs/nullableMetric" },
+        "postExitMaeR": { "$ref": "common.v1.schema.json#/$defs/nullableMetric" },
+        "costModelId": { "type": "string", "minLength": 1, "maxLength": 100, "description": "e.g. \"realistic-v1\"; names the cost mode the trades were produced under." }
+      }
+    }
+  }
+}

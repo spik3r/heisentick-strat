@@ -73,6 +73,10 @@ type Slice struct {
 // report-only annotations consumed by rich JS report groupings.
 type Trade struct {
 	engine.Trade
+	// SignalID identifies the closed decision bar that produced this trade's
+	// entry (ComputeSignalID); empty when the caller supplied no strategy
+	// identity (only annotateReportTrades' unit tests today).
+	SignalID string `json:"signalId,omitempty"`
 	// Route identity mirrors the report-only fields attached by the JS report
 	// before it combines primary-cost trades from separate routes.
 	ReportSymbol          string   `json:"reportSymbol"`

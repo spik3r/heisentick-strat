@@ -32,6 +32,12 @@ type Request struct {
 	// evidence envelope's display name and defaults to the id.
 	StrategyID   string
 	StrategyName string
+	// StrategyVersion identifies the strategy source revision the run used
+	// (by convention, the sha256 hex of the .strat source file's bytes). It
+	// feeds SignalID so a source change is reflected in every signal id;
+	// empty is accepted (SignalID is still computed and stable, just without
+	// a version component).
+	StrategyVersion string
 	// Slippage nil runs the instrument's raw/realistic/harsh rows with
 	// realistic primary; set, it runs one primary row "slip <x>".
 	Slippage *float64
@@ -136,9 +142,11 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if request.IncludeTrades {
 		document.TradeSchema = TradesSchema
 		reportTrades, err := annotateReportTrades(trades, route.Series, prepared, reportTradeRoute{
-			Symbol: route.Symbol,
-			TF:     route.TF,
-			Range:  route.Range,
+			Symbol:          route.Symbol,
+			TF:              route.TF,
+			Range:           route.Range,
+			StrategyID:      request.StrategyID,
+			StrategyVersion: request.StrategyVersion,
 		})
 		if err != nil {
 			return Document{}, err
@@ -366,6 +374,10 @@ type reportTradeRoute struct {
 	Symbol string
 	TF     string
 	Range  string
+	// StrategyID and StrategyVersion feed SignalID (empty is accepted; see
+	// Request.StrategyVersion).
+	StrategyID      string
+	StrategyVersion string
 }
 
 func annotateReportTrades(trades []engine.Trade, series marketdata.Series, prepared *engine.PreparedRun, route reportTradeRoute) ([]Trade, error) {
@@ -393,6 +405,7 @@ func annotateReportTrades(trades []engine.Trade, series marketdata.Series, prepa
 		}
 		report := Trade{
 			Trade:              trade,
+			SignalID:           ComputeSignalID(route.StrategyID, route.StrategyVersion, route.Symbol, route.TF, int64(trade.EntryT), trade.Side),
 			ReportSymbol:       route.Symbol,
 			ReportTF:           route.TF,
 			ReportRange:        route.Range,
