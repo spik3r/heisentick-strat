@@ -1,0 +1,46 @@
+dsl v6
+# Break Retest - 1h/4h Asia London Review
+strategy "Break Retest 1h/4h Asia London Review" {
+  description "Join long continuation after a clean PDH break and retest during Asia or London. Full-history review demoted the FX transfer lanes, so this promoted copy is XAUUSD-only on 1h/4h."
+}
+
+market conditions {
+  slices(XAUUSD 1h, XAUUSD 4h)
+  sessions(asia, london)
+  day type in (trending)
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+setup {
+  type: break retest
+  break within 24 candles
+  break distance at least 1 ATR
+  retest within 8 candles
+  retest tolerance 0.4 ATR
+  movement between 0.35 and 0.95
+}
+
+filters {
+  higher timeframe must agree
+  side: long only
+}
+
+risk {
+  stop: beyond retest extreme + 0.25 ATR
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

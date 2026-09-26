@@ -1,0 +1,55 @@
+dsl v7
+# FX Demand Rejection - 1.3R
+strategy "FX Demand Rejection 1.3R" {
+  description "Trade demand-side supply/demand structure: source leg, compact base, impulse departure, and first-touch rejection retest, with the target extended to the stable 1.3R management region."
+}
+
+market conditions {
+  slices(EURUSD 15m, EURUSD 1h, AUDUSD 15m, AUDUSD 1h, GBPUSD 15m)
+  sessions(london, ny)
+  day type in (trending, choppy)
+  movement below 0.95
+}
+
+setup {
+  type: supply demand
+  patterns(DBR, RBR, RBD, DBD)
+  source leg at least 0.2 ATR within 4 candles
+  base 2 to 5 candles
+  consolidation tight max 0.4 ATR
+  zone width max 0.7 ATR
+  zone bounds wick
+  departure at least 1.5 ATR within 6 candles
+  retest within 96 candles
+  retest tolerance 0.21 ATR
+  retest first touch only
+  retest must reject zone
+  zone break 0.05 ATR
+  wait 1 candle after zone
+}
+
+filters {
+  higher timeframe must agree
+  side: long only
+}
+
+triggers {
+  candle in (any)
+}
+
+risk {
+  stop: beyond zone + 0.25 ATR min 0.4 ATR max 3 ATR
+}
+
+target {
+  target 1.3R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}
