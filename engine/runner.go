@@ -137,7 +137,8 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyDualEMAResumption),
 		string(dsl.FamilySMAGoldenCross),
 		string(dsl.FamilyKeltnerReversion),
-		string(dsl.FamilyKeltnerExpansion):
+		string(dsl.FamilyKeltnerExpansion),
+		string(dsl.FamilyNamedLevelSweep):
 		return true
 	default:
 		return false

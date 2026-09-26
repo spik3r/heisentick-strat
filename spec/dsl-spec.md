@@ -447,6 +447,7 @@ are errors. The `type` value itself is written in trading language
 | `keltner reversion` | keltnerReversion |
 | `keltner expansion` | keltnerExpansion |
 | `intra hour run exhaustion` | intraHourRunExhaustion |
+| `named level sweep` | namedLevelSweep |
 
 Per-family phrase sets live in one standalone file per family under
 [`strat/docs/dsl-spec-families/`](dsl-spec-families/breakRetest.md) (named by the

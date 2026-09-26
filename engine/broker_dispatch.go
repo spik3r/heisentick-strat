@@ -33,6 +33,8 @@ func (b *broker) onBar(i int) {
 		b.onChannelBreakHoldBar(i)
 	case "failedBreakout":
 		b.onLevelSweepBar(i)
+	case "namedLevelSweep":
+		b.onNamedLevelSweepBar(i)
 	case "triplePushExhaustion":
 		b.onTriplePushExhaustionBar(i)
 	case "vwapExtensionFade":

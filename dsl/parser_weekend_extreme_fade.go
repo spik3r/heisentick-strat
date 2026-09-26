@@ -10,6 +10,8 @@ func (p *parser) parseStopDirective(line logicalLine, tokens []string) {
 		p.err(line, "unrecognized stop line — dual-ema-resumption phrases only", "")
 	} else if p.config["setupType"] == string(FamilyWeekendExtremeFade) {
 		p.parseWeekendExtremeFade(line, tokens)
+	} else if p.config["setupType"] == string(FamilyNamedLevelSweep) && p.parseNamedLevelSweepStopLine(line, tokens) {
+		// handled
 	} else if p.config["setupType"] != string(FamilyDualEMAResumption) {
 		p.parseStop(line, tokens)
 	}

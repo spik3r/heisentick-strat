@@ -32,6 +32,7 @@ const (
 	FamilyIntraHourRunExhaustion  FamilyID = "intraHourRunExhaustion"
 	FamilyKeltnerReversion        FamilyID = "keltnerReversion"
 	FamilyKeltnerExpansion        FamilyID = "keltnerExpansion"
+	FamilyNamedLevelSweep         FamilyID = "namedLevelSweep"
 )
 
 // ParseResult mirrors the DSL compiler result contract: a config plus both

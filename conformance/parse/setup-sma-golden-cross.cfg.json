@@ -81,6 +81,9 @@
       "triggerR": 1
     },
     "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": null
+    },
     "priorDayTypes": [],
     "range": {
       "activeWithinCandles": 8,

@@ -159,6 +159,9 @@ type flagParams struct {
 	BlockedPriorDayTypes       []string
 	DayTypeEREscape            float64
 	MaxMovementER              float64
+	PriorDayMinRangeATR        float64
+	NamedLevelSweep            namedLevelSweepParams
+	NLSUseTrigger              bool
 }
 
 func paramsFromConfig(cfg dsl.Config) flagParams {
@@ -495,6 +498,9 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		BlockedPriorDayTypes:      stringSliceValue(cfg["blockedPriorDayTypes"]),
 		DayTypeEREscape:           numberFromAny(cfg["dayTypeErEscape"], 0.55),
 		MaxMovementER:             numberFromAny(cfg["maxMovementEr"], 0.8),
+		PriorDayMinRangeATR:       numberValue(mapValue(cfg, "priorDay"), "minRangeAtr", 0),
+		NamedLevelSweep:           namedLevelSweepParamsFromConfig(cfg),
+		NLSUseTrigger:             triggerExplicit && !containsString(triggerCandles, "any"),
 	}
 	applyExtractedSetupParams(&p, cfg, stop, orb, setupType)
 	if p.StopLookbackCandles == 0 && !preserveExplicitStopLookback {
@@ -534,6 +540,8 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		p.TargetR = numberValue(target, "fvgR", 1)
 	case string(dsl.FamilyKeltnerReversion), string(dsl.FamilyKeltnerExpansion):
 		p.TargetR = numberValue(keltner, "targetR", numberValue(target, "krR", 1))
+	case string(dsl.FamilyNamedLevelSweep):
+		p.TargetR = numberValue(target, "nlsR", 1)
 	}
 	return p
 }

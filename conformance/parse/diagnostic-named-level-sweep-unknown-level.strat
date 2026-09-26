@@ -1,0 +1,4 @@
+dsl v7
+strategy "Diagnostic NLS Unknown Level" { description "x" }
+setup { type: named level sweep }
+entry { when price sweeps NOTALEVEL and closes back below it then signal short }
