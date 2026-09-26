@@ -8,6 +8,7 @@
       "deployed-dsl-flag-continuation-one-four-hour-review",
       "deployed-dsl-session-expansion-ny",
       "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+      "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
       "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
       "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
       "family-break-retest",
@@ -59,6 +60,6 @@
     "diagnostic": 15,
     "setup-family": 27
   },
-  "runCases": 38,
+  "runCases": 39,
   "schema": "dsl-conformance-metadata-v1"
 }

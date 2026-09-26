@@ -33,6 +33,7 @@ var implementedRunCases = []string{
 	"family-weekend-extreme-fade",
 	"deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
 	"deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+	"deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
 	"family-intra-hour-run-exhaustion",
 	"family-sma-golden-cross",
 	"family-sma-golden-cross-protected",

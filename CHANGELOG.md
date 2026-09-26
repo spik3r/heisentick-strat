@@ -6,7 +6,7 @@ version and is named here.
 
 ## [Unreleased]
 
-- Minor bump (next `0.11.0`): add whole-strategy Go run goldens for `dslWeekendExtremeFadeBtcusdtFourHour` on BTCUSDT 4h and `dslBreakRetestAsiaLondonOneFourHourReview` on XAUUSD 1h. Their 3,803- and 8,552-bar fixtures match all 31 and 16 JS trade rows exactly. Go weekend-fade diagnostic serialization now matches JS precision and metadata. These are conformance checks, not performance promotions.
+- Minor bump (next `0.11.0`): add whole-strategy Go run goldens for `dslWeekendExtremeFadeBtcusdtFourHour` on BTCUSDT 4h, `dslBreakRetestAsiaLondonOneFourHourReview` on XAUUSD 1h, and `dslSupplyDemandFxRejectionOnePointThree` on EURUSD 15m. Their 3,803-, 8,552-, and 36,036-bar fixtures match all 31, 16, and 16 JS trade rows exactly. Go weekend-fade diagnostic serialization now matches JS precision and metadata. These are conformance checks, not performance promotions.
 
 ## [0.10.0] — 2026-09-26
 
