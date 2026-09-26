@@ -1,6 +1,7 @@
 {
   "goRun": {
     "implemented": [
+      "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
       "deployed-dsl-close-vwap-extreme-magnet-defensive",
       "deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
       "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
@@ -58,6 +59,6 @@
     "diagnostic": 15,
     "setup-family": 27
   },
-  "runCases": 37,
+  "runCases": 38,
   "schema": "dsl-conformance-metadata-v1"
 }

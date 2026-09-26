@@ -6,7 +6,7 @@ version and is named here.
 
 ## [Unreleased]
 
-- Minor bump (next `0.11.0`): add a whole-strategy Go run golden for `dslWeekendExtremeFadeBtcusdtFourHour` on BTCUSDT 4h, backed by 3,803 real Binance bars. Go now serializes the strategy diagnostics with the same precision and metadata shape as the JS runtime; all 31 fixture trades match exactly. This is conformance evidence, not a performance promotion.
+- Minor bump (next `0.11.0`): add whole-strategy Go run goldens for `dslWeekendExtremeFadeBtcusdtFourHour` on BTCUSDT 4h and `dslBreakRetestAsiaLondonOneFourHourReview` on XAUUSD 1h. Their 3,803- and 8,552-bar fixtures match all 31 and 16 JS trade rows exactly. Go weekend-fade diagnostic serialization now matches JS precision and metadata. These are conformance checks, not performance promotions.
 
 ## [0.10.0] — 2026-09-26
 
