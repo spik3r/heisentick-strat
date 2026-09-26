@@ -1,0 +1,42 @@
+{
+  "oracle": "heisentick engine/strategies/vpAsiaLondonSweepContinuationFiveMinuteWideAsia.js",
+  "bars": [
+    {"t": 1704067200000, "o": 100, "h": 102, "l": 100, "c": 101, "v": 100},
+    {"t": 1704078000000, "o": 100, "h": 102, "l": 100, "c": 101, "v": 100},
+    {"t": 1704092100000, "o": 100, "h": 110, "l": 100, "c": 101, "v": 10},
+    {"t": 1704092400000, "o": 109, "h": 111, "l": 108, "c": 110.5, "v": 20}
+  ],
+  "priorAsiaRanges": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+  "expected": {
+    "side": "long",
+    "entry": 110.5,
+    "stop": 106.5,
+    "target": 112.5,
+    "predictedSweep": "high",
+    "openOutsideCompletedVA": true,
+    "firstRaidTargetR": 0.1,
+    "sourceRange": 10,
+    "poc": 101.8,
+    "vah": 102,
+    "val": 100.4
+  },
+  "shortBars": [
+    {"t": 1704067200000, "o": 109, "h": 110, "l": 108, "c": 109, "v": 100},
+    {"t": 1704078000000, "o": 109, "h": 110, "l": 108, "c": 109, "v": 100},
+    {"t": 1704092100000, "o": 109, "h": 110, "l": 100, "c": 109, "v": 10},
+    {"t": 1704092400000, "o": 101, "h": 102, "l": 99, "c": 99.5, "v": 20}
+  ],
+  "expectedShort": {
+    "side": "short",
+    "entry": 99.5,
+    "stop": 103.5,
+    "target": 97.5,
+    "predictedSweep": "low",
+    "openOutsideCompletedVA": true,
+    "firstRaidTargetR": 0.1,
+    "sourceRange": 10,
+    "poc": 109.8,
+    "vah": 110,
+    "val": 108.4
+  }
+}
