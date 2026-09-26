@@ -36,7 +36,9 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
-  heisentick report --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot [--route-mode=declared|transfer] [--slippage=<points>] [--slippage-bps=<basis-points>] [--include-trades=1] [--evidence=1] [--holdout-from=<epoch-ms>] [--json-only=1] [--memprofile=<path>]
+  heisentick report --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot [--route-mode=declared|transfer] [--slippage=<points>] [--slippage-bps=<basis-points>] [--include-trades=1] [--evidence=1] [--holdout-from=<epoch-ms>] [--json-only=1] [--memprofile=<path>] [--trade-export=1 [--strat-release=<vX.Y.Z-or-commit>] [--strat-digest=<value>]]
+
+--trade-export=1 (requires --include-trades=1) writes a trade-export.v1 document (heisentick-contracts schemas/trade-export.v1.schema.json) instead of the ordinary report: the primary-cost trades, each with a stable signalId, plus the strategy/engine/data-file provenance envelope. --strat-release names the engine release/commit (default: the running binary's Go build-info module version, "(devel)" for an unreleased build); --strat-digest names a strat build/release identity distinct from --strat-release, when needed (default: --strat-release's value).
   heisentick forward-prefix --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> [--range=zone|pivot] [--slippage=<points>] [--slippage-bps=<basis-points>] [--data-root=<path>] [--checkpoint-out=<new-path>] [--checkpoint-in=<prior-path> --checkpoint-out=<new-path>]
   heisentick grid --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot --set <param>=<v1,v2,...> [--route-mode=declared|transfer] [--json-only=1]
 
