@@ -165,7 +165,7 @@
     {
       "col": 9,
       "line": 4,
-      "message": "sweep/approach distance must be >= 0",
+      "message": "sweep/test distance must be >= 0",
       "severity": "error"
     },
     {
@@ -176,7 +176,7 @@
     }
   ],
   "errors": [
-    "line 4: sweep/approach distance must be >= 0"
+    "line 4: sweep/test distance must be >= 0"
   ],
   "schema": "dsl-conformance-parse-v1",
   "source": "generated diagnostic fixture",

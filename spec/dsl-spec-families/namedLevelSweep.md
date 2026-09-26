@@ -82,7 +82,7 @@ none of them change for this family.
   channel.low, VWAP, EMA, POC, VAH, VAL, RN<step> (round numbers), or a
   defined S/R/TL name`.
 - A negative `X` in `by at least X ATR` / `within X ATR` is a compile
-  error: `sweep/approach distance must be >= 0`.
+  error: `sweep/test distance must be >= 0`.
 - `tests <LEVEL>` with no `within X ATR` clause is a compile error:
   `"tests" entry rule requires "within X ATR" — there is no default
   tolerance for "tests"`.

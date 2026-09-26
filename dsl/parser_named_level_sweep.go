@@ -71,7 +71,7 @@ func (p *parser) parseNamedLevelSweepWhen(line logicalLine, tokens []string) {
 				return
 			}
 			if value < 0 {
-				p.err(line, "sweep/approach distance must be >= 0", "")
+				p.err(line, "sweep/test distance must be >= 0", "")
 				return
 			}
 			sweepAtr = &value
@@ -87,7 +87,7 @@ func (p *parser) parseNamedLevelSweepWhen(line logicalLine, tokens []string) {
 			return
 		}
 		if value < 0 {
-			p.err(line, "sweep/approach distance must be >= 0", "")
+			p.err(line, "sweep/test distance must be >= 0", "")
 			return
 		}
 		sweepAtr = &value
@@ -126,7 +126,7 @@ func (p *parser) parseNamedLevelSweepWhen(line logicalLine, tokens []string) {
 			return
 		}
 		if value < 0 {
-			p.err(line, "sweep/approach distance must be >= 0", "")
+			p.err(line, "sweep/test distance must be >= 0", "")
 			return
 		}
 		reclaimAtr = value
