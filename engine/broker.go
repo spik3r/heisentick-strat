@@ -322,7 +322,11 @@ func (b *broker) runScheduledWithFinalization(entries []ScheduledEntry, orders [
 	byChart := make(map[int][]order, len(entries))
 	ordersBySourceIndex := make(map[int]order, len(orders))
 	for _, captured := range orders {
-		ordersBySourceIndex[captured.Index] = captured
+		// Match the JS source-event capture path: at most the first admitted
+		// order for a source bar is scheduled.
+		if _, exists := ordersBySourceIndex[captured.Index]; !exists {
+			ordersBySourceIndex[captured.Index] = captured
+		}
 	}
 	for _, entry := range entries {
 		if captured, ok := ordersBySourceIndex[entry.SourceIndex]; ok {

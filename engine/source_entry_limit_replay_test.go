@@ -46,6 +46,7 @@ func TestScheduledSourceEventsKeepTheirCapturedOrderAfterCoverageFiltering(t *te
 	orders := []order{
 		{Side: sideLong, SL: 98, TP: 101, Limit: 99, HasLimit: true, Index: 0, ExpireBars: 2, RiskUSD: 100, HasRisk: true},
 		{Side: sideShort, SL: 103, TP: 99, Limit: 101, HasLimit: true, Index: 1, ExpireBars: 2, RiskUSD: 100, HasRisk: true},
+		{Side: sideLong, SL: 98, TP: 103, Limit: 99, HasLimit: true, Index: 1, ExpireBars: 2, RiskUSD: 100, HasRisk: true},
 	}
 	trades := chartBroker.runScheduled([]ScheduledEntry{{SourceIndex: 1, ChartIndex: 0}}, orders)
 	if len(trades) != 1 {
@@ -53,6 +54,6 @@ func TestScheduledSourceEventsKeepTheirCapturedOrderAfterCoverageFiltering(t *te
 	}
 	trade := trades[0]
 	if trade.Side != "short" || trade.Entry != 101 || trade.InitialSL != 103 || trade.InitialTP != 99 || trade.Reason != "tp" {
-		t.Fatalf("scheduled replay trade = %+v, want source-index-1 short limit and exits", trade)
+		t.Fatalf("scheduled replay trade = %+v, want first source-index-1 short limit and exits", trade)
 	}
 }
