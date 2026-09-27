@@ -281,6 +281,10 @@ Structure filters:
   enables channel detection.
 - `higher timeframe must agree` | `higher timeframe must not oppose entry` |
   `higher timeframe off` — HTF gate (mode notAgainst/off; default off).
+  `higher timeframe must be directional and agree` and
+  `higher timeframe legacy bias must be directional and agree` are stricter
+  opt-in modes for `named level sweep`; the latter uses the legacy 24-bar,
+  0.5 ATR direction rule. Both reject flat and unavailable HTF direction.
   Accepted shorthands are `<timeframe> must agree`, `higher timeframe
   <timeframe> must agree`, `htf must agree`, and `mtf must not oppose entry`
   (`higher time frame` with a space is accepted). Supported timeframe tokens

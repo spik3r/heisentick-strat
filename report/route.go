@@ -30,15 +30,15 @@ type Route struct {
 	SourceHTFSeries marketdata.Series
 }
 
-// ResolveHigherTimeframe returns the higher timeframe a configuration's
-// notAgainst HTF gate needs for the given source timeframe, or "" when the
-// strategy has no such gate.
+// ResolveHigherTimeframe returns the higher timeframe an enabled HTF gate
+// needs for the given source timeframe, or "" when the strategy has no gate.
 func ResolveHigherTimeframe(tf string, cfg dsl.Config) string {
 	htf, ok := cfg["htf"].(map[string]any)
 	if !ok {
 		return ""
 	}
-	if mode, _ := htf["mode"].(string); mode != "notAgainst" {
+	mode, _ := htf["mode"].(string)
+	if mode != "notAgainst" && mode != "strictAgree" && mode != "strictLegacyAgree" {
 		return ""
 	}
 	requested, _ := htf["timeframe"].(string)

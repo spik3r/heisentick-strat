@@ -143,7 +143,7 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 		series:       series,
 		sourceSeries: sourceSeries,
 		cols:         projectSourceColumns(series, sourceSeries, contextcols.Build(sourceSeries, options)),
-		htfTrend:     projectSourceInt8(series, sourceSeries, computeHTFTrend(sourceSeries, sourceHTFSeries)),
+		htfTrend:     projectSourceInt8(series, sourceSeries, computeHTFTrendForConfig(sourceSeries, sourceHTFSeries, request.Config)),
 		fixture:      fixture,
 		options:      options,
 		execution:    execution,

@@ -91,12 +91,21 @@ func (p *parser) parse() {
 	}
 	p.validateLevels()
 	p.validateNamedLevelSweep()
+	p.validateStrictHigherTimeframe()
 	p.validateEntryTimeframe()
 	p.validatePriceMomentum()
 	p.validateDailyFlushFailure()
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+}
+
+func (p *parser) validateStrictHigherTimeframe() {
+	htf := copyMap(p.config["htf"])
+	mode, _ := htf["mode"].(string)
+	if (mode == "strictAgree" || mode == "strictLegacyAgree") && p.config["setupType"] != string(FamilyNamedLevelSweep) {
+		p.errorAt(nil, nil, `strict directional higher timeframe agreement is currently supported only by "named level sweep" setups`, "")
+	}
 }
 
 func (p *parser) apply(line logicalLine, tokens []string) {
@@ -149,6 +158,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseChannel(line, tokens)
 	case "higher":
 		p.parseHigherTimeframe(tokens)
+	case "allow":
+		p.parseNamedLevelSweepRepeat(line, tokens)
 	case "side", "direction":
 		p.parseSide(tokens[1:])
 	case "trigger", "rejection", "candle":

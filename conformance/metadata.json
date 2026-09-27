@@ -51,12 +51,12 @@
     "vpAsiaLondonSweepContinuationOneMinuteCloseEdgeLong"
   ],
   "notes": [
-    "dslInstitutionalLiquiditySweep is a deployed-book member on current origin/main but has no strategies/source/*.strat source; it is excluded from the Strat language corpus.",
+    "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 51,
+  "parseCases": 52,
   "parseCategories": {
-    "deployed-book-dsl": 8,
+    "deployed-book-dsl": 9,
     "diagnostic": 15,
     "setup-family": 28
   },

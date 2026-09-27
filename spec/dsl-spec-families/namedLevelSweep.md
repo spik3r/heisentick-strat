@@ -73,6 +73,20 @@ the reclaim geometry re-forms, mirroring `failed breakout`'s per-day dedup.
 `risk 200 USD`, and `priority(...)` are all pre-existing shared directives;
 none of them change for this family.
 
+`higher timeframe must be directional and agree` is an opt-in stricter gate
+for this family. A long rule requires the latest completed HTF candle to be
+up; a short rule requires it to be down. Flat or unavailable HTF direction
+rejects the entry. The existing `higher timeframe must agree` and
+`higher timeframe must not oppose entry` modes keep their prior behavior.
+
+`higher timeframe legacy bias must be directional and agree` uses the
+browser runtime's legacy direction rule: the completed HTF close must exceed
+the close 24 HTF bars earlier by more than 0.5 times the 14-bar HTF ATR (or
+fall below it by the same amount). Warm-up and flat bias reject the entry.
+`allow repeated level sweeps in one local day` disables this family's default
+one-signal-per-level-per-day guard. These phrases are opt-in and leave
+defaults unchanged.
+
 ## Compile diagnostics
 
 - An unknown level key in a `when` line reuses the exact `priority(...)`

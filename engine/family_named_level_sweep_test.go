@@ -19,6 +19,61 @@ func TestNamedLevelSweepZeroReclaimRequiresStrictCloseThrough(t *testing.T) {
 	}
 }
 
+func TestNamedLevelSweepStrictHTFGateRequiresDirectionalAgreement(t *testing.T) {
+	for _, tc := range []struct {
+		name  string
+		trend int8
+		side  side
+		want  bool
+	}{
+		{"up agrees long", trendUp, sideLong, true},
+		{"up rejects short", trendUp, sideShort, false},
+		{"down agrees short", trendDown, sideShort, true},
+		{"down rejects long", trendDown, sideLong, false},
+		{"flat rejects long", trendFlat, sideLong, false},
+		{"unavailable rejects short", htfUnavailable, sideShort, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			b := broker{htfTrend: []int8{tc.trend}}
+			if got := b.htfDirectionAgrees(0, tc.side); got != tc.want {
+				t.Fatalf("htfDirectionAgrees = %v, want %v", got, tc.want)
+			}
+		})
+	}
+	b := broker{htfTrend: []int8{trendUp}}
+	if b.htfDirectionAgrees(1, sideLong) {
+		t.Fatal("missing projected HTF value must fail closed")
+	}
+}
+
+func TestNamedLevelSweepStrictHTFModeIsOptIn(t *testing.T) {
+	base := map[string]any{"namedLevelSweep": map[string]any{}}
+	if got := namedLevelSweepParamsFromConfig(base).StrictHTF; got {
+		t.Fatal("strict HTF mode must remain off by default")
+	}
+	strict := map[string]any{
+		"namedLevelSweep": map[string]any{},
+		"htf":             map[string]any{"mode": "strictAgree"},
+	}
+	if got := namedLevelSweepParamsFromConfig(strict).StrictHTF; !got {
+		t.Fatal("strictAgree mode must enable the named-level strict gate")
+	}
+	legacy := map[string]any{
+		"namedLevelSweep": map[string]any{},
+		"htf":             map[string]any{"mode": "strictLegacyAgree"},
+	}
+	if got := namedLevelSweepParamsFromConfig(legacy).StrictHTF; !got {
+		t.Fatal("strictLegacyAgree mode must enable the named-level strict gate")
+	}
+	if got := namedLevelSweepParamsFromConfig(legacy).DedupDaily; !got {
+		t.Fatal("daily deduplication must remain enabled by default")
+	}
+	noDedup := map[string]any{"namedLevelSweep": map[string]any{"dedupDaily": false}}
+	if got := namedLevelSweepParamsFromConfig(noDedup).DedupDaily; got {
+		t.Fatal("explicit dedupDaily false must permit repeat sweeps")
+	}
+}
+
 func TestNamedLevelSweepZeroReclaimRequiresStrictCloseBelow(t *testing.T) {
 	rule := namedLevelSweepRule{Mode: "test", HasSweepAtr: true, SweepAtr: 0.35, ReclaimAtr: 0, Side: sideShort}
 	bar := marketdata.Bar{O: 99.8, H: 100.2, L: 99, C: 100}

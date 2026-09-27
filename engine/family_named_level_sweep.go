@@ -41,9 +41,11 @@ type namedLevelSweepStopSide struct {
 }
 
 type namedLevelSweepParams struct {
-	Rules     map[string]namedLevelSweepRule
-	StopLong  namedLevelSweepStopSide
-	StopShort namedLevelSweepStopSide
+	Rules      map[string]namedLevelSweepRule
+	StopLong   namedLevelSweepStopSide
+	StopShort  namedLevelSweepStopSide
+	StrictHTF  bool
+	DedupDaily bool
 }
 
 func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
@@ -77,7 +79,13 @@ func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
 		rules[level] = rule
 	}
 	stop := mapValue(nls, "stop")
-	result := namedLevelSweepParams{Rules: rules}
+	htf := mapValue(cfg, "htf")
+	htfMode := stringValue(htf, "mode", "off")
+	result := namedLevelSweepParams{
+		Rules:      rules,
+		StrictHTF:  htfMode == "strictAgree" || htfMode == "strictLegacyAgree",
+		DedupDaily: boolValue(nls, "dedupDaily", true),
+	}
 	if long := mapValue(stop, "long"); long != nil {
 		result.StopLong = namedLevelSweepStopSide{HasPadding: true, PaddingATR: numberValue(long, "paddingAtr", 0)}
 	}
@@ -127,21 +135,36 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 		if s == sideShort && !p.AllowShort {
 			continue
 		}
+		if b.params.NamedLevelSweep.StrictHTF && !b.htfDirectionAgrees(i, s) {
+			continue
+		}
 		setup, ok := b.namedLevelSweepSetup(i, rule, atr)
 		if !ok {
 			continue
 		}
 		day := localDayKey(b.series.T[i])
 		seenKey := fmt.Sprintf("%s:%s", s.String(), level)
-		if b.seen.nls.seen(day, seenKey) {
+		if p.NamedLevelSweep.DedupDaily && b.seen.nls.seen(day, seenKey) {
 			continue
 		}
-		b.seen.nls.add(day, seenKey)
+		if p.NamedLevelSweep.DedupDaily {
+			b.seen.nls.add(day, seenKey)
+		}
 		b.enterSetup(i, setup)
 		b.nlsLastEntry = i
 		b.hasNLSEntry = true
 		break
 	}
+}
+
+func (b *broker) htfDirectionAgrees(i int, s side) bool {
+	if i < 0 || i >= len(b.htfTrend) {
+		return false
+	}
+	if s == sideLong {
+		return b.htfTrend[i] == trendUp
+	}
+	return b.htfTrend[i] == trendDown
 }
 
 func (b *broker) namedLevelSweepSetup(i int, rule namedLevelSweepRule, atr float64) (setupPlan, bool) {
