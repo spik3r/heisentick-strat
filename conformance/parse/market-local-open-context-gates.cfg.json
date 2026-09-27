@@ -37,7 +37,7 @@
       "ranging",
       "choppy"
     ],
-    "description": "",
+    "description": "Parses fixed-UTC+10 weekday/hour allow and block lists plus open-location aliases.",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -82,7 +82,7 @@
     ],
     "maxHoldCandles": 0,
     "maxMovementEr": 0.8,
-    "name": "",
+    "name": "Local and open-location market gates",
     "newYorkHours": [],
     "openLocations": [
       "nearRangeMid",

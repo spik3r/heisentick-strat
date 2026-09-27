@@ -1,5 +1,7 @@
 dsl v7
-strategy "Local and open-location market gates"
+strategy "Local and open-location market gates" {
+  description "Parses fixed-UTC+10 weekday/hour allow and block lists plus open-location aliases."
+}
 
 market conditions {
   slices(XAUUSD 5m)
@@ -10,7 +12,14 @@ market conditions {
   open location in (nearRangeMid, nearPDO, nearPDH, nearPDL, nearPDC)
 }
 
-setup { type: failed breakout }
+setup {
+  type: failed breakout
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
 
 filters {
   side both
