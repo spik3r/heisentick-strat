@@ -57,6 +57,31 @@ func TestSegmentAndMinuteRangeIntersect(t *testing.T) {
 	}
 }
 
+func TestExplicitUTCTradeHourRangeUsesHalfOpenUTCWindow(t *testing.T) {
+	params := flagParams{TradeWindowUTCHourFrom: 8, TradeWindowUTCHourTo: 21, TradeWindowUTCHourRangeSet: true}
+	for _, tc := range []struct {
+		name string
+		time time.Time
+		want bool
+	}{
+		{"start included", time.Date(2026, time.January, 5, 8, 0, 0, 0, time.UTC), true},
+		{"last minute included", time.Date(2026, time.January, 5, 20, 59, 59, 0, time.UTC), true},
+		{"end excluded", time.Date(2026, time.January, 5, 21, 0, 0, 0, time.UTC), false},
+		{"before start excluded", time.Date(2026, time.January, 5, 7, 59, 59, 0, time.UTC), false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got := inFlagTradeWindow(float64(tc.time.UnixMilli()), params, 0)
+			if got != tc.want {
+				t.Fatalf("inFlagTradeWindow() = %v, want %v", got, tc.want)
+			}
+			admitted := inAdmittedTradeWindow(float64(tc.time.UnixMilli()), params, 0)
+			if admitted != tc.want {
+				t.Fatalf("inAdmittedTradeWindow() = %v, want %v", admitted, tc.want)
+			}
+		})
+	}
+}
+
 func TestLondonCloseSemanticFixtureRejectsMiddleAndAdmitsClose(t *testing.T) {
 	trade := runSemanticCase(t, "pm-trade-window-london-close")
 	if trade.EntryIndex != 47 || trade.EntryT != 1767772800000 || trade.Entry != 2025 {

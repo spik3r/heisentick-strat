@@ -233,7 +233,13 @@ func (b *broker) namedLevelSweptOrTested(i int, rule namedLevelSweepRule, levelP
 	}
 	margin := rule.ReclaimAtr * atr
 	if rule.Side == sideLong {
+		if margin == 0 {
+			return b.series.C[i] > levelPrice
+		}
 		return b.series.C[i] >= levelPrice+margin
+	}
+	if margin == 0 {
+		return b.series.C[i] < levelPrice
 	}
 	return b.series.C[i] <= levelPrice-margin
 }
