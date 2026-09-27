@@ -186,6 +186,20 @@ func (p *parser) parseTradeWindow(line logicalLine, tokens []string) {
 	if len(tokens) < 3 || !strings.EqualFold(tokens[1], "window") {
 		return
 	}
+	if len(tokens) >= 4 && strings.EqualFold(tokens[2], "utc") && strings.EqualFold(tokens[3], "hours") {
+		if len(tokens) != 7 || !strings.EqualFold(tokens[5], "to") {
+			p.err(line, "trade window UTC hours must use an increasing range, e.g. trade window UTC hours 8 to 21", "")
+			return
+		}
+		from, fromErr := strconv.ParseFloat(tokens[4], 64)
+		to, toErr := strconv.ParseFloat(tokens[6], 64)
+		if fromErr != nil || toErr != nil || from < 0 || from >= 24 || to <= from || to > 24 {
+			p.err(line, "trade window UTC hours must use an increasing range from 0 to 24, e.g. trade window UTC hours 8 to 21", "")
+			return
+		}
+		p.config["tradeWindowUTCHourRange"] = map[string]any{"from": from, "to": to}
+		return
+	}
 	if strings.EqualFold(tokens[2], "unrestricted") {
 		p.config["tradeWindowMode"] = "unrestricted"
 		return

@@ -3,6 +3,10 @@ package engine
 import "github.com/spik3r/heisentick-strat/contextcols"
 
 func inFlagTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
+	if p.TradeWindowUTCHourRangeSet {
+		minuteOfDay := float64((int64(t)%int64(contextcols.DayMS)+int64(contextcols.DayMS))%int64(contextcols.DayMS)) / float64(contextcols.HourMS)
+		return minuteOfDay >= p.TradeWindowUTCHourFrom && minuteOfDay < p.TradeWindowUTCHourTo
+	}
 	if p.TradeWindowUnrestricted {
 		return true
 	}
@@ -15,6 +19,10 @@ func inFlagTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
 }
 
 func inAdmittedTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
+	if p.TradeWindowUTCHourRangeSet {
+		minuteOfDay := float64((int64(t)%int64(contextcols.DayMS)+int64(contextcols.DayMS))%int64(contextcols.DayMS)) / float64(contextcols.HourMS)
+		return minuteOfDay >= p.TradeWindowUTCHourFrom && minuteOfDay < p.TradeWindowUTCHourTo
+	}
 	if p.TradeWindowUnrestricted {
 		return true
 	}

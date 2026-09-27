@@ -13,6 +13,9 @@ type flagParams struct {
 	TradeWindowMinuteFrom      float64
 	TradeWindowMinuteTo        float64
 	TradeWindowMinuteRangeSet  bool
+	TradeWindowUTCHourFrom     float64
+	TradeWindowUTCHourTo       float64
+	TradeWindowUTCHourRangeSet bool
 	NewYorkHours               []int
 	BlockedNewYorkHours        []int
 	EntryMode                  string
@@ -194,6 +197,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 	fairValueGap := mapValue(cfg, "fairValueGap")
 	trigger := mapValue(cfg, "trigger")
 	tradeWindowMinuteRange := mapValue(cfg, "tradeWindowMinuteRange")
+	tradeWindowUTCHourRange := mapValue(cfg, "tradeWindowUTCHourRange")
 	entryMode := mapValue(cfg, "entryMode")
 	rangeCfg := mapValue(cfg, "range")
 	channel := mapValue(cfg, "channel")
@@ -230,6 +234,9 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		TradeWindowMinuteFrom:      numberValue(tradeWindowMinuteRange, "from", 0),
 		TradeWindowMinuteTo:        numberValue(tradeWindowMinuteRange, "to", 0),
 		TradeWindowMinuteRangeSet:  len(tradeWindowMinuteRange) > 0,
+		TradeWindowUTCHourFrom:     numberValue(tradeWindowUTCHourRange, "from", 0),
+		TradeWindowUTCHourTo:       numberValue(tradeWindowUTCHourRange, "to", 0),
+		TradeWindowUTCHourRangeSet: len(tradeWindowUTCHourRange) > 0,
 		NewYorkHours:               intSliceValue(cfg, "newYorkHours"),
 		BlockedNewYorkHours:        intSliceValue(cfg, "blockedNewYorkHours"),
 		EntryMode:                  normalizedEntryMode(stringValue(entryMode, "type", "market")),

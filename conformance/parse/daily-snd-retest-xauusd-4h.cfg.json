@@ -1,0 +1,191 @@
+{
+  "case": "daily-snd-retest-xauusd-4h",
+  "category": "setup-family",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 0,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0.75,
+      "offsetAtr": 0.05
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 4,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "ranging",
+      "choppy"
+    ],
+    "description": "Prior-day level rejection on the 4h chart with causal range/type filters and the original UTC session gate.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDL"
+    ],
+    "levelPriorityExplicit": true,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 1,
+    "name": "Daily SND Retest XAUUSD 4h",
+    "namedLevelSweep": {
+      "rules": {
+        "PDL": {
+          "level": "PDL",
+          "mode": "test",
+          "reclaimAtr": 0,
+          "reclaimCandles": 1,
+          "side": "long",
+          "sweepAtr": 0.35
+        }
+      },
+      "stop": {
+        "long": {
+          "paddingAtr": 0.15
+        }
+      }
+    },
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": 0.5
+    },
+    "priorDayTypes": [
+      "range",
+      "outside"
+    ],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 1,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "namedLevelSweep",
+    "slices": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "4h"
+      }
+    ],
+    "stop": {
+      "extremeCandles": 0,
+      "maxAtr": 4,
+      "minAtr": 0.4,
+      "paddingAtr": 0
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6,
+      "nlsR": 4
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowSegments": [],
+    "tradeWindowUTCHourRange": {
+      "from": 8,
+      "to": 21
+    },
+    "trail": {
+      "atr": 0,
+      "triggerR": 1
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": true,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Pins the Daily SND XAUUSD 4h conversion config, including the UTC hour gate and strict named-level reclaim geometry.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-055 Daily SND XAUUSD 4h conversion candidate",
+  "warnings": []
+}

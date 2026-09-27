@@ -164,6 +164,10 @@ Time gates:
   or after `type:`. `windows(...)` is the *deprecated* spelling.
 - `trade window minutes A to B` — minutes since session-window open,
   increasing range required. The interval is half-open: `A <= minute < B`.
+- `trade window UTC hours A to B` — explicit UTC wall-clock range with
+  `0 <= A < B <= 24`; the interval is half-open. This replaces the fixed
+  UTC+10 session-window gate and any `sessions(...)` window selection for the
+  trade-time check. Other market filters still apply.
 - `trade window unrestricted` — research-only override that removes the
   engine's fixed UTC+10 trade-window gate. Other filters, including any
   explicit `local hour` filter, still apply; use it only when the study maps a
