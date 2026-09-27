@@ -136,7 +136,17 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 			continue
 		}
 		day := localDayKey(b.series.T[i])
-		seenKey := fmt.Sprintf("%s:%s", s.String(), level)
+		// Keyed on the level's *price*, not just its name (matching every
+		// sibling family's dedup, e.g. family_range_break_fake.go/
+		// family_day_open_reclaim.go, and the JS originals' own
+		// Math.round(price * 10) key): a named level (PDL, WH, ...) is
+		// re-resolved every bar, so its price can change across a day
+		// boundary that does not line up with this dedup's own local-day
+		// boundary (localDayKey's fixed UTC+10h offset). Keying on the name
+		// alone would let an earlier signal against the *old* day's level
+		// price silently suppress a later, unrelated signal against the
+		// *new* day's level for the rest of the local day.
+		seenKey := fmt.Sprintf("%s:%s:%.0f", s.String(), level, math.Round(setup.Meta["levelPrice"].(float64)*10))
 		if b.seen.nls.seen(day, seenKey) {
 			continue
 		}
