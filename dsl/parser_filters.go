@@ -429,6 +429,8 @@ func (p *parser) parseHigherTimeframe(tokens []string) {
 	htf["timeframe"] = "auto"
 	if containsLower(tokens, "off") {
 		htf["mode"] = "off"
+	} else if containsPhrase(tokens, []string{"directional", "and", "agree"}) {
+		htf["mode"] = "strictAgree"
 	} else if containsLower(tokens, "agree") {
 		htf["mode"] = "notAgainst"
 	} else {
@@ -440,6 +442,25 @@ func (p *parser) parseHigherTimeframe(tokens []string) {
 		}
 	}
 	p.config["htf"] = htf
+}
+
+func containsPhrase(tokens, phrase []string) bool {
+	if len(phrase) == 0 || len(tokens) < len(phrase) {
+		return false
+	}
+	for start := 0; start <= len(tokens)-len(phrase); start++ {
+		match := true
+		for offset, want := range phrase {
+			if !strings.EqualFold(tokens[start+offset], want) {
+				match = false
+				break
+			}
+		}
+		if match {
+			return true
+		}
+	}
+	return false
 }
 
 func (p *parser) parseSide(tokens []string) {

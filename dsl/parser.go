@@ -91,12 +91,20 @@ func (p *parser) parse() {
 	}
 	p.validateLevels()
 	p.validateNamedLevelSweep()
+	p.validateStrictHigherTimeframe()
 	p.validateEntryTimeframe()
 	p.validatePriceMomentum()
 	p.validateDailyFlushFailure()
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+}
+
+func (p *parser) validateStrictHigherTimeframe() {
+	htf := copyMap(p.config["htf"])
+	if htf["mode"] == "strictAgree" && p.config["setupType"] != string(FamilyNamedLevelSweep) {
+		p.errorAt(nil, nil, `"higher timeframe must be directional and agree" is currently supported only by "named level sweep" setups`, "")
+	}
 }
 
 func (p *parser) apply(line logicalLine, tokens []string) {

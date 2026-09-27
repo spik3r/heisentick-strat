@@ -73,6 +73,12 @@ the reclaim geometry re-forms, mirroring `failed breakout`'s per-day dedup.
 `risk 200 USD`, and `priority(...)` are all pre-existing shared directives;
 none of them change for this family.
 
+`higher timeframe must be directional and agree` is an opt-in stricter gate
+for this family. A long rule requires the latest completed HTF candle to be
+up; a short rule requires it to be down. Flat or unavailable HTF direction
+rejects the entry. The existing `higher timeframe must agree` and
+`higher timeframe must not oppose entry` modes keep their prior behavior.
+
 ## Compile diagnostics
 
 - An unknown level key in a `when` line reuses the exact `priority(...)`

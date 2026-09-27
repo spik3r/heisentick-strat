@@ -44,6 +44,7 @@ type namedLevelSweepParams struct {
 	Rules     map[string]namedLevelSweepRule
 	StopLong  namedLevelSweepStopSide
 	StopShort namedLevelSweepStopSide
+	StrictHTF bool
 }
 
 func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
@@ -77,7 +78,8 @@ func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
 		rules[level] = rule
 	}
 	stop := mapValue(nls, "stop")
-	result := namedLevelSweepParams{Rules: rules}
+	htf := mapValue(cfg, "htf")
+	result := namedLevelSweepParams{Rules: rules, StrictHTF: stringValue(htf, "mode", "off") == "strictAgree"}
 	if long := mapValue(stop, "long"); long != nil {
 		result.StopLong = namedLevelSweepStopSide{HasPadding: true, PaddingATR: numberValue(long, "paddingAtr", 0)}
 	}
@@ -127,6 +129,9 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 		if s == sideShort && !p.AllowShort {
 			continue
 		}
+		if b.params.NamedLevelSweep.StrictHTF && !b.htfDirectionAgrees(i, s) {
+			continue
+		}
 		setup, ok := b.namedLevelSweepSetup(i, rule, atr)
 		if !ok {
 			continue
@@ -142,6 +147,16 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 		b.hasNLSEntry = true
 		break
 	}
+}
+
+func (b *broker) htfDirectionAgrees(i int, s side) bool {
+	if i < 0 || i >= len(b.htfTrend) {
+		return false
+	}
+	if s == sideLong {
+		return b.htfTrend[i] == trendUp
+	}
+	return b.htfTrend[i] == trendDown
 }
 
 func (b *broker) namedLevelSweepSetup(i int, rule namedLevelSweepRule, atr float64) (setupPlan, bool) {
