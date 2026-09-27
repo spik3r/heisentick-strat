@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-09-28
+
+- Minor bump: Go now parses and applies `local weekday`/`weekday`,
+  `local hour`/`hour`, and `open location` market filters. Weekday and hour
+  filters use the browser runtime's fixed UTC+10 clock; allowlists and
+  exclusions run during entry admission, and open-location allowlists use
+  causal session context. The parser rejects invalid values and unsupported
+  negated open-location filters. A parse conformance fixture covers the new
+  phrases.
+
 ## [0.13.0] — 2026-09-28
 
 - Minor bump: Go fair-value-gap entries now apply the shared market gates
