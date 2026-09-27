@@ -51,6 +51,11 @@ func LocalHour(t int64) float64 {
 	return float64(mod) / float64(HourMS)
 }
 
+// LocalWeekday matches the fixed UTC+10 calendar used by the browser DSL runtime.
+func LocalWeekday(t int64) string {
+	return time.UnixMilli(t + localOffset).UTC().Weekday().String()[:3]
+}
+
 var newYorkLocationOnce sync.Once
 var newYorkLocation *time.Location
 

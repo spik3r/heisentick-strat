@@ -200,6 +200,31 @@ func (b *broker) marketGatesOK(i int) bool {
 }
 
 func (b *broker) marketNonSessionGatesOK(i int) bool {
+	if len(b.params.LocalWeekdays) > 0 || len(b.params.BlockedLocalWeekdays) > 0 || len(b.params.LocalHours) > 0 || len(b.params.BlockedLocalHours) > 0 {
+		if i < 0 || i >= len(b.series.T) {
+			return false
+		}
+		timestamp := int64(b.series.T[i])
+		weekday := contextcols.LocalWeekday(timestamp)
+		if len(b.params.LocalWeekdays) > 0 && !containsString(b.params.LocalWeekdays, weekday) {
+			return false
+		}
+		if containsString(b.params.BlockedLocalWeekdays, weekday) {
+			return false
+		}
+		hour := int(contextcols.LocalHour(timestamp))
+		if len(b.params.LocalHours) > 0 && !containsInt(b.params.LocalHours, hour) {
+			return false
+		}
+		if containsInt(b.params.BlockedLocalHours, hour) {
+			return false
+		}
+	}
+	if len(b.params.OpenLocations) > 0 {
+		if i < 0 || i >= len(b.cols.OpenLocation) || !containsString(b.params.OpenLocations, openLocationName(b.cols.OpenLocation[i])) {
+			return false
+		}
+	}
 	if len(b.params.SessionPhases) > 0 {
 		phase := ""
 		if i >= 0 && i < len(b.cols.SessionPhase) {
@@ -235,6 +260,15 @@ func (b *broker) marketNonSessionGatesOK(i int) bool {
 		}
 	}
 	return true
+}
+
+func containsInt(values []int, want int) bool {
+	for _, value := range values {
+		if value == want {
+			return true
+		}
+	}
+	return false
 }
 
 func priorDayTypeName(code int8) string {

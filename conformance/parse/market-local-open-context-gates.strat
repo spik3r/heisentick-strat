@@ -1,0 +1,17 @@
+dsl v7
+strategy "Local and open-location market gates"
+
+market conditions {
+  slices(XAUUSD 5m)
+  local weekday in (Mon, Tue)
+  weekday not in (Fri)
+  local hour in (12, 13, 14, 15)
+  hour not in (23)
+  open location in (nearRangeMid, nearPDO, nearPDH, nearPDL, nearPDC)
+}
+
+setup { type: failed breakout }
+
+filters {
+  side both
+}
