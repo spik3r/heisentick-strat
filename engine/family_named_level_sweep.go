@@ -259,11 +259,21 @@ func (b *broker) namedLevelSweptOrTested(i int, rule namedLevelSweepRule, levelP
 	if !wicked {
 		return false
 	}
+	// "closes above|below it" with no margin means strictly past the level
+	// (a close exactly on it has not reclaimed anything, matching the
+	// hand-written originals' `c > level`); "by at least Y ATR" means at
+	// least Y ATR past it.
 	margin := rule.ReclaimAtr * atr
 	if rule.Side == sideLong {
-		return b.series.C[i] >= levelPrice+margin
+		if margin > 0 {
+			return b.series.C[i] >= levelPrice+margin
+		}
+		return b.series.C[i] > levelPrice
 	}
-	return b.series.C[i] <= levelPrice-margin
+	if margin > 0 {
+		return b.series.C[i] <= levelPrice-margin
+	}
+	return b.series.C[i] < levelPrice
 }
 
 // namedLevelSweepStop is the family's unified stop formula (spec §2.4): the

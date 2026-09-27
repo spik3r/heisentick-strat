@@ -216,3 +216,29 @@ execution {
 		t.Fatalf("trades = %d, want exactly 2 (a differently-priced PDL later the same dedup-local-day must still be able to signal)", result.TradeCount)
 	}
 }
+
+// "closes back above|below it" with no `by at least` margin is a strict
+// close past the level: a bar that wicks through and closes exactly on the
+// level has not reclaimed it (the hand-written originals use `c > level`).
+// With a margin, a close exactly margin*ATR past the level does count.
+func TestNamedLevelSweepReclaimCloseOnLevelIsNotAReclaim(t *testing.T) {
+	series := marketdata.Series{
+		T: []float64{0}, O: []float64{100.5}, H: []float64{101}, L: []float64{99}, C: []float64{100}, V: []float64{0},
+	}
+	b := broker{series: series}
+	long := namedLevelSweepRule{Mode: "sweep", Side: sideLong, ReclaimCandles: 1}
+	short := namedLevelSweepRule{Mode: "sweep", Side: sideShort, ReclaimCandles: 1}
+	if b.namedLevelSweptOrTested(0, long, 100, 1) {
+		t.Fatal("long: close exactly on the level must not count as closing back above it")
+	}
+	if b.namedLevelSweptOrTested(0, short, 100, 1) {
+		t.Fatal("short: close exactly on the level must not count as closing back below it")
+	}
+	if !b.namedLevelSweptOrTested(0, long, 99.9, 1) {
+		t.Fatal("long: a strict close above the swept level must reclaim")
+	}
+	withMargin := namedLevelSweepRule{Mode: "sweep", Side: sideLong, ReclaimCandles: 1, ReclaimAtr: 0.5}
+	if !b.namedLevelSweptOrTested(0, withMargin, 99.5, 1) {
+		t.Fatal("long: a close exactly `by at least` the margin past the level must reclaim")
+	}
+}

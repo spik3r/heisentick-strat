@@ -44,6 +44,10 @@ version and is named here.
   It is a compile error with any other setup type. New parse fixtures and a
   pair of run fixtures (`family-named-level-sweep-reentry-default-cap` /
   `-allowed`, 1 vs 2 trades on the same bars) pin the behavior.
+- `named level sweep` fix: "closes back above|below it" with no `by at
+  least Y ATR` margin now needs a close strictly past the level. A close
+  exactly on the level no longer counts as a reclaim (it did under
+  v0.10.0's `>=`). With a margin, a close at least Y ATR past still counts.
 
 ## [0.10.0] — 2026-09-26
 
