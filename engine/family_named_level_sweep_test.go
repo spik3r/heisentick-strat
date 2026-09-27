@@ -19,6 +19,20 @@ func TestNamedLevelSweepZeroReclaimRequiresStrictCloseThrough(t *testing.T) {
 	}
 }
 
+func TestNamedLevelSweepDailyDedupUsesResolvedLevelPrice(t *testing.T) {
+	first := namedLevelSweepSeenKey(sideLong, "PDL", 100)
+	if repeated := namedLevelSweepSeenKey(sideLong, "PDL", 100.02); repeated != first {
+		t.Fatalf("same rounded level price should deduplicate: %q != %q", repeated, first)
+	}
+	changed := namedLevelSweepSeenKey(sideLong, "PDL", 100.2)
+	if changed == first {
+		t.Fatalf("changed resolved level price should be admitted: %q", changed)
+	}
+	if oppositeSide := namedLevelSweepSeenKey(sideShort, "PDL", 100); oppositeSide == first {
+		t.Fatal("opposite side must have an independent dedup key")
+	}
+}
+
 func TestNamedLevelSweepStrictHTFGateRequiresDirectionalAgreement(t *testing.T) {
 	for _, tc := range []struct {
 		name  string

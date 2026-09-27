@@ -108,6 +108,10 @@ func sortedNamedLevelSweepLevels(rules map[string]namedLevelSweepRule) []string 
 	return levels
 }
 
+func namedLevelSweepSeenKey(s side, level string, price float64) string {
+	return fmt.Sprintf("%s:%s:%d", s.String(), level, int64(math.Round(price*10)))
+}
+
 func (b *broker) onNamedLevelSweepBar(i int) {
 	if b.hasPosition {
 		b.applyPartialManagement(i)
@@ -143,7 +147,11 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 			continue
 		}
 		day := localDayKey(b.series.T[i])
-		seenKey := fmt.Sprintf("%s:%s", s.String(), level)
+		resolved, ok := b.keyLevel(i, rule.Level, b.series.C[i])
+		if !ok {
+			continue
+		}
+		seenKey := namedLevelSweepSeenKey(s, level, resolved.Price)
 		if p.NamedLevelSweep.DedupDaily && b.seen.nls.seen(day, seenKey) {
 			continue
 		}
