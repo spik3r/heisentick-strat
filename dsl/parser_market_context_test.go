@@ -59,3 +59,49 @@ func TestParseLocalMarketContextGatesRejectInvalidValues(t *testing.T) {
 		})
 	}
 }
+
+func TestCanonicalStrategyAndSetupBlocksRetainNameDescriptionAndDefaults(t *testing.T) {
+	result, err := Parse(`dsl v7
+strategy "Named gate fixture" {
+  description "A canonical parser fixture."
+}
+setup {
+  type: failed breakout
+}
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+`)
+	if err != nil || len(result.Errors) != 0 {
+		t.Fatalf("parse errors=%v err=%v", result.Errors, err)
+	}
+	if result.Config["name"] != "Named gate fixture" || result.Config["description"] != "A canonical parser fixture." {
+		t.Fatalf("identity = name %q description %q", result.Config["name"], result.Config["description"])
+	}
+	if result.Config["setupType"] != string(FamilyFailedBreakout) {
+		t.Fatalf("setupType = %v, want %s", result.Config["setupType"], FamilyFailedBreakout)
+	}
+	if got := result.Config["breakeven"].(map[string]any); got["atR"] != 0.5 || got["offsetAtr"] != 0.05 {
+		t.Fatalf("failed-breakout breakeven = %#v", got)
+	}
+	if got := result.Config["cooldownCandles"]; got != 12 && got != float64(12) {
+		t.Fatalf("failed-breakout cooldown = %v, want 12", result.Config["cooldownCandles"])
+	}
+}
+
+func TestStandaloneStrategyDirectiveAndInlineSetupAreNotTreatedAsSections(t *testing.T) {
+	result, err := Parse(`dsl v7
+strategy "Standalone title"
+setup { type: failed breakout }
+`)
+	if err != nil || len(result.Errors) != 0 {
+		t.Fatalf("parse errors=%v err=%v", result.Errors, err)
+	}
+	if result.Config["name"] != "Standalone title" {
+		t.Fatalf("name = %q, want standalone title", result.Config["name"])
+	}
+	if result.Config["setupType"] != string(FamilyFailedBreakout) {
+		t.Fatalf("setupType = %v, want %s", result.Config["setupType"], FamilyFailedBreakout)
+	}
+}

@@ -45,6 +45,11 @@ func expandPhysicalLines(source string) []logicalLine {
 			}
 			continue
 		}
+		if isNamedStrategyHeader(stripped) {
+			section = "strategy"
+			lines = append(lines, logicalLine{text: stripped, line: lineNo, headCol: firstNonSpaceCol(raw), section: section})
+			continue
+		}
 		lines = append(lines, logicalLine{
 			text:    stripped,
 			line:    lineNo,
@@ -64,6 +69,9 @@ func expandInlineLine(raw string, stripped string, lineNo int, currentSection st
 	prefix := strings.TrimSpace(stripped[:open])
 	body := strings.TrimSpace(stripped[open+1 : close])
 	section, ok := sectionOpener(prefix + " {")
+	if !ok && isNamedStrategyHeader(prefix) {
+		section, ok = "strategy", true
+	}
 	if !ok {
 		return nil, false
 	}
@@ -136,16 +144,22 @@ func tokenize(line string) []string {
 
 func sectionOpener(line string) (string, bool) {
 	lower := strings.ToLower(strings.TrimSpace(line))
+	braced := strings.HasSuffix(lower, "{")
 	lower = strings.TrimSuffix(lower, "{")
 	lower = strings.TrimSuffix(lower, ":")
 	lower = strings.TrimSpace(lower)
-	if strings.HasPrefix(lower, "strategy") {
+	if lower == "strategy" || braced && isNamedStrategyHeader(lower) {
 		return "strategy", true
 	}
 	if canonical, ok := generatedSectionAliases[lower]; ok {
 		return canonical, true
 	}
 	return "", false
+}
+
+func isNamedStrategyHeader(prefix string) bool {
+	lower := strings.ToLower(strings.TrimSpace(prefix))
+	return strings.HasPrefix(lower, "strategy \"") && strings.HasSuffix(lower, "\"") || strings.HasPrefix(lower, "strategy '") && strings.HasSuffix(lower, "'")
 }
 
 func directiveStartsForSection(section string) []string {
