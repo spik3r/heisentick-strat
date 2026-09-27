@@ -1577,8 +1577,7 @@
     {
       "id": "directive.seasonality",
       "spelling": "seasonality",
-      "classification": "js-only",
-      "reason": "JavaScript diagnostic/editor head with no matching Go dispatch head.",
+      "classification": "shared",
       "since": 6
     },
     {

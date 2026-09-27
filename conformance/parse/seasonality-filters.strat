@@ -1,0 +1,8 @@
+dsl v7
+strategy "Seasonality filters" {
+  description "Parses seasonality aliases, lookbacks, classes, and entry-support filters."
+}
+market conditions {
+  seasonality intraday 30d in (neutral, bullish) min samples 24
+}
+setup { type: failed breakout }

@@ -23,6 +23,7 @@ type Options struct {
 	Range                  RangeOptions
 	Channel                ChannelOptions
 	RangeStatsLookback     int
+	Seasonality            []SeasonalitySpec
 }
 
 func (o Options) normalized() Options {

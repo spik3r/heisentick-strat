@@ -161,6 +161,7 @@ type flagParams struct {
 	LocalHours                 []int
 	BlockedLocalHours          []int
 	OpenLocations              []string
+	SeasonalityFilters         []seasonalityFilter
 	PriorDayTypes              []string
 	DayTypes                   []string
 	DayThemes                  []string
@@ -509,6 +510,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		LocalHours:                intSliceValue(map[string]any(cfg), "localHours"),
 		BlockedLocalHours:         intSliceValue(map[string]any(cfg), "blockedLocalHours"),
 		OpenLocations:             stringSliceValue(cfg["openLocations"]),
+		SeasonalityFilters:        seasonalityFiltersFromConfig(cfg["seasonalityFilters"]),
 		PriorDayTypes:             stringSliceValue(cfg["priorDayTypes"]),
 		DayTypes:                  stringSliceValue(cfg["dayTypes"]),
 		DayThemes:                 stringSliceValue(cfg["dayThemes"]),
