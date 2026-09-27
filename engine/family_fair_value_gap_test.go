@@ -10,9 +10,10 @@ import (
 )
 
 func colsWithATR(n int, atr float64) contextcols.Columns {
-	cols := contextcols.Columns{ATR: make([]float64, n)}
+	cols := contextcols.Columns{ATR: make([]float64, n), ER: make([]float64, n), Regime: make([]int8, n)}
 	for i := range cols.ATR {
 		cols.ATR[i] = atr
+		cols.Regime[i] = 2 // ranging; default strategy market gates allow it
 	}
 	return cols
 }
@@ -70,6 +71,35 @@ func TestFairValueGapSetupUsesConfiguredReferenceAndCausalRisk(t *testing.T) {
 	b.onFairValueGapBar(3)
 	if len(b.limitOrders) != 1 || b.limitOrders[0].ExpireBars != 1 || b.limitOrders[0].ExpireAt != 4 {
 		t.Fatalf("FVG limit order = %#v, want one-bar expiry", b.limitOrders)
+	}
+}
+
+func TestFairValueGapHonorsMarketGatesWithoutConsumingRejectedRetest(t *testing.T) {
+	series := marketdata.SeriesFromBars([]marketdata.Bar{
+		{T: 0, O: 100, H: 101, L: 99, C: 100},
+		{T: 1, O: 100, H: 104, L: 100, C: 104},
+		{T: 2, O: 104, H: 106, L: 105, C: 105.5},
+		{T: 3, O: 105.5, H: 106, L: 102, C: 103},
+	})
+	cols := colsWithATR(4, 1)
+	cols.Regime = []int8{2, 2, 2, 1} // trending, while this strategy admits only ranging
+	cols.ER = []float64{0, 0, 0, 1}
+	b := broker{
+		series: series,
+		cols:   cols,
+		params: flagParams{
+			AllowLong: true, DayTypes: []string{"ranging"}, TradeWindowUnrestricted: true,
+			FairValueGap: fairValueGapParams{MinGapATR: 0.5, MinDisplacementATR: 2, RetestCandles: 8, EntryReference: "midpoint"},
+			MinStopATR:   0.25, MaxStopATR: 3, StopBufferATR: 0.25, TargetR: 2,
+		},
+	}
+	b.detectFairValueGap(2)
+	b.onFairValueGapBar(3)
+	if len(b.limitOrders) != 0 {
+		t.Fatalf("market-gate rejected retest created an order: %#v", b.limitOrders)
+	}
+	if len(b.fvgZones) != 1 || b.fvgZones[0].Used {
+		t.Fatalf("market-gate rejected retest consumed its gap: %#v", b.fvgZones)
 	}
 }
 
