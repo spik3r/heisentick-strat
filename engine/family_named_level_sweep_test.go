@@ -3,6 +3,7 @@ package engine
 import (
 	"testing"
 
+	"github.com/spik3r/heisentick-strat/contextcols"
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
@@ -16,6 +17,44 @@ func TestNamedLevelSweepZeroReclaimRequiresStrictCloseThrough(t *testing.T) {
 	b.series.C[0] = 100.0001
 	if !b.namedLevelSweptOrTested(0, rule, 100, 1) {
 		t.Fatal("strict close above the level should pass")
+	}
+}
+
+func TestNamedLevelSweepHonorsInclusiveSharedStopBounds(t *testing.T) {
+	params := namedLevelSweepParamsFromConfig(map[string]any{
+		"stop": map[string]any{"minAtr": 0.5, "maxAtr": 5.5},
+	})
+	if params.MinStopATR != 0.5 || params.MaxStopATR != 5.5 {
+		t.Fatalf("stop bounds = [%v, %v], want [0.5, 5.5]", params.MinStopATR, params.MaxStopATR)
+	}
+	rule := namedLevelSweepRule{Level: "PDL", Mode: "test", HasSweepAtr: true, SweepAtr: 0.35, Side: sideLong}
+	setupAccepted := func(low float64) bool {
+		bar := marketdata.Bar{O: 100.2, H: 101, L: low, C: 100.5}
+		b := broker{
+			series: marketdata.SeriesFromBars([]marketdata.Bar{bar}),
+			cols:   contextcols.Columns{ATR: []float64{1}, PriorDayL: []float64{100}},
+			params: flagParams{
+				TargetR:         4,
+				NamedLevelSweep: params,
+			},
+		}
+		_, ok := b.namedLevelSweepSetup(0, rule, 1)
+		return ok
+	}
+	if !setupAccepted(100.1) {
+		t.Fatal("stop exactly at minimum bound should pass")
+	}
+	params.MinStopATR = 0.500001
+	if setupAccepted(100.1) {
+		t.Fatal("stop below minimum bound should fail")
+	}
+	params.MinStopATR = 0.5
+	if !setupAccepted(95) {
+		t.Fatal("stop exactly at maximum bound should pass")
+	}
+	params.MaxStopATR = 5.499999
+	if setupAccepted(95) {
+		t.Fatal("stop above maximum bound should fail")
 	}
 }
 
