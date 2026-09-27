@@ -40,3 +40,23 @@ func TestWeekendExtremeFadeRuntimeUsesCausalMondayWindow(t *testing.T) {
 		t.Fatalf("trades = %+v, want one causal Monday short", trades)
 	}
 }
+
+func TestWeekendExtremeFadeUnreachableWithoutWeekendBars(t *testing.T) {
+	cfg := dsl.Config{"setupType": string(dsl.FamilyWeekendExtremeFade)}
+	if WeekendExtremeFadeUnreachable(cfg, weekendExtremeFadeSeries()) {
+		t.Fatal("contiguous weekend series reported unreachable")
+	}
+	var weekdays []marketdata.Bar
+	for _, bar := range weekendExtremeFadeSeries().Bars() {
+		day := time.UnixMilli(int64(bar.T)).UTC().Weekday()
+		if day != time.Saturday && day != time.Sunday {
+			weekdays = append(weekdays, bar)
+		}
+	}
+	if !WeekendExtremeFadeUnreachable(cfg, marketdata.SeriesFromBars(weekdays)) {
+		t.Fatal("series without weekend bars reported reachable")
+	}
+	if WeekendExtremeFadeUnreachable(dsl.Config{"setupType": string(dsl.FamilyFlagContinuation)}, marketdata.SeriesFromBars(weekdays)) {
+		t.Fatal("other setups must never be reported unreachable")
+	}
+}
