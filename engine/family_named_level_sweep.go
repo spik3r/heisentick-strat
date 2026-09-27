@@ -44,6 +44,8 @@ type namedLevelSweepParams struct {
 	Rules      map[string]namedLevelSweepRule
 	StopLong   namedLevelSweepStopSide
 	StopShort  namedLevelSweepStopSide
+	MinStopATR float64
+	MaxStopATR float64
 	StrictHTF  bool
 	DedupDaily bool
 }
@@ -79,10 +81,13 @@ func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
 		rules[level] = rule
 	}
 	stop := mapValue(nls, "stop")
+	stopBounds := mapValue(cfg, "stop")
 	htf := mapValue(cfg, "htf")
 	htfMode := stringValue(htf, "mode", "off")
 	result := namedLevelSweepParams{
 		Rules:      rules,
+		MinStopATR: numberValue(stopBounds, "minAtr", 0),
+		MaxStopATR: numberValue(stopBounds, "maxAtr", math.Inf(1)),
 		StrictHTF:  htfMode == "strictAgree" || htfMode == "strictLegacyAgree",
 		DedupDaily: boolValue(nls, "dedupDaily", true),
 	}
@@ -106,6 +111,10 @@ func sortedNamedLevelSweepLevels(rules map[string]namedLevelSweepRule) []string 
 	}
 	sort.Strings(levels)
 	return levels
+}
+
+func namedLevelSweepSeenKey(s side, level string, price float64) string {
+	return fmt.Sprintf("%s:%s:%d", s.String(), level, int64(math.Round(price*10)))
 }
 
 func (b *broker) onNamedLevelSweepBar(i int) {
@@ -143,7 +152,11 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 			continue
 		}
 		day := localDayKey(b.series.T[i])
-		seenKey := fmt.Sprintf("%s:%s", s.String(), level)
+		resolved, ok := b.keyLevel(i, rule.Level, b.series.C[i])
+		if !ok {
+			continue
+		}
+		seenKey := namedLevelSweepSeenKey(s, level, resolved.Price)
 		if p.NamedLevelSweep.DedupDaily && b.seen.nls.seen(day, seenKey) {
 			continue
 		}
@@ -181,7 +194,7 @@ func (b *broker) namedLevelSweepSetup(i int, rule namedLevelSweepRule, atr float
 	entry := b.series.C[i]
 	stop := b.namedLevelSweepStop(i, level.Price, rule.Side, atr)
 	risk := math.Abs(entry - stop)
-	if risk <= 0 {
+	if risk <= 0 || !stopOK(entry, stop, atr, b.params.NamedLevelSweep.MinStopATR, b.params.NamedLevelSweep.MaxStopATR) {
 		return setupPlan{}, false
 	}
 	target := entry + float64(rule.Side)*risk*b.params.TargetR
