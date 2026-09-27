@@ -45,6 +45,11 @@ func (b *broker) onFairValueGapBar(i int) {
 		if !ok {
 			continue
 		}
+		// Match the shared guarded-entry path used by the browser runtime. A
+		// rejected market gate must leave the retest available for a later bar.
+		if !b.marketGatesOK(i) {
+			return
+		}
 		// FVG midpoint limits use their declared entry window rather than the
 		// generic swept-edge expiry.
 		entryExpireBars := b.params.FairValueGap.EntryExpireCandles
