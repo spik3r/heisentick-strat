@@ -320,9 +320,13 @@ func (b *broker) runScheduled(entries []ScheduledEntry, orders []order) []Trade 
 
 func (b *broker) runScheduledWithFinalization(entries []ScheduledEntry, orders []order, liquidateAtEnd bool) []Trade {
 	byChart := make(map[int][]order, len(entries))
-	for index, entry := range entries {
-		if index < len(orders) {
-			byChart[entry.ChartIndex] = append(byChart[entry.ChartIndex], orders[index])
+	ordersBySourceIndex := make(map[int]order, len(orders))
+	for _, captured := range orders {
+		ordersBySourceIndex[captured.Index] = captured
+	}
+	for _, entry := range entries {
+		if captured, ok := ordersBySourceIndex[entry.SourceIndex]; ok {
+			byChart[entry.ChartIndex] = append(byChart[entry.ChartIndex], captured)
 		}
 	}
 	end := b.executionEnd()

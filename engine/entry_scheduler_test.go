@@ -26,3 +26,23 @@ func TestScheduleSourceEventsCausalBoundaryGapAndIdempotence(t *testing.T) {
 		t.Fatalf("entries = %#v, want %#v", entries, want)
 	}
 }
+
+func TestScheduleSourceEventsSkipsPreCoverageEventsButKeepsWarmupBoundary(t *testing.T) {
+	source := schedulerSeries([]float64{0, 4 * schedulerHour, 8 * schedulerHour})
+	chart := schedulerSeries([]float64{
+		8 * schedulerHour,
+		9 * schedulerHour,
+		10 * schedulerHour,
+		11 * schedulerHour,
+		12 * schedulerHour,
+	})
+
+	entries := ScheduleSourceEvents(source, chart, []int{0, 1, 2})
+	want := []ScheduledEntry{
+		{SourceIndex: 1, ChartIndex: 0, SourceClose: 8 * schedulerHour, EntryTime: 9 * schedulerHour},
+		{SourceIndex: 2, ChartIndex: 4, SourceClose: 12 * schedulerHour, EntryTime: 13 * schedulerHour},
+	}
+	if !reflect.DeepEqual(entries, want) {
+		t.Fatalf("entries = %#v, want %#v", entries, want)
+	}
+}

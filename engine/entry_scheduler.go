@@ -44,9 +44,10 @@ func inferredDuration(series marketdata.Series) float64 {
 	return duration
 }
 
-// ScheduleSourceEvents maps each distinct completed 4h source decision to the
-// first actual 15m decision close strictly after it. It never invents bars in
-// a session gap and never dispatches on the coincident source-close boundary.
+// ScheduleSourceEvents maps each distinct completed source decision to the
+// first actual chart decision close strictly after it. It keeps source bars
+// before chart coverage for warmup but does not replay their events. It never
+// invents bars in a session gap or dispatches on the source-close boundary.
 func ScheduleSourceEvents(source, chart marketdata.Series, sourceIndices []int) []ScheduledEntry {
 	sourceDuration, chartDuration := inferredDuration(source), inferredDuration(chart)
 	if sourceDuration <= 0 || chartDuration <= 0 {
@@ -55,12 +56,19 @@ func ScheduleSourceEvents(source, chart marketdata.Series, sourceIndices []int) 
 	seen := map[int]bool{}
 	out := make([]ScheduledEntry, 0, len(sourceIndices))
 	chartIndex := 0
+	firstChartOpen := chart.T[0]
 	for _, sourceIndex := range sourceIndices {
 		if sourceIndex < 0 || sourceIndex >= source.Len() || seen[sourceIndex] {
 			continue
 		}
 		seen[sourceIndex] = true
 		sourceClose := source.T[sourceIndex] + sourceDuration
+		// Source history can start well before the entry route has coverage.
+		// Keep those bars available for context warmup, but never replay a
+		// historical intent onto the first chart candle.
+		if sourceClose < firstChartOpen {
+			continue
+		}
 		for chartIndex < chart.Len() && chart.T[chartIndex]+chartDuration <= sourceClose {
 			chartIndex++
 		}
