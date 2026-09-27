@@ -100,6 +100,27 @@ func TestRunnerHTFDirectionUsesLastCompletedCandle(t *testing.T) {
 	}
 }
 
+func TestRunnerHTFLegacyBiasUsesCompletedCloseDeltaAndATRThreshold(t *testing.T) {
+	htfBars := []marketdata.Bar{
+		{T: 0, O: 100, H: 101, L: 99, C: 100, V: 1},
+		{T: 4 * htfHour, O: 102, H: 103, L: 101, C: 102, V: 1},
+		{T: 8 * htfHour, O: 104, H: 105, L: 103, C: 104, V: 1},
+	}
+	htf := marketdata.SeriesFromBars(htfBars)
+	primaryBars := make([]marketdata.Bar, 0, 13)
+	for i := 0; i <= 12; i++ {
+		t := float64(i) * htfHour
+		primaryBars = append(primaryBars, marketdata.Bar{T: t, O: 100, H: 101, L: 99, C: 100, V: 1})
+	}
+	trend := computeHTFLegacyBiasTrend(marketdata.SeriesFromBars(primaryBars), htf, 2, 0.5)
+	if trend[10] != htfUnavailable { // the second HTF bar is still forming
+		t.Fatalf("trend[10] = %d, want unavailable before the HTF close", trend[10])
+	}
+	if trend[11] != trendUp { // third HTF bar closes at primary close 12h
+		t.Fatalf("trend[11] = %d, want up from the 2-bar close delta", trend[11])
+	}
+}
+
 func TestRunnerHTFUnclosedBarFixtureKeepsCausalTradeBoundary(t *testing.T) {
 	dir := filepath.Join(testsupport.StratConformanceRoot(), "semantic", "pm-htf-unclosed-bar-no-lookahead")
 	fixture, err := LoadRunFixture(filepath.Join(dir, "fixture.json"))

@@ -58,6 +58,20 @@ func TestNamedLevelSweepStrictHTFModeIsOptIn(t *testing.T) {
 	if got := namedLevelSweepParamsFromConfig(strict).StrictHTF; !got {
 		t.Fatal("strictAgree mode must enable the named-level strict gate")
 	}
+	legacy := map[string]any{
+		"namedLevelSweep": map[string]any{},
+		"htf":             map[string]any{"mode": "strictLegacyAgree"},
+	}
+	if got := namedLevelSweepParamsFromConfig(legacy).StrictHTF; !got {
+		t.Fatal("strictLegacyAgree mode must enable the named-level strict gate")
+	}
+	if got := namedLevelSweepParamsFromConfig(legacy).DedupDaily; !got {
+		t.Fatal("daily deduplication must remain enabled by default")
+	}
+	noDedup := map[string]any{"namedLevelSweep": map[string]any{"dedupDaily": false}}
+	if got := namedLevelSweepParamsFromConfig(noDedup).DedupDaily; got {
+		t.Fatal("explicit dedupDaily false must permit repeat sweeps")
+	}
 }
 
 func TestNamedLevelSweepZeroReclaimRequiresStrictCloseBelow(t *testing.T) {

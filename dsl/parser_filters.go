@@ -429,6 +429,8 @@ func (p *parser) parseHigherTimeframe(tokens []string) {
 	htf["timeframe"] = "auto"
 	if containsLower(tokens, "off") {
 		htf["mode"] = "off"
+	} else if containsPhrase(tokens, []string{"legacy", "bias", "must", "be", "directional", "and", "agree"}) {
+		htf["mode"] = "strictLegacyAgree"
 	} else if containsPhrase(tokens, []string{"directional", "and", "agree"}) {
 		htf["mode"] = "strictAgree"
 	} else if containsLower(tokens, "agree") {

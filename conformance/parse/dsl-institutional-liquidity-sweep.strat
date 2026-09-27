@@ -1,0 +1,38 @@
+dsl v7
+strategy "Institutional Liquidity Sweep" {
+  description "Fade weekly high/low sweeps after a reclaim when the higher-timeframe trend agrees."
+}
+
+market conditions {
+  slices(XAUUSD 1h, USDJPY 1h, GBPUSD 1h)
+  movement below 1
+  day type in (trending, ranging, choppy)
+  trade window unrestricted
+}
+
+levels {
+  priority(WH, WL)
+}
+
+setup {
+  type: named level sweep
+  allow repeated level sweeps in one local day
+  when price sweeps WH and closes back below it within 1 candle then signal short
+  when price sweeps WL and closes back above it within 1 candle then signal long
+  stop above the signal candle and the level by 0.2 ATR
+  stop below the signal candle and the level by 0.2 ATR
+}
+
+filters {
+  higher timeframe legacy bias must be directional and agree
+  breakeven off
+  wait 0 candles after trade
+}
+
+target {
+  target 3R
+}
+
+execution {
+  risk 200 USD
+}

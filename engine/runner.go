@@ -57,7 +57,7 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 		return runSourceEntryFixture(fixture, parsed.Config, params, series, sourceSeries, sourceHTFSeries)
 	}
 	cols := projectSourceColumns(series, sourceSeries, contextcols.Build(sourceSeries, contextOptions(fixture, parsed.Config)))
-	htfTrend := projectSourceInt8(series, sourceSeries, computeHTFTrend(sourceSeries, sourceHTFSeries))
+	htfTrend := projectSourceInt8(series, sourceSeries, computeHTFTrendForConfig(sourceSeries, sourceHTFSeries, parsed.Config))
 	ema, emaSlope := computeSetupEMA(sourceSeries, params)
 	if sourceSeries.Len() != series.Len() {
 		ema = projectSourceFloat64(series, sourceSeries, ema)
@@ -90,7 +90,7 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 	sourceFixture.Bars = fixture.SourceBars
 	sourceFixture.HTFBars = fixture.SourceHTFBars
 	sourceCols := contextcols.Build(source, contextOptions(sourceFixture, cfg))
-	sourceHTFTrend := computeHTFTrend(source, sourceHTF)
+	sourceHTFTrend := computeHTFTrendForConfig(source, sourceHTF, cfg)
 	var sourceBroker broker
 	sourceBroker.reset(source, sourceCols, sourceHTFTrend, nil, nil, params, sourceFixture, nil)
 	orders := sourceBroker.runCapturedSource()
@@ -173,7 +173,7 @@ func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
 	return PreparedRunner{
 		series:   series,
 		cols:     projectSourceColumns(series, sourceSeries, contextcols.Build(sourceSeries, contextOptions(fixture, cfg))),
-		htfTrend: projectSourceInt8(series, sourceSeries, computeHTFTrend(sourceSeries, sourceHTFSeries)),
+		htfTrend: projectSourceInt8(series, sourceSeries, computeHTFTrendForConfig(sourceSeries, sourceHTFSeries, cfg)),
 		ema:      ema,
 		emaSlope: emaSlope,
 		params:   params,
@@ -343,6 +343,66 @@ func computeHTFTrend(series marketdata.Series, htf marketdata.Series) []int8 {
 		case htf.C[p] > htf.O[p]:
 			out[i] = trendUp
 		case htf.C[p] < htf.O[p]:
+			out[i] = trendDown
+		default:
+			out[i] = trendFlat
+		}
+	}
+	return out
+}
+
+func computeHTFTrendForConfig(series marketdata.Series, htf marketdata.Series, cfg dsl.Config) []int8 {
+	mode, _ := mapValue(cfg, "htf")["mode"].(string)
+	if mode != "strictLegacyAgree" {
+		return computeHTFTrend(series, htf)
+	}
+	return computeHTFLegacyBiasTrend(series, htf, 24, 0.5)
+}
+
+// computeHTFLegacyBiasTrend mirrors the browser runtime's default HTF trend
+// direction: the completed HTF close delta over 24 HTF bars must exceed 0.5
+// times that bar's 14-period ATR. Before 24 prior bars or a completed HTF bar
+// is available, direction is unavailable and strict gates fail closed.
+func computeHTFLegacyBiasTrend(series marketdata.Series, htf marketdata.Series, biasBars int, biasATR float64) []int8 {
+	n := series.Len()
+	if n == 0 || htf.Len() == 0 {
+		return nil
+	}
+	if biasBars <= 0 {
+		biasBars = 24
+	}
+	atr := contextcols.ComputeATR(htf, 14)
+	out := make([]int8, n)
+	primaryDur := inferSeriesDurationMs(series)
+	htfDur := inferSeriesDurationMs(htf)
+	if primaryDur <= 0 || htfDur <= 0 {
+		return out
+	}
+	p := -1
+	for i := 0; i < n; i++ {
+		decision := series.T[i] + primaryDur
+		for p+1 < htf.Len() && htf.T[p+1]+htfDur <= decision {
+			p++
+		}
+		if p < biasBars {
+			continue
+		}
+		projClose := htf.T[p] + htfDur
+		if decision-projClose >= htfDur {
+			holeEnd := decision
+			if p+1 < htf.Len() {
+				holeEnd = htf.T[p+1]
+			}
+			if !spansWeekendClosure(projClose, holeEnd) {
+				continue
+			}
+		}
+		delta := htf.C[p] - htf.C[p-biasBars]
+		threshold := atr[p] * biasATR
+		switch {
+		case delta > threshold:
+			out[i] = trendUp
+		case delta < -threshold:
 			out[i] = trendDown
 		default:
 			out[i] = trendFlat

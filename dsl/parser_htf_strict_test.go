@@ -8,6 +8,7 @@ func TestHigherTimeframeStrictAgreementMode(t *testing.T) {
 		want string
 	}{
 		{"higher timeframe must be directional and agree", "strictAgree"},
+		{"higher timeframe legacy bias must be directional and agree", "strictLegacyAgree"},
 		{"higher timeframe must agree", "notAgainst"},
 		{"higher timeframe must not oppose entry", "notAgainst"},
 		{"higher timeframe off", "off"},
@@ -37,7 +38,27 @@ filters { higher timeframe must be directional and agree }
 	if err != nil {
 		t.Fatalf("Parse: %v", err)
 	}
-	if len(result.Errors) != 1 || result.Errors[0] != `"higher timeframe must be directional and agree" is currently supported only by "named level sweep" setups` {
+	if len(result.Errors) != 1 || result.Errors[0] != `strict directional higher timeframe agreement is currently supported only by "named level sweep" setups` {
 		t.Fatalf("errors = %#v, want scoped-use diagnostic", result.Errors)
+	}
+}
+
+func TestNamedLevelSweepRepeatedLevelPhraseDisablesDailyDedup(t *testing.T) {
+	result, err := Parse(`dsl v7
+strategy "Repeated sweep"
+setup {
+  type: named level sweep
+  allow repeated level sweeps in one local day
+}
+`)
+	if err != nil {
+		t.Fatalf("Parse: %v", err)
+	}
+	if len(result.Errors) != 0 {
+		t.Fatalf("parse errors: %v", result.Errors)
+	}
+	nls := result.Config["namedLevelSweep"].(map[string]any)
+	if nls["dedupDaily"] != false {
+		t.Fatalf("namedLevelSweep config = %#v, want dedupDaily false", nls)
 	}
 }

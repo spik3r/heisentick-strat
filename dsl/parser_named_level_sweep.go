@@ -262,6 +262,19 @@ func (p *parser) parseNamedLevelSweepStopLine(line logicalLine, tokens []string)
 	return true
 }
 
+func (p *parser) parseNamedLevelSweepRepeat(line logicalLine, tokens []string) {
+	if !tokensMatch(tokens, 0, []string{"allow", "repeated", "level", "sweeps", "in", "one", "local", "day"}) {
+		return
+	}
+	if p.config["setupType"] != string(FamilyNamedLevelSweep) {
+		p.err(line, `"allow repeated level sweeps in one local day" is only supported by "named level sweep" setups`, "")
+		return
+	}
+	nls := copyMap(p.config["namedLevelSweep"])
+	nls["dedupDaily"] = false
+	p.config["namedLevelSweep"] = nls
+}
+
 // validateNamedLevelSweep warns when `type: named level sweep` is declared
 // with no `when price sweeps|tests ...` entry rule at all — the setup would
 // then never signal (spec §3.5).

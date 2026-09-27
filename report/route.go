@@ -38,7 +38,7 @@ func ResolveHigherTimeframe(tf string, cfg dsl.Config) string {
 		return ""
 	}
 	mode, _ := htf["mode"].(string)
-	if mode != "notAgainst" && mode != "strictAgree" {
+	if mode != "notAgainst" && mode != "strictAgree" && mode != "strictLegacyAgree" {
 		return ""
 	}
 	requested, _ := htf["timeframe"].(string)

@@ -41,10 +41,11 @@ type namedLevelSweepStopSide struct {
 }
 
 type namedLevelSweepParams struct {
-	Rules     map[string]namedLevelSweepRule
-	StopLong  namedLevelSweepStopSide
-	StopShort namedLevelSweepStopSide
-	StrictHTF bool
+	Rules      map[string]namedLevelSweepRule
+	StopLong   namedLevelSweepStopSide
+	StopShort  namedLevelSweepStopSide
+	StrictHTF  bool
+	DedupDaily bool
 }
 
 func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
@@ -79,7 +80,12 @@ func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
 	}
 	stop := mapValue(nls, "stop")
 	htf := mapValue(cfg, "htf")
-	result := namedLevelSweepParams{Rules: rules, StrictHTF: stringValue(htf, "mode", "off") == "strictAgree"}
+	htfMode := stringValue(htf, "mode", "off")
+	result := namedLevelSweepParams{
+		Rules:      rules,
+		StrictHTF:  htfMode == "strictAgree" || htfMode == "strictLegacyAgree",
+		DedupDaily: boolValue(nls, "dedupDaily", true),
+	}
 	if long := mapValue(stop, "long"); long != nil {
 		result.StopLong = namedLevelSweepStopSide{HasPadding: true, PaddingATR: numberValue(long, "paddingAtr", 0)}
 	}
@@ -138,10 +144,12 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 		}
 		day := localDayKey(b.series.T[i])
 		seenKey := fmt.Sprintf("%s:%s", s.String(), level)
-		if b.seen.nls.seen(day, seenKey) {
+		if p.NamedLevelSweep.DedupDaily && b.seen.nls.seen(day, seenKey) {
 			continue
 		}
-		b.seen.nls.add(day, seenKey)
+		if p.NamedLevelSweep.DedupDaily {
+			b.seen.nls.add(day, seenKey)
+		}
 		b.enterSetup(i, setup)
 		b.nlsLastEntry = i
 		b.hasNLSEntry = true
