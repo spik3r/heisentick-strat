@@ -136,6 +136,18 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseSessions(tokens[1:])
 	case "trade":
 		p.parseTradeWindow(line, tokens)
+	case "local":
+		if !p.parseLocalWeekday(line, tokens) && !p.parseLocalHour(line, tokens) {
+			p.unknownDirective(line, tokens[0])
+		}
+	case "weekday":
+		p.parseLocalWeekday(line, tokens)
+	case "hour":
+		p.parseLocalHour(line, tokens)
+	case "open":
+		if !p.parseOpenLocation(line, tokens) {
+			p.unknownDirective(line, tokens[0])
+		}
 	case "new":
 		p.parseNewYorkHour(tokens)
 	case "session":

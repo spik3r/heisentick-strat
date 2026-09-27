@@ -275,13 +275,14 @@ func contextOptions(fixture RunFixture, cfg dsl.Config) contextcols.Options {
 			Source:      stringValue(channel, "source", ""),
 		},
 	}
+	needsOpenLocation := len(stringSliceValue(cfg["openLocations"])) > 0
 	if setupType == string(dsl.FamilyFlagContinuation) {
 		flag := mapValue(cfg, "flag")
 		options.Selective = true
 		options.NeedPriorDay = true
 		options.NeedRegimeTrend = true
 		options.NeedRangeActive = true
-		options.NeedOpenLocation = len(stringSliceValue(cfg["dayThemes"])) > 0
+		options.NeedOpenLocation = needsOpenLocation || len(stringSliceValue(cfg["dayThemes"])) > 0
 		options.NeedSessionPhase = boolValue(flag, "avoidLunchBreakouts", false) || len(stringSliceValue(cfg["sessionPhases"])) > 0
 	}
 	return options

@@ -156,6 +156,11 @@ type flagParams struct {
 	DualEMA                    dualEMAResumptionParams
 	SMAGoldenCross             smaGoldenCrossParams
 	SessionPhases              []string
+	LocalWeekdays              []string
+	BlockedLocalWeekdays       []string
+	LocalHours                 []int
+	BlockedLocalHours          []int
+	OpenLocations              []string
 	PriorDayTypes              []string
 	DayTypes                   []string
 	DayThemes                  []string
@@ -499,6 +504,11 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		TPBVWAPFirst:              boolValue(tpb, "sessionVwapFirstTouchOnly", false),
 		TPBVWAPReclaim:            boolValue(tpb, "sessionVwapTrendSideReclaim", false),
 		SessionPhases:             stringSliceValue(cfg["sessionPhases"]),
+		LocalWeekdays:             stringSliceValue(cfg["localWeekdays"]),
+		BlockedLocalWeekdays:      stringSliceValue(cfg["blockedLocalWeekdays"]),
+		LocalHours:                intSliceValue(map[string]any(cfg), "localHours"),
+		BlockedLocalHours:         intSliceValue(map[string]any(cfg), "blockedLocalHours"),
+		OpenLocations:             stringSliceValue(cfg["openLocations"]),
 		PriorDayTypes:             stringSliceValue(cfg["priorDayTypes"]),
 		DayTypes:                  stringSliceValue(cfg["dayTypes"]),
 		DayThemes:                 stringSliceValue(cfg["dayThemes"]),
