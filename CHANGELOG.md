@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+- Minor bump: source-entry routes keep pre-coverage source bars for context
+  warmup but discard orders formed before the chart route begins. Scheduled
+  chart orders are joined back to captured source orders by source-bar index,
+  so filtering old intents cannot shift a later event onto the wrong order.
+- Minor bump: named-level sweeps deduplicate daily by resolved level price and
+  enforce the shared minimum and maximum stop-distance bounds (#57).
+- The parser preserves named strategy declarations in standalone and braced
+  forms, including inline setup blocks (#58).
+
 ## [0.14.0] — 2026-09-28
 
 - Minor bump: Go now parses and applies `local weekday`/`weekday`,
