@@ -11,8 +11,9 @@ must reproduce those parse and trade goldens byte-for-byte.
 Scope note: Strat source files conventionally use the `.strat` extension. The
 in-file version header names the language version, not the file format. `dsl
 v6` and `dsl v7` are parsed identically to each other; `dsl v8` changes exactly
-one thing — the meaning of the bare `sessions(...)` directive (§4) — and is
-otherwise identical to v6/v7. v6-only spellings that survive for compatibility
+two things — the meaning of the bare `sessions(...)` directive (§4), and no
+hidden market filters (an unwritten day-type or movement line means no such
+gate, §4) — and is otherwise identical to v6/v7. v6-only spellings that survive for compatibility
 are marked *deprecated* and emit warnings.
 
 ## 1. Document model
@@ -233,7 +234,10 @@ Day-shape gates:
 - `day type in (trending, ranging, …)` — allowed day types; optional escape
   `… or movement below X` (a non-matching day still trades when movement
   efficiency ≤ X; default escape 0.55) or `… strictly` (no escape).
-  `regime …` is the *deprecated* head for the same gate.
+  `regime …` is the *deprecated* head for the same gate. Under `dsl v6`/`v7`
+  a strategy that writes no day-type line inherits a default gate of
+  `(ranging, choppy)`; under `dsl v8` it has **no** day-type gate (compiled
+  `dayTypes: []`) — a v8 strategy is gated only by what its source states.
 - `prior day type in (…)` / `not in (…)` — allow/block by the prior day's
   type.
 - `day theme in (buy_lows, sell_highs, join_momentum, stand_aside)` —
@@ -242,7 +246,9 @@ Day-shape gates:
   relative to key levels (aliases like `near PDH`, `near day open`
   normalize).
 - `movement below X` / `maxMovementEr X` / `trendiness below X` — cap on
-  movement efficiency ratio (default 0.8).
+  movement efficiency ratio. Under `dsl v6`/`v7` an unwritten movement line
+  means a default cap of 0.8; under `dsl v8` it means no cap (compiled
+  `maxMovementEr: 1000000`, a value no efficiency ratio can exceed).
 
 Range-stat and bias gates (repeatable; each adds one filter):
 

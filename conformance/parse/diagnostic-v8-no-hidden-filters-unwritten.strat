@@ -1,0 +1,33 @@
+dsl v8
+strategy "V8 No Hidden Filters Unwritten" {
+  description "A2/A1 pin: no day type / regime line and no movement line at all — v8 must gate on nothing, not the legacy default regime (ranging/choppy) or default 0.8 ER movement cap."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  sessions(london, ny)
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+setup {
+  type: break retest
+  break within 12 candles
+  break distance at least 1 ATR
+  retest within 6 candles
+  retest tolerance 0.35 ATR
+}
+
+risk {
+  stop: beyond retest extreme + 0.25 ATR
+}
+
+target {
+  target 0.8R
+}
+
+execution {
+  risk: 200 USD
+}

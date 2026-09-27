@@ -23,6 +23,8 @@
       "family-keltner-reversion",
       "family-level-sweep",
       "family-named-level-sweep",
+      "family-named-level-sweep-reentry-allowed",
+      "family-named-level-sweep-reentry-default-cap",
       "family-opening-range-breakout",
       "family-price-momentum",
       "family-price-momentum-guarded",
@@ -55,12 +57,12 @@
     "dslInstitutionalLiquiditySweep is a deployed-book member on current origin/main but has no strategies/source/*.strat source; it is excluded from the Strat language corpus.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 55,
+  "parseCases": 61,
   "parseCategories": {
     "deployed-book-dsl": 8,
-    "diagnostic": 20,
+    "diagnostic": 26,
     "setup-family": 27
   },
-  "runCases": 40,
+  "runCases": 42,
   "schema": "dsl-conformance-metadata-v1"
 }

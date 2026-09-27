@@ -25,6 +25,9 @@ type parser struct {
 	userSessionsSet     bool
 	userSideSet         bool
 	elderTrailSet       bool
+	dayTypesExplicit    bool
+	movementExplicit    bool
+	allowReentryLine    *logicalLine
 	dslVersion          int
 	entryTfLine         *logicalLine
 	dualEMAAudit        dualEMAParseAudit
@@ -56,6 +59,34 @@ func (p *parser) result() ParseResult {
 	}
 	p.config["sessions"] = normalizeSessionsValue(p.config["sessions"])
 	p.validateTrendPullbackSessionVWAP()
+	// dsl v8: no hidden market filters (owner decision A1). Under v6/v7 a
+	// strategy that never writes a "day type" / "regime" or "movement" line
+	// still inherits the legacy default regime gate (ranging/choppy) and
+	// default ER movement cap (0.8) baked into defaultConfig(). v8
+	// strategies are gated only by what the .strat source states:
+	//   - an unwritten day-type line clears the day-type gate (an empty
+	//     list already disables it unconditionally, see
+	//     marketNonSessionGatesOK / marketGatesOk — this is the same
+	//     "no rows means no filter" convention used elsewhere, e.g.
+	//     priorDayTypes, sessionPhases).
+	//   - an unwritten movement line sets a large sentinel (1e6) rather
+	//     than a negated/boolean escape hatch: the ER movement gate's
+	//     comparison (`er > maxMovementEr`) is otherwise untouched, so a
+	//     value no real ER column can ever exceed disables the check
+	//     without adding a second code path an existing test could (and
+	//     one does) rely on a negative maxMovementEr to mean "reject
+	//     everything" (engine/entry_admission_state_test.go). The ported
+	//     dslDailySndRetestXauusdFourHourV8.strat workaround line
+	//     ("movement below 1000") independently used the same trick before
+	//     this default existed.
+	if p.dslVersion >= 8 {
+		if !p.dayTypesExplicit {
+			p.config["dayTypes"] = []any{}
+		}
+		if !p.movementExplicit {
+			p.config["maxMovementEr"] = 1e6
+		}
+	}
 	return ParseResult{
 		Config:      p.config,
 		Errors:      nonNilStrings(p.errors),
@@ -91,6 +122,7 @@ func (p *parser) parse() {
 	}
 	p.validateLevels()
 	p.validateNamedLevelSweep()
+	p.validateNamedLevelSweepReentry()
 	p.validateEntryTimeframe()
 	p.validatePriceMomentum()
 	p.validateDailyFlushFailure()
@@ -247,6 +279,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseConfirm(tokens)
 	case "no":
 		p.parseNoConfirmationCandle(line, tokens)
+	case "allow":
+		p.parseAllowDirective(line, tokens)
 	case "impulse", "departure":
 		p.parseImpulse(tokens)
 	case "retrace":

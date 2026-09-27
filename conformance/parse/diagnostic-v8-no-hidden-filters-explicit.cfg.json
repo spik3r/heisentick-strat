@@ -1,5 +1,5 @@
 {
-  "case": "diagnostic-session-scope-v8-window",
+  "case": "diagnostic-v8-no-hidden-filters-explicit",
   "category": "diagnostic",
   "cfg": {
     "allowLong": 1,
@@ -11,9 +11,15 @@
     "blockedNewYorkHours": [],
     "blockedPriorDayTypes": [],
     "blockedSessionPhases": [],
+    "breakRetest": {
+      "freshBreakBars": 12,
+      "levelTolerance": 0.35,
+      "minBreakAtr": 1,
+      "retestBars": 6
+    },
     "breakeven": {
-      "atR": 0.75,
-      "offsetAtr": 0.02
+      "atR": 0.5,
+      "offsetAtr": 0.05
     },
     "channel": {
       "activeWithinCandles": 12,
@@ -24,15 +30,15 @@
     },
     "channelBreakHold": {},
     "closeLocationMin": 0,
-    "cooldownCandles": 3,
+    "cooldownCandles": 12,
     "customLevels": [],
     "dayOpen": {},
     "dayThemes": [],
     "dayTypeErEscape": 0.55,
     "dayTypes": [
-      "ranging"
+      "trending"
     ],
-    "description": "dsl v8 sessionWindow directive keeps the historical 3-hour open-window meaning.",
+    "description": "A1 pin same shape as its diagnostic-v8-no-hidden-filters-unwritten sibling but with an explicit day type line and an explicit movement line — v8 gates on exactly what is written so both values in cfg should be the authored ones not defaults.",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -60,16 +66,14 @@
     "levelDistanceAtr": 1.5,
     "levelPriority": [
       "PDH",
-      "PDL",
-      "WH",
-      "WL"
+      "PDL"
     ],
-    "levelPriorityExplicit": false,
+    "levelPriorityExplicit": true,
     "localHours": [],
     "localWeekdays": [],
     "maxHoldCandles": 0,
-    "maxMovementEr": 1000000,
-    "name": "Session Scope V8 Window",
+    "maxMovementEr": 0.6,
+    "name": "V8 No Hidden Filters Explicit",
     "newYorkHours": [],
     "openLocations": [],
     "openingRangeBreakout": {},
@@ -94,24 +98,24 @@
     "seasonalityFilters": [],
     "sessionBiasFilters": [],
     "sessionPhases": [],
-    "sessionScope": "window",
+    "sessionScope": "whole",
     "sessions": {
       "asia": 0,
       "london": 1,
       "mid": 0,
       "ny": 1
     },
-    "setupType": "failedBreakout",
+    "setupType": "breakRetest",
     "slices": [
       {
         "symbol": "XAUUSD",
-        "tf": "1h"
+        "tf": "4h"
       }
     ],
     "stop": {
-      "extremeCandles": 3,
-      "maxAtr": 1.5,
-      "minAtr": 0,
+      "extremeCandles": 0,
+      "maxAtr": null,
+      "minAtr": 0.4,
       "paddingAtr": 0.25
     },
     "supplyDemand": {},
@@ -130,6 +134,7 @@
     "symbols": [],
     "tailRejectionMin": 0,
     "target": {
+      "brR": 0.8,
       "edge": "range",
       "fallbackR": 1,
       "minR": 0.6
@@ -160,10 +165,10 @@
     "vp": [],
     "vwapExtensionFade": {}
   },
-  "description": "dsl v8: sessionWindow(...) keeps the historical 3-hour open-window meaning of sessions(...).",
+  "description": "see diagnostic-v8-no-hidden-filters-explicit.strat",
   "diagnostics": [],
   "errors": [],
   "schema": "dsl-conformance-parse-v1",
-  "source": "HT-054 phase C: dsl v8 session-scope version gating",
+  "source": "hand-authored (HT-054 Phase C, owner decisions A1/A2)",
   "warnings": []
 }

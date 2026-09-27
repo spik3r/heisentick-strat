@@ -68,7 +68,7 @@
     "localHours": [],
     "localWeekdays": [],
     "maxHoldCandles": 0,
-    "maxMovementEr": 0.8,
+    "maxMovementEr": 1000000,
     "name": "Session Scope V8 Whole",
     "newYorkHours": [],
     "openLocations": [],

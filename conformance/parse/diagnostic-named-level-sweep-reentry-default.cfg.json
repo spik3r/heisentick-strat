@@ -1,9 +1,9 @@
 {
-  "case": "diagnostic-session-scope-v8-window",
+  "case": "diagnostic-named-level-sweep-reentry-default",
   "category": "diagnostic",
   "cfg": {
     "allowLong": 1,
-    "allowShort": 1,
+    "allowShort": 0,
     "approachCandles": 3,
     "approachDistanceAtr": 0,
     "blockedLocalHours": [],
@@ -13,7 +13,7 @@
     "blockedSessionPhases": [],
     "breakeven": {
       "atR": 0.75,
-      "offsetAtr": 0.02
+      "offsetAtr": 0.05
     },
     "channel": {
       "activeWithinCandles": 12,
@@ -24,15 +24,13 @@
     },
     "channelBreakHold": {},
     "closeLocationMin": 0,
-    "cooldownCandles": 3,
+    "cooldownCandles": 12,
     "customLevels": [],
     "dayOpen": {},
     "dayThemes": [],
     "dayTypeErEscape": 0.55,
-    "dayTypes": [
-      "ranging"
-    ],
-    "description": "dsl v8 sessionWindow directive keeps the historical 3-hour open-window meaning.",
+    "dayTypes": [],
+    "description": "A2 pin same shape as its diagnostic-named-level-sweep-reentry-phrase sibling but without the opt-out phrase — cfg must not carry allowSameLevelReentry true i.e. the default one-signal-per-level-per-day cap stays on.",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -59,17 +57,31 @@
     "levelConfluenceAtr": 0,
     "levelDistanceAtr": 1.5,
     "levelPriority": [
-      "PDH",
-      "PDL",
-      "WH",
-      "WL"
+      "PDL"
     ],
-    "levelPriorityExplicit": false,
+    "levelPriorityExplicit": true,
     "localHours": [],
     "localWeekdays": [],
     "maxHoldCandles": 0,
     "maxMovementEr": 1000000,
-    "name": "Session Scope V8 Window",
+    "name": "Named Level Sweep Reentry Default",
+    "namedLevelSweep": {
+      "rules": {
+        "PDL": {
+          "level": "PDL",
+          "mode": "sweep",
+          "reclaimAtr": 0,
+          "reclaimCandles": 1,
+          "side": "long",
+          "sweepAtr": null
+        }
+      },
+      "stop": {
+        "long": {
+          "paddingAtr": 0
+        }
+      }
+    },
     "newYorkHours": [],
     "openLocations": [],
     "openingRangeBreakout": {},
@@ -94,25 +106,24 @@
     "seasonalityFilters": [],
     "sessionBiasFilters": [],
     "sessionPhases": [],
-    "sessionScope": "window",
     "sessions": {
-      "asia": 0,
+      "asia": 1,
       "london": 1,
       "mid": 0,
       "ny": 1
     },
-    "setupType": "failedBreakout",
+    "setupType": "namedLevelSweep",
     "slices": [
       {
         "symbol": "XAUUSD",
-        "tf": "1h"
+        "tf": "4h"
       }
     ],
     "stop": {
-      "extremeCandles": 3,
-      "maxAtr": 1.5,
+      "extremeCandles": 0,
+      "maxAtr": 10,
       "minAtr": 0,
-      "paddingAtr": 0.25
+      "paddingAtr": 0
     },
     "supplyDemand": {},
     "sweepRules": {
@@ -132,7 +143,8 @@
     "target": {
       "edge": "range",
       "fallbackR": 1,
-      "minR": 0.6
+      "minR": 0.6,
+      "nlsR": 0.5
     },
     "timeframes": [
       "5m",
@@ -150,20 +162,18 @@
       "maxSetupAgeCandles": 0
     },
     "triggerCandles": [
-      "pin",
-      "engulf",
-      "outside"
+      "any"
     ],
-    "triggerExplicit": false,
+    "triggerExplicit": true,
     "triplePush": {},
     "volumeAnomalyExhaustion": {},
     "vp": [],
     "vwapExtensionFade": {}
   },
-  "description": "dsl v8: sessionWindow(...) keeps the historical 3-hour open-window meaning of sessions(...).",
+  "description": "see diagnostic-named-level-sweep-reentry-default.strat",
   "diagnostics": [],
   "errors": [],
   "schema": "dsl-conformance-parse-v1",
-  "source": "HT-054 phase C: dsl v8 session-scope version gating",
+  "source": "hand-authored (HT-054 Phase C, owner decisions A1/A2)",
   "warnings": []
 }

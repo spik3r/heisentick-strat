@@ -1,0 +1,24 @@
+dsl v8
+strategy "Named Level Sweep Reentry Wrong Setup" {
+  description "A2 pin: the re-entry opt-out phrase is a compile error with any setup type other than named level sweep."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+filters {
+  allow re-entry on the same level after a trade closes
+}
+
+setup {
+  type: break retest
+}
+
+target {
+  target 1R
+}

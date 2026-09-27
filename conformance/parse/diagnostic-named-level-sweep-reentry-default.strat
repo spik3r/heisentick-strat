@@ -1,0 +1,41 @@
+dsl v8
+strategy "Named Level Sweep Reentry Default" {
+  description "A2 pin: same shape as its diagnostic-named-level-sweep-reentry-phrase sibling but without the opt-out phrase — cfg must not carry allowSameLevelReentry: true, i.e. the default one-signal-per-level-per-day cap stays on."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+
+levels {
+  priority(PDL)
+}
+
+filters {
+  side long only
+}
+
+trigger {
+  no confirmation candle
+}
+
+setup {
+  type: named level sweep
+}
+
+entry {
+  when price sweeps PDL and closes back above it then signal long
+}
+
+risk {
+  stop below the signal candle and the level by 0 ATR
+  stop size min 0 max 10
+}
+
+target {
+  target 0.5R
+}
+
+execution {
+  risk 200 USD
+}

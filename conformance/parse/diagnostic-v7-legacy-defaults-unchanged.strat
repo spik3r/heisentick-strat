@@ -1,0 +1,33 @@
+dsl v7
+strategy "V7 Legacy Defaults Unchanged" {
+  description "A1 pin: byte-for-byte the same shape as the v8 diagnostic-v8-no-hidden-filters-unwritten fixture, but dsl v7 — no day type / movement line, so cfg must keep the pre-HT-054 legacy defaults (dayTypes: [ranging, choppy], maxMovementEr: 0.8), proving v6/v7 semantics are untouched by the v8 change."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  sessions(london, ny)
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+setup {
+  type: break retest
+  break within 12 candles
+  break distance at least 1 ATR
+  retest within 6 candles
+  retest tolerance 0.35 ATR
+}
+
+risk {
+  stop: beyond retest extreme + 0.25 ATR
+}
+
+target {
+  target 0.8R
+}
+
+execution {
+  risk: 200 USD
+}

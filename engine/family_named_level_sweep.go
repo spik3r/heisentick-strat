@@ -42,9 +42,10 @@ type namedLevelSweepStopSide struct {
 }
 
 type namedLevelSweepParams struct {
-	Rules     map[string]namedLevelSweepRule
-	StopLong  namedLevelSweepStopSide
-	StopShort namedLevelSweepStopSide
+	Rules                 map[string]namedLevelSweepRule
+	StopLong              namedLevelSweepStopSide
+	StopShort             namedLevelSweepStopSide
+	AllowSameLevelReentry bool
 }
 
 func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
@@ -78,7 +79,10 @@ func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
 		rules[level] = rule
 	}
 	stop := mapValue(nls, "stop")
-	result := namedLevelSweepParams{Rules: rules}
+	result := namedLevelSweepParams{
+		Rules:                 rules,
+		AllowSameLevelReentry: boolFromAny(nls["allowSameLevelReentry"], false),
+	}
 	if long := mapValue(stop, "long"); long != nil {
 		result.StopLong = namedLevelSweepStopSide{HasPadding: true, PaddingATR: numberValue(long, "paddingAtr", 0)}
 	}
@@ -146,11 +150,18 @@ func (b *broker) onNamedLevelSweepBar(i int) {
 		// alone would let an earlier signal against the *old* day's level
 		// price silently suppress a later, unrelated signal against the
 		// *new* day's level for the rest of the local day.
-		seenKey := fmt.Sprintf("%s:%s:%.0f", s.String(), level, math.Round(setup.Meta["levelPrice"].(float64)*10))
-		if b.seen.nls.seen(day, seenKey) {
-			continue
+		// "allow re-entry on the same level after a trade closes" (A2)
+		// removes this daily per-level cap entirely; the "no open position"
+		// requirement it still owes still holds unconditionally, since this
+		// is a single-position engine and the b.hasPosition guard at the top
+		// of this function already blocks entry while one is open.
+		if !p.NamedLevelSweep.AllowSameLevelReentry {
+			seenKey := fmt.Sprintf("%s:%s:%.0f", s.String(), level, math.Round(setup.Meta["levelPrice"].(float64)*10))
+			if b.seen.nls.seen(day, seenKey) {
+				continue
+			}
+			b.seen.nls.add(day, seenKey)
 		}
-		b.seen.nls.add(day, seenKey)
 		b.enterSetup(i, setup)
 		b.nlsLastEntry = i
 		b.hasNLSEntry = true

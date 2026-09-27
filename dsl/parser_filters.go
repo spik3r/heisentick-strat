@@ -325,6 +325,7 @@ func (p *parser) parseDay(tokens []string) {
 		values := valuesAfterIn(tokens[1:])
 		if len(values) > 0 {
 			p.config["dayTypes"] = lowerListUntil(values, "or", "strictly")
+			p.dayTypesExplicit = true
 		}
 		if idx := indexOfLower(tokens, "movement"); idx >= 0 {
 			p.config["dayTypeErEscape"] = firstNumber(tokens[idx:], 0, 0.55)
@@ -367,6 +368,7 @@ func (p *parser) parseMovement(tokens []string) {
 		return
 	}
 	p.config["maxMovementEr"] = firstNumber(tokens, 0, 0.8)
+	p.movementExplicit = true
 }
 
 func (p *parser) parseApproach(tokens []string) {

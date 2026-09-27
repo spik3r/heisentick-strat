@@ -262,6 +262,51 @@ func (p *parser) parseNamedLevelSweepStopLine(line logicalLine, tokens []string)
 	return true
 }
 
+// parseAllowDirective handles `allow re-entry on the same level after a
+// trade closes` (spec §2.4 / A2): the family's explicit opt-out of its
+// default one-signal-per-level-per-day cap. It removes the daily dedup for
+// every rule but leaves the "no open position" gate untouched — this is a
+// single-position engine (broker.hasPosition), so that gate already holds
+// unconditionally in onNamedLevelSweepBar/onNamedLevelSweepBarJS regardless
+// of this phrase. Named-level-sweep-only: the phrase is meaningless for any
+// other family, since no other family's dedup is keyed the same way.
+func (p *parser) parseAllowDirective(line logicalLine, tokens []string) {
+	phrase := strings.ToLower(strings.Join(tokens, " "))
+	if phrase != "allow re-entry on the same level after a trade closes" {
+		p.unknownDirective(line, tokens[0])
+		return
+	}
+	// Deferred to result()/validateNamedLevelSweepReentry: this phrase's own
+	// examples put it in `filters { }`, ahead of `setup { type: ... }` later
+	// in the source, so the setupType check cannot run here without making
+	// the phrase order-sensitive.
+	saved := line
+	p.allowReentryLine = &saved
+	// Nested under namedLevelSweep (not top-level): a top-level key would
+	// show up, always false, in every other family's golden config —
+	// breaking the v6/v7 byte-identical-goldens requirement, since
+	// defaultConfig() has no per-family scoping. setup { type: named level
+	// sweep }'s own dispatch (parser_setups.go) preserves any key already
+	// set here when this phrase (in `filters { }`, per its own example)
+	// is parsed before that block, as the family's worked examples order
+	// them — see the FamilyNamedLevelSweep case there.
+	nls := copyMap(p.config["namedLevelSweep"])
+	nls["allowSameLevelReentry"] = true
+	p.config["namedLevelSweep"] = nls
+}
+
+// validateNamedLevelSweepReentry reports the deferred setupType check for
+// parseAllowDirective (see its comment): the phrase only means something for
+// `type: named level sweep`.
+func (p *parser) validateNamedLevelSweepReentry() {
+	if p.allowReentryLine == nil {
+		return
+	}
+	if p.config["setupType"] != string(FamilyNamedLevelSweep) {
+		p.err(*p.allowReentryLine, `"allow re-entry on the same level after a trade closes" is only valid for setup type: named level sweep`, "")
+	}
+}
+
 // validateNamedLevelSweep warns when `type: named level sweep` is declared
 // with no `when price sweeps|tests ...` entry rule at all — the setup would
 // then never signal (spec §3.5).

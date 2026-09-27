@@ -38,6 +38,8 @@ var implementedRunCases = []string{
 	"family-keltner-reversion",
 	"family-keltner-expansion",
 	"family-named-level-sweep",
+	"family-named-level-sweep-reentry-default-cap",
+	"family-named-level-sweep-reentry-allowed",
 	"money-risk-sizing",
 	"money-partial-exit",
 	"money-stop-distance-gate",

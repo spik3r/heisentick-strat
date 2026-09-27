@@ -29,6 +29,21 @@ version and is named here.
   `session-scope-*`); all previously-committed goldens are unchanged except
   `diagnostic-unsupported-version.cfg.json`'s error text, which now lists
   v8 as supported.
+- `dsl v8`: no hidden market filters (owner decision A1). A v8 strategy
+  that writes no `day type in (…)` / `regime` line compiles to
+  `dayTypes: []` (no day-type gate) instead of the legacy
+  `(ranging, choppy)` default, and one that writes no movement line
+  compiles to `maxMovementEr: 1000000` (no cap) instead of 0.8. v6/v7
+  compiled configs are unchanged. The three existing v8 session-scope parse
+  goldens change accordingly (`maxMovementEr`); two new parse fixtures pin
+  the unwritten and explicit cases, and a v7 fixture pins the legacy
+  defaults.
+- `named level sweep`: new phrase `allow re-entry on the same level after a
+  trade closes` (owner decision A2), an explicit opt-out of the family's
+  one-signal-per-level-per-day cap (`namedLevelSweep.allowSameLevelReentry`).
+  It is a compile error with any other setup type. New parse fixtures and a
+  pair of run fixtures (`family-named-level-sweep-reentry-default-cap` /
+  `-allowed`, 1 vs 2 trades on the same bars) pin the behavior.
 
 ## [0.10.0] — 2026-09-26
 

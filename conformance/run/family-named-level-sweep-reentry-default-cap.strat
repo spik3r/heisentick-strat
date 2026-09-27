@@ -1,0 +1,43 @@
+dsl v8
+strategy "Named Level Sweep Reentry Default Cap" {
+  description "Synthetic conformance fixture: a second same-day PDL sweep is suppressed by the default one-signal-per-level-per-day cap."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+
+levels {
+  priority(PDL)
+}
+
+filters {
+  side long only
+  trade window unrestricted
+}
+
+trigger {
+  no confirmation candle
+}
+
+setup {
+  type: named level sweep
+}
+
+entry {
+  when price sweeps PDL and closes back above it then signal long
+}
+
+risk {
+  stop below the signal candle and the level by 0 ATR
+  stop size min 0 max 10
+  wait 0 candles after trade
+}
+
+target {
+  target 0.5R
+}
+
+execution {
+  risk 200 USD
+}

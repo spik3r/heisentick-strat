@@ -1,0 +1,35 @@
+dsl v8
+strategy "V8 No Hidden Filters Explicit" {
+  description "A1 pin: same shape as its diagnostic-v8-no-hidden-filters-unwritten sibling, but with an explicit day type line and an explicit movement line — v8 gates on exactly what is written, so both values in cfg should be the authored ones, not defaults."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  sessions(london, ny)
+  day type in (trending)
+  movement below 0.6
+}
+
+levels {
+  priority(PDH, PDL)
+}
+
+setup {
+  type: break retest
+  break within 12 candles
+  break distance at least 1 ATR
+  retest within 6 candles
+  retest tolerance 0.35 ATR
+}
+
+risk {
+  stop: beyond retest extreme + 0.25 ATR
+}
+
+target {
+  target 0.8R
+}
+
+execution {
+  risk: 200 USD
+}

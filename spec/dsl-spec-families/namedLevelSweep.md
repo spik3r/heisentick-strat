@@ -54,6 +54,15 @@ future strategy may legitimately want the countertrend direction.
 **One signal per level per day** is the default invalidation rule (Phase B):
 a second sweep of the same level on the same day does not re-signal even if
 the reclaim geometry re-forms, mirroring `failed breakout`'s per-day dedup.
+The cap is keyed on the level's price, so a level that rolls to a new price
+within the local day is a new level.
+
+`allow re-entry on the same level after a trade closes` (usually in
+`filters { }`) is the explicit opt-out: it removes the per-level-per-day cap
+(compiled `namedLevelSweep.allowSameLevelReentry: true`). The engine still
+holds one position at a time, so a new signal is only taken once the
+previous trade has closed and any `wait N candles after trade` cooldown has
+passed. Writing the phrase with any other setup type is a compile error.
 
 ## Phrases
 

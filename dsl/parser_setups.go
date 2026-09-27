@@ -153,7 +153,17 @@ func (p *parser) parseSetupType(tokens []string) {
 		// config key — keltner expansion does not get its own key.
 		p.config["keltnerReversion"] = map[string]any{}
 	case string(FamilyNamedLevelSweep):
-		p.config["namedLevelSweep"] = map[string]any{"rules": map[string]any{}, "stop": map[string]any{}}
+		// Preserve, not overwrite: "allow re-entry on the same level after
+		// a trade closes" (filters { }, per the family's own worked
+		// examples) can be parsed before this setup-type line runs.
+		nls := copyMap(p.config["namedLevelSweep"])
+		if _, ok := nls["rules"]; !ok {
+			nls["rules"] = map[string]any{}
+		}
+		if _, ok := nls["stop"]; !ok {
+			nls["stop"] = map[string]any{}
+		}
+		p.config["namedLevelSweep"] = nls
 		p.config["stop"] = map[string]any{"extremeCandles": 0, "maxAtr": nil, "minAtr": 0, "paddingAtr": 0}
 		p.config["breakeven"] = map[string]any{"atR": 0.75, "offsetAtr": 0.05}
 		p.setDefaultTarget("nlsR", 1)
