@@ -1,0 +1,9 @@
+dsl v7
+strategy "Session Scope V7 Session Window" {
+  description "dsl v7: sessionWindow directive is accepted as an explicit spelling of the existing open-window sessions meaning; no sessionScope field is emitted pre-v8."
+}
+market conditions {
+  slices(XAUUSD 1h)
+  sessionWindow(london, ny)
+  day type in (ranging)
+}

@@ -1,5 +1,5 @@
 {
-  "case": "diagnostic-unsupported-version",
+  "case": "diagnostic-session-scope-v8-session-opens",
   "category": "diagnostic",
   "cfg": {
     "allowLong": 1,
@@ -32,7 +32,7 @@
     "dayTypes": [
       "ranging"
     ],
-    "description": "x",
+    "description": "dsl v8 session opens directive is an alias of sessionWindow open-window meaning .",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -69,7 +69,7 @@
     "localWeekdays": [],
     "maxHoldCandles": 0,
     "maxMovementEr": 0.8,
-    "name": "Diagnostic Version",
+    "name": "Session Scope V8 Session Opens",
     "newYorkHours": [],
     "openLocations": [],
     "openingRangeBreakout": {},
@@ -94,11 +94,12 @@
     "seasonalityFilters": [],
     "sessionBiasFilters": [],
     "sessionPhases": [],
+    "sessionScope": "window",
     "sessions": {
-      "asia": 1,
-      "london": 0,
+      "asia": 0,
+      "london": 1,
       "mid": 0,
-      "ny": 0
+      "ny": 1
     },
     "setupType": "failedBreakout",
     "slices": [
@@ -159,19 +160,10 @@
     "vp": [],
     "vwapExtensionFade": {}
   },
-  "description": "Unsupported DSL version header.",
-  "diagnostics": [
-    {
-      "col": 1,
-      "line": 1,
-      "message": "unsupported DSL version \"v99\" — this build supports v6/v7/v8",
-      "severity": "error"
-    }
-  ],
-  "errors": [
-    "line 1: unsupported DSL version \"v99\" — this build supports v6/v7/v8"
-  ],
+  "description": "dsl v8: session opens(...) is an alias of sessionWindow(...) (open-window meaning).",
+  "diagnostics": [],
+  "errors": [],
   "schema": "dsl-conformance-parse-v1",
-  "source": "generated diagnostic fixture",
+  "source": "HT-054 phase C: dsl v8 session-scope version gating",
   "warnings": []
 }

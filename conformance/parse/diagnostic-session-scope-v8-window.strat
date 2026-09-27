@@ -1,0 +1,9 @@
+dsl v8
+strategy "Session Scope V8 Window" {
+  description "dsl v8: sessionWindow directive keeps the historical 3-hour open-window meaning."
+}
+market conditions {
+  slices(XAUUSD 1h)
+  sessionWindow(london, ny)
+  day type in (ranging)
+}

@@ -41,6 +41,10 @@ var implementedRunCases = []string{
 	"money-risk-sizing",
 	"money-partial-exit",
 	"money-stop-distance-gate",
+	"session-scope-v8-whole",
+	"session-scope-v8-window",
+	"session-scope-v8-session-opens",
+	"session-scope-v7-session-window",
 }
 
 // ImplementedRunCases returns the run-corpus cases whose golden the Go engine

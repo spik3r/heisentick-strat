@@ -1,4 +1,4 @@
-# Strat Language Specification (v7)
+# Strat Language Specification (v8)
 
 Status: normative for the core document model and the shared (non-setup)
 directive vocabulary. Setup-family phrase sets are indexed in §9 and specified
@@ -9,9 +9,10 @@ document is `strat/conformance/` (see its README): any conforming implementation
 must reproduce those parse and trade goldens byte-for-byte.
 
 Scope note: Strat source files conventionally use the `.strat` extension. The
-in-file version header remains `dsl v7` because it names the language version,
-not the file format. `dsl v6` and `dsl v7` are currently parsed identically;
-v7 is the specified language. v6-only spellings that survive for compatibility
+in-file version header names the language version, not the file format. `dsl
+v6` and `dsl v7` are parsed identically to each other; `dsl v8` changes exactly
+one thing — the meaning of the bare `sessions(...)` directive (§4) — and is
+otherwise identical to v6/v7. v6-only spellings that survive for compatibility
 are marked *deprecated* and emit warnings.
 
 ## 1. Document model
@@ -83,9 +84,10 @@ enablement (§9, which also requires the setup `type` to be declared first),
 
 ### 1.2 Version header
 
-`dsl v6` | `dsl 6` | `dsl v7` | `dsl 7` — optional, conventionally the first
-line. Any other version is a compile error ("unsupported DSL version");
-implementations must refuse unknown versions rather than guess.
+`dsl v6` | `dsl 6` | `dsl v7` | `dsl 7` | `dsl v8` | `dsl 8` — optional,
+conventionally the first line. Omitted, the default is `dsl v6`. Any other
+version is a compile error ("unsupported DSL version"); implementations must
+refuse unknown versions rather than guess.
 
 ### 1.3 Diagnostics contract
 
@@ -162,6 +164,47 @@ Time gates:
   author writes an explicit session directive; explicit `sessions(...)` or
   deprecated `windows(...)` values win regardless of whether they appear before
   or after `type:`. `windows(...)` is the *deprecated* spelling.
+
+  **Version-gated meaning (owner decision, HT-054 phase C).** Three spellings
+  select which sessions gate trading, and what "in session" means differs by
+  `dsl` version:
+
+  - `sessions(...)` — under `dsl v6`/`dsl v7` (and files with no version
+    header, which default to v6), this means the same 3-hour open window as
+    `trade window in (...)` below: the session-open ± roughly one hour.
+    Under `dsl v8`, `sessions(...)` instead means the **whole session**: UTC
+    hours asia 00:00–08:00, london 08:00–16:00, ny 13:00–21:00 — the same
+    boundaries as the hand-written reference strategy
+    `engine/strategies/dslDailySndRetestXauusdFourHour.js` (`SESSION_HOURS`).
+    There is no whole-session boundary for `mid`; `sessions(mid)` compiles but
+    never gates a bar as "inside" under `dsl v8`.
+  - `sessionWindow(...)` — always means the 3-hour open-window gate, in every
+    version. This is the explicit spelling to use under `dsl v8` when the
+    open-window meaning (not the whole session) is wanted, and it is also
+    accepted under `dsl v6`/`dsl v7` as an explicit synonym for `sessions(...)`.
+  - `session opens(...)` — an alias of `sessionWindow(...)`, in every version.
+
+  The compiled config distinguishes the two gates with `sessionScope: "whole"
+  | "window"`, but **only under `dsl v8`**: `dsl v6`/`dsl v7` never emit
+  `sessionScope` (there is exactly one meaning there, so the field would be
+  redundant), which keeps every existing v6/v7 `.strat` file's compiled
+  config byte-for-byte unchanged. Under `dsl v6`/`dsl v7`, a bare
+  `sessions(...)` directive is intentionally **not** flagged with a lint
+  diagnostic suggesting `sessionWindow(...)`: doing so would add a warning to
+  every one of the hundreds of existing v6/v7 fixtures that use `sessions(...)`,
+  which is out of proportion to the (correct, unchanged) behavior it would be
+  warning about. Prefer writing `sessionWindow(...)` explicitly in new v6/v7
+  strategies, and use `dsl v8` with `sessions(...)` when the whole session is
+  actually wanted.
+
+  This table backs only the top-level market gate (`marketGatesOk`/
+  `marketGatesOK`, the same gate the named-level-sweep family and most other
+  setup families read via `guardedEnterApi`/`broker.marketGatesOK`). A few
+  setup families (e.g. `channel break hold`) additionally read the compiled
+  `sessions` allow-map through their own `useXWindow` params for a
+  family-specific window check; those keep the open-window meaning
+  unconditionally regardless of `sessionScope`, since the owner decision is
+  scoped to the `sessions(...)` directive's top-level meaning.
 - `trade window minutes A to B` — minutes since session-window open,
   increasing range required. The interval is half-open: `A <= minute < B`.
 - `trade window unrestricted` — research-only override that removes the

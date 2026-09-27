@@ -8,6 +8,7 @@ import (
 
 type flagParams struct {
 	SetupType                  string
+	SessionScope               string
 	TradeWindowUnrestricted    bool
 	TradeWindowSegments        []string
 	TradeWindowMinuteFrom      float64
@@ -225,6 +226,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 	}
 	p := flagParams{
 		SetupType:                  setupType,
+		SessionScope:               stringValue(cfg, "sessionScope", "window"),
 		TradeWindowUnrestricted:    stringValue(cfg, "tradeWindowMode", "") == "unrestricted",
 		TradeWindowSegments:        stringSliceValue(cfg["tradeWindowSegments"]),
 		TradeWindowMinuteFrom:      numberValue(tradeWindowMinuteRange, "from", 0),

@@ -1,0 +1,45 @@
+{
+  "case": "session-scope-v8-whole",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "4h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "session-scope-v8-whole",
+  "symbol": "XAUUSD",
+  "timeframe": "1h",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 101,
+      "entryIndex": 36,
+      "entryT": 1704196800000,
+      "exit": 104.5,
+      "exitIndex": 48,
+      "exitT": 1704240000000,
+      "initialSl": 94,
+      "initialTp": 104.5,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "PDL",
+        "levelPrice": 95,
+        "mode": "sweep",
+        "setup": "namedLevelSweep",
+        "side": "long"
+      },
+      "pnl": 100,
+      "points": 3.5,
+      "reason": "tp",
+      "side": "long",
+      "size": 28.5714285714286,
+      "sl": 94,
+      "tag": "DSL-NLS:PDL",
+      "tp": 104.5
+    }
+  ]
+}

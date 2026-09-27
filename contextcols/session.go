@@ -28,6 +28,37 @@ var (
 	sessionNY     = sessionWindow{start: 12, end: 21}
 )
 
+// Whole-session (dsl v8 `sessions(...)`) hour boundaries, UTC. These match
+// the hand-written strategy engine/strategies/dslDailySndRetestXauusdFourHour.js
+// SESSION_HOURS exactly (asia 00:00-08:00, london 08:00-16:00, ny
+// 13:00-21:00) and are deliberately a separate table from sessionAsia/
+// sessionLondon/sessionNY above: that table backs prior-session H/L level
+// and range/bias context (rangestats.go, sessionbias.go, levels.go,
+// columns.go) and uses different boundaries (london 07-16, ny 12-21) for
+// that unrelated purpose. Do not merge the two tables.
+var (
+	wholeSessionAsia   = sessionWindow{start: 0, end: 8}
+	wholeSessionLondon = sessionWindow{start: 8, end: 16}
+	wholeSessionNY     = sessionWindow{start: 13, end: 21}
+)
+
+// WholeSessionWindow reports whether hourUTC falls inside the named whole
+// session (asia/london/ny). Unknown names return false.
+func WholeSessionWindow(name string, hourUTC float64) bool {
+	var w sessionWindow
+	switch name {
+	case "asia":
+		w = wholeSessionAsia
+	case "london":
+		w = wholeSessionLondon
+	case "ny":
+		w = wholeSessionNY
+	default:
+		return false
+	}
+	return hourUTC >= w.start && hourUTC < w.end
+}
+
 // UTCDayKey matches engine/context/sessionContext.js.
 func UTCDayKey(t int64) int64 {
 	return floorDiv(t, DayMS)

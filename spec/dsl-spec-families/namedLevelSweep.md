@@ -119,8 +119,14 @@ three compile without error under both the JS and Go parsers today.
 
 ### `dslDailySndRetestXauusdFourHour` — a lenient `tests` port
 
+Ported under `dsl v8`: the strategy's intent is the whole London/NY session
+(matching its hand-written `SESSION_HOURS`), which is exactly what `dsl v8`'s
+`sessions(...)` means (§4 of the language spec). Under `dsl v6`/`dsl v7` this
+same source would need `sessionWindow(london, ny)` instead to say the same
+thing, since bare `sessions(...)` means the 3-hour open window there.
+
 ```dsl
-dsl v7
+dsl v8
 strategy "DSL Daily SND Retest XAUUSD 4H" {
   description "Daily PDH/PDL retest on the 4h chart during London/NY, gated by prior-day type and minimum prior-day range."
 }

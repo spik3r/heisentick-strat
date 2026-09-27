@@ -3,7 +3,7 @@
   "schemaVersion": 1,
   "dslVersions": {
     "minimum": 6,
-    "maximum": 7
+    "maximum": 8
   },
   "description": "Authored inventory of the current DSL language surface and source for generated passive parser tables.",
   "sections": [
@@ -1555,6 +1555,12 @@
       "since": 6
     },
     {
+      "id": "directive.session-window",
+      "spelling": "sessionWindow",
+      "classification": "shared",
+      "since": 6
+    },
+    {
       "id": "directive.session",
       "spelling": "session",
       "classification": "shared",
@@ -2278,6 +2284,15 @@
       "group": "Market / routing",
       "label": "sessions(…)",
       "insert": "sessions(london, ny)",
+      "classification": "shared",
+      "since": 6
+    },
+    {
+      "id": "snippet.market-routing.session-window",
+      "group": "Market / routing",
+      "label": "sessionWindow(…)",
+      "insert": "sessionWindow(london, ny)",
+      "title": "3-hour open-window session gate: the meaning of sessions(...) under dsl v6/v7, and its explicit spelling under dsl v8",
       "classification": "shared",
       "since": 6
     },

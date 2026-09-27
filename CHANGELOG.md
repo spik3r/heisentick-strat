@@ -6,6 +6,30 @@ version and is named here.
 
 ## [Unreleased]
 
+- Minor bump (pending release): new language version `dsl v8` (HT-054 Phase
+  C, owner-approved DSL naming change). Under `dsl v8`, the bare
+  `sessions(...)` directive means the **whole session** (UTC hours asia
+  00:00–08:00, london 08:00–16:00, ny 13:00–21:00 — matching the hand-written
+  `engine/strategies/dslDailySndRetestXauusdFourHour.js` `SESSION_HOURS`)
+  instead of the historical 3-hour open window. Two new spellings —
+  `sessionWindow(...)` and its alias `session opens(...)` — always mean the
+  open-window gate, in every version, and are also accepted (not just
+  tolerated) under `dsl v6`/`dsl v7` as explicit synonyms for `sessions(...)`.
+  `dsl v6` and `dsl v7` are unaffected: `sessions(...)` keeps its exact
+  historical meaning there, and the compiled config's new `sessionScope`
+  field ("whole" | "window") is emitted only under `dsl v8`, so every
+  existing v6/v7 `.strat` file's compiled config, and all 287 `.strat`
+  sources / 66 Go conformance fixtures that use `sessions(...)`, are
+  byte-for-byte unaffected. A v6/v7 bare `sessions(...)` deliberately does
+  not gain a lint diagnostic suggesting `sessionWindow(...)`: doing so would
+  add a warning to every one of those existing fixtures, so the
+  recommendation lives here and in `spec/dsl-spec.md` §4 instead. Five new
+  parse fixtures and four new run fixtures pin the version-gated behavior
+  (`conformance/{parse,run}/diagnostic-session-scope-*` /
+  `session-scope-*`); all previously-committed goldens are unchanged except
+  `diagnostic-unsupported-version.cfg.json`'s error text, which now lists
+  v8 as supported.
+
 ## [0.10.0] — 2026-09-26
 
 - Minor bump: new DSL setup family `named level sweep` (HT-054 Phase A,

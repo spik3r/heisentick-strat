@@ -149,7 +149,7 @@ func sectionOpener(line string) (string, bool) {
 }
 
 func directiveStartsForSection(section string) []string {
-	starts := []string{"description", "slices", "symbols", "timeframes", "sessions", "windows", "day", "prior", "movement", "maxMovementEr", "trendiness", "priority", "near", "nearKeyLevel", "range", "channel", "higher", "side", "direction", "trigger", "rejection", "candle", "tail", "close", "entry", "when", "enter", "stop", "target", "take", "minimum", "fallback", "move", "partial", "trail", "wait", "maxHoldCandles", "maxHoldBars", "risk", "riskUsd", "context", "location", "require", "size"}
+	starts := []string{"description", "slices", "symbols", "timeframes", "sessions", "sessionWindow", "windows", "day", "prior", "movement", "maxMovementEr", "trendiness", "priority", "near", "nearKeyLevel", "range", "channel", "higher", "side", "direction", "trigger", "rejection", "candle", "tail", "close", "entry", "when", "enter", "stop", "target", "take", "minimum", "fallback", "move", "partial", "trail", "wait", "maxHoldCandles", "maxHoldBars", "risk", "riskUsd", "context", "location", "require", "size"}
 	if section == "filters" {
 		starts = append(starts, "source")
 	}

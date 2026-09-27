@@ -2,7 +2,29 @@ package engine
 
 import "github.com/spik3r/heisentick-strat/contextcols"
 
+// inFlagWholeSession is the dsl v8 `sessions(...)` gate: the whole session
+// (UTC hours), not the 3-hour open window. It backs the top-level
+// marketGatesOK path only (broker.marketGatesOK / family_helpers.go); the
+// per-setup UseXWindow knobs some families read independently of the
+// top-level gate keep their existing open-window meaning regardless of
+// SessionScope (see the dsl v8 CHANGELOG/spec note for the scoping
+// rationale). minMinutesLeft is measured against the whole session's end.
+func inFlagWholeSession(t float64, p flagParams, minMinutesLeft float64) bool {
+	if p.TradeWindowUnrestricted {
+		return true
+	}
+	h := contextcols.HourUTC(int64(t))
+	remaining := func(end float64) bool { return (end-h)*60 >= minMinutesLeft }
+	inside := p.UseAsiaWindow && contextcols.WholeSessionWindow("asia", h) && remaining(8) ||
+		p.UseLondonWindow && contextcols.WholeSessionWindow("london", h) && remaining(16) ||
+		p.UseNYWindow && contextcols.WholeSessionWindow("ny", h) && remaining(21)
+	return inside
+}
+
 func inFlagTradeWindow(t float64, p flagParams, minMinutesLeft float64) bool {
+	if p.SessionScope == "whole" {
+		return inFlagWholeSession(t, p, minMinutesLeft)
+	}
 	if p.TradeWindowUnrestricted {
 		return true
 	}

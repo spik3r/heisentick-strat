@@ -124,7 +124,9 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	case "timeframes":
 		p.config["timeframes"] = lowerList(tokens[1:])
 	case "sessions":
-		p.parseSessions(tokens[1:])
+		p.parseSessionsHead(tokens[1:], "sessions")
+	case "sessionwindow":
+		p.parseSessionsHead(tokens[1:], "sessionWindow")
 	case "trade":
 		p.parseTradeWindow(line, tokens)
 	case "new":
@@ -325,15 +327,18 @@ func (p *parser) parseVersion(line logicalLine, tokens []string) {
 		return
 	}
 	version := strings.ToLower(tokens[1])
-	if version == "v6" || version == "6" || version == "v7" || version == "7" {
-		if version == "v7" || version == "7" {
-			p.dslVersion = 7
-		} else {
-			p.dslVersion = 6
-		}
+	switch version {
+	case "v8", "8":
+		p.dslVersion = 8
+		return
+	case "v7", "7":
+		p.dslVersion = 7
+		return
+	case "v6", "6":
+		p.dslVersion = 6
 		return
 	}
-	p.err(line, fmt.Sprintf("unsupported DSL version %q — this build supports v6/v7", tokens[1]), "")
+	p.err(line, fmt.Sprintf("unsupported DSL version %q — this build supports v6/v7/v8", tokens[1]), "")
 }
 
 func (p *parser) reportMalformedNumbers(line logicalLine, tokens []string) {

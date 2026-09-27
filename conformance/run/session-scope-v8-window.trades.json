@@ -1,0 +1,17 @@
+{
+  "case": "session-scope-v8-window",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "4h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "session-scope-v8-window",
+  "symbol": "XAUUSD",
+  "timeframe": "1h",
+  "tradeCount": 0,
+  "trades": []
+}

@@ -1,0 +1,9 @@
+dsl v7
+strategy "Session Scope V7 Sessions No Lint" {
+  description "dsl v6/v7: bare sessions directive keeps its historical open-window meaning and does not emit a lint diagnostic; a real one would churn all existing v6/v7 sessions goldens, so it is documented in spec/dsl-spec.md and CHANGELOG.md instead."
+}
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(london, ny)
+  day type in (ranging)
+}

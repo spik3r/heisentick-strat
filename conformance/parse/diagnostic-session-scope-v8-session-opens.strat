@@ -1,0 +1,9 @@
+dsl v8
+strategy "Session Scope V8 Session Opens" {
+  description "dsl v8: session opens directive is an alias of sessionWindow (open-window meaning)."
+}
+market conditions {
+  slices(XAUUSD 1h)
+  session opens(london, ny)
+  day type in (ranging)
+}

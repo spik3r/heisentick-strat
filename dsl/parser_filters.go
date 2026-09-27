@@ -172,6 +172,18 @@ func (p *parser) parseSlices(tokens []string) {
 }
 
 func (p *parser) parseSessions(tokens []string) {
+	p.parseSessionsHead(tokens, "sessions")
+}
+
+// parseSessionsHead handles the three spellings that select which sessions
+// gate trading: bare `sessions(...)`, `sessionWindow(...)` and
+// `session opens(...)`. Under dsl v6/v7 all three mean the historical 3-hour
+// open-window gate (TRADE_WINDOWS / tradeWindows). Under dsl v8, bare
+// `sessions(...)` means the whole session (see WholeSessionWindow) while
+// `sessionWindow(...)`/`session opens(...)` remain the explicit open-window
+// spelling. `sessionScope` is only written into the config for dsl v8, so
+// v6/v7 goldens are unaffected byte-for-byte.
+func (p *parser) parseSessionsHead(tokens []string, headSpelling string) {
 	sessions := map[string]any{"asia": 0, "mid": 0, "london": 0, "ny": 0}
 	for _, token := range tokens {
 		key := strings.ToLower(token)
@@ -180,6 +192,13 @@ func (p *parser) parseSessions(tokens []string) {
 		}
 	}
 	p.setUserSessions(sessions)
+	if p.dslVersion >= 8 {
+		if headSpelling == "sessions" {
+			p.config["sessionScope"] = "whole"
+		} else {
+			p.config["sessionScope"] = "window"
+		}
+	}
 }
 
 func (p *parser) parseTradeWindow(line logicalLine, tokens []string) {
@@ -294,6 +313,10 @@ func (p *parser) applyDefaultSessions(sessions map[string]any) {
 func (p *parser) parseSession(tokens []string) {
 	if len(tokens) >= 2 && strings.EqualFold(tokens[0], "phase") {
 		p.config["sessionPhases"] = stringsToAny(lowerList(valuesAfterIn(tokens[1:])))
+		return
+	}
+	if len(tokens) >= 1 && strings.EqualFold(tokens[0], "opens") {
+		p.parseSessionsHead(tokens[1:], "session opens")
 	}
 }
 

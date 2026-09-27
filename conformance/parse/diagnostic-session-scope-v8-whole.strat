@@ -1,0 +1,9 @@
+dsl v8
+strategy "Session Scope V8 Whole" {
+  description "dsl v8: bare sessions directive means the whole session (owner decision)."
+}
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(london, ny)
+  day type in (ranging)
+}
