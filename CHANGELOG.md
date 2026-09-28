@@ -6,6 +6,9 @@ version and is named here.
 
 ## [Unreleased]
 
+- Keep the base failed-breakout management defaults when its setup type is
+  stated explicitly. Other setup families still apply their family defaults.
+
 ## [0.18.0] — 2026-09-28
 
 - Add Go parsing and execution for causal seasonality filters. The filters use

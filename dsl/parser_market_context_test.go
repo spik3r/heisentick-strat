@@ -90,6 +90,22 @@ management {
 	}
 }
 
+func TestFailedBreakoutSetupKeepsBaseManagementDefaults(t *testing.T) {
+	result, err := Parse(`dsl v7
+setup { type: failed breakout }
+`)
+	if err != nil || len(result.Errors) != 0 {
+		t.Fatalf("parse errors=%v err=%v", result.Errors, err)
+	}
+	breakeven := result.Config["breakeven"].(map[string]any)
+	if breakeven["atR"] != 0.75 || breakeven["offsetAtr"] != 0.02 {
+		t.Fatalf("failed-breakout breakeven = %#v, want base defaults {atR: 0.75, offsetAtr: 0.02}", breakeven)
+	}
+	if got := result.Config["cooldownCandles"]; got != 3 && got != float64(3) {
+		t.Fatalf("failed-breakout cooldown = %v, want base default 3", got)
+	}
+}
+
 func TestStandaloneStrategyDirectiveAndInlineSetupAreNotTreatedAsSections(t *testing.T) {
 	result, err := Parse(`dsl v7
 strategy "Standalone title"

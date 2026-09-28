@@ -12,8 +12,8 @@
     "blockedPriorDayTypes": [],
     "blockedSessionPhases": [],
     "breakeven": {
-      "atR": 0.5,
-      "offsetAtr": 0.05
+      "atR": 0.75,
+      "offsetAtr": 0.02
     },
     "channel": {
       "activeWithinCandles": 12,
@@ -24,7 +24,7 @@
     },
     "channelBreakHold": {},
     "closeLocationMin": 0,
-    "cooldownCandles": 12,
+    "cooldownCandles": 3,
     "customLevels": [],
     "dayOpen": {},
     "dayThemes": [],
