@@ -44,6 +44,36 @@ func TestFairValueGapDetectionUsesCompletedThreeBarPattern(t *testing.T) {
 	}
 }
 
+func TestFairValueGapFormationContinuesWhilePositionIsOpen(t *testing.T) {
+	series := marketdata.SeriesFromBars([]marketdata.Bar{
+		{T: 0, O: 100, H: 101, L: 99, C: 100},
+		{T: 1, O: 101, H: 104, L: 100, C: 103},
+		{T: 2, O: 104, H: 106, L: 104, C: 105.5},
+		{T: 3, O: 105.5, H: 107, L: 105, C: 106},
+	})
+	b := broker{
+		series:      series,
+		cols:        colsWithATR(4, 1),
+		hasPosition: true,
+		position:    position{Side: sideLong, Entry: 100, SL: 95, TP: 120, EntryIndex: 0, Size: 1},
+		params: flagParams{FairValueGap: fairValueGapParams{
+			MinGapATR: 0.5, MinDisplacementATR: 1, RetestCandles: 8, EntryReference: "midpoint",
+		}},
+	}
+
+	b.onFairValueGapBar(3)
+
+	if len(b.fvgZones) != 1 {
+		t.Fatalf("FVG zones while position is open = %#v, want the gap created at bar 3", b.fvgZones)
+	}
+	if len(b.limitOrders) != 0 {
+		t.Fatalf("FVG limit orders while position is open = %#v, want none", b.limitOrders)
+	}
+	if zone := b.fvgZones[0]; zone.Key != "long:3" || zone.CreatedAt != 3 {
+		t.Fatalf("FVG formed while position is open = %#v, want long:3", zone)
+	}
+}
+
 func TestFairValueGapSetupUsesConfiguredReferenceAndCausalRisk(t *testing.T) {
 	series := marketdata.SeriesFromBars([]marketdata.Bar{
 		{T: 0, O: 100, H: 101, L: 99, C: 100},

@@ -20,15 +20,17 @@ type fvgZone struct {
 }
 
 func (b *broker) onFairValueGapBar(i int) {
+	// Gap formation and lifecycle are independent of broker admission. Keep
+	// them current while a position is open so later retests do not miss gaps.
+	b.detectFairValueGap(i)
+	b.pruneFairValueGaps(i)
+
 	if b.hasPosition {
 		b.applyPartialManagement(i)
 		b.moveStopToBreakeven(i)
 		b.exitAfterBars(i)
 		return
 	}
-
-	b.detectFairValueGap(i)
-	b.pruneFairValueGaps(i)
 	p := b.params
 	if b.hasFVGEntry && i-b.fvgLastEntry < p.CooldownBars {
 		return
