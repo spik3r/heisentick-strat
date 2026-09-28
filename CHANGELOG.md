@@ -6,10 +6,18 @@ version and is named here.
 
 ## [Unreleased]
 
-- Reports and grids add a route warning when a weekend extreme fade route has
-  no Monday 00:00 UTC bar after twelve contiguous 4h bars. That covers markets
-  that close at weekends and every timeframe but 4h, where the setup cannot
-  enter and zero trades is not a result. Trades and goldens are unchanged.
+## [0.16.0] — 2026-09-28
+
+- Minor bump: fair-value-gap formations and lifecycle updates continue while a
+  position is open. A later retest can now use a gap formed during that trade
+  (#63).
+- Reports and grids warn when a weekend extreme fade route has no Monday
+  00:00 UTC bar after twelve contiguous 4h bars. On those routes the setup
+  cannot enter, so zero trades are not a strategy result. Trades and existing
+  goldens are unchanged (#62).
+- Add exact-source Go run goldens for the VSA Weekly-Extreme Wide Payout
+  research strategy on XAUUSD 1h and 4h. These fixtures verify Go execution;
+  they do not establish economic or deployment evidence (#64).
 
 ## [0.15.0] — 2026-09-28
 
