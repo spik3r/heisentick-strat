@@ -6,8 +6,11 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.19.0] — 2026-09-28
+
 - Keep the base failed-breakout management defaults when its setup type is
-  stated explicitly. Other setup families still apply their family defaults.
+  stated explicitly. Other setup families still apply their family defaults
+  (#71).
 
 ## [0.18.0] — 2026-09-28
 
