@@ -40,6 +40,7 @@
       "money-partial-exit",
       "money-risk-sizing",
       "money-stop-distance-gate",
+      "research-dsl-daily-snd-retest-xauusd-4h",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h"
     ],
@@ -62,6 +63,6 @@
     "diagnostic": 15,
     "setup-family": 29
   },
-  "runCases": 41,
+  "runCases": 42,
   "schema": "dsl-conformance-metadata-v1"
 }
