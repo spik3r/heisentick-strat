@@ -6,6 +6,9 @@ version and is named here.
 
 ## [Unreleased]
 
+- Parse `stop size min ... max ...` as one directive inside a `risk` block so
+  explicit FVG stop bounds override the setup defaults.
+
 ## [0.16.0] — 2026-09-28
 
 - Minor bump: fair-value-gap formations and lifecycle updates continue while a

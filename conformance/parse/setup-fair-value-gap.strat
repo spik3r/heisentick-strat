@@ -11,4 +11,7 @@ setup {
   retest within 8 candles
   entry at midpoint
 }
+risk {
+  stop size min 0.3 max 2
+}
 target 1.5R
