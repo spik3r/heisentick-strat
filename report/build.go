@@ -224,6 +224,11 @@ func RouteWarningsForMode(cfg dsl.Config, route Route, routeMode string) []strin
 			"route %s %s is excluded by the strategy's slices()/symbols()/timeframes() market conditions; zero trades (matches JS gating)",
 			route.Symbol, route.TF))
 	}
+	if engine.WeekendExtremeFadeUnreachable(cfg, route.Series) {
+		warnings = append(warnings, fmt.Sprintf(
+			"route %s %s has no Monday 00:00 UTC bar after twelve contiguous 4h weekend bars; weekend extreme fade cannot enter, so zero trades is not a result",
+			route.Symbol, route.TF))
+	}
 	return warnings
 }
 

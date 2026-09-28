@@ -3,6 +3,9 @@ package engine
 import (
 	"math"
 	"time"
+
+	"github.com/spik3r/heisentick-strat/dsl"
+	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
 const weekendBarMillis = 4 * 60 * 60 * 1000
@@ -108,6 +111,22 @@ func (b *broker) runWeekendExtremeFade() []Trade {
 func weekendBarsContiguous(timestamps []float64, start, end int) bool {
 	for i := start + 1; i <= end; i++ {
 		if timestamps[i]-timestamps[i-1] != weekendBarMillis {
+			return false
+		}
+	}
+	return true
+}
+
+// WeekendExtremeFadeUnreachable reports whether cfg is a weekend extreme fade
+// that can never enter on series: no Monday 00:00 UTC bar follows twelve
+// contiguous 4h bars. That holds for markets that close at weekends and for
+// every timeframe but 4h, where a zero-trade run is not evidence.
+func WeekendExtremeFadeUnreachable(cfg dsl.Config, series marketdata.Series) bool {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyWeekendExtremeFade) {
+		return false
+	}
+	for i := 12; i < series.Len(); i++ {
+		if isMondayOpenTimestamp(series.T[i]) && weekendBarsContiguous(series.T, i-12, i) {
 			return false
 		}
 	}
