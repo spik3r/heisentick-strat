@@ -39,7 +39,9 @@
       "family-weekend-extreme-fade",
       "money-partial-exit",
       "money-risk-sizing",
-      "money-stop-distance-gate"
+      "money-stop-distance-gate",
+      "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+      "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h"
     ],
     "todo": {}
   },
@@ -60,6 +62,6 @@
     "diagnostic": 15,
     "setup-family": 29
   },
-  "runCases": 39,
+  "runCases": 41,
   "schema": "dsl-conformance-metadata-v1"
 }
