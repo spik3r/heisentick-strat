@@ -1,0 +1,47 @@
+dsl v7
+strategy "Cross-Asset VSA Weekly-Extreme Wide Payout" {
+  description "Research candidate: unusually high effort with a narrow result at a prior-week extreme marks absorption; the confirmed reclaim has enough excursion to target 1.75R on transferable 1h and 4h routes."
+}
+
+market conditions {
+  symbols(XAUUSD, USDJPY, AUDUSD, EURGBP, EURUSD, GBPUSD, AUS200, US500)
+  timeframes(1h, 4h)
+  sessions(asia, london, ny)
+  day type in (trending, choppy)
+}
+
+levels {
+  priority(WH, WL)
+  nearKeyLevel withinAtr 0.5
+}
+
+setup {
+  type: volume anomaly exhaustion
+  volume anomaly ratio at least 2.5
+  high effort narrow spread max 0.5 ATR
+  anomaly lookback 2 candles
+}
+
+filters {
+  close location at least 0.6
+}
+
+risk {
+  stop beyond last 5 candle extreme by 0.25 ATR
+  stop size between 0.4 and 2 ATR
+}
+
+target {
+  target 1.75R
+  minimum reward: 0.8R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  maxHoldCandles 24
+  wait 8 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

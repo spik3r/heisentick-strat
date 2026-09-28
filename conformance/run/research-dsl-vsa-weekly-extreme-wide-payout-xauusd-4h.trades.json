@@ -1,0 +1,59 @@
+{
+  "case": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslVsaWeeklyExtremeWidePayout",
+  "symbol": "XAUUSD",
+  "timeframe": "4h",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 350.695,
+      "entryIndex": 344,
+      "entryT": 1060171200000,
+      "exit": 355.31925,
+      "exitIndex": 356,
+      "exitT": 1060344000000,
+      "initialSl": 348.052571428571,
+      "initialTp": 355.31925,
+      "meta": {
+        "anomalyIndex": 344,
+        "anomalyKind": "rejection-wick",
+        "bodyAtr": 0.15016038492383,
+        "effortResultRatio": 1.86363037630427,
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelDistanceAtr": 0.106655974338417,
+        "levelKey": "WL",
+        "levelPrice": 348.359,
+        "openLocation": "nearRangeMid",
+        "priorDayType": "range",
+        "sessionPhase": "close",
+        "setup": "volumeAnomalyExhaustion",
+        "setupAgeCandles": 0,
+        "side": "long",
+        "spreadAtr": 1.35846030473136,
+        "targetMode": "fixedR",
+        "targetR": 1.75,
+        "volumeRatio20": 2.53166788890091,
+        "volumeZ50": 1.53565845899236,
+        "vwapDistanceAtr": -0.174061556280126
+      },
+      "pnl": 350,
+      "points": 4.62425000000002,
+      "reason": "tp",
+      "side": "long",
+      "size": 75.6879493971993,
+      "sl": 350.798707142857,
+      "tag": "DSL-VPA:WL",
+      "tp": 355.31925
+    }
+  ]
+}
