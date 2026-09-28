@@ -148,6 +148,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		if !p.parseOpenLocation(line, tokens) {
 			p.unknownDirective(line, tokens[0])
 		}
+	case "seasonality":
+		p.parseSeasonality(line, tokens)
 	case "new":
 		p.parseNewYorkHour(tokens)
 	case "session":

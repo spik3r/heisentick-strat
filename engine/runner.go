@@ -274,6 +274,7 @@ func contextOptions(fixture RunFixture, cfg dsl.Config) contextcols.Options {
 			MinSpan:     intValue(channel, "minSpan", 0),
 			Source:      stringValue(channel, "source", ""),
 		},
+		Seasonality: seasonalitySpecsFromConfig(cfg["seasonalityFilters"]),
 	}
 	needsOpenLocation := len(stringSliceValue(cfg["openLocations"])) > 0
 	if setupType == string(dsl.FamilyFlagContinuation) {

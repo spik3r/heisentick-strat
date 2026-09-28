@@ -42,7 +42,8 @@
       "money-stop-distance-gate",
       "research-dsl-daily-snd-retest-xauusd-4h",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
-      "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h"
+      "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+      "seasonality-filter-min-samples"
     ],
     "todo": {}
   },
@@ -57,12 +58,12 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 53,
+  "parseCases": 54,
   "parseCategories": {
     "deployed-book-dsl": 9,
     "diagnostic": 15,
-    "setup-family": 29
+    "setup-family": 30
   },
-  "runCases": 42,
+  "runCases": 43,
   "schema": "dsl-conformance-metadata-v1"
 }

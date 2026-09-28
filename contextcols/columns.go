@@ -98,6 +98,7 @@ type Columns struct {
 	DayRangeProgress []float64
 	RangeStats       RangeStatColumns
 	SessionBias      SessionBiasColumns
+	Seasonality      map[SeasonalityKey][]SeasonalityEntry
 
 	PriorDayO []float64
 	PriorDayH []float64
@@ -245,6 +246,9 @@ func Build(series marketdata.Series, options Options) Columns {
 		cols.ER = ComputeTrueRangeER(series, options.ERLen)
 	} else {
 		cols.ER = ComputeER(series, options.ERLen)
+	}
+	if len(options.Seasonality) > 0 {
+		cols.Seasonality = ComputeCausalSeasonality(series, options.Seasonality)
 	}
 	if needs.VolumeStats {
 		volumeStats := ComputeVolumeAnomalyStats(series, cols.ATR, 20, 50)

@@ -403,7 +403,7 @@ func (b *broker) enter(i int, side side, setup flagSetup) {
 	if b.windowed && !b.executionIndexAllowed(i) {
 		return
 	}
-	if !b.guardedEntryAllowed(i) || !b.marketNonSessionGatesOK(i) || !b.guardedCandleQualityOK(i, side) {
+	if !b.guardedEntryAllowed(i) || !b.marketNonSessionGatesOK(i) || !b.seasonalityGatesOK(i, side) || !b.guardedCandleQualityOK(i, side) {
 		return
 	}
 	theme, ok := b.dayThemeAdmission(i, side)
@@ -472,7 +472,7 @@ func (b *broker) enterLimit(i int, limit float64, setup setupPlan, expireBars in
 	if b.windowed && !b.executionIndexAllowed(i) {
 		return false
 	}
-	if !b.guardedEntryAllowed(i) || !b.guardedCandleQualityOK(i, setup.Side) {
+	if !b.guardedEntryAllowed(i) || !b.seasonalityGatesOK(i, setup.Side) || !b.guardedCandleQualityOK(i, setup.Side) {
 		return false
 	}
 	theme, ok := b.dayThemeAdmission(i, setup.Side)

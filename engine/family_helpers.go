@@ -555,7 +555,7 @@ func (b *broker) enterSetup(i int, setup setupPlan) bool {
 	if b.hasPosition || len(b.pendingOrders) > 0 || len(b.limitOrders) > 0 {
 		return false
 	}
-	if !b.marketGatesOK(i) || !b.guardedCandleQualityOK(i, setup.Side) {
+	if !b.marketGatesOK(i) || !b.seasonalityGatesOK(i, setup.Side) || !b.guardedCandleQualityOK(i, setup.Side) {
 		return false
 	}
 	theme, ok := b.dayThemeAdmission(i, setup.Side)
