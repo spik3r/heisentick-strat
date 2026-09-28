@@ -36,6 +36,7 @@ var implementedRunCases = []string{
 	"deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
 	"research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
 	"research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+	"research-dsl-daily-snd-retest-xauusd-4h",
 	"family-intra-hour-run-exhaustion",
 	"family-sma-golden-cross",
 	"family-sma-golden-cross-protected",

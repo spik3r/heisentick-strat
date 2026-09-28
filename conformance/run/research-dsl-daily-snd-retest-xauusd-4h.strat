@@ -1,0 +1,52 @@
+dsl v7
+strategy "DSL Daily SND Retest XAUUSD 4H" {
+  description "Daily PDH/PDL retest on the 4h chart during London/NY, gated by prior-day type and minimum prior-day range."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+  trade window UTC hours 8 to 21
+  day type in (trending, ranging, choppy)
+  prior day type in (range, outside)
+  prior day range at least 0.5 ATR
+}
+
+levels {
+  priority(PDL, PDH)
+}
+
+filters {
+  side long only
+}
+
+trigger {
+  candle in (pin, engulf, outside)
+}
+
+setup {
+  type: named level sweep
+}
+
+entry {
+  when price tests PDL within 0.35 ATR and closes above it then signal long
+  when price tests PDH within 0.35 ATR and closes below it then signal short
+}
+
+risk {
+  stop below the signal candle and the level by 0.15 ATR
+  stop above the signal candle and the level by 0.15 ATR
+  stop size min 0.4 max 4.0
+}
+
+target {
+  target 4.0R
+}
+
+management {
+  move stop to breakeven after 0.75R plus 0.05 ATR
+  wait 4 candles after trade
+}
+
+execution {
+  risk 200 USD
+}
