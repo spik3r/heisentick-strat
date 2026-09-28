@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.18.0] — 2026-09-28
+
+- Add Go parsing and execution for causal seasonality filters. The filters use
+  prior bars for UTC hour, weekday, week and month buckets, with explicit
+  sample thresholds and rolling lookbacks (#59).
+- Visit every Supply-Demand zone created on the same bar before trying older
+  zones. This restores the EURUSD 1h trade omitted by Go and matches the
+  AUDUSD 1h zone, stop and target selected by JavaScript (#69).
+
 ## [0.17.0] — 2026-09-28
 
 - Parse `stop size min ... max ...` as one directive inside a `risk` block so
