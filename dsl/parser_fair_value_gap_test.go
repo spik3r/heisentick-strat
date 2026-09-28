@@ -46,6 +46,21 @@ setup { type: fvg gap minimum 0.2 ATR displacement minimum 1.1 ATR retest within
 	}
 }
 
+func TestFairValueGapRiskStopSizeBounds(t *testing.T) {
+	source := validFairValueGapSource + `risk {
+  stop size min 0.3 max 2
+}
+`
+	result, err := Parse(source)
+	if err != nil || len(result.Errors) != 0 {
+		t.Fatalf("Parse risk stop bounds: errors=%v err=%v", result.Errors, err)
+	}
+	stop := copyMap(result.Config["stop"])
+	if stop["minAtr"] != 0.3 || stop["maxAtr"] != 2.0 {
+		t.Fatalf("stop bounds = %#v, want minAtr 0.3 and maxAtr 2", stop)
+	}
+}
+
 func TestFairValueGapEntryWindow(t *testing.T) {
 	result, err := Parse("dsl v7\nsetup { type: fair value gap entry at midpoint within 12 candles }")
 	if err != nil || len(result.Errors) != 0 {

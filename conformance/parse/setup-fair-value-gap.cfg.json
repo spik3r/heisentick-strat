@@ -115,8 +115,8 @@
     ],
     "stop": {
       "extremeCandles": 0,
-      "maxAtr": 3,
-      "minAtr": 0.4,
+      "maxAtr": 2,
+      "minAtr": 0.3,
       "paddingAtr": 0.25
     },
     "supplyDemand": {},
