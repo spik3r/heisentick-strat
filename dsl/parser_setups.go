@@ -6,8 +6,12 @@ func (p *parser) parseSetupType(tokens []string) {
 		return
 	}
 	p.config["setupType"] = family
-	p.config["breakeven"] = map[string]any{"atR": 0.5, "offsetAtr": 0.05}
-	p.config["cooldownCandles"] = 12
+	// Failed breakout is the base DSL family. Its phrase selects the family
+	// without resetting the defaults initialized by defaultConfig().
+	if family != string(FamilyFailedBreakout) {
+		p.config["breakeven"] = map[string]any{"atR": 0.5, "offsetAtr": 0.05}
+		p.config["cooldownCandles"] = 12
+	}
 	switch family {
 	case string(FamilyFlagContinuation):
 		p.config["flag"] = map[string]any{}
