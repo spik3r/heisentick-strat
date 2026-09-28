@@ -97,7 +97,7 @@ func (b *broker) nextSupplyDemandZone(lastCreatedAt int, lastIdx int) int {
 		if zone.Used {
 			continue
 		}
-		if zone.CreatedAt > lastCreatedAt || (zone.CreatedAt == lastCreatedAt && idx >= lastIdx) {
+		if zone.CreatedAt > lastCreatedAt || (zone.CreatedAt == lastCreatedAt && idx <= lastIdx) {
 			continue
 		}
 		if best < 0 ||
