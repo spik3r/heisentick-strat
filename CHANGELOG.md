@@ -6,8 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.17.0] — 2026-09-28
+
 - Parse `stop size min ... max ...` as one directive inside a `risk` block so
-  explicit FVG stop bounds override the setup defaults.
+  explicit stop bounds override setup defaults (#67).
+- Add an exact-source Go run golden for the Daily S&D research strategy on
+  XAUUSD 4h. Its 4,504-bar fixture verifies 43 trade rows; this is a
+  conformance check, not performance or deployment evidence (#66).
 
 ## [0.16.0] — 2026-09-28
 
