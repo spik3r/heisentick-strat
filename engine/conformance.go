@@ -17,6 +17,7 @@ var implementedRunCases = []string{
 	"family-supply-demand",
 	"family-double-top-bottom",
 	"deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+	"research-dsl-dual-ema-resumption-xauusd-daily",
 	"family-fib-continuation",
 	"family-channel-break-hold",
 	"family-level-sweep",

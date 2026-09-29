@@ -1,0 +1,27 @@
+dsl v7
+strategy "Dual EMA Resumption XAUUSD Daily" {
+  description "Long-only XAUUSD daily resumption through EMA 10 above a rising EMA 40, with a fill-relative ATR stop, a 2 ATR close trail, and a slow-EMA fallback exit."
+}
+
+market conditions {
+  slices(XAUUSD 1d)
+}
+
+setup {
+  type: dual ema resumption
+  ema fast 10
+  ema slow 40
+  ema slow rise 12
+  ema wilder atr 20
+  stop initial 2.5 ATR
+  trail close 2 ATR
+  fallback below slow ema
+}
+
+filters {
+  side long only
+}
+
+execution {
+  risk: 200 USD
+}

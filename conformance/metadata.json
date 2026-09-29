@@ -41,6 +41,7 @@
       "money-risk-sizing",
       "money-stop-distance-gate",
       "research-dsl-daily-snd-retest-xauusd-4h",
+      "research-dsl-dual-ema-resumption-xauusd-daily",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
       "seasonality-filter-min-samples"
@@ -64,6 +65,6 @@
     "diagnostic": 15,
     "setup-family": 30
   },
-  "runCases": 43,
+  "runCases": 44,
   "schema": "dsl-conformance-metadata-v1"
 }
