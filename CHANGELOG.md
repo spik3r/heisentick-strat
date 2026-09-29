@@ -6,6 +6,14 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.20.0] — 2026-09-29
+
+- Add an exact-source Go run golden for the XAUUSD daily Dual EMA research
+  strategy. Its 2,244-bar fixture verifies 52 trade rows. The full 8,244-bar
+  local route matches all 200 JavaScript trades within 1e-8 for trade identity
+  and financial fields. This adds conformance coverage; it does not promote
+  the strategy or approve Forward execution.
+
 ## [0.19.0] — 2026-09-28
 
 - Keep the base failed-breakout management defaults when its setup type is
