@@ -1,0 +1,17 @@
+dsl v7
+strategy "Down Shock Research immediate atr" {
+  description "HT-086 portable research rule; no profitability claim."
+}
+market conditions {
+  slices(XAUUSD 1m)
+}
+setup {
+  type: down shock rebound
+  source timeframe 15m
+  entryTf 1m
+  shock entry immediate
+  shock target 1 ATR
+}
+execution {
+  risk 200 USD
+}

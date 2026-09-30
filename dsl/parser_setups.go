@@ -13,6 +13,12 @@ func (p *parser) parseSetupType(tokens []string) {
 		p.config["cooldownCandles"] = 12
 	}
 	switch family {
+	case string(FamilyDownShockRebound):
+		p.config["downShockRebound"] = map[string]any{"entry": "immediate", "targetMode": "off", "targetValue": 0.0}
+		p.config["allowLong"] = 1
+		p.config["allowShort"] = 0
+		p.config["cooldownCandles"] = 0
+		p.config["breakeven"] = map[string]any{"atR": 0, "offsetAtr": 0}
 	case string(FamilyFlagContinuation):
 		p.config["flag"] = map[string]any{}
 		p.config["stop"] = map[string]any{"extremeCandles": 0, "maxAtr": nil, "minAtr": 0.5, "paddingAtr": 0.25}

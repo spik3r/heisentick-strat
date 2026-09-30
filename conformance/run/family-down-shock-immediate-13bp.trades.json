@@ -1,0 +1,46 @@
+{
+  "case": "family-down-shock-immediate-13bp",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "conformanceDownShock",
+  "symbol": "XAUUSD",
+  "timeframe": "1m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 98.2,
+      "entryIndex": 1,
+      "entryT": 1579867200000,
+      "exit": 98.32766,
+      "exitIndex": 1,
+      "exitT": 1579867200000,
+      "initialSl": 97.5142857142857,
+      "initialTp": 98.32766,
+      "meta": {
+        "entryMode": "immediate",
+        "rangeRatio": 11.0953036398398,
+        "returnZ": -15.1224924621671,
+        "setup": "downShockRebound",
+        "sourceATR": 0.342857142857132,
+        "sourceCloseT": 1579867200000,
+        "sourceRow": 1391,
+        "targetMode": "bp"
+      },
+      "pnl": 37.2341666666695,
+      "points": 0.127660000000006,
+      "reason": "tp",
+      "side": "long",
+      "size": 291.666666666675,
+      "sl": 97.5142857142857,
+      "tag": "DSL-DSR",
+      "tp": 98.32766
+    }
+  ]
+}

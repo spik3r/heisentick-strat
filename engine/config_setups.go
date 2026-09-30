@@ -228,6 +228,7 @@ func intraHourRunExhaustionParamsFromConfig(cfg dsl.Config, stop dsl.Config, tar
 }
 
 func applyExtractedSetupParams(p *flagParams, cfg, stop, openingRange dsl.Config, setupType string) {
+	p.DownShockRebound = downShockReboundParamsFromConfig(cfg)
 	p.WeekendExtremeFade = weekendExtremeFadeParamsFromConfig(cfg, stop)
 	p.IntraHourRunExhaustion = intraHourRunExhaustionParamsFromConfig(cfg, stop, mapValue(cfg, "target"))
 	p.ORBOpeningSessionsOverride = setupType == string(dsl.FamilyOpeningRangeBreakout) && rawLengthNonempty(openingRange["openingSessions"])
