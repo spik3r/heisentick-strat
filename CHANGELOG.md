@@ -6,6 +6,17 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.21.0] — 2026-09-30
+
+- Add the research-only down-shock rebound family with completed 15m context,
+  immediate or reversal 1m entry, fixed source ATR stops, optional ATR or bp
+  targets, and elapsed-time/gap exits. The owner approved merge and release. The historical study failed;
+  this does not promote a strategy.
+- Extend run fixture v1 with optional source timeframe and source bar columns
+  so the producer corpus can exercise native source/entry execution. Add seven
+  synthetic run goldens and seven parse goldens; existing goldens are unchanged.
+
+
 ## [0.20.0] — 2026-09-29
 
 - Add an exact-source Go run golden for the XAUUSD daily Dual EMA research

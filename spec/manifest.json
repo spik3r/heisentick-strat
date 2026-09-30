@@ -215,7 +215,8 @@
       "canonicalExample": "type: named level sweep",
       "classification": "shared",
       "since": 7
-    }
+    },
+    {"id": "downShockRebound", "canonicalSpelling": "down shock rebound", "canonicalExample": "type: down shock rebound\nsource timeframe 15m\nentryTf 1m", "classification": "shared", "since": 7}
   ],
   "aliases": [
     {
@@ -1489,7 +1490,12 @@
       "familyId": "namedLevelSweep",
       "classification": "shared",
       "since": 7
-    }
+    },
+    {"id": "alias.js-setup-type.down-shock-phrase", "spelling": "down shock rebound", "familyId": "downShockRebound", "source": "js-setup-type", "classification": "shared", "since": 7},
+    {"id": "alias.go-inline-setup-type.down-shock-phrase", "spelling": "down shock rebound", "familyId": "downShockRebound", "source": "go-inline-setup-type", "classification": "shared", "since": 7},
+    {"id": "alias.go-canonical-setup-type.down-shock-phrase", "spelling": "down shock rebound", "familyId": "downShockRebound", "source": "go-canonical-setup-type", "classification": "shared", "since": 7},
+    {"id": "alias.js-setup-type.down-shock-compact", "spelling": "downShockRebound", "familyId": "downShockRebound", "source": "js-setup-type", "classification": "shared", "since": 7},
+    {"id": "alias.go-canonical-setup-type.down-shock-compact", "spelling": "downShockRebound", "familyId": "downShockRebound", "source": "go-canonical-setup-type", "classification": "shared", "since": 7}
   ],
   "directiveHeads": [
     {
@@ -2078,7 +2084,8 @@
       "spelling": "no",
       "classification": "shared",
       "since": 7
-    }
+    },
+    {"id": "directive.shock", "spelling": "shock", "classification": "shared", "since": 7}
   ],
   "deprecations": [
     { "id": "deprecated.windows", "spelling": "windows", "replacement": "sessions", "classification": "shared", "since": 6, "deprecatedSince": 6 },

@@ -95,6 +95,7 @@ func (p *parser) parse() {
 	p.validateEntryTimeframe()
 	p.validatePriceMomentum()
 	p.validateDailyFlushFailure()
+	p.validateDownShockRebound()
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
@@ -298,6 +299,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseDailyFlushFailure(line, tokens)
 	case "weekend":
 		p.parseWeekendExtremeFade(line, tokens)
+	case "shock":
+		p.parseDownShockRebound(line, tokens)
 	case "run":
 		p.parseIntraHourRunExhaustionRun(line, tokens)
 	case "exhaustion":

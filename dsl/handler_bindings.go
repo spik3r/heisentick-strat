@@ -4,6 +4,7 @@ package dsl
 // the existing apply/setup dispatch area; parser behavior remains in those
 // handwritten functions rather than this audit metadata.
 var parserDirectiveHandlerBindings = map[string]string{
+	"directive.shock":          "parser.apply:parseDownShockRebound",
 	"directive.strategy":       "parser.apply:setString",
 	"directive.name":           "parser.apply:setString",
 	"directive.description":    "parser.apply:setString",
@@ -77,6 +78,7 @@ var parserDirectiveHandlerBindings = map[string]string{
 }
 
 var parserFamilyHandlerBindings = map[string]string{
+	"downShockRebound":        "parser.parseSetupType",
 	"failedBreakout":          "parser.parseSetupType",
 	"flagContinuation":        "parser.parseSetupType",
 	"breakRetest":             "parser.parseSetupType",

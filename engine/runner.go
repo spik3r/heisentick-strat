@@ -84,6 +84,14 @@ func runSourceEntryFixture(fixture RunFixture, cfg dsl.Config, params flagParams
 }
 
 func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed bool) ([]Trade, error) {
+	if params.SetupType == string(dsl.FamilyDownShockRebound) {
+		var b broker
+		b.reset(chart, contextcols.Columns{}, nil, nil, nil, params, fixture, nil)
+		if windowed {
+			b.setExecutionWindow(execution)
+		}
+		return b.runDownShockRebound(), nil
+	}
 	sourceFixture := fixture
 	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
 	sourceFixture.SourceTimeframe = ""
@@ -112,7 +120,8 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 
 func implementedFamily(setupType string) bool {
 	switch setupType {
-	case string(dsl.FamilyFlagContinuation),
+	case string(dsl.FamilyDownShockRebound),
+		string(dsl.FamilyFlagContinuation),
 		string(dsl.FamilyRangeBreakFake),
 		string(dsl.FamilyOpeningRangeBreakout),
 		string(dsl.FamilyInsideDayExpansion),

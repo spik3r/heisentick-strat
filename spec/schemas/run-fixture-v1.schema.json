@@ -35,7 +35,10 @@
     "contextOptions": { "type": "object" },
     "source": { "$ref": "#/$defs/source" },
     "bars": { "$ref": "#/$defs/bars" },
-    "htfBars": { "$ref": "#/$defs/bars" }
+    "htfBars": { "$ref": "#/$defs/bars" },
+    "sourceTimeframe": { "type": "string", "minLength": 1 },
+    "sourceBars": { "$ref": "#/$defs/bars" },
+    "sourceHTFBars": { "$ref": "#/$defs/bars" }
   },
   "$defs": {
     "costs": {

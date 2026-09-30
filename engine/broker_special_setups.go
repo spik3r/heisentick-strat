@@ -12,6 +12,8 @@ func (b *broker) slippageAt(price float64) float64 {
 
 func (b *broker) runSpecialSetup() ([]Trade, bool) {
 	switch b.params.SetupType {
+	case string(dsl.FamilyDownShockRebound):
+		return b.runDownShockRebound(), true
 	case string(dsl.FamilyDailyFlushFailure):
 		return b.runDailyFlushFailure(), true
 	case string(dsl.FamilyWeekendExtremeFade):

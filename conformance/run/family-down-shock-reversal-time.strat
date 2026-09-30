@@ -1,0 +1,17 @@
+dsl v7
+strategy "Down Shock Research reversal time" {
+  description "HT-086 portable research rule; no profitability claim."
+}
+market conditions {
+  slices(XAUUSD 1m)
+}
+setup {
+  type: down shock rebound
+  source timeframe 15m
+  entryTf 1m
+  shock entry reversal
+  shock target off
+}
+execution {
+  risk 200 USD
+}

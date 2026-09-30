@@ -6,6 +6,7 @@ import "encoding/json"
 type FamilyID string
 
 const (
+	FamilyDownShockRebound        FamilyID = "downShockRebound"
 	FamilyFailedBreakout          FamilyID = "failedBreakout"
 	FamilyFlagContinuation        FamilyID = "flagContinuation"
 	FamilyBreakRetest             FamilyID = "breakRetest"

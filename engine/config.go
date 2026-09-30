@@ -7,6 +7,7 @@ import (
 )
 
 type flagParams struct {
+	DownShockRebound           downShockReboundParams
 	SetupType                  string
 	TradeWindowUnrestricted    bool
 	TradeWindowSegments        []string
