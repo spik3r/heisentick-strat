@@ -167,6 +167,13 @@ func (p *parser) parseSetupType(tokens []string) {
 		p.config["stop"] = map[string]any{"extremeCandles": 0, "maxAtr": nil, "minAtr": 0, "paddingAtr": 0}
 		p.config["breakeven"] = map[string]any{"atR": 0.75, "offsetAtr": 0.05}
 		p.setDefaultTarget("nlsR", 1)
+	case string(FamilyNamedLevelFlag):
+		p.config["namedLevelFlag"] = map[string]any{"maxBars": 10, "minBars": 2, "impulseAtr": 0.8, "breakDistanceAtr": 0.1, "targetMode": "fixed2R", "minStopPoints": 0}
+		p.config["stop"] = map[string]any{"extremeCandles": 0, "maxAtr": 2.0, "minAtr": 0.4, "paddingAtr": 0.2}
+		p.config["breakeven"] = map[string]any{"atR": 0, "offsetAtr": 0}
+		p.config["cooldownCandles"] = 0
+		p.config["maxHoldCandles"] = 24
+		p.setDefaultTarget("nlfR", 2)
 	}
 }
 

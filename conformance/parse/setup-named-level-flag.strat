@@ -1,0 +1,19 @@
+dsl v7
+strategy "Named Level Flag"
+market conditions {
+  symbols(XAUUSD)
+  timeframes(5m)
+  sessions(asia, mid, london, ny)
+  trade window UTC hours 0 to 8
+}
+levels {
+  priority(WH, WL, PDH, PDL, AH, AL, LH, LL, NH, NL)
+}
+setup { type: named level flag }
+filters {
+  breakout body at least 0.5 ATR
+  signal risk at least 1.2 points
+}
+target { target 2R }
+management { maxHoldCandles 24 }
+execution { risk 200 USD }

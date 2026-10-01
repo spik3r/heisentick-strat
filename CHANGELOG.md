@@ -6,6 +6,14 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.23.0] — 2026-10-01
+
+- Add the named-level flag setup with causal completed-level snapshots,
+  one-attempt-per-level UTC-day arming, signal-ATR stops and body filters,
+  optional known-level admission and minimum signal-risk filters, and 24-bar
+  hold defaults. Add parse and run conformance fixtures; prior run goldens are
+  unchanged.
+
 ## [0.22.0] — 2026-10-01
 
 - Add the v7 RMV filter and reusable ATR-range position series. RMV uses the

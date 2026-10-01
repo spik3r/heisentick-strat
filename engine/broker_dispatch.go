@@ -35,6 +35,8 @@ func (b *broker) onBar(i int) {
 		b.onLevelSweepBar(i)
 	case "namedLevelSweep":
 		b.onNamedLevelSweepBar(i)
+	case "namedLevelFlag":
+		b.onNamedLevelFlagBar(i)
 	case "triplePushExhaustion":
 		b.onTriplePushExhaustionBar(i)
 	case "vwapExtensionFade":

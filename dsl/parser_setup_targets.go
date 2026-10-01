@@ -40,6 +40,8 @@ func setupTargetKey(raw any) string {
 		return "ihreR"
 	case string(FamilyNamedLevelSweep):
 		return "nlsR"
+	case string(FamilyNamedLevelFlag):
+		return "nlfR"
 	default:
 		return ""
 	}

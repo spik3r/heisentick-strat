@@ -1,0 +1,43 @@
+{
+  "case": "family-named-level-flag",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "nextOpen",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-named-level-flag",
+  "symbol": "XAUUSD",
+  "timeframe": "5m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 103.7,
+      "entryIndex": 19,
+      "entryT": 1704155100000,
+      "exit": 103.5,
+      "exitIndex": 19,
+      "exitT": 1704155100000,
+      "initialSl": 102.182857142857,
+      "initialTp": 107.034285714286,
+      "meta": {
+        "levelKey": "PDH",
+        "levelPrice": 101,
+        "setup": "namedLevelFlag",
+        "side": "long",
+        "targetMode": "fixed2R"
+      },
+      "pnl": -26.3653483992471,
+      "points": -0.200000000000003,
+      "reason": "end-of-test",
+      "side": "long",
+      "size": 131.826741996233,
+      "sl": 102.182857142857,
+      "tag": "DSL-NLF:PDH",
+      "tp": 107.034285714286
+    }
+  ]
+}

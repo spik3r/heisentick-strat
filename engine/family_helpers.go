@@ -34,6 +34,7 @@ type dailySeenSets struct {
 	vef dailySeenSet
 	vae dailySeenSet
 	nls dailySeenSet
+	nlf dailySeenSet
 }
 
 func (s *dailySeenSets) reset() {
@@ -49,6 +50,7 @@ func (s *dailySeenSets) reset() {
 		vef: dailySeenSet{day: math.MinInt64},
 		vae: dailySeenSet{day: math.MinInt64},
 		nls: dailySeenSet{day: math.MinInt64},
+		nlf: dailySeenSet{day: math.MinInt64},
 	}
 }
 

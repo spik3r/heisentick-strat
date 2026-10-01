@@ -163,7 +163,7 @@ func isNamedStrategyHeader(prefix string) bool {
 }
 
 func directiveStartsForSection(section string) []string {
-	starts := []string{"description", "slices", "symbols", "timeframes", "sessions", "windows", "day", "prior", "movement", "maxMovementEr", "trendiness", "priority", "near", "nearKeyLevel", "range", "channel", "higher", "side", "direction", "trigger", "rejection", "candle", "tail", "close", "entry", "when", "enter", "stop", "target", "take", "minimum", "fallback", "move", "partial", "trail", "wait", "maxHoldCandles", "maxHoldBars", "risk", "riskUsd", "context", "location", "require", "size"}
+	starts := []string{"description", "slices", "symbols", "timeframes", "sessions", "windows", "day", "prior", "movement", "maxMovementEr", "trendiness", "priority", "near", "nearKeyLevel", "range", "channel", "higher", "side", "direction", "trigger", "rejection", "candle", "tail", "close", "entry", "when", "enter", "stop", "target", "take", "minimum", "fallback", "move", "partial", "trail", "wait", "maxHoldCandles", "maxHoldBars", "risk", "riskUsd", "context", "location", "require", "size", "signal", "breakout"}
 	if section == "risk" {
 		// `stop size min ... max ...` is one stop directive. Splitting at
 		// `size` makes the bound look like an unrelated grade-size clause.

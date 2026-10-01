@@ -270,7 +270,13 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	case "neckline":
 		p.parseNeckline(tokens)
 	case "breakout":
-		p.parseBreakout(tokens)
+		if p.config["setupType"] == string(FamilyNamedLevelFlag) && line.section == "filters" {
+			p.parseNamedLevelFlagFilter(line, tokens)
+		} else {
+			p.parseBreakout(tokens)
+		}
+	case "signal":
+		p.parseNamedLevelFlagRiskFilter(line, tokens)
 	case "confirm":
 		p.parseConfirm(tokens)
 	case "no":

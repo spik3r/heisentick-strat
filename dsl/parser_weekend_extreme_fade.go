@@ -20,6 +20,10 @@ func (p *parser) parseStopDirective(line logicalLine, tokens []string) {
 func (p *parser) parseTargetDirective(line logicalLine, tokens []string) {
 	if p.config["setupType"] == string(FamilyWeekendExtremeFade) {
 		p.parseWeekendExtremeFade(line, tokens)
+	} else if p.config["setupType"] == string(FamilyNamedLevelFlag) && strings.EqualFold(strings.Join(tokens, " "), "target mode known level 2r") {
+		family := copyMap(p.config["namedLevelFlag"])
+		family["targetMode"] = "knownLevel2R"
+		p.config["namedLevelFlag"] = family
 	} else {
 		p.parseTarget(line, tokens)
 	}

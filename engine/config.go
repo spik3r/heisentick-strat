@@ -172,6 +172,7 @@ type flagParams struct {
 	MaxMovementER              float64
 	PriorDayMinRangeATR        float64
 	NamedLevelSweep            namedLevelSweepParams
+	NamedLevelFlag             namedLevelFlagParams
 	NLSUseTrigger              bool
 }
 
@@ -522,6 +523,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		MaxMovementER:             numberFromAny(cfg["maxMovementEr"], 0.8),
 		PriorDayMinRangeATR:       numberValue(mapValue(cfg, "priorDay"), "minRangeAtr", 0),
 		NamedLevelSweep:           namedLevelSweepParamsFromConfig(cfg),
+		NamedLevelFlag:            namedLevelFlagParamsFromConfig(cfg),
 		NLSUseTrigger:             triggerExplicit && !containsString(triggerCandles, "any"),
 	}
 	applyExtractedSetupParams(&p, cfg, stop, orb, setupType)

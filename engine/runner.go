@@ -153,7 +153,8 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilySMAGoldenCross),
 		string(dsl.FamilyKeltnerReversion),
 		string(dsl.FamilyKeltnerExpansion),
-		string(dsl.FamilyNamedLevelSweep):
+		string(dsl.FamilyNamedLevelSweep),
+		string(dsl.FamilyNamedLevelFlag):
 		return true
 	default:
 		return false
