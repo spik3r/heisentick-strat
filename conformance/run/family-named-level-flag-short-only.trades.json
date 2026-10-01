@@ -1,0 +1,17 @@
+{
+  "case": "family-named-level-flag-short-only",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "nextOpen",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-named-level-flag-short-only",
+  "symbol": "XAUUSD",
+  "timeframe": "5m",
+  "tradeCount": 0,
+  "trades": []
+}
