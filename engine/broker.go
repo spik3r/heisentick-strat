@@ -112,6 +112,8 @@ type broker struct {
 	hasLSEntry             bool
 	nlsLastEntry           int
 	hasNLSEntry            bool
+	nlfPrices              map[string]float64
+	nlfState               *namedLevelFlagState
 	tpeHighs               []tpePivot
 	tpeLows                []tpePivot
 	tpeLastConfirmed       int

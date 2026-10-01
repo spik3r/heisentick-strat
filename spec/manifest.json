@@ -216,9 +216,48 @@
       "classification": "shared",
       "since": 7
     },
+    {
+      "id": "namedLevelFlag",
+      "canonicalSpelling": "named level flag",
+      "canonicalExample": "type: named level flag",
+      "classification": "shared",
+      "since": 7
+    },
     {"id": "downShockRebound", "canonicalSpelling": "down shock rebound", "canonicalExample": "type: down shock rebound\nsource timeframe 15m\nentryTf 1m", "classification": "shared", "since": 7}
   ],
   "aliases": [
+    {
+      "id": "alias.js-setup-type.named-level-flag",
+      "source": "js-setup-type",
+      "spelling": "named level flag",
+      "familyId": "namedLevelFlag",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.namedlevelflag",
+      "source": "js-setup-type",
+      "spelling": "namedLevelFlag",
+      "familyId": "namedLevelFlag",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.named-level-flag",
+      "source": "go-inline-setup-type",
+      "spelling": "named level flag",
+      "familyId": "namedLevelFlag",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.named-level-flag",
+      "source": "go-canonical-setup-type",
+      "spelling": "named level flag",
+      "familyId": "namedLevelFlag",
+      "classification": "shared",
+      "since": 7
+    },
     {
       "id": "alias.js-setup-type.failed-breakout",
       "source": "js-setup-type",
@@ -2078,6 +2117,12 @@
       "spelling": "breakout",
       "classification": "shared",
       "since": 6
+    },
+    {
+      "id": "directive.signal",
+      "spelling": "signal",
+      "classification": "shared",
+      "since": 7
     },
     {
       "id": "directive.confirm",

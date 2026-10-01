@@ -56,6 +56,7 @@ var implementedRunCases = []string{
 	"family-keltner-reversion",
 	"family-keltner-expansion",
 	"family-named-level-sweep",
+	"family-named-level-flag",
 	"seasonality-filter-min-samples",
 	"money-risk-sizing",
 	"money-partial-exit",

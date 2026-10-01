@@ -239,6 +239,41 @@ func (p *parser) validateRMVSourceTimeframe() {
 	}
 }
 
+func (p *parser) parseNamedLevelFlagFilter(line logicalLine, tokens []string) {
+	if p.config["setupType"] != string(FamilyNamedLevelFlag) {
+		p.unknownDirective(line, tokens[0])
+		return
+	}
+	if len(tokens) != 6 || !strings.EqualFold(tokens[1], "body") || !tokensMatch(tokens, 2, []string{"at", "least"}) || !strings.EqualFold(tokens[5], "atr") {
+		p.err(line, "named level flag filter must be: breakout body at least X ATR", "")
+		return
+	}
+	value, err := strconv.ParseFloat(tokens[4], 64)
+	if err != nil || math.IsNaN(value) || math.IsInf(value, 0) || value <= 0 {
+		p.err(line, "named level flag breakout body threshold must be greater than zero", "")
+		return
+	}
+	config := copyMap(p.config["namedLevelFlag"])
+	config["breakoutBodyAtr"] = value
+	p.config["namedLevelFlag"] = config
+}
+
+func (p *parser) parseNamedLevelFlagRiskFilter(line logicalLine, tokens []string) {
+	if p.config["setupType"] != string(FamilyNamedLevelFlag) || len(tokens) != 6 ||
+		!strings.EqualFold(tokens[1], "risk") || !tokensMatch(tokens, 2, []string{"at", "least"}) || !strings.EqualFold(tokens[5], "points") {
+		p.unknownDirective(line, tokens[0])
+		return
+	}
+	value, err := strconv.ParseFloat(tokens[4], 64)
+	if err != nil || math.IsNaN(value) || math.IsInf(value, 0) || value <= 0 {
+		p.err(line, "named level flag signal risk threshold must be greater than zero", "")
+		return
+	}
+	config := copyMap(p.config["namedLevelFlag"])
+	config["minStopPoints"] = value
+	p.config["namedLevelFlag"] = config
+}
+
 func (p *parser) parseSourceTimeframe(line logicalLine, tokens []string) bool {
 	if len(tokens) < 2 || !strings.EqualFold(tokens[1], "timeframe") {
 		return false

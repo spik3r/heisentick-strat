@@ -473,6 +473,7 @@ are errors. The `type` value itself is written in trading language
 | `keltner expansion` | keltnerExpansion |
 | `intra hour run exhaustion` | intraHourRunExhaustion |
 | `named level sweep` | namedLevelSweep |
+| `named level flag` | namedLevelFlag |
 
 Per-family phrase sets live in one standalone file per family under
 [`strat/docs/dsl-spec-families/`](dsl-spec-families/breakRetest.md) (named by the

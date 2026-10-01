@@ -1,0 +1,34 @@
+dsl v7
+strategy "Named Level Flag Synthetic" {
+  description "Synthetic conformance fixture: a PDH impulse and flag continuation."
+}
+
+market conditions {
+  day type in (ranging, choppy, trending)
+  movement below 1.5
+}
+
+levels {
+  priority(PDH)
+}
+
+filters {
+  side long only
+  trade window unrestricted
+}
+
+setup {
+  type: named level flag
+}
+
+filters {
+  breakout body at least 0.5 ATR
+}
+
+risk {
+  risk 200 USD
+}
+
+target {
+  target 2R
+}
