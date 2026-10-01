@@ -33,7 +33,7 @@
       "ranging",
       "choppy"
     ],
-    "description": "",
+    "description": "HT-113 synthetic RMV parser fixture.",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -70,7 +70,7 @@
     "localWeekdays": [],
     "maxHoldCandles": 0,
     "maxMovementEr": 0.8,
-    "name": "",
+    "name": "rmv-parameter-only",
     "newYorkHours": [],
     "openLocations": [],
     "openingRangeBreakout": {},

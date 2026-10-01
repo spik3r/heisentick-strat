@@ -1,4 +1,5 @@
 dsl v7
+strategy { id: rmv-parameter-only name: "rmv-parameter-only" description: "HT-113 synthetic RMV parser fixture." }
 filters {
   rmv atr period 10
   rmv lookback 80

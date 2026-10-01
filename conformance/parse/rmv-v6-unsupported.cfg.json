@@ -33,7 +33,7 @@
       "ranging",
       "choppy"
     ],
-    "description": "",
+    "description": "HT-113 synthetic RMV parser fixture.",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -70,7 +70,7 @@
     "localWeekdays": [],
     "maxHoldCandles": 0,
     "maxMovementEr": 0.8,
-    "name": "",
+    "name": "rmv-v6-unsupported",
     "newYorkHours": [],
     "openLocations": [],
     "openingRangeBreakout": {},
@@ -159,13 +159,13 @@
   "diagnostics": [
     {
       "col": 11,
-      "line": 2,
+      "line": 3,
       "message": "RMV is available only in dsl v7",
       "severity": "error"
     }
   ],
   "errors": [
-    "line 2: RMV is available only in dsl v7"
+    "line 3: RMV is available only in dsl v7"
   ],
   "schema": "dsl-conformance-parse-v1",
   "source": "HT-113 synthetic version refusal",

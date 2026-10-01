@@ -33,7 +33,7 @@
       "ranging",
       "choppy"
     ],
-    "description": "",
+    "description": "HT-113 synthetic RMV parser fixture.",
     "doubleTopBottom": {},
     "elderTripleScreen": {},
     "emaLen": 0,
@@ -70,7 +70,7 @@
     "localWeekdays": [],
     "maxHoldCandles": 0,
     "maxMovementEr": 0.8,
-    "name": "",
+    "name": "rmv-duplicate-comparison",
     "newYorkHours": [],
     "openLocations": [],
     "openingRangeBreakout": {},
@@ -165,13 +165,13 @@
   "diagnostics": [
     {
       "col": 3,
-      "line": 4,
+      "line": 5,
       "message": "RMV supports one comparison, one ATR period, and one lookback",
       "severity": "error"
     }
   ],
   "errors": [
-    "line 4: RMV supports one comparison, one ATR period, and one lookback"
+    "line 5: RMV supports one comparison, one ATR period, and one lookback"
   ],
   "schema": "dsl-conformance-parse-v1",
   "source": "HT-113 synthetic RMV fixture",
