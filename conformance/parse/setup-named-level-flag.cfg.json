@@ -82,11 +82,8 @@
       "breakoutBodyAtr": 0.5,
       "impulseAtr": 0.8,
       "maxBars": 10,
-      "maxStopAtr": 2,
       "minBars": 2,
-      "minStopAtr": 0.4,
       "minStopPoints": 1.2,
-      "stopPaddingAtr": 0.2,
       "targetMode": "fixed2R"
     },
     "newYorkHours": [],

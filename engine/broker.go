@@ -205,6 +205,8 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.hasLSEntry = false
 	b.nlsLastEntry = 0
 	b.hasNLSEntry = false
+	b.nlfPrices = nil
+	b.nlfState = nil
 	b.tpeHighs = b.tpeHighs[:0]
 	b.tpeLows = b.tpeLows[:0]
 	b.tpeLastConfirmed = -1

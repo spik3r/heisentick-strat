@@ -239,3 +239,25 @@ func TestNamedLevelFlagPositionDoesNotRefreshLevelCache(t *testing.T) {
 		t.Fatalf("cached PDH = %v, want stale flat-bar value 101", b.nlfPrices["PDH"])
 	}
 }
+
+func TestNamedLevelFlagBrokerResetClearsLevelCacheAndState(t *testing.T) {
+	bars, cols := namedLevelFlagFixture()
+	series := marketdata.SeriesFromBars(bars)
+	b := broker{
+		nlfPrices: map[string]float64{"PDH": 101},
+		nlfState:  &namedLevelFlagState{Key: "PDH", Level: 101},
+	}
+	params := flagParams{SetupType: string(dsl.FamilyNamedLevelFlag), TradeWindowUnrestricted: true,
+		NamedLevelFlag: namedLevelFlagParams{LevelPriority: []string{"PDH"}, MaxBars: 10}}
+	b.reset(series, cols, nil, nil, nil, params, RunFixture{}, nil)
+	b.setExecutionWindow(ExecutionBounds{TradeStart: 2, TradeEnd: series.Len() - 1})
+	if b.nlfPrices != nil || b.nlfState != nil {
+		t.Fatalf("reset retained named-level flag state: prices=%v state=%+v", b.nlfPrices, b.nlfState)
+	}
+	if trades := b.run(); len(trades) != 0 {
+		t.Fatalf("windowed run trades = %#v, want no trade from pre-window bars", trades)
+	}
+	if b.nlfState != nil || b.nlfPrices["PDH"] != 101 {
+		t.Fatalf("windowed run did not rebuild cache from its own bars: prices=%v state=%+v", b.nlfPrices, b.nlfState)
+	}
+}

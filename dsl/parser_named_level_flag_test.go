@@ -85,6 +85,25 @@ market conditions {
 	}
 }
 
+func TestNamedLevelFlagFiltersRejectNonFiniteThresholds(t *testing.T) {
+	for _, tc := range []struct{ name, phrase string }{
+		{"body NaN", "breakout body at least NaN ATR"},
+		{"body Inf", "breakout body at least Inf ATR"},
+		{"risk NaN", "signal risk at least NaN points"},
+		{"risk Inf", "signal risk at least Inf points"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			result, err := Parse("dsl v7\nsetup { type: named level flag }\nfilters {\n  " + tc.phrase + "\n}\n")
+			if err != nil {
+				t.Fatalf("Parse: %v", err)
+			}
+			if len(result.Errors) == 0 {
+				t.Fatalf("phrase %q was accepted with a non-finite threshold", tc.phrase)
+			}
+		})
+	}
+}
+
 func TestNamedLevelFlagBodyFilterRequiresPositiveATR(t *testing.T) {
 	result, err := Parse(`dsl v7
 setup { type: named level flag }
