@@ -1,0 +1,38 @@
+dsl v6
+# Session Break-Hold - 15m Directional Target
+strategy "Session Break-Hold 15m Directional Target" {
+  description "Join confirmed continuation after selected prior-session breaks hold: AH/LH longs and LL shorts. Uses the stronger 1.4R target review setting."
+}
+
+market conditions {
+  timeframes(15m)
+  sessions(london, ny)
+  day type in (trending, choppy)
+}
+
+levels {
+  priority(AH, LH, LL)
+}
+
+setup {
+  type: session break hold
+  hold 3 candles
+  stop inside range 0.5 ATR
+}
+
+filters {
+  higher timeframe must agree
+}
+
+target {
+  target 1.4R capped at pole
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

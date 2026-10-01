@@ -6,6 +6,11 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add exact-source Go run fixtures for four XAUUSD research strategies using
+  frozen 5m/15m bars, and emit the causal seasonality diagnostics used by
+  JavaScript in trade metadata. These fixtures add implementation coverage;
+  they do not promote the strategies.
+
 ## [0.24.0] — 2026-10-01
 
 - Fix named-level flag arming to honor long-only and short-only filters.

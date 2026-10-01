@@ -570,7 +570,7 @@ func (b *broker) enterSetup(i int, setup setupPlan) bool {
 	if !b.typedEntryDistanceOK(i, setup.Meta) {
 		return false
 	}
-	setup.Meta = annotateDayTheme(setup.Meta, theme)
+	setup.Meta = b.seasonalityTradeMeta(i, annotateDayTheme(setup.Meta, theme))
 	ord := order{
 		Side:    setup.Side,
 		SL:      setup.Stop,

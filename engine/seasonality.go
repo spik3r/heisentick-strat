@@ -75,3 +75,30 @@ func (b *broker) seasonalityGatesOK(i int, side side) bool {
 	}
 	return true
 }
+
+// seasonalityTradeMeta records the causal seasonal context used to admit an
+// entry. Keep this shape aligned with the browser DSL runtime's trade metadata.
+func (b *broker) seasonalityTradeMeta(i int, meta TradeMeta) TradeMeta {
+	if len(b.params.SeasonalityFilters) == 0 {
+		return meta
+	}
+	annotated := copyTradeMeta(meta)
+	seasonality := make(map[string]any, len(b.params.SeasonalityFilters))
+	for _, filter := range b.params.SeasonalityFilters {
+		key := contextcols.SeasonalityKey{Dimension: filter.Dimension, Lookback: filter.Lookback, MinSamples: filter.MinSamples}
+		entries := b.cols.Seasonality[key]
+		if i < 0 || i >= len(entries) {
+			seasonality[filter.Dimension+":"+filter.Lookback] = nil
+			continue
+		}
+		entry := entries[i]
+		seasonality[filter.Dimension+":"+filter.Lookback] = map[string]any{
+			"bucket":           entry.Bucket,
+			"classification":   entry.Classification,
+			"bullishPercent":   entry.BullishPercent,
+			"directionalCount": entry.DirectionalCount,
+		}
+	}
+	annotated["seasonality"] = seasonality
+	return annotated
+}

@@ -417,7 +417,7 @@ func (b *broker) enter(i int, side side, setup flagSetup) {
 	if !b.typedEntryDistanceOK(i, setup.Meta) {
 		return
 	}
-	setup.Meta = annotateDayTheme(setup.Meta, theme)
+	setup.Meta = b.seasonalityTradeMeta(i, annotateDayTheme(setup.Meta, theme))
 	ord := order{
 		Side:       side,
 		SL:         setup.Stop,
@@ -483,7 +483,7 @@ func (b *broker) enterLimit(i int, limit float64, setup setupPlan, expireBars in
 	if !ok {
 		return false
 	}
-	setup.Meta = annotateDayTheme(setup.Meta, theme)
+	setup.Meta = b.seasonalityTradeMeta(i, annotateDayTheme(setup.Meta, theme))
 	ord := order{
 		Side:       setup.Side,
 		SL:         setup.Stop,
