@@ -296,3 +296,34 @@ func TestNamedLevelFlagBrokerResetClearsLevelCacheAndState(t *testing.T) {
 		t.Fatalf("windowed run did not rebuild cache from its own bars: prices=%v state=%+v", b.nlfPrices, b.nlfState)
 	}
 }
+
+func TestNamedLevelFlagDoesNotArmDisabledSide(t *testing.T) {
+	for _, disabled := range []side{sideLong, sideShort} {
+		t.Run(disabled.String(), func(t *testing.T) {
+			bars, cols := namedLevelFlagFixture()
+			key := "PDH"
+			if disabled == sideShort {
+				key = "PDL"
+				for i := range bars {
+					bars[i].O, bars[i].H, bars[i].L, bars[i].C = 202-bars[i].O, 202-bars[i].L, 202-bars[i].H, 202-bars[i].C
+				}
+				cols.PriorDayL = append([]float64(nil), cols.PriorDayH...)
+			}
+			params := flagParams{SetupType: string(dsl.FamilyNamedLevelFlag), TradeWindowUnrestricted: true,
+				AllowLong: disabled != sideLong, AllowShort: disabled != sideShort, RiskUSD: 200, MaxHoldBars: 24,
+				NamedLevelFlag: namedLevelFlagParams{LevelPriority: []string{key}, ImpulseATR: .8, BreakDistanceATR: .1,
+					MaxBars: 10, MinBars: 2, StopPaddingATR: .2, MinStopATR: .4, MaxStopATR: 2,
+					TargetMode: "fixed2R", BodyATR: .5, TargetR: 2}}
+			var b broker
+			b.reset(marketdata.SeriesFromBars(bars), cols, nil, nil, nil, params,
+				RunFixture{Costs: Costs{FillOn: "nextOpen", StartEquity: 10000}}, nil)
+			if trades := b.run(); len(trades) != 0 {
+				t.Fatalf("disabled %s side produced trades: %#v", disabled, trades)
+			}
+			day := floorDivInt64(int64(bars[1].T), 24*60*60*1000)
+			if b.seen.nlf.seen(day, key) {
+				t.Fatalf("disabled %s side consumed the %s attempt", disabled, key)
+			}
+		})
+	}
+}

@@ -33,6 +33,7 @@
       "family-keltner-reversion",
       "family-level-sweep",
       "family-named-level-flag",
+      "family-named-level-flag-short-only",
       "family-named-level-sweep",
       "family-opening-range-breakout",
       "family-price-momentum",
@@ -77,6 +78,6 @@
     "filters": 6,
     "setup-family": 38
   },
-  "runCases": 55,
+  "runCases": 56,
   "schema": "dsl-conformance-metadata-v1"
 }

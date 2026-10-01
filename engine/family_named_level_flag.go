@@ -197,6 +197,9 @@ func (b *broker) onNamedLevelFlagBar(i int) {
 	if b.series.C[i] < b.series.O[i] {
 		sideNow = sideShort
 	}
+	if sideNow == sideLong && !b.params.AllowLong || sideNow == sideShort && !b.params.AllowShort {
+		return
+	}
 	keys := append([]string(nil), b.params.NamedLevelFlag.LevelPriority...)
 	sort.Strings(keys)
 	for _, key := range keys {

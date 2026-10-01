@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.24.0] — 2026-10-01
+
+- Fix named-level flag arming to honor long-only and short-only filters.
+  Disabled sides do not consume a level attempt. Add a short-only execution
+  fixture using a long breakout; existing goldens remain unchanged.
+
 ## [0.23.0] — 2026-10-01
 
 - Add the named-level flag setup with causal completed-level snapshots,

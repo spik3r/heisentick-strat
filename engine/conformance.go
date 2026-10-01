@@ -57,6 +57,7 @@ var implementedRunCases = []string{
 	"family-keltner-expansion",
 	"family-named-level-sweep",
 	"family-named-level-flag",
+	"family-named-level-flag-short-only",
 	"seasonality-filter-min-samples",
 	"money-risk-sizing",
 	"money-partial-exit",
