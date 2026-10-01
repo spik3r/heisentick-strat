@@ -1,0 +1,3 @@
+dsl v6
+strategy { id: rmv-v6-unsupported name: "rmv-v6-unsupported" description: "HT-113 synthetic RMV parser fixture." }
+filters { rmv below 20 }

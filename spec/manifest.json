@@ -1593,6 +1593,12 @@
       "since": 7
     },
     {
+      "id": "directive.rmv",
+      "spelling": "rmv",
+      "classification": "shared",
+      "since": 7
+    },
+    {
       "id": "directive.weekday",
       "spelling": "weekday",
       "classification": "js-only",

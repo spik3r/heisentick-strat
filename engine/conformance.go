@@ -5,6 +5,9 @@ package engine
 // scoreboard: every conformance/run fixture must appear in exactly one of the
 // two, and cmd/conformance writes both lists into conformance/metadata.json.
 var implementedRunCases = []string{
+	"rmv-named-level-allow",
+	"rmv-named-level-block",
+	"rmv-named-level-warmup",
 	"family-down-shock-rebound",
 	"family-down-shock-immediate-time",
 	"family-down-shock-immediate-atr",

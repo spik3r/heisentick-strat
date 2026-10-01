@@ -91,6 +91,9 @@ func (b *broker) runWeekendExtremeFade() []Trade {
 		direction := float64(s)
 		entry := b.series.C[i]
 		atr := atrs[i]
+		if !b.rmvGateOK(i) {
+			continue
+		}
 		b.openPosition(s, entry, order{
 			Side: s, SL: entry - direction*b.params.WeekendExtremeFade.StopATR*atr,
 			TP:      entry + direction*b.params.WeekendExtremeFade.TargetATR*atr,

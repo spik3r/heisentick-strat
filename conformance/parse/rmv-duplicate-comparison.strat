@@ -1,0 +1,6 @@
+dsl v7
+strategy { id: rmv-duplicate-comparison name: "rmv-duplicate-comparison" description: "HT-113 synthetic RMV parser fixture." }
+filters {
+  rmv above 20
+  rmv below 80
+}

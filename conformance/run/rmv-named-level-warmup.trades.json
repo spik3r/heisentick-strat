@@ -1,0 +1,17 @@
+{
+  "case": "rmv-named-level-warmup",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "rmv-named-level-warmup",
+  "symbol": "XAUUSD",
+  "timeframe": "4h",
+  "tradeCount": 0,
+  "trades": []
+}

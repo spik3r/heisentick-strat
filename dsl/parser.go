@@ -29,6 +29,7 @@ type parser struct {
 	entryTfLine         *logicalLine
 	dualEMAAudit        dualEMAParseAudit
 	smaGoldenCrossAudit smaGoldenCrossParseAudit
+	rmvFields           map[string]bool
 }
 
 type logicalLine struct {
@@ -99,6 +100,7 @@ func (p *parser) parse() {
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+	p.validateRMVSourceTimeframe()
 }
 
 func (p *parser) validateStrictHigherTimeframe() {
@@ -163,6 +165,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseMovement(tokens)
 	case "micro":
 		p.parseMicrostructure(line, tokens)
+	case "rmv":
+		p.parseRelativeMeasuredVolatility(line, tokens)
 	case "approach":
 		p.parseApproach(tokens)
 	case "priority":

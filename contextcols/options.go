@@ -2,6 +2,8 @@ package contextcols
 
 // Options controls the causal core context columns implemented in this slice.
 type Options struct {
+	RMVATRPeriod         int
+	RMVLookback          int
 	ATRLen               int
 	ERLen                int
 	EMAFastLen           int

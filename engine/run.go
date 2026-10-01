@@ -165,6 +165,12 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if !implementedFamily(setupType) {
 		return nil, fmt.Errorf("setup family %q is not implemented", setupType)
 	}
+	if err := validateRMVConfig(cfg); err != nil {
+		return nil, err
+	}
+	if err := validateRMVSourceEntryRoute(s.fixture.Symbol, s.fixture.Timeframe, cfg); err != nil {
+		return nil, err
+	}
 	if err := validateDoubleTopBottomPivotWindow(cfg); err != nil {
 		return nil, err
 	}
@@ -252,6 +258,12 @@ func validateRunRequest(request RunRequest) error {
 	setupType := setupTypeFromAny(request.Config["setupType"])
 	if !implementedFamily(setupType) {
 		return fmt.Errorf("setup family %q is not implemented", setupType)
+	}
+	if err := validateRMVConfig(request.Config); err != nil {
+		return err
+	}
+	if err := validateRMVSourceEntryRoute(request.Symbol, request.Timeframe, request.Config); err != nil {
+		return err
 	}
 	if err := validateDoubleTopBottomPivotWindow(request.Config); err != nil {
 		return err

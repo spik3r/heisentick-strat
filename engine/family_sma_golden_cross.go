@@ -102,6 +102,9 @@ func (b *broker) onSMAGoldenCrossBar(i int) {
 		return
 	}
 
+	if !b.rmvGateOK(i) {
+		return
+	}
 	order := order{
 		Side:     sideLong,
 		Size:     1,
