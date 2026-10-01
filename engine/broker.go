@@ -472,7 +472,7 @@ func (b *broker) enterLimit(i int, limit float64, setup setupPlan, expireBars in
 	if b.windowed && !b.executionIndexAllowed(i) {
 		return false
 	}
-	if !b.guardedEntryAllowed(i) || !b.seasonalityGatesOK(i, setup.Side) || !b.guardedCandleQualityOK(i, setup.Side) {
+	if !b.rmvGateOK(i) || !b.guardedEntryAllowed(i) || !b.seasonalityGatesOK(i, setup.Side) || !b.guardedCandleQualityOK(i, setup.Side) {
 		return false
 	}
 	theme, ok := b.dayThemeAdmission(i, setup.Side)

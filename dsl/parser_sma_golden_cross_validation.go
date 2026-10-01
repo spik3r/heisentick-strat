@@ -38,7 +38,7 @@ func (p *parser) validateSMAGoldenCross() {
 	allowed := map[string]bool{
 		"|dsl": true, "|strategy": true, "strategy|strategy": true, "strategy|description": true,
 		"market|slices": true, "setup|type": true, "setup|sma": true,
-		"filters|side": true,
+		"filters|side": true, "filters|rmv": true,
 	}
 	seen := map[string]bool{}
 	for _, authored := range audit.authored {

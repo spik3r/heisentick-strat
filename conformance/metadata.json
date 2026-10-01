@@ -51,6 +51,9 @@
       "research-dsl-dual-ema-resumption-xauusd-daily",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
       "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+      "rmv-named-level-allow",
+      "rmv-named-level-block",
+      "rmv-named-level-warmup",
       "seasonality-filter-min-samples"
     ],
     "todo": {}
@@ -66,12 +69,13 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 61,
+  "parseCases": 67,
   "parseCategories": {
     "deployed-book-dsl": 9,
     "diagnostic": 15,
+    "filters": 6,
     "setup-family": 37
   },
-  "runCases": 51,
+  "runCases": 54,
   "schema": "dsl-conformance-metadata-v1"
 }

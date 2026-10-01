@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.22.0] — 2026-10-01
+
+- Add the v7 RMV filter and reusable ATR-range position series. RMV uses the
+  current ATR within an inclusive trailing ATR window, requires a full seed
+  and lookback, and is unavailable when the ATR range is flat.
+
 ## [0.21.0] — 2026-09-30
 
 - Add the research-only down-shock rebound family with completed 15m context,

@@ -147,6 +147,9 @@ func (b *broker) runIntraHourRunExhaustion() []Trade {
 		if risk <= 0 {
 			continue
 		}
+		if !b.rmvGateOK(i) {
+			continue
+		}
 		b.openPosition(s, entry, order{
 			Side: s, SL: sl, TP: entry - direction*p.TargetR*risk,
 			RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-IHRE",

@@ -43,6 +43,12 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if setupType := setupTypeFromAny(parsed.Config["setupType"]); !implementedFamily(setupType) {
 		return RunResult{}, fmt.Errorf("%s: setup family %q is not implemented", fixture.Case, setupType)
 	}
+	if err := validateRMVConfig(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := validateRMVSourceEntryRoute(fixture.Symbol, fixture.Timeframe, parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	series := marketdata.SeriesFromBars(fixture.Bars)
 	sourceSeries, sourceHTFSeries, err := sourceSeriesForFixture(fixture, parsed.Config)
 	if err != nil {
@@ -284,6 +290,11 @@ func contextOptions(fixture RunFixture, cfg dsl.Config) contextcols.Options {
 			Source:      stringValue(channel, "source", ""),
 		},
 		Seasonality: seasonalitySpecsFromConfig(cfg["seasonalityFilters"]),
+	}
+	if cfg["relativeMeasuredVolatility"] != nil {
+		rmv := mapValue(cfg, "relativeMeasuredVolatility")
+		options.RMVATRPeriod = intValue(rmv, "atrPeriod", 14)
+		options.RMVLookback = intValue(rmv, "lookback", 100)
 	}
 	needsOpenLocation := len(stringSliceValue(cfg["openLocations"])) > 0
 	if setupType == string(dsl.FamilyFlagContinuation) {

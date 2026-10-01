@@ -78,6 +78,7 @@ func (o Options) needs() columnNeeds {
 type Columns struct {
 	Length int
 
+	RMV []float64
 	ATR []float64
 	ER  []float64
 
@@ -242,6 +243,9 @@ func Build(series marketdata.Series, options Options) Columns {
 	}
 
 	cols.ATR = ComputeATR(series, options.ATRLen)
+	if options.RMVATRPeriod > 0 && options.RMVLookback > 0 {
+		cols.RMV = ComputeRelativeMeasuredVolatility(series, options.RMVATRPeriod, options.RMVLookback)
+	}
 	if options.TrendERMode == "trueRange" {
 		cols.ER = ComputeTrueRangeER(series, options.ERLen)
 	} else {

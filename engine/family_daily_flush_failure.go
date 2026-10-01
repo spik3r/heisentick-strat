@@ -125,7 +125,7 @@ func (b *broker) runDailyFlushFailure() []Trade {
 		failedExtension := b.series.L[rawIndex] < b.series.L[flushRaw] &&
 			b.series.C[rawIndex] > b.series.O[rawIndex] &&
 			b.series.C[rawIndex] > b.series.C[flushRaw]
-		if isFlush && failedExtension {
+		if isFlush && failedExtension && b.rmvGateOK(rawIndex) {
 			hasEntryPending = true
 			pendingATR = atr[retainedIndex]
 			pendingFlushRangeATR = dailyFlushFailureDiagnosticNumber(flushRange / atr[retainedIndex-1])

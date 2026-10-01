@@ -37,6 +37,49 @@ func ComputeATR(series marketdata.Series, length int) []float64 {
 	return atr
 }
 
+// ComputeRelativeMeasuredVolatility returns the current ATR's min-max score
+// within a trailing window of ATR values. The window includes the current ATR
+// and requires a complete ATR seed and a full lookback. Flat windows are
+// unavailable because their relative position is undefined.
+//
+// The score is bounded by 0 and 100. It measures relative position in the
+// observed ATR range, not a percentile rank or a volatility forecast.
+func ComputeRelativeMeasuredVolatility(series marketdata.Series, atrPeriod int, lookback int) []float64 {
+	if atrPeriod <= 0 {
+		atrPeriod = 14
+	}
+	if lookback <= 0 {
+		lookback = 100
+	}
+	out := nanSlice(series.Len())
+	// Check fit before adding lengths so oversized parameters cannot overflow.
+	if atrPeriod > series.Len() || lookback > series.Len() || atrPeriod-1 > series.Len()-lookback {
+		return out
+	}
+	atr := ComputeATR(series, atrPeriod)
+	firstCompleteATR := atrPeriod - 1
+	for i := firstCompleteATR + lookback - 1; i < len(atr); i++ {
+		start := i - lookback + 1
+		minimum, maximum := atr[start], atr[start]
+		if !isFinite(minimum) {
+			continue
+		}
+		for j := start + 1; j <= i; j++ {
+			if !isFinite(atr[j]) {
+				minimum = math.NaN()
+				break
+			}
+			minimum = math.Min(minimum, atr[j])
+			maximum = math.Max(maximum, atr[j])
+		}
+		if !isFinite(minimum) || !isFinite(maximum) || maximum <= minimum {
+			continue
+		}
+		out[i] = max(0, min(100, 100*(atr[i]-minimum)/(maximum-minimum)))
+	}
+	return out
+}
+
 // ComputeER matches engine/engine.js Kaufman efficiency ratio.
 func ComputeER(series marketdata.Series, length int) []float64 {
 	if length <= 0 {

@@ -200,6 +200,9 @@ func (b *broker) marketGatesOK(i int) bool {
 }
 
 func (b *broker) marketNonSessionGatesOK(i int) bool {
+	if !b.rmvGateOK(i) {
+		return false
+	}
 	if len(b.params.LocalWeekdays) > 0 || len(b.params.BlockedLocalWeekdays) > 0 || len(b.params.LocalHours) > 0 || len(b.params.BlockedLocalHours) > 0 {
 		if i < 0 || i >= len(b.series.T) {
 			return false

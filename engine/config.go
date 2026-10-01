@@ -7,6 +7,7 @@ import (
 )
 
 type flagParams struct {
+	RMV                        rmvFilter
 	DownShockRebound           downShockReboundParams
 	SetupType                  string
 	TradeWindowUnrestricted    bool
@@ -235,6 +236,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		channelDirectionRequired, channelDirectionText = rawChannelDirectionFilter(channel["directions"])
 	}
 	p := flagParams{
+		RMV:                        rmvFilterFromConfig(cfg),
 		SetupType:                  setupType,
 		TradeWindowUnrestricted:    stringValue(cfg, "tradeWindowMode", "") == "unrestricted",
 		TradeWindowSegments:        stringSliceValue(cfg["tradeWindowSegments"]),

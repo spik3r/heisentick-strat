@@ -77,6 +77,8 @@ file is compiled by the doc-fence tests.
 | `tail rejection at least X` | ratio | Requires rejection-tail quality. | `tail rejection at least 0.35` |
 | `close location at least X` | ratio | Requires close location quality. | `close location at least 0.65` |
 | `entry distance max X ATR` | ATR distance | Caps entry distance from the level. | `entry distance max 1.2 ATR` |
+| `rmv above|below|at least|at most X` | RMV score 0–100 | Gates on Relative Measured Volatility. | `rmv at most 35` |
+| `rmv atr period N` / `rmv lookback N` | positive integer lengths | Sets RMV's ATR and trailing range lengths (defaults 14 and 100). | `rmv lookback 80` |
 | `candle in (...)` | candle names | Restricts signal candle shapes. | `candle in (pin, engulf, outside)` |
 | `setup expires after N candles` | candle count | Limits setup age. | `setup expires after 6 candles` |
 | `when price sweeps ... then signal ...` | edge/side | Adds an explicit sweep-and-reclaim entry rule. | `when price sweeps range.high by 0.3 within 3 then signal short` |

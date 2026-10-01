@@ -135,6 +135,110 @@ func (p *parser) parseMicrostructure(line logicalLine, tokens []string) {
 	p.config["microstructureFilters"] = append(filters, filter)
 }
 
+func (p *parser) parseRelativeMeasuredVolatility(line logicalLine, tokens []string) {
+	if p.dslVersion < 7 {
+		p.err(line, "RMV is available only in dsl v7", "")
+		return
+	}
+	if line.section != "filters" {
+		p.err(line, "RMV directives are only allowed in filters { ... }", "")
+		return
+	}
+	config := copyMap(p.config["relativeMeasuredVolatility"])
+	if config["atrPeriod"] == nil {
+		config["atrPeriod"] = float64(14)
+	}
+	if config["lookback"] == nil {
+		config["lookback"] = float64(100)
+	}
+	if len(tokens) == 4 && strings.EqualFold(tokens[1], "atr") && strings.EqualFold(tokens[2], "period") {
+		if !p.claimRMVField(line, "atrPeriod") {
+			return
+		}
+		value, ok := parseSMAFiniteNumber(tokens[3])
+		if !ok || value < 1 || value != math.Trunc(value) {
+			p.err(line, "RMV ATR period must be a positive integer", "")
+			return
+		}
+		config["atrPeriod"] = value
+		p.config["relativeMeasuredVolatility"] = config
+		return
+	}
+	if len(tokens) == 3 && strings.EqualFold(tokens[1], "lookback") {
+		if !p.claimRMVField(line, "lookback") {
+			return
+		}
+		value, ok := parseSMAFiniteNumber(tokens[2])
+		if !ok || value < 1 || value != math.Trunc(value) {
+			p.err(line, "RMV lookback must be a positive integer", "")
+			return
+		}
+		config["lookback"] = value
+		p.config["relativeMeasuredVolatility"] = config
+		return
+	}
+	valueIndex := -1
+	switch {
+	case len(tokens) == 3 && (strings.EqualFold(tokens[1], "above") || strings.EqualFold(tokens[1], "over")):
+		config["op"], valueIndex = "above", 2
+	case len(tokens) == 3 && (strings.EqualFold(tokens[1], "below") || strings.EqualFold(tokens[1], "under")):
+		config["op"], valueIndex = "below", 2
+	case len(tokens) == 4 && strings.EqualFold(tokens[1], "at") && strings.EqualFold(tokens[2], "least"):
+		config["op"], valueIndex = "atLeast", 3
+	case len(tokens) == 4 && strings.EqualFold(tokens[1], "at") && strings.EqualFold(tokens[2], "most"):
+		config["op"], valueIndex = "atMost", 3
+	default:
+		p.err(line, `RMV filter must be "above N", "below N", "at least N", "at most N", "ATR period N", or "lookback N"`, "")
+		return
+	}
+	if valueIndex >= 0 && !p.claimRMVField(line, "comparison") {
+		return
+	}
+	value, ok := parseSMAFiniteNumber(tokens[valueIndex])
+	if !ok || value < 0 || value > 100 {
+		p.err(line, "RMV threshold must be between 0 and 100", "")
+		return
+	}
+	config["value"] = value
+	p.config["relativeMeasuredVolatility"] = config
+}
+
+func (p *parser) claimRMVField(line logicalLine, field string) bool {
+	if p.rmvFields == nil {
+		p.rmvFields = make(map[string]bool)
+	}
+	if p.rmvFields[field] {
+		p.err(line, "RMV supports one comparison, one ATR period, and one lookback", "")
+		return false
+	}
+	p.rmvFields[field] = true
+	return true
+}
+
+func (p *parser) validateRMVSourceTimeframe() {
+	if p.config["relativeMeasuredVolatility"] == nil {
+		return
+	}
+	source, _ := p.config["sourceTimeframe"].(string)
+	entryTf, _ := p.config["entryTf"].(string)
+	if source == "" {
+		return
+	}
+	if entryTf == "" || strings.EqualFold(entryTf, "current") {
+		p.errorAt(nil, nil, "RMV with a source timeframe requires a supported source-entry route", "")
+		return
+	}
+	slices, _ := p.config["slices"].([]any)
+	for _, raw := range slices {
+		slice, _ := raw.(map[string]any)
+		symbol, _ := slice["symbol"].(string)
+		if !strings.EqualFold(symbol, "XAUUSD") {
+			p.errorAt(nil, nil, "RMV with a source timeframe requires a supported source-entry route", "")
+			return
+		}
+	}
+}
+
 func (p *parser) parseSourceTimeframe(line logicalLine, tokens []string) bool {
 	if len(tokens) < 2 || !strings.EqualFold(tokens[1], "timeframe") {
 		return false

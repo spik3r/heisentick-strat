@@ -316,6 +316,23 @@ Structure filters:
 - `close location at least X` — minimum close position within the bar.
 - `entry distance max X ATR` — reject entries further than X ATR from the
   level.
+- `rmv above|below|at least|at most X`, `rmv atr period N`, and
+  `rmv lookback N` — a v7 Relative Measured Volatility filter. RMV is the
+  current simple-average ATR's min-max position in the trailing window of
+  completed ATR values, including the current value:
+  `100 * (ATR - windowMin) / (windowMax - windowMin)`. Defaults are 14 ATR
+  bars and a 100-value lookback. The ATR uses the existing simple moving
+  average of true range, including gaps from the prior close. It needs a full
+  ATR seed and full lookback; its first value is at index
+  `atrPeriod + lookback - 2`. A flat ATR window is unavailable. The value is
+  bounded from 0 to 100 and uses price only. One comparison is allowed; repeat
+  comparisons do not express a range. Parameter-only lines expose the series
+  without gating entries. The feature is independent of calendar gaps and
+  operates on observed bars. With `source timeframe`, RMV requires a supported
+  XAUUSD source-entry route; a source-only or non-XAUUSD route is rejected so
+  the native and browser engines use the same decision-bar value. The
+  down-shock rebound source-entry runner also rejects RMV because it does not
+  provide this context.
 
 Trigger:
 

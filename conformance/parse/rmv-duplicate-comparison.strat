@@ -1,0 +1,5 @@
+dsl v7
+filters {
+  rmv above 20
+  rmv below 80
+}

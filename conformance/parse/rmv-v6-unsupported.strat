@@ -1,0 +1,2 @@
+dsl v6
+filters { rmv below 20 }

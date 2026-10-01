@@ -1,0 +1,5 @@
+dsl v7
+filters {
+  rmv atr period 10
+  rmv lookback 80
+}

@@ -33,6 +33,7 @@ var parserDirectiveHandlerBindings = map[string]string{
 	"directive.entry":          "parser.apply:parseEntry",
 	"directive.approach":       "parser.apply:parseApproach",
 	"directive.micro":          "parser.apply:parseMicrostructure",
+	"directive.rmv":            "parser.apply:parseRelativeMeasuredVolatility",
 	"directive.trigger":        "parser.apply:parseTrigger",
 	"directive.rejection":      "parser.apply:parseTrigger",
 	"directive.candle":         "parser.apply:parseTrigger",
