@@ -62,6 +62,41 @@ func TestNamedLevelFlagUsesNextOpenAndSignalAnchoredTwoR(t *testing.T) {
 	}
 }
 
+func TestNamedLevelFlagShortUsesSignalATRStopAndNextOpen(t *testing.T) {
+	bars, _ := namedLevelFlagFixture()
+	// Mirror the long fixture around 101: the impulse breaches PDL, the first
+	// two flag bars include a green pullback, and the final red close breaks
+	// below the completed flag low.
+	for i := range bars {
+		bars[i].O, bars[i].H, bars[i].L, bars[i].C = 202-bars[i].O, 202-bars[i].L, 202-bars[i].H, 202-bars[i].C
+	}
+	series := marketdata.SeriesFromBars(bars)
+	cols := contextcols.Build(series, contextcols.Options{})
+	cols.ATR = make([]float64, len(bars))
+	cols.PriorDayL = make([]float64, len(bars))
+	for i := range bars {
+		cols.ATR[i], cols.PriorDayL[i] = 1, 101
+	}
+	cols.ATR[4] = .5 // stop padding must use breakout signal ATR, not impulse ATR
+	params := flagParams{SetupType: string(dsl.FamilyNamedLevelFlag), TradeWindowUnrestricted: true,
+		AllowLong: true, AllowShort: true, RiskUSD: 200, MaxHoldBars: 24,
+		NamedLevelFlag: namedLevelFlagParams{LevelPriority: []string{"PDL"}, ImpulseATR: .8, BreakDistanceATR: .1, MaxBars: 10, MinBars: 2, StopPaddingATR: .2, MinStopATR: .4, MaxStopATR: 2, TargetMode: "fixed2R", BodyATR: .5, TargetR: 2}}
+	var b broker
+	b.reset(series, cols, nil, nil, nil, params, RunFixture{Costs: Costs{FillOn: "nextOpen", StartEquity: 10000}}, nil)
+	trades := b.run()
+	if len(trades) != 1 {
+		t.Fatalf("trades = %#v, want one short named-level flag trade", trades)
+	}
+	trade := trades[0]
+	if trade.EntryIndex != 5 || trade.Side != "short" {
+		t.Fatalf("entry=%d side=%v, want next-open index 5 and short", trade.EntryIndex, trade.Side)
+	}
+	wantStop := 202 - 101.6 + .2*.5
+	if math.Abs(trade.SL-wantStop) > 1e-9 {
+		t.Fatalf("stop = %v, want %v using breakout signal ATR", trade.SL, wantStop)
+	}
+}
+
 func TestNamedLevelFlagHoldsFor24ObservedBars(t *testing.T) {
 	bars, cols := namedLevelFlagFixture()
 	for len(bars) < 30 {
