@@ -18,6 +18,8 @@ var implementedRunCases = []string{
 	"family-double-top-bottom",
 	"deployed-dsl-dual-ema-resumption-xauusd-four-hour",
 	"family-fib-continuation",
+	"htf-must-agree-v8-strict",
+	"htf-must-not-oppose-v8",
 	"family-channel-break-hold",
 	"family-level-sweep",
 	"family-triple-push-exhaustion",

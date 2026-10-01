@@ -332,13 +332,20 @@ func regimeAllowed(regime int8, allowed []string) bool {
 	return containsString(allowed, name)
 }
 
+// htfGateOn reports whether an htf.mode asks for any higher-timeframe gate:
+// "notAgainst" (a flat HTF is allowed) or "with" (dsl v8 "must agree": the
+// HTF trend must point with the trade, flat blocks).
+func htfGateOn(mode string) bool {
+	return mode == "notAgainst" || mode == "with"
+}
+
 func (b *broker) htfAllows(i int, s side) bool {
 	if !b.params.UseHTFBias {
 		return true
 	}
-	// "Must not oppose": fail closed when HTF bias is requested but no completed
-	// bar is available (absent series or a gap). A genuine flat bar opposes
-	// neither side and is allowed.
+	// Fail closed when HTF bias is requested but no completed bar is available
+	// (absent series or a gap). A genuine flat bar opposes neither side, so
+	// "must not oppose" allows it; strict "must agree" (HTFStrict) does not.
 	if i < 0 || i >= len(b.htfTrend) {
 		return false
 	}
@@ -347,7 +354,7 @@ func (b *broker) htfAllows(i int, s side) bool {
 		return false
 	}
 	if htfTrend == trendFlat {
-		return true
+		return !b.params.HTFStrict
 	}
 	if s == sideLong {
 		return htfTrend == trendUp

@@ -191,8 +191,10 @@ setup {
 }
 ```
 
-- `higher timeframe must agree` — require HTF alignment (or the softer
-  `higher timeframe must not oppose entry`).
+- `higher timeframe must agree` — require HTF alignment. Under `dsl v8` this
+  is strict (a flat HTF bar blocks the trade); the softer `higher timeframe
+  must not oppose entry` allows a flat bar. Under v6/v7 the two mean the
+  same (the softer gate).
 - `side both` — allow longs and shorts (or `side long only` / `side short only`).
 - `candle in (pin, engulf)` — accept only pin bars and engulfing signals.
 

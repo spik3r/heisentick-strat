@@ -1,0 +1,20 @@
+dsl v8
+strategy "HTF Must Agree V8" {
+  description "dsl v8: higher timeframe must agree compiles to htf mode with (strict, a flat HTF blocks the trade)."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+filters {
+  higher timeframe must agree
+}
+
+setup {
+  type: break retest
+}
+
+target {
+  target 1R
+}

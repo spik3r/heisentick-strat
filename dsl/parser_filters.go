@@ -441,7 +441,14 @@ func (p *parser) parseHigherTimeframe(tokens []string) {
 	if containsLower(tokens, "off") {
 		htf["mode"] = "off"
 	} else if containsLower(tokens, "agree") {
-		htf["mode"] = "notAgainst"
+		// dsl v8: "must agree" means the HTF trend must point with the trade
+		// (a flat HTF blocks it); "must not oppose entry" keeps the lenient
+		// gate. Under v6/v7 both spellings mean notAgainst, unchanged.
+		if p.dslVersion >= 8 {
+			htf["mode"] = "with"
+		} else {
+			htf["mode"] = "notAgainst"
+		}
 	} else {
 		htf["mode"] = "notAgainst"
 	}

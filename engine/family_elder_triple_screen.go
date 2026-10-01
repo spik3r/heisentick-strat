@@ -18,7 +18,7 @@ func elderTripleScreenParamsFrom(elderTripleScreen, cfg, htf, stop, target map[s
 		StopBufferATR:       numberValue(stop, "paddingAtr", 0.3),
 		TrailATR:            numberValue(elderTripleScreen, "trailAtr", 1.5),
 		TrailTriggerR:       numberValue(elderTripleScreen, "trailR", 1.5),
-		UseHTFBias:          stringValue(htf, "mode", "off") == "notAgainst",
+		UseHTFBias:          htfGateOn(stringValue(htf, "mode", "off")),
 		UseTrigger:          !triggerExplicit || !containsString(triggerCandles, "any"),
 	}
 }

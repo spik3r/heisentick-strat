@@ -246,7 +246,7 @@ func (b *broker) htfAllowsFade(i int, s side) bool {
 		return false // HTF requested but no completed bar -> fail closed
 	}
 	if htfTrend == trendFlat {
-		return true
+		return !b.params.HTFStrict
 	}
 	if s == sideShort {
 		return htfTrend == trendUp

@@ -11,10 +11,11 @@ must reproduce those parse and trade goldens byte-for-byte.
 Scope note: Strat source files conventionally use the `.strat` extension. The
 in-file version header names the language version, not the file format. `dsl
 v6` and `dsl v7` are parsed identically to each other; `dsl v8` changes exactly
-two things — the meaning of the bare `sessions(...)` directive (§4), and no
+three things — the meaning of the bare `sessions(...)` directive (§4), no
 hidden market filters (an unwritten day-type or movement line means no such
-gate, §4) — and is otherwise identical to v6/v7. v6-only spellings that survive for compatibility
-are marked *deprecated* and emit warnings.
+gate, §4), and a strict `higher timeframe must agree` (a flat HTF blocks the
+trade, §4) — and is otherwise identical to v6/v7. v6-only spellings that
+survive for compatibility are marked *deprecated* and emit warnings.
 
 ## 1. Document model
 
@@ -325,7 +326,12 @@ Structure filters:
   `channel min width X ATR` — channel gate family; any channel directive
   enables channel detection.
 - `higher timeframe must agree` | `higher timeframe must not oppose entry` |
-  `higher timeframe off` — HTF gate (mode notAgainst/off; default off).
+  `higher timeframe off` — HTF gate (default off). `must not oppose entry`
+  (mode `notAgainst`) rejects a trade only when the last completed HTF bar
+  trends against it; a flat bar is allowed. Under `dsl v8`, `must agree`
+  (mode `with`) is strict: the HTF bar must trend with the trade, so a flat
+  bar blocks it. Under `dsl v6`/`v7`, `must agree` means `notAgainst`, as
+  before. Both modes fail closed when no completed HTF bar is available.
   Accepted shorthands are `<timeframe> must agree`, `higher timeframe
   <timeframe> must agree`, `htf must agree`, and `mtf must not oppose entry`
   (`higher time frame` with a space is accepted). Supported timeframe tokens

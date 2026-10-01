@@ -36,6 +36,8 @@
       "family-volume-anomaly-exhaustion",
       "family-vwap-extension-fade",
       "family-weekend-extreme-fade",
+      "htf-must-agree-v8-strict",
+      "htf-must-not-oppose-v8",
       "money-partial-exit",
       "money-risk-sizing",
       "money-stop-distance-gate",
@@ -57,12 +59,12 @@
     "dslInstitutionalLiquiditySweep is a deployed-book member on current origin/main but has no strategies/source/*.strat source; it is excluded from the Strat language corpus.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 61,
+  "parseCases": 62,
   "parseCategories": {
     "deployed-book-dsl": 8,
-    "diagnostic": 26,
+    "diagnostic": 27,
     "setup-family": 27
   },
-  "runCases": 42,
+  "runCases": 44,
   "schema": "dsl-conformance-metadata-v1"
 }

@@ -30,6 +30,7 @@ type flagParams struct {
 	TargetR                    float64
 	TargetEdge                 string
 	UseHTFBias                 bool
+	HTFStrict                  bool
 	UseAsiaWindow              bool
 	UseMidWindow               bool
 	UseLondonWindow            bool
@@ -247,7 +248,8 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		LevelToleranceATR:          numberValue(flag, "levelToleranceAtr", 0.5),
 		TargetR:                    numberValue(target, "flagR", 0.8),
 		TargetEdge:                 stringValue(target, "edge", "range"),
-		UseHTFBias:                 stringValue(htf, "mode", "off") == "notAgainst",
+		UseHTFBias:                 htfGateOn(stringValue(htf, "mode", "off")),
+		HTFStrict:                  stringValue(htf, "mode", "off") == "with",
 		UseAsiaWindow:              boolValue(sessions, "asia", true),
 		UseMidWindow:               true,
 		UseLondonWindow:            boolValue(sessions, "london", true),
@@ -362,7 +364,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 			TargetR:              numberValue(target, "tpeR", 2),
 			MinER:                numberValue(triplePush, "minEr", 0),
 			MaxER:                numberValue(triplePush, "maxEr", 1),
-			UseHTFBias:           stringValue(htf, "mode", "off") == "notAgainst",
+			UseHTFBias:           htfGateOn(stringValue(htf, "mode", "off")),
 			UseTrigger:           !triggerExplicit || !containsString(triggerCandles, "any"),
 		},
 		VWAPExtensionFade: vwapExtensionFadeParams{

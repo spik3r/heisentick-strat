@@ -44,6 +44,17 @@ version and is named here.
   It is a compile error with any other setup type. New parse fixtures and a
   pair of run fixtures (`family-named-level-sweep-reentry-default-cap` /
   `-allowed`, 1 vs 2 trades on the same bars) pin the behavior.
+- `dsl v8`: `higher timeframe must agree` is strict (owner decision). It
+  compiles to the new `htf.mode: "with"`: the last completed HTF bar must
+  trend with the trade, so a flat HTF bar blocks it. `higher timeframe must
+  not oppose entry` keeps `notAgainst` (flat allowed). Under v6/v7 both
+  spellings still mean `notAgainst`, so no existing compiled config changes.
+  Every family's HTF gate honours the strict mode (shared `htfAllows`, the
+  flag continuation gate and the fade variant). New fixtures:
+  `diagnostic-htf-must-agree-v8` (parse) and the run twins
+  `htf-must-agree-v8-strict` / `htf-must-not-oppose-v8`, whose HTF series
+  has one bar edited to close at its open, so strict drops that trade
+  (14 vs 15).
 - `named level sweep` fix: "closes back above|below it" with no `by at
   least Y ATR` margin now needs a close strictly past the level. A close
   exactly on the level no longer counts as a reclaim (it did under

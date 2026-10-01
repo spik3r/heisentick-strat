@@ -60,7 +60,7 @@ func (b *broker) onFlagBar(i int) {
 		if htfTrend == htfUnavailable {
 			return
 		}
-		if htfTrend != trendFlat && htfTrend != b.cols.TrendDir[i] {
+		if htfTrend == trendFlat && p.HTFStrict || htfTrend != trendFlat && htfTrend != b.cols.TrendDir[i] {
 			return
 		}
 	}
