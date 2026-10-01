@@ -144,3 +144,50 @@ func TestRunFixtureCaseAppliesSeasonalityMinSampleGate(t *testing.T) {
 		t.Fatal("fixture must produce a trade without the seasonality gate so the gate is exercised")
 	}
 }
+
+func TestSeasonalityFilterEmitsCausalTradeDiagnostics(t *testing.T) {
+	fixturePath := filepath.Join(runFixtureDir(), "research-dsl-session-bias-seasonal-convergence-quality-fifteen.fixture.json")
+	fixture, err := LoadRunFixture(fixturePath)
+	if err != nil {
+		t.Fatalf("LoadRunFixture: %v", err)
+	}
+	source, err := os.ReadFile(filepath.Join(runFixtureDir(), "research-dsl-session-bias-seasonal-convergence-quality-fifteen.strat"))
+	if err != nil {
+		t.Fatalf("ReadFile: %v", err)
+	}
+	result, err := RunFixtureCase(fixture, string(source))
+	if err != nil {
+		t.Fatalf("RunFixtureCase: %v", err)
+	}
+	if len(result.Trades) == 0 {
+		t.Fatal("fixture must produce trades to exercise seasonality metadata")
+	}
+	parsed, err := dsl.Parse(string(source))
+	if err != nil || len(parsed.Errors) != 0 {
+		t.Fatalf("Parse errors=%v err=%v", parsed.Errors, err)
+	}
+	cols := contextcols.Build(marketdata.SeriesFromBars(fixture.Bars), contextOptions(fixture, parsed.Config))
+	wantRows := cols.Seasonality[contextcols.SeasonalityKey{Dimension: "intraday", Lookback: "all", MinSamples: 24}]
+	seasonality, ok := result.Trades[0].Meta["seasonality"].(map[string]any)
+	if !ok {
+		t.Fatalf("seasonality metadata = %#v, want object", result.Trades[0].Meta["seasonality"])
+	}
+	entry, ok := seasonality["intraday:all"].(map[string]any)
+	if !ok {
+		t.Fatalf("intraday:all diagnostic = %#v, want object", seasonality["intraday:all"])
+	}
+	trade := result.Trades[0]
+	if trade.EntryIndex < 0 || trade.EntryIndex >= len(wantRows) {
+		t.Fatalf("entry index %d outside seasonality rows %d", trade.EntryIndex, len(wantRows))
+	}
+	want := wantRows[trade.EntryIndex]
+	checks := map[string]any{
+		"bucket": want.Bucket, "classification": want.Classification,
+		"bullishPercent": want.BullishPercent, "directionalCount": want.DirectionalCount,
+	}
+	for key, value := range checks {
+		if !reflect.DeepEqual(entry[key], value) {
+			t.Errorf("intraday:all %s = %#v, want causal column value %#v", key, entry[key], value)
+		}
+	}
+}

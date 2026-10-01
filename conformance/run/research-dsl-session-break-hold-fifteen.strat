@@ -1,0 +1,38 @@
+dsl v6
+# Session Break-Hold - 15m
+strategy "Session Break-Hold 15m" {
+  description "Join the continuation after a prior-session high/low break holds for several closes (Asia/London levels, London+NY windows, 1h bias)."
+}
+
+market conditions {
+  timeframes(15m)
+  sessions(london, ny)
+  day type in (trending, choppy)
+}
+
+levels {
+  priority(AH, AL, LH, LL)
+}
+
+setup {
+  type: session break hold
+  hold 3 candles
+  stop inside range 0.5 ATR
+}
+
+filters {
+  higher timeframe must agree
+}
+
+target {
+  target 1.2R capped at pole
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}

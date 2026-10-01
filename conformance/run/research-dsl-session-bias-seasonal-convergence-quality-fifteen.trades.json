@@ -1,0 +1,154 @@
+{
+  "case": "research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.06,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1h",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslSessionBiasSeasonalConvergenceQualityFifteen",
+  "symbol": "XAUUSD",
+  "timeframe": "15m",
+  "tradeCount": 4,
+  "trades": [
+    {
+      "entry": 1313.625,
+      "entryIndex": 1573,
+      "entryT": 1550038500000,
+      "exit": 1312.54217857143,
+      "exitIndex": 1576,
+      "exitT": 1550041200000,
+      "initialSl": 1312.60217857143,
+      "initialTp": 1314.72038571429,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "AH",
+        "levelPrice": 1312.818,
+        "seasonality": {
+          "intraday:all": {
+            "bucket": "06:00",
+            "bullishPercent": 49.25373134328358,
+            "classification": "neutral",
+            "directionalCount": 67
+          }
+        },
+        "setup": "sessionBreakHold",
+        "side": "long"
+      },
+      "pnl": -211.732253221121,
+      "points": -1.08282142857138,
+      "reason": "sl",
+      "side": "long",
+      "size": 195.537553685533,
+      "sl": 1312.60217857143,
+      "tag": "DSL-SBH:AH",
+      "tp": 1314.72038571429
+    },
+    {
+      "entry": 1288.718,
+      "entryIndex": 2936,
+      "entryT": 1551852900000,
+      "exit": 1290.19331428571,
+      "exitIndex": 2938,
+      "exitT": 1551854700000,
+      "initialSl": 1287.32857142857,
+      "initialTp": 1290.25331428571,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "LH",
+        "levelPrice": 1287.708,
+        "seasonality": {
+          "intraday:all": {
+            "bucket": "06:00",
+            "bullishPercent": 46.45669291338583,
+            "classification": "neutral",
+            "directionalCount": 127
+          }
+        },
+        "setup": "sessionBreakHold",
+        "side": "long"
+      },
+      "pnl": 212.362739050004,
+      "points": 1.47531428571438,
+      "reason": "tp",
+      "side": "long",
+      "size": 143.944067448092,
+      "sl": 1287.32857142857,
+      "tag": "DSL-SBH:LH",
+      "tp": 1290.25331428571
+    },
+    {
+      "entry": 1308.195,
+      "entryIndex": 3887,
+      "entryT": 1553086800000,
+      "exit": 1306.24467857143,
+      "exitIndex": 3890,
+      "exitT": 1553089500000,
+      "initialSl": 1306.30467857143,
+      "initialTp": 1310.33138571429,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "AH",
+        "levelPrice": 1306.835,
+        "seasonality": {
+          "intraday:all": {
+            "bucket": "13:00",
+            "bullishPercent": 54.81927710843374,
+            "classification": "neutral",
+            "directionalCount": 166
+          }
+        },
+        "setup": "sessionBreakHold",
+        "side": "long"
+      },
+      "pnl": -206.348126735811,
+      "points": -1.95032142857121,
+      "reason": "sl",
+      "side": "long",
+      "size": 105.802112263607,
+      "sl": 1306.30467857143,
+      "tag": "DSL-SBH:AH",
+      "tp": 1310.33138571429
+    },
+    {
+      "entry": 1318.885,
+      "entryIndex": 4160,
+      "entryT": 1553516100000,
+      "exit": 1320.55312857143,
+      "exitIndex": 4167,
+      "exitT": 1553522400000,
+      "initialSl": 1317.33489285714,
+      "initialTp": 1320.61312857143,
+      "meta": {
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "levelKey": "AH",
+        "levelPrice": 1317.788,
+        "seasonality": {
+          "intraday:all": {
+            "bucket": "12:00",
+            "bullishPercent": 49.44444444444444,
+            "classification": "neutral",
+            "directionalCount": 180
+          }
+        },
+        "setup": "sessionBreakHold",
+        "side": "long"
+      },
+      "pnl": 215.227518835131,
+      "points": 1.66812857142872,
+      "reason": "tp",
+      "side": "long",
+      "size": 129.023339400507,
+      "sl": 1318.93893928571,
+      "tag": "DSL-SBH:AH",
+      "tp": 1320.61312857143
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+dsl v7
+# Session-Bias Seasonal Convergence Quality - 15m
+strategy "Session-Bias Seasonal Convergence Quality 15m" {
+  description "Long XAUUSD session-high continuation when live session bias, higher-timeframe direction, and causal intraday seasonality agree, excluding the predeclared weak Tuesday and London-close pockets."
+}
+
+market conditions {
+  slices(XAUUSD 15m)
+  sessions(london, ny)
+  trade window in (london.open, london.middle, ny.open, ny.middle, ny.close)
+  local weekday not in (Tue)
+  day type in (trending, choppy)
+  session bias up
+  seasonality intraday all in (neutral, bullish, extreme_bullish) min samples 24
+}
+
+levels {
+  priority(AH, LH)
+}
+
+setup {
+  type: session break hold
+  hold 3 candles
+  stop inside range 0.5 ATR
+}
+
+filters {
+  side long only
+  higher timeframe must agree
+}
+
+target {
+  target 1.2R capped at pole
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 12 candles after trade
+}
+
+execution {
+  risk: 200 USD
+}
