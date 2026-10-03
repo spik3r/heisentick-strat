@@ -68,9 +68,20 @@ type InteractiveRunResult struct {
 	Stats         InteractiveStats      `json:"stats"`
 }
 
-// RunInteractiveFixture currently admits the ordinary SMA Golden Cross chart
-// route only. Scheduled source-entry and special-family loops do not yet emit
-// complete per-bar marks; other families lack verified skip diagnostics.
+// The admitted ordinary families make no skip-reason decisions. Scheduled
+// source-entry and special-family loops do not yet emit complete per-bar marks;
+// other families have not qualified their skip diagnostics.
+func interactiveOrdinaryFamily(setupType string) bool {
+	switch setupType {
+	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption):
+		return true
+	default:
+		return false
+	}
+}
+
+// RunInteractiveFixture admits only ordinary chart-timeframe families whose
+// complete per-bar marks and empty skip map are verified above.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
@@ -86,11 +97,11 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	if len(parsed.Errors) != 0 {
 		return InteractiveRunResult{}, fmt.Errorf("DSL parse errors: %v", parsed.Errors)
 	}
-	if setupTypeFromAny(parsed.Config["setupType"]) != string(dsl.FamilySMAGoldenCross) ||
+	if !interactiveOrdinaryFamily(setupTypeFromAny(parsed.Config["setupType"])) ||
 		sourceTimeframeFromConfig(parsed.Config) != "" ||
 		fixture.SourceTimeframe != "" || len(fixture.SourceBars) != 0 ||
 		len(fixture.HTFBars) != 0 || len(fixture.SourceHTFBars) != 0 {
-		return InteractiveRunResult{}, fmt.Errorf("%w: only chart-timeframe SMA Golden Cross without source/HTF inputs is admitted", ErrInteractiveUnsupported)
+		return InteractiveRunResult{}, fmt.Errorf("%w: only qualified chart-timeframe ordinary families without source/HTF inputs are admitted", ErrInteractiveUnsupported)
 	}
 	costs := fixture.Costs.normalized()
 	if costs.StartEquity <= 0 || costs.FeePerUnit < 0 || costs.Slippage < 0 || costs.SlippageBps < 0 ||

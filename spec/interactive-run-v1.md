@@ -8,14 +8,21 @@ does not change the `dsl-conformance-trades-v1` result or its goldens.
 
 ## Admitted route
 
-Only a chart-timeframe `smaGoldenCross` DSL strategy on its declared route,
-with no source or HTF bar inputs, is admitted. The existing fixture costs
+Only chart-timeframe `smaGoldenCross` and `dualEmaResumption` DSL strategies on
+their declared routes, with no source or HTF bar inputs, are admitted. These
+ordinary handlers do not emit skip reasons; `skips` is the empty object for
+both. The existing fixture costs
 (`fillOn`, slippage, basis-point slippage, fee per unit, positive start equity)
 are supported. Route mismatch, source/HTF input, and every other setup family
 are explicit `unsupported-route` errors. The ordinary broker loop supplies
 the marks. Scheduled source-entry, special-family and windowed loops are not
-represented by this version. SMA Golden Cross does not emit skip reasons, so
-`skips` is exactly an empty object for this admitted route.
+represented by this version. Adding a family with skip diagnostics requires
+an explicit contract extension rather than silently emitting an empty map.
+Same-build native/WASM parity requires identical trades, statistics, closed
+equity and error fields. Dual EMA marked equity may differ by at most `1e-9`
+absolute across Go targets due to floating-point rounding; the admitted
+5000-bar fixture currently differs at 13 marks by at most `1.82e-12`. Browser
+replay comparisons must apply this tolerance only to `equityCurve` values.
 
 ## Success envelope
 

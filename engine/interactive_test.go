@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"math"
+	"os"
+	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -12,6 +14,7 @@ const interactiveSMASource = `dsl v7
 strategy "Interactive SMA" {
   description "Small marked-equity fixture."
 }
+
 market conditions {
   slices(XAUUSD 4h)
 }
@@ -23,6 +26,53 @@ setup {
 filters {
   side long only
 }`
+
+func TestInteractiveDualEMAUsesOrdinaryTradeAndEquityPath(t *testing.T) {
+	base := filepath.Join("..", "conformance", "run", "deployed-dsl-dual-ema-resumption-xauusd-four-hour")
+	raw, err := os.ReadFile(base + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(base + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := RunInteractiveFixture(raw, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture, err := DecodeRunFixture(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := RunFixtureCase(fixture, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
+		len(result.EquityCurve) != len(fixture.Bars) ||
+		len(result.ClosedEquity) != len(fixture.Bars) || len(result.Skips) != 0 ||
+		result.Stats.EndEquity != result.CashEndEquity {
+		t.Fatalf("dual EMA interactive contract disagrees with ordinary run: %+v", result)
+	}
+	var prefixFixture RunFixture
+	if err := json.Unmarshal(raw, &prefixFixture); err != nil {
+		t.Fatal(err)
+	}
+	prefixFixture.RawBars = prefixFixture.RawBars[:len(prefixFixture.RawBars)/2]
+	prefixRaw, err := json.Marshal(prefixFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	prefix, err := RunInteractiveFixture(prefixRaw, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(prefix.EquityCurve, result.EquityCurve[:len(prefix.EquityCurve)]) ||
+		!reflect.DeepEqual(prefix.ClosedEquity, result.ClosedEquity[:len(prefix.ClosedEquity)]) {
+		t.Fatal("dual EMA prior equity marks changed after a suffix was appended")
+	}
+}
 
 func interactiveSMAFixture(t *testing.T, bars [][]float64) []byte {
 	t.Helper()

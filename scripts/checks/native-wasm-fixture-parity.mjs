@@ -106,9 +106,44 @@ try {
   assert.equal(wasmInteractive.closedEquityCurve.length, interactiveFixture.bars.length);
   assert.ok(wasmInteractive.run.tradeCount > 0);
   assert.equal(wasmInteractive.stats.endEquity, wasmInteractive.cashEndEquity);
+  const dualBase = join(root, 'conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour');
+  const dualFixtureRaw = readFileSync(`${dualBase}.fixture.json`, 'utf8');
+  const dualSource = readFileSync(`${dualBase}.strat`, 'utf8');
+  writeFileSync(interactiveFixturePath, dualFixtureRaw);
+  writeFileSync(interactiveSourcePath, dualSource);
+  const nativeDual = JSON.parse(command(nativePath,
+    ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+  const wasmDual = JSON.parse(globalThis.engineRunInteractiveFixture(dualFixtureRaw, dualSource));
+  const dualNumericDiffs = [];
+  function compareDual(a, b, path = '') {
+    if (typeof a === 'number' && typeof b === 'number') {
+      if (a !== b) dualNumericDiffs.push({ path, abs: Math.abs(a - b), a, b });
+      return;
+    }
+    if (Array.isArray(a) && Array.isArray(b)) {
+      assert.equal(a.length, b.length, `${path} length`);
+      a.forEach((item, index) => compareDual(item, b[index], `${path}[${index}]`));
+      return;
+    }
+    if (a && b && typeof a === 'object' && typeof b === 'object') {
+      assert.deepStrictEqual(Object.keys(a).sort(), Object.keys(b).sort(), `${path} keys`);
+      for (const key of Object.keys(a)) compareDual(a[key], b[key], path ? `${path}.${key}` : key);
+      return;
+    }
+    assert.deepStrictEqual(a, b, `${path} nonnumeric value`);
+  }
+  compareDual(wasmDual, nativeDual);
+  assert.ok(dualNumericDiffs.every((difference) => /^equityCurve\[\d+\]$/.test(difference.path)
+    && difference.abs <= 1e-9), 'dual EMA changed a decision, stat, closed mark, or marked equity beyond 1e-9');
+  assert.equal(wasmDual.schema, 'dsl-interactive-run-v1');
+  assert.ok(wasmDual.run.tradeCount > 0);
+  assert.equal(wasmDual.equityCurve.length, 5000);
+  assert.equal(wasmDual.closedEquityCurve.length, 5000);
+  assert.deepStrictEqual(wasmDual.skips, {});
   const unsupported = { ...interactiveFixture, sourceBars: [interactiveFixture.bars[0]] };
   const unsupportedRaw = JSON.stringify(unsupported);
   writeFileSync(interactiveFixturePath, unsupportedRaw);
+  writeFileSync(interactiveSourcePath, interactiveSource);
   const nativeUnsupported = JSON.parse(command(nativePath,
     ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
   const wasmUnsupported = JSON.parse(globalThis.engineRunInteractiveFixture(unsupportedRaw, interactiveSource));
@@ -123,7 +158,13 @@ try {
       tradeCount: wasmInteractive.run.tradeCount,
       bars: wasmInteractive.equityCurve.length,
       outputSha256: sha256(JSON.stringify(nativeInteractive)),
-      unsupportedCode: wasmUnsupported.error.code } }, null, 2));
+      unsupportedCode: wasmUnsupported.error.code },
+    dualEMAResult: { route: 'chart-timeframe-dual-ema-resumption',
+      tradeCount: wasmDual.run.tradeCount, bars: wasmDual.equityCurve.length,
+      nativeOutputSha256: sha256(JSON.stringify(nativeDual)),
+      wasmOutputSha256: sha256(JSON.stringify(wasmDual)),
+      numericDifferences: dualNumericDiffs.length,
+      maxMarkedEquityAbsDrift: Math.max(0, ...dualNumericDiffs.map((difference) => difference.abs)) } }, null, 2));
 } catch (error) {
   console.error(error);
   process.exitCode = 1;
