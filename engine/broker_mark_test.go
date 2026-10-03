@@ -34,7 +34,7 @@ func TestBrokerMarkPrecedesFinalLiquidationAndResetClearsCapture(t *testing.T) {
 		t.Fatalf("last mark %.12f, post-liquidation equity %.12f", b.equityCurve[5], 10000+b.realized)
 	}
 	b.reset(series, contextcols.Columns{}, nil, nil, nil, params, fixture, nil)
-	if b.equityCurve != nil || b.realized != 0 || len(b.trades) != 0 {
+	if b.equityCurve != nil || b.cashCurve != nil || b.realized != 0 || len(b.trades) != 0 {
 		t.Fatalf("reset retained marked-run state: curve %v, realized %v, trades %+v", b.equityCurve, b.realized, b.trades)
 	}
 }

@@ -76,6 +76,7 @@ type broker struct {
 	// equityCurve is populated only for an explicitly marked run. Keep the
 	// conformance trades-only path allocation-free.
 	equityCurve            []float64
+	cashCurve              []float64
 	flagLastEntry          int
 	hasFlagEntry           bool
 	rbfLastEntry           int
@@ -170,6 +171,7 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.trades = trades[:0]
 	b.realized = 0
 	b.equityCurve = nil
+	b.cashCurve = nil
 	b.flagLastEntry = 0
 	b.hasFlagEntry = false
 	b.rbfLastEntry = 0
@@ -315,10 +317,17 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 // optional final-data liquidation. Closed trades alone cannot recover this
 // intratrade equity path or its drawdown.
 func (b *broker) markToMarket(i int) {
+	if b.equityCurve == nil && b.cashCurve == nil {
+		return
+	}
+	cash := b.costs.StartEquity + b.realized
+	if b.cashCurve != nil {
+		b.cashCurve[i] = cash
+	}
 	if b.equityCurve == nil {
 		return
 	}
-	equity := b.costs.StartEquity + b.realized
+	equity := cash
 	if b.hasPosition {
 		pos := b.position
 		equity += (b.series.C[i] - pos.Entry) * float64(pos.Side) * pos.Size

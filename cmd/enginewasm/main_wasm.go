@@ -11,6 +11,12 @@ import (
 )
 
 func main() {
+	js.Global().Set("engineRunInteractiveFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return string(runInteractive("", ""))
+		}
+		return string(runInteractive(args[0].String(), args[1].String()))
+	}))
 	js.Global().Set("engineRunFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return `{"error":"expected fixture JSON and source strings"}`

@@ -87,12 +87,43 @@ try {
     assert.equal(typeof wasm.error, 'string', `${name}: WASM accepted invalid fixture`);
     assert.ok(native.stderr.includes(wasm.error), `${name}: native/WASM errors differ`);
   }
+  if (typeof globalThis.engineRunInteractiveFixture !== 'function') throw new Error('interactive WASM export missing');
+  const interactiveBase = join(root, 'conformance/run/family-sma-golden-cross');
+  const interactiveSource = readFileSync(`${interactiveBase}.strat`, 'utf8');
+  const interactiveFixture = JSON.parse(readFileSync(`${interactiveBase}.fixture.json`, 'utf8'));
+  interactiveFixture.costs.feePerUnit = 0.1;
+  const interactiveRaw = JSON.stringify(interactiveFixture);
+  const interactiveFixturePath = join(temp, 'interactive.fixture.json');
+  const interactiveSourcePath = join(temp, 'interactive.strat');
+  writeFileSync(interactiveFixturePath, interactiveRaw);
+  writeFileSync(interactiveSourcePath, interactiveSource);
+  const nativeInteractive = JSON.parse(command(nativePath,
+    ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+  const wasmInteractive = JSON.parse(globalThis.engineRunInteractiveFixture(interactiveRaw, interactiveSource));
+  assert.deepStrictEqual(wasmInteractive, nativeInteractive, 'interactive native/WASM result mismatch');
+  assert.equal(wasmInteractive.schema, 'dsl-interactive-run-v1');
+  assert.equal(wasmInteractive.equityCurve.length, interactiveFixture.bars.length);
+  assert.equal(wasmInteractive.closedEquityCurve.length, interactiveFixture.bars.length);
+  assert.ok(wasmInteractive.run.tradeCount > 0);
+  assert.equal(wasmInteractive.stats.endEquity, wasmInteractive.cashEndEquity);
+  const unsupported = { ...interactiveFixture, sourceBars: [interactiveFixture.bars[0]] };
+  const unsupportedRaw = JSON.stringify(unsupported);
+  writeFileSync(interactiveFixturePath, unsupportedRaw);
+  const nativeUnsupported = JSON.parse(command(nativePath,
+    ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+  const wasmUnsupported = JSON.parse(globalThis.engineRunInteractiveFixture(unsupportedRaw, interactiveSource));
+  assert.deepStrictEqual(wasmUnsupported, nativeUnsupported);
+  assert.equal(wasmUnsupported.error.code, 'unsupported-route');
   console.log(JSON.stringify({ schema: 'native-wasm-fixture-parity-v1',
     source: { commit: command('git', ['rev-parse', 'HEAD']),
       dirty: Boolean(command('git', ['status', '--porcelain', '--untracked-files=normal'])) },
     artifact: { wasmSha256: sha256(readFileSync(wasmPath)), shimSha256: sha256(readFileSync(shim)) },
     cases, invalidCases: ['bad-schema', 'short-row'],
-    interactiveResult: { complete: false, missing: ['equityCurve', 'skips', 'stats', 'maxDrawdown'] } }, null, 2));
+    interactiveResult: { route: 'chart-timeframe-sma-golden-cross',
+      tradeCount: wasmInteractive.run.tradeCount,
+      bars: wasmInteractive.equityCurve.length,
+      outputSha256: sha256(JSON.stringify(nativeInteractive)),
+      unsupportedCode: wasmUnsupported.error.code } }, null, 2));
 } catch (error) {
   console.error(error);
   process.exitCode = 1;

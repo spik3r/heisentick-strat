@@ -6,6 +6,11 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add a separate versioned interactive result for the ordinary SMA Golden
+  Cross chart route, with per-bar marked/closed equity, post-liquidation cash,
+  fee-inclusive stats, running-peak drawdown and structured unsupported-route
+  errors. The existing conformance trade envelope remains unchanged; consumer
+  adoption requires a reviewed release and explicit capability gating.
 - Use one native/WASM run-fixture decoder and reject OHLCV rows with fewer or
   more than six values. Previously the fixture adapters silently skipped short
   rows; this explicit error preserves bar indices and requires a minor release

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -21,6 +22,35 @@ func runFixture(raw, source string) ([]byte, error) {
 		return nil, err
 	}
 	return json.Marshal(result)
+}
+
+type interactiveFailure struct {
+	Schema string `json:"schema"`
+	Error  struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	} `json:"error"`
+}
+
+// runInteractive returns a structured v1 response for both successes and
+// failures. Native and browser callers consume the same bytes.
+func runInteractive(raw, source string) []byte {
+	result, err := native.RunInteractiveFixture([]byte(raw), source)
+	if err == nil {
+		out, marshalErr := json.Marshal(result)
+		if marshalErr == nil {
+			return out
+		}
+		err = marshalErr
+	}
+	failure := interactiveFailure{Schema: native.InteractiveRunSchema}
+	failure.Error.Code = "invalid-request"
+	if errors.Is(err, native.ErrInteractiveUnsupported) {
+		failure.Error.Code = "unsupported-route"
+	}
+	failure.Error.Message = err.Error()
+	out, _ := json.Marshal(failure)
+	return out
 }
 
 // columnRunMeta is deliberately narrower than a RunFixture. The T-F0 bridge
