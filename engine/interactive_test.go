@@ -134,4 +134,23 @@ setup { type: down shock rebound }`,
 	if _, err := RunInteractiveFixture(withBadCosts, interactiveSMASource); err == nil {
 		t.Fatal("negative start equity accepted")
 	}
+	for _, costs := range []string{
+		`{"startEquity":0}`, `{"startEquity":null}`, `{"fillOn":null}`,
+		`{"fillOn":""}`, `{"feePerUnit":null}`, `{"commission":1}`,
+	} {
+		raw := []byte(`{"schema":"dsl-conformance-run-fixture-v1","costs":` + costs +
+			`,"symbol":"XAUUSD","timeframe":"4h","bars":[[0,1,1,1,1,1]]}`)
+		if _, err := RunInteractiveFixture(raw, interactiveSMASource); err == nil {
+			t.Errorf("accepted invalid explicit costs %s", costs)
+		}
+	}
+	for _, invalid := range []string{
+		`{"schema":"dsl-conformance-run-fixture-v1","costs":{},"symbol":"XAUUSD","timeframe":"4h","bars":[[0,1,1,1,null,1]]}`,
+		`{"schema":"dsl-conformance-run-fixture-v1","costs":{},"symbol":"XAUUSD","timeframe":"4h","bars":[[0,1,1,1,1,1]],"forceRoute":true}`,
+		`{"schema":"dsl-conformance-run-fixture-v1","costs":{},"symbol":"XAUUSD","timeframe":"4h","bars":[[0,1,1,1,1,1]],"contextOptions":{"pivotK":1}}`,
+	} {
+		if _, err := RunInteractiveFixture([]byte(invalid), interactiveSMASource); err == nil {
+			t.Errorf("accepted unrepresented interactive input %s", invalid)
+		}
+	}
 }

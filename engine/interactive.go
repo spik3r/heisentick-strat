@@ -3,9 +3,11 @@ package engine
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
+	"sort"
 
 	"github.com/spik3r/heisentick-strat/dsl"
 	"github.com/spik3r/heisentick-strat/marketdata"
@@ -70,6 +72,9 @@ type InteractiveRunResult struct {
 // route only. Scheduled source-entry and special-family loops do not yet emit
 // complete per-bar marks; other families lack verified skip diagnostics.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
+	if err := validateInteractiveInput(raw); err != nil {
+		return InteractiveRunResult{}, err
+	}
 	fixture, err := DecodeRunFixture(raw)
 	if err != nil {
 		return InteractiveRunResult{}, err
@@ -145,6 +150,96 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		ClosedEquity: prepared.broker.cashCurve, CashEndEquity: cashEnd,
 		Skips: map[string]int{}, Stats: stats,
 	}, nil
+}
+
+// The conformance decoder intentionally accepts metadata and legacy defaults.
+// Interactive admission rejects every option or row value it cannot represent
+// before that decoder can silently discard it or turn null into zero.
+func validateInteractiveInput(raw []byte) error {
+	var envelope map[string]json.RawMessage
+	if err := json.Unmarshal(raw, &envelope); err != nil {
+		return err
+	}
+	if envelope == nil {
+		return errors.New("interactive fixture must be an object")
+	}
+	names := make([]string, 0, len(envelope))
+	for name := range envelope {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	for _, name := range names {
+		switch name {
+		case "schema", "case", "strategyId", "symbol", "timeframe", "higherTimeframe",
+			"rangeMethod", "sourceTimeframe", "costs", "bars", "htfBars",
+			"sourceBars", "sourceHtfBars", "source":
+			// source is provenance metadata, not execution input.
+		case "contextOptions":
+			var options map[string]json.RawMessage
+			if json.Unmarshal(envelope[name], &options) != nil || options == nil || len(options) != 0 {
+				return fmt.Errorf("%w: nonempty contextOptions", ErrInteractiveUnsupported)
+			}
+		default:
+			return fmt.Errorf("%w: fixture field %s", ErrInteractiveUnsupported, name)
+		}
+	}
+	for _, name := range []string{"bars", "htfBars", "sourceBars", "sourceHtfBars"} {
+		value, exists := envelope[name]
+		if !exists {
+			continue
+		}
+		var rows [][]json.RawMessage
+		if string(value) == "null" || json.Unmarshal(value, &rows) != nil || rows == nil {
+			return fmt.Errorf("interactive %s must be an array", name)
+		}
+		if len(rows) > 50_000 {
+			return fmt.Errorf("%w: %s exceeds the 50000-bar local limit", ErrInteractiveUnsupported, name)
+		}
+		for i, row := range rows {
+			if len(row) != 6 {
+				return fmt.Errorf("interactive %s[%d] must contain six OHLCV numbers", name, i)
+			}
+			for j, cell := range row {
+				var number float64
+				if string(cell) == "null" || json.Unmarshal(cell, &number) != nil ||
+					!isFiniteDerivedOutput(number) {
+					return fmt.Errorf("interactive %s[%d][%d] must be a finite number", name, i, j)
+				}
+			}
+		}
+	}
+	var fields map[string]json.RawMessage
+	if len(envelope["costs"]) == 0 || string(envelope["costs"]) == "null" ||
+		json.Unmarshal(envelope["costs"], &fields) != nil || fields == nil {
+		return errors.New("interactive costs must be an object")
+	}
+	names = names[:0]
+	for name := range fields {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	for _, name := range names {
+		value := fields[name]
+		switch name {
+		case "feePerUnit", "slippage", "slippageBps", "startEquity":
+			var number float64
+			if string(value) == "null" || json.Unmarshal(value, &number) != nil ||
+				!isFiniteDerivedOutput(number) ||
+				(name == "startEquity" && number <= 0) ||
+				(name != "startEquity" && number < 0) {
+				return fmt.Errorf("interactive costs.%s is invalid", name)
+			}
+		case "fillOn":
+			var fill string
+			if string(value) == "null" || json.Unmarshal(value, &fill) != nil ||
+				(fill != "close" && fill != "open" && fill != "nextOpen") {
+				return errors.New("interactive costs.fillOn must be close, open, or nextOpen")
+			}
+		default:
+			return fmt.Errorf("interactive costs.%s is unsupported", name)
+		}
+	}
+	return nil
 }
 
 func validateInteractiveStats(stats InteractiveStats) error {
