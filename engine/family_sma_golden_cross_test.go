@@ -82,10 +82,16 @@ func TestSMAGoldenCrossQueuesFixedSizeNextOpenTradesWithoutBrackets(t *testing.T
 				FastLen: 2, SlowLen: 3, AllowLong: true,
 			},
 		},
-		costs: Costs{FillOn: "close"},
+		costs:       Costs{FillOn: "close", StartEquity: 10000, FeePerUnit: 0.1},
+		equityCurve: make([]float64, 7),
 	}
 
 	trades := b.run()
+	for index, want := range map[int]float64{3: 10000, 4: 9997.9, 5: 9994.9, 6: 10000.8} {
+		if math.Abs(b.equityCurve[index]-want) > 1e-9 {
+			t.Fatalf("marked equity[%d] = %.12f, want %.12f", index, b.equityCurve[index], want)
+		}
+	}
 	if len(trades) != 1 {
 		t.Fatalf("trades = %+v, want one trade", trades)
 	}

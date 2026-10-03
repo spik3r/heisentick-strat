@@ -58,21 +58,24 @@ type pendingExit struct {
 }
 
 type broker struct {
-	series                 marketdata.Series
-	cols                   contextcols.Columns
-	htfTrend               []int8
-	ema                    []float64
-	emaSlope               []float64
-	costs                  Costs
-	params                 flagParams
-	fixture                RunFixture
-	position               position
-	hasPosition            bool
-	pendingOrders          []order
-	pendingExits           []pendingExit
-	limitOrders            []order
-	trades                 []Trade
-	realized               float64
+	series        marketdata.Series
+	cols          contextcols.Columns
+	htfTrend      []int8
+	ema           []float64
+	emaSlope      []float64
+	costs         Costs
+	params        flagParams
+	fixture       RunFixture
+	position      position
+	hasPosition   bool
+	pendingOrders []order
+	pendingExits  []pendingExit
+	limitOrders   []order
+	trades        []Trade
+	realized      float64
+	// equityCurve is populated only for an explicitly marked run. Keep the
+	// conformance trades-only path allocation-free.
+	equityCurve            []float64
 	flagLastEntry          int
 	hasFlagEntry           bool
 	rbfLastEntry           int
@@ -166,6 +169,7 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.limitOrders = b.limitOrders[:0]
 	b.trades = trades[:0]
 	b.realized = 0
+	b.equityCurve = nil
 	b.flagLastEntry = 0
 	b.hasFlagEntry = false
 	b.rbfLastEntry = 0
@@ -296,6 +300,7 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 		b.closeExpiredWindowPosition(i)
 		b.resolveIntrabarExit(i)
 		b.onBar(i)
+		b.markToMarket(i)
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
 		}
@@ -304,6 +309,21 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
+}
+
+// markToMarket records the broker's state after bar decisions, before the
+// optional final-data liquidation. Closed trades alone cannot recover this
+// intratrade equity path or its drawdown.
+func (b *broker) markToMarket(i int) {
+	if b.equityCurve == nil {
+		return
+	}
+	equity := b.costs.StartEquity + b.realized
+	if b.hasPosition {
+		pos := b.position
+		equity += (b.series.C[i] - pos.Entry) * float64(pos.Side) * pos.Size
+	}
+	b.equityCurve[i] = equity
 }
 
 // runCapturedSource evaluates the ordinary parsed setup on source candles but
