@@ -8,9 +8,26 @@ import (
 	"runtime"
 	"syscall/js"
 	"unsafe"
+
+	native "github.com/spik3r/heisentick-strat/engine"
 )
 
 func main() {
+	js.Global().Set("engineRunAuthoredOrbInteractive", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 1 || args[0].Type() != js.TypeString {
+			return `{"error":{"code":"ENGINE_UNSUPPORTED","message":"expected authored ORB request JSON"}}`
+		}
+		result, err := native.RunAuthoredOrbInteractive([]byte(args[0].String()))
+		if err != nil {
+			out, _ := json.Marshal(map[string]any{"error": map[string]string{"code": "ENGINE_UNSUPPORTED", "message": err.Error()}})
+			return string(out)
+		}
+		out, err := json.Marshal(result)
+		if err != nil {
+			out, _ = json.Marshal(map[string]any{"error": map[string]string{"code": "ENGINE_CONTRACT", "message": err.Error()}})
+		}
+		return string(out)
+	}))
 	js.Global().Set("engineRunAuthoredOrb", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 1 || args[0].Type() != js.TypeString {
 			return `{"error":"expected authored ORB request JSON"}`

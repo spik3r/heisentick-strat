@@ -212,3 +212,22 @@ asynchronous artifact reference, not this interactive chart response.
 Producer-owned v1 lives here until a cross-repo consumer needs a published
 generated contract; then add a distinct schema and follow that repository's
 generation, fixtures, and release rules.
+
+## Authored ORB interactive v1
+
+`daySessionOrbOriginalTvParity` uses the separate `authored-orb-interactive-v1`
+result. Its request retains the historical `authored-orb-run-v1` identity,
+XAUUSD 30m route, explicit OHLCV objects and execution costs. The interactive
+adapter requires all five cost fields and complete finite bars; unknown fields,
+open-ended runs, forced routes and alternate symbols/timeframes fail closed.
+The authored strategy and inherited base are identified by SHA-256 digests.
+
+`run.trades` preserves the historical authored ORB trade records. The new
+result adds one marked and one closed cash value per bar, `cashEndEquity`,
+`tradeNetPnl`, and the same fee-inclusive `InteractiveStats` definitions above.
+Entry fees debit realized cash immediately; a position surviving the last
+bar is liquidated after its final mark, so final cash may differ from the last
+curve entry. `skips` and a skip-reason schema are absent: this authored
+strategy has no counted gate contract, and the browser displays diagnostics
+as unavailable. This version does not rewrite the historical
+`authored-orb-run-v1` JSON or its golden trades.

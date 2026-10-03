@@ -113,6 +113,10 @@ type Result struct {
 	Trades        []Trade        `json:"trades"`
 	EquityCurve   []float64      `json:"equityCurve"`
 	OpenPositions []OpenPosition `json:"openPositions,omitempty"`
+	// Interactive accounting is available to Go adapters without changing the
+	// historical authored-orb-run-v1 JSON envelope or its parity fixtures.
+	ClosedEquity  []float64 `json:"-"`
+	CashEndEquity float64   `json:"-"`
 }
 
 type position struct {
@@ -217,7 +221,7 @@ func Run(req Request) (Result, error) {
 	if !finite(p["atrLen"]) || p["atrLen"] < 1 {
 		p["atrLen"] = 14
 	}
-	r := runner{req: req, params: p, result: Result{Schema: Schema, StrategyID: req.StrategyID, Symbol: req.Symbol, Timeframe: req.Timeframe, Trades: make([]Trade, 0), EquityCurve: make([]float64, len(req.Bars))}, orbHigh: math.NaN(), orbLow: math.NaN(), atr: math.NaN()}
+	r := runner{req: req, params: p, result: Result{Schema: Schema, StrategyID: req.StrategyID, Symbol: req.Symbol, Timeframe: req.Timeframe, Trades: make([]Trade, 0), EquityCurve: make([]float64, len(req.Bars)), ClosedEquity: make([]float64, len(req.Bars))}, orbHigh: math.NaN(), orbLow: math.NaN(), atr: math.NaN()}
 	for i, b := range req.Bars {
 		// buildContext computes UTC-day VWAP for every bar, even while the
 		// defineStrategy wrapper pauses this strategy's onBar state.
@@ -239,6 +243,7 @@ func Run(req Request) (Result, error) {
 			unrealized = (b.C - r.pos.Entry) * sign(r.pos.Side) * r.pos.Size
 		}
 		r.result.EquityCurve[i] = startEquity + r.realized + unrealized
+		r.result.ClosedEquity[i] = startEquity + r.realized
 	}
 	if req.CloseAtEnd == nil || *req.CloseAtEnd {
 		i := len(req.Bars) - 1
@@ -246,6 +251,7 @@ func Run(req Request) (Result, error) {
 	} else if r.pos != nil {
 		r.result.OpenPositions = []OpenPosition{r.pos.OpenPosition}
 	}
+	r.result.CashEndEquity = startEquity + r.realized
 	return r.result, nil
 }
 

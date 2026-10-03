@@ -23,6 +23,22 @@ func main() {
 		fmt.Println(string(out))
 		return
 	}
+	if len(os.Args) == 3 && os.Args[1] == "--authored-orb-interactive" {
+		raw, err := os.ReadFile(os.Args[2])
+		if err != nil {
+			panic(err)
+		}
+		result, err := native.RunAuthoredOrbInteractive(raw)
+		if err != nil {
+			panic(err)
+		}
+		out, err := json.Marshal(result)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(out))
+		return
+	}
 	if len(os.Args) == 3 && (os.Args[1] == "--forward-smoke" || os.Args[1] == "--forward-smoke-prefix") {
 		raw, err := os.ReadFile(os.Args[2])
 		if err != nil {
