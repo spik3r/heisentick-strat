@@ -42,6 +42,13 @@ Parsing the shared v7 phrase remains valid. Earlier Go runs using either
 setting used key levels without the requested EMA filter and need executor
 provenance before their conclusions are reused.
 
+Current key-level execution searches the recent close-through breaks and
+level tags in separate windows. It does not require the tag to occur after
+the break, despite the sequential setup description above. A three-candle
+sequence can therefore qualify at the break close using a tag from the
+preceding candle. Making break-before-retest mandatory would change existing
+strategy results and needs an explicit opt-in phrase and reviewed release.
+
 ## Defaults and interactions
 
 The type phrase sets `setupType: "breakRetest"`, initializes
