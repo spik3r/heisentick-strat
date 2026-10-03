@@ -165,6 +165,28 @@ func TestCompositionBridgeRunsPinnedWrapper(t *testing.T) {
 	if empty["run"] != nil || empty["error"] == nil {
 		t.Fatalf("empty bars returned chart success: %v", empty)
 	}
+	rawCost, err := os.ReadFile("../../engine/testdata/composition/balanced-cost.fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var missing map[string]json.RawMessage
+	if err := json.Unmarshal(rawCost, &missing); err != nil {
+		t.Fatal(err)
+	}
+	delete(missing, "higherTimeframe")
+	delete(missing, "htfBars")
+	rawMissing, err := json.Marshal(missing)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var missingResult map[string]any
+	if err := json.Unmarshal(runInteractiveComposition(string(rawMissing), string(rawSources)), &missingResult); err != nil {
+		t.Fatal(err)
+	}
+	missingError, ok := missingResult["error"].(map[string]any)
+	if missingResult["schema"] != native.InteractiveCompositionSchema || !ok || missingError["code"] != "unsupported-route" || missingResult["run"] != nil {
+		t.Fatalf("missing required HTF returned chart success: %v", missingResult)
+	}
 }
 
 func TestColumnResultUsesFixedNumericRecordWidth(t *testing.T) {

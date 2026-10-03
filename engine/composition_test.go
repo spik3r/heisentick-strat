@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"math"
 	"os"
 	"path/filepath"
@@ -114,6 +115,42 @@ func TestInteractiveCompositionMatchesCostBearingJSOracle(t *testing.T) {
 				math.Abs(result.Stats.Net-tradeNet) > 1e-8 || result.Stats.Trades != tc.TradeCount ||
 				result.SkipDiagnostics != "measured" || result.SkipReasonSchema != InteractiveSkipReasonSchema || result.Skips == nil {
 				t.Fatalf("fee-inclusive result is inconsistent: cash=%g net=%g tradeNet=%g", result.CashEndEquity, result.Stats.Net, tradeNet)
+			}
+			if tc.StrategyID == "dslSessionBiasSeasonalConvergenceBalancedFifteen" {
+				var missing map[string]json.RawMessage
+				if err := json.Unmarshal(raw, &missing); err != nil {
+					t.Fatal(err)
+				}
+				delete(missing, "higherTimeframe")
+				delete(missing, "htfBars")
+				rawMissing, err := json.Marshal(missing)
+				if err != nil {
+					t.Fatal(err)
+				}
+				got, err := RunInteractiveCompositionFixture(rawMissing, sources)
+				if err == nil || !errors.Is(err, ErrInteractiveUnsupported) || !strings.Contains(err.Error(), "requires higher-timeframe bars") || got.Schema != "" {
+					t.Fatalf("missing required HTF returned success or wrong error: result=%+v err=%v", got, err)
+				}
+				var offGrid map[string]json.RawMessage
+				if err := json.Unmarshal(raw, &offGrid); err != nil {
+					t.Fatal(err)
+				}
+				var htfRows [][]float64
+				if err := json.Unmarshal(offGrid["htfBars"], &htfRows); err != nil {
+					t.Fatal(err)
+				}
+				htfRows[0][0]++
+				offGrid["htfBars"], err = json.Marshal(htfRows)
+				if err != nil {
+					t.Fatal(err)
+				}
+				rawOffGrid, err := json.Marshal(offGrid)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if _, err := RunInteractiveCompositionFixture(rawOffGrid, sources); err == nil || !errors.Is(err, ErrInteractiveUnsupported) || !strings.Contains(err.Error(), "off the declared timeframe grid") {
+					t.Fatalf("off-grid HTF was admitted: %v", err)
+				}
 			}
 		})
 	}

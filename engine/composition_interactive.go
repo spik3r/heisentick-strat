@@ -89,6 +89,9 @@ func RunInteractiveCompositionFixture(raw []byte, sources map[string]string) (In
 		return InteractiveCompositionResult{}, fmt.Errorf("%w: undeclared composite route %s %s", ErrInteractiveUnsupported, fixture.Symbol, fixture.Timeframe)
 	}
 	for _, child := range prepared {
+		if child.params.UseHTFBias && len(fixture.HTFBars) == 0 {
+			return InteractiveCompositionResult{}, fmt.Errorf("%w: composite child requires higher-timeframe bars", ErrInteractiveUnsupported)
+		}
 		if child.c5 || child.windowed || child.series.Len() != len(fixture.Bars) {
 			return InteractiveCompositionResult{}, fmt.Errorf("%w: scheduled, windowed, or mismatched child series", ErrInteractiveUnsupported)
 		}

@@ -64,6 +64,9 @@ costs are admitted to this interactive adapter. The pinned child DSL generates
 its own context; caller supplied context overrides, source bars, scheduled
 source entry, and windowed execution are rejected. The legacy trade-only
 composition function remains available for conformance compatibility.
+Every selected child with HTF bias requires declared higher-timeframe bars;
+omitting both the timeframe label and bars is an explicit error. Supplied HTF
+bars must pass the fixed-grid duration and ordering check before execution.
 
 Tests include a full six-trade conformance fixture, an ordered two-child
 fixture with both sides and no overlapping positions, shared cooldown and
