@@ -10,16 +10,18 @@ does not change the `dsl-conformance-trades-v1` result or its goldens.
 
 Only chart-timeframe `smaGoldenCross`, `dualEmaResumption`, and
 `namedLevelSweep` DSL strategies on their declared routes, with HTF mode off
-and no source or HTF bar inputs, are admitted. These ordinary handlers do not
-emit skip reasons; `skips` is the empty object. The existing fixture costs
+and no source or HTF bar inputs, are admitted. The ordinary Go broker does not
+collect gate rejection reasons. `skips` is JSON `null` and
+`skipDiagnostics: "unavailable"`; this must never be displayed as a measured
+empty map. The existing fixture costs
 (`fillOn`, slippage, basis-point slippage, fee per unit, positive start equity)
 are supported. Route mismatch, HTF mode, source/HTF input, and every other setup family
 are explicit `unsupported-route` errors. The ordinary broker loop supplies
 the marks. Scheduled source-entry, special-family and windowed loops are not
-represented by this version. Adding a family with skip diagnostics requires
-an explicit contract extension rather than silently emitting an empty map.
+represented by this version. Complete skip reasons remain an F2 diagnostic
+gate before an engine-default decision.
 Same-build native/WASM parity requires identical structure, route and input
-metadata, skip reasons, trade count/order, trade decisions and fill fields,
+metadata, skip diagnostic state, trade count/order, trade decisions and fill fields,
 categorical states, counts, final cash and errors. For Dual EMA and named-level
 sweep, explicit derived-number paths may have cross-target floating-point
 rounding: per-bar
@@ -38,7 +40,7 @@ byte identity across targets.
 The response contains `schema`, SHA-256 hashes of the exact raw fixture JSON
 and source, `run` (the unchanged conformance trade envelope), one
 `equityCurve` and `closedEquityCurve` value per input bar, post-liquidation
-`cashEndEquity`, `skips`, and `stats`. The host must attach the verified
+`cashEndEquity`, `skips`, `skipDiagnostics`, and `stats`. The host must attach the verified
 native/WASM artifact digest to the presented result; an input hash does not
 identify an executable. A failure is `{schema,error:{code,message}}`; callers
 must not turn it into a successful empty run.

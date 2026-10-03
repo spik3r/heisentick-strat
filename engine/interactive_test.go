@@ -52,7 +52,7 @@ func TestInteractiveDualEMAUsesOrdinaryTradeAndEquityPath(t *testing.T) {
 	}
 	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
 		len(result.EquityCurve) != len(fixture.Bars) ||
-		len(result.ClosedEquity) != len(fixture.Bars) || len(result.Skips) != 0 ||
+		len(result.ClosedEquity) != len(fixture.Bars) || result.Skips != nil || result.SkipDiagnostics != "unavailable" ||
 		result.Stats.EndEquity != result.CashEndEquity {
 		t.Fatalf("dual EMA interactive contract disagrees with ordinary run: %+v", result)
 	}
@@ -99,7 +99,7 @@ func TestInteractiveNamedLevelSweepPreservesFixtureTradesAndCausalMarks(t *testi
 	}
 	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
 		len(result.EquityCurve) != len(fixture.Bars) ||
-		len(result.ClosedEquity) != len(fixture.Bars) || len(result.Skips) != 0 ||
+		len(result.ClosedEquity) != len(fixture.Bars) || result.Skips != nil || result.SkipDiagnostics != "unavailable" ||
 		result.Stats.EndEquity != result.CashEndEquity {
 		t.Fatalf("named level sweep interactive contract disagrees with fixture run: %+v", result)
 	}
@@ -208,7 +208,7 @@ func TestInteractiveResultUsesCausalMarksAndFeeInclusiveStats(t *testing.T) {
 	}
 	if result.Schema != InteractiveRunSchema || result.Run.TradeCount != 1 ||
 		len(result.Provenance.FixtureSHA256) != 64 || len(result.Provenance.SourceSHA256) != 64 ||
-		len(result.Skips) != 0 {
+		result.Skips != nil || result.SkipDiagnostics != "unavailable" {
 		t.Fatalf("interactive envelope = %+v", result)
 	}
 	for _, check := range []struct {
