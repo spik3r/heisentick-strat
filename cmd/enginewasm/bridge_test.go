@@ -50,6 +50,15 @@ func TestBridgeMatchesFixtureLoader(t *testing.T) {
 	}
 }
 
+func TestBridgeAndNativeShareMalformedRowError(t *testing.T) {
+	raw := `{"schema":"dsl-conformance-run-fixture-v1","bars":[[0,1,2,0,1,1],[1,2,3,1,2]]}`
+	_, nativeErr := native.DecodeRunFixture([]byte(raw))
+	_, bridgeErr := runFixture(raw, "")
+	if nativeErr == nil || bridgeErr == nil || nativeErr.Error() != bridgeErr.Error() {
+		t.Fatalf("native error %v differs from bridge error %v", nativeErr, bridgeErr)
+	}
+}
+
 func TestColumnResultUsesFixedNumericRecordWidth(t *testing.T) {
 	fixturePath := "../../conformance/run/deployed-dsl-session-expansion-ny.fixture.json"
 	fixture, err := native.LoadRunFixture(fixturePath)

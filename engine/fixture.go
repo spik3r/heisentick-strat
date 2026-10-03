@@ -14,26 +14,48 @@ func LoadRunFixture(path string) (RunFixture, error) {
 	if err != nil {
 		return RunFixture{}, err
 	}
+	fixture, err := DecodeRunFixture(data)
+	if err != nil {
+		return RunFixture{}, fmt.Errorf("%s: %w", path, err)
+	}
+	return fixture, nil
+}
+
+// DecodeRunFixture is the shared native/WASM fixture adapter. A malformed
+// row must fail visibly rather than shifting the indices of all later bars.
+func DecodeRunFixture(data []byte) (RunFixture, error) {
 	var fixture RunFixture
 	if err := json.Unmarshal(data, &fixture); err != nil {
 		return RunFixture{}, err
 	}
 	if fixture.Schema != runFixtureSchema {
-		return RunFixture{}, fmt.Errorf("%s: schema %q, want %q", path, fixture.Schema, runFixtureSchema)
+		return RunFixture{}, fmt.Errorf("schema %q, want %q", fixture.Schema, runFixtureSchema)
 	}
 	fixture.Costs = fixture.Costs.normalized()
-	fixture.Bars = rowsToBars(fixture.RawBars)
-	fixture.SourceBars = rowsToBars(fixture.RawSourceBars)
-	fixture.HTFBars = rowsToBars(fixture.RawHTFBars)
-	fixture.SourceHTFBars = rowsToBars(fixture.RawSourceHTFBars)
+	for _, series := range []struct {
+		name string
+		raw  [][]float64
+		out  *[]marketdata.Bar
+	}{
+		{"bars", fixture.RawBars, &fixture.Bars},
+		{"sourceBars", fixture.RawSourceBars, &fixture.SourceBars},
+		{"htfBars", fixture.RawHTFBars, &fixture.HTFBars},
+		{"sourceHtfBars", fixture.RawSourceHTFBars, &fixture.SourceHTFBars},
+	} {
+		bars, err := decodeFixtureBars(series.name, series.raw)
+		if err != nil {
+			return RunFixture{}, err
+		}
+		*series.out = bars
+	}
 	return fixture, nil
 }
 
-func rowsToBars(rows [][]float64) []marketdata.Bar {
+func decodeFixtureBars(name string, rows [][]float64) ([]marketdata.Bar, error) {
 	bars := make([]marketdata.Bar, 0, len(rows))
-	for _, row := range rows {
-		if len(row) < 6 {
-			continue
+	for i, row := range rows {
+		if len(row) != 6 {
+			return nil, fmt.Errorf("%s[%d]: expected six OHLCV values, got %d", name, i, len(row))
 		}
 		bars = append(bars, marketdata.Bar{
 			T: row[0],
@@ -44,5 +66,5 @@ func rowsToBars(rows [][]float64) []marketdata.Bar {
 			V: row[5],
 		})
 	}
-	return bars
+	return bars, nil
 }

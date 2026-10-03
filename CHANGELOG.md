@@ -6,6 +6,10 @@ version and is named here.
 
 ## [Unreleased]
 
+- Use one native/WASM run-fixture decoder and reject OHLCV rows with fewer or
+  more than six values. Previously the fixture adapters silently skipped short
+  rows; this explicit error preserves bar indices and requires a minor release
+  before consumer adoption. Add a fast same-build native/WASM parity check.
 - Fail closed in the Go executor when break/retest requests swing levels or
   positive EMA confluence, or named-level sweep requests a level the Go
   resolver cannot produce. Shared v7 parsing remains unchanged; previously
