@@ -37,6 +37,34 @@ from the native command. The app still owns source distribution and its own JS
 registration until its consumer release adopts a pinned Go build. The manifest
 is not a new home for strategy sources.
 
+## Interactive composition result
+
+`engine.RunInteractiveCompositionFixture(fixtureJSON, sources)` exposes the
+versioned `dsl-interactive-composition-v1` chart result. Native callers use
+`enginewasm --interactive-composition fixture.json child-sources.json`; browser
+callers use `engineRunInteractiveCompositionFixture(fixtureJSON,
+childSourcesJSON)`. Both bridges return the same structured JSON success or
+`{schema,error:{code,message}}` failure. An undeclared route or unsupported
+source-timeframe input is an `unsupported-route` error, never a successful
+empty chart. Missing or stale child sources are `invalid-request` errors.
+
+The result contains the conformance trade envelope under `run`, one marked
+`equityCurve` and `closedEquityCurve` point for every chart bar, final
+post-liquidation `cashEndEquity`, `tradeNetPnl` including allocated entry and
+exit fees, the interactive v1 statistics, and instrumented entry-gate `skips`.
+The mark and closed curve are recorded after each bar's fills and decisions,
+before final-data liquidation. `stats.net` is final cash minus start equity;
+drawdown includes both per-bar marks and final cash. Its provenance hashes the
+exact raw fixture and embedded manifest, identifies the pinned app revision,
+and lists every digest-validated child used anywhere in the selected wrapper.
+See `spec/interactive-run-v1.md` for the shared accounting and skip definitions.
+
+Only fixed-grid chart and higher-timeframe series with supported execution
+costs are admitted to this interactive adapter. The pinned child DSL generates
+its own context; caller supplied context overrides, source bars, scheduled
+source entry, and windowed execution are rejected. The legacy trade-only
+composition function remains available for conformance compatibility.
+
 Tests include a full six-trade conformance fixture, an ordered two-child
 fixture with both sides and no overlapping positions, shared cooldown and
 rejected-entry retry fixtures frozen from the app's SBH runtime, fail-closed
@@ -49,3 +77,12 @@ available, run `HEISENTICK_APP_SOURCE_ROOT=/path/to/app go test ./engine
 -run 'TestBuiltInComposition' -v` to verify exact source digests and replay
 the oracles. The checked-in slices do not establish full-history strategy
 profitability.
+
+Cost-bearing positive JavaScript oracles additionally lock balanced 15m and
+London 4h wrapper trades and every marked equity point with 0.05 point
+slippage and 0.01 per-unit per-side fees. The Go interactive cash and stats
+include entry fees, which the legacy JavaScript `computeStats` does not fully
+include; the oracles therefore compare JS trade fills and marks, then verify
+the Go producer's fee-inclusive accounting directly. All 14 declared routes
+are exercised through both trade and interactive execution in the optional
+app-source integration test.

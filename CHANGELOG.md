@@ -41,6 +41,12 @@ version and is named here.
   rule and selected-row value-area accumulation; test both actual veto and
   allowed-entry native/WASM success. This semantic change requires a
   minor release before consumer adoption.
+- Add `dsl-interactive-composition-v1` for the five Go-owned authored wrappers,
+  with per-bar marked and closed equity, fee-inclusive trade net and stats,
+  post-liquidation cash, measured skips and pinned manifest/child provenance.
+  Native and WASM bridges return structured failures for unsupported chart
+  routes. Cost-bearing JavaScript wrapper oracles lock trade fills and equity
+  marks for balanced 15m and London 4h.
 - Add native and WASM Go composition v1 for five active authored wrappers,
   with digest-pinned child sources, exact symbol/timeframe routes, child
   runtime params, and shared broker state for the balanced 15m route. Frozen

@@ -107,6 +107,37 @@ func runInteractiveWithComposition(raw, source string, vpNYHandoff bool) []byte 
 	return out
 }
 
+// runInteractiveComposition is the same structured transport on native and
+// WASM. An unsupported route is an explicit error response, never empty data.
+func runInteractiveComposition(rawFixture, rawSources string) []byte {
+	var sources map[string]string
+	decoder := json.NewDecoder(bytes.NewBufferString(rawSources))
+	decoder.DisallowUnknownFields()
+	err := decoder.Decode(&sources)
+	if err == nil && sources == nil {
+		err = errors.New("composition sources must be an object keyed by child ID")
+	}
+	if err == nil {
+		var result native.InteractiveCompositionResult
+		result, err = native.RunInteractiveCompositionFixture([]byte(rawFixture), sources)
+		if err == nil {
+			out, marshalErr := json.Marshal(result)
+			if marshalErr == nil {
+				return out
+			}
+			err = marshalErr
+		}
+	}
+	failure := interactiveFailure{Schema: native.InteractiveCompositionSchema}
+	failure.Error.Code = "invalid-request"
+	if errors.Is(err, native.ErrInteractiveUnsupported) {
+		failure.Error.Code = "unsupported-route"
+	}
+	failure.Error.Message = err.Error()
+	out, _ := json.Marshal(failure)
+	return out
+}
+
 // columnRunMeta is deliberately narrower than a RunFixture. The T-F0 bridge
 // measures one chart-timeframe series only; callers must not silently omit
 // source, higher-timeframe, or precomputed-context inputs.

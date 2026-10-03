@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"math"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -23,6 +24,98 @@ func compositionTestRequest(t *testing.T, fixtureName, strategyID string) RunReq
 		Series: marketdata.SeriesFromBars(fixture.Bars), HTFSeries: marketdata.SeriesFromBars(fixture.HTFBars),
 		StrategyID: strategyID, Symbol: fixture.Symbol, Timeframe: fixture.Timeframe,
 		HigherTimeframe: fixture.HigherTimeframe, RangeMethod: fixture.RangeMethod, Costs: fixture.Costs,
+	}
+}
+
+func TestInteractiveCompositionMatchesCostBearingJSOracle(t *testing.T) {
+	root := os.Getenv("HEISENTICK_APP_SOURCE_ROOT")
+	if root == "" {
+		t.Skip("set HEISENTICK_APP_SOURCE_ROOT for pinned JS wrapper oracle")
+	}
+	manifest, err := BuiltInCompositionManifest()
+	if err != nil {
+		t.Fatal(err)
+	}
+	sources := make(map[string]string)
+	for _, child := range manifest.Children {
+		raw, err := os.ReadFile(filepath.Join(root, child.Path))
+		if err != nil {
+			t.Fatal(err)
+		}
+		sources[child.ID] = string(raw)
+	}
+	rawOracle, err := os.ReadFile(filepath.Join("testdata", "composition", "js-cost-oracle-v1.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var oracle struct {
+		Schema         string `json:"schema"`
+		SourceRevision string `json:"sourceRevision"`
+		Cases          []struct {
+			Fixture     string          `json:"fixture"`
+			StrategyID  string          `json:"strategyId"`
+			TradeCount  int             `json:"tradeCount"`
+			Trades      json.RawMessage `json:"trades"`
+			EquityCurve []float64       `json:"equityCurve"`
+		} `json:"cases"`
+	}
+	if err := json.Unmarshal(rawOracle, &oracle); err != nil {
+		t.Fatal(err)
+	}
+	if oracle.Schema != "composition-js-cost-oracle-v1" || oracle.SourceRevision != manifest.SourceRevision || len(oracle.Cases) != 2 {
+		t.Fatal("invalid cost oracle source/version/cases")
+	}
+	for _, tc := range oracle.Cases {
+		t.Run(filepath.Base(tc.Fixture), func(t *testing.T) {
+			raw, err := os.ReadFile(filepath.Join("..", tc.Fixture))
+			if err != nil {
+				t.Fatal(err)
+			}
+			fixture, err := DecodeRunFixture(raw)
+			if err != nil {
+				t.Fatal(err)
+			}
+			result, err := RunInteractiveCompositionFixture(raw, sources)
+			if err != nil {
+				t.Fatal(err)
+			}
+			wantChildren := map[string]bool{}
+			for _, composite := range manifest.Composites {
+				if composite.ID == tc.StrategyID {
+					for _, route := range composite.Routes {
+						for _, id := range route.Children {
+							wantChildren[id] = true
+						}
+					}
+				}
+			}
+			if result.Schema != InteractiveCompositionSchema || result.Run.TradeCount != tc.TradeCount || tc.TradeCount == 0 || len(result.Provenance.Children) != len(wantChildren) {
+				t.Fatalf("incomplete interactive result: schema=%q trades=%d children=%d", result.Schema, result.Run.TradeCount, len(result.Provenance.Children))
+			}
+			if got, want := canonicalJSON(ConformanceProjection(result.Run).Trades), canonicalRawJSON(t, tc.Trades); got != want {
+				t.Fatalf("cost-bearing wrapper trades differ: %s", firstDiff(got, want))
+			}
+			if len(result.EquityCurve) != len(tc.EquityCurve) || len(result.ClosedEquity) != len(tc.EquityCurve) || len(result.EquityCurve) != len(fixture.Bars) {
+				t.Fatal("missing per-bar chart marks")
+			}
+			for i, want := range tc.EquityCurve {
+				if math.Abs(result.EquityCurve[i]-want) > 1e-9 {
+					t.Fatalf("equity[%d] = %.15g, JS = %.15g", i, result.EquityCurve[i], want)
+				}
+			}
+			tradeNet := 0.0
+			for i, net := range result.TradeNetPnL {
+				if net >= result.Run.Trades[i].PnL {
+					t.Fatalf("trade %d does not include entry fee", i)
+				}
+				tradeNet += net
+			}
+			if math.Abs(result.CashEndEquity-(fixture.Costs.StartEquity+tradeNet)) > 1e-8 ||
+				math.Abs(result.Stats.Net-tradeNet) > 1e-8 || result.Stats.Trades != tc.TradeCount ||
+				result.SkipDiagnostics != "measured" || result.SkipReasonSchema != InteractiveSkipReasonSchema || result.Skips == nil {
+				t.Fatalf("fee-inclusive result is inconsistent: cash=%g net=%g tradeNet=%g", result.CashEndEquity, result.Stats.Net, tradeNet)
+			}
+		})
 	}
 }
 
@@ -199,6 +292,27 @@ func TestBuiltInCompositionWithAppSources(t *testing.T) {
 				}
 				if want, ok := wantPositive[composite.ID+" "+route.Symbol+" "+route.Timeframe]; ok && result.TradeCount != want {
 					t.Fatalf("whole-strategy fixture trades = %d, want %d", result.TradeCount, want)
+				}
+				raw, err := os.ReadFile(filepath.Join(runFixtureDir(), fixtureByTimeframe[route.Timeframe]+".fixture.json"))
+				if err != nil {
+					t.Fatal(err)
+				}
+				var input map[string]any
+				if err := json.Unmarshal(raw, &input); err != nil {
+					t.Fatal(err)
+				}
+				input["strategyId"], input["symbol"] = composite.ID, route.Symbol
+				delete(input, "contextOptions") // The pinned child DSL owns its EMA context.
+				raw, err = json.Marshal(input)
+				if err != nil {
+					t.Fatal(err)
+				}
+				interactive, err := RunInteractiveCompositionFixture(raw, sources)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if interactive.Run.TradeCount != result.TradeCount || len(interactive.EquityCurve) != request.Series.Len() || len(interactive.ClosedEquity) != request.Series.Len() {
+					t.Fatalf("interactive route lost broker data: trades=%d, equity=%d, closed=%d", interactive.Run.TradeCount, len(interactive.EquityCurve), len(interactive.ClosedEquity))
 				}
 				t.Logf("%s %s: %d Go trades", request.Symbol, request.Timeframe, result.TradeCount)
 			})

@@ -126,6 +126,45 @@ func TestCompositionBridgeRunsPinnedWrapper(t *testing.T) {
 	if result.Case != "composition-balanced" || result.StrategyID != "dslSessionBiasSeasonalConvergenceBalancedFifteen" || result.TradeCount != 3 {
 		t.Fatalf("composition bridge lost identity or trades: case=%q strategy=%q trades=%d", result.Case, result.StrategyID, result.TradeCount)
 	}
+	rawInteractive := runInteractiveComposition(string(rawFixture), string(rawSources))
+	var interactive native.InteractiveCompositionResult
+	if err := json.Unmarshal(rawInteractive, &interactive); err != nil {
+		t.Fatal(err)
+	}
+	fixture, err := native.DecodeRunFixture(rawFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if interactive.Schema != native.InteractiveCompositionSchema || interactive.Run.TradeCount != result.TradeCount ||
+		len(interactive.EquityCurve) != len(fixture.Bars) || len(interactive.ClosedEquity) != len(fixture.Bars) || interactive.Provenance.ManifestSHA256 == "" {
+		t.Fatalf("interactive composition bridge lost chart result: schema=%q trades=%d marks=%d", interactive.Schema, interactive.Run.TradeCount, len(interactive.EquityCurve))
+	}
+	var offRoute map[string]any
+	fixture.Symbol = "EURUSD"
+	rawOffRoute, err := json.Marshal(fixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(runInteractiveComposition(string(rawOffRoute), string(rawSources)), &offRoute); err != nil {
+		t.Fatal(err)
+	}
+	errBody, ok := offRoute["error"].(map[string]any)
+	if offRoute["schema"] != native.InteractiveCompositionSchema || !ok || errBody["code"] != "unsupported-route" || offRoute["run"] != nil {
+		t.Fatalf("off-route was reported as successful chart result: %v", offRoute)
+	}
+	var empty map[string]any
+	fixture.Symbol = "XAUUSD"
+	fixture.RawBars = [][]float64{}
+	rawEmpty, err := json.Marshal(fixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(runInteractiveComposition(string(rawEmpty), string(rawSources)), &empty); err != nil {
+		t.Fatal(err)
+	}
+	if empty["run"] != nil || empty["error"] == nil {
+		t.Fatalf("empty bars returned chart success: %v", empty)
+	}
 }
 
 func TestColumnResultUsesFixedNumericRecordWidth(t *testing.T) {

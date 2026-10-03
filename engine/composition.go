@@ -72,31 +72,47 @@ func RunBuiltInComposition(request RunRequest, sources map[string]string) (RunRe
 // An undeclared route is a genuine empty result; a missing, stale, or invalid
 // child is an error, including when it is only needed on another route.
 func RunComposition(manifest CompositionManifest, request RunRequest, sources map[string]string) (RunResult, error) {
+	prepared, offRoute, err := prepareComposition(manifest, request, sources)
+	if err != nil {
+		return RunResult{}, err
+	}
+	if offRoute {
+		return checkedResultEnvelope(fixtureFromRequest(request), []Trade{})
+	}
+	if len(prepared) == 1 {
+		result, err := prepared[0].RunChecked(request.Costs)
+		return normalizeCompositionResult(result), err
+	}
+	result, _, err := runOrderedSessionBreakHoldWithBroker(prepared, request.Costs, false)
+	return normalizeCompositionResult(result), err
+}
+
+func prepareComposition(manifest CompositionManifest, request RunRequest, sources map[string]string) ([]*PreparedRun, bool, error) {
 	if manifest.Schema != CompositionSchema {
-		return RunResult{}, fmt.Errorf("unsupported composition schema %q", manifest.Schema)
+		return nil, false, fmt.Errorf("unsupported composition schema %q", manifest.Schema)
 	}
 	var selected *Composite
 	for i := range manifest.Composites {
 		if manifest.Composites[i].ID == request.StrategyID {
 			if selected != nil {
-				return RunResult{}, fmt.Errorf("duplicate composite %q", request.StrategyID)
+				return nil, false, fmt.Errorf("duplicate composite %q", request.StrategyID)
 			}
 			selected = &manifest.Composites[i]
 		}
 	}
 	if selected == nil {
-		return RunResult{}, fmt.Errorf("unknown composite %q", request.StrategyID)
+		return nil, false, fmt.Errorf("unknown composite %q", request.StrategyID)
 	}
 	children, err := compileCompositionChildren(manifest.Children, selected.Routes, request, sources)
 	if err != nil {
-		return RunResult{}, fmt.Errorf("composite %s: %w", request.StrategyID, err)
+		return nil, false, fmt.Errorf("composite %s: %w", request.StrategyID, err)
 	}
 	var route *CompositionRoute
 	for i := range selected.Routes {
 		candidate := &selected.Routes[i]
 		if candidate.Symbol == request.Symbol && candidate.Timeframe == request.Timeframe {
 			if route != nil {
-				return RunResult{}, fmt.Errorf("duplicate route %s %s", request.Symbol, request.Timeframe)
+				return nil, false, fmt.Errorf("duplicate route %s %s", request.Symbol, request.Timeframe)
 			}
 			route = candidate
 		}
@@ -109,40 +125,35 @@ func RunComposition(manifest CompositionManifest, request RunRequest, sources ma
 			break
 		}
 		if err := validateRunRequest(request); err != nil {
-			return RunResult{}, err
+			return nil, false, err
 		}
 		if _, err := ResolveExecutionWindow(request.Series, request.ExecutionWindow); err != nil {
-			return RunResult{}, err
+			return nil, false, err
 		}
-		return checkedResultEnvelope(fixtureFromRequest(request), []Trade{})
+		return nil, true, nil
 	}
 	prepared := make([]*PreparedRun, 0, len(route.Children))
 	for _, id := range route.Children {
 		child, ok := children[id]
 		if !ok {
-			return RunResult{}, fmt.Errorf("route %s %s references undeclared child %q", route.Symbol, route.Timeframe, id)
+			return nil, false, fmt.Errorf("route %s %s references undeclared child %q", route.Symbol, route.Timeframe, id)
 		}
 		childRequest := request
 		childRequest.Config = child.config
 		p, err := PrepareRun(childRequest)
 		if err != nil {
-			return RunResult{}, fmt.Errorf("child %s: %w", id, err)
+			return nil, false, fmt.Errorf("child %s: %w", id, err)
 		}
 		if p.offRoute {
-			return RunResult{}, fmt.Errorf("child %s rejects declared composite route %s %s", id, route.Symbol, route.Timeframe)
+			return nil, false, fmt.Errorf("child %s rejects declared composite route %s %s", id, route.Symbol, route.Timeframe)
 		}
 		p.params = child.runtime
 		prepared = append(prepared, p)
 	}
-	if len(prepared) == 1 {
-		result, err := prepared[0].RunChecked(request.Costs)
-		return normalizeCompositionResult(result), err
+	if len(prepared) != 1 && len(prepared) != 2 {
+		return nil, false, fmt.Errorf("route %s %s has unsupported child count %d", route.Symbol, route.Timeframe, len(prepared))
 	}
-	if len(prepared) == 2 {
-		result, err := runOrderedSessionBreakHold(prepared, request.Costs)
-		return normalizeCompositionResult(result), err
-	}
-	return RunResult{}, fmt.Errorf("route %s %s has unsupported child count %d", route.Symbol, route.Timeframe, len(prepared))
+	return prepared, false, nil
 }
 
 // The JS conformance serializer rounds numeric values inside nested metadata
@@ -421,9 +432,14 @@ func applyCompositionParams(p *flagParams, values map[string]float64) error {
 // object to both children, so the broker must also share seen/cooldown state.
 // Only params and compiled context change between child calls.
 func runOrderedSessionBreakHold(children []*PreparedRun, costs Costs) (RunResult, error) {
+	result, _, err := runOrderedSessionBreakHoldWithBroker(children, costs, false)
+	return result, err
+}
+
+func runOrderedSessionBreakHoldWithBroker(children []*PreparedRun, costs Costs, interactive bool) (RunResult, *broker, error) {
 	for _, child := range children {
 		if child.c5 || child.params.SetupType != string(dsl.FamilySessionBreakHold) || child.series.Len() != children[0].series.Len() {
-			return RunResult{}, errors.New("ordered composition supports only same-series session-break-hold children")
+			return RunResult{}, nil, errors.New("ordered composition supports only same-series session-break-hold children")
 		}
 	}
 	first := children[0]
@@ -431,6 +447,11 @@ func runOrderedSessionBreakHold(children []*PreparedRun, costs Costs) (RunResult
 	fixture.Costs = costs
 	var b broker
 	b.reset(first.series, first.cols, first.htfTrend, first.ema, first.emaSlope, first.params, fixture, nil)
+	if interactive {
+		b.equityCurve = make([]float64, first.series.Len())
+		b.cashCurve = make([]float64, first.series.Len())
+		b.skipCounts = make(map[string]int)
+	}
 	if first.windowed {
 		b.setExecutionWindow(first.execution)
 	}
@@ -463,5 +484,6 @@ func runOrderedSessionBreakHold(children []*PreparedRun, costs Costs) (RunResult
 	if end >= 0 && b.hasPosition {
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
 	}
-	return checkedResultEnvelope(fixture, b.trades)
+	result, err := checkedResultEnvelope(fixture, b.trades)
+	return result, &b, err
 }

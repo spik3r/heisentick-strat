@@ -69,12 +69,13 @@ func main() {
 	}
 	interactive := len(os.Args) == 4 && (os.Args[1] == "--interactive" || os.Args[1] == "--interactive-vp-ny-handoff")
 	composition := len(os.Args) == 4 && os.Args[1] == "--composition"
-	if !interactive && !composition && len(os.Args) != 3 {
-		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive|--interactive-vp-ny-handoff fixture.json source.strat | --composition fixture.json child-sources.json | fixture.json source.strat]")
+	interactiveComposition := len(os.Args) == 4 && os.Args[1] == "--interactive-composition"
+	if !interactive && !composition && !interactiveComposition && len(os.Args) != 3 {
+		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive|--interactive-vp-ny-handoff fixture.json source.strat | --composition|--interactive-composition fixture.json child-sources.json | fixture.json source.strat]")
 		os.Exit(2)
 	}
 	offset := 1
-	if interactive || composition {
+	if interactive || composition || interactiveComposition {
 		offset = 2
 	}
 	raw, err := os.ReadFile(os.Args[offset])
@@ -91,6 +92,10 @@ func main() {
 			out = runInteractiveVPNYHandoff(string(raw), string(source))
 		}
 		fmt.Println(string(out))
+		return
+	}
+	if interactiveComposition {
+		fmt.Println(string(runInteractiveComposition(string(raw), string(source))))
 		return
 	}
 	if composition {

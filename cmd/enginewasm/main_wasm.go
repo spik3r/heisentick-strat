@@ -31,6 +31,12 @@ func main() {
 		}
 		return string(out)
 	}))
+	js.Global().Set("engineRunInteractiveCompositionFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return string(runInteractiveComposition("", ""))
+		}
+		return string(runInteractiveComposition(args[0].String(), args[1].String()))
+	}))
 	js.Global().Set("engineRunInteractiveFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return string(runInteractive("", ""))
