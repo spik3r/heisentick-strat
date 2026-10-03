@@ -74,6 +74,60 @@ func TestVPNYHandoffBridgeFailsClosedWithItsVersionedSchema(t *testing.T) {
 	}
 }
 
+func TestCompositionBridgeFailsClosed(t *testing.T) {
+	raw, err := os.ReadFile("../../engine/testdata/composition/balanced.fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := runCompositionFixture(string(raw), "not JSON"); err == nil || !strings.Contains(err.Error(), "composition sources") {
+		t.Fatalf("invalid source map: %v", err)
+	}
+	if _, err := runCompositionFixture(string(raw), `{}`); err == nil || !strings.Contains(err.Error(), "missing source") {
+		t.Fatalf("missing child source: %v", err)
+	}
+	if _, err := runCompositionFixture(string(raw), `null`); err == nil || !strings.Contains(err.Error(), "must be an object") {
+		t.Fatalf("null source map: %v", err)
+	}
+}
+
+func TestCompositionBridgeRunsPinnedWrapper(t *testing.T) {
+	root := os.Getenv("HEISENTICK_APP_SOURCE_ROOT")
+	if root == "" {
+		t.Skip("set HEISENTICK_APP_SOURCE_ROOT for app-source bridge integration")
+	}
+	manifest, err := native.BuiltInCompositionManifest()
+	if err != nil {
+		t.Fatal(err)
+	}
+	sources := make(map[string]string)
+	for _, child := range manifest.Children {
+		text, err := os.ReadFile(filepath.Join(root, child.Path))
+		if err != nil {
+			t.Fatal(err)
+		}
+		sources[child.ID] = string(text)
+	}
+	rawSources, err := json.Marshal(sources)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rawFixture, err := os.ReadFile("../../engine/testdata/composition/balanced.fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	rawResult, err := runCompositionFixture(string(rawFixture), string(rawSources))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result native.RunResult
+	if err := json.Unmarshal(rawResult, &result); err != nil {
+		t.Fatal(err)
+	}
+	if result.Case != "composition-balanced" || result.StrategyID != "dslSessionBiasSeasonalConvergenceBalancedFifteen" || result.TradeCount != 3 {
+		t.Fatalf("composition bridge lost identity or trades: case=%q strategy=%q trades=%d", result.Case, result.StrategyID, result.TradeCount)
+	}
+}
+
 func TestColumnResultUsesFixedNumericRecordWidth(t *testing.T) {
 	fixturePath := "../../conformance/run/deployed-dsl-session-expansion-ny.fixture.json"
 	fixture, err := native.LoadRunFixture(fixturePath)

@@ -24,6 +24,41 @@ func runFixture(raw, source string) ([]byte, error) {
 	return json.Marshal(result)
 }
 
+// runCompositionFixture is the JSON transport for the Go-owned authored
+// wrappers. Sources is a JSON object keyed by every required child ID. The
+// adapter never falls back to a JS strategy or an empty result on dependency
+// errors; native callers receive an error and WASM emits {"error":...}.
+func runCompositionFixture(rawFixture, rawSources string) ([]byte, error) {
+	fixture, err := native.DecodeRunFixture([]byte(rawFixture))
+	if err != nil {
+		return nil, err
+	}
+	var sources map[string]string
+	decoder := json.NewDecoder(bytes.NewBufferString(rawSources))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&sources); err != nil {
+		return nil, fmt.Errorf("composition sources: %w", err)
+	}
+	if sources == nil {
+		return nil, errors.New("composition sources must be an object keyed by child ID")
+	}
+	request := native.RunRequest{
+		Series:          marketdata.SeriesFromBars(fixture.Bars),
+		SourceSeries:    marketdata.SeriesFromBars(fixture.SourceBars),
+		HTFSeries:       marketdata.SeriesFromBars(fixture.HTFBars),
+		SourceHTFSeries: marketdata.SeriesFromBars(fixture.SourceHTFBars),
+		StrategyID:      fixture.StrategyID, Symbol: fixture.Symbol, Timeframe: fixture.Timeframe,
+		SourceTimeframe: fixture.SourceTimeframe, HigherTimeframe: fixture.HigherTimeframe,
+		RangeMethod: fixture.RangeMethod, Costs: fixture.Costs,
+	}
+	result, err := native.RunBuiltInComposition(request, sources)
+	if err != nil {
+		return nil, err
+	}
+	result.Case = fixture.Case
+	return json.Marshal(result)
+}
+
 type interactiveFailure struct {
 	Schema string `json:"schema"`
 	Error  struct {

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"reflect"
 	"strings"
 
 	"github.com/spik3r/heisentick-strat/dsl"
@@ -86,7 +87,7 @@ func RunComposition(manifest CompositionManifest, request RunRequest, sources ma
 	if selected == nil {
 		return RunResult{}, fmt.Errorf("unknown composite %q", request.StrategyID)
 	}
-	children, err := compileCompositionChildren(manifest.Children, selected.Routes, sources)
+	children, err := compileCompositionChildren(manifest.Children, selected.Routes, request, sources)
 	if err != nil {
 		return RunResult{}, fmt.Errorf("composite %s: %w", request.StrategyID, err)
 	}
@@ -130,30 +131,77 @@ func RunComposition(manifest CompositionManifest, request RunRequest, sources ma
 		if p.offRoute {
 			return RunResult{}, fmt.Errorf("child %s rejects declared composite route %s %s", id, route.Symbol, route.Timeframe)
 		}
-		emaLen, emaSlopeLen := p.params.TPBEMALen, p.params.TPBEMASlopeLen
-		if err := applyCompositionParams(&p.params, child.params); err != nil {
-			return RunResult{}, fmt.Errorf("child %s runtime params: %w", id, err)
-		}
-		if p.params.SetupType == string(dsl.FamilyTrendPullback) && (p.params.TPBEMALen != emaLen || p.params.TPBEMASlopeLen != emaSlopeLen) {
-			return RunResult{}, fmt.Errorf("child %s runtime EMA params disagree with pinned DSL source", id)
-		}
+		p.params = child.runtime
 		prepared = append(prepared, p)
 	}
 	if len(prepared) == 1 {
-		return prepared[0].RunChecked(request.Costs)
+		result, err := prepared[0].RunChecked(request.Costs)
+		return normalizeCompositionResult(result), err
 	}
 	if len(prepared) == 2 {
-		return runOrderedSessionBreakHold(prepared, request.Costs)
+		result, err := runOrderedSessionBreakHold(prepared, request.Costs)
+		return normalizeCompositionResult(result), err
 	}
 	return RunResult{}, fmt.Errorf("route %s %s has unsupported child count %d", route.Symbol, route.Timeframe, len(prepared))
 }
 
-type compiledCompositionChild struct {
-	config dsl.Config
-	params map[string]float64
+// The JS conformance serializer rounds numeric values inside nested metadata
+// as well as top-level trade fields. The ordinary Go serializer currently only
+// rounds one map level; composition normalizes the deeper seasonal metadata
+// so the wrapper's transport output is byte-for-byte compatible with JS.
+func normalizeCompositionResult(result RunResult) RunResult {
+	if len(result.Trades) == 0 {
+		return result
+	}
+	trades := make([]Trade, len(result.Trades))
+	copy(trades, result.Trades)
+	for i := range trades {
+		if trades[i].Meta != nil {
+			trades[i].Meta = normalizeCompositionMeta(trades[i].Meta).(TradeMeta)
+		}
+	}
+	result.Trades = trades
+	return result
 }
 
-func compileCompositionChildren(definitions []CompositionChild, routes []CompositionRoute, sources map[string]string) (map[string]compiledCompositionChild, error) {
+func normalizeCompositionMeta(value any) any {
+	switch typed := value.(type) {
+	case float64:
+		return numberForJSON(typed)
+	case *float64:
+		if typed == nil {
+			return nil
+		}
+		return numberForJSON(*typed)
+	case TradeMeta:
+		out := make(TradeMeta, len(typed))
+		for key, nested := range typed {
+			out[key] = normalizeCompositionMeta(nested)
+		}
+		return out
+	case map[string]any:
+		out := make(map[string]any, len(typed))
+		for key, nested := range typed {
+			out[key] = normalizeCompositionMeta(nested)
+		}
+		return out
+	case []any:
+		out := make([]any, len(typed))
+		for i, nested := range typed {
+			out[i] = normalizeCompositionMeta(nested)
+		}
+		return out
+	default:
+		return value
+	}
+}
+
+type compiledCompositionChild struct {
+	config  dsl.Config
+	runtime flagParams
+}
+
+func compileCompositionChildren(definitions []CompositionChild, routes []CompositionRoute, request RunRequest, sources map[string]string) (map[string]compiledCompositionChild, error) {
 	defs := make(map[string]CompositionChild, len(definitions))
 	for _, child := range definitions {
 		if child.ID == "" || child.Path == "" || len(child.SHA256) != 64 || child.Params == nil {
@@ -170,29 +218,60 @@ func compileCompositionChildren(definitions []CompositionChild, routes []Composi
 			return nil, errors.New("incomplete composition route")
 		}
 		for _, id := range route.Children {
-			if _, done := compiled[id]; done {
-				continue
+			resolved, done := compiled[id]
+			if !done {
+				child, ok := defs[id]
+				if !ok {
+					return nil, fmt.Errorf("undeclared child %q", id)
+				}
+				source, ok := sources[id]
+				if !ok || strings.TrimSpace(source) == "" {
+					return nil, fmt.Errorf("missing source for child %q (%s)", id, child.Path)
+				}
+				digest := sha256.Sum256([]byte(source))
+				if hex.EncodeToString(digest[:]) != child.SHA256 {
+					return nil, fmt.Errorf("source digest mismatch for child %q (%s)", id, child.Path)
+				}
+				parsed, err := dsl.Parse(source)
+				if err != nil {
+					return nil, fmt.Errorf("child %s: %w", id, err)
+				}
+				if len(parsed.Errors) != 0 {
+					return nil, fmt.Errorf("child %s DSL parse errors: %v", id, parsed.Errors)
+				}
+				parsedRuntime := paramsFromConfig(parsed.Config)
+				runtime := parsedRuntime
+				emaLen, emaSlopeLen := runtime.TPBEMALen, runtime.TPBEMASlopeLen
+				if err := applyCompositionParams(&runtime, child.Params); err != nil {
+					return nil, fmt.Errorf("child %s runtime params: %w", id, err)
+				}
+				if runtime.SetupType == string(dsl.FamilyTrendPullback) && (runtime.TPBEMALen != emaLen || runtime.TPBEMASlopeLen != emaSlopeLen) {
+					return nil, fmt.Errorf("child %s runtime EMA params disagree with pinned DSL source", id)
+				}
+				// The authored wrapper uses the child's generated params, not
+				// caller overrides. Require the snapshot to agree with the DSL
+				// parser. One reviewed parser gap is explicit: London Quality's
+				// displacement phrase compiles to zero in Go, while the JS
+				// child's params carry its authored 0.5 ATR threshold.
+				if id == "dslLondonBreakRetestQuality" && parsedRuntime.BRDisplacementATR == 0 && runtime.BRDisplacementATR == 0.5 {
+					parsedRuntime.BRDisplacementATR = 0.5
+				}
+				if !reflect.DeepEqual(parsedRuntime, runtime) {
+					return nil, fmt.Errorf("child %s runtime params disagree with pinned DSL source", id)
+				}
+				resolved = compiledCompositionChild{config: parsed.Config, runtime: runtime}
+				compiled[id] = resolved
 			}
-			child, ok := defs[id]
-			if !ok {
-				return nil, fmt.Errorf("undeclared child %q", id)
+			childRequest := request
+			childRequest.Config = resolved.config
+			childRequest.Symbol = route.Symbol
+			childRequest.Timeframe = route.Timeframe
+			if err := validateRunRequest(childRequest); err != nil {
+				return nil, fmt.Errorf("child %s on %s %s: %w", id, route.Symbol, route.Timeframe, err)
 			}
-			source, ok := sources[id]
-			if !ok || strings.TrimSpace(source) == "" {
-				return nil, fmt.Errorf("missing source for child %q (%s)", id, child.Path)
+			if !RouteAllowed(resolved.config, route.Symbol, route.Timeframe, request.Series) {
+				return nil, fmt.Errorf("child %s rejects declared composite route %s %s", id, route.Symbol, route.Timeframe)
 			}
-			digest := sha256.Sum256([]byte(source))
-			if hex.EncodeToString(digest[:]) != child.SHA256 {
-				return nil, fmt.Errorf("source digest mismatch for child %q (%s)", id, child.Path)
-			}
-			parsed, err := dsl.Parse(source)
-			if err != nil {
-				return nil, fmt.Errorf("child %s: %w", id, err)
-			}
-			if len(parsed.Errors) != 0 {
-				return nil, fmt.Errorf("child %s DSL parse errors: %v", id, parsed.Errors)
-			}
-			compiled[id] = compiledCompositionChild{config: parsed.Config, params: child.Params}
 		}
 	}
 	return compiled, nil
@@ -267,9 +346,17 @@ func applyCompositionParams(p *flagParams, values map[string]float64) error {
 				return fmt.Errorf("targetR unsupported for %s", p.SetupType)
 			}
 		case "minEr":
-			p.BRMinER, p.TPBMinER = v, v
+			if p.SetupType == string(dsl.FamilyBreakRetest) {
+				p.BRMinER = v
+			} else {
+				p.TPBMinER = v
+			}
 		case "maxEr":
-			p.BRMaxER, p.TPBMaxER = v, v
+			if p.SetupType == string(dsl.FamilyBreakRetest) {
+				p.BRMaxER = v
+			} else {
+				p.TPBMaxER = v
+			}
 		case "holdCandles":
 			p.SBHHoldCandles = int(v)
 		case "stopInsideAtr":
@@ -297,8 +384,11 @@ func applyCompositionParams(p *flagParams, values map[string]float64) error {
 		case "attemptCount":
 			p.TPBAttemptCount = int(v)
 		case "useTrigger":
-			if p.SetupType == string(dsl.FamilySessionBreakHold) && v != 1 {
-				return errors.New("session break hold requires trigger")
+			if p.SetupType == string(dsl.FamilySessionBreakHold) {
+				if v != 1 {
+					return errors.New("session break hold requires trigger")
+				}
+				break
 			}
 			p.TPBUseTrigger = boolean(v)
 		case "emaLen":
@@ -326,16 +416,10 @@ func applyCompositionParams(p *flagParams, values map[string]float64) error {
 	return nil
 }
 
-type sessionBreakHoldBranchState struct {
-	lastEntry int
-	hasEntry  bool
-	seen      dailySeenSet
-}
-
 // The balanced wrapper calls long then short on each bar and calls short only
-// if the shared API has no position after long. Keep one broker for occupancy,
-// pending orders, fills, exits and P&L, while swapping each child DSL runtime's
-// independent session-break-hold seen/cooldown state and compiled context.
+// if the shared API has no position after long. It passes the same api.state
+// object to both children, so the broker must also share seen/cooldown state.
+// Only params and compiled context change between child calls.
 func runOrderedSessionBreakHold(children []*PreparedRun, costs Costs) (RunResult, error) {
 	for _, child := range children {
 		if child.c5 || child.params.SetupType != string(dsl.FamilySessionBreakHold) || child.series.Len() != children[0].series.Len() {
@@ -350,7 +434,6 @@ func runOrderedSessionBreakHold(children []*PreparedRun, costs Costs) (RunResult
 	if first.windowed {
 		b.setExecutionWindow(first.execution)
 	}
-	states := []sessionBreakHoldBranchState{{seen: dailySeenSet{day: -1}}, {seen: dailySeenSet{day: -1}}}
 	end := b.executionEnd()
 	if end >= b.series.Len() {
 		end = b.series.Len() - 1
@@ -370,9 +453,7 @@ func runOrderedSessionBreakHold(children []*PreparedRun, costs Costs) (RunResult
 			}
 			b.params, b.cols, b.htfTrend = child.params, child.cols, child.htfTrend
 			b.ema, b.emaSlope = child.ema, child.emaSlope
-			b.sbhLastEntry, b.hasSBHEntry, b.seen.sbh = states[branch].lastEntry, states[branch].hasEntry, states[branch].seen
 			b.onBar(i)
-			states[branch] = sessionBreakHoldBranchState{b.sbhLastEntry, b.hasSBHEntry, b.seen.sbh}
 		}
 		b.markToMarket(i)
 		if b.windowed && i < b.executionStart() {

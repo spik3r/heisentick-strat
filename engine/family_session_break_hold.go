@@ -46,14 +46,15 @@ func (b *broker) onSessionBreakHoldBar(i int) {
 			continue
 		}
 		b.vpNYVetoed = false
-		b.enterSetup(i, setup)
+		entered := b.enterSetup(i, setup)
 		if b.vpNYVetoed {
 			// The JS wrapper restores SBH seen/cooldown after a veto.
 			// Its guarded enter returns undefined, so the base stops this bar.
 			break
 		}
-		// Preserve the ordinary broker's existing bookkeeping on non-veto
-		// rejections. Accepted entries receive the same cooldown and seen mark.
+		if !entered {
+			continue
+		}
 		b.seen.sbh.add(day, key)
 		b.sbhLastEntry = i
 		b.hasSBHEntry = true

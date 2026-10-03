@@ -41,6 +41,13 @@ version and is named here.
   rule and selected-row value-area accumulation; test both actual veto and
   allowed-entry native/WASM success. This semantic change requires a
   minor release before consumer adoption.
+- Add native and WASM Go composition v1 for five active authored wrappers,
+  with digest-pinned child sources, exact symbol/timeframe routes, child
+  runtime params, and shared broker state for the balanced 15m route. Frozen
+  nonempty JavaScript trade oracles cover every wrapper. Correct session
+  break-hold seen/cooldown updates so a rejected entry can retry on a later
+  fresh level; existing conformance goldens are unchanged. These engine
+  semantics require the next minor release before consumer adoption.
 - Add a separate versioned interactive result for the qualified ordinary SMA
   Golden Cross and Dual EMA Resumption chart routes, with per-bar marked/closed equity, post-liquidation cash,
   fee-inclusive stats, running-peak drawdown and structured unsupported-route

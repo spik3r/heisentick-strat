@@ -1,0 +1,57 @@
+{
+  "schema": "composition-sbh-state-js-oracle-v1",
+  "scenarios": [
+    {
+      "name": "shared-cooldown",
+      "indices": [
+        5,
+        10,
+        18
+      ],
+      "events": [
+        {
+          "index": 5,
+          "side": "long",
+          "levelKey": "AH",
+          "accepted": true
+        },
+        {
+          "index": 18,
+          "side": "short",
+          "levelKey": "LL",
+          "accepted": true
+        }
+      ],
+      "lastEntry": 18,
+      "seen": [
+        "long:AH",
+        "short:LL"
+      ]
+    },
+    {
+      "name": "rejected-retry",
+      "indices": [
+        5,
+        6
+      ],
+      "events": [
+        {
+          "index": 5,
+          "side": "long",
+          "levelKey": "AH",
+          "accepted": false
+        },
+        {
+          "index": 6,
+          "side": "long",
+          "levelKey": "LH",
+          "accepted": true
+        }
+      ],
+      "lastEntry": 6,
+      "seen": [
+        "long:LH"
+      ]
+    }
+  ]
+}
