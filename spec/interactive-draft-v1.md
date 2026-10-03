@@ -24,6 +24,12 @@ Unknown setup types and multiple types fail instead of retaining a default.
 HTF, source/entry timeframe, microstructure/morphology, approach, grade and
 other unaudited directives are refused. This narrower source profile does not
 claim support for all ordinary-family directives or rewrite older syntax.
+All draft families additionally audit original physical section lines: no
+non-comment content after an unquoted closing brace, and no discarded prefix
+before the first inline directive. Quoted braces are metadata; `#` starts a
+comment. The historical parser and strict parser remain unchanged.
+An opening brace whose close is on a later line must have only whitespace or a
+comment after it; opening-line bodies otherwise disappear in historical lexing.
 
 ## Fixed Failed Breakout source subset
 

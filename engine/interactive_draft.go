@@ -93,6 +93,9 @@ func draftSourceProfile(source, symbol, timeframe string) (dsl.ParseResult, stri
 	if len(source) == 0 || len(source) > 256_000 {
 		return zero, "", fmt.Errorf("draft source requires 1–256000 bytes")
 	}
+	if err := validateDraftPhysicalSections(source); err != nil {
+		return zero, "", err
+	}
 	if _, ok := interactiveFixedDuration(timeframe); !ok {
 		return zero, "", fmt.Errorf("%w: draft timeframe %q", ErrInteractiveUnsupported, timeframe)
 	}
@@ -130,6 +133,80 @@ func draftSourceProfile(source, symbol, timeframe string) (dsl.ParseResult, stri
 		return zero, "", fmt.Errorf("%w: %v", ErrInteractiveUnsupported, err)
 	}
 	return parsed, rangeMethod, nil
+}
+
+// The historical inline lexer may drop content after a closing section brace.
+// Local draft admission must not discard authored intent. Inspect original
+// physical lines, honoring quoted metadata and trailing comments; leave the
+// historical parser and its corpus unchanged.
+func validateDraftPhysicalSections(source string) error {
+	depth := 0
+	for lineIndex, line := range strings.Split(source, "\n") {
+		var quote rune
+		escaped, closed := false, false
+		open, closeAt := -1, -1
+		for i, char := range line {
+			if quote != 0 {
+				if escaped {
+					escaped = false
+				} else if char == '\\' {
+					escaped = true
+				} else if char == quote {
+					quote = 0
+				}
+				continue
+			}
+			if char == '#' {
+				break
+			}
+			if closed && !strings.ContainsRune(" \t\r", char) {
+				return fmt.Errorf("%w: draft line %d has trailing section content", ErrInteractiveUnsupported, lineIndex+1)
+			}
+			if char == '"' || char == '\'' {
+				quote = char
+			} else if char == '{' {
+				if depth != 0 {
+					return fmt.Errorf("%w: draft line %d has nested sections", ErrInteractiveUnsupported, lineIndex+1)
+				}
+				depth = 1
+				open = i
+			} else if char == '}' {
+				if depth != 1 {
+					return fmt.Errorf("%w: draft line %d has unmatched closing brace", ErrInteractiveUnsupported, lineIndex+1)
+				}
+				depth = 0
+				closed = true
+				closeAt = i
+			}
+		}
+		if quote != 0 {
+			return fmt.Errorf("%w: draft line %d has an unclosed quote", ErrInteractiveUnsupported, lineIndex+1)
+		}
+		if open >= 0 && !dsl.InlineSourcePrefixPreserved(line[:open], "") {
+			return fmt.Errorf("%w: draft line %d has an unsupported section header", ErrInteractiveUnsupported, lineIndex+1)
+		}
+		if open >= 0 && closeAt < 0 {
+			body := strings.TrimSpace(line[open+1:])
+			if body != "" && !strings.HasPrefix(body, "#") {
+				return fmt.Errorf("%w: draft line %d has discarded opening-line content", ErrInteractiveUnsupported, lineIndex+1)
+			}
+		}
+		if open >= 0 && closeAt > open {
+			body := strings.TrimSpace(line[open+1 : closeAt])
+			if body == "" {
+				continue
+			}
+			// Share the actual historical splitter and its heads. A separate
+			// approximate vocabulary would miss within-section prefix loss.
+			if !dsl.InlineSourcePrefixPreserved(line[:open], body) {
+				return fmt.Errorf("%w: draft line %d has discarded inline prefix", ErrInteractiveUnsupported, lineIndex+1)
+			}
+		}
+	}
+	if depth != 0 {
+		return fmt.Errorf("%w: draft has an unclosed section", ErrInteractiveUnsupported)
+	}
+	return nil
 }
 
 func draftFamilyCalculation(parsed dsl.ParseResult, calculationSource string) error {

@@ -197,3 +197,42 @@ func TestInteractiveDraftPrefixStrictCostsAndRefusals(t *testing.T) {
 		t.Fatal("source audit bypassed")
 	}
 }
+
+func TestInteractiveDraftSectionSuffixCannotDiscardIntent(t *testing.T) {
+	profile := []byte(`{"schema":"dsl-interactive-source-profile-v1","symbol":"XAUUSD","timeframe":"5m"}`)
+	for _, source := range []string{draftSMASource + " ignored", draftSMASource + " risk 2 USD", draftSMASource + " }",
+		draftSMASource + " \"ignored\"", draftSMASource + " // ignored", strings.Replace(draftSMASource, "{ side long only }", "{ ignored side long only }", 1),
+		strings.Replace(draftSMASource, "{ side long only }", "{ ema ignored side long only }", 1),
+		strings.Replace(draftSMASource, "{ side long only }", "{ name ignored side long only }", 1),
+		strings.Replace(draftSMASource, "{ side long only }", "{ sma ignored side long only }", 1),
+		strings.Replace(draftSMASource, "{ side long only }", "{ \"ignored side long only }", 1),
+		strings.Replace(draftSMASource, "{ side long only }", "{ 'ignored side long only }", 1),
+		strings.Replace(draftSMASource, "{ side long only }", "{ { side long only }", 1),
+		strings.TrimSuffix(draftSMASource, "}"),
+		strings.Replace(draftSMASource, "setup {\n type: sma golden cross\n sma fast 2\n sma slow 4\n}", "setup { sma fast 2 type: sma golden cross }", 1),
+		strings.Replace(draftSMASource, `strategy "Mutable SMA" { description "A mutable source, with no catalog identity." }`,
+			"strategy \"First metadata\"\nstrategy \"Second metadata\" { risk 999 USD\n}", 1),
+		strings.Replace(draftSMASource, `strategy "Mutable SMA" { description "A mutable source, with no catalog identity." }`,
+			"strategy \"First metadata\"\nstrategy \"Second metadata\" risk 999 USD {\n}", 1),
+		strings.Replace(draftSMASource, `strategy "Mutable SMA" { description "A mutable source, with no catalog identity." }`,
+			"strategy \"First metadata\"\nstrategy \"Second metadata\" risk 999 USD {}", 1),
+		strings.Replace(draftSMASource, "{ slices(XAUUSD 5m) }", "{ ignored slices(XAUUSD 5m) }", 1)} {
+		if _, err := InspectInteractiveSource(profile, source); err == nil {
+			t.Fatal("profile discarded physical section suffix")
+		}
+		if _, err := RunInteractiveDraftFixture(draftFixture(t), source); err == nil {
+			t.Fatal("finalized draft discarded physical section suffix")
+		}
+		if _, err := RunInteractiveDraftPrefixFixture(draftFixture(t), source); err == nil {
+			t.Fatal("prefix discarded physical section suffix")
+		}
+	}
+	for _, source := range []string{draftSMASource + " # comment",
+		strings.Replace(draftSMASource, "setup {", "setup { # opening comment", 1),
+		strings.Replace(draftSMASource, "Mutable SMA", "Quoted } metadata", 1),
+		strings.Replace(draftSMASource, `"Mutable SMA"`, `'Quoted } metadata'`, 1)} {
+		if _, err := InspectInteractiveSource(profile, source); err != nil {
+			t.Fatalf("quoted/comment brace guard rejected source: %v", err)
+		}
+	}
+}
