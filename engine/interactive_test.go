@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -71,6 +72,100 @@ func TestInteractiveDualEMAUsesOrdinaryTradeAndEquityPath(t *testing.T) {
 	if !reflect.DeepEqual(prefix.EquityCurve, result.EquityCurve[:len(prefix.EquityCurve)]) ||
 		!reflect.DeepEqual(prefix.ClosedEquity, result.ClosedEquity[:len(prefix.ClosedEquity)]) {
 		t.Fatal("dual EMA prior equity marks changed after a suffix was appended")
+	}
+}
+
+func TestInteractiveNamedLevelSweepPreservesFixtureTradesAndCausalMarks(t *testing.T) {
+	base := filepath.Join("..", "conformance", "run", "research-dsl-daily-snd-retest-xauusd-4h")
+	raw, err := os.ReadFile(base + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(base + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := RunInteractiveFixture(raw, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture, err := DecodeRunFixture(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := RunFixtureCase(fixture, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
+		len(result.EquityCurve) != len(fixture.Bars) ||
+		len(result.ClosedEquity) != len(fixture.Bars) || len(result.Skips) != 0 ||
+		result.Stats.EndEquity != result.CashEndEquity {
+		t.Fatalf("named level sweep interactive contract disagrees with fixture run: %+v", result)
+	}
+	var prefixFixture RunFixture
+	if err := json.Unmarshal(raw, &prefixFixture); err != nil {
+		t.Fatal(err)
+	}
+	prefixFixture.RawBars = prefixFixture.RawBars[:len(prefixFixture.RawBars)/2]
+	prefixRaw, err := json.Marshal(prefixFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	prefix, err := RunInteractiveFixture(prefixRaw, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(prefix.EquityCurve, result.EquityCurve[:len(prefix.EquityCurve)]) ||
+		!reflect.DeepEqual(prefix.ClosedEquity, result.ClosedEquity[:len(prefix.ClosedEquity)]) {
+		t.Fatal("named level sweep prior equity marks changed after a suffix was appended")
+	}
+}
+
+func TestInteractiveNamedLevelSweepWaitsForPriorDayAndPreservesOpenPrefix(t *testing.T) {
+	base := filepath.Join("..", "conformance", "run", "family-named-level-sweep")
+	raw, err := os.ReadFile(base + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(base + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture RunFixture
+	if err := json.Unmarshal(raw, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	run := func(count int) InteractiveRunResult {
+		t.Helper()
+		prefix := fixture
+		prefix.RawBars = fixture.RawBars[:count]
+		encoded, err := json.Marshal(prefix)
+		if err != nil {
+			t.Fatal(err)
+		}
+		result, err := RunInteractiveFixture(encoded, string(source))
+		if err != nil {
+			t.Fatal(err)
+		}
+		return result
+	}
+	beforeDayClose, open, full := run(6), run(11), run(len(fixture.RawBars))
+	if beforeDayClose.Run.TradeCount != 0 || open.Run.TradeCount != 1 ||
+		open.Run.Trades[0].EntryIndex != 10 || full.Run.TradeCount != 1 ||
+		full.Run.Trades[0].EntryIndex != 10 || full.Run.Trades[0].ExitIndex != 11 {
+		t.Fatalf("prior-day availability/open-prefix trade timing = %d/%+v/%+v",
+			beforeDayClose.Run.TradeCount, open.Run.Trades, full.Run.Trades)
+	}
+	for _, prefix := range []InteractiveRunResult{beforeDayClose, open} {
+		if !reflect.DeepEqual(prefix.EquityCurve, full.EquityCurve[:len(prefix.EquityCurve)]) ||
+			!reflect.DeepEqual(prefix.ClosedEquity, full.ClosedEquity[:len(prefix.ClosedEquity)]) {
+			t.Fatal("named-level sweep prior marks changed after a suffix was appended")
+		}
+	}
+	htfSource := strings.Replace(string(source), "  side long only", "  side long only\n  higher timeframe must be directional and agree", 1)
+	if _, err := RunInteractiveFixture(raw, htfSource); !errors.Is(err, ErrInteractiveUnsupported) {
+		t.Fatalf("HTF-gated named-level sweep without HTF bars = %v, want unsupported", err)
 	}
 }
 

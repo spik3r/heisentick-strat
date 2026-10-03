@@ -73,7 +73,7 @@ type InteractiveRunResult struct {
 // other families have not qualified their skip diagnostics.
 func interactiveOrdinaryFamily(setupType string) bool {
 	switch setupType {
-	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption):
+	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption), string(dsl.FamilyNamedLevelSweep):
 		return true
 	default:
 		return false
@@ -98,6 +98,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		return InteractiveRunResult{}, fmt.Errorf("DSL parse errors: %v", parsed.Errors)
 	}
 	if !interactiveOrdinaryFamily(setupTypeFromAny(parsed.Config["setupType"])) ||
+		stringValue(mapValue(parsed.Config, "htf"), "mode", "off") != "off" ||
 		sourceTimeframeFromConfig(parsed.Config) != "" ||
 		fixture.SourceTimeframe != "" || len(fixture.SourceBars) != 0 ||
 		len(fixture.HTFBars) != 0 || len(fixture.SourceHTFBars) != 0 {

@@ -8,12 +8,12 @@ does not change the `dsl-conformance-trades-v1` result or its goldens.
 
 ## Admitted route
 
-Only chart-timeframe `smaGoldenCross` and `dualEmaResumption` DSL strategies on
-their declared routes, with no source or HTF bar inputs, are admitted. These
-ordinary handlers do not emit skip reasons; `skips` is the empty object for
-both. The existing fixture costs
+Only chart-timeframe `smaGoldenCross`, `dualEmaResumption`, and
+`namedLevelSweep` DSL strategies on their declared routes, with HTF mode off
+and no source or HTF bar inputs, are admitted. These ordinary handlers do not
+emit skip reasons; `skips` is the empty object. The existing fixture costs
 (`fillOn`, slippage, basis-point slippage, fee per unit, positive start equity)
-are supported. Route mismatch, source/HTF input, and every other setup family
+are supported. Route mismatch, HTF mode, source/HTF input, and every other setup family
 are explicit `unsupported-route` errors. The ordinary broker loop supplies
 the marks. Scheduled source-entry, special-family and windowed loops are not
 represented by this version. Adding a family with skip diagnostics requires
