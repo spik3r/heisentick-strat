@@ -1,0 +1,57 @@
+{
+  "request": {
+    "schema": "authored-orb-run-v1",
+    "strategyId": "daySessionOrbOriginalTvParity",
+    "symbol": "XAUUSD",
+    "timeframe": "30m",
+    "params": {
+      "strategyStyle": 1,
+      "direction": 1
+    },
+    "costs": {
+      "slippage": 0.06,
+      "feePerUnit": 0,
+      "fillOn": "close",
+      "startEquity": 10000
+    },
+    "bars": [
+      {
+        "t": 1767578400000,
+        "o": 100,
+        "h": 100,
+        "l": 100,
+        "c": 100,
+        "v": 0
+      },
+      {
+        "t": 1767580200000,
+        "o": 110,
+        "h": 110,
+        "l": 110,
+        "c": 110,
+        "v": 0
+      },
+      {
+        "t": 1767582000000,
+        "o": 103,
+        "h": 103,
+        "l": 103,
+        "c": 103,
+        "v": 0
+      }
+    ],
+    "contextVwap": [
+      null,
+      null,
+      null
+    ]
+  },
+  "expected": {
+    "trades": [],
+    "equityCurve": [
+      10000,
+      10000,
+      10000
+    ]
+  }
+}

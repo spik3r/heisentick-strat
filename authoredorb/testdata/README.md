@@ -12,6 +12,13 @@ returns before calling the strategy's `onBar` while a position is open. The
 strategy's in-bar `session close` exit is therefore unreachable and its
 EMA, ATR, ORB, and day state pause while a position remains open. The
 `parity-held-through-session-close` fixture makes this visible as `eod`.
+The JS engine computes UTC-day context VWAP on every bar independently of
+that wrapper. `parity-computed-vwap` freezes a heavy-volume held bar that
+blocks an immediate second entry after the first trade stops out. The Go
+runner must advance context VWAP while leaving strategy EMA/ATR/ORB state
+paused.
+`parity-explicit-null-vwap` verifies that a JSON `null` context value uses
+the authored fallback; numeric zero is a different value.
 The first bar of a run is also counted twice in the strategy's HLC3 fallback
 VWAP because initialization and the ordinary same-day branch both add it;
 `parity-first-bar-hlc3-double-count` freezes that edge behavior.

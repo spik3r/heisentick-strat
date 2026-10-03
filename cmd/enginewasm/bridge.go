@@ -7,27 +7,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/spik3r/heisentick-strat/authoredorb"
 	"github.com/spik3r/heisentick-strat/dsl"
 	native "github.com/spik3r/heisentick-strat/engine"
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
-
-// runAuthoredOrb is a whole-strategy native/WASM entrypoint for the authored
-// JavaScript ORB pair. It deliberately does not parse a Strat source string.
-func runAuthoredOrb(raw string) ([]byte, error) {
-	decoder := json.NewDecoder(bytes.NewBufferString(raw))
-	decoder.DisallowUnknownFields()
-	var request authoredorb.Request
-	if err := decoder.Decode(&request); err != nil {
-		return nil, err
-	}
-	result, err := authoredorb.Run(request)
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(result)
-}
 
 func runFixture(raw, source string) ([]byte, error) {
 	fixture, err := native.DecodeRunFixture([]byte(raw))

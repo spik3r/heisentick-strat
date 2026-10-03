@@ -16,6 +16,10 @@ one context VWAP value per bar. Without a context column, the producer computes
 the ordinary JS context's UTC-day close-volume VWAP. Where that VWAP is not
 finite, the authored strategy's AEST-day HLC3 mean applies. No server data or
 external state is required.
+An explicit `null` context VWAP value also selects that fallback.
+Context VWAP advances on every input bar, including held bars, while the
+authored `onBar` state remains paused for held positions. Requests reject
+malformed OHLCV, negative execution costs, unknown params, and trailing JSON.
 
 The frozen fixtures under `authoredorb/testdata/` cover both IDs, route
 metadata, default short, long next-open target, trend-pullback gap stop,

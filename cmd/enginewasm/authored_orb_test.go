@@ -37,4 +37,7 @@ func TestAuthoredOrbWholeStrategyBridge(t *testing.T) {
 	if _, err := runAuthoredOrb(`{"schema":"authored-orb-run-v1","unknown":true}`); err == nil {
 		t.Fatal("unknown request field admitted")
 	}
+	if _, err := runAuthoredOrb(string(fixture.Request) + ` {"extra":true}`); err == nil {
+		t.Fatal("trailing JSON admitted")
+	}
 }

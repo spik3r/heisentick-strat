@@ -4,7 +4,9 @@
     "strategyId": "daySessionOrbOriginalTvParity",
     "symbol": "XAUUSD",
     "timeframe": "30m",
-    "params": {},
+    "params": {
+      "oneTradePerDay": 0
+    },
     "costs": {
       "slippage": 0.06,
       "feePerUnit": 0,
@@ -86,16 +88,16 @@
       },
       {
         "t": 1767583800000,
-        "o": 96,
+        "o": 94,
         "h": 98,
-        "l": 94,
-        "c": 96,
-        "v": 10
+        "l": 93,
+        "c": 94,
+        "v": 100000
       },
       {
         "t": 1767585600000,
-        "o": 95,
-        "h": 97,
+        "o": 110,
+        "h": 111,
         "l": 94,
         "c": 95,
         "v": 10
@@ -103,9 +105,9 @@
       {
         "t": 1767591000000,
         "o": 94,
-        "h": 96,
-        "l": 93,
-        "c": 94,
+        "h": 95,
+        "l": 92,
+        "c": 93,
         "v": 10
       },
       {
@@ -124,7 +126,7 @@
         "positionId": "position-8-0",
         "side": "short",
         "entry": 94.94,
-        "exit": 94.06,
+        "exit": 110.06,
         "sl": 98.77802972845734,
         "tp": 87.4439405430853,
         "initialSl": 98.77802972845734,
@@ -138,11 +140,37 @@
         },
         "size": 52.11007057008596,
         "entryIndex": 8,
-        "exitIndex": 12,
+        "exitIndex": 10,
         "entryT": 1767582000000,
+        "exitT": 1767585600000,
+        "points": -15.120000000000005,
+        "pnl": -787.9042670196999,
+        "reason": "sl",
+        "tag": "DaySessionOrb:Mid 12-16 AEST:SHORT:ORB"
+      },
+      {
+        "positionId": "position-11-1",
+        "side": "short",
+        "entry": 92.94,
+        "exit": 94.06,
+        "sl": 98.27034195974129,
+        "tp": 82.45931608051744,
+        "initialSl": 98.27034195974129,
+        "initialTp": 82.45931608051744,
+        "meta": {
+          "strategy": "daySessionOrb",
+          "style": "ORB",
+          "session": "Mid 12-16 AEST",
+          "setup": "ORB",
+          "entryStyle": "signal"
+        },
+        "size": 37.5210448992858,
+        "entryIndex": 11,
+        "exitIndex": 12,
+        "entryT": 1767591000000,
         "exitT": 1767592800000,
-        "points": 0.8799999999999955,
-        "pnl": 45.856862101675404,
+        "points": -1.1200000000000045,
+        "pnl": -42.023570287200265,
         "reason": "eod",
         "tag": "DaySessionOrb:Mid 12-16 AEST:SHORT:ORB"
       }
@@ -157,10 +185,10 @@
       10000,
       10000,
       9996.873395765795,
-      9944.763325195709,
-      9996.873395765795,
       10048.983466335882,
-      10048.983466335882
+      9212.0957329803,
+      9209.844470286343,
+      9172.323425387058
     ]
   }
 }

@@ -63,12 +63,12 @@ type Request struct {
 	Params     Params           `json:"params,omitempty"`
 	Costs      Costs            `json:"costs"`
 	Bars       []marketdata.Bar `json:"bars"`
-	// ContextVWAP, when supplied, represents api.ctx.vwap. A non-finite
-	// value selects the authored HLC3 fallback. Without a supplied column,
+	// ContextVWAP, when supplied, represents api.ctx.vwap. A null or
+	// non-finite value selects the authored HLC3 fallback. Without a column,
 	// Run computes the ordinary JS context's UTC-day close-volume VWAP.
-	ContextVWAP []float64 `json:"contextVwap,omitempty"`
-	ForceRoute  bool      `json:"forceRoute,omitempty"`
-	CloseAtEnd  *bool     `json:"closeAtEnd,omitempty"`
+	ContextVWAP []*float64 `json:"contextVwap,omitempty"`
+	ForceRoute  bool       `json:"forceRoute,omitempty"`
+	CloseAtEnd  *bool      `json:"closeAtEnd,omitempty"`
 }
 
 type Trade struct {
@@ -182,24 +182,46 @@ func Run(req Request) (Result, error) {
 	if req.Costs.FillOn != "" && req.Costs.FillOn != "close" && req.Costs.FillOn != "nextOpen" {
 		return Result{}, fmt.Errorf("unsupported fillOn %q", req.Costs.FillOn)
 	}
+	for name, value := range map[string]float64{"slippage": req.Costs.Slippage, "slippageBps": req.Costs.SlippageBps, "feePerUnit": req.Costs.FeePerUnit} {
+		if !finite(value) || value < 0 {
+			return Result{}, fmt.Errorf("costs.%s must be finite and nonnegative", name)
+		}
+	}
 	startEquity := 10000.0
 	if req.Costs.StartEquity != nil {
 		startEquity = *req.Costs.StartEquity
 	}
+	if !finite(startEquity) || startEquity < 0 {
+		return Result{}, errors.New("costs.startEquity must be finite and nonnegative")
+	}
 	for i, b := range req.Bars {
-		if !finite(b.T) || !finite(b.O) || !finite(b.H) || !finite(b.L) || !finite(b.C) || (i > 0 && b.T <= req.Bars[i-1].T) {
-			return Result{}, fmt.Errorf("bars[%d] has invalid OHLC/time ordering", i)
+		if !finite(b.T) || !finite(b.O) || !finite(b.H) || !finite(b.L) || !finite(b.C) ||
+			!finite(b.V) || b.V < 0 || b.H < b.L || b.O > b.H || b.O < b.L || b.C > b.H || b.C < b.L ||
+			(i > 0 && b.T <= req.Bars[i-1].T) {
+			return Result{}, fmt.Errorf("bars[%d] has invalid OHLCV/time ordering", i)
 		}
 	}
 	p := defaults()
 	for k, v := range req.Params {
+		if _, ok := p[k]; !ok {
+			return Result{}, fmt.Errorf("unknown authored ORB param %q", k)
+		}
+		if !finite(v) {
+			return Result{}, fmt.Errorf("param %q must be finite", k)
+		}
 		p[k] = v
+	}
+	if p["riskUsd"] < 0 {
+		return Result{}, errors.New("param riskUsd must be nonnegative")
 	}
 	if !finite(p["atrLen"]) || p["atrLen"] < 1 {
 		p["atrLen"] = 14
 	}
 	r := runner{req: req, params: p, result: Result{Schema: Schema, StrategyID: req.StrategyID, Symbol: req.Symbol, Timeframe: req.Timeframe, Trades: make([]Trade, 0), EquityCurve: make([]float64, len(req.Bars))}, orbHigh: math.NaN(), orbLow: math.NaN(), atr: math.NaN()}
 	for i, b := range req.Bars {
+		// buildContext computes UTC-day VWAP for every bar, even while the
+		// defineStrategy wrapper pauses this strategy's onBar state.
+		r.updateContextVWAP(i, b)
 		if r.pending != nil {
 			next := r.pending
 			r.pending = nil
@@ -225,6 +247,17 @@ func Run(req Request) (Result, error) {
 		r.result.OpenPositions = []OpenPosition{r.pos.OpenPosition}
 	}
 	return r.result, nil
+}
+
+func (r *runner) updateContextVWAP(i int, b marketdata.Bar) {
+	utcDay := math.Floor(b.T / dayMS)
+	if i == 0 || utcDay != r.utcDayKey {
+		r.utcDayKey = utcDay
+		r.utcVwapNum = 0
+		r.utcVwapDen = 0
+	}
+	r.utcVwapNum += b.C * b.V
+	r.utcVwapDen += b.V
 }
 
 func finite(v float64) bool { return !math.IsNaN(v) && !math.IsInf(v, 0) }
@@ -314,10 +347,8 @@ func (r *runner) checkBracket(i int, b marketdata.Bar) {
 func (r *runner) onBar(i int, b marketdata.Bar) {
 	p := r.params
 	localDay := math.Floor((b.T + localOffsetMS) / dayMS)
-	utcDay := math.Floor(b.T / dayMS)
 	if i == 0 {
 		r.dayKey = localDay
-		r.utcDayKey = utcDay
 		r.emaFast = b.C
 		r.emaSlow = b.C
 		r.lastClose = b.C
@@ -338,15 +369,6 @@ func (r *runner) onBar(i int, b marketdata.Bar) {
 	} else {
 		r.dayVwapSum += (b.H + b.L + b.C) / 3
 		r.dayVwapBars++
-	}
-	if i == 0 || utcDay != r.utcDayKey {
-		r.utcDayKey = utcDay
-		r.utcVwapNum = 0
-		r.utcVwapDen = 0
-	}
-	if finite(b.V) && b.V >= 0 {
-		r.utcVwapNum += b.C * b.V
-		r.utcVwapDen += b.V
 	}
 	minute := int(math.Floor(math.Mod((b.T+localOffsetMS)/60000, 1440)))
 	preset := 1
@@ -398,8 +420,8 @@ func (r *runner) onBar(i int, b marketdata.Bar) {
 	}
 	vwap := r.dayVwapSum / r.dayVwapBars
 	if r.req.ContextVWAP != nil {
-		if finite(r.req.ContextVWAP[i]) {
-			vwap = r.req.ContextVWAP[i]
+		if value := r.req.ContextVWAP[i]; value != nil && finite(*value) {
+			vwap = *value
 		}
 	} else if r.utcVwapDen > 0 {
 		vwap = r.utcVwapNum / r.utcVwapDen

@@ -94,4 +94,33 @@ func TestRoutesAndInputs(t *testing.T) {
 	if _, err := Run(req); err == nil {
 		t.Fatal("short context column admitted")
 	}
+	for _, tc := range []struct {
+		name   string
+		mutate func(*Request)
+	}{
+		{"inverted high-low", func(r *Request) { r.Bars[0].H = r.Bars[0].L - 1 }},
+		{"open outside range", func(r *Request) { r.Bars[0].O = r.Bars[0].H + 1 }},
+		{"close outside range", func(r *Request) { r.Bars[0].C = r.Bars[0].L - 1 }},
+		{"negative volume", func(r *Request) { r.Bars[0].V = -1 }},
+		{"nonfinite volume", func(r *Request) { r.Bars[0].V = math.NaN() }},
+		{"negative fee", func(r *Request) { r.Costs.FeePerUnit = -1 }},
+		{"negative slippage", func(r *Request) { r.Costs.Slippage = -1 }},
+		{"negative slippage bps", func(r *Request) { r.Costs.SlippageBps = -1 }},
+		{"unknown param", func(r *Request) { r.Params["unrecognized"] = 1 }},
+		{"nonfinite param", func(r *Request) { r.Params["rr"] = math.NaN() }},
+		{"negative risk", func(r *Request) { r.Params["riskUsd"] = -1 }},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			r := fixture.Request
+			r.Bars = append(r.Bars[:0:0], r.Bars...)
+			r.Params = Params{}
+			for k, v := range fixture.Request.Params {
+				r.Params[k] = v
+			}
+			tc.mutate(&r)
+			if _, err := Run(r); err == nil {
+				t.Fatal("malformed request admitted")
+			}
+		})
+	}
 }
