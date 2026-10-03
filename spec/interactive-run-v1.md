@@ -21,6 +21,8 @@ inputs and mislabeled HTF bars are rejected because the shared projection
 currently infers duration from observed spacing. Every admitted strategy must
 also pass its declared route.
 No explicit source-timeframe or source-entry route is admitted yet.
+Each input series has a 200,000-row local ceiling; the browser admission gate
+may set a smaller per-route ceiling until its worker resource budget is measured.
 Interactive execution records
 evaluated Go entry-gate rejections with `skips: {}` (or positive counts),
 `skipDiagnostics: "measured"`, and `skipReasonSchema: "dsl-skip-reasons-v1"`.

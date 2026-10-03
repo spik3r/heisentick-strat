@@ -283,8 +283,8 @@ func validateInteractiveInput(raw []byte) error {
 		if string(value) == "null" || json.Unmarshal(value, &rows) != nil || rows == nil {
 			return fmt.Errorf("interactive %s must be an array", name)
 		}
-		if len(rows) > 50_000 {
-			return fmt.Errorf("%w: %s exceeds the 50000-bar local limit", ErrInteractiveUnsupported, name)
+		if len(rows) > 200_000 {
+			return fmt.Errorf("%w: %s exceeds the 200000-bar local limit", ErrInteractiveUnsupported, name)
 		}
 		for i, row := range rows {
 			if len(row) != 6 {
