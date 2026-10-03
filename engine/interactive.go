@@ -71,17 +71,19 @@ type InteractiveStats struct {
 // existing conformance trade envelope, while the curves and statistics use
 // the explicitly defined interactive accounting above.
 type InteractiveRunResult struct {
-	Schema           string                `json:"schema"`
-	Provenance       InteractiveProvenance `json:"provenance"`
-	Run              RunResult             `json:"run"`
-	TradeNetPnL      []float64             `json:"tradeNetPnl"`
-	EquityCurve      []float64             `json:"equityCurve"`
-	ClosedEquity     []float64             `json:"closedEquityCurve"`
-	CashEndEquity    float64               `json:"cashEndEquity"`
-	Skips            map[string]int        `json:"skips"`
-	SkipDiagnostics  string                `json:"skipDiagnostics"`
-	SkipReasonSchema string                `json:"skipReasonSchema"`
-	Stats            InteractiveStats      `json:"stats"`
+	Schema                  string                `json:"schema"`
+	CalculationSource       string                `json:"calculationSource,omitempty"`
+	CalculationSourceSchema string                `json:"calculationSourceSchema,omitempty"`
+	Provenance              InteractiveProvenance `json:"provenance"`
+	Run                     RunResult             `json:"run"`
+	TradeNetPnL             []float64             `json:"tradeNetPnl"`
+	EquityCurve             []float64             `json:"equityCurve"`
+	ClosedEquity            []float64             `json:"closedEquityCurve"`
+	CashEndEquity           float64               `json:"cashEndEquity"`
+	Skips                   map[string]int        `json:"skips"`
+	SkipDiagnostics         string                `json:"skipDiagnostics"`
+	SkipReasonSchema        string                `json:"skipReasonSchema"`
+	Stats                   InteractiveStats      `json:"stats"`
 }
 
 // Admitted ordinary families use the shared per-bar broker loop. Scheduled
@@ -185,6 +187,12 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (Interac
 	if !ordinary && !special && !sourceFVG {
 		return InteractiveRunResult{}, fmt.Errorf("%w: route/family has no qualified interactive execution profile", ErrInteractiveUnsupported)
 	}
+	if fixture.CalculationSource != "" && fixture.CalculationSource != "raw" && fixture.CalculationSource != "heikinAshi" {
+		return InteractiveRunResult{}, fmt.Errorf("%w: calculation source %q", ErrInteractiveUnsupported, fixture.CalculationSource)
+	}
+	if fixture.CalculationSource == "heikinAshi" && (!ordinary || vpNYHandoff) {
+		return InteractiveRunResult{}, fmt.Errorf("%w: Heikin-Ashi calculation requires an ordinary chart route", ErrInteractiveUnsupported)
+	}
 	if special && setupType == string(dsl.FamilyDailyFlushFailure) &&
 		!isWeekdayTimestamp(fixture.Bars[len(fixture.Bars)-1].T) {
 		return InteractiveRunResult{}, fmt.Errorf("%w: daily flush failure needs a retained weekday final bar", ErrInteractiveUnsupported)
@@ -207,8 +215,22 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (Interac
 		return InteractiveRunResult{}, errors.New("invalid interactive execution costs")
 	}
 	series := marketdata.SeriesFromBars(fixture.Bars)
+	calculationSeries := series
+	calculationHTF := marketdata.SeriesFromBars(fixture.HTFBars)
+	if fixture.CalculationSource == "heikinAshi" {
+		calculationSeries, err = heikinAshiSeries(series)
+		if err != nil {
+			return InteractiveRunResult{}, err
+		}
+		if calculationHTF.Len() != 0 {
+			calculationHTF, err = heikinAshiSeries(calculationHTF)
+			if err != nil {
+				return InteractiveRunResult{}, err
+			}
+		}
+	}
 	request := RunRequest{
-		Config: parsed.Config, Series: series, HTFSeries: marketdata.SeriesFromBars(fixture.HTFBars), StrategyID: fixture.StrategyID,
+		Config: parsed.Config, Series: calculationSeries, HTFSeries: calculationHTF, StrategyID: fixture.StrategyID,
 		Symbol: fixture.Symbol, Timeframe: fixture.Timeframe,
 		HigherTimeframe: fixture.HigherTimeframe, RangeMethod: fixture.RangeMethod,
 		SourceTimeframe: fixture.SourceTimeframe, SourceSeries: marketdata.SeriesFromBars(fixture.SourceBars),
@@ -253,6 +275,9 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (Interac
 		}
 		prepared.broker.reset(prepared.series, prepared.cols, prepared.htfTrend,
 			prepared.ema, prepared.emaSlope, prepared.params, prepared.fixture, nil)
+		if fixture.CalculationSource == "heikinAshi" {
+			prepared.broker.rawSeries = series
+		}
 		prepared.broker.equityCurve = make([]float64, series.Len())
 		prepared.broker.cashCurve = make([]float64, series.Len())
 		prepared.broker.skipCounts = make(map[string]int)
@@ -294,7 +319,9 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (Interac
 		skipSchema = InteractiveVPNYSkipReasonSchema
 	}
 	return InteractiveRunResult{
-		Schema: schema,
+		Schema:                  schema,
+		CalculationSource:       fixture.CalculationSource,
+		CalculationSourceSchema: calculationSourceSchema(fixture.CalculationSource),
 		Provenance: InteractiveProvenance{
 			FixtureSHA256: hex.EncodeToString(fixtureHash[:]), SourceSHA256: hex.EncodeToString(sourceHash[:]),
 		},
@@ -394,7 +421,7 @@ func validateInteractiveInput(raw []byte) error {
 	sort.Strings(names)
 	for _, name := range names {
 		switch name {
-		case "schema", "case", "strategyId", "symbol", "timeframe", "higherTimeframe",
+		case "schema", "case", "strategyId", "symbol", "timeframe", "higherTimeframe", "calculationSource",
 			"rangeMethod", "sourceTimeframe", "costs", "bars", "htfBars",
 			"sourceBars", "sourceHtfBars", "source":
 			// source is provenance metadata, not execution input.
@@ -405,6 +432,13 @@ func validateInteractiveInput(raw []byte) error {
 			}
 		default:
 			return fmt.Errorf("%w: fixture field %s", ErrInteractiveUnsupported, name)
+		}
+	}
+	if value, exists := envelope["calculationSource"]; exists {
+		var source string
+		if string(value) == "null" || json.Unmarshal(value, &source) != nil ||
+			(source != "raw" && source != "heikinAshi") {
+			return fmt.Errorf("%w: calculationSource must be raw or heikinAshi", ErrInteractiveUnsupported)
 		}
 	}
 	for _, name := range []string{"bars", "htfBars", "sourceBars", "sourceHtfBars"} {

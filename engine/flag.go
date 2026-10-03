@@ -314,11 +314,11 @@ func (b *broker) applyPartialManagement(i int) {
 	}
 	fraction := math.Min(1, math.Max(0, p.Fraction))
 	if fraction >= 1 {
-		b.closePosition(b.series.C[i], i, "partial", "")
+		b.closePosition(b.executionSeries().C[i], i, "partial", "")
 		return
 	}
 	closedSize := pos.Size * fraction
-	px := b.series.C[i] - sign*b.slippageAt(b.series.C[i])
+	px := b.executionSeries().C[i] - sign*b.slippageAt(b.executionSeries().C[i])
 	points := (px - pos.Entry) * sign
 	pnl := points*closedSize - b.costs.FeePerUnit*closedSize
 	b.realized += pnl
@@ -381,7 +381,7 @@ func (b *broker) exitAfterBars(i int) {
 	if float64(i-b.position.EntryIndex) < b.params.MaxHoldBars {
 		return
 	}
-	b.closePosition(b.series.C[i], i, "time", "")
+	b.closePosition(b.executionSeries().C[i], i, "time", "")
 }
 
 func longTrigger(series marketdata.Series, i int) bool {

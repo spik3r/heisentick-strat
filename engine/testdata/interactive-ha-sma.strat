@@ -1,0 +1,16 @@
+dsl v7
+strategy "Interactive SMA" {
+  description "Small marked-equity fixture."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+setup {
+  type: sma golden cross
+  sma fast 2
+  sma slow 3
+}
+filters {
+  side long only
+}

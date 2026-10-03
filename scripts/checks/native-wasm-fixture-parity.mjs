@@ -108,6 +108,20 @@ try {
   assert.equal(wasmInteractive.stats.endEquity, wasmInteractive.cashEndEquity);
   assert.deepStrictEqual(wasmInteractive.skips, {});
   assert.equal(wasmInteractive.skipReasonSchema, 'dsl-skip-reasons-v1');
+  const haBase = join(root, 'engine/testdata/interactive-ha-sma');
+  const haFixtureRaw = readFileSync(`${haBase}.fixture.json`, 'utf8');
+  const haSource = readFileSync(`${haBase}.strat`, 'utf8');
+  const haFixturePath = join(temp, 'interactive-ha.fixture.json');
+  const haSourcePath = join(temp, 'interactive-ha.strat');
+  writeFileSync(haFixturePath, haFixtureRaw);
+  writeFileSync(haSourcePath, haSource);
+  const nativeHA = JSON.parse(command(nativePath, ['--interactive', haFixturePath, haSourcePath], env));
+  const wasmHA = JSON.parse(globalThis.engineRunInteractiveFixture(haFixtureRaw, haSource));
+  assert.deepStrictEqual(wasmHA, nativeHA, 'Heikin-Ashi interactive native/WASM mismatch');
+  assert.equal(wasmHA.calculationSource, 'heikinAshi');
+  assert.equal(wasmHA.calculationSourceSchema, 'strategy-calculation-source-v1');
+  assert.equal(wasmHA.run.trades[0].entryIndex, 4);
+  assert.equal(wasmHA.run.tradeCount, 2);
   const blockedSMASource = interactiveSource.replace('  side long only',
     '  side long only\n  rmv atr period 1\n  rmv lookback 3\n  rmv below 0');
   assert.notEqual(blockedSMASource, interactiveSource);
@@ -317,6 +331,10 @@ try {
       bars: wasmInteractive.equityCurve.length,
       outputSha256: sha256(JSON.stringify(nativeInteractive)),
       unsupportedCode: wasmUnsupported.error.code },
+    heikinAshiResult: { route: 'chart-timeframe-sma-golden-cross',
+      tradeCount: wasmHA.run.tradeCount, firstEntryIndex: wasmHA.run.trades[0].entryIndex,
+      nativeOutputSha256: sha256(JSON.stringify(nativeHA)),
+      wasmOutputSha256: sha256(JSON.stringify(wasmHA)) },
     dualEMAResult: { route: 'chart-timeframe-dual-ema-resumption',
       tradeCount: wasmDual.run.tradeCount, bars: wasmDual.equityCurve.length,
       nativeOutputSha256: sha256(JSON.stringify(nativeDual)),

@@ -58,7 +58,10 @@ type pendingExit struct {
 }
 
 type broker struct {
-	series        marketdata.Series
+	series marketdata.Series
+	// rawSeries owns every market execution price. It aliases series for
+	// legacy runs and differs only for an interactive calculation transform.
+	rawSeries     marketdata.Series
 	cols          contextcols.Columns
 	htfTrend      []int8
 	ema           []float64
@@ -159,8 +162,19 @@ type broker struct {
 	windowed               bool
 }
 
+// Some legacy direct broker tests construct a broker without reset. The
+// calculation and execution series are identical unless the interactive HA
+// runner explicitly supplies original provider bars.
+func (b *broker) executionSeries() marketdata.Series {
+	if b.rawSeries.Len() != 0 {
+		return b.rawSeries
+	}
+	return b.series
+}
+
 func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTrend []int8, ema []float64, emaSlope []float64, params flagParams, fixture RunFixture, trades []Trade) {
 	b.series = series
+	b.rawSeries = series
 	b.cols = cols
 	b.htfTrend = htfTrend
 	b.ema = ema
@@ -316,7 +330,7 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 		}
 	}
 	if liquidateAtEnd && n > 0 && end >= 0 && b.hasPosition {
-		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
+		b.closePosition(b.executionSeries().C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
 }
@@ -338,7 +352,7 @@ func (b *broker) markToMarket(i int) {
 	equity := cash
 	if b.hasPosition {
 		pos := b.position
-		equity += (b.series.C[i] - pos.Entry) * float64(pos.Side) * pos.Size
+		equity += (b.executionSeries().C[i] - pos.Entry) * float64(pos.Side) * pos.Size
 	}
 	b.equityCurve[i] = equity
 }
@@ -399,7 +413,7 @@ func (b *broker) runScheduledWithFinalization(entries []ScheduledEntry, orders [
 		}
 	}
 	if liquidateAtEnd && end >= 0 && b.hasPosition {
-		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
+		b.closePosition(b.executionSeries().C[end], end, ReasonEndOfTest, "")
 	}
 	return b.trades
 }
@@ -412,7 +426,7 @@ func (b *broker) fillPending(i int) {
 			continue
 		}
 		b.pendingOrders = append(b.pendingOrders[:k], b.pendingOrders[k+1:]...)
-		b.openPosition(ord.Side, b.series.O[i], ord, i)
+		b.openPosition(ord.Side, b.executionSeries().O[i], ord, i)
 	}
 }
 
@@ -422,14 +436,14 @@ func (b *broker) fillLimits(i int) {
 		if i <= ord.PlacedAt {
 			continue
 		}
-		fillable := (ord.Side == sideLong && b.series.L[i] <= ord.Limit) ||
-			(ord.Side == sideShort && b.series.H[i] >= ord.Limit)
+		fillable := (ord.Side == sideLong && b.executionSeries().L[i] <= ord.Limit) ||
+			(ord.Side == sideShort && b.executionSeries().H[i] >= ord.Limit)
 		if fillable {
-			gapped := (ord.Side == sideLong && b.series.O[i] < ord.Limit) ||
-				(ord.Side == sideShort && b.series.O[i] > ord.Limit)
+			gapped := (ord.Side == sideLong && b.executionSeries().O[i] < ord.Limit) ||
+				(ord.Side == sideShort && b.executionSeries().O[i] > ord.Limit)
 			fill := ord.Limit
 			if gapped {
-				fill = b.series.O[i]
+				fill = b.executionSeries().O[i]
 			}
 			b.limitOrders = append(b.limitOrders[:k], b.limitOrders[k+1:]...)
 			ord.NoSlip = true
@@ -479,7 +493,7 @@ func (b *broker) enter(i int, side side, setup flagSetup) {
 		b.queueMarketAtNextOpen(&ord, i)
 		return
 	}
-	b.openPosition(side, b.series.C[i], ord, i)
+	b.openPosition(side, b.executionSeries().C[i], ord, i)
 }
 
 func (b *broker) queueMarketAtNextOpen(ord *order, signalIndex int) {
@@ -508,7 +522,7 @@ func (b *broker) dispatchCaptured(i int, captured order) {
 		b.queueMarketAtNextOpen(&captured, i)
 		return
 	}
-	b.openPosition(captured.Side, b.series.C[i], captured, i)
+	b.openPosition(captured.Side, b.executionSeries().C[i], captured, i)
 }
 
 func (b *broker) enterLimit(i int, limit float64, setup setupPlan, expireBars int) bool {

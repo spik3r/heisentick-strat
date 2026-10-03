@@ -40,23 +40,24 @@ func (c Costs) fillsMarketAtNextOpen() bool {
 
 // RunFixture is the language-agnostic fixture shape under strat/conformance/run.
 type RunFixture struct {
-	Schema           string           `json:"schema"`
-	Case             string           `json:"case"`
-	StrategyID       string           `json:"strategyId"`
-	Symbol           string           `json:"symbol"`
-	Timeframe        string           `json:"timeframe"`
-	SourceTimeframe  string           `json:"sourceTimeframe,omitempty"`
-	HigherTimeframe  string           `json:"higherTimeframe"`
-	RangeMethod      string           `json:"rangeMethod"`
-	Costs            Costs            `json:"costs"`
-	Bars             []marketdata.Bar `json:"-"`
-	RawBars          [][]float64      `json:"bars"`
-	SourceBars       []marketdata.Bar `json:"-"`
-	RawSourceBars    [][]float64      `json:"sourceBars,omitempty"`
-	HTFBars          []marketdata.Bar `json:"-"`
-	RawHTFBars       [][]float64      `json:"htfBars,omitempty"`
-	SourceHTFBars    []marketdata.Bar `json:"-"`
-	RawSourceHTFBars [][]float64      `json:"sourceHtfBars,omitempty"`
+	Schema            string           `json:"schema"`
+	Case              string           `json:"case"`
+	StrategyID        string           `json:"strategyId"`
+	Symbol            string           `json:"symbol"`
+	Timeframe         string           `json:"timeframe"`
+	SourceTimeframe   string           `json:"sourceTimeframe,omitempty"`
+	HigherTimeframe   string           `json:"higherTimeframe"`
+	RangeMethod       string           `json:"rangeMethod"`
+	CalculationSource string           `json:"calculationSource,omitempty"`
+	Costs             Costs            `json:"costs"`
+	Bars              []marketdata.Bar `json:"-"`
+	RawBars           [][]float64      `json:"bars"`
+	SourceBars        []marketdata.Bar `json:"-"`
+	RawSourceBars     [][]float64      `json:"sourceBars,omitempty"`
+	HTFBars           []marketdata.Bar `json:"-"`
+	RawHTFBars        [][]float64      `json:"htfBars,omitempty"`
+	SourceHTFBars     []marketdata.Bar `json:"-"`
+	RawSourceHTFBars  [][]float64      `json:"sourceHtfBars,omitempty"`
 }
 
 // RunResult mirrors strat/conformance/run/*.trades.json.

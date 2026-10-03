@@ -36,6 +36,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if fixture.StrategyID == vpNYHandoffStrategyID {
 		return RunResult{}, fmt.Errorf("VP NY handoff strategy requires RunInteractiveVPNYHandoffVetoFixture")
 	}
+	if fixture.CalculationSource != "" && fixture.CalculationSource != "raw" {
+		return RunResult{}, fmt.Errorf("%w: calculationSource %q requires the interactive runner", ErrInteractiveUnsupported, fixture.CalculationSource)
+	}
 	parsed, err := dsl.Parse(source)
 	if err != nil {
 		return RunResult{}, err

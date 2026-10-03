@@ -622,7 +622,7 @@ func (b *broker) enterSetup(i int, setup setupPlan) bool {
 		b.queueMarketAtNextOpen(&ord, i)
 		return true
 	}
-	b.openPosition(setup.Side, b.series.C[i], ord, i)
+	b.openPosition(setup.Side, b.executionSeries().C[i], ord, i)
 	return true
 }
 func priorWeekLevels(series marketdata.Series, i int) (float64, float64, bool) {

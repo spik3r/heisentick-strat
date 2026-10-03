@@ -6,6 +6,41 @@ produced by `engine.RunInteractiveFixture`, native `enginewasm --interactive`,
 and WASM `engineRunInteractiveFixture` from the **same Go source build**. It
 does not change the `dsl-conformance-trades-v1` result or its goldens.
 
+## Strategy calculation candles
+
+An interactive fixture may set `calculationSource` to `raw` or `heikinAshi`.
+Omission means `raw` and preserves the prior response shape and decisions.
+An explicit value is echoed in the response with
+`calculationSourceSchema: "strategy-calculation-source-v1"`; the exact fixture
+bytes remain covered by `provenance.fixtureSha256`. Values such as `renko`,
+`null`, or an empty string fail visibly. This local v1 addition does not
+alter the conformance fixture interpreter or historical run goldens.
+The legacy conformance fixture runner rejects `heikinAshi` instead of
+silently treating it as raw; callers must use the interactive runner.
+
+Heikin-Ashi uses the original provider OHLC on each supplied bar:
+`HA close = (O+H+L+C)/4`; first `HA open = (O+C)/2`; later
+`HA open = (previous HA open + previous HA close)/2`; `HA high` is the
+maximum of provider high, HA open and HA close; `HA low` is the minimum of
+provider low, HA open and HA close. Its seed is the first supplied bar, with
+no hidden history. Missing time periods and session boundaries do not reset
+the recursive open. Appending future bars never changes earlier calculation
+candles. Chart and supplied higher-timeframe series transform independently;
+higher-timeframe decisions still use only completed higher-timeframe bars.
+Timestamps and provider volume remain unchanged and index-aligned. Invalid
+raw OHLC or arithmetic overflow fails before strategy execution.
+
+The transformed OHLC feeds strategy indicators, levels and bar decisions.
+The broker exclusively uses original provider OHLC for market and next-open
+fills, stop and target touches, gap opens, limit-order touch and fill, final
+liquidation, and marked equity. Slippage and fees apply to those actual
+execution prices. A level calculated from Heikin-Ashi is an order price, not
+evidence that a synthetic candle traded there. In this increment Heikin-Ashi
+is admitted for the ordinary chart profiles below, including their qualified
+chart/HTF session-break-hold profile. Special and source-entry profiles fail
+with `unsupported-route` until their separate broker paths are qualified.
+Renko remains a display transform and is not a strategy calculation source.
+
 ## Admitted route
 
 Chart-timeframe `smaGoldenCross`, `dualEmaResumption`, `namedLevelSweep`,
