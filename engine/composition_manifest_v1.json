@@ -1,0 +1,528 @@
+{
+  "schema": "heisentick-composition-v1",
+  "sourceRevision": "a7bc97689838d7cc5e2d7fdf462b9ca2f5dbfd28",
+  "children": [
+    {
+      "id": "dslSessionBiasSeasonalConvergenceQualityFifteen",
+      "path": "strategies/source/dslSessionBiasSeasonalConvergenceQualityFifteen.strat",
+      "sha256": "51fdde73993d13738bf311b9654c1337b015e4e7ba5046cb4ce66e9b80b04f9f",
+      "params": {
+        "holdCandles": 3,
+        "stopInsideAtr": 0.5,
+        "minStopAtr": 0.5,
+        "maxStopAtr": 3,
+        "targetR": 1.2,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useTrigger": 1,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 1,
+        "allowLong": 1,
+        "allowShort": 0,
+        "riskUsd": 200,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslSessionBiasSeasonalConvergenceLlShortFifteen",
+      "path": "strategies/source/dslSessionBiasSeasonalConvergenceLlShortFifteen.strat",
+      "sha256": "05bc1b4443a486045c9d5933805bfba6e50cb82d1d1a0f827ca82942891ede12",
+      "params": {
+        "holdCandles": 3,
+        "stopInsideAtr": 0.5,
+        "minStopAtr": 0.5,
+        "maxStopAtr": 3,
+        "targetR": 1.2,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useTrigger": 1,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 1,
+        "allowLong": 0,
+        "allowShort": 1,
+        "riskUsd": 200,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslLondonBreakRetestQuality",
+      "path": "strategies/source/dslLondonBreakRetestQuality.strat",
+      "sha256": "7c6cca248529f5aafc2ce0e39bde857e862e54d835fbaf213973b60769f40546",
+      "params": {
+        "swingLookbackBars": 60,
+        "swingPivotK": 2,
+        "swingLevelCount": 4,
+        "freshBreakBars": 12,
+        "retestBars": 6,
+        "levelTolerance": 0.35,
+        "minBreakAtr": 1.5,
+        "displacementAtr": 0.5,
+        "fibExtension": 0,
+        "minStopAtr": 0.4,
+        "stopBufferAtr": 0.25,
+        "targetR": 2,
+        "minEr": 0.4,
+        "maxEr": 0.95,
+        "emaLen": 0,
+        "emaSlopeLen": 5,
+        "emaConfluenceAtr": 0,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 0,
+        "allowLong": 1,
+        "allowShort": 1,
+        "riskUsd": 200,
+        "stopPaddingAtr": 0.25,
+        "maxStopAtr": 1.5,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslLondonBreakRetestXauusd4h",
+      "path": "strategies/source/dslLondonBreakRetestXauusd4h.strat",
+      "sha256": "126982c69f781d253d15d06b01c6b4a9d1dda3fd319b60e78fbfb2dfed8b22da",
+      "params": {
+        "swingLookbackBars": 60,
+        "swingPivotK": 2,
+        "swingLevelCount": 4,
+        "freshBreakBars": 12,
+        "retestBars": 12,
+        "levelTolerance": 0.35,
+        "minBreakAtr": 1,
+        "displacementAtr": 0,
+        "fibExtension": 0,
+        "minStopAtr": 0.4,
+        "stopBufferAtr": 0.25,
+        "targetR": 2,
+        "minEr": 0.4,
+        "maxEr": 0.95,
+        "emaLen": 0,
+        "emaSlopeLen": 5,
+        "emaConfluenceAtr": 0,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 0,
+        "allowLong": 1,
+        "allowShort": 1,
+        "riskUsd": 200,
+        "stopPaddingAtr": 0.25,
+        "maxStopAtr": 1.5,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslLondonBreakRetestUsdjpy1h",
+      "path": "strategies/source/dslLondonBreakRetestUsdjpy1h.strat",
+      "sha256": "ed85bd5508c8a1716dba26e5741b6717eeccb042617fe6e110f215c397e4dadc",
+      "params": {
+        "swingLookbackBars": 60,
+        "swingPivotK": 2,
+        "swingLevelCount": 4,
+        "freshBreakBars": 8,
+        "retestBars": 12,
+        "levelTolerance": 0.35,
+        "minBreakAtr": 2,
+        "displacementAtr": 0,
+        "fibExtension": 0,
+        "minStopAtr": 0.4,
+        "stopBufferAtr": 0.25,
+        "targetR": 2,
+        "minEr": 0.4,
+        "maxEr": 0.95,
+        "emaLen": 0,
+        "emaSlopeLen": 5,
+        "emaConfluenceAtr": 0,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 0,
+        "allowLong": 1,
+        "allowShort": 1,
+        "riskUsd": 200,
+        "stopPaddingAtr": 0.25,
+        "maxStopAtr": 1.5,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslLondonBreakRetestGbpusd4h",
+      "path": "strategies/source/dslLondonBreakRetestGbpusd4h.strat",
+      "sha256": "c4eca1e758a53ede0de53c31d739a387f8613d1249a8561d0a940026f0624db4",
+      "params": {
+        "swingLookbackBars": 60,
+        "swingPivotK": 2,
+        "swingLevelCount": 4,
+        "freshBreakBars": 12,
+        "retestBars": 6,
+        "levelTolerance": 0.35,
+        "minBreakAtr": 1,
+        "displacementAtr": 0,
+        "fibExtension": 0,
+        "minStopAtr": 0.4,
+        "stopBufferAtr": 0.25,
+        "targetR": 1.5,
+        "minEr": 0.4,
+        "maxEr": 0.95,
+        "emaLen": 0,
+        "emaSlopeLen": 5,
+        "emaConfluenceAtr": 0,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 0,
+        "allowLong": 1,
+        "allowShort": 1,
+        "riskUsd": 200,
+        "stopPaddingAtr": 0.25,
+        "maxStopAtr": 1.5,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslBreakRetestAsiaLondonOneFourHourReview",
+      "path": "strategies/source/dslBreakRetestAsiaLondonOneFourHourReview.strat",
+      "sha256": "56ba8a97a8bfe352a619abfae503dcf4753e3735ead921765c548ae36849942d",
+      "params": {
+        "swingLookbackBars": 60,
+        "swingPivotK": 2,
+        "swingLevelCount": 4,
+        "freshBreakBars": 24,
+        "retestBars": 8,
+        "levelTolerance": 0.4,
+        "minBreakAtr": 1,
+        "displacementAtr": 0,
+        "fibExtension": 0,
+        "minStopAtr": 0.4,
+        "stopBufferAtr": 0.25,
+        "targetR": 2,
+        "minEr": 0.35,
+        "maxEr": 0.95,
+        "emaLen": 0,
+        "emaSlopeLen": 5,
+        "emaConfluenceAtr": 0,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useAsiaWindow": 1,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 0,
+        "allowLong": 1,
+        "allowShort": 0,
+        "riskUsd": 200,
+        "stopPaddingAtr": 0.25,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslSessionBreakHoldNyFocusBalancedFifteen",
+      "path": "strategies/source/dslSessionBreakHoldNyFocusBalancedFifteen.strat",
+      "sha256": "c3fa897885f84b61d718b364e78448457016814efd101125333a87df7878a405",
+      "params": {
+        "holdCandles": 3,
+        "stopInsideAtr": 0.5,
+        "minStopAtr": 0.5,
+        "maxStopAtr": 3,
+        "targetR": 1.15,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useTrigger": 1,
+        "useHtfBias": 1,
+        "useAsiaWindow": 0,
+        "useMidWindow": 0,
+        "useLondonWindow": 0,
+        "useNyWindow": 1,
+        "allowLong": 1,
+        "allowShort": 1,
+        "riskUsd": 200,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslBreakRetestOneFourHourReview",
+      "path": "strategies/source/dslBreakRetestOneFourHourReview.strat",
+      "sha256": "39bb0875443886ea3bbe658ee574cea94c4cb40b47d3731ed075d9c810c0609e",
+      "params": {
+        "swingLookbackBars": 60,
+        "swingPivotK": 2,
+        "swingLevelCount": 4,
+        "freshBreakBars": 18,
+        "retestBars": 8,
+        "levelTolerance": 0.4,
+        "minBreakAtr": 1,
+        "displacementAtr": 0,
+        "fibExtension": 0,
+        "minStopAtr": 0.4,
+        "stopBufferAtr": 0.25,
+        "targetR": 2,
+        "minEr": 0.35,
+        "maxEr": 0.95,
+        "emaLen": 0,
+        "emaSlopeLen": 5,
+        "emaConfluenceAtr": 0,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useAsiaWindow": 1,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 1,
+        "allowLong": 1,
+        "allowShort": 0,
+        "riskUsd": 200,
+        "stopPaddingAtr": 0.25,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    },
+    {
+      "id": "dslTrendPullbackXauusdFourHourCloseResume",
+      "path": "strategies/source/dslTrendPullbackXauusdFourHourCloseResume.strat",
+      "sha256": "a54fac17c88fb65f697a1ea9a8188d62ab287aa3a463c46654a7373123f9a729",
+      "params": {
+        "emaLen": 21,
+        "emaSlopeLen": 5,
+        "pullbackAtr": 0.35,
+        "pullbackWithin": 6,
+        "maxPullbackDepth": 0.5,
+        "impulseLookbackBars": 12,
+        "targetR": 2,
+        "minEr": 0.35,
+        "maxEr": 0.95,
+        "minStopAtr": 0.5,
+        "stopBufferAtr": 0.25,
+        "breakevenR": 0.5,
+        "breakevenOffsetAtr": 0.05,
+        "maxHoldBars": 0,
+        "cooldownBars": 12,
+        "useHtfBias": 1,
+        "useTrigger": 0,
+        "useAsiaWindow": 1,
+        "useMidWindow": 0,
+        "useLondonWindow": 1,
+        "useNyWindow": 1,
+        "allowLong": 1,
+        "allowShort": 0,
+        "attemptCount": 1,
+        "sessionVwapTouchMode": 0,
+        "sessionVwapFirstTouchOnly": 0,
+        "sessionVwapTrendSideReclaim": 0,
+        "riskUsd": 200,
+        "partialEnabled": 0,
+        "partialFraction": 0,
+        "partialTriggerR": 1,
+        "partialMoveBreakeven": 0,
+        "trailAtr": 0,
+        "trailTriggerR": 1
+      }
+    }
+  ],
+  "composites": [
+    {
+      "id": "dslSessionBiasSeasonalConvergenceBalancedFifteen",
+      "routes": [
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "15m",
+          "children": [
+            "dslSessionBiasSeasonalConvergenceQualityFifteen",
+            "dslSessionBiasSeasonalConvergenceLlShortFifteen"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dslLondonBreakRetestPlaybook",
+      "routes": [
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "1h",
+          "children": [
+            "dslLondonBreakRetestQuality"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "4h",
+          "children": [
+            "dslLondonBreakRetestXauusd4h"
+          ]
+        },
+        {
+          "symbol": "USDJPY",
+          "timeframe": "1h",
+          "children": [
+            "dslLondonBreakRetestUsdjpy1h"
+          ]
+        },
+        {
+          "symbol": "GBPUSD",
+          "timeframe": "4h",
+          "children": [
+            "dslLondonBreakRetestGbpusd4h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "continuationReviewPlaybook",
+      "routes": [
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "15m",
+          "children": [
+            "dslSessionBreakHoldNyFocusBalancedFifteen"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "1h",
+          "children": [
+            "dslBreakRetestAsiaLondonOneFourHourReview"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "4h",
+          "children": [
+            "dslBreakRetestAsiaLondonOneFourHourReview"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "continuationReviewPlaybookHighSample",
+      "routes": [
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "15m",
+          "children": [
+            "dslSessionBreakHoldNyFocusBalancedFifteen"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "1h",
+          "children": [
+            "dslBreakRetestAsiaLondonOneFourHourReview"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "4h",
+          "children": [
+            "dslBreakRetestOneFourHourReview"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "continuationReviewPlaybookTrendPullback",
+      "routes": [
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "15m",
+          "children": [
+            "dslSessionBreakHoldNyFocusBalancedFifteen"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "1h",
+          "children": [
+            "dslBreakRetestAsiaLondonOneFourHourReview"
+          ]
+        },
+        {
+          "symbol": "XAUUSD",
+          "timeframe": "4h",
+          "children": [
+            "dslTrendPullbackXauusdFourHourCloseResume"
+          ]
+        }
+      ]
+    }
+  ]
+}
