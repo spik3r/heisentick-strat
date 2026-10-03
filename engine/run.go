@@ -14,6 +14,7 @@ import (
 
 // RunRequest describes a direct engine run over already-loaded market columns.
 type RunRequest struct {
+	interactiveDraft   bool // only the versioned draft adapter may authorize its reserved ID
 	Config             dsl.Config
 	Series             marketdata.Series
 	SourceSeries       marketdata.Series
@@ -255,6 +256,9 @@ func sourceEntryRequest(request RunRequest) bool {
 }
 
 func validateRunRequest(request RunRequest) error {
+	if request.StrategyID == InteractiveDraftStrategyID && !request.interactiveDraft {
+		return fmt.Errorf("draft strategy requires RunInteractiveDraftFixture")
+	}
 	if request.StrategyID == vpNYHandoffStrategyID {
 		return fmt.Errorf("VP NY handoff strategy requires RunInteractiveVPNYHandoffVetoFixture")
 	}

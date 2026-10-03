@@ -13,6 +13,20 @@ import (
 )
 
 func main() {
+	for _, operation := range []struct {
+		name    string
+		inspect bool
+	}{
+		{"engineInspectInteractiveSource", true}, {"engineRunInteractiveDraftFixture", false},
+	} {
+		inspect := operation.inspect
+		js.Global().Set(operation.name, js.FuncOf(func(_ js.Value, args []js.Value) any {
+			if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+				return string(runInteractiveDraft("", "", inspect))
+			}
+			return string(runInteractiveDraft(args[0].String(), args[1].String(), inspect))
+		}))
+	}
 	js.Global().Set("engineRunForwardPrefixFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return string(runForwardPrefix("", ""))

@@ -8,6 +8,15 @@ func Parse(source string) (ParseResult, error) {
 	return parse(source)
 }
 
+// ParseStrict is the draft-only syntax boundary. Historical Parse retains its
+// corpus behavior; mutable source must not inherit a default on an unknown type.
+func ParseStrict(source string) (ParseResult, error) {
+	parser := newParser(source)
+	parser.strictSource = true
+	parser.parse()
+	return parser.result(), nil
+}
+
 // HigherTimeframe returns the automatic higher timeframe used by the Strat
 // language routing rules.
 func HigherTimeframe(tf string) string {

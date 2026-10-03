@@ -87,12 +87,13 @@ func main() {
 	composition := len(os.Args) == 4 && os.Args[1] == "--composition"
 	interactiveComposition := len(os.Args) == 4 && os.Args[1] == "--interactive-composition"
 	forwardPrefix := len(os.Args) == 4 && os.Args[1] == "--forward-prefix"
-	if !interactive && !composition && !interactiveComposition && !forwardPrefix && len(os.Args) != 3 {
+	draft := len(os.Args) == 4 && (os.Args[1] == "--interactive-draft" || os.Args[1] == "--interactive-source-profile")
+	if !interactive && !composition && !interactiveComposition && !forwardPrefix && !draft && len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive|--interactive-vp-ny-handoff fixture.json source.strat | --composition|--interactive-composition fixture.json child-sources.json | fixture.json source.strat]")
 		os.Exit(2)
 	}
 	offset := 1
-	if interactive || composition || interactiveComposition || forwardPrefix {
+	if interactive || composition || interactiveComposition || forwardPrefix || draft {
 		offset = 2
 	}
 	raw, err := os.ReadFile(os.Args[offset])
@@ -113,6 +114,10 @@ func main() {
 	}
 	if forwardPrefix {
 		fmt.Println(string(runForwardPrefix(string(raw), string(source))))
+		return
+	}
+	if draft {
+		fmt.Println(string(runInteractiveDraft(string(raw), string(source), os.Args[1] == "--interactive-source-profile")))
 		return
 	}
 	if interactiveComposition {

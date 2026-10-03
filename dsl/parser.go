@@ -16,6 +16,10 @@ func parse(source string) (ParseResult, error) {
 }
 
 type parser struct {
+	strictSource        bool
+	strictTypes         int
+	strictVersions      int
+	strictSlices        int
 	source              string
 	config              Config
 	errors              []string
@@ -101,6 +105,9 @@ func (p *parser) parse() {
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
 	p.validateRMVSourceTimeframe()
+	if p.strictSource && (p.strictTypes != 1 || p.strictVersions != 1 || p.strictSlices != 1) {
+		p.errorAt(nil, nil, "strict source requires exactly one dsl v7, setup type and slices declaration", "")
+	}
 }
 
 func (p *parser) validateStrictHigherTimeframe() {
@@ -113,6 +120,9 @@ func (p *parser) validateStrictHigherTimeframe() {
 
 func (p *parser) apply(line logicalLine, tokens []string) {
 	head := strings.ToLower(tokens[0])
+	if p.strictSource {
+		p.validateStrictSourceLine(line, tokens, head)
+	}
 	p.recordDualEMAAuthored(line, tokens, head)
 	p.recordSMAGoldenCrossAuthored(line, head)
 	if head != "dsl" {

@@ -121,7 +121,7 @@ func RunInteractiveVPNYHandoffVetoFixture(raw []byte, source string) (Interactiv
 	return runInteractiveFixture(raw, source, true)
 }
 
-func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (InteractiveRunResult, error) {
+func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool, draft ...bool) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
 	}
@@ -134,6 +134,10 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (Interac
 		if hex.EncodeToString(sum[:]) != editorDefaultSourceSHA256 {
 			return InteractiveRunResult{}, fmt.Errorf("%w: editor default source has changed", ErrInteractiveUnsupported)
 		}
+	}
+	allowDraft := len(draft) == 1 && draft[0]
+	if fixture.StrategyID == InteractiveDraftStrategyID && !allowDraft {
+		return InteractiveRunResult{}, fmt.Errorf("%w: draft requires its versioned execution route", ErrInteractiveUnsupported)
 	}
 	if !vpNYHandoff && fixture.StrategyID == vpNYHandoffStrategyID {
 		return InteractiveRunResult{}, fmt.Errorf("%w: VP NY handoff strategy requires the versioned composition route", ErrInteractiveUnsupported)
@@ -230,7 +234,8 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (Interac
 		}
 	}
 	request := RunRequest{
-		Config: parsed.Config, Series: calculationSeries, HTFSeries: calculationHTF, StrategyID: fixture.StrategyID,
+		interactiveDraft: allowDraft,
+		Config:           parsed.Config, Series: calculationSeries, HTFSeries: calculationHTF, StrategyID: fixture.StrategyID,
 		Symbol: fixture.Symbol, Timeframe: fixture.Timeframe,
 		HigherTimeframe: fixture.HigherTimeframe, RangeMethod: fixture.RangeMethod,
 		SourceTimeframe: fixture.SourceTimeframe, SourceSeries: marketdata.SeriesFromBars(fixture.SourceBars),

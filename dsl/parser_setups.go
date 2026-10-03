@@ -3,6 +3,9 @@ package dsl
 func (p *parser) parseSetupType(tokens []string) {
 	family := canonicalSetupFamily(tokens)
 	if family == "" {
+		if p.strictSource {
+			p.errorAt(nil, nil, "unknown setup type", "")
+		}
 		return
 	}
 	p.config["setupType"] = family
