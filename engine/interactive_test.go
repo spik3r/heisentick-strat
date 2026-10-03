@@ -296,6 +296,9 @@ func TestInteractiveResultUsesCausalMarksAndFeeInclusiveStats(t *testing.T) {
 	if result.Stats.ProfitFactor != nil || result.Stats.ProfitFactorState != "unbounded" {
 		t.Fatalf("profit factor = %v/%s", result.Stats.ProfitFactor, result.Stats.ProfitFactorState)
 	}
+	if len(result.TradeNetPnL) != 1 || math.Abs(result.TradeNetPnL[0]-0.8) > 1e-9 {
+		t.Fatalf("fee-inclusive trade outcomes = %v, want [0.8]", result.TradeNetPnL)
+	}
 	prefix, err := RunInteractiveFixture(interactiveSMAFixture(t, bars[:6]), interactiveSMASource)
 	if err != nil {
 		t.Fatal(err)
@@ -304,6 +307,24 @@ func TestInteractiveResultUsesCausalMarksAndFeeInclusiveStats(t *testing.T) {
 		!reflect.DeepEqual(prefix.ClosedEquity, result.ClosedEquity[:6]) ||
 		prefix.CashEndEquity >= prefix.EquityCurve[5] {
 		t.Fatalf("prefix changed prior marks or lost final exit cost: %+v", prefix)
+	}
+}
+
+func TestInteractiveTradeOutcomesAlignWithPartialAndFinalExits(t *testing.T) {
+	trades := []Trade{{PnL: 1.8, Size: 0.4, Partial: true}, {PnL: 2.7, Size: 0.6}}
+	stats, outcomes := interactiveStats(trades, nil, nil,
+		Costs{StartEquity: 10000, FeePerUnit: 0.1}, 10004.4)
+	if len(outcomes) != 2 || math.Abs(outcomes[0]-1.76) > 1e-9 ||
+		math.Abs(outcomes[1]-2.64) > 1e-9 {
+		t.Fatalf("partial/final outcomes = %v, want [1.76 2.64]", outcomes)
+	}
+	if math.Abs(outcomes[0]+outcomes[1]-stats.Net) > 1e-9 {
+		t.Fatalf("outcome sum = %.12f, cash net = %.12f", outcomes[0]+outcomes[1], stats.Net)
+	}
+	_, empty := interactiveStats(nil, nil, nil, Costs{StartEquity: 10000}, 10000)
+	encoded, err := json.Marshal(InteractiveRunResult{TradeNetPnL: empty})
+	if err != nil || !strings.Contains(string(encoded), `"tradeNetPnl":[]`) {
+		t.Fatalf("zero-trade outcomes serialization = %s, %v", encoded, err)
 	}
 }
 

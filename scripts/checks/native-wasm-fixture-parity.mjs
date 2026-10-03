@@ -148,6 +148,7 @@ try {
   const dualRoundingFields = [
     [/^(?:equityCurve|closedEquityCurve)\[\d+\]$/, 1e-9],
     [/^run\.trades\[\d+\]\.pnl$/, 1e-9],
+    [/^tradeNetPnl\[\d+\]$/, 1e-9],
     [/^run\.trades\[\d+\]\.points$/, 1e-10],
     [/^run\.trades\[\d+\]\.meta\.signalAtr$/, 1e-12],
     [/^stats\.(?:tradeNet|maxDD|maxClosedDD)$/, 1e-9],

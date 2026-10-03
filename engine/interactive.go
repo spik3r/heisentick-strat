@@ -61,6 +61,7 @@ type InteractiveRunResult struct {
 	Schema           string                `json:"schema"`
 	Provenance       InteractiveProvenance `json:"provenance"`
 	Run              RunResult             `json:"run"`
+	TradeNetPnL      []float64             `json:"tradeNetPnl"`
 	EquityCurve      []float64             `json:"equityCurve"`
 	ClosedEquity     []float64             `json:"closedEquityCurve"`
 	CashEndEquity    float64               `json:"cashEndEquity"`
@@ -152,7 +153,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	if !isFiniteDerivedOutput(cashEnd) {
 		return InteractiveRunResult{}, errors.New("interactive cash end equity contains non-finite value")
 	}
-	stats := interactiveStats(trades, prepared.broker.equityCurve, prepared.broker.cashCurve, costs, cashEnd)
+	stats, tradeNetPnL := interactiveStats(trades, prepared.broker.equityCurve, prepared.broker.cashCurve, costs, cashEnd)
 	if err := validateInteractiveStats(stats); err != nil {
 		return InteractiveRunResult{}, err
 	}
@@ -162,7 +163,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		Provenance: InteractiveProvenance{
 			FixtureSHA256: hex.EncodeToString(fixtureHash[:]), SourceSHA256: hex.EncodeToString(sourceHash[:]),
 		},
-		Run: run, EquityCurve: prepared.broker.equityCurve,
+		Run: run, TradeNetPnL: tradeNetPnL, EquityCurve: prepared.broker.equityCurve,
 		ClosedEquity: prepared.broker.cashCurve, CashEndEquity: cashEnd,
 		Skips: prepared.broker.skipCounts, SkipDiagnostics: "measured",
 		SkipReasonSchema: InteractiveSkipReasonSchema, Stats: stats,
@@ -283,15 +284,17 @@ func validateInteractiveStats(stats InteractiveStats) error {
 	return nil
 }
 
-func interactiveStats(trades []Trade, marked, closed []float64, costs Costs, cashEnd float64) InteractiveStats {
+func interactiveStats(trades []Trade, marked, closed []float64, costs Costs, cashEnd float64) (InteractiveStats, []float64) {
 	stats := InteractiveStats{Trades: len(trades), EndEquity: cashEnd,
 		Net: cashEnd - costs.StartEquity, ReturnPct: (cashEnd/costs.StartEquity - 1) * 100}
+	tradeNetPnL := make([]float64, 0, len(trades))
 	curWin, curLoss, holdSum := 0, 0, 0
 	for _, trade := range trades {
 		stats.TradeNet += trade.PnL
 		// Trade.PnL includes the exit commission. Allocate the already
 		// debited entry commission to the closed quantity, including partials.
 		net := trade.PnL - costs.FeePerUnit*trade.Size
+		tradeNetPnL = append(tradeNetPnL, net)
 		if net > 0 {
 			stats.Wins++
 			stats.GrossWin += net
@@ -332,7 +335,7 @@ func interactiveStats(trades []Trade, marked, closed []float64, costs Costs, cas
 	}
 	stats.MaxDD, stats.MaxDDpct = runningPeakDrawdown(marked, costs.StartEquity, cashEnd)
 	stats.MaxClosedDD, stats.MaxClosedDDpct = runningPeakDrawdown(closed, costs.StartEquity, cashEnd)
-	return stats
+	return stats, tradeNetPnL
 }
 
 func runningPeakDrawdown(curve []float64, start, terminal float64) (float64, float64) {

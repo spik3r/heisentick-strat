@@ -93,6 +93,14 @@ comparison. When gross loss is zero and gross win positive, profit factor is
 `null` with `profitFactorState: "unbounded"`; zero activity uses numeric zero
 and `"zero"`. `endEquity` equals final cash, not the final chart mark.
 
+`tradeNetPnl[i]` is the Go-owned fee-inclusive outcome for `run.trades[i]`:
+trade P&L after its allocated entry commission. It is an empty array when
+there are no trades. Consumers may group these outcomes for display without
+reimplementing fee allocation or changing the conformance trade record.
+This field is required in the local v1 contract; producer and consumer must
+be rebuilt together. Its cross-target derived-float tolerance is `1e-9`
+absolute per outcome, matching the underlying trade P&L tolerance.
+
 `maxDD` and `maxDDpct` are the independent maximum absolute and percentage
 falls against the *running peak*, initialized at start equity, over every
 marked bar **and final cash**. `maxClosedDD` and `maxClosedDDpct` apply the
