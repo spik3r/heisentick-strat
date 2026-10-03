@@ -33,6 +33,9 @@ Session Break Hold entry opposite the predicted sweep. The veto leaves that
 setup's daily-seen and cooldown state untouched. Accepted entries in the
 active destination window carry `meta.vpNyHandoff`. The same broker still owns
 fills, costs, fees, per-bar marked and closed equity, and final cash.
+The POC near-tie rule retains the maximum-volume reference when it selects a
+slightly lower-volume higher row, then starts the value-area expansion with
+the selected POC row's actual volume.
 
 The composition reports `skipReasonSchema: "dsl-skip-reasons-v2"`. It retains
 the v1 Go market-gate reason priority and adds
@@ -44,7 +47,11 @@ whole-strategy outputs at app commit `22de07ba`. Its 4,300-bar real-data
 conformance fixture has the 2019-03-20 12:00 open/low changed to 1301.7 and
 1301.65, making the wrapped strategy veto an actual 13:00 long. The JS base
 has six trades; the wrapper has five and one VP skip. A second destination
-open of 1305.4 verifies accepted-entry VP metadata. Tests compare the Go
-trades, net P&L, skip count, prefix curves, HTF behavior and fee-inclusive
-accounting to this frozen evidence. This oracle is a semantic test, not a
+open of 1305.4 verifies accepted-entry VP metadata. A five-price near-tie
+case pins JS VAL/VAH at 100/100.3 and a short veto at a 100.39 destination
+open. Tests compare all common Go/JS trade fields, every JS marked-equity
+point, JS-derived closed equity, net P&L, skip count, prefix curves, HTF
+behavior and fee-inclusive accounting to this frozen evidence. The native/WASM
+parity matrix executes both the veto and allowed-entry composition routes,
+including their complete trade and equity responses. This oracle is a semantic test, not a
 strategy promotion or a conformance golden regeneration.

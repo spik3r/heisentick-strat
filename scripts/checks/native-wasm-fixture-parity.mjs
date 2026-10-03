@@ -243,6 +243,61 @@ try {
       assert.equal(wasmRejected.error.code, 'unsupported-route', 'mutated editor inherited default capability');
     }
   }
+  if (typeof globalThis.engineRunInteractiveVPNYHandoffVetoFixture !== 'function') {
+    throw new Error('VP NY handoff composition WASM export missing');
+  }
+  const vpOracle = JSON.parse(readFileSync(join(root, 'engine/testdata/vp-ny-handoff-js-oracle.json'), 'utf8'));
+  const vpSource = readFileSync(join(root, 'engine/testdata/vp-ny-handoff-base.strat'), 'utf8');
+  assert.equal(sha256(vpSource), vpOracle.baseSourceSha256, 'VP composition base source changed');
+  const vpBaseFixture = JSON.parse(readFileSync(join(root, vpOracle.fixture), 'utf8'));
+  vpBaseFixture.case = 'vp-ny-handoff-whole-strategy';
+  vpBaseFixture.strategyId = 'dslSessionBreakHoldNyFocusBalancedFifteenVpVeto';
+  const vpBar = vpBaseFixture.bars.find((bar) => bar[0] === vpOracle.modifiedBar.t);
+  assert.ok(vpBar, 'VP oracle destination bar missing');
+  vpBar[1] = vpOracle.modifiedBar.o;
+  vpBar[3] = vpOracle.modifiedBar.l;
+  const vpParityCases = [];
+  function compareVPComposition(name, fixture, expected) {
+    const raw = JSON.stringify(fixture);
+    writeFileSync(interactiveFixturePath, raw);
+    writeFileSync(interactiveSourcePath, vpSource);
+    const native = JSON.parse(command(nativePath,
+      ['--interactive-vp-ny-handoff', interactiveFixturePath, interactiveSourcePath], env));
+    const wasm = JSON.parse(globalThis.engineRunInteractiveVPNYHandoffVetoFixture(raw, vpSource));
+    const numericDiffs = [];
+    compareDual(wasm, native, '', numericDiffs);
+    assert.ok(numericDiffs.every((difference) => {
+      const tolerance = [...dualRoundingFields,
+        [/^run\.trades\[\d+\]\.meta\.vpNyHandoff\.targetDistanceRange$/, 1e-12],
+      ].find(([rule]) => rule.test(difference.path))?.[1];
+      return tolerance !== undefined && Number.isFinite(difference.abs) && difference.abs <= tolerance;
+    }), `${name}: VP native/WASM decision, skip, or number differs outside its budget`);
+    assert.equal(wasm.schema, 'dsl-interactive-vp-ny-handoff-v1');
+    assert.equal(wasm.skipReasonSchema, 'dsl-skip-reasons-v2');
+    assert.equal(wasm.run.tradeCount, expected.trades);
+    assert.equal(wasm.skips['filter.vp_ny_unresolved_raid'] || 0, expected.vpSkips);
+    assert.equal(wasm.equityCurve.length, fixture.bars.length);
+    assert.equal(wasm.closedEquityCurve.length, fixture.bars.length);
+    assert.equal(wasm.stats.endEquity, wasm.cashEndEquity);
+    return { name, trades: wasm.run.tradeCount, vpSkips: wasm.skips['filter.vp_ny_unresolved_raid'] || 0,
+      nativeOutputSha256: sha256(JSON.stringify(native)), wasmOutputSha256: sha256(JSON.stringify(wasm)),
+      numericDifferences: numericDiffs.length };
+  }
+  vpParityCases.push(compareVPComposition('vp-veto', vpBaseFixture,
+    { trades: vpOracle.wrapped.trades.length, vpSkips: vpOracle.wrapped.vpSkipCount }));
+  const vpAllowed = structuredClone(vpBaseFixture);
+  const vpAllowedBar = vpAllowed.bars.find((bar) => bar[0] === vpOracle.modifiedBar.t);
+  vpAllowedBar[1] = vpOracle.allowed.modifiedOpen;
+  vpAllowedBar[3] = 1304.638;
+  vpParityCases.push(compareVPComposition('vp-allowed-meta', vpAllowed,
+    { trades: vpOracle.base.trades.length, vpSkips: vpOracle.allowed.vpSkipCount }));
+  const unwrappedRaw = JSON.stringify(vpBaseFixture);
+  writeFileSync(interactiveFixturePath, unwrappedRaw);
+  const nativeUnwrapped = JSON.parse(command(nativePath,
+    ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+  const wasmUnwrapped = JSON.parse(globalThis.engineRunInteractiveFixture(unwrappedRaw, vpSource));
+  assert.deepStrictEqual(wasmUnwrapped, nativeUnwrapped, 'VP ID generic-route rejection parity');
+  assert.equal(wasmUnwrapped.error.code, 'unsupported-route');
   const unsupported = { ...interactiveFixture, sourceBars: [interactiveFixture.bars[0]] };
   const unsupportedRaw = JSON.stringify(unsupported);
   writeFileSync(interactiveFixturePath, unsupportedRaw);
@@ -269,7 +324,8 @@ try {
       numericDifferences: dualNumericDiffs.length,
       maxMarkedEquityAbsDrift: Math.max(0, ...dualNumericDiffs.map((difference) => difference.abs)) },
     skipReasonResults: { blockedSMA: wasmBlockedSMA.skips, namedLevelSweep: wasmNamed.skips,
-      namedNumericDifferences: namedNumericDiffs.length }, ordinaryResults }, null, 2));
+      namedNumericDifferences: namedNumericDiffs.length }, ordinaryResults,
+    vpNYHandoffResult: { cases: vpParityCases, unwrappedCode: wasmUnwrapped.error.code } }, null, 2));
 } catch (error) {
   console.error(error);
   process.exitCode = 1;

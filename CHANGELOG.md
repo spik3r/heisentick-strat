@@ -37,7 +37,9 @@ version and is named here.
   interactive calls now reject that wrapper's strategy ID, preventing a DSL
   text-only run from silently omitting the stateful veto. The composition has
   a pinned base source, strict OHLCV/HTF admission, distinct skip schema, and
-  a frozen JavaScript whole-strategy oracle. This semantic change requires a
+  a frozen JavaScript whole-strategy oracle. Match the JavaScript POC near-tie
+  rule and selected-row value-area accumulation; test both actual veto and
+  allowed-entry native/WASM success. This semantic change requires a
   minor release before consumer adoption.
 - Add a separate versioned interactive result for the qualified ordinary SMA
   Golden Cross and Dual EMA Resumption chart routes, with per-bar marked/closed equity, post-liquidation cash,

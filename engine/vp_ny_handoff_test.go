@@ -2,6 +2,7 @@ package engine
 
 import (
 	"crypto/sha256"
+	_ "embed"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -10,65 +11,42 @@ import (
 	"path/filepath"
 	"reflect"
 	"testing"
+
+	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
-// Exact archived dslText, pinned by the composition's source hash. The
-// strategy remains app-owned; this string is a self-contained oracle input.
-const vpNYHandoffBaseSource = `dsl v6
-# Session Break-Hold - 15m NY Focus Balanced
-strategy "Session Break-Hold 15m NY Focus Balanced" {
-  description "Join confirmed continuation after selected prior-session breaks hold during NY. Balanced copy uses a 1.15R target to improve win rate and yearly floor while keeping the same review sample."
-}
-
-market conditions {
-  symbols(XAUUSD)
-  timeframes(15m)
-  sessions(ny)
-  day type in (trending, choppy)
-}
-
-levels {
-  priority(AH, LH, LL)
-}
-
-setup {
-  type: session break hold
-  hold 3 candles
-  stop inside range 0.5 ATR
-}
-
-filters {
-  higher timeframe must agree
-}
-
-target {
-  target 1.15R capped at pole
-}
-
-management {
-  move stop to breakeven after 0.5R plus 0.05 ATR
-  wait 12 candles after trade
-}
-
-execution {
-  risk: 200 USD
-}`
+// Exact app-owned dslText, copied only as a pinned, portable oracle input.
+//
+//go:embed testdata/vp-ny-handoff-base.strat
+var vpNYHandoffBaseSource string
 
 type vpOracleTrade struct {
 	EntryT      float64   `json:"entryT"`
 	ExitT       float64   `json:"exitT"`
+	EntryIndex  int       `json:"entryIndex"`
+	ExitIndex   int       `json:"exitIndex"`
 	Side        string    `json:"side"`
 	Tag         string    `json:"tag"`
 	Entry       float64   `json:"entry"`
 	Exit        float64   `json:"exit"`
+	SL          float64   `json:"sl"`
+	TP          float64   `json:"tp"`
+	InitialSL   float64   `json:"initialSl"`
+	InitialTP   float64   `json:"initialTp"`
+	Size        float64   `json:"size"`
+	Points      float64   `json:"points"`
 	PnL         float64   `json:"pnl"`
+	Reason      string    `json:"reason"`
+	Meta        TradeMeta `json:"meta"`
 	VPNYHandoff TradeMeta `json:"vpNyHandoff"`
 }
 
 type vpOracleResult struct {
-	Trades      []vpOracleTrade `json:"trades"`
-	VPSkipCount int             `json:"vpSkipCount"`
-	Net         float64         `json:"net"`
+	Trades            []vpOracleTrade `json:"trades"`
+	VPSkipCount       int             `json:"vpSkipCount"`
+	Net               float64         `json:"net"`
+	EquityCurve       []float64       `json:"equityCurve"`
+	ClosedEquityCurve []float64       `json:"closedEquityCurve"`
 }
 
 type vpOracle struct {
@@ -77,7 +55,18 @@ type vpOracle struct {
 	ModifiedBar      struct{ T, O, L float64 } `json:"modifiedBar"`
 	Base             vpOracleResult            `json:"base"`
 	Wrapped          vpOracleResult            `json:"wrapped"`
-	Allowed          struct {
+	NearTie          struct {
+		SourceRows     [][]float64 `json:"sourceRows"`
+		DestinationRow []float64   `json:"destinationRow"`
+		VAL            float64     `json:"val"`
+		VAH            float64     `json:"vah"`
+		POC            float64     `json:"poc"`
+		Predicted      string      `json:"predicted"`
+		BlockedSide    string      `json:"blockedSide"`
+		VPSkipCount    int         `json:"vpSkipCount"`
+		Trades         int         `json:"trades"`
+	} `json:"nearTie"`
+	Allowed struct {
 		ModifiedOpen float64 `json:"modifiedOpen"`
 		Trade        []struct {
 			EntryT      float64   `json:"entryT"`
@@ -158,10 +147,30 @@ func checkVPOracleResult(t *testing.T, result InteractiveRunResult, expected vpO
 		if want.VPNYHandoff != nil {
 			vpMetaMatches = reflect.DeepEqual(trade.Meta["vpNyHandoff"], want.VPNYHandoff)
 		}
-		if trade.EntryT != want.EntryT || trade.ExitT != want.ExitT || trade.Side != want.Side || trade.Tag != want.Tag ||
+		if trade.EntryT != want.EntryT || trade.ExitT != want.ExitT || trade.EntryIndex != want.EntryIndex || trade.ExitIndex != want.ExitIndex ||
+			trade.Side != want.Side || trade.Tag != want.Tag || trade.Reason != want.Reason ||
 			math.Abs(trade.Entry-want.Entry) > 1e-8 || math.Abs(trade.Exit-want.Exit) > 1e-8 ||
-			math.Abs(trade.PnL-want.PnL) > 1e-8 || !vpMetaMatches {
+			math.Abs(trade.SL-want.SL) > 1e-8 || math.Abs(trade.TP-want.TP) > 1e-8 ||
+			math.Abs(trade.InitialSL-want.InitialSL) > 1e-8 || math.Abs(trade.InitialTP-want.InitialTP) > 1e-8 ||
+			math.Abs(trade.Size-want.Size) > 1e-8 || math.Abs(trade.Points-want.Points) > 1e-8 ||
+			math.Abs(trade.PnL-want.PnL) > 1e-8 || !reflect.DeepEqual(trade.Meta, want.Meta) || !vpMetaMatches {
 			t.Fatalf("trade %d = %+v, JS = %+v", i, trade, want)
+		}
+	}
+	if len(result.EquityCurve) != len(expected.EquityCurve) {
+		t.Fatalf("Go equity points = %d, JS = %d", len(result.EquityCurve), len(expected.EquityCurve))
+	}
+	for i := range result.EquityCurve {
+		if math.Abs(result.EquityCurve[i]-expected.EquityCurve[i]) > 1e-8 {
+			t.Fatalf("equity[%d] = %g, JS = %g", i, result.EquityCurve[i], expected.EquityCurve[i])
+		}
+	}
+	if len(result.ClosedEquity) != len(expected.ClosedEquityCurve) {
+		t.Fatalf("Go closed equity points = %d, JS-derived = %d", len(result.ClosedEquity), len(expected.ClosedEquityCurve))
+	}
+	for i := range result.ClosedEquity {
+		if math.Abs(result.ClosedEquity[i]-expected.ClosedEquityCurve[i]) > 1e-8 {
+			t.Fatalf("closed equity[%d] = %g, JS-derived = %g", i, result.ClosedEquity[i], expected.ClosedEquityCurve[i])
 		}
 	}
 	if result.Skips[skipVPNYUnresolvedRaid] != expected.VPSkipCount || math.Abs(result.Stats.Net-expected.Net) > 1e-8 {
@@ -212,6 +221,33 @@ func TestInteractiveVPNYHandoffAllowedEntryMetadataJSOracle(t *testing.T) {
 	}
 	if !found {
 		t.Fatal("allowed JS VP metadata entry missing")
+	}
+}
+
+func TestVPNYHandoffNearTieJSVetoDecision(t *testing.T) {
+	_, oracle := vpOracleFixture(t, true)
+	caseData := oracle.NearTie
+	if len(caseData.SourceRows) != 5 || len(caseData.DestinationRow) != 6 ||
+		caseData.VPSkipCount != 1 || caseData.Trades != 0 || caseData.BlockedSide != "short" {
+		t.Fatalf("near-tie JS oracle shape: %+v", caseData)
+	}
+	rows := append(append([][]float64{}, caseData.SourceRows...), caseData.DestinationRow)
+	bars := make([]marketdata.Bar, len(rows))
+	for i, row := range rows {
+		bars[i] = marketdata.Bar{T: row[0], O: row[1], H: row[2], L: row[3], C: row[4], V: row[5]}
+	}
+	val, vah, ok := vpNYValueArea(bars[:5], 0.1)
+	if !ok || math.Abs(val-caseData.VAL) > 1e-12 || math.Abs(vah-caseData.VAH) > 1e-12 {
+		t.Fatalf("near-tie value area = %g/%g, JS = %g/%g", val, vah, caseData.VAL, caseData.VAH)
+	}
+	series := marketdata.SeriesFromBars(bars)
+	var state vpNYHandoffState
+	for i := range bars {
+		state.update(series, i)
+	}
+	if !state.active || state.predicted != caseData.Predicted ||
+		!state.block(caseData.DestinationRow[0], sideShort) || state.block(caseData.DestinationRow[0], sideLong) {
+		t.Fatalf("near-tie veto = %+v, JS predicts %s and blocks %s", state, caseData.Predicted, caseData.BlockedSide)
 	}
 }
 

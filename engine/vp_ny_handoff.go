@@ -185,11 +185,17 @@ func vpNYValueArea(bars []marketdata.Bar, tick float64) (val, vah float64, ok bo
 	poc, maxVolume := 0, -1.0
 	for j, index := range indices {
 		vol := bins[index]
-		if vol > maxVolume || (math.Abs(vol-maxVolume) < 1e-10 && index > indices[poc]) {
+		if vol > maxVolume {
 			poc, maxVolume = j, vol
+		} else if math.Abs(vol-maxVolume) < 1e-10 && index > indices[poc] {
+			// JS moves the POC on a near tie without lowering the maximum
+			// used to compare subsequent rows.
+			poc = j
 		}
 	}
-	current := maxVolume
+	// Value area starts with the selected POC row's actual volume, which
+	// can be just below the retained maximum after a near tie.
+	current := bins[indices[poc]]
 	bottom, top := poc, poc
 	for up, down := poc+1, poc-1; current < totalVolume*0.7 && (up < len(indices) || down >= 0); {
 		chooseUp := down < 0
