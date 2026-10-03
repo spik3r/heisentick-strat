@@ -128,7 +128,7 @@ func TestInteractiveDraftStrictInputAndReservedIdentity(t *testing.T) {
 	for name, mutate := range map[string]func(map[string]any){
 		"htf":                  func(f map[string]any) { f["htfBars"] = []any{} },
 		"source":               func(f map[string]any) { f["sourceTimeframe"] = "1h" },
-		"ha":                   func(f map[string]any) { f["calculationSource"] = "heikinAshi" },
+		"unknown calculation":  func(f map[string]any) { f["calculationSource"] = "renko" },
 		"params":               func(f map[string]any) { f["params"] = map[string]any{} },
 		"window":               func(f map[string]any) { f["executionWindow"] = map[string]any{} },
 		"identity":             func(f map[string]any) { f["strategyId"] = "dslEditorStrategy" },

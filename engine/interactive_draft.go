@@ -77,6 +77,17 @@ func draftString(fields map[string]json.RawMessage, key string) (string, error) 
 	return value, nil
 }
 
+func draftCalculationSource(fields map[string]json.RawMessage) (string, error) {
+	if _, exists := fields["calculationSource"]; !exists {
+		return "raw", nil
+	}
+	value, err := draftString(fields, "calculationSource")
+	if err != nil || (value != "raw" && value != "heikinAshi") {
+		return "", fmt.Errorf("%w: draft calculationSource must be raw or heikinAshi", ErrInteractiveUnsupported)
+	}
+	return value, nil
+}
+
 func draftSourceProfile(source, symbol, timeframe string) (dsl.ParseResult, string, error) {
 	var zero dsl.ParseResult
 	if len(source) == 0 || len(source) > 256_000 {
@@ -125,7 +136,11 @@ func draftSourceProfile(source, symbol, timeframe string) (dsl.ParseResult, stri
 // mutable local DSL. It admits no catalog wrappers or implicit runtime options.
 func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfile, error) {
 	var zero InteractiveSourceProfile
-	fields, err := draftObject(raw, map[string]bool{"schema": true, "symbol": true, "timeframe": true})
+	fields, err := draftObject(raw, map[string]bool{"schema": true, "symbol": true, "timeframe": true, "calculationSource": true})
+	if err != nil {
+		return zero, err
+	}
+	calculationSource, err := draftCalculationSource(fields)
 	if err != nil {
 		return zero, err
 	}
@@ -153,7 +168,7 @@ func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfi
 		Provenance: InteractiveProvenance{FixtureSHA256: hex.EncodeToString(requestSum[:]), SourceSHA256: hex.EncodeToString(sourceSum[:])}}
 	out.Profile.Family = setupTypeFromAny(parsed.Config["setupType"])
 	out.Profile.Symbol, out.Profile.Timeframe, out.Profile.RangeMethod = symbol, timeframe, rangeMethod
-	out.Profile.MaxBars, out.Profile.CalculationSource = interactiveDraftMaxBars, "raw"
+	out.Profile.MaxBars, out.Profile.CalculationSource = interactiveDraftMaxBars, calculationSource
 	return out, nil
 }
 
@@ -162,8 +177,11 @@ func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfi
 func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	var zero InteractiveRunResult
 	fields, err := draftObject(raw, map[string]bool{"schema": true, "case": true, "strategyId": true,
-		"symbol": true, "timeframe": true, "rangeMethod": true, "costs": true, "bars": true})
+		"symbol": true, "timeframe": true, "rangeMethod": true, "costs": true, "bars": true, "calculationSource": true})
 	if err != nil {
+		return zero, err
+	}
+	if _, err := draftCalculationSource(fields); err != nil {
 		return zero, err
 	}
 	for _, key := range []string{"schema", "case", "strategyId", "symbol", "timeframe", "rangeMethod"} {

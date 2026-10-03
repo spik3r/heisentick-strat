@@ -6,11 +6,12 @@ constructs require further qualification. It does not change historical
 `dsl.Parse`, the frozen `dslEditorStrategy` source or conformance goldens.
 
 `InspectInteractiveSource` / native `--interactive-source-profile` / WASM
-`engineInspectInteractiveSource` consume exactly `{schema,symbol,timeframe}`
+`engineInspectInteractiveSource` consume `{schema,symbol,timeframe}` and optional
+`calculationSource` (`raw` or `heikinAshi`, default `raw`)
 with `schema: dsl-interactive-source-profile-v1`, and the source as a separate
 string. Nonempty symbol/timeframe are required. The result contains `parse`
 (Go config and diagnostics), `profile` (family, symbol, timeframe, rangeMethod,
-maxBars 30000, calculationSource raw) and SHA256 of exact request/source bytes.
+maxBars 30000, selected calculationSource) and SHA256 of exact request/source bytes.
 The host verifies the executable identity and binds it across preflight and run.
 Preflight validates executor config support using a dummy bar; it performs no
 strategy execution or market-data inference.
@@ -26,12 +27,22 @@ claim support for all ordinary-family directives or rewrite older syntax.
 
 `RunInteractiveDraftFixture` / native `--interactive-draft` / WASM
 `engineRunInteractiveDraftFixture` consume only `schema`, `case`, `strategyId`,
-`symbol`, `timeframe`, `rangeMethod`, `costs`, `bars`, plus separate source.
+`symbol`, `timeframe`, `rangeMethod`, `costs`, `bars`, optional `calculationSource`
+(`raw` or `heikinAshi`, default `raw`), plus separate source.
 Schema is `dsl-conformance-run-fixture-v1`; strategyId is `dslDraftStrategy`.
 All strings and all five cost fields are explicit. Source is reparsed and route
 admission rechecked at execution. Range method must match the Go profile.
 Unknown/case aliases, duplicate JSON keys and trailing JSON fail. No parameters,
-context, auxiliary rows, transformations or execution windows are accepted.
+context, auxiliary rows, other transformations or execution windows are accepted.
+
+Explicit Heikin-Ashi uses the existing `strategy-calculation-source-v1` causal
+recursive transform for strategy calculations only. Execution fills, stop/target
+touches and equity marks use the supplied raw OHLCV, including raw next-open
+prices. The first raw bar seeds the transform; missing periods do not reseed it.
+No HA plus source/HTF composition is admitted by this chart-only draft contract.
+Absent calculationSource preserves the previous raw request/output meaning.
+Consumers bind the selected calculation source across preflight and execution;
+the exact request and execution fixture digests include any explicit selection.
 
 Input has 1–30000 six-cell finite raw OHLCV rows with safe nonnegative integer
 UTC timestamps, strictly increasing and on the declared fixed timeframe grid;
