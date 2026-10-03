@@ -77,6 +77,8 @@ type broker struct {
 	// conformance trades-only path allocation-free.
 	equityCurve            []float64
 	cashCurve              []float64
+	skipCounts             map[string]int
+	lastSkipIndex          int
 	flagLastEntry          int
 	hasFlagEntry           bool
 	rbfLastEntry           int
@@ -172,6 +174,8 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.realized = 0
 	b.equityCurve = nil
 	b.cashCurve = nil
+	b.skipCounts = nil
+	b.lastSkipIndex = -1
 	b.flagLastEntry = 0
 	b.hasFlagEntry = false
 	b.rbfLastEntry = 0

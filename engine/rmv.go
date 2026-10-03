@@ -73,24 +73,37 @@ func validateRMVSourceEntryRoute(symbol, timeframe string, cfg dsl.Config) error
 }
 
 func (b *broker) rmvGateOK(i int) bool {
+	return b.rmvRejectionCode(i) == ""
+}
+
+func (b *broker) rmvRejectionCode(i int) string {
 	f := b.params.RMV
 	if f.Op == "" {
-		return true
+		return ""
 	}
 	if i < 0 || i >= len(b.cols.RMV) || !isFinite(b.cols.RMV[i]) {
-		return false
+		return skipRMVUnavailable
 	}
 	value := b.cols.RMV[i]
 	switch f.Op {
 	case "above":
-		return value > f.Value
+		if value > f.Value {
+			return ""
+		}
 	case "below":
-		return value < f.Value
+		if value < f.Value {
+			return ""
+		}
 	case "atLeast":
-		return value >= f.Value
+		if value >= f.Value {
+			return ""
+		}
 	case "atMost":
-		return value <= f.Value
+		if value <= f.Value {
+			return ""
+		}
 	default:
-		return false
+		return skipRMVUnavailable
 	}
+	return skipRMVThreshold
 }

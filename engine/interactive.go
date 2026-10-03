@@ -58,21 +58,22 @@ type InteractiveStats struct {
 // existing conformance trade envelope, while the curves and statistics use
 // the explicitly defined interactive accounting above.
 type InteractiveRunResult struct {
-	Schema          string                `json:"schema"`
-	Provenance      InteractiveProvenance `json:"provenance"`
-	Run             RunResult             `json:"run"`
-	EquityCurve     []float64             `json:"equityCurve"`
-	ClosedEquity    []float64             `json:"closedEquityCurve"`
-	CashEndEquity   float64               `json:"cashEndEquity"`
-	Skips           map[string]int        `json:"skips"`
-	SkipDiagnostics string                `json:"skipDiagnostics"`
-	Stats           InteractiveStats      `json:"stats"`
+	Schema           string                `json:"schema"`
+	Provenance       InteractiveProvenance `json:"provenance"`
+	Run              RunResult             `json:"run"`
+	EquityCurve      []float64             `json:"equityCurve"`
+	ClosedEquity     []float64             `json:"closedEquityCurve"`
+	CashEndEquity    float64               `json:"cashEndEquity"`
+	Skips            map[string]int        `json:"skips"`
+	SkipDiagnostics  string                `json:"skipDiagnostics"`
+	SkipReasonSchema string                `json:"skipReasonSchema"`
+	Stats            InteractiveStats      `json:"stats"`
 }
 
 // The admitted ordinary families use the shared per-bar broker loop. The Go
-// broker does not collect gate-rejection reasons; the response marks those
-// diagnostics unavailable. Scheduled source-entry and special-family loops
-// do not yet emit complete per-bar marks.
+// broker records instrumented market-gate rejections for interactive runs.
+// Scheduled source-entry and special-family loops do not yet emit complete
+// per-bar marks or skip diagnostics.
 func interactiveOrdinaryFamily(setupType string) bool {
 	switch setupType {
 	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption), string(dsl.FamilyNamedLevelSweep):
@@ -83,7 +84,7 @@ func interactiveOrdinaryFamily(setupType string) bool {
 }
 
 // RunInteractiveFixture admits only ordinary chart-timeframe families with
-// complete per-bar marks and explicitly unavailable skip diagnostics.
+// complete per-bar marks and producer-owned market-gate diagnostics.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
@@ -131,6 +132,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		prepared.ema, prepared.emaSlope, prepared.params, prepared.fixture, nil)
 	prepared.broker.equityCurve = make([]float64, series.Len())
 	prepared.broker.cashCurve = make([]float64, series.Len())
+	prepared.broker.skipCounts = make(map[string]int)
 	trades := prepared.broker.run()
 	if prepared.broker.hasPosition {
 		return InteractiveRunResult{}, errors.New("interactive run ended with an open position")
@@ -162,10 +164,8 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		},
 		Run: run, EquityCurve: prepared.broker.equityCurve,
 		ClosedEquity: prepared.broker.cashCurve, CashEndEquity: cashEnd,
-		// The ordinary Go broker does not collect reasons for gate rejection.
-		// JSON null and an explicit state distinguish unavailable diagnostics
-		// from a measured empty skip map.
-		Skips: nil, SkipDiagnostics: "unavailable", Stats: stats,
+		Skips: prepared.broker.skipCounts, SkipDiagnostics: "measured",
+		SkipReasonSchema: InteractiveSkipReasonSchema, Stats: stats,
 	}, nil
 }
 

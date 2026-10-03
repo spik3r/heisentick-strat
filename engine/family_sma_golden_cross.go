@@ -102,7 +102,8 @@ func (b *broker) onSMAGoldenCrossBar(i int) {
 		return
 	}
 
-	if !b.rmvGateOK(i) {
+	if code := b.rmvRejectionCode(i); code != "" {
+		b.recordInteractiveSkip(i, code)
 		return
 	}
 	order := order{

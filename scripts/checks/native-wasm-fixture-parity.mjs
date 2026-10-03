@@ -106,6 +106,18 @@ try {
   assert.equal(wasmInteractive.closedEquityCurve.length, interactiveFixture.bars.length);
   assert.ok(wasmInteractive.run.tradeCount > 0);
   assert.equal(wasmInteractive.stats.endEquity, wasmInteractive.cashEndEquity);
+  assert.deepStrictEqual(wasmInteractive.skips, {});
+  assert.equal(wasmInteractive.skipReasonSchema, 'dsl-skip-reasons-v1');
+  const blockedSMASource = interactiveSource.replace('  side long only',
+    '  side long only\n  rmv atr period 1\n  rmv lookback 3\n  rmv below 0');
+  assert.notEqual(blockedSMASource, interactiveSource);
+  writeFileSync(interactiveSourcePath, blockedSMASource);
+  const nativeBlockedSMA = JSON.parse(command(nativePath,
+    ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+  const wasmBlockedSMA = JSON.parse(globalThis.engineRunInteractiveFixture(interactiveRaw, blockedSMASource));
+  assert.deepStrictEqual(wasmBlockedSMA, nativeBlockedSMA, 'SMA RMV rejection parity');
+  assert.ok((wasmBlockedSMA.skips['gate.rmv_threshold'] || 0) > 0);
+  assert.equal(wasmBlockedSMA.run.tradeCount, 0);
   const dualBase = join(root, 'conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour');
   const dualFixtureRaw = readFileSync(`${dualBase}.fixture.json`, 'utf8');
   const dualSource = readFileSync(`${dualBase}.strat`, 'utf8');
@@ -115,19 +127,19 @@ try {
     ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
   const wasmDual = JSON.parse(globalThis.engineRunInteractiveFixture(dualFixtureRaw, dualSource));
   const dualNumericDiffs = [];
-  function compareDual(a, b, path = '') {
+  function compareDual(a, b, path = '', numericDiffs = dualNumericDiffs) {
     if (typeof a === 'number' && typeof b === 'number') {
-      if (a !== b) dualNumericDiffs.push({ path, abs: Math.abs(a - b), a, b });
+      if (a !== b) numericDiffs.push({ path, abs: Math.abs(a - b), a, b });
       return;
     }
     if (Array.isArray(a) && Array.isArray(b)) {
       assert.equal(a.length, b.length, `${path} length`);
-      a.forEach((item, index) => compareDual(item, b[index], `${path}[${index}]`));
+      a.forEach((item, index) => compareDual(item, b[index], `${path}[${index}]`, numericDiffs));
       return;
     }
     if (a && b && typeof a === 'object' && typeof b === 'object') {
       assert.deepStrictEqual(Object.keys(a).sort(), Object.keys(b).sort(), `${path} keys`);
-      for (const key of Object.keys(a)) compareDual(a[key], b[key], path ? `${path}.${key}` : key);
+      for (const key of Object.keys(a)) compareDual(a[key], b[key], path ? `${path}.${key}` : key, numericDiffs);
       return;
     }
     assert.deepStrictEqual(a, b, `${path} nonnumeric value`);
@@ -150,6 +162,24 @@ try {
   assert.equal(wasmDual.equityCurve.length, 5000);
   assert.equal(wasmDual.closedEquityCurve.length, 5000);
   assert.deepStrictEqual(wasmDual.skips, {});
+  const namedBase = join(root, 'conformance/run/research-dsl-daily-snd-retest-xauusd-4h');
+  const namedFixtureRaw = readFileSync(`${namedBase}.fixture.json`, 'utf8');
+  const namedSource = readFileSync(`${namedBase}.strat`, 'utf8');
+  writeFileSync(interactiveFixturePath, namedFixtureRaw);
+  writeFileSync(interactiveSourcePath, namedSource);
+  const nativeNamed = JSON.parse(command(nativePath,
+    ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+  const wasmNamed = JSON.parse(globalThis.engineRunInteractiveFixture(namedFixtureRaw, namedSource));
+  const namedNumericDiffs = [];
+  compareDual(wasmNamed, nativeNamed, '', namedNumericDiffs);
+  assert.ok(namedNumericDiffs.every((difference) => {
+    const tolerance = dualRoundingFields.find(([rule]) => rule.test(difference.path))?.[1];
+    return tolerance !== undefined && Number.isFinite(difference.abs) && difference.abs <= tolerance;
+  }), 'named level sweep changed a decision, skip count, or derived value beyond its budget');
+  assert.deepStrictEqual(wasmNamed.skips, {
+    'gate.utc_window': 1605, 'gate.prior_day_type_allow': 1649, 'gate.movement_er': 13,
+  });
+  assert.equal(wasmNamed.skipReasonSchema, 'dsl-skip-reasons-v1');
   const unsupported = { ...interactiveFixture, sourceBars: [interactiveFixture.bars[0]] };
   const unsupportedRaw = JSON.stringify(unsupported);
   writeFileSync(interactiveFixturePath, unsupportedRaw);
@@ -174,7 +204,9 @@ try {
       nativeOutputSha256: sha256(JSON.stringify(nativeDual)),
       wasmOutputSha256: sha256(JSON.stringify(wasmDual)),
       numericDifferences: dualNumericDiffs.length,
-      maxMarkedEquityAbsDrift: Math.max(0, ...dualNumericDiffs.map((difference) => difference.abs)) } }, null, 2));
+      maxMarkedEquityAbsDrift: Math.max(0, ...dualNumericDiffs.map((difference) => difference.abs)) },
+    skipReasonResults: { blockedSMA: wasmBlockedSMA.skips, namedLevelSweep: wasmNamed.skips,
+      namedNumericDifferences: namedNumericDiffs.length } }, null, 2));
 } catch (error) {
   console.error(error);
   process.exitCode = 1;

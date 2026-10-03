@@ -52,7 +52,8 @@ func TestInteractiveDualEMAUsesOrdinaryTradeAndEquityPath(t *testing.T) {
 	}
 	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
 		len(result.EquityCurve) != len(fixture.Bars) ||
-		len(result.ClosedEquity) != len(fixture.Bars) || result.Skips != nil || result.SkipDiagnostics != "unavailable" ||
+		len(result.ClosedEquity) != len(fixture.Bars) || result.Skips == nil || result.SkipDiagnostics != "measured" ||
+		result.SkipReasonSchema != InteractiveSkipReasonSchema ||
 		result.Stats.EndEquity != result.CashEndEquity {
 		t.Fatalf("dual EMA interactive contract disagrees with ordinary run: %+v", result)
 	}
@@ -99,7 +100,8 @@ func TestInteractiveNamedLevelSweepPreservesFixtureTradesAndCausalMarks(t *testi
 	}
 	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
 		len(result.EquityCurve) != len(fixture.Bars) ||
-		len(result.ClosedEquity) != len(fixture.Bars) || result.Skips != nil || result.SkipDiagnostics != "unavailable" ||
+		len(result.ClosedEquity) != len(fixture.Bars) || result.Skips == nil || result.SkipDiagnostics != "measured" ||
+		result.SkipReasonSchema != InteractiveSkipReasonSchema ||
 		result.Stats.EndEquity != result.CashEndEquity {
 		t.Fatalf("named level sweep interactive contract disagrees with fixture run: %+v", result)
 	}
@@ -169,6 +171,58 @@ func TestInteractiveNamedLevelSweepWaitsForPriorDayAndPreservesOpenPrefix(t *tes
 	}
 }
 
+func TestInteractiveSkipReasonsUseGoGatePriorityAndCausalPrefixes(t *testing.T) {
+	base := filepath.Join("..", "conformance", "run", "research-dsl-daily-snd-retest-xauusd-4h")
+	raw, err := os.ReadFile(base + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(base + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var fixture RunFixture
+	if err := json.Unmarshal(raw, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	check := func(n int, want map[string]int) {
+		t.Helper()
+		prefix := fixture
+		prefix.RawBars = fixture.RawBars[:n]
+		encoded, err := json.Marshal(prefix)
+		if err != nil {
+			t.Fatal(err)
+		}
+		result, err := RunInteractiveFixture(encoded, string(source))
+		if err != nil {
+			t.Fatal(err)
+		}
+		if result.SkipDiagnostics != "measured" || result.SkipReasonSchema != InteractiveSkipReasonSchema ||
+			!reflect.DeepEqual(result.Skips, want) {
+			t.Fatalf("%d-bar Go gate counts = %v (%s/%s), want %v", n,
+				result.Skips, result.SkipDiagnostics, result.SkipReasonSchema, want)
+		}
+	}
+	check(1, map[string]int{skipUTCWindow: 1})
+	// On the first six bars, three 00:00/04:00 UTC bars fail the window;
+	// the remaining three are inside the window but have no allowed prior day.
+	check(6, map[string]int{skipUTCWindow: 3, skipPriorDayTypeAllow: 3})
+	check(len(fixture.RawBars), map[string]int{
+		skipUTCWindow: 1605, skipPriorDayTypeAllow: 1649, skipMovementER: 13,
+	})
+}
+
+func TestInteractiveSkipRecorderKeepsFirstReasonPerBar(t *testing.T) {
+	b := broker{skipCounts: map[string]int{}, lastSkipIndex: -1}
+	b.recordInteractiveSkip(4, skipUTCWindow)
+	b.recordInteractiveSkip(4, skipPriorDayTypeAllow)
+	b.recordInteractiveSkip(5, "")
+	b.recordInteractiveSkip(5, skipPriorDayTypeAllow)
+	if !reflect.DeepEqual(b.skipCounts, map[string]int{skipUTCWindow: 1, skipPriorDayTypeAllow: 1}) {
+		t.Fatalf("first-reason counts = %v", b.skipCounts)
+	}
+}
+
 func interactiveSMAFixture(t *testing.T, bars [][]float64) []byte {
 	t.Helper()
 	fixture := RunFixture{
@@ -208,8 +262,16 @@ func TestInteractiveResultUsesCausalMarksAndFeeInclusiveStats(t *testing.T) {
 	}
 	if result.Schema != InteractiveRunSchema || result.Run.TradeCount != 1 ||
 		len(result.Provenance.FixtureSHA256) != 64 || len(result.Provenance.SourceSHA256) != 64 ||
-		result.Skips != nil || result.SkipDiagnostics != "unavailable" {
+		result.Skips == nil || result.SkipDiagnostics != "measured" ||
+		result.SkipReasonSchema != InteractiveSkipReasonSchema {
 		t.Fatalf("interactive envelope = %+v", result)
+	}
+	jsonResult, err := json.Marshal(result)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(jsonResult), `"skips":{}`) {
+		t.Fatalf("empty measured map serialized as %s", jsonResult)
 	}
 	for _, check := range []struct {
 		name string

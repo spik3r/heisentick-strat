@@ -195,39 +195,52 @@ func openingAllowedWindows(p flagParams) map[string]bool {
 }
 
 func (b *broker) marketGatesOK(i int) bool {
+	code := b.marketGateRejectionCode(i)
+	b.recordInteractiveSkip(i, code)
+	return code == ""
+}
+
+func (b *broker) marketGateRejectionCode(i int) string {
 	if !inFlagTradeWindow(b.series.T[i], b.params, 0) {
-		return false
+		if b.params.TradeWindowUTCHourRangeSet {
+			return skipUTCWindow
+		}
+		return skipSessionWindow
 	}
-	return b.marketNonSessionGatesOK(i)
+	return b.marketNonSessionGateRejectionCode(i)
 }
 
 func (b *broker) marketNonSessionGatesOK(i int) bool {
-	if !b.rmvGateOK(i) {
-		return false
+	return b.marketNonSessionGateRejectionCode(i) == ""
+}
+
+func (b *broker) marketNonSessionGateRejectionCode(i int) string {
+	if code := b.rmvRejectionCode(i); code != "" {
+		return code
 	}
 	if len(b.params.LocalWeekdays) > 0 || len(b.params.BlockedLocalWeekdays) > 0 || len(b.params.LocalHours) > 0 || len(b.params.BlockedLocalHours) > 0 {
 		if i < 0 || i >= len(b.series.T) {
-			return false
+			return skipLocalHourAllow
 		}
 		timestamp := int64(b.series.T[i])
 		weekday := contextcols.LocalWeekday(timestamp)
 		if len(b.params.LocalWeekdays) > 0 && !containsString(b.params.LocalWeekdays, weekday) {
-			return false
+			return skipLocalWeekdayAllow
 		}
 		if containsString(b.params.BlockedLocalWeekdays, weekday) {
-			return false
+			return skipLocalWeekdayBlock
 		}
 		hour := int(contextcols.LocalHour(timestamp))
 		if len(b.params.LocalHours) > 0 && !containsInt(b.params.LocalHours, hour) {
-			return false
+			return skipLocalHourAllow
 		}
 		if containsInt(b.params.BlockedLocalHours, hour) {
-			return false
+			return skipLocalHourBlock
 		}
 	}
 	if len(b.params.OpenLocations) > 0 {
 		if i < 0 || i >= len(b.cols.OpenLocation) || !containsString(b.params.OpenLocations, openLocationName(b.cols.OpenLocation[i])) {
-			return false
+			return skipOpenLocation
 		}
 	}
 	if len(b.params.SessionPhases) > 0 {
@@ -236,7 +249,7 @@ func (b *broker) marketNonSessionGatesOK(i int) bool {
 			phase = sessionPhaseName(b.cols.SessionPhase[i])
 		}
 		if !containsString(b.params.SessionPhases, phase) {
-			return false
+			return skipSessionPhase
 		}
 	}
 	priorDayType := ""
@@ -244,27 +257,27 @@ func (b *broker) marketNonSessionGatesOK(i int) bool {
 		priorDayType = priorDayTypeName(b.cols.PriorDayType[i])
 	}
 	if len(b.params.PriorDayTypes) > 0 && !containsString(b.params.PriorDayTypes, priorDayType) {
-		return false
+		return skipPriorDayTypeAllow
 	}
 	if len(b.params.BlockedPriorDayTypes) > 0 && containsString(b.params.BlockedPriorDayTypes, priorDayType) {
-		return false
+		return skipPriorDayTypeBlock
 	}
 	if len(b.params.DayTypes) > 0 && !regimeAllowed(b.cols.Regime[i], b.params.DayTypes) && finiteOrZero(b.cols.ER[i]) > b.params.DayTypeEREscape {
-		return false
+		return skipDayRegime
 	}
 	if finiteOrZero(b.cols.ER[i]) > b.params.MaxMovementER {
-		return false
+		return skipMovementER
 	}
 	if b.params.PriorDayMinRangeATR > 0 {
 		atr := finiteOrZero(b.cols.ATR[i])
 		if atr == 0 || !isFinite(b.cols.PriorDayH[i]) || !isFinite(b.cols.PriorDayL[i]) {
-			return false
+			return skipPriorDayRangeMissing
 		}
 		if b.cols.PriorDayH[i]-b.cols.PriorDayL[i] < atr*b.params.PriorDayMinRangeATR {
-			return false
+			return skipPriorDayRangeTooSmall
 		}
 	}
-	return true
+	return ""
 }
 
 func containsInt(values []int, want int) bool {
