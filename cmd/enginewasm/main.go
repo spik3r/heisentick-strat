@@ -3,6 +3,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -14,6 +15,31 @@ func main() {
 			panic(err)
 		}
 		out, err := runAuthoredOrb(string(raw))
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(out))
+		return
+	}
+	if len(os.Args) == 3 && (os.Args[1] == "--forward-smoke" || os.Args[1] == "--forward-smoke-prefix") {
+		raw, err := os.ReadFile(os.Args[2])
+		if err != nil {
+			panic(err)
+		}
+		mode := "whole"
+		if os.Args[1] == "--forward-smoke-prefix" {
+			mode = "prefix"
+		}
+		var input map[string]any
+		if err := json.Unmarshal(raw, &input); err != nil {
+			panic(err)
+		}
+		input["mode"] = mode
+		raw, err = json.Marshal(input)
+		if err != nil {
+			panic(err)
+		}
+		out, err := runForwardSmokeJSON(string(raw))
 		if err != nil {
 			panic(err)
 		}

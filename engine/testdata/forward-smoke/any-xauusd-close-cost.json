@@ -1,0 +1,496 @@
+{
+  "schema": "forward-smoke-js-oracle-v1",
+  "name": "any-xauusd-close-cost",
+  "strategyId": "forwardExecutionSmokeTwoCandleAnySymbolOneMinute",
+  "strategyVersion": "sha256:f2ebf1a9334cf088464434f49b921a9264287f9ac04577c88437e5eae2d35558",
+  "symbol": "XAUUSD",
+  "timeframe": "1m",
+  "costs": {
+    "fillOn": "close",
+    "slippage": 0.06,
+    "slippageBps": 0,
+    "feePerUnit": 0.01,
+    "startEquity": 10000
+  },
+  "bars": [
+    {
+      "t": 1700000000000,
+      "o": 3348.0176211453745,
+      "h": 3353.3039647577093,
+      "l": 3347.136563876652,
+      "c": 3352.4229074889868,
+      "v": 100
+    },
+    {
+      "t": 1700000060000,
+      "o": 3352.4229074889868,
+      "h": 3357.7092511013216,
+      "l": 3351.541850220264,
+      "c": 3356.828193832599,
+      "v": 100
+    },
+    {
+      "t": 1700000120000,
+      "o": 3356.828193832599,
+      "h": 3367.84140969163,
+      "l": 3356.387665198238,
+      "c": 3361.2334801762117,
+      "v": 100
+    },
+    {
+      "t": 1700000180000,
+      "o": 3361.2334801762117,
+      "h": 3366.5198237885465,
+      "l": 3360.352422907489,
+      "c": 3365.638766519824,
+      "v": 100
+    },
+    {
+      "t": 1700000240000,
+      "o": 3365.638766519824,
+      "h": 3366.5198237885465,
+      "l": 3359.911894273128,
+      "c": 3361.2334801762117,
+      "v": 100
+    },
+    {
+      "t": 1700000300000,
+      "o": 3361.2334801762117,
+      "h": 3362.114537444934,
+      "l": 3355.947136563877,
+      "c": 3356.828193832599,
+      "v": 100
+    },
+    {
+      "t": 1700000360000,
+      "o": 3356.828193832599,
+      "h": 3357.7092511013216,
+      "l": 3345.8149779735686,
+      "c": 3348.0176211453745,
+      "v": 100
+    },
+    {
+      "t": 1700000420000,
+      "o": 3348.0176211453745,
+      "h": 3353.3039647577093,
+      "l": 3347.136563876652,
+      "c": 3352.4229074889868,
+      "v": 100
+    },
+    {
+      "t": 1700000480000,
+      "o": 3352.4229074889868,
+      "h": 3357.7092511013216,
+      "l": 3351.541850220264,
+      "c": 3356.828193832599,
+      "v": 100
+    },
+    {
+      "t": 1700000540000,
+      "o": 3356.828193832599,
+      "h": 3357.7092511013216,
+      "l": 3350.220264317181,
+      "c": 3354.625550660793,
+      "v": 100
+    },
+    {
+      "t": 1700000600000,
+      "o": 3354.625550660793,
+      "h": 3357.2687224669603,
+      "l": 3348.898678414097,
+      "c": 3355.947136563877,
+      "v": 100
+    },
+    {
+      "t": 1700000660000,
+      "o": 3355.947136563877,
+      "h": 3361.2334801762117,
+      "l": 3354.625550660793,
+      "c": 3359.0308370044054,
+      "v": 100
+    }
+  ],
+  "wholeTrades": [
+    {
+      "positionId": "position-1-0",
+      "side": "long",
+      "entry": 3356.888193832599,
+      "exit": 3365.1602643171805,
+      "sl": 3348.4361233480176,
+      "tp": 3365.2202643171804,
+      "initialSl": 3348.4361233480176,
+      "initialTp": 3365.2202643171804,
+      "meta": null,
+      "size": 11.83142050015139,
+      "entryIndex": 1,
+      "exitIndex": 2,
+      "entryT": 1700000060000,
+      "exitT": 1700000120000,
+      "points": 8.27207048458149,
+      "pnl": 97.75203010497319,
+      "reason": "tp",
+      "tag": "FORWARD-SMOKE-2-BULLISH"
+    },
+    {
+      "positionId": "position-2-1",
+      "side": "long",
+      "entry": 3361.2934801762117,
+      "exit": 3352.770396475771,
+      "sl": 3352.830396475771,
+      "tp": 3369.6365638766524,
+      "initialSl": 3352.830396475771,
+      "initialTp": 3369.6365638766524,
+      "meta": null,
+      "size": 11.816023986008034,
+      "entryIndex": 2,
+      "exitIndex": 6,
+      "entryT": 1700000120000,
+      "exitT": 1700000360000,
+      "points": -8.523083700440566,
+      "pnl": -100.82712167901991,
+      "reason": "sl",
+      "tag": "FORWARD-SMOKE-2-BULLISH"
+    },
+    {
+      "positionId": "position-6-2",
+      "side": "short",
+      "entry": 3347.9576211453746,
+      "exit": 3356.4476651982377,
+      "sl": 3356.3876651982378,
+      "tp": 3339.6475770925113,
+      "initialSl": 3356.3876651982378,
+      "initialTp": 3339.6475770925113,
+      "meta": null,
+      "size": 11.862334214734716,
+      "entryIndex": 6,
+      "exitIndex": 8,
+      "entryT": 1700000360000,
+      "exitT": 1700000480000,
+      "points": -8.49004405286314,
+      "pnl": -100.83036339503077,
+      "reason": "sl",
+      "tag": "FORWARD-SMOKE-2-BEARISH"
+    },
+    {
+      "positionId": "position-8-3",
+      "side": "long",
+      "entry": 3356.888193832599,
+      "exit": 3358.9708370044054,
+      "sl": 3348.4361233480176,
+      "tp": 3365.2202643171804,
+      "initialSl": 3348.4361233480176,
+      "initialTp": 3365.2202643171804,
+      "meta": null,
+      "size": 11.83142050015139,
+      "entryIndex": 8,
+      "exitIndex": 11,
+      "entryT": 1700000480000,
+      "exitT": 1700000660000,
+      "points": 2.082643171806467,
+      "pnl": 24.52231291240983,
+      "reason": "eod",
+      "tag": "FORWARD-SMOKE-2-BULLISH"
+    }
+  ],
+  "prefix": [
+    {
+      "length": 2,
+      "trades": [],
+      "openPositions": [
+        {
+          "id": "position-1-0",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "size": 11.83142050015139,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "executionCalendar": null,
+          "adverseStopGaps": false,
+          "entryIndex": 1,
+          "entryT": 1700000060000,
+          "tag": "FORWARD-SMOKE-2-BULLISH",
+          "gapAwareStop": false
+        }
+      ]
+    },
+    {
+      "length": 3,
+      "trades": [
+        {
+          "positionId": "position-1-0",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "exit": 3365.1602643171805,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "size": 11.83142050015139,
+          "entryIndex": 1,
+          "exitIndex": 2,
+          "entryT": 1700000060000,
+          "exitT": 1700000120000,
+          "points": 8.27207048458149,
+          "pnl": 97.75203010497319,
+          "reason": "tp",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        }
+      ],
+      "openPositions": [
+        {
+          "id": "position-2-1",
+          "side": "long",
+          "entry": 3361.2934801762117,
+          "size": 11.816023986008034,
+          "sl": 3352.830396475771,
+          "tp": 3369.6365638766524,
+          "initialSl": 3352.830396475771,
+          "initialTp": 3369.6365638766524,
+          "meta": null,
+          "executionCalendar": null,
+          "adverseStopGaps": false,
+          "entryIndex": 2,
+          "entryT": 1700000120000,
+          "tag": "FORWARD-SMOKE-2-BULLISH",
+          "gapAwareStop": false
+        }
+      ]
+    },
+    {
+      "length": 7,
+      "trades": [
+        {
+          "positionId": "position-1-0",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "exit": 3365.1602643171805,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "size": 11.83142050015139,
+          "entryIndex": 1,
+          "exitIndex": 2,
+          "entryT": 1700000060000,
+          "exitT": 1700000120000,
+          "points": 8.27207048458149,
+          "pnl": 97.75203010497319,
+          "reason": "tp",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        },
+        {
+          "positionId": "position-2-1",
+          "side": "long",
+          "entry": 3361.2934801762117,
+          "exit": 3352.770396475771,
+          "sl": 3352.830396475771,
+          "tp": 3369.6365638766524,
+          "initialSl": 3352.830396475771,
+          "initialTp": 3369.6365638766524,
+          "meta": null,
+          "size": 11.816023986008034,
+          "entryIndex": 2,
+          "exitIndex": 6,
+          "entryT": 1700000120000,
+          "exitT": 1700000360000,
+          "points": -8.523083700440566,
+          "pnl": -100.82712167901991,
+          "reason": "sl",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        }
+      ],
+      "openPositions": [
+        {
+          "id": "position-6-2",
+          "side": "short",
+          "entry": 3347.9576211453746,
+          "size": 11.862334214734716,
+          "sl": 3356.3876651982378,
+          "tp": 3339.6475770925113,
+          "initialSl": 3356.3876651982378,
+          "initialTp": 3339.6475770925113,
+          "meta": null,
+          "executionCalendar": null,
+          "adverseStopGaps": false,
+          "entryIndex": 6,
+          "entryT": 1700000360000,
+          "tag": "FORWARD-SMOKE-2-BEARISH",
+          "gapAwareStop": false
+        }
+      ]
+    },
+    {
+      "length": 10,
+      "trades": [
+        {
+          "positionId": "position-1-0",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "exit": 3365.1602643171805,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "size": 11.83142050015139,
+          "entryIndex": 1,
+          "exitIndex": 2,
+          "entryT": 1700000060000,
+          "exitT": 1700000120000,
+          "points": 8.27207048458149,
+          "pnl": 97.75203010497319,
+          "reason": "tp",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        },
+        {
+          "positionId": "position-2-1",
+          "side": "long",
+          "entry": 3361.2934801762117,
+          "exit": 3352.770396475771,
+          "sl": 3352.830396475771,
+          "tp": 3369.6365638766524,
+          "initialSl": 3352.830396475771,
+          "initialTp": 3369.6365638766524,
+          "meta": null,
+          "size": 11.816023986008034,
+          "entryIndex": 2,
+          "exitIndex": 6,
+          "entryT": 1700000120000,
+          "exitT": 1700000360000,
+          "points": -8.523083700440566,
+          "pnl": -100.82712167901991,
+          "reason": "sl",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        },
+        {
+          "positionId": "position-6-2",
+          "side": "short",
+          "entry": 3347.9576211453746,
+          "exit": 3356.4476651982377,
+          "sl": 3356.3876651982378,
+          "tp": 3339.6475770925113,
+          "initialSl": 3356.3876651982378,
+          "initialTp": 3339.6475770925113,
+          "meta": null,
+          "size": 11.862334214734716,
+          "entryIndex": 6,
+          "exitIndex": 8,
+          "entryT": 1700000360000,
+          "exitT": 1700000480000,
+          "points": -8.49004405286314,
+          "pnl": -100.83036339503077,
+          "reason": "sl",
+          "tag": "FORWARD-SMOKE-2-BEARISH"
+        }
+      ],
+      "openPositions": [
+        {
+          "id": "position-8-3",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "size": 11.83142050015139,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "executionCalendar": null,
+          "adverseStopGaps": false,
+          "entryIndex": 8,
+          "entryT": 1700000480000,
+          "tag": "FORWARD-SMOKE-2-BULLISH",
+          "gapAwareStop": false
+        }
+      ]
+    },
+    {
+      "length": 12,
+      "trades": [
+        {
+          "positionId": "position-1-0",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "exit": 3365.1602643171805,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "size": 11.83142050015139,
+          "entryIndex": 1,
+          "exitIndex": 2,
+          "entryT": 1700000060000,
+          "exitT": 1700000120000,
+          "points": 8.27207048458149,
+          "pnl": 97.75203010497319,
+          "reason": "tp",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        },
+        {
+          "positionId": "position-2-1",
+          "side": "long",
+          "entry": 3361.2934801762117,
+          "exit": 3352.770396475771,
+          "sl": 3352.830396475771,
+          "tp": 3369.6365638766524,
+          "initialSl": 3352.830396475771,
+          "initialTp": 3369.6365638766524,
+          "meta": null,
+          "size": 11.816023986008034,
+          "entryIndex": 2,
+          "exitIndex": 6,
+          "entryT": 1700000120000,
+          "exitT": 1700000360000,
+          "points": -8.523083700440566,
+          "pnl": -100.82712167901991,
+          "reason": "sl",
+          "tag": "FORWARD-SMOKE-2-BULLISH"
+        },
+        {
+          "positionId": "position-6-2",
+          "side": "short",
+          "entry": 3347.9576211453746,
+          "exit": 3356.4476651982377,
+          "sl": 3356.3876651982378,
+          "tp": 3339.6475770925113,
+          "initialSl": 3356.3876651982378,
+          "initialTp": 3339.6475770925113,
+          "meta": null,
+          "size": 11.862334214734716,
+          "entryIndex": 6,
+          "exitIndex": 8,
+          "entryT": 1700000360000,
+          "exitT": 1700000480000,
+          "points": -8.49004405286314,
+          "pnl": -100.83036339503077,
+          "reason": "sl",
+          "tag": "FORWARD-SMOKE-2-BEARISH"
+        }
+      ],
+      "openPositions": [
+        {
+          "id": "position-8-3",
+          "side": "long",
+          "entry": 3356.888193832599,
+          "size": 11.83142050015139,
+          "sl": 3348.4361233480176,
+          "tp": 3365.2202643171804,
+          "initialSl": 3348.4361233480176,
+          "initialTp": 3365.2202643171804,
+          "meta": null,
+          "executionCalendar": null,
+          "adverseStopGaps": false,
+          "entryIndex": 8,
+          "entryT": 1700000480000,
+          "tag": "FORWARD-SMOKE-2-BULLISH",
+          "gapAwareStop": false
+        }
+      ]
+    }
+  ]
+}

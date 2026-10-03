@@ -21,6 +21,16 @@ func main() {
 		}
 		return string(out)
 	}))
+	js.Global().Set("engineRunForwardSmoke", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 1 || args[0].Type() != js.TypeString {
+			return `{"error":"expected forward smoke request JSON"}`
+		}
+		out, err := runForwardSmokeJSON(args[0].String())
+		if err != nil {
+			out, _ = json.Marshal(map[string]string{"error": err.Error()})
+		}
+		return string(out)
+	}))
 	js.Global().Set("engineRunInteractiveFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return string(runInteractive("", ""))
