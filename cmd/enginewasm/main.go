@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	native "github.com/spik3r/heisentick-strat/engine"
 )
 
 func main() {
@@ -42,6 +44,25 @@ func main() {
 		out, err := runForwardSmokeJSON(string(raw))
 		if err != nil {
 			panic(err)
+		}
+		fmt.Println(string(out))
+		return
+	}
+	if len(os.Args) == 3 && os.Args[1] == "--authored-vp-asia-london-wide" {
+		raw, err := os.ReadFile(os.Args[2])
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		result, err := native.RunAuthoredVPAsiaLondonWideInteractive(raw)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		out, err := json.Marshal(result)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
 		fmt.Println(string(out))
 		return

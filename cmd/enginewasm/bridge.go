@@ -35,6 +35,9 @@ type interactiveFailure struct {
 // runInteractive returns a structured v1 response for both successes and
 // failures. Native and browser callers consume the same bytes.
 func runInteractive(raw, source string) []byte {
+	if authoredVPWideFixtureID(raw) {
+		return runAuthoredVPWideInteractive(raw, source)
+	}
 	result, err := native.RunInteractiveFixture([]byte(raw), source)
 	if err == nil {
 		out, marshalErr := json.Marshal(result)

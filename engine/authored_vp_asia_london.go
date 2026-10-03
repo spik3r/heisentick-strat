@@ -22,33 +22,43 @@ const authoredVPAsiaLondonWideID = "vpAsiaLondonSweepContinuationFiveMinuteWideA
 // London-close rules; the active variant owns the percentile and edge-distance
 // filters. The frozen oracle in testdata records both source hashes.
 func RunAuthoredVPAsiaLondonWide(bars []marketdata.Bar, symbol, timeframe string, costs Costs) (RunResult, error) {
-	if symbol != "XAUUSD" || timeframe != "5m" {
-		return RunResult{}, fmt.Errorf("%s supports XAUUSD 5m only, got %s %s", AuthoredVPAsiaLondonWideVersion, symbol, timeframe)
+	b, fixture, err := runAuthoredVPAsiaLondonWide(bars, symbol, timeframe, costs)
+	if err != nil {
+		return RunResult{}, err
 	}
-	if costs.FillOn != "" && costs.FillOn != "close" {
-		return RunResult{}, fmt.Errorf("%s requires close fills", AuthoredVPAsiaLondonWideVersion)
+	return checkedResultEnvelope(fixture, b.trades)
+}
+
+func runAuthoredVPAsiaLondonWide(bars []marketdata.Bar, symbol, timeframe string, costs Costs) (*broker, RunFixture, error) {
+	if symbol != "XAUUSD" || timeframe != "5m" {
+		return nil, RunFixture{}, fmt.Errorf("%s supports XAUUSD 5m only, got %s %s", AuthoredVPAsiaLondonWideVersion, symbol, timeframe)
+	}
+	if costs.FillOn != "close" {
+		return nil, RunFixture{}, fmt.Errorf("%s requires close fills", AuthoredVPAsiaLondonWideVersion)
 	}
 	if len(bars) == 0 {
-		return RunResult{}, errors.New("VP Asia-London wide strategy requires bars")
+		return nil, RunFixture{}, errors.New("VP Asia-London wide strategy requires bars")
 	}
-	if !isFinite(costs.FeePerUnit) || !isFinite(costs.Slippage) || !isFinite(costs.SlippageBps) || costs.FeePerUnit < 0 || costs.Slippage < 0 || costs.SlippageBps < 0 {
-		return RunResult{}, errors.New("VP Asia-London wide strategy requires finite non-negative costs")
+	if !isFinite(costs.FeePerUnit) || !isFinite(costs.Slippage) || !isFinite(costs.SlippageBps) || !isFinite(costs.StartEquity) || costs.FeePerUnit < 0 || costs.Slippage < 0 || costs.SlippageBps < 0 || costs.StartEquity <= 0 {
+		return nil, RunFixture{}, errors.New("VP Asia-London wide strategy requires finite non-negative execution costs and positive start equity")
 	}
 	series := marketdata.SeriesFromBars(bars)
 	if err := validateSeriesValues("VP Asia-London wide", series); err != nil {
-		return RunResult{}, err
+		return nil, RunFixture{}, err
 	}
 	for i, bar := range bars {
 		if !isFinite(bar.V) || bar.V < 0 || bar.H < math.Max(bar.O, bar.C) || bar.L > math.Min(bar.O, bar.C) || bar.H < bar.L {
-			return RunResult{}, fmt.Errorf("VP Asia-London wide invalid OHLCV at bar %d", i)
+			return nil, RunFixture{}, fmt.Errorf("VP Asia-London wide invalid OHLCV at bar %d", i)
 		}
 		if i > 0 && !(bar.T > bars[i-1].T) {
-			return RunResult{}, fmt.Errorf("VP Asia-London wide timestamps must increase at bar %d", i)
+			return nil, RunFixture{}, fmt.Errorf("VP Asia-London wide timestamps must increase at bar %d", i)
 		}
 	}
 	fixture := RunFixture{Case: AuthoredVPAsiaLondonWideVersion, StrategyID: authoredVPAsiaLondonWideID, Symbol: symbol, Timeframe: timeframe, RangeMethod: "zone", Costs: costs.normalized()}
-	var b broker
+	b := &broker{}
 	b.reset(series, contextcols.Columns{}, nil, nil, nil, flagParams{}, fixture, nil)
+	b.equityCurve = make([]float64, series.Len())
+	b.cashCurve = make([]float64, series.Len())
 	var state AsiaLondonSweepState
 	params := AsiaLondonSweepParams{
 		TickSize: 0.1, RowsLayout: "number_of_rows", SessionRows: 24, ValueAreaPercent: 70,
@@ -62,13 +72,16 @@ func RunAuthoredVPAsiaLondonWide(bars []marketdata.Bar, symbol, timeframe string
 		hour := utcHourOfDay(bar.T)
 		if b.hasPosition && hour >= params.LondonEndHour {
 			b.closePosition(bar.C, i, ReasonRule, "london-close")
+			b.markToMarket(i)
 			continue
 		}
 		if b.hasPosition && hour >= params.LondonStartHour && hour < params.LondonEndHour {
+			b.markToMarket(i)
 			continue
 		}
 		signal := state.Process(bar, params)
 		if signal == nil {
+			b.markToMarket(i)
 			continue
 		}
 		s := sideLong
@@ -89,12 +102,13 @@ func RunAuthoredVPAsiaLondonWide(bars []marketdata.Bar, symbol, timeframe string
 				"tradeStartHour": 7, "tradeEndHour": 16, "rMultiple": 0.5, "stopBufferRange": 0.35,
 			},
 		}, i)
+		b.markToMarket(i)
 	}
 	if b.hasPosition {
 		b.closePosition(series.C[series.Len()-1], series.Len()-1, ReasonEndOfTest, "")
 	}
 	if len(b.trades) == 0 {
-		return RunResult{}, fmt.Errorf("%s produced no trades; parity is unproven for this input", AuthoredVPAsiaLondonWideVersion)
+		return nil, RunFixture{}, fmt.Errorf("%s produced no trades; parity is unproven for this input", AuthoredVPAsiaLondonWideVersion)
 	}
-	return checkedResultEnvelope(fixture, b.trades)
+	return b, fixture, nil
 }

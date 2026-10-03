@@ -22,6 +22,12 @@ type authoredVPWholeFixture struct {
 	Bars              []marketdata.Bar          `json:"bars"`
 	Expected          []authoredVPExpectedTrade `json:"expected"`
 	ExpectedRealistic []authoredVPExpectedTrade `json:"expectedRealistic"`
+	ExpectedWithFees  struct {
+		Trades            []authoredVPExpectedTrade `json:"trades"`
+		EquityCurve       []float64                 `json:"equityCurve"`
+		ClosedEquityCurve []float64                 `json:"closedEquityCurve"`
+		CashEndEquity     float64                   `json:"cashEndEquity"`
+	} `json:"expectedWithFees"`
 }
 
 type authoredVPExpectedTrade struct {
@@ -64,7 +70,9 @@ func TestAuthoredVPAsiaLondonWideMatchesWholeJavaScriptStrategy(t *testing.T) {
 		costs    Costs
 		expected []authoredVPExpectedTrade
 	}{
-		{"raw", Costs{}, fixture.Expected}, {"realistic", Costs{Slippage: 0.06}, fixture.ExpectedRealistic},
+		{"raw", Costs{FillOn: "close", StartEquity: 10_000}, fixture.Expected},
+		{"realistic", Costs{FillOn: "close", StartEquity: 10_000, Slippage: 0.06}, fixture.ExpectedRealistic},
+		{"with fees", Costs{FillOn: "close", StartEquity: 10_000, Slippage: 0.06, FeePerUnit: 0.25}, fixture.ExpectedWithFees.Trades},
 	} {
 		t.Run(testCase.name, func(t *testing.T) { compareAuthoredVPWholeStrategy(t, fixture.Bars, testCase.costs, testCase.expected) })
 	}
@@ -129,11 +137,12 @@ func TestAuthoredVPAsiaLondonWideFailsClosed(t *testing.T) {
 		costs             Costs
 		message           string
 	}{
-		{"other symbol", fixture.Bars, "XAGUSD", "5m", Costs{}, "XAUUSD 5m only"},
-		{"other timeframe", fixture.Bars, "XAUUSD", "1m", Costs{}, "XAUUSD 5m only"},
-		{"unsupported fill", fixture.Bars, "XAUUSD", "5m", Costs{FillOn: "open"}, "requires close fills"},
-		{"empty", nil, "XAUUSD", "5m", Costs{}, "requires bars"},
-		{"insufficient warmup", fixture.Bars[:4], "XAUUSD", "5m", Costs{}, "produced no trades"},
+		{"other symbol", fixture.Bars, "XAGUSD", "5m", Costs{FillOn: "close", StartEquity: 10_000}, "XAUUSD 5m only"},
+		{"other timeframe", fixture.Bars, "XAUUSD", "1m", Costs{FillOn: "close", StartEquity: 10_000}, "XAUUSD 5m only"},
+		{"unsupported fill", fixture.Bars, "XAUUSD", "5m", Costs{FillOn: "open", StartEquity: 10_000}, "requires close fills"},
+		{"zero start equity", fixture.Bars, "XAUUSD", "5m", Costs{FillOn: "close"}, "positive start equity"},
+		{"empty", nil, "XAUUSD", "5m", Costs{FillOn: "close", StartEquity: 10_000}, "requires bars"},
+		{"insufficient warmup", fixture.Bars[:4], "XAUUSD", "5m", Costs{FillOn: "close", StartEquity: 10_000}, "produced no trades"},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			result, err := RunAuthoredVPAsiaLondonWide(tc.bars, tc.symbol, tc.timeframe, tc.costs)

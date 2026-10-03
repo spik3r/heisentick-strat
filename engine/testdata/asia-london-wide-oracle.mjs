@@ -38,9 +38,23 @@ if (expected.length !== 3) throw new Error(`expected 3 oracle trades, got ${expe
 const realisticResult = runBacktest(bars, strategy, { symbol: 'XAUUSD', timeframe: '5m', ctx: Array(bars.length).fill(null), ...costs, slippage: 0.06 });
 const expectedRealistic = realisticResult.trades.map(({ side, entry, exit, sl, tp, size, entryIndex, exitIndex, entryT, exitT, reason, tag, pnl, meta }) => ({ side, entry, exit, sl, tp, size, entryIndex, exitIndex, entryT, exitT, reason, tag, pnl, meta }));
 if (expectedRealistic.length !== expected.length) throw new Error('realistic cost changed oracle trade count');
+const feeCosts = { ...costs, slippage: 0.06, feePerUnit: 0.25 };
+const feeResult = runBacktest(bars, strategy, { symbol: 'XAUUSD', timeframe: '5m', ctx: Array(bars.length).fill(null), ...feeCosts });
+const feeTrades = feeResult.trades.map(({ side, entry, exit, sl, tp, size, entryIndex, exitIndex, entryT, exitT, reason, tag, pnl, meta }) => ({ side, entry, exit, sl, tp, size, entryIndex, exitIndex, entryT, exitT, reason, tag, pnl, meta }));
+if (feeTrades.length !== expected.length) throw new Error('fees changed oracle trade count');
+const closedEquityCurve = bars.map((_, i) => feeCosts.startEquity + feeTrades.reduce((cash, trade) => cash - (trade.entryIndex <= i ? feeCosts.feePerUnit * trade.size : 0) + (trade.exitIndex <= i ? trade.pnl : 0), 0));
+const cashEndEquity = closedEquityCurve.at(-1);
 const fixture = {
   schema: 'heisentick-strat/authored-js-vp-asia-london-wide/v1',
   provenance: { strategyId: strategy.id, strategySha256: hash(strategyPath), inheritedBaseSha256: hash(basePath), engineSha256: hash(enginePath), generator: 'engine/testdata/asia-london-wide-oracle.mjs', costs },
   bars, expected, expectedRealistic,
+  expectedWithFees: { trades: feeTrades, equityCurve: feeResult.equityCurve, closedEquityCurve, cashEndEquity },
 };
 writeFileSync(resolve(import.meta.dirname, 'asia-london-wide-whole-strategy.json'), JSON.stringify(fixture, null, 2) + '\n');
+const input = {
+  schema: 'dsl-conformance-run-fixture-v1', case: 'authored-vp-asia-london-wide-fees-v1',
+  strategyId: strategy.id, symbol: 'XAUUSD', timeframe: '5m', rangeMethod: 'zone',
+  costs: { ...feeCosts, slippageBps: 0 },
+  bars: bars.map(({ t, o, h, l, c, v }) => [t, o, h, l, c, v]),
+};
+writeFileSync(resolve(import.meta.dirname, 'asia-london-wide-interactive.fixture.json'), JSON.stringify(input, null, 2) + '\n');

@@ -23,10 +23,15 @@ version and is named here.
   archived base strategy's frozen Asia tick-volume profile, outside-value-area
   prediction, first-raid continuation, range-percentile and edge-distance
   filters, range-based brackets and London close. Whole-strategy JavaScript
-  oracle fixtures cover raw and realistic costs. The Go result names the
+  oracle fixtures cover raw, realistic and fee-bearing costs, full trades, and
+  per-bar marked/closed equity. The dedicated interactive result is exposed
+  through the native `enginewasm --authored-vp-asia-london-wide` command and
+  the active-ID WASM interactive bridge; a same-build parity check covers
+  both. The Go result names the
   London close as `reason: rule, rule: london-close` instead of the app's legacy
   `reason: london-close`; price and PnL semantics are unchanged. Unsupported
-  routes, fills and zero-trade parity runs return errors.
+  routes, fills, zero start equity, incomplete costs and zero-trade parity runs
+  return errors.
 - Add a separate versioned interactive result for the qualified ordinary SMA
   Golden Cross and Dual EMA Resumption chart routes, with per-bar marked/closed equity, post-liquidation cash,
   fee-inclusive stats, running-peak drawdown and structured unsupported-route
