@@ -37,6 +37,11 @@ captured only after its source bar completes and assigned to the first later
 chart decision close. Marks come from the scheduled chart broker's actual
 fills, fees and exits. Source-HTF input fails closed.
 
+The `dslEditorStrategy` ID is admitted only with the exact app
+`DEFAULT_SPEC_TEXT` snapshot (SHA-256
+`329a0750d4f5770209d8a92951b36e7b02206ef3c72e4f3e35e396104efa1521`). A
+modified editor source is an unsupported route under that ID; a changed
+template requires a new producer qualification and consumer capability gate.
 Each input series has a 200,000-row local ceiling; the browser admission gate
 may set a smaller per-route ceiling until its worker resource budget is measured.
 Ordinary and special chart execution records
@@ -63,9 +68,9 @@ percentages have `1e-10`; trade `meta.signalAtr` has `1e-12`. All other values
 must match exactly. The admitted 5000-bar Dual EMA fixture has only 13 marked
 equity differences, at most `1.82e-12`; local browser 4h samples found bounded
 drift in the listed fields for Dual EMA (22,180 differences, maximum `7.28e-12`)
-and named-level sweep (28 differences, maximum `3.64e-12`). The two admitted
-opening-range fixtures have one and nine derived-value differences respectively,
-each at most `1.82e-12`. Compare decoded values under these explicit
+and named-level sweep (28 differences, maximum `3.64e-12`). The active
+XAUUSD Forward ORB canary matches exactly; the BTCUSD Forward ORB canary has
+11 derived-value differences, each at most `9.1e-13`. Compare decoded values under these explicit
 rules and retain separate native/WASM response hashes, rather than claiming
 byte identity across targets.
 

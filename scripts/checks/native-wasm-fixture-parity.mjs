@@ -183,18 +183,23 @@ try {
   assert.equal(wasmNamed.skipReasonSchema, 'dsl-skip-reasons-v1');
   const ordinaryProfiles = [
     ['dslSmaGoldenCrossXauusdOneMinuteCanary', 'deployed-dsl-sma-golden-cross-xauusd-one-minute-canary'],
-    ['dslCloseVwapMagnet', 'family-vwap-extension-fade'],
+    ['dslCloseVwapExtremeMagnetDefensive', 'deployed-dsl-close-vwap-extreme-magnet-defensive'],
     ['dslGoldNamedLevelFlagBodyHalfAtr', 'family-named-level-flag', 'dslGoldNamedLevelFlagBodyHalfAtr'],
     ['dslGoldNamedLevelFlagBodyHalfAtrRiskFloor12', 'family-named-level-flag', 'dslGoldNamedLevelFlagBodyHalfAtrRiskFloor12'],
-    ['dslOpeningRangeBreakoutXauusd', 'family-opening-range-breakout'],
-    ['dslOpeningRangeBreakoutFxFifteen', 'deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m', 'dslOpeningRangeBreakoutFxFifteen'],
+    ['dslForwardTesterCanaryOrbXauusdFiveMinute', 'research-dsl-failed-breakout-five-minute-early-breakeven', 'dslForwardTesterCanaryOrbXauusdFiveMinute'],
+    ['dslForwardTesterCanaryOrbBtcusdFiveMinute', 'research-dsl-failed-breakout-five-minute-early-breakeven', 'dslForwardTesterCanaryOrbBtcusdFiveMinute'],
     ['dslEditorStrategy', 'research-dsl-failed-breakout-five-minute-early-breakeven', 'dslEditorStrategy'],
   ];
   const ordinaryResults = [];
   for (const [id, fixtureName, snapshotName] of ordinaryProfiles) {
     const fixture = JSON.parse(readFileSync(join(root, 'conformance/run', `${fixtureName}.fixture.json`), 'utf8'));
+    fixture.strategyId = id;
     if (fixtureName === 'family-named-level-flag') {
       fixture.bars.unshift([Date.UTC(2023, 11, 25), 100, 110, 95, 100, 1]);
+    }
+    if (id === 'dslForwardTesterCanaryOrbBtcusdFiveMinute') {
+      fixture.symbol = 'BTCUSD';
+      fixture.bars.forEach((bar) => { bar[0] += 5 * 24 * 60 * 60 * 1000; });
     }
     const fixtureRaw = JSON.stringify(fixture);
     const profileSource = readFileSync(snapshotName
@@ -210,6 +215,7 @@ try {
     assert.equal(wasmProfile.schema, 'dsl-interactive-run-v1', `${id}: unexpected schema`);
     assert.ok(wasmProfile.run.tradeCount > 0, `${id}: no whole-strategy trades`);
     assert.equal(wasmProfile.equityCurve.length, fixture.bars.length, `${id}: incomplete marks`);
+    assert.equal(wasmProfile.run.strategyId, id, `${id}: wrong strategy ID`);
     assert.deepStrictEqual(wasmProfile.skips, nativeProfile.skips, `${id}: skip mismatch`);
     assert.ok(numericDiffs.every((difference) => {
       const tolerance = dualRoundingFields.find(([rule]) => rule.test(difference.path))?.[1];
@@ -218,6 +224,24 @@ try {
     ordinaryResults.push({ id, tradeCount: wasmProfile.run.tradeCount, numericDifferences: numericDiffs.length,
       maxNumericAbsDrift: Math.max(0, ...numericDiffs.map((difference) => difference.abs)),
       nativeOutputSha256: sha256(JSON.stringify(nativeProfile)), wasmOutputSha256: sha256(JSON.stringify(wasmProfile)) });
+    const wrongRouteRaw = JSON.stringify({ ...fixture, timeframe: '1d' });
+    writeFileSync(interactiveFixturePath, wrongRouteRaw);
+    const nativeWrongRoute = JSON.parse(command(nativePath,
+      ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+    const wasmWrongRoute = JSON.parse(globalThis.engineRunInteractiveFixture(wrongRouteRaw, profileSource));
+    assert.deepStrictEqual(wasmWrongRoute, nativeWrongRoute, `${id}: route rejection parity`);
+    assert.equal(wasmWrongRoute.error.code, 'unsupported-route', `${id}: wrong timeframe was admitted`);
+    writeFileSync(interactiveFixturePath, fixtureRaw);
+    if (id === 'dslEditorStrategy') {
+      const mutated = profileSource.replace('by 0.1 ATR', 'by 0.2 ATR');
+      assert.notEqual(mutated, profileSource, 'editor mutation did not alter the source');
+      writeFileSync(interactiveSourcePath, mutated);
+      const nativeRejected = JSON.parse(command(nativePath,
+        ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+      const wasmRejected = JSON.parse(globalThis.engineRunInteractiveFixture(fixtureRaw, mutated));
+      assert.deepStrictEqual(wasmRejected, nativeRejected, 'mutated editor rejection parity');
+      assert.equal(wasmRejected.error.code, 'unsupported-route', 'mutated editor inherited default capability');
+    }
   }
   const unsupported = { ...interactiveFixture, sourceBars: [interactiveFixture.bars[0]] };
   const unsupportedRaw = JSON.stringify(unsupported);

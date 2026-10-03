@@ -11,8 +11,9 @@ version and is named here.
   trade and equity fixtures. This new producer capability requires a minor
   release and explicit consumer adoption; existing Strat results are unchanged.
 - Admit the remaining ordinary interactive DSL profiles: one-minute SMA,
-  VWAP extension fade, named-level flag, opening-range breakout, and the
-  editor's failed-breakout default. Bind supplied HTF bars to their declared
+  defensive VWAP extension fade, named-level flag, both Forward ORB canaries,
+  and the editor's failed-breakout default. Pin the editor default source so
+  mutations under its ID fail closed. Bind supplied HTF bars to their declared
   timeframe, retain measured Go gate diagnostics and per-bar accounting, and
   test exact whole-strategy sources on nonzero-trade fixtures. This expands
   interactive engine semantics and requires the next minor release before

@@ -15,6 +15,12 @@ import (
 
 const InteractiveRunSchema = "dsl-interactive-run-v1"
 
+// dslEditorStrategy is an app-owned mutable editor surface. Only the exact
+// DEFAULT_SPEC_TEXT snapshot reviewed for this profile may use that ID here;
+// edits require a newly qualified source/profile instead of inheriting the
+// default's interactive capability.
+const editorDefaultSourceSHA256 = "329a0750d4f5770209d8a92951b36e7b02206ef3c72e4f3e35e396104efa1521"
+
 var ErrInteractiveUnsupported = errors.New("interactive route unsupported")
 
 // InteractiveProvenance identifies the exact inputs interpreted by this run.
@@ -100,6 +106,12 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	fixture, err := DecodeRunFixture(raw)
 	if err != nil {
 		return InteractiveRunResult{}, err
+	}
+	if fixture.StrategyID == "dslEditorStrategy" {
+		sum := sha256.Sum256([]byte(source))
+		if hex.EncodeToString(sum[:]) != editorDefaultSourceSHA256 {
+			return InteractiveRunResult{}, fmt.Errorf("%w: editor default source has changed", ErrInteractiveUnsupported)
+		}
 	}
 	parsed, err := dsl.Parse(source)
 	if err != nil {
