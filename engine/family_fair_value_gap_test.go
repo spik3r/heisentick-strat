@@ -216,6 +216,24 @@ func TestFairValueGapSweepGateRequiresSweptPivot(t *testing.T) {
 	}
 }
 
+func TestFairValueGapSweepAllowsEqualRightPoolButRequiresStrictRaid(t *testing.T) {
+	bar := func(i int, low float64) marketdata.Bar {
+		return marketdata.Bar{T: float64(i), O: 3, H: 4, L: low, C: 3, V: 1}
+	}
+	prefix := []marketdata.Bar{bar(0, 3), bar(1, 1), bar(2, 1)}
+	b := broker{series: marketdata.SeriesFromBars(prefix)}
+	if fvgSwept(&b, sideLong, 1, 4, 1) || fvgSwept(&b, sideLong, 2, 4, 1) {
+		t.Fatal("equal low at confirmation is not a strict sweep")
+	}
+	b.series = marketdata.SeriesFromBars(append(append([]marketdata.Bar{}, prefix...), bar(3, 0.5)))
+	if fvgSwept(&b, sideLong, 2, 4, 1) {
+		t.Fatal("future raid changed the prior displacement decision")
+	}
+	if !fvgSwept(&b, sideLong, 3, 4, 1) {
+		t.Fatal("right-side equal low should preserve the older pivot for a later strict raid")
+	}
+}
+
 func TestFairValueGapFamilyIsImplementedAndConfigured(t *testing.T) {
 	parsed, err := dsl.Parse(`dsl v7
 setup { type: fvg gap minimum 0.1 ATR displacement minimum 0.8 ATR retest within 8 candles entry at midpoint }
