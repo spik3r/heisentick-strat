@@ -133,8 +133,18 @@ try {
     assert.deepStrictEqual(a, b, `${path} nonnumeric value`);
   }
   compareDual(wasmDual, nativeDual);
-  assert.ok(dualNumericDiffs.every((difference) => /^equityCurve\[\d+\]$/.test(difference.path)
-    && difference.abs <= 1e-9), 'dual EMA changed a decision, stat, closed mark, or marked equity beyond 1e-9');
+  const dualRoundingFields = [
+    [/^(?:equityCurve|closedEquityCurve)\[\d+\]$/, 1e-9],
+    [/^run\.trades\[\d+\]\.pnl$/, 1e-9],
+    [/^run\.trades\[\d+\]\.points$/, 1e-10],
+    [/^run\.trades\[\d+\]\.meta\.signalAtr$/, 1e-12],
+    [/^stats\.(?:tradeNet|maxDD|maxClosedDD)$/, 1e-9],
+    [/^stats\.(?:maxDDpct|maxClosedDDpct)$/, 1e-10],
+  ];
+  assert.ok(dualNumericDiffs.every((difference) => {
+    const tolerance = dualRoundingFields.find(([rule]) => rule.test(difference.path))?.[1];
+    return tolerance !== undefined && Number.isFinite(difference.abs) && difference.abs <= tolerance;
+  }), 'dual EMA changed a decision, unlisted field, or derived value beyond its explicit budget');
   assert.equal(wasmDual.schema, 'dsl-interactive-run-v1');
   assert.ok(wasmDual.run.tradeCount > 0);
   assert.equal(wasmDual.equityCurve.length, 5000);

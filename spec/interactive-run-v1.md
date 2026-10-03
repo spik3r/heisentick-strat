@@ -18,11 +18,18 @@ are explicit `unsupported-route` errors. The ordinary broker loop supplies
 the marks. Scheduled source-entry, special-family and windowed loops are not
 represented by this version. Adding a family with skip diagnostics requires
 an explicit contract extension rather than silently emitting an empty map.
-Same-build native/WASM parity requires identical trades, statistics, closed
-equity and error fields. Dual EMA marked equity may differ by at most `1e-9`
-absolute across Go targets due to floating-point rounding; the admitted
-5000-bar fixture currently differs at 13 marks by at most `1.82e-12`. Browser
-replay comparisons must apply this tolerance only to `equityCurve` values.
+Same-build native/WASM parity requires identical structure, route and input
+metadata, skip reasons, trade count/order, trade decisions and fill fields,
+categorical states, counts, final cash and errors. For Dual EMA only, explicit
+derived-number paths may have cross-target floating-point rounding: per-bar
+marked and closed equity, trade `pnl`, and statistic `tradeNet`, `maxDD`, and
+`maxClosedDD` have `1e-9` absolute budgets; trade `points` and the two drawdown
+percentages have `1e-10`; trade `meta.signalAtr` has `1e-12`. All other values
+must match exactly. The admitted 5000-bar fixture has only 13 marked equity
+differences, at most `1.82e-12`; the local browser 4h sample also found tiny
+differences in the listed fields. Compare decoded values under these explicit
+rules and retain separate native/WASM response hashes, rather than claiming
+byte identity across targets.
 
 ## Success envelope
 
