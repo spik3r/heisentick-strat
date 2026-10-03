@@ -4,6 +4,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/spik3r/heisentick-strat/marketdata"
 	"github.com/spik3r/heisentick-strat/testsupport"
@@ -153,6 +154,44 @@ func TestRunnerHTFProjectionGapIsUnavailable(t *testing.T) {
 	idx := 3
 	if trend[idx] != htfUnavailable {
 		t.Fatalf("gapped 25:45 primary = %d, want htfUnavailable", trend[idx])
+	}
+}
+
+// A future HTF open cannot make an earlier intraday source gap look like a
+// scheduled weekend closure. The Friday decisions must be prefix invariant.
+func TestRunnerHTFFutureWeekendOpenDoesNotChangeFridayProjection(t *testing.T) {
+	hour := func(day int, hour int) float64 {
+		return float64(time.Date(2026, time.October, day, hour, 0, 0, 0, time.UTC).UnixMilli())
+	}
+	bar := func(at float64) marketdata.Bar {
+		return marketdata.Bar{T: at, O: 100, H: 102, L: 99, C: 101, V: 1}
+	}
+	primary := marketdata.SeriesFromBars([]marketdata.Bar{
+		bar(hour(2, 11)), bar(hour(2, 11) + htfQuarter),
+	})
+	prefix := []marketdata.Bar{bar(hour(2, 8)), bar(hour(2, 9))}
+	prefix[0].C = 100 // make the completed close delta positive for legacy bias
+	withFuture := append(append([]marketdata.Bar{}, prefix...), bar(hour(5, 0)))
+	for name, bars := range map[string][]marketdata.Bar{"prefix": prefix, "future Monday bar": withFuture} {
+		series := marketdata.SeriesFromBars(bars)
+		for mode, trend := range map[string][]int8{
+			"direction":   computeHTFTrend(primary, series),
+			"legacy bias": computeHTFLegacyBiasTrend(primary, series, 1, 0.1),
+		} {
+			for i, got := range trend {
+				if got != htfUnavailable {
+					t.Errorf("%s %s Friday primary[%d] trend = %d, want unavailable", name, mode, i, got)
+				}
+			}
+		}
+	}
+	// The same Friday close may be reused on Monday once the decision itself
+	// lies after the scheduled weekend closure.
+	monday := marketdata.SeriesFromBars([]marketdata.Bar{
+		bar(hour(5, 0)), bar(hour(5, 0) + htfQuarter),
+	})
+	if got := computeHTFTrend(monday, marketdata.SeriesFromBars(withFuture)); got[0] != trendUp {
+		t.Errorf("Monday completed projection = %d, want prior Friday up candle", got[0])
 	}
 }
 

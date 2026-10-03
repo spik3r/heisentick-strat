@@ -353,12 +353,9 @@ func computeHTFTrend(series marketdata.Series, htf marketdata.Series) []int8 {
 		projClose := htf.T[p] + htfDur
 		if decision-projClose >= htfDur {
 			// Stale projection: unavailable only for a genuine intraday hole. A
-			// hole spanning a weekend closure is legitimate; reuse completed bar.
-			holeEnd := decision
-			if p+1 < htf.Len() {
-				holeEnd = htf.T[p+1]
-			}
-			if !spansWeekendClosure(projClose, holeEnd) {
+			// hole already spanning a weekend closure may reuse the completed
+			// bar. A future HTF open cannot change this decision retroactively.
+			if !spansWeekendClosure(projClose, decision) {
 				continue
 			}
 		}
@@ -412,11 +409,7 @@ func computeHTFLegacyBiasTrend(series marketdata.Series, htf marketdata.Series, 
 		}
 		projClose := htf.T[p] + htfDur
 		if decision-projClose >= htfDur {
-			holeEnd := decision
-			if p+1 < htf.Len() {
-				holeEnd = htf.T[p+1]
-			}
-			if !spansWeekendClosure(projClose, holeEnd) {
+			if !spansWeekendClosure(projClose, decision) {
 				continue
 			}
 		}
