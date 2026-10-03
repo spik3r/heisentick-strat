@@ -88,7 +88,7 @@ func TestSMAGoldenCrossQueuesFixedSizeNextOpenTradesWithoutBrackets(t *testing.T
 
 	trades := b.run()
 	for index, want := range map[int]float64{3: 10000, 4: 9997.9, 5: 9994.9, 6: 10000.8} {
-		if math.Abs(b.equityCurve[index]-want) > 1e-9 {
+		if math.IsNaN(b.equityCurve[index]) || math.IsInf(b.equityCurve[index], 0) || math.Abs(b.equityCurve[index]-want) > 1e-9 {
 			t.Fatalf("marked equity[%d] = %.12f, want %.12f", index, b.equityCurve[index], want)
 		}
 	}
