@@ -182,10 +182,14 @@ func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfi
 	return out, nil
 }
 
-// RunInteractiveDraftFixture reparses exact source and rechecks capability at
-// execution. No preflight token can authorize a different source or route.
-func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult, error) {
-	var zero InteractiveRunResult
+type preparedInteractiveDraft struct {
+	fixture RunFixture
+	parsed  dsl.ParseResult
+}
+
+// Both finalized and prefix operations recheck the exact input in Go.
+func prepareInteractiveDraftFixture(raw []byte, source string) (preparedInteractiveDraft, error) {
+	var zero preparedInteractiveDraft
 	fields, err := draftObject(raw, map[string]bool{"schema": true, "case": true, "strategyId": true,
 		"symbol": true, "timeframe": true, "rangeMethod": true, "costs": true, "bars": true, "calculationSource": true})
 	if err != nil {
@@ -241,6 +245,16 @@ func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult
 	}
 	if !adjacent {
 		return zero, fmt.Errorf("%w: draft cadence cannot be verified from only gapped bars", ErrInteractiveUnsupported)
+	}
+	return preparedInteractiveDraft{fixture: fixture, parsed: parsed}, nil
+}
+
+// RunInteractiveDraftFixture reparses exact source and rechecks capability at
+// execution. No preflight token can authorize a different source or route.
+func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult, error) {
+	var zero InteractiveRunResult
+	if _, err := prepareInteractiveDraftFixture(raw, source); err != nil {
+		return zero, err
 	}
 	result, err := runInteractiveFixture(raw, source, false, true)
 	if err != nil {

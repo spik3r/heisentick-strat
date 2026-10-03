@@ -22,3 +22,13 @@ func TestInteractiveDraftTransportFailures(t *testing.T) {
 		}
 	}
 }
+
+func TestInteractiveDraftPrefixTransportFailure(t *testing.T) {
+	var result map[string]any
+	if err := json.Unmarshal(runInteractiveDraftPrefix("", ""), &result); err != nil {
+		t.Fatal(err)
+	}
+	if result["schema"] != "dsl-interactive-draft-prefix-v1" || result["error"].(map[string]any)["code"] != "invalid-request" {
+		t.Fatal("prefix failure contract changed")
+	}
+}
