@@ -149,6 +149,17 @@ v1 counts. Missing FVG setups, invalid geometry, cooldown and unfilled limits
 are outside this metric. Consumers must understand this schema before
 displaying source skips as chart diagnostics.
 
+For the versioned VP NY handoff adapter, `skipDiagnostics` is `measured` and
+`skipReasonSchema` is `dsl-skip-reasons-v2`. It retains the v1 chart-bar gate
+codes and adds `filter.vp_ny_unresolved_raid`. That code records an attempted
+entry vetoed by the Go-owned handoff filter after the ordinary market,
+seasonality, candle-quality, day-theme, and entry-distance checks have passed.
+The counting unit remains one flat chart bar: only the first instrumented
+gate failure or handoff veto is counted on that bar. Earlier failed gates
+prevent the VP filter from being reached. Missing setups, non-vetoed bars,
+and other uninstrumented filters do not add a count. Consumers should display
+the v2 vocabulary explicitly; it does not revise historical v1 counts.
+
 | Priority | Reason codes | Meaning |
 | --- | --- | --- |
 | 1 | `gate.utc_window`, `gate.session_window` | Bar outside the configured UTC or local session/segment trade window. |
