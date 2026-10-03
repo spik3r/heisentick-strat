@@ -1,7 +1,7 @@
 # Local mutable DSL interactive v1
 
-This unreleased opt-in contract admits mutable SMA Golden Cross and Dual EMA
-Resumption source without a catalog source-hash whitelist. Other families and
+This unreleased opt-in contract admits mutable SMA Golden Cross, Dual EMA
+Resumption and a fixed Failed Breakout construct with mutable risk, without a catalog source-hash whitelist. Other families and
 constructs require further qualification. It does not change historical
 `dsl.Parse`, the frozen `dslEditorStrategy` source or conformance goldens.
 
@@ -19,11 +19,54 @@ strategy execution or market-data inference.
 Source uses draft-specific `dsl.ParseStrict`: exactly one `dsl v7`, setup type
 and nonempty complete `slices` declaration; exact long-only side syntax; finite
 decimal period/risk tokens without ignored suffixes; no unresolved parser
-errors or warnings. Existing SMA/Dual family audits own the admitted phrases.
+errors or warnings. Family-specific audits own the admitted phrases.
 Unknown setup types and multiple types fail instead of retaining a default.
 HTF, source/entry timeframe, microstructure/morphology, approach, grade and
 other unaudited directives are refused. This narrower source profile does not
 claim support for all ordinary-family directives or rewrite older syntax.
+
+## Fixed Failed Breakout source subset
+
+Failed Breakout requires exactly one of each execution declaration below. Only
+USD risk is editable; `range method zone` asserts the qualified range algorithm.
+Strategy name and description are optional metadata. Use braced sections with
+one complete phrase per physical line, or one phrase in a complete inline
+section. Blank lines and `#` comments are allowed. Duplicate sections or
+assignments, empty/unknown sections, nested/unclosed braces, discarded inline
+prefixes and trailing content are refused. `riskUsd N` is an alias for the same
+risk assignment; it cannot appear together with `risk N USD`. N must be a finite
+positive decimal without suffixes or exponent notation.
+
+```dsl
+dsl v7
+strategy "Fixed Failed Breakout" {
+  description "Existing Go setup; mutable USD risk only."
+}
+market conditions { slices(XAUUSD 5m) }
+setup { type: failed breakout }
+filters {
+  side long only
+  range method zone
+}
+execution { risk 200 USD }
+```
+
+This subset retains the existing Go defaults: range active within eight bars,
+PDH/PDL/WH/WL priority with 1.5 ATR proximity, range-low sweep by 0.1 ATR and
+reclaim within three bars, three-bar approach, existing bullish pin/engulf/outside
+trigger, recent three-bar extreme stop plus 0.25 ATR with maximum 1.5 ATR,
+opposite range-edge target/minimum 0.6R/fallback 1R, breakeven at 0.75R plus
+0.02 ATR, three-bar cooldown and daily edge-price deduplication. Asia/London/NY
+session gates, ranging/choppy classification with the existing ER <= 0.55
+escape, and maximum movement ER 0.8 remain active. These are fixed Go behaviors,
+not newly configurable phrases. Custom sweep/approach/trigger/levels/day gates,
+stops/targets/management/grades/partials/limit entries and auxiliary timeframes
+are all refused. Historical ordinary sources are unchanged.
+
+Failed Breakout accepts **raw calculation only**, enforced in inspection and
+execution. SMA/Dual HA qualification does not authorize this family's range
+and level dependencies. This is additive capability in unreleased local v1;
+release adoption still follows the producer semantic-version/review policy.
 
 `RunInteractiveDraftFixture` / native `--interactive-draft` / WASM
 `engineRunInteractiveDraftFixture` consume only `schema`, `case`, `strategyId`,

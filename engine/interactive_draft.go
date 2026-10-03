@@ -111,10 +111,10 @@ func draftSourceProfile(source, symbol, timeframe string) (dsl.ParseResult, stri
 		return zero, "", fmt.Errorf("%w: draft microstructure filters are not implemented", ErrInteractiveUnsupported)
 	}
 	family := setupTypeFromAny(cfg["setupType"])
-	if (family != string(dsl.FamilySMAGoldenCross) && family != string(dsl.FamilyDualEMAResumption)) ||
+	if (family != string(dsl.FamilySMAGoldenCross) && family != string(dsl.FamilyDualEMAResumption) && family != string(dsl.FamilyFailedBreakout)) ||
 		stringValue(mapValue(cfg, "htf"), "mode", "off") != "off" || sourceTimeframeFromConfig(cfg) != "" ||
 		stringValue(cfg, "entryTf", "current") != "current" {
-		return zero, "", fmt.Errorf("%w: draft v1 admits audited SMA or Dual EMA chart-only syntax without HTF or source/entry timeframe", ErrInteractiveUnsupported)
+		return zero, "", fmt.Errorf("%w: draft v1 admits audited SMA, Dual EMA or fixed Failed Breakout chart-only syntax without HTF or source/entry timeframe", ErrInteractiveUnsupported)
 	}
 	if !compiledRouteAllowed(cfg, symbol, timeframe) {
 		return zero, "", fmt.Errorf("%w: draft is off-route", ErrInteractiveUnsupported)
@@ -130,6 +130,13 @@ func draftSourceProfile(source, symbol, timeframe string) (dsl.ParseResult, stri
 		return zero, "", fmt.Errorf("%w: %v", ErrInteractiveUnsupported, err)
 	}
 	return parsed, rangeMethod, nil
+}
+
+func draftFamilyCalculation(parsed dsl.ParseResult, calculationSource string) error {
+	if setupTypeFromAny(parsed.Config["setupType"]) == string(dsl.FamilyFailedBreakout) && calculationSource != "raw" {
+		return fmt.Errorf("%w: fixed Failed Breakout draft requires raw calculation source", ErrInteractiveUnsupported)
+	}
+	return nil
 }
 
 // InspectInteractiveSource supplies Go-owned parsing and data requirements for
@@ -163,6 +170,9 @@ func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfi
 	if err != nil {
 		return zero, err
 	}
+	if err := draftFamilyCalculation(parsed, calculationSource); err != nil {
+		return zero, err
+	}
 	requestSum, sourceSum := sha256.Sum256(raw), sha256.Sum256([]byte(source))
 	out := InteractiveSourceProfile{Schema: InteractiveSourceProfileSchema, Parse: parsed,
 		Provenance: InteractiveProvenance{FixtureSHA256: hex.EncodeToString(requestSum[:]), SourceSHA256: hex.EncodeToString(sourceSum[:])}}
@@ -181,7 +191,8 @@ func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult
 	if err != nil {
 		return zero, err
 	}
-	if _, err := draftCalculationSource(fields); err != nil {
+	calculationSource, err := draftCalculationSource(fields)
+	if err != nil {
 		return zero, err
 	}
 	for _, key := range []string{"schema", "case", "strategyId", "symbol", "timeframe", "rangeMethod"} {
@@ -206,8 +217,11 @@ func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult
 	if fixture.StrategyID != InteractiveDraftStrategyID {
 		return zero, fmt.Errorf("%w: draft requires its reserved strategy identity", ErrInteractiveUnsupported)
 	}
-	_, rangeMethod, err := draftSourceProfile(source, fixture.Symbol, fixture.Timeframe)
+	parsed, rangeMethod, err := draftSourceProfile(source, fixture.Symbol, fixture.Timeframe)
 	if err != nil {
+		return zero, err
+	}
+	if err := draftFamilyCalculation(parsed, calculationSource); err != nil {
 		return zero, err
 	}
 	if fixture.RangeMethod != rangeMethod || len(fixture.Bars) == 0 || len(fixture.Bars) > interactiveDraftMaxBars {

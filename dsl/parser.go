@@ -104,6 +104,7 @@ func (p *parser) parse() {
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+	p.validateStrictFailedBreakout()
 	p.validateRMVSourceTimeframe()
 	if p.strictSource && (p.strictTypes != 1 || p.strictVersions != 1 || p.strictSlices != 1) {
 		p.errorAt(nil, nil, "strict source requires exactly one dsl v7, setup type and slices declaration", "")
