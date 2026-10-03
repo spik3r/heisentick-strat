@@ -8,16 +8,28 @@ does not change the `dsl-conformance-trades-v1` result or its goldens.
 
 ## Admitted route
 
-Only chart-timeframe `smaGoldenCross`, `dualEmaResumption`, and
-`namedLevelSweep` DSL strategies on their declared routes, with HTF mode off
-and no source or HTF bar inputs, are admitted. Interactive execution records
+Chart-timeframe `smaGoldenCross`, `dualEmaResumption`, and `namedLevelSweep`
+with HTF mode off and no source or HTF bars are admitted. The ordinary
+`sessionBreakHold` family is also admitted either with HTF mode off and no
+HTF bars, or with `notAgainst`, a declared higher timeframe and nonempty HTF
+bars. Its HTF decisions use the latest completed higher-timeframe bar; missing
+intraday periods fail closed, while the existing scheduled weekend-closure
+rule may reuse the last completed bar. The interactive boundary binds both timestamp series to
+their declared fixed timeframes: ordered, grid-aligned rows, whole-period
+gaps, and at least one adjacent period in each series. Ambiguous fully sparse
+inputs and mislabeled HTF bars are rejected because the shared projection
+currently infers duration from observed spacing. Every admitted strategy must
+also pass its declared route.
+No explicit source-timeframe or source-entry route is admitted yet.
+Interactive execution records
 evaluated Go entry-gate rejections with `skips: {}` (or positive counts),
 `skipDiagnostics: "measured"`, and `skipReasonSchema: "dsl-skip-reasons-v1"`.
 An empty map means no instrumented gate rejected a bar; it does not mean
 every bar formed a setup. The existing fixture costs
 (`fillOn`, slippage, basis-point slippage, fee per unit, positive start equity)
-are supported. Route mismatch, HTF mode, source/HTF input, and every other setup family
-are explicit `unsupported-route` errors. The ordinary broker loop supplies
+are supported. Route mismatch, unqualified HTF mode/input combinations,
+source-timeframe input, and every other setup family are explicit
+`unsupported-route` errors. The ordinary broker loop supplies
 the marks. Scheduled source-entry, special-family and windowed loops are not
 represented by this version. The recorded reasons cover instrumented market
 gates, not every evaluated entry filter, missing setup, cooldown, or failed

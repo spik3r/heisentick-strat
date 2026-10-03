@@ -76,6 +76,96 @@ func TestInteractiveDualEMAUsesOrdinaryTradeAndEquityPath(t *testing.T) {
 	}
 }
 
+func TestInteractiveSessionBreakHoldUsesCompletedHTFAndOrdinaryAccounting(t *testing.T) {
+	base := filepath.Join("..", "conformance", "run", "research-dsl-session-bias-seasonal-convergence-quality-fifteen")
+	raw, err := os.ReadFile(base + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(base + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := RunInteractiveFixture(raw, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture, err := DecodeRunFixture(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := RunFixtureCase(fixture, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(result.Run, legacy) || result.Run.TradeCount == 0 ||
+		len(result.EquityCurve) != len(fixture.Bars) ||
+		len(result.ClosedEquity) != len(fixture.Bars) || result.SkipDiagnostics != "measured" {
+		t.Fatalf("session break-hold interactive contract disagrees with fixture run: %+v", result)
+	}
+	var prefixFixture RunFixture
+	if err := json.Unmarshal(raw, &prefixFixture); err != nil {
+		t.Fatal(err)
+	}
+	prefixFixture.RawBars = prefixFixture.RawBars[:len(prefixFixture.RawBars)/2]
+	lastChartOpen := prefixFixture.RawBars[len(prefixFixture.RawBars)-1][0]
+	htfCount := 0
+	for htfCount < len(prefixFixture.RawHTFBars) && prefixFixture.RawHTFBars[htfCount][0] <= lastChartOpen {
+		htfCount++
+	}
+	prefixFixture.RawHTFBars = prefixFixture.RawHTFBars[:htfCount]
+	prefixRaw, err := json.Marshal(prefixFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	prefix, err := RunInteractiveFixture(prefixRaw, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(prefix.EquityCurve, result.EquityCurve[:len(prefix.EquityCurve)]) ||
+		!reflect.DeepEqual(prefix.ClosedEquity, result.ClosedEquity[:len(prefix.ClosedEquity)]) {
+		t.Fatal("future chart/HTF suffix changed prior equity marks")
+	}
+	prefixFixture.RawHTFBars = nil
+	withoutHTF, err := json.Marshal(prefixFixture)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := RunInteractiveFixture(withoutHTF, string(source)); !errors.Is(err, ErrInteractiveUnsupported) {
+		t.Fatalf("missing HTF bars = %v, want unsupported", err)
+	}
+	expectUnsupported := func(name string, bad RunFixture) {
+		t.Helper()
+		encoded, err := json.Marshal(bad)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if _, err := RunInteractiveFixture(encoded, string(source)); !errors.Is(err, ErrInteractiveUnsupported) {
+			t.Fatalf("%s = %v, want unsupported", name, err)
+		}
+	}
+	var full RunFixture
+	if err := json.Unmarshal(raw, &full); err != nil {
+		t.Fatal(err)
+	}
+	wrongLabel := full
+	wrongLabel.HigherTimeframe = "nonsense"
+	expectUnsupported("unbound higher-timeframe label", wrongLabel)
+	wrongRows := full
+	wrongRows.RawHTFBars = full.RawBars
+	expectUnsupported("15m rows labeled 1h", wrongRows)
+	sparse := full
+	sparse.RawHTFBars = nil
+	for i := 0; i < len(full.RawHTFBars); i += 2 {
+		sparse.RawHTFBars = append(sparse.RawHTFBars, full.RawHTFBars[i])
+	}
+	expectUnsupported("only gapped HTF bars", sparse)
+	outOfOrder := full
+	outOfOrder.RawHTFBars = append([][]float64(nil), full.RawHTFBars...)
+	outOfOrder.RawHTFBars[1] = full.RawHTFBars[0]
+	expectUnsupported("duplicate HTF timestamp", outOfOrder)
+}
+
 func TestInteractiveNamedLevelSweepPreservesFixtureTradesAndCausalMarks(t *testing.T) {
 	base := filepath.Join("..", "conformance", "run", "research-dsl-daily-snd-retest-xauusd-4h")
 	raw, err := os.ReadFile(base + ".fixture.json")

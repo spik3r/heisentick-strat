@@ -77,7 +77,8 @@ type InteractiveRunResult struct {
 // per-bar marks or skip diagnostics.
 func interactiveOrdinaryFamily(setupType string) bool {
 	switch setupType {
-	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption), string(dsl.FamilyNamedLevelSweep):
+	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption),
+		string(dsl.FamilyNamedLevelSweep), string(dsl.FamilySessionBreakHold):
 		return true
 	default:
 		return false
@@ -85,7 +86,8 @@ func interactiveOrdinaryFamily(setupType string) bool {
 }
 
 // RunInteractiveFixture admits only ordinary chart-timeframe families with
-// complete per-bar marks and producer-owned market-gate diagnostics.
+// complete per-bar marks and producer-owned market-gate diagnostics. The
+// session break-hold HTF profile consumes completed higher-timeframe bars.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
@@ -101,12 +103,21 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	if len(parsed.Errors) != 0 {
 		return InteractiveRunResult{}, fmt.Errorf("DSL parse errors: %v", parsed.Errors)
 	}
-	if !interactiveOrdinaryFamily(setupTypeFromAny(parsed.Config["setupType"])) ||
-		stringValue(mapValue(parsed.Config, "htf"), "mode", "off") != "off" ||
+	setupType := setupTypeFromAny(parsed.Config["setupType"])
+	htfMode := stringValue(mapValue(parsed.Config, "htf"), "mode", "off")
+	chartOnly := htfMode == "off" && len(fixture.HTFBars) == 0
+	htfBreakHold := setupType == string(dsl.FamilySessionBreakHold) &&
+		htfMode == "notAgainst" && fixture.HigherTimeframe != "" && len(fixture.HTFBars) != 0
+	if !interactiveOrdinaryFamily(setupType) || !(chartOnly || htfBreakHold) ||
 		sourceTimeframeFromConfig(parsed.Config) != "" ||
 		fixture.SourceTimeframe != "" || len(fixture.SourceBars) != 0 ||
-		len(fixture.HTFBars) != 0 || len(fixture.SourceHTFBars) != 0 {
-		return InteractiveRunResult{}, fmt.Errorf("%w: only qualified chart-timeframe ordinary families without source/HTF inputs are admitted", ErrInteractiveUnsupported)
+		len(fixture.SourceHTFBars) != 0 {
+		return InteractiveRunResult{}, fmt.Errorf("%w: only qualified chart-timeframe ordinary and session break-hold HTF profiles are admitted", ErrInteractiveUnsupported)
+	}
+	if htfBreakHold {
+		if err := validateInteractiveHTFBinding(fixture); err != nil {
+			return InteractiveRunResult{}, err
+		}
 	}
 	costs := fixture.Costs.normalized()
 	if costs.StartEquity <= 0 || costs.FeePerUnit < 0 || costs.Slippage < 0 || costs.SlippageBps < 0 ||
@@ -117,7 +128,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	}
 	series := marketdata.SeriesFromBars(fixture.Bars)
 	request := RunRequest{
-		Config: parsed.Config, Series: series, StrategyID: fixture.StrategyID,
+		Config: parsed.Config, Series: series, HTFSeries: marketdata.SeriesFromBars(fixture.HTFBars), StrategyID: fixture.StrategyID,
 		Symbol: fixture.Symbol, Timeframe: fixture.Timeframe,
 		HigherTimeframe: fixture.HigherTimeframe, RangeMethod: fixture.RangeMethod,
 		Costs: costs,
@@ -168,6 +179,68 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		Skips: prepared.broker.skipCounts, SkipDiagnostics: "measured",
 		SkipReasonSchema: InteractiveSkipReasonSchema, Stats: stats,
 	}, nil
+}
+
+// The shared projection currently infers duration from the smallest positive
+// spacing. Bind both supplied series to their declared fixed timeframes before
+// using that projection, so sparse or mislabeled rows cannot change decisions.
+func validateInteractiveHTFBinding(fixture RunFixture) error {
+	chartDuration, chartOK := interactiveFixedDuration(fixture.Timeframe)
+	htfDuration, htfOK := interactiveFixedDuration(fixture.HigherTimeframe)
+	if !chartOK || !htfOK || htfDuration <= chartDuration || math.Mod(htfDuration, chartDuration) != 0 {
+		return fmt.Errorf("%w: invalid chart/higher-timeframe pair", ErrInteractiveUnsupported)
+	}
+	for _, input := range []struct {
+		name     string
+		bars     []marketdata.Bar
+		duration float64
+	}{
+		{name: "chart", bars: fixture.Bars, duration: chartDuration},
+		{name: "higher-timeframe", bars: fixture.HTFBars, duration: htfDuration},
+	} {
+		if len(input.bars) < 2 {
+			return fmt.Errorf("%w: %s needs two fixed-timeframe bars", ErrInteractiveUnsupported, input.name)
+		}
+		foundAdjacent := false
+		for i, bar := range input.bars {
+			if math.Mod(bar.T, input.duration) != 0 {
+				return fmt.Errorf("%w: %s bar %d is off the declared timeframe grid", ErrInteractiveUnsupported, input.name, i)
+			}
+			if i == 0 {
+				continue
+			}
+			gap := bar.T - input.bars[i-1].T
+			if gap <= 0 || math.Mod(gap, input.duration) != 0 {
+				return fmt.Errorf("%w: %s bar %d is not ordered on the declared timeframe grid", ErrInteractiveUnsupported, input.name, i)
+			}
+			foundAdjacent = foundAdjacent || gap == input.duration
+		}
+		if !foundAdjacent {
+			return fmt.Errorf("%w: %s duration cannot be inferred from only gapped bars", ErrInteractiveUnsupported, input.name)
+		}
+	}
+	return nil
+}
+
+func interactiveFixedDuration(timeframe string) (float64, bool) {
+	switch timeframe {
+	case "1m":
+		return 60_000, true
+	case "5m":
+		return 300_000, true
+	case "15m":
+		return 900_000, true
+	case "30m":
+		return 1_800_000, true
+	case "1h":
+		return 3_600_000, true
+	case "4h":
+		return 14_400_000, true
+	case "1d":
+		return 86_400_000, true
+	default:
+		return 0, false
+	}
 }
 
 // The conformance decoder intentionally accepts metadata and legacy defaults.
