@@ -85,9 +85,14 @@ func interactiveOrdinaryFamily(setupType string) bool {
 	}
 }
 
-// RunInteractiveFixture admits only ordinary chart-timeframe families with
-// complete per-bar marks and producer-owned market-gate diagnostics. The
-// session break-hold HTF profile consumes completed higher-timeframe bars.
+func interactiveSpecialFamily(setupType string) bool {
+	return setupType == string(dsl.FamilyDailyFlushFailure) || setupType == string(dsl.FamilyWeekendExtremeFade)
+}
+
+const InteractiveSourceSkipReasonSchema = "dsl-skip-reasons-source-v1"
+
+// RunInteractiveFixture admits routes with complete marks and explicitly
+// identified market-gate skip units. Source FVG counts source decision bars.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
@@ -106,16 +111,35 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	setupType := setupTypeFromAny(parsed.Config["setupType"])
 	htfMode := stringValue(mapValue(parsed.Config, "htf"), "mode", "off")
 	chartOnly := htfMode == "off" && len(fixture.HTFBars) == 0
+	sourceFVG := setupType == string(dsl.FamilyFairValueGap) && fixture.Symbol == "XAUUSD" &&
+		fixture.Timeframe == "5m" && fixture.SourceTimeframe == "1h" &&
+		sourceTimeframeFromConfig(parsed.Config) == "1h" &&
+		stringValue(parsed.Config, "entryTf", "current") == "5m" &&
+		len(fixture.SourceBars) != 0 && len(fixture.SourceHTFBars) == 0 && chartOnly
+	special := interactiveSpecialFamily(setupType) && chartOnly && len(fixture.Bars) > 0 &&
+		sourceTimeframeFromConfig(parsed.Config) == "" && fixture.SourceTimeframe == "" &&
+		len(fixture.SourceBars) == 0 && len(fixture.SourceHTFBars) == 0 &&
+		(setupType == string(dsl.FamilyDailyFlushFailure) && fixture.Timeframe == "1d" ||
+			setupType == string(dsl.FamilyWeekendExtremeFade) && fixture.Timeframe == "4h")
 	htfBreakHold := setupType == string(dsl.FamilySessionBreakHold) &&
 		htfMode == "notAgainst" && fixture.HigherTimeframe != "" && len(fixture.HTFBars) != 0
-	if !interactiveOrdinaryFamily(setupType) || !(chartOnly || htfBreakHold) ||
-		sourceTimeframeFromConfig(parsed.Config) != "" ||
-		fixture.SourceTimeframe != "" || len(fixture.SourceBars) != 0 ||
-		len(fixture.SourceHTFBars) != 0 {
-		return InteractiveRunResult{}, fmt.Errorf("%w: only qualified chart-timeframe ordinary and session break-hold HTF profiles are admitted", ErrInteractiveUnsupported)
+	ordinary := interactiveOrdinaryFamily(setupType) && (chartOnly || htfBreakHold) &&
+		sourceTimeframeFromConfig(parsed.Config) == "" && fixture.SourceTimeframe == "" &&
+		len(fixture.SourceBars) == 0 && len(fixture.SourceHTFBars) == 0
+	if !ordinary && !special && !sourceFVG {
+		return InteractiveRunResult{}, fmt.Errorf("%w: route/family has no qualified interactive execution profile", ErrInteractiveUnsupported)
+	}
+	if special && setupType == string(dsl.FamilyDailyFlushFailure) &&
+		!isWeekdayTimestamp(fixture.Bars[len(fixture.Bars)-1].T) {
+		return InteractiveRunResult{}, fmt.Errorf("%w: daily flush failure needs a retained weekday final bar", ErrInteractiveUnsupported)
 	}
 	if htfBreakHold {
 		if err := validateInteractiveHTFBinding(fixture); err != nil {
+			return InteractiveRunResult{}, err
+		}
+	}
+	if sourceFVG {
+		if err := validateInteractiveSourceBinding(fixture); err != nil {
 			return InteractiveRunResult{}, err
 		}
 	}
@@ -131,30 +155,60 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		Config: parsed.Config, Series: series, HTFSeries: marketdata.SeriesFromBars(fixture.HTFBars), StrategyID: fixture.StrategyID,
 		Symbol: fixture.Symbol, Timeframe: fixture.Timeframe,
 		HigherTimeframe: fixture.HigherTimeframe, RangeMethod: fixture.RangeMethod,
-		Costs: costs,
+		SourceTimeframe: fixture.SourceTimeframe, SourceSeries: marketdata.SeriesFromBars(fixture.SourceBars),
+		SourceHTFSeries: marketdata.SeriesFromBars(fixture.SourceHTFBars),
+		Costs:           costs,
 	}
 	prepared, err := PrepareRun(request)
 	if err != nil {
 		return InteractiveRunResult{}, err
 	}
-	if prepared.offRoute || prepared.c5 || prepared.windowed {
-		return InteractiveRunResult{}, fmt.Errorf("%w: route is off-route, scheduled, or windowed", ErrInteractiveUnsupported)
+	if prepared.offRoute || prepared.windowed || !RouteAllowed(parsed.Config, fixture.Symbol, fixture.Timeframe, series) {
+		return InteractiveRunResult{}, fmt.Errorf("%w: route is off-route or windowed", ErrInteractiveUnsupported)
 	}
-	prepared.broker.reset(prepared.series, prepared.cols, prepared.htfTrend,
-		prepared.ema, prepared.emaSlope, prepared.params, prepared.fixture, nil)
-	prepared.broker.equityCurve = make([]float64, series.Len())
-	prepared.broker.cashCurve = make([]float64, series.Len())
-	prepared.broker.skipCounts = make(map[string]int)
-	trades := prepared.broker.run()
-	if prepared.broker.hasPosition {
-		return InteractiveRunResult{}, errors.New("interactive run ended with an open position")
+	var trades []Trade
+	var equityCurve, cashCurve []float64
+	var skips map[string]int
+	skipDiagnostics, skipSchema := "measured", InteractiveSkipReasonSchema
+	var cashEnd float64
+	if sourceFVG {
+		if !prepared.c5 {
+			return InteractiveRunResult{}, fmt.Errorf("%w: source FVG did not bind the scheduled source-entry route", ErrInteractiveUnsupported)
+		}
+		trades, equityCurve, cashCurve, skips, cashEnd, err = runSourceEntrySeriesObserved(
+			prepared.fixture, parsed.Config, prepared.params, series, prepared.c5Source, prepared.c5SourceHTF,
+			prepared.execution, false, true)
+		if err != nil {
+			return InteractiveRunResult{}, err
+		}
+		skipDiagnostics, skipSchema = "measured-source", InteractiveSourceSkipReasonSchema
+	} else {
+		if prepared.c5 {
+			return InteractiveRunResult{}, fmt.Errorf("%w: unexpected scheduled route", ErrInteractiveUnsupported)
+		}
+		if special && setupType == string(dsl.FamilyWeekendExtremeFade) && WeekendExtremeFadeUnreachable(parsed.Config, series) {
+			return InteractiveRunResult{}, fmt.Errorf("%w: weekend-extreme setup cannot execute without a contiguous weekend", ErrInteractiveUnsupported)
+		}
+		prepared.broker.reset(prepared.series, prepared.cols, prepared.htfTrend,
+			prepared.ema, prepared.emaSlope, prepared.params, prepared.fixture, nil)
+		prepared.broker.equityCurve = make([]float64, series.Len())
+		prepared.broker.cashCurve = make([]float64, series.Len())
+		prepared.broker.skipCounts = make(map[string]int)
+		trades = prepared.broker.run()
+		if prepared.broker.hasPosition {
+			return InteractiveRunResult{}, errors.New("interactive run ended with an open position")
+		}
+		equityCurve, cashCurve, skips = prepared.broker.equityCurve, prepared.broker.cashCurve, prepared.broker.skipCounts
+		cashEnd = costs.StartEquity + prepared.broker.realized
 	}
 	run, err := checkedResultEnvelope(fixture, trades)
 	if err != nil {
 		return InteractiveRunResult{}, err
 	}
-	cashEnd := costs.StartEquity + prepared.broker.realized
-	for _, curve := range [][]float64{prepared.broker.equityCurve, prepared.broker.cashCurve} {
+	if len(equityCurve) != series.Len() || len(cashCurve) != series.Len() || skips == nil {
+		return InteractiveRunResult{}, errors.New("interactive execution did not record every chart mark and its skip profile")
+	}
+	for _, curve := range [][]float64{equityCurve, cashCurve} {
 		for i, value := range curve {
 			if !isFiniteDerivedOutput(value) {
 				return InteractiveRunResult{}, fmt.Errorf("interactive equity[%d] contains non-finite value", i)
@@ -164,7 +218,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 	if !isFiniteDerivedOutput(cashEnd) {
 		return InteractiveRunResult{}, errors.New("interactive cash end equity contains non-finite value")
 	}
-	stats, tradeNetPnL := interactiveStats(trades, prepared.broker.equityCurve, prepared.broker.cashCurve, costs, cashEnd)
+	stats, tradeNetPnL := interactiveStats(trades, equityCurve, cashCurve, costs, cashEnd)
 	if err := validateInteractiveStats(stats); err != nil {
 		return InteractiveRunResult{}, err
 	}
@@ -174,10 +228,10 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		Provenance: InteractiveProvenance{
 			FixtureSHA256: hex.EncodeToString(fixtureHash[:]), SourceSHA256: hex.EncodeToString(sourceHash[:]),
 		},
-		Run: run, TradeNetPnL: tradeNetPnL, EquityCurve: prepared.broker.equityCurve,
-		ClosedEquity: prepared.broker.cashCurve, CashEndEquity: cashEnd,
-		Skips: prepared.broker.skipCounts, SkipDiagnostics: "measured",
-		SkipReasonSchema: InteractiveSkipReasonSchema, Stats: stats,
+		Run: run, TradeNetPnL: tradeNetPnL, EquityCurve: equityCurve,
+		ClosedEquity: cashCurve, CashEndEquity: cashEnd,
+		Skips: skips, SkipDiagnostics: skipDiagnostics,
+		SkipReasonSchema: skipSchema, Stats: stats,
 	}, nil
 }
 
@@ -220,6 +274,15 @@ func validateInteractiveHTFBinding(fixture RunFixture) error {
 		}
 	}
 	return nil
+}
+
+// The source scheduler also infers period lengths from observed spacing. Bind
+// both legs before any captured source event can be assigned to a chart bar.
+func validateInteractiveSourceBinding(fixture RunFixture) error {
+	bound := fixture
+	bound.HigherTimeframe = fixture.SourceTimeframe
+	bound.HTFBars = fixture.SourceBars
+	return validateInteractiveHTFBinding(bound)
 }
 
 func interactiveFixedDuration(timeframe string) (float64, bool) {

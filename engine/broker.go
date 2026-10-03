@@ -385,6 +385,7 @@ func (b *broker) runScheduledWithFinalization(entries []ScheduledEntry, orders [
 		for _, captured := range byChart[i] {
 			b.dispatchCaptured(i, captured)
 		}
+		b.markToMarket(i)
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
 		}

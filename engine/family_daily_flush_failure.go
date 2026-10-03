@@ -59,79 +59,109 @@ func (b *broker) runDailyFlushFailure() []Trade {
 		if rawIndex > end {
 			break
 		}
-		// The retained ATR history above remains causal context, but a pending
-		// setup formed before the tradable window must not enter on its first
-		// bar. Reset execution state at the boundary while preserving that
-		// indicator history.
-		if rawIndex < start {
-			hasEntryPending = false
-			exitPending = false
-			continue
-		}
-		exitedThisBar := false
-		if exitPending && b.hasPosition {
-			b.closePosition(b.series.O[rawIndex], rawIndex, "time", "")
-			exitPending = false
-			exitedThisBar = true
-		}
-		if hasEntryPending && !b.hasPosition {
-			entry := b.series.O[rawIndex] + b.slippageAt(b.series.O[rawIndex])
-			risk := entry - pendingStop
-			riskATR := risk / pendingATR
-			if risk > 0 && riskATR >= b.params.MinStopATR && riskATR <= b.params.MaxStopATR {
-				b.openPosition(sideLong, b.series.O[rawIndex], order{
-					Side: sideLong, SL: pendingStop, TP: math.MaxFloat64,
-					RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-DFF",
-					NoTarget: true,
-					Meta: TradeMeta{
-						"setup":               "dailyFlushFailure",
-						"side":                "long",
-						"signalRetainedIndex": float64(retainedIndex - 1),
-						"entryRetainedIndex":  float64(retainedIndex),
-						"flushRangeAtr":       pendingFlushRangeATR,
-						"flushCloseLocation":  pendingFlushCloseLocation,
-					},
-				}, rawIndex)
-				survivedBars = 0
+		func() {
+			defer b.markToMarket(rawIndex)
+			// The retained ATR history above remains causal context, but a pending
+			// setup formed before the tradable window must not enter on its first
+			// bar. Reset execution state at the boundary while preserving that
+			// indicator history.
+			if rawIndex < start {
+				hasEntryPending = false
+				exitPending = false
+				return
 			}
-			hasEntryPending = false
-		}
-		if b.hasPosition {
-			if b.series.L[rawIndex] <= b.position.SL {
-				exit := math.Min(b.series.O[rawIndex], b.position.SL)
-				b.closePosition(exit, rawIndex, "sl", "")
+			exitedThisBar := false
+			if exitPending && b.hasPosition {
+				b.closePosition(b.series.O[rawIndex], rawIndex, "time", "")
 				exitPending = false
 				exitedThisBar = true
-			} else {
-				survivedBars++
-				if float64(survivedBars) >= b.params.MaxHoldBars {
-					exitPending = true
+			}
+			if hasEntryPending && !b.hasPosition {
+				entry := b.series.O[rawIndex] + b.slippageAt(b.series.O[rawIndex])
+				risk := entry - pendingStop
+				riskATR := risk / pendingATR
+				if risk > 0 && riskATR >= b.params.MinStopATR && riskATR <= b.params.MaxStopATR {
+					b.openPosition(sideLong, b.series.O[rawIndex], order{
+						Side: sideLong, SL: pendingStop, TP: math.MaxFloat64,
+						RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-DFF",
+						NoTarget: true,
+						Meta: TradeMeta{
+							"setup":               "dailyFlushFailure",
+							"side":                "long",
+							"signalRetainedIndex": float64(retainedIndex - 1),
+							"entryRetainedIndex":  float64(retainedIndex),
+							"flushRangeAtr":       pendingFlushRangeATR,
+							"flushCloseLocation":  pendingFlushCloseLocation,
+						},
+					}, rawIndex)
+					survivedBars = 0
+				}
+				hasEntryPending = false
+			}
+			if b.hasPosition {
+				if b.series.L[rawIndex] <= b.position.SL {
+					exit := math.Min(b.series.O[rawIndex], b.position.SL)
+					b.closePosition(exit, rawIndex, "sl", "")
+					exitPending = false
+					exitedThisBar = true
+				} else {
+					survivedBars++
+					if float64(survivedBars) >= b.params.MaxHoldBars {
+						exitPending = true
+					}
 				}
 			}
-		}
-		if b.hasPosition || hasEntryPending || exitPending || exitedThisBar ||
-			retainedIndex < b.params.DailyFlushFailure.ATRLength+2 || retainedIndex+1 >= len(retained) || !b.params.AllowLong {
-			continue
-		}
-		flushRaw := retained[retainedIndex-1]
-		flushRange := b.series.H[flushRaw] - b.series.L[flushRaw]
-		flushCloseLocation := 1.0
-		if flushRange > 0 {
-			flushCloseLocation = (b.series.C[flushRaw] - b.series.L[flushRaw]) / flushRange
-		}
-		isFlush := b.series.C[flushRaw] < b.series.O[flushRaw] &&
-			flushRange >= b.params.DailyFlushFailure.MinFlushRangeATR*atr[retainedIndex-1] &&
-			flushCloseLocation <= b.params.DailyFlushFailure.MaxFlushCloseLocation
-		failedExtension := b.series.L[rawIndex] < b.series.L[flushRaw] &&
-			b.series.C[rawIndex] > b.series.O[rawIndex] &&
-			b.series.C[rawIndex] > b.series.C[flushRaw]
-		if isFlush && failedExtension && b.rmvGateOK(rawIndex) {
-			hasEntryPending = true
-			pendingATR = atr[retainedIndex]
-			pendingFlushRangeATR = dailyFlushFailureDiagnosticNumber(flushRange / atr[retainedIndex-1])
-			pendingFlushCloseLocation = dailyFlushFailureDiagnosticNumber(flushCloseLocation)
-			pendingStop = math.Min(b.series.L[rawIndex], b.series.L[flushRaw]) +
-				-b.params.StopBufferATR*pendingATR
+			if b.hasPosition || hasEntryPending || exitPending || exitedThisBar ||
+				retainedIndex < b.params.DailyFlushFailure.ATRLength+2 || retainedIndex+1 >= len(retained) || !b.params.AllowLong {
+				return
+			}
+			flushRaw := retained[retainedIndex-1]
+			flushRange := b.series.H[flushRaw] - b.series.L[flushRaw]
+			flushCloseLocation := 1.0
+			if flushRange > 0 {
+				flushCloseLocation = (b.series.C[flushRaw] - b.series.L[flushRaw]) / flushRange
+			}
+			isFlush := b.series.C[flushRaw] < b.series.O[flushRaw] &&
+				flushRange >= b.params.DailyFlushFailure.MinFlushRangeATR*atr[retainedIndex-1] &&
+				flushCloseLocation <= b.params.DailyFlushFailure.MaxFlushCloseLocation
+			failedExtension := b.series.L[rawIndex] < b.series.L[flushRaw] &&
+				b.series.C[rawIndex] > b.series.O[rawIndex] &&
+				b.series.C[rawIndex] > b.series.C[flushRaw]
+			if isFlush && failedExtension {
+				if code := b.rmvRejectionCode(rawIndex); code != "" {
+					b.recordInteractiveSkip(rawIndex, code)
+					return
+				}
+				hasEntryPending = true
+				pendingATR = atr[retainedIndex]
+				pendingFlushRangeATR = dailyFlushFailureDiagnosticNumber(flushRange / atr[retainedIndex-1])
+				pendingFlushCloseLocation = dailyFlushFailureDiagnosticNumber(flushCloseLocation)
+				pendingStop = math.Min(b.series.L[rawIndex], b.series.L[flushRaw]) +
+					-b.params.StopBufferATR*pendingATR
+			}
+		}()
+	}
+	// Weekend bars are absent from this family's retained stream. Repeat the
+	// preceding retained mark for each omitted input row so they neither change
+	// position P&L nor manufacture an unobserved equity point.
+	if b.equityCurve != nil || b.cashCurve != nil {
+		lastEquity, lastCash := b.costs.StartEquity, b.costs.StartEquity
+		for i := 0; i <= end; i++ {
+			if isWeekdayTimestamp(b.series.T[i]) {
+				if b.equityCurve != nil {
+					lastEquity = b.equityCurve[i]
+				}
+				if b.cashCurve != nil {
+					lastCash = b.cashCurve[i]
+				}
+			} else {
+				if b.equityCurve != nil {
+					b.equityCurve[i] = lastEquity
+				}
+				if b.cashCurve != nil {
+					b.cashCurve[i] = lastCash
+				}
+			}
 		}
 	}
 	if end >= 0 && b.hasPosition {

@@ -20,20 +20,32 @@ gaps, and at least one adjacent period in each series. Ambiguous fully sparse
 inputs and mislabeled HTF bars are rejected because the shared projection
 currently infers duration from observed spacing. Every admitted strategy must
 also pass its declared route.
-No explicit source-timeframe or source-entry route is admitted yet.
+Two special chart profiles are admitted: `dailyFlushFailure` on 1d and
+`weekendExtremeFade` on 4h. The latter rejects a stream without a contiguous
+weekend followed by Monday 00:00 UTC, which cannot form its setup. Special
+loops record post-decision marks before final liquidation. Daily flush failure
+carries the preceding retained weekday mark across omitted weekend bars and
+requires a retained weekday final bar for its existing final liquidation.
+
+The XAUUSD `fairValueGap` source-entry profile is admitted for 1h source and
+5m entry bars, with HTF mode off and no source-HTF bars. Both inputs must be
+ordered, grid-aligned, and contain adjacent periods. A source setup is
+captured only after its source bar completes and assigned to the first later
+chart decision close. Marks come from the scheduled chart broker's actual
+fills, fees and exits. Source-HTF input fails closed.
+
 Each input series has a 200,000-row local ceiling; the browser admission gate
 may set a smaller per-route ceiling until its worker resource budget is measured.
-Interactive execution records
+Ordinary and special chart execution records
 evaluated Go entry-gate rejections with `skips: {}` (or positive counts),
 `skipDiagnostics: "measured"`, and `skipReasonSchema: "dsl-skip-reasons-v1"`.
 An empty map means no instrumented gate rejected a bar; it does not mean
 every bar formed a setup. The existing fixture costs
 (`fillOn`, slippage, basis-point slippage, fee per unit, positive start equity)
 are supported. Route mismatch, unqualified HTF mode/input combinations,
-source-timeframe input, and every other setup family are explicit
-`unsupported-route` errors. The ordinary broker loop supplies
-the marks. Scheduled source-entry, special-family and windowed loops are not
-represented by this version. The recorded reasons cover instrumented market
+unsupported source-timeframe input, and every other setup family are explicit
+`unsupported-route` errors. Ordinary, special and scheduled broker loops
+supply their own marks. Windowed loops remain unsupported. The recorded reasons cover instrumented market
 gates, not every evaluated entry filter, missing setup, cooldown, or failed
 geometry. Broader reason coverage remains a separate qualification gate.
 Same-build native/WASM parity requires identical structure, route and input
@@ -63,7 +75,7 @@ must not turn it into a successful empty run.
 
 ## Skip reason counting
 
-One count is the **first failed instrumented entry gate evaluated for one chart bar while
+For `dsl-skip-reasons-v1`, one count is the **first failed instrumented entry gate evaluated for one chart bar while
 the strategy is flat**, before any possible order from that bar. The Go broker
 short-circuits at that gate. Later gates on the same bar are not counted, and
 the same bar contributes at most one count. Position-management bars, warm-up,
@@ -76,6 +88,16 @@ after a long cross; `dualEmaResumption` currently has no evaluated market gate.
 Thus maps from different families must not be read as equal-denominator
 rejection rates. The code vocabulary and priority below are owned by Go, not
 by legacy JavaScript display strings.
+
+For source-entry FVG, `skipDiagnostics` is `measured-source` and
+`skipReasonSchema` is `dsl-skip-reasons-source-v1`. A count is the first failed
+instrumented gate on one completed **source decision bar** during setup capture.
+Source capture has no open position; a later chart position can prevent a
+captured order from executing. The same gate codes and priority apply, but
+the denominator is source bars and counts must not be compared to chart-bar
+v1 counts. Missing FVG setups, invalid geometry, cooldown and unfilled limits
+are outside this metric. Consumers must understand this schema before
+displaying source skips as chart diagnostics.
 
 | Priority | Reason codes | Meaning |
 | --- | --- | --- |

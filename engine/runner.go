@@ -96,13 +96,23 @@ func runSourceEntryFixture(fixture RunFixture, cfg dsl.Config, params flagParams
 }
 
 func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed bool) ([]Trade, error) {
+	trades, _, _, _, _, err := runSourceEntrySeriesObserved(fixture, cfg, params, chart, source, sourceHTF, execution, windowed, false)
+	return trades, err
+}
+
+// The observer records source-decision skips and chart-execution marks without
+// altering either leg's orders, fills, or final liquidation.
+func runSourceEntrySeriesObserved(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed, observe bool) ([]Trade, []float64, []float64, map[string]int, float64, error) {
 	if params.SetupType == string(dsl.FamilyDownShockRebound) {
 		var b broker
 		b.reset(chart, contextcols.Columns{}, nil, nil, nil, params, fixture, nil)
 		if windowed {
 			b.setExecutionWindow(execution)
 		}
-		return b.runDownShockRebound(), nil
+		if observe {
+			return nil, nil, nil, nil, 0, fmt.Errorf("%w: down-shock source-entry observation", ErrInteractiveUnsupported)
+		}
+		return b.runDownShockRebound(), nil, nil, nil, 0, nil
 	}
 	sourceFixture := fixture
 	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
@@ -113,6 +123,9 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 	sourceHTFTrend := computeHTFTrendForConfig(source, sourceHTF, cfg)
 	var sourceBroker broker
 	sourceBroker.reset(source, sourceCols, sourceHTFTrend, nil, nil, params, sourceFixture, nil)
+	if observe {
+		sourceBroker.skipCounts = make(map[string]int)
+	}
 	orders := sourceBroker.runCapturedSource()
 	indices := make([]int, len(orders))
 	for i, order := range orders {
@@ -123,11 +136,16 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 	chartHTFTrend := projectSourceInt8(chart, source, sourceHTFTrend)
 	var chartBroker broker
 	chartBroker.reset(chart, chartCols, chartHTFTrend, nil, nil, params, fixture, nil)
+	if observe {
+		chartBroker.equityCurve = make([]float64, chart.Len())
+		chartBroker.cashCurve = make([]float64, chart.Len())
+	}
 	if windowed {
 		chartBroker.setExecutionWindow(execution)
 	}
 	trades := chartBroker.runScheduled(entries, orders)
-	return trades, nil
+	return trades, chartBroker.equityCurve, chartBroker.cashCurve, sourceBroker.skipCounts,
+		chartBroker.costs.StartEquity + chartBroker.realized, nil
 }
 
 func implementedFamily(setupType string) bool {

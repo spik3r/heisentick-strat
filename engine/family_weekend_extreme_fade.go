@@ -49,61 +49,67 @@ func (b *broker) runWeekendExtremeFade() []Trade {
 		maxHold = 12
 	}
 	for i := b.executionStart(); i <= end; i++ {
-		if b.hasPosition && i > b.position.EntryIndex {
-			pos := b.position
-			if (pos.Side == sideLong && b.series.L[i] <= pos.SL) || (pos.Side == sideShort && b.series.H[i] >= pos.SL) {
-				b.closePosition(pos.SL, i, "sl", "")
-			} else if (!pos.NoTarget && pos.Side == sideLong && b.series.H[i] >= pos.TP) || (!pos.NoTarget && pos.Side == sideShort && b.series.L[i] <= pos.TP) {
-				b.closePosition(pos.TP, i, "tp", "")
-			} else if i-pos.EntryIndex >= maxHold {
-				b.closePosition(b.series.C[i], i, "time", "")
+		// Special setups retain their own decision ordering, but interactive
+		// marks use the same post-decision, pre-liquidation broker accounting.
+		func() {
+			defer b.markToMarket(i)
+			if b.hasPosition && i > b.position.EntryIndex {
+				pos := b.position
+				if (pos.Side == sideLong && b.series.L[i] <= pos.SL) || (pos.Side == sideShort && b.series.H[i] >= pos.SL) {
+					b.closePosition(pos.SL, i, "sl", "")
+				} else if (!pos.NoTarget && pos.Side == sideLong && b.series.H[i] >= pos.TP) || (!pos.NoTarget && pos.Side == sideShort && b.series.L[i] <= pos.TP) {
+					b.closePosition(pos.TP, i, "tp", "")
+				} else if i-pos.EntryIndex >= maxHold {
+					b.closePosition(b.series.C[i], i, "time", "")
+				}
 			}
-		}
-		if b.hasPosition || !isMondayOpenTimestamp(b.series.T[i]) || atrs[i] == 0 {
-			continue
-		}
-		start := i - 12
-		if start < 0 || !weekendBarsContiguous(b.series.T, start, i) {
-			continue
-		}
-		high, low := b.series.H[start], b.series.L[start]
-		for j := start + 1; j < i; j++ {
-			high = math.Max(high, b.series.H[j])
-			low = math.Min(low, b.series.L[j])
-		}
-		rangeSize := high - low
-		location := 0.5
-		if rangeSize > 0 {
-			location = (b.series.C[i-1] - low) / rangeSize
-		}
-		if rangeSize/atrs[i] > b.params.WeekendExtremeFade.MaxWeekendRangeATR {
-			continue
-		}
-		long := b.params.AllowLong && location <= b.params.WeekendExtremeFade.CloseExtremePct && b.series.C[i] > b.series.O[i]
-		short := b.params.AllowShort && location >= 1-b.params.WeekendExtremeFade.CloseExtremePct && b.series.C[i] < b.series.O[i]
-		if !long && !short {
-			continue
-		}
-		s := sideShort
-		if long {
-			s = sideLong
-		}
-		direction := float64(s)
-		entry := b.series.C[i]
-		atr := atrs[i]
-		if !b.rmvGateOK(i) {
-			continue
-		}
-		b.openPosition(s, entry, order{
-			Side: s, SL: entry - direction*b.params.WeekendExtremeFade.StopATR*atr,
-			TP:      entry + direction*b.params.WeekendExtremeFade.TargetATR*atr,
-			RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-WEF",
-			Meta: TradeMeta{
-				"setup": "weekendExtremeFade", "entryIndex": float64(i),
-				"weekendRangeAtr":      diagnosticNumber(rangeSize / atrs[i]),
-				"weekendCloseLocation": diagnosticNumber(location), "signalAtr": diagnosticNumber(atr),
-			},
-		}, i)
+			if b.hasPosition || !isMondayOpenTimestamp(b.series.T[i]) || atrs[i] == 0 {
+				return
+			}
+			start := i - 12
+			if start < 0 || !weekendBarsContiguous(b.series.T, start, i) {
+				return
+			}
+			high, low := b.series.H[start], b.series.L[start]
+			for j := start + 1; j < i; j++ {
+				high = math.Max(high, b.series.H[j])
+				low = math.Min(low, b.series.L[j])
+			}
+			rangeSize := high - low
+			location := 0.5
+			if rangeSize > 0 {
+				location = (b.series.C[i-1] - low) / rangeSize
+			}
+			if rangeSize/atrs[i] > b.params.WeekendExtremeFade.MaxWeekendRangeATR {
+				return
+			}
+			long := b.params.AllowLong && location <= b.params.WeekendExtremeFade.CloseExtremePct && b.series.C[i] > b.series.O[i]
+			short := b.params.AllowShort && location >= 1-b.params.WeekendExtremeFade.CloseExtremePct && b.series.C[i] < b.series.O[i]
+			if !long && !short {
+				return
+			}
+			s := sideShort
+			if long {
+				s = sideLong
+			}
+			direction := float64(s)
+			entry := b.series.C[i]
+			atr := atrs[i]
+			if code := b.rmvRejectionCode(i); code != "" {
+				b.recordInteractiveSkip(i, code)
+				return
+			}
+			b.openPosition(s, entry, order{
+				Side: s, SL: entry - direction*b.params.WeekendExtremeFade.StopATR*atr,
+				TP:      entry + direction*b.params.WeekendExtremeFade.TargetATR*atr,
+				RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-WEF",
+				Meta: TradeMeta{
+					"setup": "weekendExtremeFade", "entryIndex": float64(i),
+					"weekendRangeAtr":      diagnosticNumber(rangeSize / atrs[i]),
+					"weekendCloseLocation": diagnosticNumber(location), "signalAtr": diagnosticNumber(atr),
+				},
+			}, i)
+		}()
 	}
 	if b.hasPosition && end >= 0 {
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
