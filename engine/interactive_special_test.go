@@ -194,6 +194,25 @@ func TestInteractiveSourceFVGWholeStrategyParityAndCompletedSourcePrefix(t *test
 		!reflect.DeepEqual(prefix.ClosedEquity, full.ClosedEquity[:305]) {
 		t.Fatal("chart/source prefix changed earlier marks")
 	}
+	var extended RunFixture
+	if err := json.Unmarshal(raw, &extended); err != nil {
+		t.Fatal(err)
+	}
+	extended.RawBars = extended.RawBars[:305]
+	extendedRaw, err := json.Marshal(extended)
+	if err != nil {
+		t.Fatal(err)
+	}
+	extendedResult, err := RunInteractiveFixture(extendedRaw, source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(extendedResult.Run, prefix.Run) ||
+		!reflect.DeepEqual(extendedResult.EquityCurve, prefix.EquityCurve) ||
+		!reflect.DeepEqual(extendedResult.ClosedEquity, prefix.ClosedEquity) ||
+		!reflect.DeepEqual(extendedResult.Skips, prefix.Skips) {
+		t.Fatal("an incomplete future source bar changed chart-prefix trades, marks or skips")
+	}
 	fixture.RawSourceBars[24][1], fixture.RawSourceBars[24][2], fixture.RawSourceBars[24][3], fixture.RawSourceBars[24][4] = 107, 108, 106, 107
 	mutatedRaw, err := json.Marshal(fixture)
 	if err != nil {

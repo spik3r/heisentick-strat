@@ -126,7 +126,20 @@ func runSourceEntrySeriesObserved(fixture RunFixture, cfg dsl.Config, params fla
 	if observe {
 		sourceBroker.skipCounts = make(map[string]int)
 	}
-	orders := sourceBroker.runCapturedSource()
+	var orders []order
+	if observe {
+		// Source bars that have not completed by the chart prefix's final
+		// close cannot contribute source decisions or measured source skips.
+		chartDuration, sourceDuration := inferredDuration(chart), inferredDuration(source)
+		lastChartClose := chart.T[chart.Len()-1] + chartDuration
+		complete := 0
+		for complete < source.Len() && source.T[complete]+sourceDuration <= lastChartClose {
+			complete++
+		}
+		orders = sourceBroker.runCapturedSourceThrough(complete)
+	} else {
+		orders = sourceBroker.runCapturedSource()
+	}
 	indices := make([]int, len(orders))
 	for i, order := range orders {
 		indices[i] = order.Index

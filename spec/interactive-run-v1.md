@@ -92,7 +92,8 @@ by legacy JavaScript display strings.
 For source-entry FVG, `skipDiagnostics` is `measured-source` and
 `skipReasonSchema` is `dsl-skip-reasons-source-v1`. A count is the first failed
 instrumented gate on one completed **source decision bar** during setup capture.
-Source capture has no open position; a later chart position can prevent a
+Bars incomplete at the final chart close do not contribute. Source capture
+has no open position; a later chart position can prevent a
 captured order from executing. The same gate codes and priority apply, but
 the denominator is source bars and counts must not be compared to chart-bar
 v1 counts. Missing FVG setups, invalid geometry, cooldown and unfilled limits

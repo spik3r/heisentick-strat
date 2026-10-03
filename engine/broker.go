@@ -343,8 +343,12 @@ func (b *broker) markToMarket(i int) {
 // captures its admitted orders instead of opening source-timeframe positions.
 // C5 later dispatches those exact orders through the chart broker.
 func (b *broker) runCapturedSource() []order {
+	return b.runCapturedSourceThrough(b.series.Len())
+}
+
+func (b *broker) runCapturedSourceThrough(endExclusive int) []order {
 	b.captureEntries = true
-	for i := 0; i < b.series.Len(); i++ {
+	for i := 0; i < endExclusive; i++ {
 		b.onBar(i)
 	}
 	b.captureEntries = false
