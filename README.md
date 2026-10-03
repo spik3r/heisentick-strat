@@ -40,15 +40,18 @@ corresponding task there. This repository keeps its code, tests and runbooks.
   hand-derived semantic fixture set. JS and WASM conform to them; a golden
   changes only in a reviewed regeneration PR (`conformance/README.md`).
 - `examples/`: small compiling `.strat` files.
+- `authoredorb/`: a versioned whole-strategy Go port of the Day Session ORB
+  base and active 30m parity variant; see [its interface](docs/authored-orb-v1.md).
 
 ## What this repo is not
 
 - No application code: UI, backend routes, dev server, Solid frontend.
 - No JavaScript Strat compiler. `strat/implementations/browser-runtime/` and
   `strat/tools/` stay in the app until the JS engine is deleted (M8).
-- No strategies. The canonical `.strat` sources live in the app's
+- No canonical `.strat` strategy sources. They live in the app's
   `strategies/source/`; two archived ones are copied here as engine test
-  fixtures only.
+  fixtures only. `authoredorb/` is a separately versioned Go port of one
+  authored JavaScript strategy pair.
 - No market data and no infrastructure.
 
 ## Release and adoption

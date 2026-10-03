@@ -8,6 +8,18 @@ import (
 )
 
 func main() {
+	if len(os.Args) == 3 && os.Args[1] == "--authored-orb" {
+		raw, err := os.ReadFile(os.Args[2])
+		if err != nil {
+			panic(err)
+		}
+		out, err := runAuthoredOrb(string(raw))
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(string(out))
+		return
+	}
 	interactive := len(os.Args) == 4 && os.Args[1] == "--interactive"
 	if !interactive && len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive] fixture.json source.strat")

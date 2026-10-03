@@ -11,6 +11,16 @@ import (
 )
 
 func main() {
+	js.Global().Set("engineRunAuthoredOrb", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 1 || args[0].Type() != js.TypeString {
+			return `{"error":"expected authored ORB request JSON"}`
+		}
+		out, err := runAuthoredOrb(args[0].String())
+		if err != nil {
+			out, _ = json.Marshal(map[string]string{"error": err.Error()})
+		}
+		return string(out)
+	}))
 	js.Global().Set("engineRunInteractiveFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return string(runInteractive("", ""))

@@ -6,6 +6,10 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add `authored-orb-run-v1`, a whole-strategy native/WASM execution path for
+  archived Day Session ORB and active Original TV Parity, including frozen JS
+  trade and equity fixtures. This new producer capability requires a minor
+  release and explicit consumer adoption; existing Strat results are unchanged.
 - Add a separate versioned interactive result for the qualified ordinary SMA
   Golden Cross and Dual EMA Resumption chart routes, with per-bar marked/closed equity, post-liquidation cash,
   fee-inclusive stats, running-peak drawdown and structured unsupported-route

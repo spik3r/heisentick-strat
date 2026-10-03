@@ -1,0 +1,79 @@
+{
+  "request": {
+    "schema": "authored-orb-run-v1",
+    "strategyId": "daySessionOrbOriginalTvParity",
+    "symbol": "XAUUSD",
+    "timeframe": "30m",
+    "params": {
+      "strategyStyle": 1,
+      "direction": 1
+    },
+    "costs": {
+      "slippage": 0.06,
+      "feePerUnit": 0,
+      "fillOn": "close",
+      "startEquity": 10000
+    },
+    "bars": [
+      {
+        "t": 1767578400000,
+        "o": 100,
+        "h": 100,
+        "l": 100,
+        "c": 100,
+        "v": 0
+      },
+      {
+        "t": 1767580200000,
+        "o": 110,
+        "h": 110,
+        "l": 110,
+        "c": 110,
+        "v": 0
+      },
+      {
+        "t": 1767582000000,
+        "o": 105,
+        "h": 105,
+        "l": 105,
+        "c": 105,
+        "v": 0
+      }
+    ]
+  },
+  "expected": {
+    "trades": [
+      {
+        "positionId": "position-2-0",
+        "side": "long",
+        "entry": 105.06,
+        "exit": 104.94,
+        "sl": 103.46938775510205,
+        "tp": 108.06122448979592,
+        "initialSl": 103.46938775510205,
+        "initialTp": 108.06122448979592,
+        "meta": {
+          "strategy": "daySessionOrb",
+          "style": "VWAP Reclaim",
+          "session": "Mid 12-16 AEST",
+          "setup": "ORB",
+          "entryStyle": "signal"
+        },
+        "size": 125.73774698486052,
+        "entryIndex": 2,
+        "exitIndex": 2,
+        "entryT": 1767582000000,
+        "exitT": 1767582000000,
+        "points": -0.12000000000000455,
+        "pnl": -15.088529638183834,
+        "reason": "eod",
+        "tag": "DaySessionOrb:Mid 12-16 AEST:LONG:VWAP Reclaim"
+      }
+    ],
+    "equityCurve": [
+      10000,
+      10000,
+      9992.455735180909
+    ]
+  }
+}
