@@ -13,6 +13,12 @@ import (
 )
 
 func main() {
+	js.Global().Set("engineRunForwardPrefixFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return string(runForwardPrefix("", ""))
+		}
+		return string(runForwardPrefix(args[0].String(), args[1].String()))
+	}))
 	js.Global().Set("engineRunAuthoredOrbInteractive", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 1 || args[0].Type() != js.TypeString {
 			return `{"error":{"code":"ENGINE_UNSUPPORTED","message":"expected authored ORB request JSON"}}`

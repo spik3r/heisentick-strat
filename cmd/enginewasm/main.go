@@ -86,12 +86,13 @@ func main() {
 	interactive := len(os.Args) == 4 && (os.Args[1] == "--interactive" || os.Args[1] == "--interactive-vp-ny-handoff")
 	composition := len(os.Args) == 4 && os.Args[1] == "--composition"
 	interactiveComposition := len(os.Args) == 4 && os.Args[1] == "--interactive-composition"
-	if !interactive && !composition && !interactiveComposition && len(os.Args) != 3 {
+	forwardPrefix := len(os.Args) == 4 && os.Args[1] == "--forward-prefix"
+	if !interactive && !composition && !interactiveComposition && !forwardPrefix && len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive|--interactive-vp-ny-handoff fixture.json source.strat | --composition|--interactive-composition fixture.json child-sources.json | fixture.json source.strat]")
 		os.Exit(2)
 	}
 	offset := 1
-	if interactive || composition || interactiveComposition {
+	if interactive || composition || interactiveComposition || forwardPrefix {
 		offset = 2
 	}
 	raw, err := os.ReadFile(os.Args[offset])
@@ -108,6 +109,10 @@ func main() {
 			out = runInteractiveVPNYHandoff(string(raw), string(source))
 		}
 		fmt.Println(string(out))
+		return
+	}
+	if forwardPrefix {
+		fmt.Println(string(runForwardPrefix(string(raw), string(source))))
 		return
 	}
 	if interactiveComposition {
