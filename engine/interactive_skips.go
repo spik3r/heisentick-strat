@@ -5,6 +5,9 @@ package engine
 // not the legacy browser's display strings or every bar without a setup.
 const InteractiveSkipReasonSchema = "dsl-skip-reasons-v1"
 
+// The composition adds a veto reason after the ordinary gate priority.
+const InteractiveVPNYSkipReasonSchema = "dsl-skip-reasons-v2"
+
 const (
 	skipRMVUnavailable        = "gate.rmv_unavailable"
 	skipRMVThreshold          = "gate.rmv_threshold"
@@ -22,6 +25,7 @@ const (
 	skipMovementER            = "gate.movement_er"
 	skipPriorDayRangeMissing  = "gate.prior_day_range_missing"
 	skipPriorDayRangeTooSmall = "gate.prior_day_range_too_small"
+	skipVPNYUnresolvedRaid    = "filter.vp_ny_unresolved_raid"
 )
 
 func (b *broker) recordInteractiveSkip(i int, code string) {

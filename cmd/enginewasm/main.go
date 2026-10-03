@@ -67,9 +67,9 @@ func main() {
 		fmt.Println(string(out))
 		return
 	}
-	interactive := len(os.Args) == 4 && os.Args[1] == "--interactive"
+	interactive := len(os.Args) == 4 && (os.Args[1] == "--interactive" || os.Args[1] == "--interactive-vp-ny-handoff")
 	if !interactive && len(os.Args) != 3 {
-		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive] fixture.json source.strat")
+		fmt.Fprintln(os.Stderr, "usage: enginewasm [--interactive|--interactive-vp-ny-handoff] fixture.json source.strat")
 		os.Exit(2)
 	}
 	offset := 1
@@ -86,6 +86,9 @@ func main() {
 	}
 	if interactive {
 		out := runInteractive(string(raw), string(source))
+		if os.Args[1] == "--interactive-vp-ny-handoff" {
+			out = runInteractiveVPNYHandoff(string(raw), string(source))
+		}
 		fmt.Println(string(out))
 		return
 	}

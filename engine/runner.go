@@ -33,6 +33,9 @@ func spansWeekendClosure(startMs, endMs float64) bool {
 
 // RunFixture executes the fixture's DSL source and returns the conformance envelope.
 func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
+	if fixture.StrategyID == vpNYHandoffStrategyID {
+		return RunResult{}, fmt.Errorf("VP NY handoff strategy requires RunInteractiveVPNYHandoffVetoFixture")
+	}
 	parsed, err := dsl.Parse(source)
 	if err != nil {
 		return RunResult{}, err

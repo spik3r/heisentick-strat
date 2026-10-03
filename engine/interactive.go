@@ -21,6 +21,13 @@ const InteractiveRunSchema = "dsl-interactive-run-v1"
 // default's interactive capability.
 const editorDefaultSourceSHA256 = "329a0750d4f5770209d8a92951b36e7b02206ef3c72e4f3e35e396104efa1521"
 
+// InteractiveVPNYHandoffSchema identifies the Go-owned composition of the
+// archived balanced Session Break Hold DSL and its JavaScript VP handoff veto.
+const InteractiveVPNYHandoffSchema = "dsl-interactive-vp-ny-handoff-v1"
+
+const vpNYHandoffBaseSourceSHA256 = "c3fa897885f84b61d718b364e78448457016814efd101125333a87df7878a405"
+const vpNYHandoffStrategyID = "dslSessionBreakHoldNyFocusBalancedFifteenVpVeto"
+
 var ErrInteractiveUnsupported = errors.New("interactive route unsupported")
 
 // InteractiveProvenance identifies the exact inputs interpreted by this run.
@@ -100,6 +107,19 @@ const InteractiveSourceSkipReasonSchema = "dsl-skip-reasons-source-v1"
 // RunInteractiveFixture admits qualified routes with complete marks and
 // identified gate skip units. Source FVG counts source decision bars.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
+	return runInteractiveFixture(raw, source, false)
+}
+
+// RunInteractiveVPNYHandoffVetoFixture is the only admitted Go route for the
+// archived JS wrapper. Its source hash and strategy ID bind the specific base
+// DSL, and the VP filter is installed before the ordinary broker loop runs.
+// Calling RunInteractiveFixture under the base strategy ID runs the unwrapped
+// DSL; using the wrapper ID there is rejected.
+func RunInteractiveVPNYHandoffVetoFixture(raw []byte, source string) (InteractiveRunResult, error) {
+	return runInteractiveFixture(raw, source, true)
+}
+
+func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
 	}
@@ -111,6 +131,22 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		sum := sha256.Sum256([]byte(source))
 		if hex.EncodeToString(sum[:]) != editorDefaultSourceSHA256 {
 			return InteractiveRunResult{}, fmt.Errorf("%w: editor default source has changed", ErrInteractiveUnsupported)
+		}
+	}
+	if !vpNYHandoff && fixture.StrategyID == vpNYHandoffStrategyID {
+		return InteractiveRunResult{}, fmt.Errorf("%w: VP NY handoff strategy requires the versioned composition route", ErrInteractiveUnsupported)
+	}
+	if vpNYHandoff {
+		hash := sha256.Sum256([]byte(source))
+		if fixture.StrategyID != vpNYHandoffStrategyID || hex.EncodeToString(hash[:]) != vpNYHandoffBaseSourceSHA256 ||
+			fixture.Symbol != "XAUUSD" || fixture.Timeframe != "15m" || fixture.HigherTimeframe != "1h" ||
+			fixture.RangeMethod != "zone" {
+			return InteractiveRunResult{}, fmt.Errorf("%w: VP NY handoff requires its pinned XAUUSD 15m/1h balanced source and route", ErrInteractiveUnsupported)
+		}
+		for i, bar := range fixture.Bars {
+			if bar.V <= 0 || bar.L <= 0 || bar.L > bar.H || bar.O < bar.L || bar.O > bar.H || bar.C < bar.L || bar.C > bar.H {
+				return InteractiveRunResult{}, fmt.Errorf("%w: VP NY handoff chart bar %d has unsupported OHLCV", ErrInteractiveUnsupported, i)
+			}
 		}
 	}
 	parsed, err := dsl.Parse(source)
@@ -179,6 +215,12 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		SourceHTFSeries: marketdata.SeriesFromBars(fixture.SourceHTFBars),
 		Costs:           costs,
 	}
+	if vpNYHandoff {
+		// Ordinary shared-run admission rejects the wrapper ID. Composition
+		// evaluates its pinned base under the base ID, then binds the final
+		// result to the original wrapper fixture and composition schema.
+		request.StrategyID = "dslSessionBreakHoldNyFocusBalancedFifteen"
+	}
 	prepared, err := PrepareRun(request)
 	if err != nil {
 		return InteractiveRunResult{}, err
@@ -214,6 +256,9 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		prepared.broker.equityCurve = make([]float64, series.Len())
 		prepared.broker.cashCurve = make([]float64, series.Len())
 		prepared.broker.skipCounts = make(map[string]int)
+		if vpNYHandoff {
+			prepared.broker.vpNYHandoff = &vpNYHandoffState{}
+		}
 		trades = prepared.broker.run()
 		if prepared.broker.hasPosition {
 			return InteractiveRunResult{}, errors.New("interactive run ended with an open position")
@@ -243,8 +288,13 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		return InteractiveRunResult{}, err
 	}
 	fixtureHash, sourceHash := sha256.Sum256(raw), sha256.Sum256([]byte(source))
+	schema := InteractiveRunSchema
+	if vpNYHandoff {
+		schema = InteractiveVPNYHandoffSchema
+		skipSchema = InteractiveVPNYSkipReasonSchema
+	}
 	return InteractiveRunResult{
-		Schema: InteractiveRunSchema,
+		Schema: schema,
 		Provenance: InteractiveProvenance{
 			FixtureSHA256: hex.EncodeToString(fixtureHash[:]), SourceSHA256: hex.EncodeToString(sourceHash[:]),
 		},

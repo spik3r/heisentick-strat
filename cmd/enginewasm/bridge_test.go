@@ -59,6 +59,21 @@ func TestBridgeAndNativeShareMalformedRowError(t *testing.T) {
 	}
 }
 
+func TestVPNYHandoffBridgeFailsClosedWithItsVersionedSchema(t *testing.T) {
+	var failure struct {
+		Schema string `json:"schema"`
+		Error  struct {
+			Code string `json:"code"`
+		} `json:"error"`
+	}
+	if err := json.Unmarshal(runInteractiveVPNYHandoff(`{"schema":"dsl-conformance-run-fixture-v1","strategyId":"not-vp","costs":{"startEquity":10000,"fillOn":"close"}}`, ""), &failure); err != nil {
+		t.Fatal(err)
+	}
+	if failure.Schema != native.InteractiveVPNYHandoffSchema || failure.Error.Code != "unsupported-route" {
+		t.Fatalf("composition bridge failure = %+v", failure)
+	}
+}
+
 func TestColumnResultUsesFixedNumericRecordWidth(t *testing.T) {
 	fixturePath := "../../conformance/run/deployed-dsl-session-expansion-ny.fixture.json"
 	fixture, err := native.LoadRunFixture(fixturePath)

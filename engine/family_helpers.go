@@ -583,6 +583,16 @@ func (b *broker) enterSetup(i int, setup setupPlan) bool {
 	if !b.typedEntryDistanceOK(i, setup.Meta) {
 		return false
 	}
+	if b.vpNYHandoff != nil {
+		if b.vpNYHandoff.block(b.series.T[i], setup.Side) {
+			b.vpNYVetoed = true
+			b.recordInteractiveSkip(i, skipVPNYUnresolvedRaid)
+			return false
+		}
+		if meta, ok := b.vpNYHandoff.entryMeta(b.series.T[i]); ok {
+			setup.Meta["vpNyHandoff"] = meta
+		}
+	}
 	setup.Meta = b.seasonalityTradeMeta(i, annotateDayTheme(setup.Meta, theme))
 	ord := order{
 		Side:    setup.Side,

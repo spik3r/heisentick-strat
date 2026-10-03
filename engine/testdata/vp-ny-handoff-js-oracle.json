@@ -1,0 +1,148 @@
+{
+  "schema": "vp-ny-handoff-js-oracle-v1",
+  "appCommit": "22de07ba",
+  "fixture": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen.fixture.json",
+  "baseSourceSha256": "c3fa897885f84b61d718b364e78448457016814efd101125333a87df7878a405",
+  "modifiedBar": {
+    "t": 1553083200000,
+    "o": 1301.7,
+    "l": 1301.65
+  },
+  "base": {
+    "trades": [
+      {
+        "entryT": 1548415800000,
+        "exitT": 1548421200000,
+        "side": "long",
+        "tag": "DSL-SBH:LH",
+        "entry": 1284.7179999999998,
+        "exit": 1283.4120714285716,
+        "pnl": -209.6313707504377,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1549969200000,
+        "exitT": 1549977300000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1313.485,
+        "exit": 1313.467475,
+        "pnl": -3.027610674066986,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1550493900000,
+        "exitT": 1550496600000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1325.925,
+        "exit": 1326.9690875000001,
+        "pnl": 194.74702727912674,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1552993200000,
+        "exitT": 1552995000000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1307.935,
+        "exit": 1307.2255357142856,
+        "pnl": -218.47676656583008,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1553086800000,
+        "exitT": 1553089500000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1308.195,
+        "exit": 1306.1379642857144,
+        "pnl": -206.0089060571867,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1553516100000,
+        "exitT": 1553522400000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1318.885,
+        "exit": 1320.4786232142858,
+        "pnl": 205.6145888533234,
+        "vpNyHandoff": null
+      }
+    ],
+    "vpSkipCount": 0,
+    "net": -236.78303791507125
+  },
+  "wrapped": {
+    "trades": [
+      {
+        "entryT": 1548415800000,
+        "exitT": 1548421200000,
+        "side": "long",
+        "tag": "DSL-SBH:LH",
+        "entry": 1284.7179999999998,
+        "exit": 1283.4120714285716,
+        "pnl": -209.6313707504377,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1549969200000,
+        "exitT": 1549977300000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1313.485,
+        "exit": 1313.467475,
+        "pnl": -3.027610674066986,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1550493900000,
+        "exitT": 1550496600000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1325.925,
+        "exit": 1326.9690875000001,
+        "pnl": 194.74702727912674,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1552993200000,
+        "exitT": 1552995000000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1307.935,
+        "exit": 1307.2255357142856,
+        "pnl": -218.47676656583008,
+        "vpNyHandoff": null
+      },
+      {
+        "entryT": 1553516100000,
+        "exitT": 1553522400000,
+        "side": "long",
+        "tag": "DSL-SBH:AH",
+        "entry": 1318.885,
+        "exit": 1320.4786232142858,
+        "pnl": 205.6145888533234,
+        "vpNyHandoff": null
+      }
+    ],
+    "vpSkipCount": 1,
+    "net": -30.774131857884583
+  },
+  "allowed": {
+    "modifiedOpen": 1305.4,
+    "trade": [
+      {
+        "entryT": 1553086800000,
+        "side": "long",
+        "vpNyHandoff": {
+          "predicted": "high",
+          "targetDistanceRange": 0.030164287638050385,
+          "expectedEdge": 1305.288
+        }
+      }
+    ],
+    "vpSkipCount": 0
+  }
+}

@@ -79,6 +79,8 @@ type broker struct {
 	cashCurve              []float64
 	skipCounts             map[string]int
 	lastSkipIndex          int
+	vpNYHandoff            *vpNYHandoffState
+	vpNYVetoed             bool
 	flagLastEntry          int
 	hasFlagEntry           bool
 	rbfLastEntry           int
@@ -176,6 +178,8 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.cashCurve = nil
 	b.skipCounts = nil
 	b.lastSkipIndex = -1
+	b.vpNYHandoff = nil
+	b.vpNYVetoed = false
 	b.flagLastEntry = 0
 	b.hasFlagEntry = false
 	b.rbfLastEntry = 0

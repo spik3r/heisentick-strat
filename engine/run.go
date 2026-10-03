@@ -255,6 +255,9 @@ func sourceEntryRequest(request RunRequest) bool {
 }
 
 func validateRunRequest(request RunRequest) error {
+	if request.StrategyID == vpNYHandoffStrategyID {
+		return fmt.Errorf("VP NY handoff strategy requires RunInteractiveVPNYHandoffVetoFixture")
+	}
 	if request.Config == nil {
 		return errors.New("engine config is required")
 	}

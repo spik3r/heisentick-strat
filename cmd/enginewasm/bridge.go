@@ -35,10 +35,26 @@ type interactiveFailure struct {
 // runInteractive returns a structured v1 response for both successes and
 // failures. Native and browser callers consume the same bytes.
 func runInteractive(raw, source string) []byte {
-	if authoredVPWideFixtureID(raw) {
+	return runInteractiveWithComposition(raw, source, false)
+}
+
+func runInteractiveVPNYHandoff(raw, source string) []byte {
+	return runInteractiveWithComposition(raw, source, true)
+}
+
+func runInteractiveWithComposition(raw, source string, vpNYHandoff bool) []byte {
+	if !vpNYHandoff && authoredVPWideFixtureID(raw) {
 		return runAuthoredVPWideInteractive(raw, source)
 	}
-	result, err := native.RunInteractiveFixture([]byte(raw), source)
+	var result native.InteractiveRunResult
+	var err error
+	schema := native.InteractiveRunSchema
+	if vpNYHandoff {
+		result, err = native.RunInteractiveVPNYHandoffVetoFixture([]byte(raw), source)
+		schema = native.InteractiveVPNYHandoffSchema
+	} else {
+		result, err = native.RunInteractiveFixture([]byte(raw), source)
+	}
 	if err == nil {
 		out, marshalErr := json.Marshal(result)
 		if marshalErr == nil {
@@ -46,7 +62,7 @@ func runInteractive(raw, source string) []byte {
 		}
 		err = marshalErr
 	}
-	failure := interactiveFailure{Schema: native.InteractiveRunSchema}
+	failure := interactiveFailure{Schema: schema}
 	failure.Error.Code = "invalid-request"
 	if errors.Is(err, native.ErrInteractiveUnsupported) {
 		failure.Error.Code = "unsupported-route"

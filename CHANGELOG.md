@@ -32,6 +32,13 @@ version and is named here.
   `reason: london-close`; price and PnL semantics are unchanged. Unsupported
   routes, fills, zero start equity, incomplete costs and zero-trade parity runs
   return errors.
+- Add the versioned Go-owned VP NY handoff veto composition for the archived
+  balanced XAUUSD 15m Session Break Hold strategy. Generic fixture and
+  interactive calls now reject that wrapper's strategy ID, preventing a DSL
+  text-only run from silently omitting the stateful veto. The composition has
+  a pinned base source, strict OHLCV/HTF admission, distinct skip schema, and
+  a frozen JavaScript whole-strategy oracle. This semantic change requires a
+  minor release before consumer adoption.
 - Add a separate versioned interactive result for the qualified ordinary SMA
   Golden Cross and Dual EMA Resumption chart routes, with per-bar marked/closed equity, post-liquidation cash,
   fee-inclusive stats, running-peak drawdown and structured unsupported-route
