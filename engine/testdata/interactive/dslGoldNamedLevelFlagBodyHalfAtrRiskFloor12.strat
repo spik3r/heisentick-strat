@@ -1,0 +1,46 @@
+dsl v7
+# Research candidate; not part of the validated book.
+strategy "Gold Named-Level Flag — Half-ATR Body and 1.2-Point Signal Risk" {
+  description "5m XAUUSD completed named-level impulse and flag continuation. Requires an absolute breakout body of at least 0.5 breakout-signal ATR and at least 1.2 points between the breakout close and padded flag stop. Research execution uses next-open fills."
+}
+
+market conditions {
+  symbols(XAUUSD)
+  timeframes(5m)
+  sessions(asia, mid, london, ny)
+  day type in (ranging, choppy, trending)
+  movement below 1.5
+  trade window UTC hours 0 to 8
+}
+
+levels {
+  priority(WH, WL, PDH, PDL, AH, AL, LH, LL, NH, NL)
+}
+
+setup {
+  type: named level flag
+}
+
+filters {
+  breakout body at least 0.5 ATR
+  signal risk at least 1.2 points
+}
+
+risk {
+  stop size min 0.4 max 2.0
+}
+
+target {
+  target mode known level 2R
+  target 2R
+}
+
+management {
+  breakeven off
+  maxHoldCandles 24
+  wait 0 candles after trade
+}
+
+execution {
+  risk 200 USD
+}

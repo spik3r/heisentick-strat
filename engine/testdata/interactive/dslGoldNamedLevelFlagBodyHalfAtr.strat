@@ -1,0 +1,45 @@
+dsl v7
+# Research candidate; not part of the validated book.
+strategy "Gold Named-Level Flag — Half-ATR Breakout Body" {
+  description "Trade a 5m XAUUSD continuation after an impulse through a completed named level and a short flag. Requires an absolute breakout body of at least 0.5 breakout-signal ATR. Research execution uses next-open fills."
+}
+
+market conditions {
+  symbols(XAUUSD)
+  timeframes(5m)
+  sessions(asia, mid, london, ny)
+  day type in (ranging, choppy, trending)
+  movement below 1.5
+  trade window UTC hours 0 to 8
+}
+
+levels {
+  priority(WH, WL, PDH, PDL, AH, AL, LH, LL, NH, NL)
+}
+
+setup {
+  type: named level flag
+}
+
+filters {
+  breakout body at least 0.5 ATR
+}
+
+risk {
+  stop size min 0.4 max 2.0
+}
+
+target {
+  target mode known level 2R
+  target 2R
+}
+
+management {
+  breakeven off
+  maxHoldCandles 24
+  wait 0 candles after trade
+}
+
+execution {
+  risk 200 USD
+}

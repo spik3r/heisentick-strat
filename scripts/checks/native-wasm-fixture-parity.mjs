@@ -13,7 +13,7 @@ const root = resolve(import.meta.dirname, '../..');
 const temp = mkdtempSync(join(tmpdir(), 'heisentick-native-wasm-parity-'));
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');
 function command(executable, args, env = process.env) {
-  const result = spawnSync(executable, args, { cwd: root, env, encoding: 'utf8' });
+  const result = spawnSync(executable, args, { cwd: root, env, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
   if (result.status !== 0) throw new Error(`${executable} ${args.join(' ')} failed: ${result.stderr || result.stdout}`);
   return result.stdout.trim();
 }
@@ -181,6 +181,44 @@ try {
     'gate.utc_window': 1605, 'gate.prior_day_type_allow': 1649, 'gate.movement_er': 13,
   });
   assert.equal(wasmNamed.skipReasonSchema, 'dsl-skip-reasons-v1');
+  const ordinaryProfiles = [
+    ['dslSmaGoldenCrossXauusdOneMinuteCanary', 'deployed-dsl-sma-golden-cross-xauusd-one-minute-canary'],
+    ['dslCloseVwapMagnet', 'family-vwap-extension-fade'],
+    ['dslGoldNamedLevelFlagBodyHalfAtr', 'family-named-level-flag', 'dslGoldNamedLevelFlagBodyHalfAtr'],
+    ['dslGoldNamedLevelFlagBodyHalfAtrRiskFloor12', 'family-named-level-flag', 'dslGoldNamedLevelFlagBodyHalfAtrRiskFloor12'],
+    ['dslOpeningRangeBreakoutXauusd', 'family-opening-range-breakout'],
+    ['dslOpeningRangeBreakoutFxFifteen', 'deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m', 'dslOpeningRangeBreakoutFxFifteen'],
+    ['dslEditorStrategy', 'research-dsl-failed-breakout-five-minute-early-breakeven', 'dslEditorStrategy'],
+  ];
+  const ordinaryResults = [];
+  for (const [id, fixtureName, snapshotName] of ordinaryProfiles) {
+    const fixture = JSON.parse(readFileSync(join(root, 'conformance/run', `${fixtureName}.fixture.json`), 'utf8'));
+    if (fixtureName === 'family-named-level-flag') {
+      fixture.bars.unshift([Date.UTC(2023, 11, 25), 100, 110, 95, 100, 1]);
+    }
+    const fixtureRaw = JSON.stringify(fixture);
+    const profileSource = readFileSync(snapshotName
+      ? join(root, 'engine/testdata/interactive', `${snapshotName}.strat`)
+      : join(root, 'conformance/run', `${fixtureName}.strat`), 'utf8');
+    writeFileSync(interactiveFixturePath, fixtureRaw);
+    writeFileSync(interactiveSourcePath, profileSource);
+    const nativeProfile = JSON.parse(command(nativePath,
+      ['--interactive', interactiveFixturePath, interactiveSourcePath], env));
+    const wasmProfile = JSON.parse(globalThis.engineRunInteractiveFixture(fixtureRaw, profileSource));
+    const numericDiffs = [];
+    compareDual(wasmProfile, nativeProfile, '', numericDiffs);
+    assert.equal(wasmProfile.schema, 'dsl-interactive-run-v1', `${id}: unexpected schema`);
+    assert.ok(wasmProfile.run.tradeCount > 0, `${id}: no whole-strategy trades`);
+    assert.equal(wasmProfile.equityCurve.length, fixture.bars.length, `${id}: incomplete marks`);
+    assert.deepStrictEqual(wasmProfile.skips, nativeProfile.skips, `${id}: skip mismatch`);
+    assert.ok(numericDiffs.every((difference) => {
+      const tolerance = dualRoundingFields.find(([rule]) => rule.test(difference.path))?.[1];
+      return tolerance !== undefined && Number.isFinite(difference.abs) && difference.abs <= tolerance;
+    }), `${id}: native/WASM decision or derived value differs beyond budget: ${JSON.stringify(numericDiffs.slice(0, 3))}`);
+    ordinaryResults.push({ id, tradeCount: wasmProfile.run.tradeCount, numericDifferences: numericDiffs.length,
+      maxNumericAbsDrift: Math.max(0, ...numericDiffs.map((difference) => difference.abs)),
+      nativeOutputSha256: sha256(JSON.stringify(nativeProfile)), wasmOutputSha256: sha256(JSON.stringify(wasmProfile)) });
+  }
   const unsupported = { ...interactiveFixture, sourceBars: [interactiveFixture.bars[0]] };
   const unsupportedRaw = JSON.stringify(unsupported);
   writeFileSync(interactiveFixturePath, unsupportedRaw);
@@ -207,7 +245,7 @@ try {
       numericDifferences: dualNumericDiffs.length,
       maxMarkedEquityAbsDrift: Math.max(0, ...dualNumericDiffs.map((difference) => difference.abs)) },
     skipReasonResults: { blockedSMA: wasmBlockedSMA.skips, namedLevelSweep: wasmNamed.skips,
-      namedNumericDifferences: namedNumericDiffs.length } }, null, 2));
+      namedNumericDifferences: namedNumericDiffs.length }, ordinaryResults }, null, 2));
 } catch (error) {
   console.error(error);
   process.exitCode = 1;

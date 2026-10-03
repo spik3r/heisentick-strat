@@ -8,11 +8,14 @@ does not change the `dsl-conformance-trades-v1` result or its goldens.
 
 ## Admitted route
 
-Chart-timeframe `smaGoldenCross`, `dualEmaResumption`, and `namedLevelSweep`
-with HTF mode off and no source or HTF bars are admitted. The ordinary
-`sessionBreakHold` family is also admitted either with HTF mode off and no
-HTF bars, or with `notAgainst`, a declared higher timeframe and nonempty HTF
-bars. Its HTF decisions use the latest completed higher-timeframe bar; missing
+Chart-timeframe `smaGoldenCross`, `dualEmaResumption`, `namedLevelSweep`,
+`namedLevelFlag`, `vwapExtensionFade`, `openingRangeBreakout`,
+`sessionBreakHold`, and `failedBreakout` with HTF mode off and no source or HTF
+bars are admitted. The ordinary `sessionBreakHold` and `openingRangeBreakout`
+families are also admitted with `notAgainst`, a declared higher timeframe and
+nonempty HTF bars. `vwapExtensionFade` accepts an HTF series only when HTF mode
+is off; the supplied series is grid-validated but does not drive an HTF rule.
+HTF decisions use the latest completed higher-timeframe bar; missing
 intraday periods fail closed, while the existing scheduled weekend-closure
 rule may reuse the last completed bar. The interactive boundary binds both timestamp series to
 their declared fixed timeframes: ordered, grid-aligned rows, whole-period
@@ -50,8 +53,9 @@ gates, not every evaluated entry filter, missing setup, cooldown, or failed
 geometry. Broader reason coverage remains a separate qualification gate.
 Same-build native/WASM parity requires identical structure, route and input
 metadata, skip schema and counts, trade count/order, trade decisions and fill fields,
-categorical states, counts, final cash and errors. For Dual EMA and named-level
-sweep, explicit derived-number paths may have cross-target floating-point
+categorical states, counts, final cash and errors. For Dual EMA,
+named-level sweep, and opening-range breakout, explicit derived-number paths
+may have cross-target floating-point
 rounding: per-bar
 marked and closed equity, trade `pnl`, and statistic `tradeNet`, `maxDD`, and
 `maxClosedDD` have `1e-9` absolute budgets; trade `points` and the two drawdown
@@ -59,7 +63,9 @@ percentages have `1e-10`; trade `meta.signalAtr` has `1e-12`. All other values
 must match exactly. The admitted 5000-bar Dual EMA fixture has only 13 marked
 equity differences, at most `1.82e-12`; local browser 4h samples found bounded
 drift in the listed fields for Dual EMA (22,180 differences, maximum `7.28e-12`)
-and named-level sweep (28 differences, maximum `3.64e-12`). Compare decoded values under these explicit
+and named-level sweep (28 differences, maximum `3.64e-12`). The two admitted
+opening-range fixtures have one and nine derived-value differences respectively,
+each at most `1.82e-12`. Compare decoded values under these explicit
 rules and retain separate native/WASM response hashes, rather than claiming
 byte identity across targets.
 
@@ -85,7 +91,10 @@ outside this metric. A missing setup alone adds no count, though a market gate
 may reject a bar before its setup is checked. `namedLevelSweep` evaluates the market gates
 before its setup check on each flat bar; `smaGoldenCross` evaluates RMV only
 after a long cross; `dualEmaResumption` currently has no evaluated market gate.
-Thus maps from different families must not be read as equal-denominator
+The VWAP extension profile evaluates its own session and geometry checks
+without an instrumented market-gate call, so its skip map may be empty even
+when some bars are rejected. The opening-range profile evaluates market gates
+after its range and held-break setup has formed. Thus maps from different families must not be read as equal-denominator
 rejection rates. The code vocabulary and priority below are owned by Go, not
 by legacy JavaScript display strings.
 

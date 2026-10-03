@@ -10,6 +10,13 @@ version and is named here.
   archived Day Session ORB and active Original TV Parity, including frozen JS
   trade and equity fixtures. This new producer capability requires a minor
   release and explicit consumer adoption; existing Strat results are unchanged.
+- Admit the remaining ordinary interactive DSL profiles: one-minute SMA,
+  VWAP extension fade, named-level flag, opening-range breakout, and the
+  editor's failed-breakout default. Bind supplied HTF bars to their declared
+  timeframe, retain measured Go gate diagnostics and per-bar accounting, and
+  test exact whole-strategy sources on nonzero-trade fixtures. This expands
+  interactive engine semantics and requires the next minor release before
+  consumer adoption.
 - Add a separate versioned interactive result for the qualified ordinary SMA
   Golden Cross and Dual EMA Resumption chart routes, with per-bar marked/closed equity, post-liquidation cash,
   fee-inclusive stats, running-peak drawdown and structured unsupported-route

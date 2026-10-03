@@ -71,14 +71,14 @@ type InteractiveRunResult struct {
 	Stats            InteractiveStats      `json:"stats"`
 }
 
-// The admitted ordinary families use the shared per-bar broker loop. The Go
-// broker records instrumented market-gate rejections for interactive runs.
-// Scheduled source-entry and special-family loops do not yet emit complete
-// per-bar marks or skip diagnostics.
+// Admitted ordinary families use the shared per-bar broker loop. Scheduled
+// source-entry and special families record their own marks and gate counts.
 func interactiveOrdinaryFamily(setupType string) bool {
 	switch setupType {
 	case string(dsl.FamilySMAGoldenCross), string(dsl.FamilyDualEMAResumption),
-		string(dsl.FamilyNamedLevelSweep), string(dsl.FamilySessionBreakHold):
+		string(dsl.FamilyNamedLevelSweep), string(dsl.FamilySessionBreakHold),
+		string(dsl.FamilyVWAPExtensionFade), string(dsl.FamilyNamedLevelFlag),
+		string(dsl.FamilyOpeningRangeBreakout), string(dsl.FamilyFailedBreakout):
 		return true
 	default:
 		return false
@@ -91,8 +91,8 @@ func interactiveSpecialFamily(setupType string) bool {
 
 const InteractiveSourceSkipReasonSchema = "dsl-skip-reasons-source-v1"
 
-// RunInteractiveFixture admits routes with complete marks and explicitly
-// identified market-gate skip units. Source FVG counts source decision bars.
+// RunInteractiveFixture admits qualified routes with complete marks and
+// identified gate skip units. Source FVG counts source decision bars.
 func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	if err := validateInteractiveInput(raw); err != nil {
 		return InteractiveRunResult{}, err
@@ -121,11 +121,19 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		len(fixture.SourceBars) == 0 && len(fixture.SourceHTFBars) == 0 &&
 		(setupType == string(dsl.FamilyDailyFlushFailure) && fixture.Timeframe == "1d" ||
 			setupType == string(dsl.FamilyWeekendExtremeFade) && fixture.Timeframe == "4h")
-	htfBreakHold := setupType == string(dsl.FamilySessionBreakHold) &&
+	// The deployed VWAP profile ships an unused HTF series in its fixture.
+	// Admit it only after binding its timestamp grid; the strategy's HTF mode
+	// remains off, so no higher-timeframe decision is read from those bars.
+	vwapWithUnusedHTF := setupType == string(dsl.FamilyVWAPExtensionFade) &&
+		htfMode == "off" && fixture.HigherTimeframe != "" && len(fixture.HTFBars) != 0
+	htfOrdinary := (setupType == string(dsl.FamilySessionBreakHold) ||
+		setupType == string(dsl.FamilyOpeningRangeBreakout)) &&
 		htfMode == "notAgainst" && fixture.HigherTimeframe != "" && len(fixture.HTFBars) != 0
-	ordinary := interactiveOrdinaryFamily(setupType) && (chartOnly || htfBreakHold) &&
-		sourceTimeframeFromConfig(parsed.Config) == "" && fixture.SourceTimeframe == "" &&
-		len(fixture.SourceBars) == 0 && len(fixture.SourceHTFBars) == 0
+	ordinary := interactiveOrdinaryFamily(setupType) &&
+		(chartOnly || htfOrdinary || vwapWithUnusedHTF) &&
+		sourceTimeframeFromConfig(parsed.Config) == "" &&
+		fixture.SourceTimeframe == "" && len(fixture.SourceBars) == 0 &&
+		len(fixture.SourceHTFBars) == 0
 	if !ordinary && !special && !sourceFVG {
 		return InteractiveRunResult{}, fmt.Errorf("%w: route/family has no qualified interactive execution profile", ErrInteractiveUnsupported)
 	}
@@ -133,7 +141,7 @@ func RunInteractiveFixture(raw []byte, source string) (InteractiveRunResult, err
 		!isWeekdayTimestamp(fixture.Bars[len(fixture.Bars)-1].T) {
 		return InteractiveRunResult{}, fmt.Errorf("%w: daily flush failure needs a retained weekday final bar", ErrInteractiveUnsupported)
 	}
-	if htfBreakHold {
+	if htfOrdinary || vwapWithUnusedHTF {
 		if err := validateInteractiveHTFBinding(fixture); err != nil {
 			return InteractiveRunResult{}, err
 		}
