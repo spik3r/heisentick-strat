@@ -154,7 +154,9 @@ func runForwardSmoke(r ForwardSmokeRequest, liquidate bool) (*broker, error) {
 			tag = "FORWARD-SMOKE-2-BEARISH"
 		}
 		ord := order{Side: s, SL: entry - float64(s)*distance, TP: entry + float64(s)*distance, RiskUSD: 100, HasRisk: true, Index: i, Tag: tag}
-		if b.costs.fillsMarketAtNextOpen() {
+		// Authored JS only defers the literal "nextOpen" spelling. Its
+		// fillOn="open" runs at the signal close, unlike the DSL broker.
+		if b.costs.FillOn == "nextOpen" {
 			ord.Index = i + 1
 			b.pendingOrders = append(b.pendingOrders, ord)
 		} else {

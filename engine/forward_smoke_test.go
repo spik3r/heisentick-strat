@@ -35,7 +35,7 @@ func smokeVersion(id string) string {
 
 func TestForwardSmokeFrozenJSWholeTradesAndPrefixes(t *testing.T) {
 	files, err := filepath.Glob("testdata/forward-smoke/*.json")
-	if err != nil || len(files) != 6 {
+	if err != nil || len(files) != 8 {
 		t.Fatalf("oracle files = %v, %v", files, err)
 	}
 	for _, path := range files {
@@ -58,6 +58,17 @@ func TestForwardSmokeFrozenJSWholeTradesAndPrefixes(t *testing.T) {
 			}
 			if result.TradeCount == 0 {
 				t.Fatal("oracle route silently returned zero trades")
+			}
+			if filepath.Base(path) == "btc-open-cost.json" {
+				wantEntries := []int{1, 2, 6, 8}
+				if len(result.Trades) != len(wantEntries) {
+					t.Fatalf("open-mode trade count = %d", len(result.Trades))
+				}
+				for i, entry := range wantEntries {
+					if result.Trades[i].EntryIndex != entry {
+						t.Fatalf("open-mode trade %d entry index = %d, want %d", i, result.Trades[i].EntryIndex, entry)
+					}
+				}
 			}
 			assertSmokeTrades(t, result.Trades, oracle.WholeTrades)
 			positionIDs := map[int]string{}

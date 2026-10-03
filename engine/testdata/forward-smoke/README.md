@@ -1,6 +1,6 @@
 # Frozen authored-JS Forward smoke oracles
 
-These six fixtures were generated with `runBacktest` from app commit
+These eight fixtures were generated with `runBacktest` from app commit
 `a7bc97689838d7cc5e2d7fdf462b9ca2f5dbfd28` using the two authored-JS
 canary modules. The source SHA-256 values are pinned in each fixture and in
 `engine/forward_smoke.go`. Each fixture records complete JS trades and
@@ -8,6 +8,13 @@ canary modules. The source SHA-256 values are pinned in each fixture and in
 and 12. The Go test compares every fill, bracket, size, index, time, PnL,
 reason, tag, and preserved open position. The only intentional vocabulary
 difference is JS terminal `eod` versus Go `end-of-test` (engine D-20).
+
+The `fillOn: "open"` fixtures capture a JS quirk: authored-JS `api.enter`
+defers only for literal `nextOpen`; `open` fills on the decision close. The
+BTC whole-run entry indices are `[1, 2, 6, 8]`. Prefix snapshots at lengths
+2 and 3 check that this exposure survives a replay restart under a stable
+Go position ID, and the later prefixes check subsequent closed/open trade
+states.
 
 The BTC rule is named “ThreeCandle” for historical reasons; its source checks
 only the current and immediately prior candle. Both modules carry a visible
