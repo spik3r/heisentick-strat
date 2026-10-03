@@ -165,6 +165,12 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if !implementedFamily(setupType) {
 		return nil, fmt.Errorf("setup family %q is not implemented", setupType)
 	}
+	if err := validateBreakRetestSupport(cfg); err != nil {
+		return nil, err
+	}
+	if err := validateNamedLevelSweepSupport(cfg); err != nil {
+		return nil, err
+	}
 	if err := validateRMVConfig(cfg); err != nil {
 		return nil, err
 	}
@@ -258,6 +264,12 @@ func validateRunRequest(request RunRequest) error {
 	setupType := setupTypeFromAny(request.Config["setupType"])
 	if !implementedFamily(setupType) {
 		return fmt.Errorf("setup family %q is not implemented", setupType)
+	}
+	if err := validateBreakRetestSupport(request.Config); err != nil {
+		return err
+	}
+	if err := validateNamedLevelSweepSupport(request.Config); err != nil {
+		return err
 	}
 	if err := validateRMVConfig(request.Config); err != nil {
 		return err

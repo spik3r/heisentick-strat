@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+- Fail closed in the Go executor when break/retest requests swing levels or
+  positive EMA confluence, or named-level sweep requests a level the Go
+  resolver cannot produce. Shared v7 parsing remains unchanged; previously
+  silent mismatches now return execution errors.
+- Classify HTF source gaps using the decision timestamp, so appending a future
+  HTF open cannot retroactively make an intraday gap look like a weekend
+  closure. Add causal swing and FVG sweep fixtures.
 - Add exact-source Go run fixtures for four XAUUSD research strategies using
   frozen 5m/15m bars, and emit the causal seasonality diagnostics used by
   JavaScript in trade metadata. These fixtures add implementation coverage;

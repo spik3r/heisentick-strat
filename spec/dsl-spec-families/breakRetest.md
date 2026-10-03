@@ -35,6 +35,13 @@ resistance that becomes support; short setups mirror against lows.
 | `ema slope window N` | Use this many bars to measure the EMA slope when EMA confluence is enabled. | `5` | `breakRetest.emaSlopeLen` |
 | `ema confluence within X ATR` | Require the entry close to be on the EMA/slope trend side and the flipped level to be within `X * ATR` of the EMA. | off | `breakRetest.emaConfluenceAtr` |
 
+The browser runtime supports swing levels and EMA confluence. The current Go
+executor supports key-level break/retest only; it rejects an active `swing
+levels` or `ema confluence` setting at execution until those rules are ported.
+Parsing the shared v7 phrase remains valid. Earlier Go runs using either
+setting used key levels without the requested EMA filter and need executor
+provenance before their conclusions are reused.
+
 ## Defaults and interactions
 
 The type phrase sets `setupType: "breakRetest"`, initializes

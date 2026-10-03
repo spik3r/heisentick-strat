@@ -4,11 +4,9 @@ Status: specified (2026-09-26)
 
 Part of `spec/dsl-spec.md` §9; design plan and naming rationale live in
 `heisentick-backlog/plans/2026-09-26-dsl-named-level-sweep.md` and
-`heisentick-backlog/tasks/HT-054-dsl-named-level-sweep.md`. Phase A (this
-file, parser phrases in both languages, and parse conformance) is specified
-and implemented; the runtime (the actual entry/stop/target evaluation on a
-bar series) is Phase B and not yet implemented — see "Status of the runtime"
-below.
+`heisentick-backlog/tasks/HT-054-dsl-named-level-sweep.md`. The parser and
+runtime are implemented for the supported level keys listed below; the
+runtime status section records the remaining Go resolver limits.
 
 ## Why this name, not `level sweep`
 
@@ -114,17 +112,19 @@ defaults unchanged.
 
 ## Status of the runtime
 
-Phase A (this document, the JS and Go parser phrases, and parse
-conformance) is implemented. The engine side —
-`engine/family_named_level_sweep.go` (Go) and
-`engine/dsl/setups/namedLevelSweep.js` (JS): the actual sweep/test geometry,
-the unified stop formula, and the one-per-level-per-day dedup — is Phase B
-and not implemented yet. A `.strat` source using this family parses and
-compiles cleanly under both languages today, but does not yet execute
-against a bar series; `namedLevelSweep` is deliberately left out of the Go
-engine's `implementedFamily(...)` allow-list until Phase B lands, so running
-one produces a clear "setup family is not implemented" error rather than
-silently falling back to another family's runtime.
+The Go and browser runtimes implement sweep/test geometry, stops, targets,
+and daily dedup. The Go resolver currently supports VWAP, CAM_R3/R4/S3/S4,
+PDH/PDL/PDO/PDC, DO/DH/DL, WH/WL, and AH/AL/LH/LL/NH/NL. Other keys accepted
+by the shared parser, such as EMA, volume-profile values, round numbers,
+range/channel edges, and custom levels, remain unsupported in Go and are
+rejected at execution. For a multi-candle reclaim window, the Go runtime
+compares all candidate wicks with the level and ATR at the signal bar; it
+does not freeze a level when the first wick crosses it. DO is fixed at the
+first UTC-day bar's open; DH/DL and VWAP develop through the day, unlike
+completed prior-day/session levels. Current Go daily dedup uses local UTC+10
+day, side, key, and price rounded to 0.1, so a developing level can signal
+again at a different rounded price within one day. The simpler invalidation
+rule above describes the intended fixed-level case.
 
 ## Examples
 

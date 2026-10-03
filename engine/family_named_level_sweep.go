@@ -52,11 +52,11 @@ type namedLevelSweepParams struct {
 
 func namedLevelSweepParamsFromConfig(cfg dsl.Config) namedLevelSweepParams {
 	nls := mapValue(cfg, "namedLevelSweep")
-	rulesRaw, _ := nls["rules"].(map[string]any)
+	rulesRaw := mapValue(nls, "rules")
 	rules := map[string]namedLevelSweepRule{}
-	for level, raw := range rulesRaw {
-		ruleMap, ok := raw.(map[string]any)
-		if !ok {
+	for level := range rulesRaw {
+		ruleMap := mapValue(rulesRaw, level)
+		if ruleMap == nil {
 			continue
 		}
 		mode, _ := ruleMap["mode"].(string)

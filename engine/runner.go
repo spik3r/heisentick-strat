@@ -43,6 +43,12 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if setupType := setupTypeFromAny(parsed.Config["setupType"]); !implementedFamily(setupType) {
 		return RunResult{}, fmt.Errorf("%s: setup family %q is not implemented", fixture.Case, setupType)
 	}
+	if err := validateBreakRetestSupport(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := validateNamedLevelSweepSupport(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateRMVConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
