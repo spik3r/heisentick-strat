@@ -6,6 +6,14 @@ version and is named here.
 
 ## [Unreleased]
 
+- Parse opening-range `first N minutes` as minutes and disable candle-count
+  mode, as specified. Preserve candle/bar units and integer-hour UTC slots;
+  reject malformed or ambiguous duration prefixes and non-positive,
+  fractional or overflowing durations rather than silently coercing them.
+  Add two synthetic parse goldens; no existing run golden changes. This is
+  a prospective parser-semantic correction requiring a minor release and
+  explicit consumer adoption; no tag or consumer pin is included.
+
 - Reject a supplied timed-return calendar on another strategy family before
   generic fixture execution or shared/native preparation. This closes mixed
   profile admission without changing valid existing family behavior.
