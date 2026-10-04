@@ -40,6 +40,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if len(parsed.Errors) > 0 {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
 	}
+	if err := validateTimedCalendarFamily(parsed.Config, fixture.TimedCalendar); err != nil {
+		return RunResult{}, err
+	}
 	if isTimedReturn(parsed.Config) {
 		if len(fixture.RawSourceBars) != 0 || len(fixture.RawHTFBars) != 0 || len(fixture.RawSourceHTFBars) != 0 {
 			return RunResult{}, fmt.Errorf("timed fixture rejects source/HTF rows")
