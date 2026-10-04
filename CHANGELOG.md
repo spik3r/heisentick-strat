@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add a native-only opt-in timed-return family and `timed-report` CLI with
+  typed opening/completed-close anchors, pinned timezone/calendar inputs,
+  one-bar-delayed scheduled fills, one fixed unit and dated admission audit.
+  Two invented run fixtures and one parse fixture exercise the new contract;
+  existing goldens retain their semantics. This addition requires the next
+  minor release (at least 0.25.0); no tag or consumer adoption is included.
+
 - Add exact-source Go run fixtures for four XAUUSD research strategies using
   frozen 5m/15m bars, and emit the causal seasonality diagnostics used by
   JavaScript in trade metadata. These fixtures add implementation coverage;

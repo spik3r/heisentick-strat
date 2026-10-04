@@ -1,0 +1,73 @@
+{
+  "case": "family-timed-return-predecessor",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "nextOpen",
+    "slippage": 0.1,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-timed-return-predecessor",
+  "symbol": "SYNTHUSD",
+  "timedReturn": {
+    "admissionModel": "retrospective-whole-batch-coverage",
+    "calendarSha256": "9e6ae78985b17857aa2083f74aabb0cd095f9941a3311c219e3cf1341f7bafcc",
+    "executionModel": "one-timeframe-delayed-open-ohlc-proxy",
+    "quantityModel": "one-fixed-unit-price-pnl",
+    "rows": [
+      {
+        "date": "2026-03-09",
+        "decisionT": 1773064800000,
+        "endKind": "current.clock:close",
+        "endT": 1773064800000,
+        "entryT": 1773064860000,
+        "exitT": 1773068460000,
+        "logReturn": -0.01960847138837618,
+        "startKind": "previous.close:close",
+        "startT": 1772816400000,
+        "status": "executed"
+      }
+    ],
+    "schema": "strat-timed-return-audit-v1",
+    "timezoneDataSha256": "e9ed07d7bee0c76a9d442d091ef1f01668fee7c4f26014c0a868b19fe6c18a95"
+  },
+  "timeframe": "1m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 100.1,
+      "entryIndex": 122,
+      "entryT": 1773064860000,
+      "exit": 99.9,
+      "exitIndex": 182,
+      "exitT": 1773068460000,
+      "initialSl": null,
+      "initialTp": null,
+      "meta": {
+        "calendarSha256": "9e6ae78985b17857aa2083f74aabb0cd095f9941a3311c219e3cf1341f7bafcc",
+        "date": "2026-03-09",
+        "decisionT": 1773064800000,
+        "endKind": "current.clock:close",
+        "endpointLogReturn": -0.0196084713883762,
+        "executionModel": "one-timeframe-delayed-open-ohlc-proxy",
+        "scheduledEntryT": 1773064860000,
+        "scheduledExitT": 1773068460000,
+        "setup": "timedReturn",
+        "signalEndT": 1773064800000,
+        "signalStartT": 1772816400000,
+        "startKind": "previous.close:close"
+      },
+      "pnl": -0.199999999999989,
+      "points": -0.199999999999989,
+      "reason": "rule",
+      "rule": "timed-scheduled-exit",
+      "side": "long",
+      "size": 1,
+      "sl": null,
+      "tag": "DSL-TIMED-RETURN",
+      "tp": null
+    }
+  ]
+}

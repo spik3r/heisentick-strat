@@ -16,13 +16,27 @@ func ResearchLocalMinute(date, zone string, minuteOfDay int) (int64, error) {
 	default:
 		return 0, fmt.Errorf("unsupported research time zone %q", zone)
 	}
-	d, err := time.Parse("2006-01-02", date)
-	if err != nil || d.Year() < 2000 || d.Year() > 2099 || minuteOfDay < 0 || minuteOfDay >= 24*60 {
-		return 0, fmt.Errorf("invalid research date or minute")
-	}
 	loc, err := time.LoadLocation(zone)
 	if err != nil {
 		return 0, fmt.Errorf("load research time zone: %w", err)
+	}
+	return ResearchLocalMinuteInLocation(date, loc, minuteOfDay)
+}
+
+// ResearchLocalMinuteInLocation uses a caller-pinned location, including TZif data.
+// It has the same bounded clock semantics as ResearchLocalMinute.
+func ResearchLocalMinuteInLocation(date string, loc *time.Location, minuteOfDay int) (int64, error) {
+	if loc == nil {
+		return 0, fmt.Errorf("research time zone is required")
+	}
+	switch loc.String() {
+	case "UTC", "America/New_York", "Europe/London", "Asia/Tokyo":
+	default:
+		return 0, fmt.Errorf("unsupported research time zone %q", loc.String())
+	}
+	d, err := time.Parse("2006-01-02", date)
+	if err != nil || d.Year() < 2000 || d.Year() > 2099 || minuteOfDay < 0 || minuteOfDay >= 24*60 {
+		return 0, fmt.Errorf("invalid research date or minute")
 	}
 	hour, minute := minuteOfDay/60, minuteOfDay%60
 	t := time.Date(d.Year(), d.Month(), d.Day(), hour, minute, 0, 0, loc)

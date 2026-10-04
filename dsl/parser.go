@@ -101,6 +101,7 @@ func (p *parser) parse() {
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
 	p.validateRMVSourceTimeframe()
+	p.validateTimedReturn()
 }
 
 func (p *parser) validateStrictHigherTimeframe() {
@@ -123,6 +124,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		return
 	}
 	switch head {
+	case "timed":
+		p.parseTimedReturn(line, tokens)
 	case "dsl":
 		p.parseVersion(line, tokens)
 	case "strategy", "name":

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "timed-return-audit-v1.schema.json",
+  "title": "Strat timed return audit v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "calendarSha256",
+    "timezoneDataSha256",
+    "executionModel",
+    "quantityModel",
+    "admissionModel",
+    "rows"
+  ],
+  "properties": {
+    "schema": {
+      "const": "strat-timed-return-audit-v1"
+    },
+    "calendarSha256": {
+      "type": "string",
+      "minLength": 64
+    },
+    "timezoneDataSha256": {
+      "type": "string",
+      "minLength": 64
+    },
+    "executionModel": {
+      "const": "one-timeframe-delayed-open-ohlc-proxy"
+    },
+    "quantityModel": {
+      "const": "one-fixed-unit-price-pnl"
+    },
+    "admissionModel": {
+      "const": "retrospective-whole-batch-coverage"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "status"
+        ],
+        "properties": {
+          "date": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "executed",
+              "zero_return",
+              "side_blocked",
+              "unavailable_endpoint",
+              "excluded_reference_session",
+              "excluded_predecessor_session"
+            ]
+          },
+          "startKind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "endKind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "startT": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "endT": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "decisionT": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "entryT": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "exitT": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "logReturn": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}
