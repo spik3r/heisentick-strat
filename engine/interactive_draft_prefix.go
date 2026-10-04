@@ -13,13 +13,14 @@ const InteractiveDraftPrefixSchema = "dsl-interactive-draft-prefix-v1"
 // This is preserved exposure, not finalized chart/report equity or resumable
 // state. TradeNetPnL aligns with Result.Trades (including their position IDs).
 type InteractiveDraftPrefixResult struct {
-	Schema            string                `json:"schema"`
-	Provenance        InteractiveProvenance `json:"provenance"`
-	StrategyVersion   string                `json:"strategyVersion"`
-	CalculationSource string                `json:"calculationSource"`
-	Costs             Costs                 `json:"costs"`
-	Result            PrefixResult          `json:"result"`
-	TradeNetPnL       []float64             `json:"tradeNetPnl"`
+	SourceAssertions  *InteractiveSourceAssertions `json:"sourceAssertions,omitempty"`
+	Schema            string                       `json:"schema"`
+	Provenance        InteractiveProvenance        `json:"provenance"`
+	StrategyVersion   string                       `json:"strategyVersion"`
+	CalculationSource string                       `json:"calculationSource"`
+	Costs             Costs                        `json:"costs"`
+	Result            PrefixResult                 `json:"result"`
+	TradeNetPnL       []float64                    `json:"tradeNetPnl"`
 }
 
 // RunInteractiveDraftPrefixFixture preserves the last open position and leaves
@@ -70,6 +71,6 @@ func RunInteractiveDraftPrefixFixture(raw []byte, source string) (InteractiveDra
 			return zero, fmt.Errorf("draft prefix net P&L must be finite")
 		}
 	}
-	return InteractiveDraftPrefixResult{Schema: InteractiveDraftPrefixSchema, Provenance: provenance,
+	return InteractiveDraftPrefixResult{Schema: InteractiveDraftPrefixSchema, Provenance: provenance, SourceAssertions: prepared.assertions,
 		StrategyVersion: version, CalculationSource: "raw", Costs: f.Costs.normalized(), Result: result, TradeNetPnL: net}, nil
 }

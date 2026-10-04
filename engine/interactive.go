@@ -71,19 +71,20 @@ type InteractiveStats struct {
 // existing conformance trade envelope, while the curves and statistics use
 // the explicitly defined interactive accounting above.
 type InteractiveRunResult struct {
-	Schema                  string                `json:"schema"`
-	CalculationSource       string                `json:"calculationSource,omitempty"`
-	CalculationSourceSchema string                `json:"calculationSourceSchema,omitempty"`
-	Provenance              InteractiveProvenance `json:"provenance"`
-	Run                     RunResult             `json:"run"`
-	TradeNetPnL             []float64             `json:"tradeNetPnl"`
-	EquityCurve             []float64             `json:"equityCurve"`
-	ClosedEquity            []float64             `json:"closedEquityCurve"`
-	CashEndEquity           float64               `json:"cashEndEquity"`
-	Skips                   map[string]int        `json:"skips"`
-	SkipDiagnostics         string                `json:"skipDiagnostics"`
-	SkipReasonSchema        string                `json:"skipReasonSchema"`
-	Stats                   InteractiveStats      `json:"stats"`
+	SourceAssertions        *InteractiveSourceAssertions `json:"sourceAssertions,omitempty"`
+	Schema                  string                       `json:"schema"`
+	CalculationSource       string                       `json:"calculationSource,omitempty"`
+	CalculationSourceSchema string                       `json:"calculationSourceSchema,omitempty"`
+	Provenance              InteractiveProvenance        `json:"provenance"`
+	Run                     RunResult                    `json:"run"`
+	TradeNetPnL             []float64                    `json:"tradeNetPnl"`
+	EquityCurve             []float64                    `json:"equityCurve"`
+	ClosedEquity            []float64                    `json:"closedEquityCurve"`
+	CashEndEquity           float64                      `json:"cashEndEquity"`
+	Skips                   map[string]int               `json:"skips"`
+	SkipDiagnostics         string                       `json:"skipDiagnostics"`
+	SkipReasonSchema        string                       `json:"skipReasonSchema"`
+	Stats                   InteractiveStats             `json:"stats"`
 }
 
 // Admitted ordinary families use the shared per-bar broker loop. Scheduled
@@ -122,7 +123,8 @@ func RunInteractiveVPNYHandoffVetoFixture(raw []byte, source string) (Interactiv
 }
 
 func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool, draft ...bool) (InteractiveRunResult, error) {
-	if err := validateInteractiveInput(raw); err != nil {
+	allowDraft := len(draft) == 1 && draft[0]
+	if err := validateInteractiveInput(raw, allowDraft); err != nil {
 		return InteractiveRunResult{}, err
 	}
 	fixture, err := DecodeRunFixture(raw)
@@ -135,7 +137,6 @@ func runInteractiveFixture(raw []byte, source string, vpNYHandoff bool, draft ..
 			return InteractiveRunResult{}, fmt.Errorf("%w: editor default source has changed", ErrInteractiveUnsupported)
 		}
 	}
-	allowDraft := len(draft) == 1 && draft[0]
 	if fixture.StrategyID == InteractiveDraftStrategyID && !allowDraft {
 		return InteractiveRunResult{}, fmt.Errorf("%w: draft requires its versioned execution route", ErrInteractiveUnsupported)
 	}
@@ -411,7 +412,7 @@ func interactiveFixedDuration(timeframe string) (float64, bool) {
 // The conformance decoder intentionally accepts metadata and legacy defaults.
 // Interactive admission rejects every option or row value it cannot represent
 // before that decoder can silently discard it or turn null into zero.
-func validateInteractiveInput(raw []byte) error {
+func validateInteractiveInput(raw []byte, draft ...bool) error {
 	var envelope map[string]json.RawMessage
 	if err := json.Unmarshal(raw, &envelope); err != nil {
 		return err
@@ -430,6 +431,10 @@ func validateInteractiveInput(raw []byte) error {
 			"rangeMethod", "sourceTimeframe", "costs", "bars", "htfBars",
 			"sourceBars", "sourceHtfBars", "source":
 			// source is provenance metadata, not execution input.
+		case "sourceAssertions":
+			if len(draft) != 1 || !draft[0] {
+				return fmt.Errorf("%w: source assertions require the versioned draft operation", ErrInteractiveUnsupported)
+			}
 		case "contextOptions":
 			var options map[string]json.RawMessage
 			if json.Unmarshal(envelope[name], &options) != nil || options == nil || len(options) != 0 {

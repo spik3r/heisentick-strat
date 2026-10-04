@@ -20,10 +20,11 @@ const InteractiveDraftStrategyID = "dslDraftStrategy"
 const interactiveDraftMaxBars = 30_000
 
 type InteractiveSourceProfile struct {
-	Schema     string                `json:"schema"`
-	Provenance InteractiveProvenance `json:"provenance"`
-	Parse      dsl.ParseResult       `json:"parse"`
-	Profile    struct {
+	SourceAssertions *InteractiveSourceAssertions `json:"sourceAssertions,omitempty"`
+	Schema           string                       `json:"schema"`
+	Provenance       InteractiveProvenance        `json:"provenance"`
+	Parse            dsl.ParseResult              `json:"parse"`
+	Profile          struct {
 		Family            string `json:"family"`
 		Symbol            string `json:"symbol"`
 		Timeframe         string `json:"timeframe"`
@@ -220,7 +221,7 @@ func draftFamilyCalculation(parsed dsl.ParseResult, calculationSource string) er
 // mutable local DSL. It admits no catalog wrappers or implicit runtime options.
 func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfile, error) {
 	var zero InteractiveSourceProfile
-	fields, err := draftObject(raw, map[string]bool{"schema": true, "symbol": true, "timeframe": true, "calculationSource": true})
+	fields, err := draftObject(raw, map[string]bool{"schema": true, "symbol": true, "timeframe": true, "calculationSource": true, "sourceAssertions": true})
 	if err != nil {
 		return zero, err
 	}
@@ -250,8 +251,12 @@ func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfi
 	if err := draftFamilyCalculation(parsed, calculationSource); err != nil {
 		return zero, err
 	}
+	assertions, err := draftSourceAssertions(fields, parsed, symbol, timeframe)
+	if err != nil {
+		return zero, err
+	}
 	requestSum, sourceSum := sha256.Sum256(raw), sha256.Sum256([]byte(source))
-	out := InteractiveSourceProfile{Schema: InteractiveSourceProfileSchema, Parse: parsed,
+	out := InteractiveSourceProfile{Schema: InteractiveSourceProfileSchema, Parse: parsed, SourceAssertions: assertions,
 		Provenance: InteractiveProvenance{FixtureSHA256: hex.EncodeToString(requestSum[:]), SourceSHA256: hex.EncodeToString(sourceSum[:])}}
 	out.Profile.Family = setupTypeFromAny(parsed.Config["setupType"])
 	out.Profile.Symbol, out.Profile.Timeframe, out.Profile.RangeMethod = symbol, timeframe, rangeMethod
@@ -260,15 +265,16 @@ func InspectInteractiveSource(raw []byte, source string) (InteractiveSourceProfi
 }
 
 type preparedInteractiveDraft struct {
-	fixture RunFixture
-	parsed  dsl.ParseResult
+	fixture    RunFixture
+	parsed     dsl.ParseResult
+	assertions *InteractiveSourceAssertions
 }
 
 // Both finalized and prefix operations recheck the exact input in Go.
 func prepareInteractiveDraftFixture(raw []byte, source string) (preparedInteractiveDraft, error) {
 	var zero preparedInteractiveDraft
 	fields, err := draftObject(raw, map[string]bool{"schema": true, "case": true, "strategyId": true,
-		"symbol": true, "timeframe": true, "rangeMethod": true, "costs": true, "bars": true, "calculationSource": true})
+		"symbol": true, "timeframe": true, "rangeMethod": true, "costs": true, "bars": true, "calculationSource": true, "sourceAssertions": true})
 	if err != nil {
 		return zero, err
 	}
@@ -288,7 +294,7 @@ func prepareInteractiveDraftFixture(raw []byte, source string) (preparedInteract
 	if len(costs) != 5 {
 		return zero, fmt.Errorf("draft requires all five explicit costs")
 	}
-	if err := validateInteractiveInput(raw); err != nil {
+	if err := validateInteractiveInput(raw, true); err != nil {
 		return zero, err
 	}
 	fixture, err := DecodeRunFixture(raw)
@@ -303,6 +309,10 @@ func prepareInteractiveDraftFixture(raw []byte, source string) (preparedInteract
 		return zero, err
 	}
 	if err := draftFamilyCalculation(parsed, calculationSource); err != nil {
+		return zero, err
+	}
+	assertions, err := draftSourceAssertions(fields, parsed, fixture.Symbol, fixture.Timeframe)
+	if err != nil {
 		return zero, err
 	}
 	if fixture.RangeMethod != rangeMethod || len(fixture.Bars) == 0 || len(fixture.Bars) > interactiveDraftMaxBars {
@@ -323,14 +333,15 @@ func prepareInteractiveDraftFixture(raw []byte, source string) (preparedInteract
 	if !adjacent {
 		return zero, fmt.Errorf("%w: draft cadence cannot be verified from only gapped bars", ErrInteractiveUnsupported)
 	}
-	return preparedInteractiveDraft{fixture: fixture, parsed: parsed}, nil
+	return preparedInteractiveDraft{fixture: fixture, parsed: parsed, assertions: assertions}, nil
 }
 
 // RunInteractiveDraftFixture reparses exact source and rechecks capability at
 // execution. No preflight token can authorize a different source or route.
 func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult, error) {
 	var zero InteractiveRunResult
-	if _, err := prepareInteractiveDraftFixture(raw, source); err != nil {
+	prepared, err := prepareInteractiveDraftFixture(raw, source)
+	if err != nil {
 		return zero, err
 	}
 	result, err := runInteractiveFixture(raw, source, false, true)
@@ -338,5 +349,6 @@ func RunInteractiveDraftFixture(raw []byte, source string) (InteractiveRunResult
 		return zero, err
 	}
 	result.Schema = InteractiveDraftSchema
+	result.SourceAssertions = prepared.assertions
 	return result, nil
 }

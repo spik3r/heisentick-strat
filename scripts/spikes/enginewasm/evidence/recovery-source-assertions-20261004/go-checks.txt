@@ -1,0 +1,16 @@
+go version go1.22.12 linux/amd64
+ok  	github.com/spik3r/heisentick-strat/authoredorb	(cached)
+ok  	github.com/spik3r/heisentick-strat/cmd/conformance	6.090s
+ok  	github.com/spik3r/heisentick-strat/cmd/dslwasm	(cached)
+ok  	github.com/spik3r/heisentick-strat/cmd/enginewasm	1.390s
+ok  	github.com/spik3r/heisentick-strat/cmd/heisentick	0.940s
+ok  	github.com/spik3r/heisentick-strat/contextcols	(cached)
+ok  	github.com/spik3r/heisentick-strat/data	(cached)
+ok  	github.com/spik3r/heisentick-strat/diagnostics	(cached)
+ok  	github.com/spik3r/heisentick-strat/dsl	(cached)
+ok  	github.com/spik3r/heisentick-strat/engine	14.218s
+ok  	github.com/spik3r/heisentick-strat/marketdata	(cached)
+ok  	github.com/spik3r/heisentick-strat/montecarlo	(cached)
+ok  	github.com/spik3r/heisentick-strat/report	0.242s
+ok  	github.com/spik3r/heisentick-strat/testsupport	(cached)
+conformance OK: 68 parse goldens, 60 run goldens, 0 TODO run cases match the Go engine

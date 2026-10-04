@@ -111,3 +111,41 @@ entrypoints. Draft preflight is not an authorization token for another source.
 Consumers must preserve Go accounting, label legacy idle JS diagnostics as
 advisory in Go mode, reject unsupported requests visibly without fallback,
 and prevent stale source/route/build results from being published.
+
+## Optional registered source assertions
+
+Inspection, finalized draft execution and raw draft-prefix execution additionally
+accept `sourceAssertions`, using `dsl-source-assertions-v1`. It checks a caller's
+registry snapshot for source consistency, never overrides Go's parsed config.
+The outer execution strategy ID remains `dslDraftStrategy`. Its six explicit
+fields are `schema`, `strategyId`, `params`, `contextOptions`,
+`contextRequirements`, and `preferredRangeMethod`. Unknown, duplicate, missing,
+case-aliased, null, or incorrectly typed fields fail closed.
+
+This checkpoint qualifies only `dslDualEmaResumptionXauusdDaily` on XAUUSD 1d
+and `dslDualEmaResumptionXauusdFourHour` on XAUUSD 4h, with the strict Dual family.
+`params` requires exactly nine finite JSON numbers: `fastEmaLen`, `slowEmaLen`,
+`slowRiseBars`, `atrLen`, `stopAtr`, `trailAtr`, `allowLong`, `allowShort`, and
+`riskUsd`. Each must equal its effective Go-parsed source value. Emptying params
+or substituting a registry default cannot bypass this check.
+
+`contextOptions` is exactly `{}` and `contextRequirements` exactly `["sessions"]`.
+This preserves the wrapper's inherited capability declaration; it does not add
+a session trading filter to Dual's family execution. `preferredRangeMethod` is
+exactly `"zone"`, preserving registry metadata. The actual source profile remains
+`pivot`; execution with `rangeMethod: "zone"` still fails. Metadata assertions
+never change trading behavior or source admission.
+
+Every operation reparses source and rechecks assertions independently, then echoes
+the canonical object as `sourceAssertions` in success. Exact request bytes,
+including assertions, remain in fixture provenance. Omitted assertions preserve
+the prior request/result shape. Other interactive operations reject this field.
+Finalized raw/Heikin-Ashi qualification and raw-only prefix restrictions remain.
+
+This does not authenticate registry source or authorize a new caller. Consumers
+must snapshot their actual definition, bind its ID and exact canonical source,
+verify Go's echo and executable identity across asynchronous boundaries, and
+fail visibly on unsupported options. Daily stays archived. This producer-only
+checkpoint does not adopt a registered CLI or alter lifecycle. Source-consistent
+edits can pass this contract; the consumer's canonical source binding remains a
+separate mandatory boundary.

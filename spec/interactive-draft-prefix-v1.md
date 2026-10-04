@@ -11,6 +11,10 @@ bars, safe ordered timestamp grid/gaps and OHLCV bounds. Calculation is raw only
 fillOn is close or nextOpen. Positive starting equity, nonnegative finite costs,
 exact keys and no params/auxiliary rows/windows/finalization switches are required.
 SMA retains its established next-open family behavior under global close costs.
+Optional `sourceAssertions` is admitted only under the exact consistency contract
+in `interactive-draft-v1.md`, rechecked against source on every prefix call and
+echoed canonically in success. It does not supply execution overrides, replace
+the raw-only restriction, or change position IDs.
 
 Success contains `schema`, exact-byte source/fixture `provenance`, `costs`,
 `calculationSource: raw`, `strategyVersion`, `result` and `tradeNetPnl`.

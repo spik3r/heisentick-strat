@@ -6,6 +6,14 @@ version and is named here.
 
 ## [Unreleased]
 
+- Reconstruct the optional `dsl-source-assertions-v1` producer contract for
+  registered XAUUSD Dual EMA daily/4h snapshots after the 2026-10-04 cloud
+  workspace loss. Go checks nine source-derived numeric parameters, empty
+  context options, the sessions capability and registry range preference at
+  inspection, finalized draft and raw-prefix entry points. Assertions are
+  never overrides or registry authentication; caller adoption remains separate.
+  This unreleased capability requires a minor release and explicit consumer
+  adoption. Prior lost checkpoint hashes and test claims are not reused.
 - Add `authored-orb-run-v1`, a whole-strategy native/WASM execution path for
   archived Day Session ORB and active Original TV Parity, including frozen JS
   trade and equity fixtures. This new producer capability requires a minor
