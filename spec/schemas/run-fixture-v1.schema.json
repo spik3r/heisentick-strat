@@ -20,6 +20,7 @@
   ],
   "properties": {
     "schema": { "const": "dsl-conformance-run-fixture-v1" },
+    "timedCalendar": { "$ref": "timed-return-calendar-v1.schema.json" },
     "case": { "type": "string", "minLength": 1 },
     "strategyId": { "type": "string", "minLength": 1 },
     "symbol": { "type": "string", "minLength": 1 },
@@ -49,6 +50,7 @@
         "feePerUnit": { "type": "number" },
         "fillOn": { "enum": ["close", "open", "nextOpen"] },
         "slippage": { "type": "number" },
+        "slippageBps": { "type": "number" },
         "startEquity": { "type": "number" }
       }
     },

@@ -40,6 +40,31 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if len(parsed.Errors) > 0 {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
 	}
+	if isTimedReturn(parsed.Config) {
+		if len(fixture.RawSourceBars) != 0 || len(fixture.RawHTFBars) != 0 || len(fixture.RawSourceHTFBars) != 0 {
+			return RunResult{}, fmt.Errorf("timed fixture rejects source/HTF rows")
+		}
+		if fixture.RawBars != nil {
+			if len(fixture.RawBars) != len(fixture.Bars) {
+				return RunResult{}, fmt.Errorf("timed fixture has malformed raw bars")
+			}
+			for _, row := range fixture.RawBars {
+				if len(row) != 6 {
+					return RunResult{}, fmt.Errorf("timed fixture requires six-value OHLCV rows")
+				}
+			}
+		}
+		result, err := Run(RunRequest{Config: parsed.Config, Series: marketdata.SeriesFromBars(fixture.Bars),
+			Symbol: fixture.Symbol, Timeframe: fixture.Timeframe, StrategyID: fixture.StrategyID,
+			TimedCalendar: fixture.TimedCalendar, Costs: fixture.Costs,
+			SourceSeries: marketdata.SeriesFromBars(fixture.SourceBars), HTFSeries: marketdata.SeriesFromBars(fixture.HTFBars),
+			SourceHTFSeries: marketdata.SeriesFromBars(fixture.SourceHTFBars), SourceTimeframe: fixture.SourceTimeframe,
+			HigherTimeframe: fixture.HigherTimeframe})
+		if err == nil {
+			result.Case = fixture.Case
+		}
+		return result, err
+	}
 	if setupType := setupTypeFromAny(parsed.Config["setupType"]); !implementedFamily(setupType) {
 		return RunResult{}, fmt.Errorf("%s: setup family %q is not implemented", fixture.Case, setupType)
 	}

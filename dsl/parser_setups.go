@@ -13,6 +13,12 @@ func (p *parser) parseSetupType(tokens []string) {
 		p.config["cooldownCandles"] = 12
 	}
 	switch family {
+	case string(FamilyTimedReturn):
+		// This strict family uses only its explicit timed contract. Keep the
+		// inherited inert fields canonical so nondefault overrides fail closed.
+		p.config["breakeven"] = map[string]any{"atR": 0.75, "offsetAtr": 0.02}
+		p.config["cooldownCandles"] = 3
+		p.config["timedReturn"] = map[string]any{}
 	case string(FamilyDownShockRebound):
 		p.config["downShockRebound"] = map[string]any{"entry": "immediate", "targetMode": "off", "targetValue": 0.0}
 		p.config["allowLong"] = 1
