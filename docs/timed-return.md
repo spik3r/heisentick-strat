@@ -35,7 +35,9 @@ unit with adverse entry and exit slippage. Commission is unsupported and the
 native API rejects nonzero `FeePerUnit`; `costComplete` is always false. No
 currency conversion, risk normalization, financing, fees or portfolio is implied.
 
-The checked `engine.Run` API, fixture path and CLI share the same runner. Generic
+The checked `engine.Run` API, fixture path and CLI share the same runner.
+A nonnil timed calendar paired with any other family is rejected before generic
+execution or preparation, including off-route and otherwise empty results. Generic
 report/grid preparation, prefix/resume, source-timeframe transfer, clipping,
 HTF and generic report context deliberately refuse this family. No app pin,
 WASM/browser runner adoption, default switch or release is included.

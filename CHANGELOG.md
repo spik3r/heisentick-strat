@@ -6,6 +6,10 @@ version and is named here.
 
 ## [Unreleased]
 
+- Reject a supplied timed-return calendar on another strategy family before
+  generic fixture execution or shared/native preparation. This closes mixed
+  profile admission without changing valid existing family behavior.
+
 - Add a native-only opt-in timed-return family and `timed-report` CLI with
   typed opening/completed-close anchors, pinned timezone/calendar inputs,
   one-bar-delayed scheduled fills, one fixed unit and dated admission audit.

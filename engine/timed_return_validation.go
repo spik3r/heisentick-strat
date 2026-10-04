@@ -19,6 +19,15 @@ func isTimedReturn(cfg dsl.Config) bool {
 	return cfg != nil && cfg["setupType"] == string(dsl.FamilyTimedReturn)
 }
 
+// A supplied calendar is an explicit timed-return request, never ignorable
+// metadata on another family. Check this before generic preparation/execution.
+func validateTimedCalendarFamily(cfg dsl.Config, calendar *TimedReturnCalendar) error {
+	if calendar != nil && !isTimedReturn(cfg) {
+		return fmt.Errorf("timed calendar requires the timed-return family")
+	}
+	return nil
+}
+
 func timedDuration(tf string) (int64, error) {
 	minutes := map[string]int64{"1m": 1, "5m": 5, "15m": 15, "30m": 30, "1h": 60}
 	m, ok := minutes[tf]

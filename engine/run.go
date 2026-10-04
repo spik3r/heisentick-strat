@@ -262,6 +262,9 @@ func sourceEntryRequest(request RunRequest) bool {
 }
 
 func validateRunRequest(request RunRequest) error {
+	if err := validateTimedCalendarFamily(request.Config, request.TimedCalendar); err != nil {
+		return err
+	}
 	if request.Config == nil {
 		return errors.New("engine config is required")
 	}
