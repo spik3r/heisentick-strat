@@ -34,6 +34,21 @@ beyond the high or low.
 | `stop <N> pips` | Use a fixed absolute stop distance converted with the route instrument's reviewed pip size. When the order opens, the engine anchors this distance to the actual fill. Supported by this family for operational canaries. | Family stop | `stop.type = pips`, `stop.pips` |
 | `target <N> pips` | Use a fixed absolute target distance converted with the route instrument's reviewed pip size. When the order opens, the engine anchors this distance to the actual fill. Supported by this family for operational canaries. | Family target | `target.pips` |
 
+## Duration units
+
+`first N` requires a finite positive whole-number duration under the existing
+float64 numeric representation. `minute` and `minutes` select minute mode; `candle`, `candles`, `bar` and `bars` select
+candle-count mode. Zero, negative, fractional and native-integer-overflow
+values, missing or unknown duration units, and mixed units in the duration
+prefix produce a parse error. Whole-number decimal spellings such as `15.0` remain valid. The
+`every N hours UTC` form retains its integer 1–24-hour range and first-15-minute
+default.
+
+A later `first N` directive clears the other duration mode. It does not
+change a separately selected UTC-slot clock, the named-session clock, or
+any entry/exit rule. The optional session suffix keeps its existing shared
+session-selection behavior.
+
 ## Defaults and interactions
 
 Selecting `type: opening range breakout` enables London+NY sessions only when

@@ -1,0 +1,7 @@
+dsl v7
+strategy "Opening range duration unit regression" {
+}
+setup {
+  type: opening range breakout
+  opening range first 15 minutes candles
+}
