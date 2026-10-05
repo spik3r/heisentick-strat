@@ -34,6 +34,7 @@ file is compiled by the doc-fence tests.
 | `sessions(...)` | `asia`, `mid`, `london`, `ny` | Enables trading sessions. | `sessions(london, ny)` |
 | `trade window in (...)` | `<session>.<part>` | Restricts fixed UTC+10 windows to half-open 60-minute parts; the fourth `mid` hour matches only `mid.all`. | `trade window in (london.open, ny.open)` |
 | `trade window minutes A to B` | minutes | Restricts minutes from the active window open to the half-open interval `[A, B)`. | `trade window minutes 0 to 90` |
+| `clock UTC+10` | fixed UTC offset | Declares the wall clock read by `clock range breakout` times. No DST. | `clock UTC+10` |
 | `local weekday in (...)` / `not in (...)` | weekdays | Allows or blocks local weekdays. | `local weekday not in (Fri)` |
 | `local hour in (...)` / `not in (...)` | hours | Allows or blocks local hours. | `local hour in (7, 8, 9)` |
 | `session phase in (...)` / `not in (...)` | phases | Allows or blocks named session phases. | `session phase not in (lunch)` |

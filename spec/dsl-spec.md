@@ -182,6 +182,11 @@ Time gates:
   Because mid lasts four hours, 15:00–16:00 matches only `mid.all`. The
   segment and minute gates intersect and still respect `sessions(...)`.
   A DST-aware clock would be a separate versioned semantic change.
+- `clock UTC+10` — fixed offset from UTC (`UTC±H` or `UTC±H:MM`, within
+  `[-12:00, +14:00]`, no DST) used by families that read wall-clock times.
+  Today only `clock range breakout` does; it requires this directive. It does
+  not change `local hour`, `trade window ...` or `sessions(...)`, which keep
+  their own fixed clocks.
 - `local weekday in (Mon, Tue)` / `local weekday not in (Fri)` — allow/block
   by local weekday (`weekday …` also accepted).
 - `local hour in (…)` / `not in (…)` — allow/block local hours 0–23.
@@ -364,6 +369,8 @@ Risk (stop):
   setup-structure stops (which one applies depends on the setup family).
 - `stop beyond opposite range edge [by X] [min A] [max B]`.
 - `stop <M> ATR` — fixed ATR-multiple stop.
+- `stop <N> percent` — stop distance as a percent of the fill price, anchored
+  to the actual fill (`clock range breakout` only).
 - `stop beyond <ratio> retrace [by X]` — fib-retrace stop.
 - `stop extreme N [+ X]`, `stop recentExtreme key/value…` — *deprecated*
   spellings of the extreme stop.
@@ -407,6 +414,8 @@ Management:
   values.
 - `wait N candles after trade` — re-entry cooldown (default 3).
   *Deprecated:* `cooldownCandles`, `cooldownBars`.
+- `close positions at HH:MM` — close an open position at a wall-clock time on
+  the strategy's `clock` (`clock range breakout` only).
 - `maxHoldCandles N` — time stop (0 = off). *Deprecated:* `maxHoldBars`.
 
 Execution:
@@ -474,6 +483,7 @@ are errors. The `type` value itself is written in trading language
 | `intra hour run exhaustion` | intraHourRunExhaustion |
 | `named level sweep` | namedLevelSweep |
 | `named level flag` | namedLevelFlag |
+| `clock range breakout` | clockRangeBreakout |
 
 Per-family phrase sets live in one standalone file per family under
 [`strat/docs/dsl-spec-families/`](dsl-spec-families/breakRetest.md) (named by the
