@@ -1,10 +1,12 @@
 # Setup family: `clock range breakout` (`clockRangeBreakout`)
 
-Status: proposed (HT-133). Parser, engine and conformance fixtures follow in
+Status: proposed (HT-167). Parser, engine and conformance fixtures follow in
 the next heisentick-strat PR; this file is the text they are built to.
 
 Part of `spec/dsl-spec.md` §9. Backlog task:
-[HT-133](https://github.com/spik3r/heisentick-backlog/blob/main/tasks/HT-133-dsl-clock-range-breakout.md).
+[HT-167](https://github.com/spik3r/heisentick-backlog/blob/claude/ht133-clock-range-breakout/tasks/HT-167-dsl-clock-range-breakout.md).
+
+Task identity note: originally proposed as HT-133, now HT-167 to resolve a backlog ID collision. The deferred extras task is HT-168, originally proposed as HT-134. Earlier commits and branch names retain those historical IDs. This identifier/link correction does not change or approve the proposed semantics.
 
 ## Type phrase
 
@@ -40,7 +42,7 @@ edge itself with a stop order, and holds to a clock time instead of a target.
 The family has no target. An absent `target` section means no target; any
 `target` phrase is a compile error for this family. Breakeven, trail, partial
 and `maxHoldCandles` are not part of v1 and are compile errors when present
-(follow-up: HT-134).
+(follow-up: HT-168).
 
 ### Times after the range end
 
