@@ -200,6 +200,9 @@ func validateClockRangeFixtureRows(cfg dsl.Config, fixture RunFixture) error {
 	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyClockRangeBreakout) || fixture.RawBars == nil {
 		return nil
 	}
+	if fixture.rawRowDefect != "" {
+		return fmt.Errorf("clockRangeBreakout: malformed series: %s", fixture.rawRowDefect)
+	}
 	if len(fixture.RawBars) != len(fixture.Bars) {
 		return fmt.Errorf("clockRangeBreakout: malformed series: %d bar rows were reduced to %d bars", len(fixture.RawBars), len(fixture.Bars))
 	}

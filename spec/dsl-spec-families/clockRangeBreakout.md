@@ -335,7 +335,7 @@ any order, nothing before the first, and metadata as one quoted string. Words
 inside quoted metadata are text in every family.
 
 **Runtime checks.** Original fixture rows are checked before the row-to-bar
-adapters (exactly six finite values per row), then the series. A malformed series (non-increasing or duplicate
+adapters (exactly six finite JSON numbers per row; `null` and other primitives are rejected, because decoding would turn `null` into zero), then the series. A malformed series (non-increasing or duplicate
 timestamps, timestamps off the route grid, OHLC outside bounds, a timestamp
 outside the year 1970-9999, an implementation support bound that keeps the
 per-day loop finite) fails the whole run with an error that starts

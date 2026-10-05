@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"math"
+	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
@@ -832,5 +834,99 @@ func TestClockRangeBreakoutDirectConfigRiskBoundary(t *testing.T) {
 		if (err != nil) != tc.wantErr {
 			t.Errorf("riskUsd %v: err = %v, wantErr %v", tc.risk, err, tc.wantErr)
 		}
+	}
+}
+
+// JSON null decodes to zero in [][]float64, so a missing value would pass for
+// a real quote. The original primitives are checked on every fixture entry.
+func TestClockRangeBreakoutRejectsNullAndNonNumberFixtureValues(t *testing.T) {
+	dir := crbCorpusRunDir(t)
+	baseJSON, err := os.ReadFile(filepath.Join(dir, "family-clock-range-breakout-ordinary-long.fixture.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(filepath.Join(dir, "family-clock-range-breakout-ordinary-long.strat"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	longOnly := strings.Replace(string(source), "risk {", "filters {\n  side long only\n}\nrisk {", 1)
+	mutated := func(mutate func(bars [][]any)) []byte {
+		var fixture map[string]any
+		if err := json.Unmarshal(baseJSON, &fixture); err != nil {
+			t.Fatal(err)
+		}
+		bars := fixture["bars"].([]any)
+		rows := make([][]any, len(bars))
+		for i, row := range bars {
+			rows[i] = row.([]any)
+		}
+		mutate(rows)
+		for i := range rows {
+			bars[i] = rows[i]
+		}
+		out, err := json.Marshal(fixture)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return out
+	}
+	run := func(raw []byte, program string) error {
+		path := filepath.Join(t.TempDir(), "fixture.json")
+		if err := os.WriteFile(path, raw, 0o644); err != nil {
+			t.Fatal(err)
+		}
+		fixture, err := LoadRunFixture(path)
+		if err != nil {
+			return err // a non-number primitive may already fail to decode
+		}
+		_, err = RunFixtureCase(fixture, program)
+		return err
+	}
+	if err := run(mutated(func([][]any) {}), string(source)); err != nil {
+		t.Fatalf("unmodified fixture: %v", err)
+	}
+	columns := []string{"timestamp", "open", "high", "low", "close", "volume"}
+	for column, name := range columns {
+		raw := mutated(func(bars [][]any) { bars[10][column] = nil })
+		if err := run(raw, string(source)); err == nil {
+			t.Errorf("null %s was accepted", name)
+		}
+	}
+	// Trade-producing cases: the intended range loses a bar, or a missing open
+	// is read as a zero quote.
+	if err := run(mutated(func(bars [][]any) { bars[0][0] = nil }), string(source)); err == nil {
+		t.Error("null first timestamp was accepted")
+	}
+	if err := run(mutated(func(bars [][]any) { bars[36][1] = nil; bars[36][3] = 0.0 }), longOnly); err == nil {
+		t.Error("null open with a zero low was accepted")
+	}
+	for name, value := range map[string]any{"string": "101", "boolean": true, "object": map[string]any{}} {
+		if err := run(mutated(func(bars [][]any) { bars[10][2] = value }), string(source)); err == nil {
+			t.Errorf("%s value was accepted", name)
+		}
+	}
+	// Legitimate zeros stay valid: zero volume, and explicit zero risk.
+	if err := run(mutated(func(bars [][]any) { bars[10][5] = 0.0 }), string(source)); err != nil {
+		t.Errorf("zero volume rejected: %v", err)
+	}
+	zeroRisk := strings.Replace(string(source), "risk: 200 USD", "risk: 0 USD", 1)
+	if err := run(mutated(func([][]any) {}), zeroRisk); err != nil {
+		t.Errorf("explicit zero risk rejected: %v", err)
+	}
+}
+
+// Another family keeps decoding null as before.
+func TestOtherFamiliesStillDecodeNullFixtureValuesAsBefore(t *testing.T) {
+	var fixture RunFixture
+	raw := []byte(`{"bars":[[1,2,3,null,5,6]]}`)
+	if err := json.Unmarshal(raw, &fixture); err != nil {
+		t.Fatal(err)
+	}
+	fixture.ScanRawBarRows(raw)
+	if fixture.RawBars[0][3] != 0 {
+		t.Fatalf("decoded row = %v", fixture.RawBars[0])
+	}
+	if err := validateClockRangeFixtureRows(dsl.Config{"setupType": "openingRangeBreakout"}, fixture); err != nil {
+		t.Fatalf("other family checked the rows: %v", err)
 	}
 }

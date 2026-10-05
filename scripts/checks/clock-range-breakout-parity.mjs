@@ -87,6 +87,9 @@ try {
   const rows = {
     shortRow: (bars) => { bars[10] = bars[10].slice(0, 4); },
     sevenValueRow: (bars) => { bars[10] = [...bars[10], 7]; },
+    nullTimestamp: (bars) => { bars[0][0] = null; },
+    nullOpen: (bars) => { bars[36][1] = null; bars[36][3] = 0; },
+    nullVolume: (bars) => { bars[10][5] = null; },
   };
   for (const [label, mutate] of Object.entries(rows)) {
     const fixture = structuredClone(base);

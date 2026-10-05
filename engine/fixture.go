@@ -37,6 +37,7 @@ func LoadRunFixture(path string) (RunFixture, error) {
 			return RunFixture{}, fmt.Errorf("timed fixture rejects context options")
 		}
 	}
+	fixture.ScanRawBarRows(data)
 	fixture.Costs = fixture.Costs.normalized()
 	fixture.Bars = rowsToBars(fixture.RawBars)
 	fixture.SourceBars = rowsToBars(fixture.RawSourceBars)
@@ -61,4 +62,28 @@ func rowsToBars(rows [][]float64) []marketdata.Bar {
 		})
 	}
 	return bars
+}
+
+// ScanRawBarRows records the first bar-row element of data that is not a JSON
+// number. Decoding into [][]float64 turns null into zero, which would let a
+// missing value pass for a real quote; the clock range breakout run refuses a
+// fixture with such a defect. Other families ignore it. Callers that decode a
+// fixture themselves should call this with the same bytes.
+func (f *RunFixture) ScanRawBarRows(data []byte) {
+	f.rawRowDefect = ""
+	var probe struct {
+		Bars [][]json.RawMessage `json:"bars"`
+	}
+	if err := json.Unmarshal(data, &probe); err != nil {
+		return
+	}
+	for i, row := range probe.Bars {
+		for j, element := range row {
+			text := bytes.TrimSpace(element)
+			if len(text) == 0 || !(text[0] == '-' || text[0] >= '0' && text[0] <= '9') {
+				f.rawRowDefect = fmt.Sprintf("bar row %d value %d is %s, not a number", i, j, string(text))
+				return
+			}
+		}
+	}
 }

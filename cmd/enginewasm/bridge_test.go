@@ -155,3 +155,31 @@ func barsToColumns(bars []marketdata.Bar) [6][]float64 {
 	}
 	return columns
 }
+
+// The string bridge refuses a null bar value for the clock range breakout
+// family, where decoding would otherwise turn it into a zero quote.
+func TestBridgeRejectsNullBarValuesForClockRangeBreakout(t *testing.T) {
+	const name = "../../conformance/run/family-clock-range-breakout-ordinary-long"
+	raw, err := os.ReadFile(name + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(name + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := runFixture(string(raw), string(source)); err != nil {
+		t.Fatalf("unmodified fixture: %v", err)
+	}
+	for column := 0; column < 6; column++ {
+		var fixture map[string]any
+		if err := json.Unmarshal(raw, &fixture); err != nil {
+			t.Fatal(err)
+		}
+		fixture["bars"].([]any)[10].([]any)[column] = nil
+		mutated, _ := json.Marshal(fixture)
+		if _, err := runFixture(string(mutated), string(source)); err == nil || !strings.Contains(err.Error(), "malformed series") {
+			t.Errorf("column %d: err = %v, want malformed series", column, err)
+		}
+	}
+}
