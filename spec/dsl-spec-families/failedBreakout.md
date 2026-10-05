@@ -51,6 +51,10 @@ side/edge price. `take profit [at] [the] opposite channel edge` switches the
 target lookup to the active channel; limit entry rests at the swept edge instead
 of entering on the signal close.
 
+`target N R` sets the fallback reward (`target.fallbackR`), just like `fallback
+N R`. It does not replace a valid opposite-edge target that meets the configured
+minimum reward. If both phrases are authored, the later one wins.
+
 ## Example
 
 ```dsl
