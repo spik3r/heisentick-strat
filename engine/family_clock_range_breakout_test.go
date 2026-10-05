@@ -2,6 +2,8 @@ package engine
 
 import (
 	"encoding/json"
+	"errors"
+	"math"
 	"reflect"
 	"strings"
 	"testing"
@@ -742,5 +744,93 @@ func TestClockRangeBreakoutExecutionWindow(t *testing.T) {
 	}
 	if after := run(crbEntryAt(1), crbEntryAt(3)); after.TradeCount != 0 {
 		t.Errorf("a fill before the window start must not trade later: %+v", after.Trades)
+	}
+}
+
+// The range closes when its final bar does. A series that ends there already
+// shows the day: orders pending with all 36 bars counted, or the rejection.
+func TestClockRangeBreakoutPlacesWhenTheFinalRangeBarCloses(t *testing.T) {
+	_, prepared := crbMustRun(t, crbOptions{}.program(), crbRangeBars(crbBaseRangeStart, 99, 101), Costs{})
+	if day := crbDay(t, prepared, 0); day.Outcome != ClockDayPending || day.RangeBars != 36 || day.DayKey != "2026-03-10" {
+		t.Errorf("complete range, no later quote: %+v", day)
+	}
+	_, prepared = crbMustRun(t, crbOptions{}.program(), crbRangeBars(crbBaseRangeStart, 99, 101, 1, 2, 4, 5), Costs{})
+	if day := crbDay(t, prepared, 0); day.Reason != ClockReasonInsufficient {
+		t.Errorf("insufficient coverage, no later quote: %+v", day)
+	}
+}
+
+// First quote after the range arrives past the expiry: the orders were live
+// and expired unfilled, and nothing trades even though that bar spans a trigger.
+func TestClockRangeBreakoutFirstPostRangeQuoteAfterExpiry(t *testing.T) {
+	late := crbBar(crbUTC(2026, time.March, 10, 5, 5), 100, 105, 95, 100)
+	result, prepared := crbMustRun(t, crbOptions{expire: "15:00"}.program(), crbSession(late), Costs{})
+	if day := crbDay(t, prepared, 0); result.TradeCount != 0 || day.Outcome != ClockDayExpired {
+		t.Errorf("trades=%d day=%+v", result.TradeCount, day)
+	}
+}
+
+// Prefix replay is not checkpoint resume. The resumable entry point stays
+// unsupported for this family and says so.
+func TestClockRangeBreakoutCheckpointResumeIsUnsupported(t *testing.T) {
+	parsed, err := dsl.Parse(crbOptions{}.program())
+	if err != nil || len(parsed.Errors) != 0 {
+		t.Fatalf("parse: %v %v", err, parsed.Errors)
+	}
+	request := RunRequest{Config: parsed.Config, Series: marketdata.SeriesFromBars(crbSession(crbBar(crbBaseRangeEnd, 100.5, 101.5, 100.2, 101))), Symbol: "XAUUSD", Timeframe: "5m", StrategyID: "crb-resume"}
+	_, _, err = RunPrefixResumable(request, nil)
+	var unsupported *PrefixCheckpointUnsupportedError
+	if !errors.As(err, &unsupported) || !strings.Contains(err.Error(), "clockRangeBreakout") {
+		t.Fatalf("err = %v, want an unsupported-checkpoint error naming the family", err)
+	}
+}
+
+// Original fixture rows are checked before the lossy adapters: a short row is
+// not dropped (the coverage rule would hide it) and a long one is not cut.
+func TestClockRangeBreakoutRejectsMalformedFixtureRows(t *testing.T) {
+	source := crbOptions{}.program()
+	base := func() RunFixture {
+		bars := crbSession(crbBar(crbBaseRangeEnd, 100.5, 101.5, 100.2, 101), crbBar(crbBaseClose, 102, 103, 101, 102))
+		fixture := RunFixture{Case: "rows", Symbol: "XAUUSD", Timeframe: "5m", Bars: bars}
+		for _, bar := range bars {
+			fixture.RawBars = append(fixture.RawBars, []float64{bar.T, bar.O, bar.H, bar.L, bar.C, bar.V})
+		}
+		return fixture
+	}
+	if _, err := RunFixtureCase(base(), source); err != nil {
+		t.Fatalf("well-formed fixture: %v", err)
+	}
+	dropped := base() // what rowsToBars does to a four-value row
+	dropped.RawBars[10] = dropped.RawBars[10][:4]
+	dropped.Bars = append(append([]marketdata.Bar(nil), dropped.Bars[:10]...), dropped.Bars[11:]...)
+	extra := base()
+	extra.RawBars[10] = append(extra.RawBars[10], 7)
+	nonfinite := base()
+	nonfinite.Bars[36].H = math.Inf(1)
+	nonfinite.RawBars = nil // typed caller
+	for name, fixture := range map[string]RunFixture{"short row": dropped, "seven-value row": extra, "typed +Inf high": nonfinite} {
+		if _, err := RunFixtureCase(fixture, source); err == nil || !strings.Contains(err.Error(), "malformed series") {
+			t.Errorf("%s: err = %v, want malformed series", name, err)
+		}
+	}
+}
+
+// A parsed config changed after parsing keeps the parser's promise: a negative
+// risk cannot trade through a direct API, and explicit zero still can.
+func TestClockRangeBreakoutDirectConfigRiskBoundary(t *testing.T) {
+	bars := crbSession(crbBar(crbBaseRangeEnd, 100.5, 101.5, 100.2, 101), crbBar(crbBaseClose, 102, 103, 101, 102))
+	for _, tc := range []struct {
+		risk    float64
+		wantErr bool
+	}{{-200, true}, {math.NaN(), true}, {math.Inf(1), true}, {0, false}, {50, false}} {
+		parsed, err := dsl.Parse(crbOptions{}.program())
+		if err != nil || len(parsed.Errors) != 0 {
+			t.Fatalf("parse: %v %v", err, parsed.Errors)
+		}
+		parsed.Config["riskUsd"] = tc.risk
+		_, err = Run(RunRequest{Config: parsed.Config, Series: marketdata.SeriesFromBars(bars), Symbol: "XAUUSD", Timeframe: "5m", StrategyID: "crb-risk"})
+		if (err != nil) != tc.wantErr {
+			t.Errorf("riskUsd %v: err = %v, wantErr %v", tc.risk, err, tc.wantErr)
+		}
 	}
 }

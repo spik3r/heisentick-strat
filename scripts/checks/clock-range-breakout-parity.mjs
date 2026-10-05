@@ -83,7 +83,22 @@ try {
     writeFileSync(join(scratch, 'source.strat'), baseSource);
     assert.throws(() => execFileSync(resolve(nativeEngine), [join(scratch, 'fixture.json'), join(scratch, 'source.strat')], { stdio: 'pipe' }), `${label}: native accepted a malformed series`);
   }
-  results.malformedRejected = Object.keys(malformed).length;
+  // Original rows are checked before the lossy adapters can drop or cut them.
+  const rows = {
+    shortRow: (bars) => { bars[10] = bars[10].slice(0, 4); },
+    sevenValueRow: (bars) => { bars[10] = [...bars[10], 7]; },
+  };
+  for (const [label, mutate] of Object.entries(rows)) {
+    const fixture = structuredClone(base);
+    mutate(fixture.bars);
+    const raw = JSON.stringify(fixture);
+    const wasm = JSON.parse(globalThis.engineRunFixture(raw, baseSource));
+    assert.match(wasm.error ?? '', /malformed series/, `${label}: WASM accepted a malformed row`);
+    writeFileSync(join(scratch, 'fixture.json'), raw);
+    writeFileSync(join(scratch, 'source.strat'), baseSource);
+    assert.throws(() => execFileSync(resolve(nativeEngine), [join(scratch, 'fixture.json'), join(scratch, 'source.strat')], { stdio: 'pipe' }), `${label}: native accepted a malformed row`);
+  }
+  results.malformedRejected = Object.keys(malformed).length + Object.keys(rows).length;
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }

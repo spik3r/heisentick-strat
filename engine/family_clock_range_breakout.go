@@ -142,6 +142,30 @@ func validateClockRangeRun(cfg dsl.Config, symbol, timeframe string, series mark
 	if err != nil {
 		return fmt.Errorf("clockRangeBreakout: invalid config: %w", err)
 	}
+	// A config the parser would reject must not trade through a direct API.
+	// Explicit zero risk is valid; negative or non-finite risk is not.
+	if raw, present := cfg["riskUsd"]; present {
+		var risk float64
+		switch typed := raw.(type) {
+		case int:
+			risk = float64(typed)
+		case int64:
+			risk = float64(typed)
+		case float64:
+			risk = typed
+		default:
+			risk = math.NaN()
+		}
+		if !isFinite(risk) || risk < 0 {
+			return fmt.Errorf("clockRangeBreakout: invalid config: riskUsd must be a finite nonnegative number")
+		}
+	}
+	if err := validateSeriesShape("market", series); err != nil {
+		return fmt.Errorf("clockRangeBreakout: malformed series: %w", err)
+	}
+	if err := validateSeriesValues("market", series); err != nil {
+		return fmt.Errorf("clockRangeBreakout: malformed series: %w", err)
+	}
 	if _, ok := dsl.ReviewedInstrumentPip(symbol); !ok {
 		return fmt.Errorf("clockRangeBreakout: no reviewed pip size for symbol %q", symbol)
 	}
@@ -163,6 +187,30 @@ func validateClockRangeRun(cfg dsl.Config, symbol, timeframe string, series mark
 			return fmt.Errorf("clockRangeBreakout: malformed series: timestamps must be strictly increasing and distinct (index %d)", i)
 		case !(series.L[i] <= math.Min(series.O[i], series.C[i])) || !(math.Max(series.O[i], series.C[i]) <= series.H[i]):
 			return fmt.Errorf("clockRangeBreakout: malformed series: OHLC bounds violated at index %d", i)
+		}
+	}
+	return nil
+}
+
+// validateClockRangeFixtureRows checks the fixture's original rows before the
+// lossy row-to-bar adapters ran: a short row would otherwise be dropped and a
+// long one truncated, and the coverage rule could hide the loss. Typed callers
+// that supply only Bars have no rows to check.
+func validateClockRangeFixtureRows(cfg dsl.Config, fixture RunFixture) error {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyClockRangeBreakout) || fixture.RawBars == nil {
+		return nil
+	}
+	if len(fixture.RawBars) != len(fixture.Bars) {
+		return fmt.Errorf("clockRangeBreakout: malformed series: %d bar rows were reduced to %d bars", len(fixture.RawBars), len(fixture.Bars))
+	}
+	for i, row := range fixture.RawBars {
+		if len(row) != 6 {
+			return fmt.Errorf("clockRangeBreakout: malformed series: bar row %d has %d values, want exactly 6", i, len(row))
+		}
+		for _, value := range row {
+			if !isFinite(value) {
+				return fmt.Errorf("clockRangeBreakout: malformed series: bar row %d has a non-finite value", i)
+			}
 		}
 	}
 	return nil
@@ -218,6 +266,12 @@ func (b *broker) runClockRangeBreakout(liquidateAtEnd bool) []Trade {
 				b.fillClockRangeOrders(schedule, pending, i)
 			}
 		}
+		// A range closes when its final bar does: place then, without waiting
+		// for another quote. Bars up to i are all that is known.
+		for schedule.rangeEnd(nextDay) <= t+schedule.timeframe {
+			b.placeClockRangeOrders(schedule, nextDay, i+1, pipSize)
+			nextDay++
+		}
 	}
 	if liquidateAtEnd && b.hasPosition {
 		b.closeClockRangePosition(b.series.C[end], end, ReasonEndOfTest, "", "end-of-data")
@@ -234,7 +288,8 @@ func (b *broker) finishClockRangeDay(pending *clockPendingOrders, outcome, reaso
 }
 
 // placeClockRangeOrders evaluates day at its range end using only bars that
-// opened before it. barIndex is the first bar at or after that instant, so the
+// opened before it. barIndex is the count of bars known at that instant (the
+// index of the first bar at or after it, which may not exist yet), so the
 // range bars are the contiguous run of bars before it.
 func (b *broker) placeClockRangeOrders(schedule clockSchedule, day int64, barIndex int, pipSize float64) {
 	spec := schedule.spec

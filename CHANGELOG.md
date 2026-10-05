@@ -15,8 +15,8 @@ version and is named here.
   other authored directive as a compile error. New phrases: `clock UTC<±H[:MM]>`,
   `orders expire`, `buffer N pips`, `close positions at`, and `stop N percent`
   and `range HH:MM to HH:MM` in this family. The reviewed pip registry moves to
-  `dsl.ReviewedInstrumentPip` (engine behavior unchanged). Add 27 parse and
-  37 run conformance cases; all earlier goldens are unchanged. This is an
+  `dsl.ReviewedInstrumentPip` (engine behavior unchanged). Add 31 parse and
+  38 run conformance cases; all earlier goldens are unchanged. This is an
   unreleased source addition that needs the next minor version. JavaScript
   adoption, a producer tag, a consumer pin, strategy registration and the
   historical comparison are separate, pending steps.

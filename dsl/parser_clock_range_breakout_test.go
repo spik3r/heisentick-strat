@@ -526,3 +526,79 @@ func permutations(items []string) [][]string {
 }
 
 var _ = fmt.Sprintf
+
+// A forbidden directive written inline, before, between or after the allowed
+// ones, must fail. The ordinary inline splitter drops text before the first
+// recognized directive and glues the rest onto its neighbor, so these cases
+// exercise the family's audit of the original text.
+func TestClockRangeBreakoutRejectsForbiddenDirectivesInsideInlineBlocks(t *testing.T) {
+	bodies := []struct {
+		section string
+		header  string
+		parts   []string
+	}{
+		{"market", "market conditions", []string{"slices(XAUUSD 5m)", "clock UTC+10"}},
+		{"setup", "setup", []string{"type: clock range breakout", "range 11:05 to 14:05", "orders expire 03:00", "buffer 0 pips"}},
+		{"risk", "risk", []string{"stop 1 percent"}},
+		{"management", "management", []string{"close positions at 03:00"}},
+		{"execution", "execution", []string{"risk: 200 USD"}},
+	}
+	injections := []string{"local hour in (1)", "trade window unrestricted", "sessions london", "maxHoldCandles 0", "target 2R", "frobnicate 3", "weekday in (mon)"}
+	for _, injection := range injections {
+		for _, target := range bodies {
+			positions := map[string]func() string{
+				"leading":  func() string { return injection + " " + strings.Join(target.parts, " ") },
+				"trailing": func() string { return strings.Join(target.parts, " ") + " " + injection },
+			}
+			if len(target.parts) > 1 {
+				positions["middle"] = func() string {
+					return target.parts[0] + " " + injection + " " + strings.Join(target.parts[1:], " ")
+				}
+			}
+			for position, body := range positions {
+				source := clockExample(func(name, block string) string {
+					if name != target.section {
+						return block
+					}
+					return target.header + " { " + body() + " }\n"
+				})
+				result := parseClock(t, source)
+				if len(result.Errors) == 0 {
+					t.Errorf("%s inline %q in %s was accepted silently", position, injection, target.section)
+				}
+			}
+		}
+	}
+}
+
+func TestClockRangeBreakoutAcceptsInlineBlocksAndQuotedMetadata(t *testing.T) {
+	source := clockExample(func(name, block string) string {
+		switch name {
+		case "strategy":
+			return "strategy \"Mentions clock UTC+10 and buffer 1 pips\" { description \"orders expire at close; range 11:05 to 14:05; local hour is not used\" }\n"
+		case "market":
+			return "market conditions { slices(XAUUSD 5m) clock UTC+10 }\n"
+		case "setup":
+			return "setup { type: clock range breakout range 11:05 to 14:05 orders expire 03:00 buffer 0 pips }\n"
+		}
+		return block
+	})
+	if result := parseClock(t, source); len(result.Errors) != 0 {
+		t.Fatalf("errors = %v", result.Errors)
+	}
+}
+
+// Words that happen to be family directives, inside quoted strategy metadata
+// of another family, are text. The base parser keeps them; so must this one.
+func TestQuotedMetadataKeepsDirectiveWordsInOtherFamilies(t *testing.T) {
+	tests := map[string]string{
+		"dsl v7\nstrategy \"Old family\" { description \"Runs by clock UTC+10\" }\nsetup { type: opening range breakout }\n":              "Runs by clock UTC+10",
+		"dsl v7\nstrategy \"Old family\" { description \"orders expire soon, buffer 2 pips\" }\nsetup { type: opening range breakout }\n": "orders expire soon buffer 2 pips",
+	}
+	for source, want := range tests {
+		result := parseClock(t, source)
+		if len(result.Errors) != 0 || result.Config["description"] != want {
+			t.Errorf("errors=%v description=%q, want %q", result.Errors, result.Config["description"], want)
+		}
+	}
+}

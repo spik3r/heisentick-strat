@@ -219,6 +219,9 @@ func splitInlineBody(body string, starts []string, section string) []string {
 			}
 		}
 		for _, extra := range clockRangeInlineStarts {
+			if inQuotedText(body, i) {
+				break
+			}
 			if strings.HasPrefix(lower[i:], extra.head) && isBoundary(body, i+len(extra.head)) && extra.next.MatchString(body[i+len(extra.head):]) {
 				hits = append(hits, inlineHit{index: i, word: extra.head})
 				break
@@ -239,6 +242,21 @@ func splitInlineBody(body string, starts []string, section string) []string {
 		parts = append(parts, body[hit.index:end])
 	}
 	return parts
+}
+
+// inQuotedText reports whether index falls inside a quoted string of body, so
+// words in strategy metadata are never taken for directives.
+func inQuotedText(body string, index int) bool {
+	var open byte
+	for i := 0; i < index && i < len(body); i++ {
+		switch {
+		case open == 0 && (body[i] == '"' || body[i] == '\''):
+			open = body[i]
+		case open != 0 && body[i] == open:
+			open = 0
+		}
+	}
+	return open != 0
 }
 
 func filterInlineSetupTypeHits(body string, hits []inlineHit) []inlineHit {

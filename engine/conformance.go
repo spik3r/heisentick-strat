@@ -63,6 +63,7 @@ var implementedRunCases = []string{
 	"family-keltner-expansion",
 	"family-named-level-sweep",
 	"family-named-level-flag",
+	"family-clock-range-breakout-post-range-quote-after-expiry",
 	"family-clock-range-breakout-range-end-bar-excluded",
 	"family-clock-range-breakout-empty-range-rejected",
 	"family-clock-range-breakout-month-end",

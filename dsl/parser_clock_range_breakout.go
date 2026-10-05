@@ -186,6 +186,7 @@ func (p *parser) applyClockRangeNeutralConfig() {
 // scanClockRangeSource rejects every authored directive outside the family's
 // v1 surface, whatever section or order it appears in.
 func (p *parser) scanClockRangeSource() {
+	p.auditClockRangeInlineBodies()
 	types := 0
 	for _, line := range joinWhenLines(expandPhysicalLines(p.source)) {
 		tokens := tokenize(normalizeLine(line.text))
@@ -429,4 +430,151 @@ func (p *parser) validateClockRangeRoutes(spec ClockRangeSpec) {
 			}
 		}
 	}
+}
+
+var clockAllowedHeads = map[string]bool{
+	"dsl": true, "strategy": true, "name": true, "description": true, "slices": true, "symbols": true,
+	"timeframes": true, "type": true, "range": true, "orders": true, "buffer": true, "clock": true,
+	"close": true, "stop": true, "side": true, "risk": true, "riskusd": true,
+}
+
+// clockInlineKnownHeads are the words that start a directive in an inline
+// `{ ... }` body for the purpose of the family's audit: every allowed head plus
+// every head any other family accepts, so none can hide in text the ordinary
+// splitter would drop or glue to a neighbor.
+var clockInlineKnownHeads = func() map[string]bool {
+	known := map[string]bool{}
+	for head := range clockAllowedHeads {
+		known[head] = true
+	}
+	for _, head := range generatedDirectiveHeads {
+		known[strings.ToLower(head)] = true
+	}
+	for _, head := range directiveStartsForSection("setup") {
+		known[strings.ToLower(head)] = true
+	}
+	for _, head := range []string{"local", "trade", "weekday", "hour", "new", "open", "seasonality", "micro", "rmv", "approach", "allow", "entrytf", "timed", "cooldown", "windows", "sessions", "session"} {
+		known[head] = true
+	}
+	return known
+}()
+
+var clockQuotedMetadata = regexp.MustCompile(`^(?:"[^"]*"|'[^']*')$`)
+
+// auditClockRangeInlineBodies checks the original text of every inline block.
+// The ordinary splitter drops text before the first recognized directive and
+// glues unrecognized words onto the previous one, so a forbidden gate written
+// inline would otherwise vanish. Here each inline body must consist only of
+// allowed directives, with nothing before the first one and metadata given as
+// a single quoted string.
+func (p *parser) auditClockRangeInlineBodies() {
+	for index, raw := range strings.Split(p.source, "\n") {
+		stripped := strings.TrimSpace(stripComment(raw))
+		open, closeIndex := strings.Index(stripped, "{"), strings.LastIndex(stripped, "}")
+		if open < 0 || closeIndex < open {
+			continue
+		}
+		prefix := strings.TrimSpace(stripped[:open])
+		if _, ok := sectionOpener(prefix + " {"); !ok && !isNamedStrategyHeader(prefix) {
+			continue
+		}
+		line := logicalLine{text: stripped, line: index + 1, headCol: firstNonSpaceCol(raw)}
+		body := strings.TrimSpace(stripped[open+1 : closeIndex])
+		leading, segments := splitClockInlineBody(body)
+		if leading != "" {
+			p.err(line, fmt.Sprintf("clock range breakout does not support inline text %q before the first directive", leading), "")
+		}
+		for _, segment := range segments {
+			fields := strings.Fields(strings.NewReplacer("(", " ", ")", " ").Replace(segment))
+			head := strings.ToLower(strings.TrimRight(fields[0], ":"))
+			if !clockAllowedHeads[head] {
+				p.err(line, fmt.Sprintf("clock range breakout does not support inline directive %q", strings.TrimSpace(segment)), "")
+				continue
+			}
+			if head == "description" || head == "name" || head == "strategy" {
+				if rest := strings.TrimSpace(segment[len(fields[0]):]); !clockQuotedMetadata.MatchString(rest) {
+					p.err(line, fmt.Sprintf("clock range breakout inline %s must be one quoted string", head), "")
+				}
+			}
+		}
+	}
+}
+
+// splitClockInlineBody splits body at every known directive head outside
+// quotes. It returns the text before the first head and the segments.
+func splitClockInlineBody(body string) (string, []string) {
+	var starts []int
+	var open byte
+	prevHeadEnd := 0
+	for i := 0; i < len(body); i++ {
+		c := body[i]
+		switch {
+		case open == 0 && (c == '"' || c == '\''):
+			open = c
+			continue
+		case open != 0:
+			if c == open {
+				open = 0
+			}
+			continue
+		}
+		if i > 0 && body[i-1] != ' ' && body[i-1] != '\t' {
+			continue
+		}
+		end := i
+		for end < len(body) && (body[end] == '_' || body[end] >= '0' && body[end] <= '9' || body[end] >= 'a' && body[end] <= 'z' || body[end] >= 'A' && body[end] <= 'Z') {
+			end++
+		}
+		word := strings.ToLower(body[i:end])
+		if end == i || !clockInlineKnownHeads[word] || (end < len(body) && body[end] != ' ' && body[end] != '\t' && body[end] != '(' && body[end] != ':') {
+			continue
+		}
+		if len(starts) > 0 && skipsInsideTypeValue(body, starts[len(starts)-1], i) {
+			continue
+		}
+		// A head directly after another head is part of a multi-word head
+		// such as `local hour` or `trade window`.
+		if len(starts) > 0 && strings.TrimSpace(body[prevHeadEnd:i]) == "" {
+			continue
+		}
+		gated := false
+		for _, extra := range clockRangeInlineStarts {
+			if word == extra.head && !extra.next.MatchString(body[end:]) {
+				gated = true
+			}
+		}
+		if !gated {
+			starts = append(starts, i)
+			prevHeadEnd = end
+		}
+		i = end - 1
+	}
+	if len(starts) == 0 {
+		return strings.TrimSpace(body), nil
+	}
+	segments := make([]string, 0, len(starts))
+	for k, start := range starts {
+		stop := len(body)
+		if k+1 < len(starts) {
+			stop = starts[k+1]
+		}
+		segments = append(segments, strings.TrimSpace(body[start:stop]))
+	}
+	return strings.TrimSpace(body[:starts[0]]), segments
+}
+
+// skipsInsideTypeValue reports whether position i lies in the family name
+// following a `type` head at typeStart, whose words (clock, range, breakout)
+// would otherwise look like directive heads.
+func skipsInsideTypeValue(body string, typeStart, i int) bool {
+	rest := strings.ToLower(body[typeStart:])
+	if !strings.HasPrefix(rest, "type") {
+		return false
+	}
+	cursor := len("type")
+	for cursor < len(rest) && (rest[cursor] == ' ' || rest[cursor] == ':') {
+		cursor++
+	}
+	const name = "clock range breakout"
+	return strings.HasPrefix(rest[cursor:], name) && i > typeStart && i < typeStart+cursor+len(name)
 }

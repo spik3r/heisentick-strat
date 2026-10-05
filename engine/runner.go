@@ -78,6 +78,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 		return RunResult{}, err
 	}
 	series := marketdata.SeriesFromBars(fixture.Bars)
+	if err := validateClockRangeFixtureRows(parsed.Config, fixture); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateClockRangeRun(parsed.Config, fixture.Symbol, fixture.Timeframe, series); err != nil {
 		return RunResult{}, err
 	}

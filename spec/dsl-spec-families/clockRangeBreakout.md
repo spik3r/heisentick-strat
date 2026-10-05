@@ -328,9 +328,17 @@ matter. The shared heads `range`, `close` and `stop` keep their meaning in
 other families; only their clock spellings (`range <digit>...`, `close
 positions ...`, `stop <N> percent`) are recorded for this family.
 
-**Runtime checks.** A malformed series (non-increasing or duplicate
+**Inline blocks.** The ordinary inline splitter drops text before the first
+directive and glues unknown words to the previous one, so the family audits
+the original text of every inline `{ ... }` block: only allowed directives, in
+any order, nothing before the first, and metadata as one quoted string. Words
+inside quoted metadata are text in every family.
+
+**Runtime checks.** Original fixture rows are checked before the row-to-bar
+adapters (exactly six finite values per row), then the series. A malformed series (non-increasing or duplicate
 timestamps, timestamps off the route grid, OHLC outside bounds, a timestamp
-outside the year 1970-9999) fails the whole run with an error that starts
+outside the year 1970-9999, an implementation support bound that keeps the
+per-day loop finite) fails the whole run with an error that starts
 `clockRangeBreakout: malformed series`. A symbol without a reviewed pip size
 or a timeframe the schedule cannot sit on fails the run the same way. Neither
 produces trades.
@@ -341,9 +349,20 @@ one record per evaluated range day: `outcome` is `entered`, `rejected`,
 `reason` for a rejection: `empty-range`, `insufficient-coverage`,
 `missing-final-slot`, `nonpositive-range-width`, `invalid-price`,
 `broker-blocked`, `invalid-fill`, `invalid-stop-distance`, `invalid-size`,
-`outside-execution-window`. A day is evaluated at the first bar that opens at
-or after its range end; days that end before the first bar are not evaluated.
-These records are Go API only and are not part of the trade envelope.
+`outside-execution-window`. A day is evaluated when its final range bar closes, that is at range end,
+without waiting for another quote; a day whose range end precedes the first
+supplied bar is not evaluated. A range whose final slot is absent can only be
+judged once a later bar shows time has passed. These records are Go API only and are not part of the trade envelope.
+
+**Direct configs.** A parsed config edited afterwards cannot trade with a
+negative, `NaN` or infinite `riskUsd`; explicit zero stays valid. Only this
+family's run entries enforce that; other families' money semantics are
+unchanged.
+
+**Prefix replay is not checkpoint resume.** `RunPrefix` replays the supplied
+bars, keeps an open position open and does not liquidate. `RunPrefixResumable`
+(checkpoint resume) rejects this family with an unsupported-path error; adding
+checkpoint support is a separate decision.
 
 **Sizing.** `size = riskUsd / (p * q / 100)` with `p` the post-slippage fill.
 This is the stated distance, not `|fill - SL|`, which differs in the last

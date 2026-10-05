@@ -45,6 +45,12 @@ func clockParseCases() []clockParseCase {
 			return block
 		})},
 		{name: "setup-clock-range-breakout-long-only-fractional", category: "setup-family", description: "Fractional negative offset, implicit symbol/timeframe route, fractional buffer and stop, long side only.", source: "dsl v7\nstrategy \"Clock Range Breakout Long Only\" {\n  description \"synthetic fractional offset example\"\n}\nmarket conditions {\n  symbols XAUUSD\n  timeframes 5m 1m\n  clock UTC-3:30\n}\nsetup {\n  type: clock range breakout\n  range 09:05 to 12:05\n  buffer 2.5 pips\n}\nfilters {\n  side long only\n}\nrisk {\n  stop 0.5 percent\n}\nmanagement {\n  close positions at 20:00\n}\nexecution {\n  risk: 150 USD\n}\n"},
+		{name: "setup-clock-range-breakout-quoted-metadata", category: "setup-family", description: "Directive words inside quoted inline strategy metadata are text, not directives.", source: clockExample(func(name, block string) string {
+			if name == "strategy" {
+				return "strategy \"Mentions clock UTC+10\" { description \"orders expire at close; range 11:05 to 14:05; buffer 1 pips; local hour unused\" }\n"
+			}
+			return block
+		})},
 		diagnostic("missing-required", "No clock, range, percent stop or clock close: each is reported.", "requires clock UTC", func(name, block string) string {
 			switch name {
 			case "market":
@@ -82,6 +88,9 @@ func clockParseCases() []clockParseCase {
 		}),
 		{name: "diagnostic-clock-range-breakout-forbidden-target-reordered", category: "diagnostic", description: "A target in a management block placed before the setup is still an error.", wantError: "does not support directive \"target\"", source: reordered},
 		diagnostic("forbidden-local-hour", "A local-hour gate is not part of the v1 surface.", "does not support directive \"local\"", replace("setup", "buffer 0 pips", "buffer 0 pips\n  local hour not in (18)")),
+		diagnostic("inline-forbidden-leading", "A local-hour gate before the first inline directive is an error, not dropped text.", "inline directive \"local hour in (1)\"", replace("market", "market conditions {\n  slices(XAUUSD 5m)\n  clock UTC+10\n}\n", "market conditions { local hour in (1) slices(XAUUSD 5m) clock UTC+10 }\n")),
+		diagnostic("inline-forbidden-middle", "A trade window between inline directives is an error.", "inline directive \"trade window unrestricted", replace("setup", "setup {\n  type: clock range breakout\n  range 11:05 to 14:05\n  orders expire 03:00\n  buffer 0 pips\n}\n", "setup { type: clock range breakout range 11:05 to 14:05 trade window unrestricted orders expire 03:00 buffer 0 pips }\n")),
+		diagnostic("inline-forbidden-trailing", "A local-hour gate after an inline directive is an error.", "inline directive \"local hour in (1)\"", replace("management", "management {\n  close positions at 03:00\n}\n", "management { close positions at 03:00 local hour in (1) }\n")),
 		diagnostic("forbidden-atr-stop", "Only a percent stop is supported.", "does not support stop", replace("risk", "stop 1 percent", "stop 2 ATR")),
 		diagnostic("forbidden-neutral-hold-limit", "A neutral-looking maxHoldCandles value is still unsupported.", "does not support directive \"maxholdcandles\"", replace("management", "{\n", "{\n  maxHoldCandles 0\n")),
 	}
