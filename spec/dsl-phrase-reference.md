@@ -34,6 +34,7 @@ file is compiled by the doc-fence tests.
 | `sessions(...)` | `asia`, `mid`, `london`, `ny` | Enables trading sessions. | `sessions(london, ny)` |
 | `trade window in (...)` | `<session>.<part>` | Restricts fixed UTC+10 windows to half-open 60-minute parts; the fourth `mid` hour matches only `mid.all`. | `trade window in (london.open, ny.open)` |
 | `trade window minutes A to B` | minutes | Restricts minutes from the active window open to the half-open interval `[A, B)`. | `trade window minutes 0 to 90` |
+| `clock UTC+10` | fixed UTC offset | Required for proposed `clock range breakout` v1; offset `[-12:00,+14:00]`, no DST. | `clock UTC+10` |
 | `local weekday in (...)` / `not in (...)` | weekdays | Allows or blocks local weekdays. | `local weekday not in (Fri)` |
 | `local hour in (...)` / `not in (...)` | hours | Allows or blocks local hours. | `local hour in (7, 8, 9)` |
 | `session phase in (...)` / `not in (...)` | phases | Allows or blocks named session phases. | `session phase not in (lunch)` |
@@ -207,3 +208,21 @@ execution {
   risk 200 USD
 }
 ```
+
+## Proposed clock range breakout v1
+
+Documentation-only phrases; parser/engine support follows separately. The
+[family contract](dsl-spec-families/clockRangeBreakout.md) defines required
+clock close, neutral family defaults, placement-time admission, strict clock
+alignment, OHLC tie/stop rules and twelve conformance groups. Extra filters,
+entry/management modes and a magnifier are outside v1.
+
+| Phrase | Meaning | Example |
+| --- | --- | --- |
+| `type: clock range breakout` | Timed range with pending stop-entry OCO | `type: clock range breakout` |
+| `range HH:MM to HH:MM` | Required same-clock-day range, start < end | `range 11:05 to 14:05` |
+| `orders expire HH:MM` | Defaults to required close; rangeEnd < expiry <= close | `orders expire 03:00` |
+| `buffer N pips` | Finite nonnegative reviewed instrument pips, default 0 | `buffer 0 pips` |
+| `stop N percent` | Required finite percent of post-slippage fill, 0 < N <= 100 | `stop 1 percent` |
+| `close positions at HH:MM` | Required clock close; next quote or terminal fallback | `close positions at 03:00` |
+| `side long only` / `side short only` / `side both` | Static side allowance, default both | `side both` |

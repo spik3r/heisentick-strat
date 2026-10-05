@@ -182,6 +182,13 @@ Time gates:
   Because mid lasts four hours, 15:00–16:00 matches only `mid.all`. The
   segment and minute gates intersect and still respect `sessions(...)`.
   A DST-aware clock would be a separate versioned semantic change.
+- `clock UTC+10` — fixed offset from UTC (`UTC±H` or `UTC±H:MM`, within
+  `[-12:00, +14:00]`, no DST) used by families that read wall-clock times.
+  The proposed `clock range breakout` v1 requires this directive and a clock
+  close. Its family contract neutralizes inherited time gates and rejects
+  explicit `local hour`, `trade window ...` and `sessions(...)` directives.
+  Other families retain their existing clocks and defaults. Offset minutes,
+  strict time tokens and route-grid validation are specified in the family file.
 - `local weekday in (Mon, Tue)` / `local weekday not in (Fri)` — allow/block
   by local weekday (`weekday …` also accepted).
 - `local hour in (…)` / `not in (…)` — allow/block local hours 0–23.
@@ -364,6 +371,9 @@ Risk (stop):
   setup-structure stops (which one applies depends on the setup family).
 - `stop beyond opposite range edge [by X] [min A] [max B]`.
 - `stop <M> ATR` — fixed ATR-multiple stop.
+- `stop <N> percent` — stop distance as a percent of the fill price, anchored
+  to the actual post-slippage fill, with finite `0 < N <= 100`
+  (proposed `clock range breakout` only; no inherited ATR clamp).
 - `stop beyond <ratio> retrace [by X]` — fib-retrace stop.
 - `stop extreme N [+ X]`, `stop recentExtreme key/value…` — *deprecated*
   spellings of the extreme stop.
@@ -407,6 +417,10 @@ Management:
   values.
 - `wait N candles after trade` — re-entry cooldown (default 3).
   *Deprecated:* `cooldownCandles`, `cooldownBars`.
+- `close positions at HH:MM` — close an open position at a wall-clock time on
+  the strategy's `clock` (required in proposed `clock range breakout` v1).
+  Expiry/close alignment, missing quotes and terminal liquidation follow the
+  family contract; this is not an optional indefinite hold.
 - `maxHoldCandles N` — time stop (0 = off). *Deprecated:* `maxHoldBars`.
 
 Execution:
@@ -474,6 +488,7 @@ are errors. The `type` value itself is written in trading language
 | `intra hour run exhaustion` | intraHourRunExhaustion |
 | `named level sweep` | namedLevelSweep |
 | `named level flag` | namedLevelFlag |
+| `clock range breakout` | clockRangeBreakout |
 
 Per-family phrase sets live in one standalone file per family under
 [`strat/docs/dsl-spec-families/`](dsl-spec-families/breakRetest.md) (named by the
@@ -491,8 +506,9 @@ anchors, lookback) used by POC/VAH/VAL levels and VP-aware setups.
 
 ## 10. Evaluation order and causality
 
-Signal admission happens in this normative order; the first failing gate
-rejects the signal (skips are recorded for funnel diagnostics):
+Unless a family explicitly replaces these gates, signal admission happens in
+this normative order; the first failing gate rejects the signal (skips are
+recorded for funnel diagnostics):
 
 1. market gates (sessions, windows, weekday/hour/phase, day type + escape,
    prior day type, open location, movement efficiency, range-stat and bias
@@ -504,6 +520,13 @@ rejects the signal (skips are recorded for funnel diagnostics):
 6. setup-age cap (`setup expires after`);
 7. grade requirement, then grade-based sizing;
 8. broker admission (cooldown, one-position-at-a-time, side allowances).
+
+The proposed [`clock range breakout`](dsl-spec-families/clockRangeBreakout.md)
+v1 replaces the inherited gate/default pipeline with its explicit directive
+allowlist and placement-time admission. Pending stop entries cannot use their
+fill bar's completed context to decide admission. Its family file specifies
+OCO ties, clock/expiry precedence, terminal finalization and the required
+conformance matrix. This exception changes no other family.
 
 Causality rules (normative):
 
