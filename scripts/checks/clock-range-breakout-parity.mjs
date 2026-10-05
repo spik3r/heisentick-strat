@@ -101,7 +101,27 @@ try {
     writeFileSync(join(scratch, 'source.strat'), baseSource);
     assert.throws(() => execFileSync(resolve(nativeEngine), [join(scratch, 'fixture.json'), join(scratch, 'source.strat')], { stdio: 'pipe' }), `${label}: native accepted a malformed row`);
   }
-  results.malformedRejected = Object.keys(malformed).length + Object.keys(rows).length;
+  // The bars container is required; an explicit empty array is the only way to supply none.
+  for (const [label, mutate] of Object.entries({ omittedBars: (f) => { delete f.bars; }, nullBars: (f) => { f.bars = null; } })) {
+    const fixture = structuredClone(base);
+    mutate(fixture);
+    const raw = JSON.stringify(fixture);
+    const wasm = JSON.parse(globalThis.engineRunFixture(raw, baseSource));
+    assert.match(wasm.error ?? '', /malformed series/, `${label}: WASM accepted a missing container`);
+    writeFileSync(join(scratch, 'fixture.json'), raw);
+    writeFileSync(join(scratch, 'source.strat'), baseSource);
+    assert.throws(() => execFileSync(resolve(nativeEngine), [join(scratch, 'fixture.json'), join(scratch, 'source.strat')], { stdio: 'pipe' }), `${label}: native accepted a missing container`);
+    results.malformedRejected = (results.malformedRejected ?? 0) + 1;
+  }
+  const empty = structuredClone(base);
+  empty.bars = [];
+  const emptyRaw = JSON.stringify(empty);
+  writeFileSync(join(scratch, 'fixture.json'), emptyRaw);
+  writeFileSync(join(scratch, 'source.strat'), baseSource);
+  const emptyNative = execFileSync(resolve(nativeEngine), [join(scratch, 'fixture.json'), join(scratch, 'source.strat')], { encoding: 'utf8' }).trim();
+  assert.equal(globalThis.engineRunFixture(emptyRaw, baseSource), emptyNative);
+  assert.equal(JSON.parse(emptyNative).tradeCount, 0);
+  results.malformedRejected = (results.malformedRejected ?? 0) + Object.keys(malformed).length + Object.keys(rows).length;
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }

@@ -171,6 +171,29 @@ func TestBridgeRejectsNullBarValuesForClockRangeBreakout(t *testing.T) {
 	if _, err := runFixture(string(raw), string(source)); err != nil {
 		t.Fatalf("unmodified fixture: %v", err)
 	}
+	for name, mutate := range map[string]func(map[string]any){
+		"omitted bars": func(f map[string]any) { delete(f, "bars") },
+		"null bars":    func(f map[string]any) { f["bars"] = nil },
+	} {
+		var fixture map[string]any
+		if err := json.Unmarshal(raw, &fixture); err != nil {
+			t.Fatal(err)
+		}
+		mutate(fixture)
+		mutated, _ := json.Marshal(fixture)
+		if _, err := runFixture(string(mutated), string(source)); err == nil || !strings.Contains(err.Error(), "malformed series") {
+			t.Errorf("%s: err = %v, want malformed series", name, err)
+		}
+	}
+	var empty map[string]any
+	if err := json.Unmarshal(raw, &empty); err != nil {
+		t.Fatal(err)
+	}
+	empty["bars"] = []any{}
+	emptyJSON, _ := json.Marshal(empty)
+	if _, err := runFixture(string(emptyJSON), string(source)); err != nil {
+		t.Errorf("explicit empty bars rejected: %v", err)
+	}
 	for column := 0; column < 6; column++ {
 		var fixture map[string]any
 		if err := json.Unmarshal(raw, &fixture); err != nil {

@@ -930,3 +930,54 @@ func TestOtherFamiliesStillDecodeNullFixtureValuesAsBefore(t *testing.T) {
 		t.Fatalf("other family checked the rows: %v", err)
 	}
 }
+
+// `bars` is required by the fixture schema. Missing or null is a malformed
+// container, distinct from an explicit empty array, which means no quotes.
+func TestClockRangeBreakoutRejectsMissingOrNullBarsContainer(t *testing.T) {
+	dir := crbCorpusRunDir(t)
+	baseJSON, err := os.ReadFile(filepath.Join(dir, "family-clock-range-breakout-ordinary-long.fixture.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(filepath.Join(dir, "family-clock-range-breakout-ordinary-long.strat"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	run := func(mutate func(map[string]any)) (RunResult, error) {
+		var fixture map[string]any
+		if err := json.Unmarshal(baseJSON, &fixture); err != nil {
+			t.Fatal(err)
+		}
+		mutate(fixture)
+		raw, _ := json.Marshal(fixture)
+		path := filepath.Join(t.TempDir(), "fixture.json")
+		if err := os.WriteFile(path, raw, 0o644); err != nil {
+			t.Fatal(err)
+		}
+		loaded, err := LoadRunFixture(path)
+		if err != nil {
+			return RunResult{}, err
+		}
+		return RunFixtureCase(loaded, string(source))
+	}
+	for name, mutate := range map[string]func(map[string]any){
+		"omitted bars": func(f map[string]any) { delete(f, "bars") },
+		"null bars":    func(f map[string]any) { f["bars"] = nil },
+		"string bars":  func(f map[string]any) { f["bars"] = "none" },
+		"object bars":  func(f map[string]any) { f["bars"] = map[string]any{} },
+	} {
+		if _, err := run(mutate); err == nil {
+			t.Errorf("%s was accepted", name)
+		}
+	}
+	result, err := run(func(f map[string]any) { f["bars"] = []any{} })
+	if err != nil || result.TradeCount != 0 {
+		t.Errorf("explicit empty bars: err=%v trades=%d, want no error and no trades", err, result.TradeCount)
+	}
+	// A typed caller supplies Bars directly and has no JSON container.
+	typed := RunFixture{Case: "typed", Symbol: "XAUUSD", Timeframe: "5m",
+		Bars: crbSession(crbBar(crbBaseRangeEnd, 100.5, 101.5, 100.2, 101), crbBar(crbBaseClose, 102, 103, 101, 102))}
+	if result, err := RunFixtureCase(typed, string(source)); err != nil || result.TradeCount != 1 {
+		t.Errorf("typed-only bars: err=%v trades=%d", err, result.TradeCount)
+	}
+}

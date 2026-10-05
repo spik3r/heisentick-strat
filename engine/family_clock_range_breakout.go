@@ -197,11 +197,14 @@ func validateClockRangeRun(cfg dsl.Config, symbol, timeframe string, series mark
 // long one truncated, and the coverage rule could hide the loss. Typed callers
 // that supply only Bars have no rows to check.
 func validateClockRangeFixtureRows(cfg dsl.Config, fixture RunFixture) error {
-	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyClockRangeBreakout) || fixture.RawBars == nil {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyClockRangeBreakout) {
 		return nil
 	}
 	if fixture.rawRowDefect != "" {
 		return fmt.Errorf("clockRangeBreakout: malformed series: %s", fixture.rawRowDefect)
+	}
+	if fixture.RawBars == nil {
+		return nil
 	}
 	if len(fixture.RawBars) != len(fixture.Bars) {
 		return fmt.Errorf("clockRangeBreakout: malformed series: %d bar rows were reduced to %d bars", len(fixture.RawBars), len(fixture.Bars))

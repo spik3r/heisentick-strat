@@ -71,10 +71,22 @@ func rowsToBars(rows [][]float64) []marketdata.Bar {
 // fixture themselves should call this with the same bytes.
 func (f *RunFixture) ScanRawBarRows(data []byte) {
 	f.rawRowDefect = ""
+	var container struct {
+		Bars json.RawMessage `json:"bars"`
+	}
+	if err := json.Unmarshal(data, &container); err != nil {
+		f.rawRowDefect = "fixture is not a JSON object"
+		return
+	}
+	if text := bytes.TrimSpace(container.Bars); len(text) == 0 || string(text) == "null" {
+		f.rawRowDefect = "bars is missing or null; an empty array is the only way to supply no bars"
+		return
+	}
 	var probe struct {
 		Bars [][]json.RawMessage `json:"bars"`
 	}
 	if err := json.Unmarshal(data, &probe); err != nil {
+		f.rawRowDefect = "bars is not an array of rows"
 		return
 	}
 	for i, row := range probe.Bars {
