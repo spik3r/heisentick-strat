@@ -5,12 +5,48 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 
 	native "github.com/spik3r/heisentick-strat/engine"
+	"github.com/spik3r/heisentick-strat/marketdata"
+	"github.com/spik3r/heisentick-strat/report"
 )
 
 func main() {
+	if len(os.Args) == 4 && os.Args[1] == "--market-data-window" {
+		read := func(path string, limit int64) []byte {
+			f, e := os.Open(path)
+			if e != nil {
+				panic(e)
+			}
+			defer f.Close()
+			b, e := io.ReadAll(io.LimitReader(f, limit+1))
+			if e != nil {
+				panic(e)
+			}
+			return b
+		}
+		fmt.Println(string(runWindowPayload(string(read(os.Args[2], 4096)), read(os.Args[3], marketdata.MaxWindowPayloadBytes))))
+		return
+	}
+
+	if len(os.Args) == 3 && os.Args[1] == "--basket-report" {
+		file, err := os.Open(os.Args[2])
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		defer file.Close()
+		raw, err := io.ReadAll(io.LimitReader(file, report.MaxBasketJSONBytes+1))
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		fmt.Println(string(runBasketReport(string(raw))))
+		return
+	}
+
 	if len(os.Args) == 3 && os.Args[1] == "--authored-orb" {
 		raw, err := os.ReadFile(os.Args[2])
 		if err != nil {

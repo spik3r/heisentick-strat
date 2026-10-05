@@ -3,6 +3,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"runtime"
@@ -13,6 +14,28 @@ import (
 )
 
 func main() {
+	js.Global().Set("engineReadMarketDataWindow", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return string(runWindowPayload("", nil))
+		}
+		encoded := args[1].String()
+		if len(encoded) > ((32<<20)+2)/3*4 {
+			return string(runWindowPayload("", nil))
+		}
+		payload, err := base64.StdEncoding.DecodeString(encoded)
+		if err != nil {
+			return string(runWindowPayload("", nil))
+		}
+		return string(runWindowPayload(args[0].String(), payload))
+	}))
+
+	js.Global().Set("engineBuildBasketReport", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 1 || args[0].Type() != js.TypeString {
+			return string(runBasketReport(""))
+		}
+		return string(runBasketReport(args[0].String()))
+	}))
+
 	js.Global().Set("engineRunInteractiveDraftPrefixFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return string(runInteractiveDraftPrefix("", ""))
