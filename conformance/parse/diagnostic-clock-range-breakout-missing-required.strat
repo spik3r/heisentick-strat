@@ -1,0 +1,13 @@
+dsl v7
+strategy "Clock Range Breakout - XAUUSD" {
+  description "synthetic example"
+}
+market conditions {
+  slices(XAUUSD 5m)
+}
+setup {
+  type: clock range breakout
+}
+execution {
+  risk: 200 USD
+}

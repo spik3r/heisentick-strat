@@ -190,6 +190,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if err := validateSessionBreakHoldLevelPriority(cfg); err != nil {
 		return nil, err
 	}
+	if err := validateClockRangeRun(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series); err != nil {
+		return nil, err
+	}
 	options := contextOptions(s.fixture, cfg)
 	options.NeedReportTradeContext = s.options.NeedReportTradeContext
 	if !reflect.DeepEqual(options, s.options) {
@@ -297,6 +300,9 @@ func validateRunRequest(request RunRequest) error {
 		return err
 	}
 	if err := validateSeriesValues("market", request.Series); err != nil {
+		return err
+	}
+	if err := validateClockRangeRun(request.Config, request.Symbol, request.Timeframe, request.Series); err != nil {
 		return err
 	}
 	if err := validateSeriesValues("higher-timeframe", request.HTFSeries); err != nil {

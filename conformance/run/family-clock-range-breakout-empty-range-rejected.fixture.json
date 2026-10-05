@@ -1,0 +1,49 @@
+{
+  "schema": "dsl-conformance-run-fixture-v1",
+  "case": "family-clock-range-breakout-empty-range-rejected",
+  "strategyId": "family-clock-range-breakout-empty-range-rejected",
+  "symbol": "XAUUSD",
+  "timeframe": "5m",
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "source": {
+    "bars": {
+      "kind": "synthetic-clock-range-breakout"
+    },
+    "htfBars": null
+  },
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "contextOptions": {},
+  "htfBars": [],
+  "bars": [
+    [
+      1773057600000,
+      100,
+      100.1,
+      99.9,
+      100,
+      1
+    ],
+    [
+      1773115500000,
+      100.5,
+      101.5,
+      100.2,
+      101,
+      1
+    ],
+    [
+      1773162000000,
+      105,
+      106,
+      104,
+      105,
+      1
+    ]
+  ]
+}

@@ -6,6 +6,21 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the clock range breakout setup family (`type: clock range breakout`,
+  id `clockRangeBreakout`) specified by HT-167: a fixed-UTC-offset clock range,
+  buy/sell stop orders with OCO and one entry per range day, a percent stop
+  sized from the post-slippage fill, and a required clock close. The family
+  runs its own broker loop with no inherited session, gate, target,
+  breakeven, trailing, partial, max-hold or ATR-stop behavior, and rejects any
+  other authored directive as a compile error. New phrases: `clock UTC<±H[:MM]>`,
+  `orders expire`, `buffer N pips`, `close positions at`, and `stop N percent`
+  and `range HH:MM to HH:MM` in this family. The reviewed pip registry moves to
+  `dsl.ReviewedInstrumentPip` (engine behavior unchanged). Add 27 parse and
+  37 run conformance cases; all earlier goldens are unchanged. This is an
+  unreleased source addition that needs the next minor version. JavaScript
+  adoption, a producer tag, a consumer pin, strategy registration and the
+  historical comparison are separate, pending steps.
+
 - Correct numeric Failed Breakout `target N R` lowering to `fallbackR`, the
   field the execution engine consumes. Previously the accepted phrase wrote
   an unused `r` field and silently retained the default 1R fallback. Opposite

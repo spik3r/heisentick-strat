@@ -78,6 +78,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 		return RunResult{}, err
 	}
 	series := marketdata.SeriesFromBars(fixture.Bars)
+	if err := validateClockRangeRun(parsed.Config, fixture.Symbol, fixture.Timeframe, series); err != nil {
+		return RunResult{}, err
+	}
 	sourceSeries, sourceHTFSeries, err := sourceSeriesForFixture(fixture, parsed.Config)
 	if err != nil {
 		return RunResult{}, err
@@ -182,7 +185,8 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyKeltnerReversion),
 		string(dsl.FamilyKeltnerExpansion),
 		string(dsl.FamilyNamedLevelSweep),
-		string(dsl.FamilyNamedLevelFlag):
+		string(dsl.FamilyNamedLevelFlag),
+		string(dsl.FamilyClockRangeBreakout):
 		return true
 	default:
 		return false

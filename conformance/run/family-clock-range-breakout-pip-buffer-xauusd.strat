@@ -1,0 +1,25 @@
+dsl v7
+strategy "family-clock-range-breakout-pip-buffer-xauusd" {
+  description "synthetic clock range breakout conformance case; acceptance group(s) 9"
+}
+market conditions {
+  slices(XAUUSD 5m)
+  clock UTC+10
+}
+setup {
+  type: clock range breakout
+  range 11:05 to 14:05
+  buffer 10 pips
+}
+filters {
+  side long only
+}
+risk {
+  stop 1 percent
+}
+management {
+  close positions at 03:00
+}
+execution {
+  risk: 200 USD
+}

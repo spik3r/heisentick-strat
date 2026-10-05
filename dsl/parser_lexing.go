@@ -218,6 +218,12 @@ func splitInlineBody(body string, starts []string, section string) []string {
 				break
 			}
 		}
+		for _, extra := range clockRangeInlineStarts {
+			if strings.HasPrefix(lower[i:], extra.head) && isBoundary(body, i+len(extra.head)) && extra.next.MatchString(body[i+len(extra.head):]) {
+				hits = append(hits, inlineHit{index: i, word: extra.head})
+				break
+			}
+		}
 	}
 	hits = filterInlineSetupTypeHits(body, hits)
 	if len(hits) == 0 {

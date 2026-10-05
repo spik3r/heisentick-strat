@@ -1,0 +1,26 @@
+dsl v7
+strategy "Clock Range Breakout Long Only" {
+  description "synthetic fractional offset example"
+}
+market conditions {
+  symbols XAUUSD
+  timeframes 5m 1m
+  clock UTC-3:30
+}
+setup {
+  type: clock range breakout
+  range 09:05 to 12:05
+  buffer 2.5 pips
+}
+filters {
+  side long only
+}
+risk {
+  stop 0.5 percent
+}
+management {
+  close positions at 20:00
+}
+execution {
+  risk: 150 USD
+}

@@ -1,0 +1,21 @@
+dsl v7
+strategy "family-clock-range-breakout-fractional-offset-minus-3-30" {
+  description "synthetic clock range breakout conformance case; acceptance group(s) 1"
+}
+market conditions {
+  slices(XAUUSD 5m)
+  clock UTC-3:30
+}
+setup {
+  type: clock range breakout
+  range 09:05 to 12:05
+}
+risk {
+  stop 1 percent
+}
+management {
+  close positions at 20:00
+}
+execution {
+  risk: 200 USD
+}

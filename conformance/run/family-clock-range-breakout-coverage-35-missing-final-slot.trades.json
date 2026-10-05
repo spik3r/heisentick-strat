@@ -1,0 +1,17 @@
+{
+  "case": "family-clock-range-breakout-coverage-35-missing-final-slot",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-clock-range-breakout-coverage-35-missing-final-slot",
+  "symbol": "XAUUSD",
+  "timeframe": "5m",
+  "tradeCount": 0,
+  "trades": []
+}
