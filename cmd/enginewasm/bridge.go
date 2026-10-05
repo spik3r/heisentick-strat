@@ -33,6 +33,9 @@ func runCompositionFixture(rawFixture, rawSources string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	if fixture.TimedCalendar != nil {
+		return nil, fmt.Errorf("timed calendar requires the timed-return family; composition fixtures are unsupported")
+	}
 	var sources map[string]string
 	decoder := json.NewDecoder(bytes.NewBufferString(rawSources))
 	decoder.DisallowUnknownFields()

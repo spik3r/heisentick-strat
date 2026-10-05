@@ -1,0 +1,17 @@
+dsl v7
+strategy "Synthetic timed return"
+market conditions {
+  slices(SYNTHUSD 1m)
+}
+setup {
+  type: timed return
+  timed timezone UTC
+  timed signal start current session open
+  timed signal end current clock 10:00 completed-close
+  timed entry 10:00
+  timed exit 11:00
+  timed direction with return
+  timed quantity 1 unit
+  timed execution delayed-open
+  timed calendar required
+}

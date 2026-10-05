@@ -15,6 +15,7 @@ import (
 // RunRequest describes a direct engine run over already-loaded market columns.
 type RunRequest struct {
 	interactiveDraft   bool // only the versioned draft adapter may authorize its reserved ID
+	TimedCalendar      *TimedReturnCalendar
 	Config             dsl.Config
 	Series             marketdata.Series
 	SourceSeries       marketdata.Series
@@ -91,6 +92,9 @@ type SharedRunContext struct {
 
 // SharedContextKey returns a stable key for the context columns a request needs.
 func SharedContextKey(request RunRequest) (string, error) {
+	if isTimedReturn(request.Config) {
+		return "", fmt.Errorf("timed return does not support shared/grid contexts")
+	}
 	if err := validateRunRequest(request); err != nil {
 		return "", err
 	}
@@ -120,6 +124,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 // PrepareSharedRunContext builds immutable context columns and higher-timeframe
 // state once for a route/config context group.
 func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
+	if isTimedReturn(request.Config) {
+		return nil, fmt.Errorf("timed return does not support shared/grid contexts")
+	}
 	if sourceEntryRequest(request) {
 		return nil, errors.New("XAUUSD source-entry execution is not supported by shared grid contexts; use PrepareRun/report or refuse the route")
 	}
@@ -156,6 +163,9 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 // PrepareVariant creates a per-variant runner that shares immutable context
 // state while owning its broker and trade buffers.
 func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) {
+	if isTimedReturn(cfg) {
+		return nil, fmt.Errorf("timed return does not support shared/grid variants")
+	}
 	if s == nil {
 		return nil, errors.New("shared run context is required")
 	}
@@ -217,6 +227,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 
 // PrepareRun builds the causal context columns and setup state for a strategy.
 func PrepareRun(request RunRequest) (*PreparedRun, error) {
+	if isTimedReturn(request.Config) {
+		return nil, fmt.Errorf("timed return requires engine.Run or timed-report; ordinary report, prepared and prefix paths are unsupported")
+	}
 	if sourceEntryRequest(request) {
 		if err := validateRunRequest(request); err != nil {
 			return nil, err
@@ -255,12 +268,22 @@ func sourceEntryRequest(request RunRequest) bool {
 	return request.Timeframe == entry && supportedSourceEntryRoute(request.Symbol, sourceTimeframeFromConfig(request.Config), entry)
 }
 
-func validateRunRequest(request RunRequest) error {
+func validateRunStrategyIdentity(request RunRequest) error {
 	if request.StrategyID == InteractiveDraftStrategyID && !request.interactiveDraft {
 		return fmt.Errorf("draft strategy requires RunInteractiveDraftFixture")
 	}
 	if request.StrategyID == vpNYHandoffStrategyID {
 		return fmt.Errorf("VP NY handoff strategy requires RunInteractiveVPNYHandoffVetoFixture")
+	}
+	return nil
+}
+
+func validateRunRequest(request RunRequest) error {
+	if err := validateRunStrategyIdentity(request); err != nil {
+		return err
+	}
+	if err := validateTimedCalendarFamily(request.Config, request.TimedCalendar); err != nil {
+		return err
 	}
 	if request.Config == nil {
 		return errors.New("engine config is required")
@@ -475,6 +498,12 @@ func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
 
 // Run executes a direct engine request in one call.
 func Run(request RunRequest) (RunResult, error) {
+	if err := validateRunStrategyIdentity(request); err != nil {
+		return RunResult{}, err
+	}
+	if isTimedReturn(request.Config) {
+		return runTimedReturn(request)
+	}
 	prepared, err := PrepareRun(request)
 	if err != nil {
 		return RunResult{}, err

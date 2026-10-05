@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+- Reconcile the recovery producer with current-main timed-return/calendar,
+  quote preflight and opening-range minute parsing changes. Keep reserved
+  interactive strategy IDs protected before timed dispatch and reject timed
+  calendars in the composition bridge instead of discarding them. Existing
+  generic and interactive outputs are unchanged for admitted inputs.
+
 - Reconstruct the optional `dsl-source-assertions-v1` producer contract for
   registered XAUUSD Dual EMA daily/4h snapshots after the 2026-10-04 cloud
   workspace loss. Go checks nine source-derived numeric parameters, empty
@@ -78,6 +84,25 @@ version and is named here.
 - Classify HTF source gaps using the decision timestamp, so appending a future
   HTF open cannot retroactively make an intraday gap look like a weekend
   closure. Add causal swing and FVG sweep fixtures.
+- Parse opening-range `first N minutes` as minutes and disable candle-count
+  mode, as specified. Preserve candle/bar units and integer-hour UTC slots;
+  reject malformed or ambiguous duration prefixes and non-positive,
+  fractional or overflowing durations rather than silently coercing them.
+  Add two synthetic parse goldens; no existing run golden changes. This is
+  a prospective parser-semantic correction requiring a minor release and
+  explicit consumer adoption; no tag or consumer pin is included.
+
+- Reject a supplied timed-return calendar on another strategy family before
+  generic fixture execution or shared/native preparation. This closes mixed
+  profile admission without changing valid existing family behavior.
+
+- Add a native-only opt-in timed-return family and `timed-report` CLI with
+  typed opening/completed-close anchors, pinned timezone/calendar inputs,
+  one-bar-delayed scheduled fills, one fixed unit and dated admission audit.
+  Two invented run fixtures and one parse fixture exercise the new contract;
+  existing goldens retain their semantics. This addition requires the next
+  minor release (at least 0.25.0); no tag or consumer adoption is included.
+
 - Add exact-source Go run fixtures for four XAUUSD research strategies using
   frozen 5m/15m bars, and emit the causal seasonality diagnostics used by
   JavaScript in trade metadata. These fixtures add implementation coverage;

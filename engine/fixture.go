@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -30,6 +31,21 @@ func DecodeRunFixture(data []byte) (RunFixture, error) {
 	}
 	if fixture.Schema != runFixtureSchema {
 		return RunFixture{}, fmt.Errorf("schema %q, want %q", fixture.Schema, runFixtureSchema)
+	}
+	if fixture.TimedCalendar != nil {
+		var strict struct {
+			RunFixture
+			Source         json.RawMessage `json:"source,omitempty"`
+			ContextOptions map[string]any  `json:"contextOptions"`
+		}
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&strict); err != nil {
+			return RunFixture{}, fmt.Errorf("timed fixture JSON: %w", err)
+		}
+		if len(strict.ContextOptions) != 0 {
+			return RunFixture{}, fmt.Errorf("timed fixture rejects context options")
+		}
 	}
 	fixture.Costs = fixture.Costs.normalized()
 	for _, series := range []struct {

@@ -223,7 +223,15 @@
       "classification": "shared",
       "since": 7
     },
-    {"id": "downShockRebound", "canonicalSpelling": "down shock rebound", "canonicalExample": "type: down shock rebound\nsource timeframe 15m\nentryTf 1m", "classification": "shared", "since": 7}
+    {"id": "downShockRebound", "canonicalSpelling": "down shock rebound", "canonicalExample": "type: down shock rebound\nsource timeframe 15m\nentryTf 1m", "classification": "shared", "since": 7},
+    {
+      "id": "timedReturn",
+      "canonicalSpelling": "timed return",
+      "canonicalExample": "type: timed return\n  timed timezone UTC\n  timed signal start current session open\n  timed signal end current clock 10:00 completed-close\n  timed entry 10:00\n  timed exit 11:00\n  timed direction with return\n  timed quantity 1 unit\n  timed execution delayed-open\n  timed calendar required",
+      "classification": "go-only",
+      "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
+      "since": 7
+    }
   ],
   "aliases": [
     {
@@ -1534,7 +1542,25 @@
     {"id": "alias.go-inline-setup-type.down-shock-phrase", "spelling": "down shock rebound", "familyId": "downShockRebound", "source": "go-inline-setup-type", "classification": "shared", "since": 7},
     {"id": "alias.go-canonical-setup-type.down-shock-phrase", "spelling": "down shock rebound", "familyId": "downShockRebound", "source": "go-canonical-setup-type", "classification": "shared", "since": 7},
     {"id": "alias.js-setup-type.down-shock-compact", "spelling": "downShockRebound", "familyId": "downShockRebound", "source": "js-setup-type", "classification": "shared", "since": 7},
-    {"id": "alias.go-canonical-setup-type.down-shock-compact", "spelling": "downShockRebound", "familyId": "downShockRebound", "source": "go-canonical-setup-type", "classification": "shared", "since": 7}
+    {"id": "alias.go-canonical-setup-type.down-shock-compact", "spelling": "downShockRebound", "familyId": "downShockRebound", "source": "go-canonical-setup-type", "classification": "shared", "since": 7},
+    {
+      "id": "alias.go-inline-setup-type.timed-return",
+      "source": "go-inline-setup-type",
+      "spelling": "timed return",
+      "familyId": "timedReturn",
+      "classification": "go-only",
+      "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.timed-return",
+      "source": "go-canonical-setup-type",
+      "spelling": "timed return",
+      "familyId": "timedReturn",
+      "classification": "go-only",
+      "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
+      "since": 7
+    }
   ],
   "directiveHeads": [
     {
@@ -2136,7 +2162,14 @@
       "classification": "shared",
       "since": 7
     },
-    {"id": "directive.shock", "spelling": "shock", "classification": "shared", "since": 7}
+    {"id": "directive.shock", "spelling": "shock", "classification": "shared", "since": 7},
+    {
+      "id": "directive.timed",
+      "spelling": "timed",
+      "classification": "go-only",
+      "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
+      "since": 7
+    }
   ],
   "deprecations": [
     { "id": "deprecated.windows", "spelling": "windows", "replacement": "sessions", "classification": "shared", "since": 6, "deprecatedSince": 6 },

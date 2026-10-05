@@ -109,6 +109,7 @@ func (p *parser) parse() {
 	if p.strictSource && (p.strictTypes != 1 || p.strictVersions != 1 || p.strictSlices != 1) {
 		p.errorAt(nil, nil, "strict source requires exactly one dsl v7, setup type and slices declaration", "")
 	}
+	p.validateTimedReturn()
 }
 
 func (p *parser) validateStrictHigherTimeframe() {
@@ -134,6 +135,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		return
 	}
 	switch head {
+	case "timed":
+		p.parseTimedReturn(line, tokens)
 	case "dsl":
 		p.parseVersion(line, tokens)
 	case "strategy", "name":
