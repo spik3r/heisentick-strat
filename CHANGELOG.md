@@ -6,6 +6,14 @@ version and is named here.
 
 ## [Unreleased]
 
+- Correct numeric Failed Breakout `target N R` lowering to `fallbackR`, the
+  field the execution engine consumes. Previously the accepted phrase wrote
+  an unused `r` field and silently retained the default 1R fallback. Opposite
+  edge priority and the minimum-reward filter remain unchanged. Add invented
+  long/short trade-outcome and native/WASM regressions. This prospective
+  semantic correction requires a minor release and explicit consumer adoption;
+  no tag or consumer pin is included.
+
 - Parse opening-range `first N minutes` as minutes and disable candle-count
   mode, as specified. Preserve candle/bar units and integer-hour UTC slots;
   reject malformed or ambiguous duration prefixes and non-positive,

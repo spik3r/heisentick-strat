@@ -32,7 +32,7 @@ func setupTargetKey(raw any) string {
 		return "vefR"
 	case string(FamilyVolumeAnomalyExhaustion):
 		return "vaeR"
-	case string(FamilyPriceMomentum):
+	case string(FamilyFailedBreakout), string(FamilyPriceMomentum):
 		return "fallbackR"
 	case string(FamilyFairValueGap):
 		return "fvgR"
