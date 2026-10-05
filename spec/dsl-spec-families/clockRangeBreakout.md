@@ -1,11 +1,13 @@
 # Setup family: `clock range breakout` (`clockRangeBreakout`)
 
-Status: documentation-only v1 contract (HT-167). Parser, engine and
-conformance fixtures are not implemented by this spec PR. The requirements
-below are acceptance criteria for a separately reviewed implementation.
+Status: v1 contract (HT-167). The Go producer (parser, engine, conformance
+corpus, native and WASM builds) implements it in the unreleased source tree.
+The app's JavaScript runtime does not implement it yet, so Go/WASM/JS parity
+stays pending until a separately reviewed adoption lands. Nothing here is a
+release, a consumer pin or a strategy registration.
 
 Part of `spec/dsl-spec.md` §9. Backlog task:
-[HT-167](https://github.com/spik3r/heisentick-backlog/blob/claude/ht133-clock-range-breakout/tasks/HT-167-dsl-clock-range-breakout.md).
+[HT-167](https://github.com/spik3r/heisentick-backlog/blob/main/tasks/HT-167-dsl-clock-range-breakout.md).
 
 Task identity note: originally proposed as HT-133, now HT-167 to resolve a
 backlog ID collision. Deferred extras are HT-168, originally proposed as
@@ -216,7 +218,7 @@ insufficient coverage, missing final slot, nonpositive range width, invalid
 price/distance/size and broker-blocked placement. Rejected days and expired
 orders must be observable without inventing trades.
 
-## Example (proposed syntax, not yet implemented)
+## Example
 
 UTC+10 range 11:05–14:05 / next-day 03:00 close represents UTC+2 range
 03:05–06:05 / 19:00 close. The 5m example is a separate resolution from a 1m
@@ -302,3 +304,75 @@ fixed-dollar risk sizing can yield different profit factors even for identical
 fills. Cost/resolution differences must also be explicit. Language support
 and parity alone provide no edge, promotion, basket, forward-test or live
 execution qualification.
+
+## Go producer notes
+
+These notes record choices the contract leaves open, as implemented in Go. The
+conformance cases `family-clock-range-breakout-*` and
+`*-clock-range-breakout-*` pin them.
+
+**Parsed configuration.** `type: clock range breakout` yields `setupType`
+`clockRangeBreakout`, `clock.utcOffsetMinutes`, and
+`clockRangeBreakout.{rangeStartMinute, rangeEndMinute, expireMinute,
+closeMinute, bufferPips}` (minutes after midnight on the declared clock).
+`expireMinute` always holds the effective value: the close when no
+`orders expire` line is written. `stop` is `{type: "percent", percent, ...}`.
+The inherited fields are reset to neutral values: `target {}`, `breakeven
+{atR: null, offsetAtr: 0}`, `cooldownCandles 0`, `maxHoldCandles 0`,
+`tradeWindowMode "unrestricted"`, all four sessions on, `dayTypes []`,
+`maxMovementEr 1`, `triggerCandles ["any"]`. The engine reads none of them.
+
+**Compile checks.** Authored lines are checked against an allowlist after the
+whole document is read, so section order and the position of `type:` do not
+matter. The shared heads `range`, `close` and `stop` keep their meaning in
+other families; only their clock spellings (`range <digit>...`, `close
+positions ...`, `stop <N> percent`) are recorded for this family.
+
+**Inline blocks.** The ordinary inline splitter drops text before the first
+directive and glues unknown words to the previous one, so the family audits
+the original text of every inline `{ ... }` block: only allowed directives, in
+any order, nothing before the first, and metadata as one quoted string. Words
+inside quoted metadata are text in every family.
+
+**Runtime checks.** Original fixture rows are checked before the row-to-bar
+adapters (exactly six finite JSON numbers per row; `null` and other primitives are rejected, because decoding would turn `null` into zero; a fixture whose `bars` is missing or null is malformed, while an explicit empty array means no quotes), then the series. A malformed series (non-increasing or duplicate
+timestamps, timestamps off the route grid, OHLC outside bounds, a timestamp
+outside the year 1970-9999, an implementation support bound that keeps the
+per-day loop finite) fails the whole run with an error that starts
+`clockRangeBreakout: malformed series`. A symbol without a reviewed pip size
+or a timeframe the schedule cannot sit on fails the run the same way. Neither
+produces trades.
+
+**Rejected days and expired orders.** `PreparedRun.ClockRangeDays()` returns
+one record per evaluated range day: `outcome` is `entered`, `rejected`,
+`expired` or `pending` (orders still live when the data ended), with a stable
+`reason` for a rejection: `empty-range`, `insufficient-coverage`,
+`missing-final-slot`, `nonpositive-range-width`, `invalid-price`,
+`broker-blocked`, `invalid-fill`, `invalid-stop-distance`, `invalid-size`,
+`outside-execution-window`. A day is evaluated when its final range bar closes, that is at range end,
+without waiting for another quote; a day whose range end precedes the first
+supplied bar is not evaluated. A range whose final slot is absent can only be
+judged once a later bar shows time has passed. These records are Go API only and are not part of the trade envelope.
+
+**Direct configs.** A parsed config edited afterwards cannot trade with a
+negative, `NaN` or infinite `riskUsd`; explicit zero stays valid. Only this
+family's run entries enforce that; other families' money semantics are
+unchanged.
+
+**Prefix replay is not checkpoint resume.** `RunPrefix` replays the supplied
+bars, keeps an open position open and does not liquidate. `RunPrefixResumable`
+(checkpoint resume) rejects this family with an unsupported-path error; adding
+checkpoint support is a separate decision.
+
+**Sizing.** `size = riskUsd / (p * q / 100)` with `p` the post-slippage fill.
+This is the stated distance, not `|fill - SL|`, which differs in the last
+digits.
+
+**Prior-position blocking.** The placement guard exists, but a valid next-day
+range always contains a final slot at or after the resolved clock close, so
+the due close has already closed the earlier position. The guard is covered by
+a direct unit test, not by a conformance fixture.
+
+**Entry-bar and metadata details.** The stop fill on the entry bar exits at the
+stop, not at the open. `trade.meta.clockRangeBreakout` omits `exitReason` on a
+position that is still open in a prefix result.

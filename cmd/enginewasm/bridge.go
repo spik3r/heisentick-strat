@@ -19,6 +19,7 @@ func runFixture(raw, source string) ([]byte, error) {
 	if fixture.Schema != "dsl-conformance-run-fixture-v1" {
 		return nil, fmt.Errorf("unsupported fixture schema %q", fixture.Schema)
 	}
+	fixture.ScanRawBarRows([]byte(raw))
 	// Mirror LoadRunFixture's input adapter; the engine's Bars fields are json:"-".
 	fixture.Bars = rowsToBars(fixture.RawBars)
 	fixture.SourceBars = rowsToBars(fixture.RawSourceBars)

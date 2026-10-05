@@ -1,0 +1,47 @@
+{
+  "case": "family-clock-range-breakout-terminal-last-close",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-clock-range-breakout-terminal-last-close",
+  "symbol": "XAUUSD",
+  "timeframe": "5m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 101,
+      "entryIndex": 36,
+      "entryT": 1773115500000,
+      "exit": 100.9,
+      "exitIndex": 36,
+      "exitT": 1773115500000,
+      "initialSl": 99.99,
+      "initialTp": null,
+      "meta": {
+        "clockRangeBreakout": {
+          "dayKey": "2026-03-10",
+          "exitReason": "end-of-data",
+          "orderPlacedAt": 1773115500000,
+          "rangeBars": 36,
+          "rangeHigh": 101,
+          "rangeLow": 99,
+          "side": "long"
+        }
+      },
+      "pnl": -19.8019801980187,
+      "points": -0.0999999999999943,
+      "reason": "end-of-test",
+      "side": "long",
+      "size": 198.019801980198,
+      "sl": 99.99,
+      "tag": "DSL-CRB",
+      "tp": null
+    }
+  ]
+}

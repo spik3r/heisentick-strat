@@ -30,6 +30,7 @@ type parser struct {
 	dualEMAAudit        dualEMAParseAudit
 	smaGoldenCrossAudit smaGoldenCrossParseAudit
 	rmvFields           map[string]bool
+	clockRange          clockRangeParse
 }
 
 type logicalLine struct {
@@ -102,6 +103,7 @@ func (p *parser) parse() {
 	p.validateSMAGoldenCross()
 	p.validateRMVSourceTimeframe()
 	p.validateTimedReturn()
+	p.validateClockRangeBreakout()
 }
 
 func (p *parser) validateStrictHigherTimeframe() {
@@ -121,6 +123,9 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.reportDeprecatedSpellings(line, tokens)
 	}
 	if p.tryKeltnerLine(line, head, tokens) {
+		return
+	}
+	if p.recordClockRangeDirective(line, tokens) {
 		return
 	}
 	switch head {

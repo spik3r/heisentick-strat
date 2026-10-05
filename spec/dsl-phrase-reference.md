@@ -209,9 +209,10 @@ execution {
 }
 ```
 
-## Proposed clock range breakout v1
+## Clock range breakout v1
 
-Documentation-only phrases; parser/engine support follows separately. The
+Implemented in the unreleased Go producer (parser, engine, conformance and
+WASM); JavaScript adoption is pending. The
 [family contract](dsl-spec-families/clockRangeBreakout.md) defines required
 clock close, neutral family defaults, placement-time admission, strict clock
 alignment, OHLC tie/stop rules and twelve conformance groups. Extra filters,
@@ -220,6 +221,7 @@ entry/management modes and a magnifier are outside v1.
 | Phrase | Meaning | Example |
 | --- | --- | --- |
 | `type: clock range breakout` | Timed range with pending stop-entry OCO | `type: clock range breakout` |
+| `clock UTC<±H[:MM]>` | Required fixed offset in `market conditions`, `[-12:00, +14:00]`, no DST | `clock UTC+10` |
 | `range HH:MM to HH:MM` | Required same-clock-day range, start < end | `range 11:05 to 14:05` |
 | `orders expire HH:MM` | Defaults to required close; rangeEnd < expiry <= close | `orders expire 03:00` |
 | `buffer N pips` | Finite nonnegative reviewed instrument pips, default 0 | `buffer 0 pips` |

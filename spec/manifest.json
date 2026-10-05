@@ -231,6 +231,14 @@
       "classification": "go-only",
       "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
       "since": 7
+    },
+    {
+      "id": "clockRangeBreakout",
+      "canonicalSpelling": "clock range breakout",
+      "canonicalExample": "type: clock range breakout\n  range 11:05 to 14:05\n  orders expire 03:00\n  buffer 0 pips",
+      "classification": "go-only",
+      "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1560,6 +1568,24 @@
       "classification": "go-only",
       "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.clock-range-breakout",
+      "source": "go-inline-setup-type",
+      "spelling": "clock range breakout",
+      "familyId": "clockRangeBreakout",
+      "classification": "go-only",
+      "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.clock-range-breakout",
+      "source": "go-canonical-setup-type",
+      "spelling": "clock range breakout",
+      "familyId": "clockRangeBreakout",
+      "classification": "go-only",
+      "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2168,6 +2194,27 @@
       "spelling": "timed",
       "classification": "go-only",
       "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
+      "since": 7
+    },
+    {
+      "id": "directive.clock",
+      "spelling": "clock",
+      "classification": "go-only",
+      "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
+      "since": 7
+    },
+    {
+      "id": "directive.orders",
+      "spelling": "orders",
+      "classification": "go-only",
+      "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
+      "since": 7
+    },
+    {
+      "id": "directive.buffer",
+      "spelling": "buffer",
+      "classification": "go-only",
+      "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
       "since": 7
     }
   ],

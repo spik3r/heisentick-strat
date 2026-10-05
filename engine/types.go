@@ -52,12 +52,13 @@ type RunFixture struct {
 	Costs            Costs                `json:"costs"`
 	Bars             []marketdata.Bar     `json:"-"`
 	RawBars          [][]float64          `json:"bars"`
-	SourceBars       []marketdata.Bar     `json:"-"`
-	RawSourceBars    [][]float64          `json:"sourceBars,omitempty"`
-	HTFBars          []marketdata.Bar     `json:"-"`
-	RawHTFBars       [][]float64          `json:"htfBars,omitempty"`
-	SourceHTFBars    []marketdata.Bar     `json:"-"`
-	RawSourceHTFBars [][]float64          `json:"sourceHtfBars,omitempty"`
+	rawRowDefect     string
+	SourceBars       []marketdata.Bar `json:"-"`
+	RawSourceBars    [][]float64      `json:"sourceBars,omitempty"`
+	HTFBars          []marketdata.Bar `json:"-"`
+	RawHTFBars       [][]float64      `json:"htfBars,omitempty"`
+	SourceHTFBars    []marketdata.Bar `json:"-"`
+	RawSourceHTFBars [][]float64      `json:"sourceHtfBars,omitempty"`
 }
 
 // RunResult mirrors strat/conformance/run/*.trades.json.

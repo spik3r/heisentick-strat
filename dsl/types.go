@@ -36,6 +36,7 @@ const (
 	FamilyKeltnerExpansion        FamilyID = "keltnerExpansion"
 	FamilyNamedLevelSweep         FamilyID = "namedLevelSweep"
 	FamilyNamedLevelFlag          FamilyID = "namedLevelFlag"
+	FamilyClockRangeBreakout      FamilyID = "clockRangeBreakout"
 )
 
 // ParseResult mirrors the DSL compiler result contract: a config plus both

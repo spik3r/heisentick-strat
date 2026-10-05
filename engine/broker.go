@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/spik3r/heisentick-strat/contextcols"
+	"github.com/spik3r/heisentick-strat/dsl"
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
@@ -149,6 +150,7 @@ type broker struct {
 	sma                    smaGoldenCrossState
 	execution              ExecutionBounds
 	windowed               bool
+	clock                  clockRangeState
 }
 
 func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTrend []int8, ema []float64, emaSlope []float64, params flagParams, fixture RunFixture, trades []Trade) {
@@ -235,6 +237,7 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.sma = smaGoldenCrossState{}
 	b.windowed = false
 	b.execution = ExecutionBounds{}
+	b.clock.reset()
 }
 
 func (b *broker) setExecutionWindow(window ExecutionBounds) {
@@ -271,6 +274,9 @@ func (b *broker) run() []Trade {
 }
 
 func (b *broker) runWithFinalization(liquidateAtEnd bool) []Trade {
+	if b.params.SetupType == string(dsl.FamilyClockRangeBreakout) {
+		return b.runClockRangeBreakout(liquidateAtEnd)
+	}
 	if trades, handled := b.runSpecialSetup(); handled {
 		return trades
 	}

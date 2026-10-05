@@ -184,7 +184,7 @@ Time gates:
   A DST-aware clock would be a separate versioned semantic change.
 - `clock UTC+10` — fixed offset from UTC (`UTC±H` or `UTC±H:MM`, within
   `[-12:00, +14:00]`, no DST) used by families that read wall-clock times.
-  The proposed `clock range breakout` v1 requires this directive and a clock
+  The `clock range breakout` v1 family requires this directive and a clock
   close. Its family contract neutralizes inherited time gates and rejects
   explicit `local hour`, `trade window ...` and `sessions(...)` directives.
   Other families retain their existing clocks and defaults. Offset minutes,
@@ -373,7 +373,7 @@ Risk (stop):
 - `stop <M> ATR` — fixed ATR-multiple stop.
 - `stop <N> percent` — stop distance as a percent of the fill price, anchored
   to the actual post-slippage fill, with finite `0 < N <= 100`
-  (proposed `clock range breakout` only; no inherited ATR clamp).
+  (`clock range breakout` only; no inherited ATR clamp).
 - `stop beyond <ratio> retrace [by X]` — fib-retrace stop.
 - `stop extreme N [+ X]`, `stop recentExtreme key/value…` — *deprecated*
   spellings of the extreme stop.
@@ -418,7 +418,7 @@ Management:
 - `wait N candles after trade` — re-entry cooldown (default 3).
   *Deprecated:* `cooldownCandles`, `cooldownBars`.
 - `close positions at HH:MM` — close an open position at a wall-clock time on
-  the strategy's `clock` (required in proposed `clock range breakout` v1).
+  the strategy's `clock` (required, and only supported, by `clock range breakout` v1).
   Expiry/close alignment, missing quotes and terminal liquidation follow the
   family contract; this is not an optional indefinite hold.
 - `maxHoldCandles N` — time stop (0 = off). *Deprecated:* `maxHoldBars`.
@@ -521,7 +521,7 @@ recorded for funnel diagnostics):
 7. grade requirement, then grade-based sizing;
 8. broker admission (cooldown, one-position-at-a-time, side allowances).
 
-The proposed [`clock range breakout`](dsl-spec-families/clockRangeBreakout.md)
+The [`clock range breakout`](dsl-spec-families/clockRangeBreakout.md)
 v1 replaces the inherited gate/default pipeline with its explicit directive
 allowlist and placement-time admission. Pending stop entries cannot use their
 fill bar's completed context to decide admission. Its family file specifies

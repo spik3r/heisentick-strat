@@ -174,6 +174,7 @@ type flagParams struct {
 	NamedLevelSweep            namedLevelSweepParams
 	NamedLevelFlag             namedLevelFlagParams
 	NLSUseTrigger              bool
+	ClockRange                 dsl.ClockRangeSpec
 }
 
 func paramsFromConfig(cfg dsl.Config) flagParams {
@@ -527,6 +528,11 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		NLSUseTrigger:             triggerExplicit && !containsString(triggerCandles, "any"),
 	}
 	applyExtractedSetupParams(&p, cfg, stop, orb, setupType)
+	if setupType == string(dsl.FamilyClockRangeBreakout) {
+		// Run entry points validate the config first; a decode failure here
+		// leaves a zero spec that the family loop refuses to trade.
+		p.ClockRange, _ = dsl.DecodeClockRangeBreakout(cfg)
+	}
 	if p.StopLookbackCandles == 0 && !preserveExplicitStopLookback {
 		p.StopLookbackCandles = p.familyDefaultStopLookback()
 	}

@@ -1,0 +1,24 @@
+dsl v7
+strategy "Clock Range Breakout - XAUUSD" {
+  description "synthetic example"
+}
+management {
+  target 2R
+  close positions at 03:00
+}
+execution {
+  risk: 200 USD
+}
+risk {
+  stop 1 percent
+}
+setup {
+  type: clock range breakout
+  range 11:05 to 14:05
+  orders expire 03:00
+  buffer 0 pips
+}
+market conditions {
+  slices(XAUUSD 5m)
+  clock UTC+10
+}
