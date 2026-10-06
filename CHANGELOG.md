@@ -6,16 +6,32 @@ version and is named here.
 
 ## [Unreleased]
 
-## [0.25.0] — 2026-10-06
+## [0.25.0] — not yet tagged (candidate; date set when tagged)
 
 - Add `engine/frozenlevels`, isolated causal primitives for frozen-level
   research: source windows, prior-opening locks, a lock manager (HT-169) and a
-  level lifecycle with admission events (HT-170). They are not DSL syntax, a
-  strategy, an execution adapter or a result; all fixtures are invented and no
-  existing family or golden changes.
+  level lifecycle with admission events (HT-170). They are building blocks,
+  not a complete backtester: no DSL syntax, strategy, quote execution adapter
+  or result; all fixtures are invented and no existing family or golden
+  changes.
 
 - Add generic synthetic quote and clock preflight checks in `marketdata`. No
   parser or engine semantics change.
+
+- Add `frozenLevelBreakout` (`type: frozen level breakout`, HT-171), a
+  compile-only research control. It parses an explicit typed profile
+  (`stored-m30-lock-isolation-v1`) with required, authored settings and opaque
+  input identities, and every successful parse reports
+  `frozen-level-quote-execution-unimplemented`. It is not a runnable strategy:
+  every engine entry (`Run`, `PrepareRun`, shared and variant preparation)
+  refuses it with that error, and nothing supplies quote execution. Its
+  grammar is family-specific; other families' parsing is unchanged. Adds 12
+  parse conformance cases; no run golden changes.
+
+- The WASM entry points `dslParse`, `engineRunFixture` and `engineRunColumns`
+  reject DSL source that is not valid UTF-16 (an unpaired surrogate) instead of
+  letting the JavaScript-to-Go string conversion repair it. This applies to
+  every family and is visible to consumers of the WASM builds.
 
 - Add the clock range breakout setup family (`type: clock range breakout`,
   id `clockRangeBreakout`) specified by HT-167: a fixed-UTC-offset clock range,
@@ -57,6 +73,8 @@ version and is named here.
   one-bar-delayed scheduled fills, one fixed unit and dated admission audit.
   Two invented run fixtures and one parse fixture exercise the new contract;
   existing goldens retain their semantics. Consumer adoption is separate.
+
+## [0.24.1] — 2026-10-01
 
 - Add exact-source Go run fixtures for four XAUUSD research strategies using
   frozen 5m/15m bars, and emit the causal seasonality diagnostics used by
