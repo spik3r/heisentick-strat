@@ -1,0 +1,808 @@
+{
+  "files": {
+    "long-base.json": {
+      "bytes": 79258,
+      "controls": [
+        {
+          "configDigest": "39aa6e291199c3b18d4d8d0a5ebcdb550c586837c517ee41c26da7458547a549",
+          "mode": "none",
+          "policyDigest": "b3080ead8f432800e09d399903e2a7c0b158d31452fe738029d830305810e81a"
+        },
+        {
+          "configDigest": "b113429748e8be45e4a09fcc083d6886c0bea9a599418e569f5be4641f254d4a",
+          "mode": "scale",
+          "policyDigest": "112f3f350e208cfdc79f78e72b568ebc5cade27e6419c1afaf6a6ce517664b72"
+        },
+        {
+          "configDigest": "b1e18f5164eb34fdf26388711497adcdc7e7b6d9734c437208dd204edb10e5b1",
+          "mode": "pivot",
+          "policyDigest": "10a91dcba8a2fa9aa8b8da537febe1e75f335b4d3ddbe4de5eddfeb67578317c"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "5483d79bc8fd39b7f4dbabbcd48ec0512304142e3c1f8f2768dff1a8cc9402c3",
+        "normalizedSnapshot": "dfbf15ebfaf3b0fb2a65f64b77e4f9527abb36baeb6bf14769d65460c199cc5b",
+        "ordering": "3dd71b40cee0d4eea28f92abdbfe76c738bad28b0fed96df70d1d9a1be54a876",
+        "rawCSV": "e1abecc6367507c5198734003dcdffbf64e04aa16d6c20f288fbd6f8c3c5c36f",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "67ee7f2bb37fb442858a2be30b2df40bdfb432e4010f892a9ef0fdc710a3a59f",
+        "source": "d59863bd3670c2b18b5ef01fd58a8ab80b5b86b0d82969e1982fd7a4c40ccdd5"
+      },
+      "sha256": "e48a89d5b3c4c26969751d729c3e16f9ac17b5d7d3d07eb9bd11c931406f628e"
+    },
+    "long-fee-stress.json": {
+      "bytes": 79302,
+      "controls": [
+        {
+          "configDigest": "1b27d490351c550739ac9e0bcf915ea2d2360f5587241cbb675efb20385f2f16",
+          "mode": "none",
+          "policyDigest": "d17daca685ade9856d25ddf906dbd1383c63104138f235d5a939ebedda8c5ce9"
+        },
+        {
+          "configDigest": "a124fd13c1e56953967ce6a7fb945c31f70f9428c0ea58b66eea587d35ed8e52",
+          "mode": "scale",
+          "policyDigest": "ccb143940a06804a38c35ead66c8672177be99ae600fda54e0df820c6787b561"
+        },
+        {
+          "configDigest": "1c4a4c78586a98bd9d08acf52d4eb01fc4788ee98e0edb4701f8cffb639843b3",
+          "mode": "pivot",
+          "policyDigest": "71bbad6d30ee6eb9203bf3a4bda287e9e27746d7131480eed9f04b0980665308"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "7dde9917577747572da3c33407e57978b6682d39df0fe7bd5ac4f37de35efc58",
+        "normalizedSnapshot": "dfbf15ebfaf3b0fb2a65f64b77e4f9527abb36baeb6bf14769d65460c199cc5b",
+        "ordering": "3dd71b40cee0d4eea28f92abdbfe76c738bad28b0fed96df70d1d9a1be54a876",
+        "rawCSV": "e1abecc6367507c5198734003dcdffbf64e04aa16d6c20f288fbd6f8c3c5c36f",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "67ee7f2bb37fb442858a2be30b2df40bdfb432e4010f892a9ef0fdc710a3a59f",
+        "source": "d59863bd3670c2b18b5ef01fd58a8ab80b5b86b0d82969e1982fd7a4c40ccdd5"
+      },
+      "sha256": "3c6162e2e4b607d8f01f8f861c2f602ca78d30e9033961e04d1b10775d19cc82"
+    },
+    "long-missing-opening.json": {
+      "bytes": 75672,
+      "controls": [
+        {
+          "configDigest": "094e3ebec107a54547ce8b13b94a9fdb4da493e118770a39060c1c77efeb33ee",
+          "mode": "none",
+          "policyDigest": "d9584bd7010217d72115ec0318cd3991ceca9043c7111d766e89620c945eb7ef"
+        },
+        {
+          "configDigest": "72ab45388e37c24eda0df06c55c16329f5c1e8f4c4a2a6bc28c7a17fff6d3343",
+          "mode": "scale",
+          "policyDigest": "43f196be185d089de30add39d06c1ea1531d8ef0798fec87f62ae658523f80ad"
+        },
+        {
+          "configDigest": "639756a0eaa07ce10803b29da5d3ba6c88de2c63cc64025d6490868db72b0ec1",
+          "mode": "pivot",
+          "policyDigest": "fcb77bbbf8a008193ec0103f3b98aedff7f6d1c89a0d1a012e2b8b81b79251f0"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "5483d79bc8fd39b7f4dbabbcd48ec0512304142e3c1f8f2768dff1a8cc9402c3",
+        "normalizedSnapshot": "dfbf15ebfaf3b0fb2a65f64b77e4f9527abb36baeb6bf14769d65460c199cc5b",
+        "ordering": "ece8939d540bae3d2f483ffa332e600c78d8e1e814327f0e5c41d2675334201a",
+        "rawCSV": "e1abecc6367507c5198734003dcdffbf64e04aa16d6c20f288fbd6f8c3c5c36f",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "67ee7f2bb37fb442858a2be30b2df40bdfb432e4010f892a9ef0fdc710a3a59f",
+        "source": "d59863bd3670c2b18b5ef01fd58a8ab80b5b86b0d82969e1982fd7a4c40ccdd5"
+      },
+      "sha256": "d3503dbe3c9ba1f432e7a77d9b72ebe1c8bc8135fbcbdb41007c54f46b2d6427"
+    },
+    "long-same-ms.json": {
+      "bytes": 77095,
+      "controls": [
+        {
+          "configDigest": "a0a581aad2dbf3eaf147624998cb21dd2c146e96f2e01f0d8bc9ffdb85ca584b",
+          "mode": "none",
+          "policyDigest": "c7bc82e58169b2c540cf42c202f9924fd44a2e12f0ae1f42878db6746e3263c8"
+        },
+        {
+          "configDigest": "41b6e59eaff524a9c3bd53880c5cffd3aa82aec91e5dc1048505ec7221069988",
+          "mode": "scale",
+          "policyDigest": "9c7a3ace2ff9bd16da4ce19e2a2ea740a1f9aa4c9c67891d631bd70d3436e5ed"
+        },
+        {
+          "configDigest": "c0c67c647f706b19abc0fac56a1ce0380fc29b32a4732f561965fc32a2b28d7c",
+          "mode": "pivot",
+          "policyDigest": "4cfdb584b12b06906ac37aa3884a8d72d35e80b538361bdba432227d6d572d14"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "6dec4cb1ac611192d91d727d32bcda85e63cecdaa0683804ea2fe5e743e8a924",
+        "normalizedSnapshot": "b86bf0fc6b594c7bc398d4922c1fcfbf7af5f74a4a1d3627a8908ad9f4c41e39",
+        "ordering": "cf3de62bde3ec51c103281364f7a8f667e7e9e8773d3c2b1a931d8469edca609",
+        "rawCSV": "d6eef48a23597f5f57aeed55a2ca92c2d0f7cb51bdd4830db1588dcf96b403b8",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "7ac20d79049476b1f3a4fda707c5012d579d1b891f9319bc94fb1f0a9a6a3ec4",
+        "source": "09383f3c9e6942690bd937389db1d3110fd53779d1faa31fbc732693877f2750"
+      },
+      "sha256": "db8f1a8fcf2496e7d53240000b18736c433c84eaf8fce88aca677dba35904e48"
+    },
+    "long-target-before-amendment.json": {
+      "bytes": 79490,
+      "controls": [
+        {
+          "configDigest": "c064847998b8823edce2258e7f845c1cafa4237a51148c6fbe46045b951a80e6",
+          "mode": "none",
+          "policyDigest": "2642bec804b038791fafb37213f3b329b8989bc82a2e9c6126357ad9a58b4893"
+        },
+        {
+          "configDigest": "6f8d7da98901aa040d259b5be5ad029b648e2b4b5e447c7313041e20553aab3b",
+          "mode": "scale",
+          "policyDigest": "c8f3ef7b3cb89aff9dde8215b3a13731e5e98e593cc9fc59c248a240fbd1de5a"
+        },
+        {
+          "configDigest": "5c3fd5f865e8da7db65f5574ee03ff9438c3a59f0ad6468282441d9d5f1bf1e1",
+          "mode": "pivot",
+          "policyDigest": "eb31ef77db6dbf76ccda5d5e9942716e41878f80cb77b976edf9313fdd75b221"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 1
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 1
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "1245cd0fc141a4e93023d65d7f44ccc07af34e656a8b9bd8a74ba5dde14201bc",
+        "normalizedSnapshot": "b740c10fbf739c513b65c2be6d808b56344cfdb380c5f8ccdcf63c1b537a9004",
+        "ordering": "605580fee56d6fe59155f1dc0db196802cfb5f0e73f0938a8f43e216ffbff3f7",
+        "rawCSV": "f81f5441dc884d6488f1fd14d63d2f938638ec82e321293a48e90270488f1985",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "75fa95896ba556d6e382849957ec011a4fc8d73bb3f242b3daf9a35ec453e89d",
+        "source": "d7e8b60b0ff0b6728b777fcd8d5a8edba3221bba618cf999f636abb8a90a432c"
+      },
+      "sha256": "bca711bc7eaa16739e00c2dae363dc3f4690188051581cd0b3ddf61b6c36bd83"
+    },
+    "long-target-cap.json": {
+      "bytes": 79297,
+      "controls": [
+        {
+          "configDigest": "2b40dd37eb24d6e424eb4dbbfbe9db0bc43b37c790d9e503721b12d7cda5d5bf",
+          "mode": "none",
+          "policyDigest": "06f0a836989c43deb7b5846a125ab4f781d8460b311c1eef6e08c8f8abec493a"
+        },
+        {
+          "configDigest": "d13e8a91bad2eec1e5f0d97d520350a46f02d809b674bb7e7284439b03e66814",
+          "mode": "scale",
+          "policyDigest": "9a1bd5e0d0387b10cbfaf5e8c9e5ddc953db12a565a2726f9499614d18bd587f"
+        },
+        {
+          "configDigest": "139d1b3cda550cdeb2c4365d5cbed34b330ca993710124975f70ffcf2063d769",
+          "mode": "pivot",
+          "policyDigest": "6ab78a08816f3ffd4ac84074b2d8a9372270418bb56b75c3c9e7da41d02a54e3"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a",
+        "normalizedSnapshot": "8a63f860a376b96ef7be6b587089ade36e8c556cb78e37b2f2dc78db2a66c1e4",
+        "ordering": "46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9",
+        "rawCSV": "0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "da217b7d79571c49e207aefbb4dcd9573ebdcebb3dffec1519194eee9001be72",
+        "source": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2"
+      },
+      "sha256": "dd2b487c51421515b82bd7fbb614f9953b703b1238f17972d8f9aa93d546c953"
+    },
+    "long-unknown-path.json": {
+      "bytes": 79349,
+      "controls": [
+        {
+          "configDigest": "18ff400ad8b728327ad1eaa1a84b34a3ba47bbfbe1e619cf2a02af0c3a81f0aa",
+          "mode": "none",
+          "policyDigest": "8faa8bf00baa61d6e4ca5c6f2998c9892729e15358bf78a7b1828358efd6fdea"
+        },
+        {
+          "configDigest": "06692dc0aaa2bc411557a35b2d7fac25fd140e38612f72e1fb49d3dabbabd30c",
+          "mode": "scale",
+          "policyDigest": "91d08354b2630efb8f444260c2dd89731670941a6726aa047d38de4910b2ac44"
+        },
+        {
+          "configDigest": "ecd1c7e55955985dc114852e04a088819c6ad90e1dc08986d3fa653adda18c52",
+          "mode": "pivot",
+          "policyDigest": "055f9e6f251ea1380f1a8f4a5fcdb61ebe842c27f77b88f98f4ad0027ee943f3"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "e1bac1b064ad3414622a140963b85c38c7912b675dbe8e7de320d4241163ad6f",
+        "normalizedSnapshot": "dfbf15ebfaf3b0fb2a65f64b77e4f9527abb36baeb6bf14769d65460c199cc5b",
+        "ordering": "43c75ee18811c315c20358959740373e656a7116e7e693fda31ab7efaa687952",
+        "rawCSV": "e1abecc6367507c5198734003dcdffbf64e04aa16d6c20f288fbd6f8c3c5c36f",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "67ee7f2bb37fb442858a2be30b2df40bdfb432e4010f892a9ef0fdc710a3a59f",
+        "source": "012cc501eacb9982733eab5fd3a6dddee3b83cee36236c564bbec5c8dd2c4afe"
+      },
+      "sha256": "727445cf2efff42aa9005083352191ea2133186133c633f27f09be7182c154c2"
+    },
+    "short-base.json": {
+      "bytes": 79412,
+      "controls": [
+        {
+          "configDigest": "b422ce8041a788179d3e9006ebe91d8e4e2145032196c3190b533aca9023136e",
+          "mode": "none",
+          "policyDigest": "73936514b707e25e1e6d9edc0721a9e5e8475920d2cd173f638840e708294e1c"
+        },
+        {
+          "configDigest": "bb117bf37a6648d2b8d45c1e08ab860870fc739e27ee0e52eb25e85dd6f67d1f",
+          "mode": "scale",
+          "policyDigest": "f7a0ceefc02051702c63e1f9b8dd5e5b0472d7a0caeaf69455a2d714c95a9056"
+        },
+        {
+          "configDigest": "cb870e396e3c1fabe1d2ddb8ed147bb40f758a5de4069b657a34b5c955ca5b19",
+          "mode": "pivot",
+          "policyDigest": "ff9cca0c10121a2741d206c0502f43c6b85ad09509d28e50a182b497eded4fed"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "a71e0018188670f7a23fac91a4c6b49c74a8839121211a3230e0b49078a9ce5f",
+        "normalizedSnapshot": "3889211d877c34ba609d1c5d78da12136ab0c7049a8038988d2e8bdadc69a643",
+        "ordering": "9520c4ec6605b8f77ba20c12182582bd7dfbe397b66654b6c2a33d4790d20223",
+        "rawCSV": "f388dfce037db37849ae4afd6104bc1605ddd657e4d1363912be6bcc6d79b5b6",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "2b35dc1cebf2e8e5590f529739fd4d9173f34bcfa4dadc9c14f97a2189801c13",
+        "source": "3c5247a3ffb9085654db3d7ff62930e9c6c0256d81bad61ec01bef050d0a2546"
+      },
+      "sha256": "093abd809281167c983274ccf95519e177cf99f6b04a3461fe62c795c2caf94f"
+    },
+    "short-fee-stress.json": {
+      "bytes": 79456,
+      "controls": [
+        {
+          "configDigest": "6bad2671e6f4e4c4a429c0fd72781fdf04a831e22122e4870ebe8bc591f02f60",
+          "mode": "none",
+          "policyDigest": "4f59287ca94daeda6839ca42386df9e9b9cfb4141ee75ecae8322a008417ca51"
+        },
+        {
+          "configDigest": "c8bb7110f0f467ae4cb4758aa393612f2d3cd2a71aa4569ec3a27db8a6cea8f1",
+          "mode": "scale",
+          "policyDigest": "a06754a49c8956c6bcb5cd36d15b92530fab42fee24586ea875bfe0d4098da7f"
+        },
+        {
+          "configDigest": "e898de05514f53a0898ea83ef1d1effdcec74cb8781b37f89a0a1c21bd513d63",
+          "mode": "pivot",
+          "policyDigest": "1d9587e0de5132ae6890167000ecc8e4369bf1224948b0887d58d2ff3c179cdd"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "a53f034339131b4b0ea382b70a2efd00e3cdcb2e408db9a299fae75a2753354c",
+        "normalizedSnapshot": "3889211d877c34ba609d1c5d78da12136ab0c7049a8038988d2e8bdadc69a643",
+        "ordering": "9520c4ec6605b8f77ba20c12182582bd7dfbe397b66654b6c2a33d4790d20223",
+        "rawCSV": "f388dfce037db37849ae4afd6104bc1605ddd657e4d1363912be6bcc6d79b5b6",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "2b35dc1cebf2e8e5590f529739fd4d9173f34bcfa4dadc9c14f97a2189801c13",
+        "source": "3c5247a3ffb9085654db3d7ff62930e9c6c0256d81bad61ec01bef050d0a2546"
+      },
+      "sha256": "86d6f554a7608c85cc4208749ff534839184f74fc46b631a97affd6a34f27b37"
+    },
+    "short-missing-opening.json": {
+      "bytes": 75832,
+      "controls": [
+        {
+          "configDigest": "96f51eb0ad506173c7a8ff5b8943b774de0ad1d563560297b293704bc7d5d78a",
+          "mode": "none",
+          "policyDigest": "ed6b9453bc871f33f17ec830a3675e151401077af298678f7f0955122f2b355d"
+        },
+        {
+          "configDigest": "5204c7e8cfbdb61a845a40b9b2aacb34504a146a6a498543c6f941d9fec05728",
+          "mode": "scale",
+          "policyDigest": "a3cde704a5e1926f9148ec97a1625440f53d46a3610b2f390a62ce3f858ea64b"
+        },
+        {
+          "configDigest": "afcfc6291b601a39d014f257dd22e50ca536e62ca56c693830389a2aa0ff2d0f",
+          "mode": "pivot",
+          "policyDigest": "fd0f46f70c42fc091f32fc045839565bc92dcb23e0e92a05087bbda4dfbb5bc9"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "a71e0018188670f7a23fac91a4c6b49c74a8839121211a3230e0b49078a9ce5f",
+        "normalizedSnapshot": "3889211d877c34ba609d1c5d78da12136ab0c7049a8038988d2e8bdadc69a643",
+        "ordering": "d55f4c501e4dc876fdf206b520280cfbafdc259ef8af6f40f86c520cbf138097",
+        "rawCSV": "f388dfce037db37849ae4afd6104bc1605ddd657e4d1363912be6bcc6d79b5b6",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "2b35dc1cebf2e8e5590f529739fd4d9173f34bcfa4dadc9c14f97a2189801c13",
+        "source": "3c5247a3ffb9085654db3d7ff62930e9c6c0256d81bad61ec01bef050d0a2546"
+      },
+      "sha256": "32d9aeb38558fa828dfdfcd7d9b3a2422b06f94b8a0d2c54927fd6693e515db8"
+    },
+    "short-same-ms.json": {
+      "bytes": 77255,
+      "controls": [
+        {
+          "configDigest": "a2058b30f034036c1eb7ae5a80aa38e6731d63c9ac9cc91789eed76c3d0e0ea7",
+          "mode": "none",
+          "policyDigest": "722479c051725c47b631dd279af75cc396ec1694d2a7bcbfcda89c70641f8ba0"
+        },
+        {
+          "configDigest": "e651dd6b6fbbc69b0bc6b52977b8061c4ca37b2b9a8ecd4da00d4e69c3f0f345",
+          "mode": "scale",
+          "policyDigest": "9f78dcb824e01fbb33095ed816895d6d331ab4744735dabf462da7eaa0810410"
+        },
+        {
+          "configDigest": "28f8e6e64af6753633ea5366edc2bbfcd5c0c8cdcd1740061de528739411437a",
+          "mode": "pivot",
+          "policyDigest": "c5ebfdf4a4c85804c89a27bbf679a38ad0ee3cc982488e494b9b1a18ad281627"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "462fbe795f21f0beacdebf8d50a47d6d2230bdda7920649751a6dee7c183a5bc",
+        "normalizedSnapshot": "367a832125abf302aa3d390e3a6449c1ff314b6b1dd9358f1bde543d29c1400b",
+        "ordering": "d44f53131d742c80633de7a8a53f19eeaca4f685bc12b239d0c3be4ec478db9b",
+        "rawCSV": "dd3902e5e7e4bcd1b15a343cf5190d1dc11694a19693a2aa910d02419e99d6f1",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "c509932ea868e134dd11d5f3de91e070159dbe2b2acfd7146c4bc546a56cbcdb",
+        "source": "aecb76a058e36d185e74deb6f081e545fa23bba7e6ca1b1b3c78823d0452713a"
+      },
+      "sha256": "060d30de22e1cd2e35c5365f654b95614203dc5cca77f27441b5f18cb0e56854"
+    },
+    "short-target-before-amendment.json": {
+      "bytes": 79650,
+      "controls": [
+        {
+          "configDigest": "2c2b46be27a6c541073c3b2da0f78f9a1021dafb10bf44782ec0d4afb9018f8e",
+          "mode": "none",
+          "policyDigest": "29e0438cbd1da90e2ca9881d3795e0db695ec25f2c02d6f849c93970743addc2"
+        },
+        {
+          "configDigest": "8617c60b55d5db2972eb0147b461c696af143fdd6650b4d99d2aa1936b6939ac",
+          "mode": "scale",
+          "policyDigest": "48ad14abf4f607efabdb8b9c836d6ab63c01872ea4b7a94b9d66bfa28dc3d671"
+        },
+        {
+          "configDigest": "58ca33625ac0e1f5fecdd371688cb3d22e440a071fea6f6d5c793adc2707cb5f",
+          "mode": "pivot",
+          "policyDigest": "10ef45acff959a8522329c2675b38fef7687f92c832e872979a5ccfcdf6b7a9b"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 1
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 1
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "78e0516e09c32421b37a0a54b08208d6597960b3ff6e2e1fbbf0c0c3bcce17eb",
+        "normalizedSnapshot": "bfb0bd0db2f5823d9e6cc1ca4b04481a1650f602769bd1f891d43b4c11272bec",
+        "ordering": "5388e935d092fbfd9cb5ccf44ffcddb46615c541c18f7375bf9ff7557ddb8f8d",
+        "rawCSV": "737330d50c40db7ec91a7986ff20df2b17632fc8696d4c7198fc1066d1426c84",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "dc56e7907fcb0af4de6609bed5f238bc69c2707cb54ba15d6d558ceea978a854",
+        "source": "276d80b219283129b4a916d9b2d865f79e8fd8c3e4d7a69cf32c71780a86fea7"
+      },
+      "sha256": "da9ac530e378293566a65f842888baf47f9a852e0c7494b96d94409ad63f0423"
+    },
+    "short-target-cap.json": {
+      "bytes": 79449,
+      "controls": [
+        {
+          "configDigest": "8ffdffe32ecc2a2a1b7dd45b455a214aea06c34c580db3ebeb56177e2734bd28",
+          "mode": "none",
+          "policyDigest": "dd7d26b7a16062f564e1420ee602792d366b0fe167ae381a46f5efb725f231d0"
+        },
+        {
+          "configDigest": "b65021350bf36ce6e1876eb65caf5f180b3b3ef0ce6bcf99f4d212a9e3d8b798",
+          "mode": "scale",
+          "policyDigest": "530a21eef43979a67c94bb48cfd6de2368c2cbabff528a46f1b988813b4865f1"
+        },
+        {
+          "configDigest": "ed0942e753c8fbd6be2fdd70bf5928de890fc8610d2f9c140aed48116f092a76",
+          "mode": "pivot",
+          "policyDigest": "48e54c87f66a8471f0514d50cdfefa5028828692602586adf8b4a5a4ebedaa03"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "8e33d3a4f85d0bd93f5c959c21ad4b620445f846b76492df3e88bfef0b861242",
+        "normalizedSnapshot": "58cda0a5784138531045ef1eb013aa68a9df95ee83ca823c95bc4c16ede3acb6",
+        "ordering": "872dbe2b3726f9fbae0c0630faae2e6815f0d346e1bb5907c0f75d4a65e9a4db",
+        "rawCSV": "75155b8098bee8ea33761d3f974731f4530ceda3269966f94bf9a695e010c44d",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "808bfb69ead8fa994df05c97f1f4e28b1e5427fd06c01ad548defecebdf2bbb1",
+        "source": "35e9f43277f1a4dcd9dcc00d233b43a81f95db1f7f53547f63723dc7878df54c"
+      },
+      "sha256": "c784437d2537302bdc4e36a982bc45cb8cf9d208ae42c23bd7e4983ade54c6ce"
+    },
+    "short-unknown-path.json": {
+      "bytes": 79504,
+      "controls": [
+        {
+          "configDigest": "003663dff177320ffda49ca04174ed8a23bd489713d6e2ca41f04b2254f6c238",
+          "mode": "none",
+          "policyDigest": "aebb2ef6314b2239c77090b35e7353276f12efbc66b1cdcc370edaf1a2d4033c"
+        },
+        {
+          "configDigest": "62443fa6e965a762fc18021e5194caff569d8bb401bbdca09438f842f49a5870",
+          "mode": "scale",
+          "policyDigest": "6a37e86775abedd44e2a7247e0acf7a5b74707b43a2bc4ca86a38165c11c217f"
+        },
+        {
+          "configDigest": "8cc9ce0561b966000f950f0064b4dd13bfcc5f6a669a84a1f92deb6622a25871",
+          "mode": "pivot",
+          "policyDigest": "c62cc6e197ff334a0edff8201870a909a19f0c33235351cfadf894a7804d1102"
+        }
+      ],
+      "counters": {
+        "none": {
+          "activations": 0,
+          "eligible": 0,
+          "submitted": 0,
+          "accepted": 0,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "pivot": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        },
+        "scale": {
+          "activations": 1,
+          "eligible": 1,
+          "submitted": 1,
+          "accepted": 1,
+          "rejected": 0,
+          "canceled": 0
+        }
+      },
+      "identities": {
+        "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+        "costs": "d2c5e62536e295def50804a32458541de441dc25ea8041fadafd481ec6a53db4",
+        "normalizedSnapshot": "3889211d877c34ba609d1c5d78da12136ab0c7049a8038988d2e8bdadc69a643",
+        "ordering": "e7e822aa6656f7412b570ce9a6ccbcaa18689e0d2cfb6735dc128076559c658c",
+        "rawCSV": "f388dfce037db37849ae4afd6104bc1605ddd657e4d1363912be6bcc6d79b5b6",
+        "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+        "snapshot": "2b35dc1cebf2e8e5590f529739fd4d9173f34bcfa4dadc9c14f97a2189801c13",
+        "source": "f0226bd7e6bf5252e780ecf894403d63ad2368b938e841b8a0910e1fb7b82a59"
+      },
+      "sha256": "c2eae7169eacca2d6236d38d00bc89b506b2abcbbfb68ce7547e2f68c3d43c8f"
+    }
+  },
+  "lifecycleVersion": "frozen-level-lifecycle-v1",
+  "primitiveVersion": "frozen-level-primitives-v1",
+  "producerBase": "9135fa5d2b91933cf15556cf9d05d1734ba44aec",
+  "proposal": "1dd3591c98e37a8fb4bab73eaa282aa9f82fd1fe10496d0314936fda2ad6a5ff",
+  "schema": "synthetic-precoordinator-freeze-v1",
+  "scope": "literal input/config/cost/context and existing primitive events; no coordinator implementation"
+}

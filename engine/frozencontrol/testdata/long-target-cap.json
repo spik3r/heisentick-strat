@@ -1,0 +1,620 @@
+{
+  "name": "long-target-cap",
+  "direction": "long",
+  "variant": "target-cap",
+  "rawCSV": "eventMS,bid,ask\n86400000,3800,3800.02\n172800000,95,95.02\n172900000,99.5,99.52\n173000000,94,94.02\n173099999,96,96.02\n173100000,96,96.02\n173200000,98,98.02\n173300000,94,94.02\n173399999,95,95.02\n173400000,95,95.02\n173500000,97,97.02\n173600000,93,93.02\n173699999,96,96.02\n173700000,95,95.02\n173800000,98,98.02\n173900000,90.01,90.03\n173999999,96,96.02\n174000000,96,96.02\n174100000,99,99.02\n174200000,94,94.02\n174299999,97,97.02\n174300000,97,97.02\n174400000,99.5,99.52\n174500000,95,95.02\n174599999,98,98.02\n174600000,98,98.02\n174700000,110,110.02\n174800000,95,95.02\n174899999,105,105.02\n174900000,105,105.02\n175000000,133.77,133.79\n175100000,90.01,90.03\n175199999,104,104.02\n175200000,104,104.02\n175300000,120,120.02\n175400000,100,100.02\n175499999,106,106.02\n175500000,99.4,99.42\n175500001,99.5,99.52\n175500002,99.98,100\n175500003,110,110.02\n175500003,110.01,110.03\n175500004,121,121.02\n175500005,100.5,100.52\n175500006,89.5,89.52\n",
+  "snapshot": "{\"dataset\":\"SyntheticManagerTrace\",\"id\":\"SyntheticSnapshot\",\"priceUnits\":\"USD-per-troy-ounce\",\"rows\":[{\"ask\":3800.02,\"availableMS\":86400000,\"bid\":3800,\"eventMS\":86400000,\"sequence\":0,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":0}},{\"ask\":95.02,\"availableMS\":172800000,\"bid\":95,\"eventMS\":172800000,\"sequence\":1,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":1}},{\"ask\":99.52,\"availableMS\":172900000,\"bid\":99.5,\"eventMS\":172900000,\"sequence\":2,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":2}},{\"ask\":94.02,\"availableMS\":173000000,\"bid\":94,\"eventMS\":173000000,\"sequence\":3,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":3}},{\"ask\":96.02,\"availableMS\":173099999,\"bid\":96,\"eventMS\":173099999,\"sequence\":4,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":4}},{\"ask\":96.02,\"availableMS\":173100000,\"bid\":96,\"eventMS\":173100000,\"sequence\":5,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":5}},{\"ask\":98.02,\"availableMS\":173200000,\"bid\":98,\"eventMS\":173200000,\"sequence\":6,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":6}},{\"ask\":94.02,\"availableMS\":173300000,\"bid\":94,\"eventMS\":173300000,\"sequence\":7,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":7}},{\"ask\":95.02,\"availableMS\":173399999,\"bid\":95,\"eventMS\":173399999,\"sequence\":8,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":8}},{\"ask\":95.02,\"availableMS\":173400000,\"bid\":95,\"eventMS\":173400000,\"sequence\":9,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":9}},{\"ask\":97.02,\"availableMS\":173500000,\"bid\":97,\"eventMS\":173500000,\"sequence\":10,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":10}},{\"ask\":93.02,\"availableMS\":173600000,\"bid\":93,\"eventMS\":173600000,\"sequence\":11,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":11}},{\"ask\":96.02,\"availableMS\":173699999,\"bid\":96,\"eventMS\":173699999,\"sequence\":12,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":12}},{\"ask\":95.02,\"availableMS\":173700000,\"bid\":95,\"eventMS\":173700000,\"sequence\":13,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":13}},{\"ask\":98.02,\"availableMS\":173800000,\"bid\":98,\"eventMS\":173800000,\"sequence\":14,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":14}},{\"ask\":90.03,\"availableMS\":173900000,\"bid\":90.01,\"eventMS\":173900000,\"sequence\":15,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":15}},{\"ask\":96.02,\"availableMS\":173999999,\"bid\":96,\"eventMS\":173999999,\"sequence\":16,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":16}},{\"ask\":96.02,\"availableMS\":174000000,\"bid\":96,\"eventMS\":174000000,\"sequence\":17,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":17}},{\"ask\":99.02,\"availableMS\":174100000,\"bid\":99,\"eventMS\":174100000,\"sequence\":18,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":18}},{\"ask\":94.02,\"availableMS\":174200000,\"bid\":94,\"eventMS\":174200000,\"sequence\":19,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":19}},{\"ask\":97.02,\"availableMS\":174299999,\"bid\":97,\"eventMS\":174299999,\"sequence\":20,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":20}},{\"ask\":97.02,\"availableMS\":174300000,\"bid\":97,\"eventMS\":174300000,\"sequence\":21,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":21}},{\"ask\":99.52,\"availableMS\":174400000,\"bid\":99.5,\"eventMS\":174400000,\"sequence\":22,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":22}},{\"ask\":95.02,\"availableMS\":174500000,\"bid\":95,\"eventMS\":174500000,\"sequence\":23,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":23}},{\"ask\":98.02,\"availableMS\":174599999,\"bid\":98,\"eventMS\":174599999,\"sequence\":24,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":24}},{\"ask\":98.02,\"availableMS\":174600000,\"bid\":98,\"eventMS\":174600000,\"sequence\":25,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":25}},{\"ask\":110.02,\"availableMS\":174700000,\"bid\":110,\"eventMS\":174700000,\"sequence\":26,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":26}},{\"ask\":95.02,\"availableMS\":174800000,\"bid\":95,\"eventMS\":174800000,\"sequence\":27,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":27}},{\"ask\":105.02,\"availableMS\":174899999,\"bid\":105,\"eventMS\":174899999,\"sequence\":28,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":28}},{\"ask\":105.02,\"availableMS\":174900000,\"bid\":105,\"eventMS\":174900000,\"sequence\":29,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":29}},{\"ask\":133.79,\"availableMS\":175000000,\"bid\":133.77,\"eventMS\":175000000,\"sequence\":30,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":30}},{\"ask\":90.03,\"availableMS\":175100000,\"bid\":90.01,\"eventMS\":175100000,\"sequence\":31,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":31}},{\"ask\":104.02,\"availableMS\":175199999,\"bid\":104,\"eventMS\":175199999,\"sequence\":32,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":32}},{\"ask\":104.02,\"availableMS\":175200000,\"bid\":104,\"eventMS\":175200000,\"sequence\":33,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":33}},{\"ask\":120.02,\"availableMS\":175300000,\"bid\":120,\"eventMS\":175300000,\"sequence\":34,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":34}},{\"ask\":100.02,\"availableMS\":175400000,\"bid\":100,\"eventMS\":175400000,\"sequence\":35,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":35}},{\"ask\":106.02,\"availableMS\":175499999,\"bid\":106,\"eventMS\":175499999,\"sequence\":36,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":36}},{\"ask\":99.42,\"availableMS\":175500000,\"bid\":99.4,\"eventMS\":175500000,\"sequence\":37,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":37}},{\"ask\":99.52,\"availableMS\":175500001,\"bid\":99.5,\"eventMS\":175500001,\"sequence\":38,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":38}},{\"ask\":100,\"availableMS\":175500002,\"bid\":99.98,\"eventMS\":175500002,\"sequence\":39,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":39}},{\"ask\":110.02,\"availableMS\":175500003,\"bid\":110,\"eventMS\":175500003,\"sequence\":40,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":40}},{\"ask\":110.03,\"availableMS\":175500003,\"bid\":110.01,\"eventMS\":175500003,\"sequence\":41,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":41}},{\"ask\":121.02,\"availableMS\":175500004,\"bid\":121,\"eventMS\":175500004,\"sequence\":42,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":42}},{\"ask\":100.52,\"availableMS\":175500005,\"bid\":100.5,\"eventMS\":175500005,\"sequence\":43,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":43}},{\"ask\":89.52,\"availableMS\":175500006,\"bid\":89.5,\"eventMS\":175500006,\"sequence\":44,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":44}}],\"schema\":\"frozen-quote-snapshot-v1\",\"sequenceMethod\":\"artifact-record-ordinal\",\"sides\":\"paired-bid-ask\",\"symbol\":\"XAUUSD\",\"version\":\"v1\"}\n",
+  "normalizedSnapshot": "{\"dataset\":\"SyntheticManagerTrace\",\"id\":\"SyntheticSnapshot\",\"priceUnits\":\"USD-per-troy-ounce\",\"rows\":[{\"ask\":3800.02,\"availableMS\":86400000,\"bid\":3800,\"eventMS\":86400000,\"sequence\":0,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":0}},{\"ask\":95.02,\"availableMS\":172800000,\"bid\":95,\"eventMS\":172800000,\"sequence\":1,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":1}},{\"ask\":99.52,\"availableMS\":172900000,\"bid\":99.5,\"eventMS\":172900000,\"sequence\":2,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":2}},{\"ask\":94.02,\"availableMS\":173000000,\"bid\":94,\"eventMS\":173000000,\"sequence\":3,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":3}},{\"ask\":96.02,\"availableMS\":173099999,\"bid\":96,\"eventMS\":173099999,\"sequence\":4,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":4}},{\"ask\":96.02,\"availableMS\":173100000,\"bid\":96,\"eventMS\":173100000,\"sequence\":5,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":5}},{\"ask\":98.02,\"availableMS\":173200000,\"bid\":98,\"eventMS\":173200000,\"sequence\":6,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":6}},{\"ask\":94.02,\"availableMS\":173300000,\"bid\":94,\"eventMS\":173300000,\"sequence\":7,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":7}},{\"ask\":95.02,\"availableMS\":173399999,\"bid\":95,\"eventMS\":173399999,\"sequence\":8,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":8}},{\"ask\":95.02,\"availableMS\":173400000,\"bid\":95,\"eventMS\":173400000,\"sequence\":9,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":9}},{\"ask\":97.02,\"availableMS\":173500000,\"bid\":97,\"eventMS\":173500000,\"sequence\":10,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":10}},{\"ask\":93.02,\"availableMS\":173600000,\"bid\":93,\"eventMS\":173600000,\"sequence\":11,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":11}},{\"ask\":96.02,\"availableMS\":173699999,\"bid\":96,\"eventMS\":173699999,\"sequence\":12,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":12}},{\"ask\":95.02,\"availableMS\":173700000,\"bid\":95,\"eventMS\":173700000,\"sequence\":13,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":13}},{\"ask\":98.02,\"availableMS\":173800000,\"bid\":98,\"eventMS\":173800000,\"sequence\":14,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":14}},{\"ask\":90.03,\"availableMS\":173900000,\"bid\":90.01,\"eventMS\":173900000,\"sequence\":15,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":15}},{\"ask\":96.02,\"availableMS\":173999999,\"bid\":96,\"eventMS\":173999999,\"sequence\":16,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":16}},{\"ask\":96.02,\"availableMS\":174000000,\"bid\":96,\"eventMS\":174000000,\"sequence\":17,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":17}},{\"ask\":99.02,\"availableMS\":174100000,\"bid\":99,\"eventMS\":174100000,\"sequence\":18,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":18}},{\"ask\":94.02,\"availableMS\":174200000,\"bid\":94,\"eventMS\":174200000,\"sequence\":19,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":19}},{\"ask\":97.02,\"availableMS\":174299999,\"bid\":97,\"eventMS\":174299999,\"sequence\":20,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":20}},{\"ask\":97.02,\"availableMS\":174300000,\"bid\":97,\"eventMS\":174300000,\"sequence\":21,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":21}},{\"ask\":99.52,\"availableMS\":174400000,\"bid\":99.5,\"eventMS\":174400000,\"sequence\":22,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":22}},{\"ask\":95.02,\"availableMS\":174500000,\"bid\":95,\"eventMS\":174500000,\"sequence\":23,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":23}},{\"ask\":98.02,\"availableMS\":174599999,\"bid\":98,\"eventMS\":174599999,\"sequence\":24,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":24}},{\"ask\":98.02,\"availableMS\":174600000,\"bid\":98,\"eventMS\":174600000,\"sequence\":25,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":25}},{\"ask\":110.02,\"availableMS\":174700000,\"bid\":110,\"eventMS\":174700000,\"sequence\":26,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":26}},{\"ask\":95.02,\"availableMS\":174800000,\"bid\":95,\"eventMS\":174800000,\"sequence\":27,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":27}},{\"ask\":105.02,\"availableMS\":174899999,\"bid\":105,\"eventMS\":174899999,\"sequence\":28,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":28}},{\"ask\":105.02,\"availableMS\":174900000,\"bid\":105,\"eventMS\":174900000,\"sequence\":29,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":29}},{\"ask\":133.79,\"availableMS\":175000000,\"bid\":133.77,\"eventMS\":175000000,\"sequence\":30,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":30}},{\"ask\":90.03,\"availableMS\":175100000,\"bid\":90.01,\"eventMS\":175100000,\"sequence\":31,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":31}},{\"ask\":104.02,\"availableMS\":175199999,\"bid\":104,\"eventMS\":175199999,\"sequence\":32,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":32}},{\"ask\":104.02,\"availableMS\":175200000,\"bid\":104,\"eventMS\":175200000,\"sequence\":33,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":33}},{\"ask\":120.02,\"availableMS\":175300000,\"bid\":120,\"eventMS\":175300000,\"sequence\":34,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":34}},{\"ask\":100.02,\"availableMS\":175400000,\"bid\":100,\"eventMS\":175400000,\"sequence\":35,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":35}},{\"ask\":106.02,\"availableMS\":175499999,\"bid\":106,\"eventMS\":175499999,\"sequence\":36,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":36}},{\"ask\":99.42,\"availableMS\":175500000,\"bid\":99.4,\"eventMS\":175500000,\"sequence\":37,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":37}},{\"ask\":99.52,\"availableMS\":175500001,\"bid\":99.5,\"eventMS\":175500001,\"sequence\":38,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":38}},{\"ask\":100,\"availableMS\":175500002,\"bid\":99.98,\"eventMS\":175500002,\"sequence\":39,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":39}},{\"ask\":110.02,\"availableMS\":175500003,\"bid\":110,\"eventMS\":175500003,\"sequence\":40,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":40}},{\"ask\":110.03,\"availableMS\":175500003,\"bid\":110.01,\"eventMS\":175500003,\"sequence\":41,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":41}},{\"ask\":121.02,\"availableMS\":175500004,\"bid\":121,\"eventMS\":175500004,\"sequence\":42,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":42}},{\"ask\":100.52,\"availableMS\":175500005,\"bid\":100.5,\"eventMS\":175500005,\"sequence\":43,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":43}},{\"ask\":89.52,\"availableMS\":175500006,\"bid\":89.5,\"eventMS\":175500006,\"sequence\":44,\"sourceRecord\":{\"artifactId\":\"SyntheticRawQuotes\",\"artifactVersion\":\"v1\",\"recordIndex\":44}}],\"schema\":\"frozen-quote-snapshot-v1\",\"sequenceMethod\":\"artifact-record-ordinal\",\"sides\":\"paired-bid-ask\",\"symbol\":\"XAUUSD\",\"version\":\"v1\"}",
+  "source": "{\"coverageSegments\":[{\"endMS\":175500007,\"evidenceRefs\":[{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}],\"startMS\":86400000,\"status\":\"complete-claimed\"}],\"dataset\":\"SyntheticManagerTrace\",\"decoder\":{\"id\":\"SyntheticThreeColumnCSV\",\"method\":\"preserve-all-records-in-original-order-without-sort-repair-or-drop\",\"version\":\"v1\"},\"id\":\"SyntheticSource\",\"normalizationVersion\":\"frozen-quote-snapshot-normalization-v1\",\"normalizedSnapshotSHA256\":\"8a63f860a376b96ef7be6b587089ade36e8c556cb78e37b2f2dc78db2a66c1e4\",\"priceUnits\":\"USD-per-troy-ounce\",\"provider\":\"SyntheticFixture\",\"rawArtifact\":{\"byteCount\":925,\"format\":\"synthetic-three-column-csv-v1\",\"recordCount\":45,\"ref\":{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}},\"schema\":\"frozen-quote-source-v1\",\"snapshotRef\":{\"id\":\"SyntheticSnapshot\",\"sha256\":\"da217b7d79571c49e207aefbb4dcd9573ebdcebb3dffec1519194eee9001be72\",\"version\":\"v1\"},\"supportingArtifacts\":[],\"symbol\":\"XAUUSD\",\"version\":\"v1\",\"windows\":{\"evaluation\":{\"endMS\":175500007,\"startMS\":175500000},\"warmup\":{\"endMS\":175500000,\"startMS\":86400000}}}",
+  "ordering": "{\"availabilityModel\":\"event-time-reference-assumption\",\"calendarRef\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"contextBindings\":[{\"calendarRef\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"evidenceRefs\":[{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}],\"evidenceState\":\"unqualified\",\"interval\":{\"endMS\":174600000,\"startMS\":172800000},\"kind\":\"stored-clock-M30\",\"sourceRef\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"},\"sourceSide\":\"bid\",\"windowId\":\"e175c7ccf29827cbc6d8699ddbb114d531090c82b267efeb785558fee1a34bc2\"},{\"calendarRef\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"evidenceRefs\":[{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}],\"evidenceState\":\"unqualified\",\"interval\":{\"endMS\":175500000,\"startMS\":173700000},\"kind\":\"rolling-six-M5\",\"sourceRef\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"},\"sourceSide\":\"bid\",\"windowId\":\"3e416fccdd792e3aa7aefe2c6e2679dd03912309bf815214939ea7b5cc8f5bea\"},{\"calendarRef\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"evidenceRefs\":[{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}],\"evidenceState\":\"unqualified\",\"interval\":{\"endMS\":175500000,\"startMS\":174600000},\"kind\":\"completed-clock-M15\",\"sourceRef\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"},\"sourceSide\":\"bid\",\"windowId\":\"cd3173139e22826ce9bbd27ace70ccf6fcff2e10bbc9cae773c24310ba6881a7\"},{\"calendarRef\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"evidenceRefs\":[{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}],\"evidenceState\":\"unqualified\",\"interval\":{\"endMS\":86400001,\"startMS\":86400000},\"kind\":\"prior-broker-opening\",\"sourceRef\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"},\"sourceSide\":\"bid\",\"windowId\":\"fcc7ff0a4c61033da4b441139c5a099f33256c42c0e20a61cf4d3333442a3d15\"}],\"id\":\"SyntheticOrdering\",\"schema\":\"frozen-quote-ordering-v1\",\"scope\":{\"endMS\":175500007,\"firstEvent\":{\"eventMS\":86400000,\"sequence\":0},\"lastEvent\":{\"eventMS\":175500006,\"sequence\":44},\"rowCount\":45,\"startMS\":86400000},\"sequence\":{\"counterPolicy\":\"zero-based-data-record-index\",\"decoder\":{\"id\":\"SyntheticThreeColumnCSV\",\"method\":\"preserve-all-records-in-original-order-without-sort-repair-or-drop\",\"version\":\"v1\"},\"domainId\":\"SyntheticCompleteChangeSequence\",\"evidenceRefs\":[{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}],\"evidenceState\":\"asserted\",\"method\":\"artifact-record-ordinal\",\"rawArtifactRef\":{\"id\":\"SyntheticRawQuotes\",\"sha256\":\"0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b\",\"version\":\"v1\"}},\"snapshotRef\":{\"id\":\"SyntheticSnapshot\",\"sha256\":\"da217b7d79571c49e207aefbb4dcd9573ebdcebb3dffec1519194eee9001be72\",\"version\":\"v1\"},\"sourceRef\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"},\"version\":\"v1\"}",
+  "calendar": "{\"id\":\"SyntheticCalendar\",\"version\":\"v1\",\"qualification\":\"test-only-finite-UTC-calendar\",\"days\":[{\"date\":\"1970-01-02\",\"startMillis\":86400000,\"endMillis\":172800000,\"status\":\"trading\"},{\"date\":\"1970-01-03\",\"startMillis\":172800000,\"endMillis\":259200000,\"status\":\"trading\"}]}",
+  "schedule": "{\"authority\":\"test-only-fixture\",\"breaks\":[],\"calendarRef\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"evaluation\":{\"endMS\":175500007,\"startMS\":175500000},\"id\":\"SyntheticSchedule\",\"schema\":\"synthetic-intraday-schedule-v1\",\"version\":\"v1\"}",
+  "costs": "{\"commissionPerOzPerFillUSD\":0.03,\"commissionTiming\":\"entry-and-exit-on-fill\",\"currency\":\"USD\",\"extraAdversePricePenalty\":0,\"financing\":\"not-applicable-synthetic-intraday-fixture\",\"id\":\"SyntheticCosts\",\"quantityUnits\":\"troy-ounce\",\"schema\":\"frozen-quote-costs-pilot-v1\",\"sourceRef\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"},\"spread\":\"observed-paired-quotes-no-second-charge\",\"version\":\"v1\"}",
+  "controls": [
+    {
+      "mode": "none",
+      "dsl": "dsl v7\nstrategy \"Synthetic long-target-cap / none\" {\n  description \"Invented mechanics fixture; execution remains unregistered.\"\n}\nmarket conditions {\n  frozen source \"SyntheticSource\" version \"v1\" sha256 \"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\"\n  frozen calendar \"SyntheticCalendar\" version \"v1\" sha256 \"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\"\n  frozen ordering \"SyntheticOrdering\" version \"v1\" sha256 \"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\"\n  frozen schedule \"SyntheticSchedule\" version \"v1\" sha256 \"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\"\n}\nsetup {\n  frozen control stored-m30-lock-isolation-v1\n  type: frozen level breakout\n}\nrisk {\n  frozen grid .01 price units\n}\nmanagement {\n  frozen lock none\n  frozen activation 1 R\n  frozen timeout 1 minutes\n}\nexecution {\n  frozen freshness predecessor 1000 ms receipt 1 ms\n  frozen latency entry 0 ms amendment 0 ms\n  frozen costs \"SyntheticCosts\" version \"v1\" sha256 \"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\"\n  frozen assumptions \"SyntheticAssumptions-none\" version \"v1\" sha256 \"be29ea80353c5ea5eee823382ba1427fe1e682d77f4157679897d59986d23fe3\"\n}\n",
+      "config": "{\"description\":\"Invented mechanics fixture; execution remains unregistered.\",\"dslVersion\":7,\"frozenLevelBreakout\":{\"activationR\":1,\"amendmentLatencyMS\":0,\"contractVersion\":\"frozen-level-compiler-v1\",\"controlProfile\":\"stored-m30-lock-isolation-v1\",\"entryLatencyMS\":0,\"inputRefs\":{\"assumptions\":{\"id\":\"SyntheticAssumptions-none\",\"sha256\":\"be29ea80353c5ea5eee823382ba1427fe1e682d77f4157679897d59986d23fe3\",\"version\":\"v1\"},\"calendar\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"costs\":{\"id\":\"SyntheticCosts\",\"sha256\":\"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\",\"version\":\"v1\"},\"ordering\":{\"id\":\"SyntheticOrdering\",\"sha256\":\"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\",\"version\":\"v1\"},\"schedule\":{\"id\":\"SyntheticSchedule\",\"sha256\":\"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\",\"version\":\"v1\"},\"source\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"}},\"lockMode\":\"none\",\"maxPredecessorAgeMS\":1000,\"maxReceiptAgeMS\":1,\"priceGrid\":0.01,\"profile\":{\"clockAlignment\":\"UTC-epoch-millisecond-grid\",\"contracts\":{\"lifecycle\":\"frozen-level-lifecycle-v1\",\"primitives\":\"frozen-level-primitives-v1\",\"sourceCommit\":\"0ca22bf6493cd02e1f2adf13094981dfdcac148f\"},\"entryLevels\":{\"creation\":\"completed-boundary\",\"directionalIdentity\":\"independent-no-oco\",\"durationMS\":1800000,\"expiry\":\"next-clock-m30-boundary\",\"kind\":\"previous-clock-m30-range\"},\"execution\":{\"availability\":\"availableMS==eventMS;nondecreasing\",\"availabilityModel\":\"event-time-reference-assumption\",\"entryObservation\":\"strictly-subsequent-source-observation\",\"entrySide\":{\"long\":\"ask\",\"short\":\"bid\"},\"liquidationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"mode\":\"paired-quotes\",\"orderingBindings\":\"same-source-calendar-and-context-window-identities\",\"sequenceRange\":{\"max\":9007199254740991,\"min\":0},\"sourceOrder\":\"strict-lexicographic-(eventMS,sequence)\",\"stopFill\":\"observed-liquidation-with-price-gap\",\"targetFill\":\"threshold-no-improvement\",\"timeRange\":{\"max\":9007199254740991,\"min\":0},\"timeUnit\":\"UTC-Unix-milliseconds\",\"unverifiedCoverage\":\"unresolved-no-fill\"},\"id\":\"stored-m30-lock-isolation-v1\",\"initialRisk\":{\"R0\":\"direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded\",\"bufferGridSteps\":1,\"evidenceStatus\":\"unverified-research-control\",\"freeze\":\"signal\",\"kind\":\"opposite-six-m5-extreme\",\"rounding\":\"outward\",\"shortReference\":\"numerical-bid-high-used-as-liquidation-stop\",\"window\":\"rolling-six-completed-M5-slots-at-signal-not-stored-M30\"},\"lifecycle\":{\"busyPolicy\":\"skip-and-require-fresh-recross\",\"expiryBeforeAdmission\":true,\"reset\":\"inside-or-proved-fresh-predecessor\",\"triggerSide\":\"bid\",\"usePolicy\":\"one-success-no-retry\"},\"management\":{\"activation\":\"inclusive-direction*(liquidation-effective-entry)\\u003e=activationR*fixed-R0\",\"activationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"attempts\":1,\"lockContextCutoff\":\"frozenAtMS\\u003cactual-entry-eventMS\",\"minimumLockDistanceGridSteps\":1,\"noLockActivation\":\"inert\",\"oldProtectionBeforeAmendment\":true,\"retryAfterRejection\":false,\"sameMillisecondIntegration\":\"requires-separately-reviewed-common-opportunity-policy-across-all-managers\",\"stopWidening\":false,\"timeout\":\"elapsed-time\"},\"momentum\":{\"bars\":6,\"direction\":\"last-close\\u003efirst-open-long;\\u003cshort;equal-no-signal\",\"durationMS\":300000,\"enabled\":true,\"freeze\":\"signal\",\"kind\":\"first-open-to-last-close\",\"window\":\"rolling-six-completed-M5-slots-at-signal\"},\"pivot\":{\"comparison\":\"exact-shortest-decimal-input-rational-no-epsilon\",\"eligibility\":\"raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap\",\"formula\":\"primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2\",\"freeze\":\"signal\",\"kind\":\"camarilla\",\"levels\":[\"S4\",\"S3\",\"S2\",\"S1\",\"C\",\"R1\",\"R2\",\"R3\",\"R4\"],\"rounding\":\"towards-entry;then-profitable-tightening-and-one-grid-admissible\",\"selection\":\"most-protective-profitable-admissible\",\"side\":\"bid\",\"ties\":\"first-in-fixed-ladder-order-for-equal-snapped-stop\",\"window\":\"previous-clock-m15\"},\"position\":{\"additions\":false,\"compounding\":false,\"maxConcurrent\":1,\"plannedRiskUnits\":1,\"quantityModel\":\"continuous-research-only\"},\"scale\":{\"divisor\":3800,\"evidenceStatus\":\"location-only-convention\",\"freeze\":\"signal\",\"rounding\":\"decimal-float-quotient-half-even-cents-then-grid-toward-entry\",\"source\":\"prior-qualified-broker-trading-date-bid-opening\"},\"sourceBars\":{\"coverage\":\"all-consecutive-completed-slots\",\"durationMS\":300000,\"interval\":\"half-open-start-inclusive-end-exclusive\",\"knowledge\":\"complete-and-endMS\\u003c=knownAtMS\\u003c=decisionMS\",\"side\":\"bid\"},\"symbol\":\"XAUUSD\",\"target\":{\"kind\":\"fill-relative-R\",\"multiple\":2,\"rounding\":\"none-exact-research-control\"}},\"timeoutMinutes\":1},\"name\":\"Synthetic long-target-cap / none\",\"setupType\":\"frozenLevelBreakout\"}",
+      "policy": "{\"dslVersion\":7,\"frozenLevelBreakout\":{\"activationR\":1,\"amendmentLatencyMS\":0,\"contractVersion\":\"frozen-level-compiler-v1\",\"controlProfile\":\"stored-m30-lock-isolation-v1\",\"entryLatencyMS\":0,\"inputRefs\":{\"calendar\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"costs\":{\"id\":\"SyntheticCosts\",\"sha256\":\"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\",\"version\":\"v1\"},\"ordering\":{\"id\":\"SyntheticOrdering\",\"sha256\":\"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\",\"version\":\"v1\"},\"schedule\":{\"id\":\"SyntheticSchedule\",\"sha256\":\"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\",\"version\":\"v1\"},\"source\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"}},\"lockMode\":\"none\",\"maxPredecessorAgeMS\":1000,\"maxReceiptAgeMS\":1,\"priceGrid\":0.01,\"profile\":{\"clockAlignment\":\"UTC-epoch-millisecond-grid\",\"contracts\":{\"lifecycle\":\"frozen-level-lifecycle-v1\",\"primitives\":\"frozen-level-primitives-v1\",\"sourceCommit\":\"0ca22bf6493cd02e1f2adf13094981dfdcac148f\"},\"entryLevels\":{\"creation\":\"completed-boundary\",\"directionalIdentity\":\"independent-no-oco\",\"durationMS\":1800000,\"expiry\":\"next-clock-m30-boundary\",\"kind\":\"previous-clock-m30-range\"},\"execution\":{\"availability\":\"availableMS==eventMS;nondecreasing\",\"availabilityModel\":\"event-time-reference-assumption\",\"entryObservation\":\"strictly-subsequent-source-observation\",\"entrySide\":{\"long\":\"ask\",\"short\":\"bid\"},\"liquidationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"mode\":\"paired-quotes\",\"orderingBindings\":\"same-source-calendar-and-context-window-identities\",\"sequenceRange\":{\"max\":9007199254740991,\"min\":0},\"sourceOrder\":\"strict-lexicographic-(eventMS,sequence)\",\"stopFill\":\"observed-liquidation-with-price-gap\",\"targetFill\":\"threshold-no-improvement\",\"timeRange\":{\"max\":9007199254740991,\"min\":0},\"timeUnit\":\"UTC-Unix-milliseconds\",\"unverifiedCoverage\":\"unresolved-no-fill\"},\"id\":\"stored-m30-lock-isolation-v1\",\"initialRisk\":{\"R0\":\"direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded\",\"bufferGridSteps\":1,\"evidenceStatus\":\"unverified-research-control\",\"freeze\":\"signal\",\"kind\":\"opposite-six-m5-extreme\",\"rounding\":\"outward\",\"shortReference\":\"numerical-bid-high-used-as-liquidation-stop\",\"window\":\"rolling-six-completed-M5-slots-at-signal-not-stored-M30\"},\"lifecycle\":{\"busyPolicy\":\"skip-and-require-fresh-recross\",\"expiryBeforeAdmission\":true,\"reset\":\"inside-or-proved-fresh-predecessor\",\"triggerSide\":\"bid\",\"usePolicy\":\"one-success-no-retry\"},\"management\":{\"activation\":\"inclusive-direction*(liquidation-effective-entry)\\u003e=activationR*fixed-R0\",\"activationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"attempts\":1,\"lockContextCutoff\":\"frozenAtMS\\u003cactual-entry-eventMS\",\"minimumLockDistanceGridSteps\":1,\"noLockActivation\":\"inert\",\"oldProtectionBeforeAmendment\":true,\"retryAfterRejection\":false,\"sameMillisecondIntegration\":\"requires-separately-reviewed-common-opportunity-policy-across-all-managers\",\"stopWidening\":false,\"timeout\":\"elapsed-time\"},\"momentum\":{\"bars\":6,\"direction\":\"last-close\\u003efirst-open-long;\\u003cshort;equal-no-signal\",\"durationMS\":300000,\"enabled\":true,\"freeze\":\"signal\",\"kind\":\"first-open-to-last-close\",\"window\":\"rolling-six-completed-M5-slots-at-signal\"},\"pivot\":{\"comparison\":\"exact-shortest-decimal-input-rational-no-epsilon\",\"eligibility\":\"raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap\",\"formula\":\"primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2\",\"freeze\":\"signal\",\"kind\":\"camarilla\",\"levels\":[\"S4\",\"S3\",\"S2\",\"S1\",\"C\",\"R1\",\"R2\",\"R3\",\"R4\"],\"rounding\":\"towards-entry;then-profitable-tightening-and-one-grid-admissible\",\"selection\":\"most-protective-profitable-admissible\",\"side\":\"bid\",\"ties\":\"first-in-fixed-ladder-order-for-equal-snapped-stop\",\"window\":\"previous-clock-m15\"},\"position\":{\"additions\":false,\"compounding\":false,\"maxConcurrent\":1,\"plannedRiskUnits\":1,\"quantityModel\":\"continuous-research-only\"},\"scale\":{\"divisor\":3800,\"evidenceStatus\":\"location-only-convention\",\"freeze\":\"signal\",\"rounding\":\"decimal-float-quotient-half-even-cents-then-grid-toward-entry\",\"source\":\"prior-qualified-broker-trading-date-bid-opening\"},\"sourceBars\":{\"coverage\":\"all-consecutive-completed-slots\",\"durationMS\":300000,\"interval\":\"half-open-start-inclusive-end-exclusive\",\"knowledge\":\"complete-and-endMS\\u003c=knownAtMS\\u003c=decisionMS\",\"side\":\"bid\"},\"symbol\":\"XAUUSD\",\"target\":{\"kind\":\"fill-relative-R\",\"multiple\":2,\"rounding\":\"none-exact-research-control\"}},\"timeoutMinutes\":1},\"setupType\":\"frozenLevelBreakout\"}",
+      "assumptions": "{\"authority\":\"test-only-fixture\",\"fixtureRiskBudgetUSD\":\"1\",\"id\":\"SyntheticAssumptions-none\",\"policyDigest\":\"06f0a836989c43deb7b5846a125ab4f781d8460b311c1eef6e08c8f8abec493a\",\"qualification\":\"unverified-research-control\",\"schema\":\"synthetic-control-assumptions-v1\",\"version\":\"v1\"}",
+      "configDigest": "2b40dd37eb24d6e424eb4dbbfbe9db0bc43b37c790d9e503721b12d7cda5d5bf",
+      "policyDigest": "06f0a836989c43deb7b5846a125ab4f781d8460b311c1eef6e08c8f8abec493a"
+    },
+    {
+      "mode": "scale",
+      "dsl": "dsl v7\nstrategy \"Synthetic long-target-cap / scale\" {\n  description \"Invented mechanics fixture; execution remains unregistered.\"\n}\nmarket conditions {\n  frozen source \"SyntheticSource\" version \"v1\" sha256 \"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\"\n  frozen calendar \"SyntheticCalendar\" version \"v1\" sha256 \"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\"\n  frozen ordering \"SyntheticOrdering\" version \"v1\" sha256 \"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\"\n  frozen schedule \"SyntheticSchedule\" version \"v1\" sha256 \"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\"\n}\nsetup {\n  frozen control stored-m30-lock-isolation-v1\n  type: frozen level breakout\n}\nrisk {\n  frozen grid .01 price units\n}\nmanagement {\n  frozen lock scale\n  frozen activation 1 R\n  frozen timeout 1 minutes\n}\nexecution {\n  frozen freshness predecessor 1000 ms receipt 1 ms\n  frozen latency entry 0 ms amendment 0 ms\n  frozen costs \"SyntheticCosts\" version \"v1\" sha256 \"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\"\n  frozen assumptions \"SyntheticAssumptions-scale\" version \"v1\" sha256 \"e2f4c667a43f078d26f4be8162750c765af201860ee89fd9cba5a733bba0aea8\"\n}\n",
+      "config": "{\"description\":\"Invented mechanics fixture; execution remains unregistered.\",\"dslVersion\":7,\"frozenLevelBreakout\":{\"activationR\":1,\"amendmentLatencyMS\":0,\"contractVersion\":\"frozen-level-compiler-v1\",\"controlProfile\":\"stored-m30-lock-isolation-v1\",\"entryLatencyMS\":0,\"inputRefs\":{\"assumptions\":{\"id\":\"SyntheticAssumptions-scale\",\"sha256\":\"e2f4c667a43f078d26f4be8162750c765af201860ee89fd9cba5a733bba0aea8\",\"version\":\"v1\"},\"calendar\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"costs\":{\"id\":\"SyntheticCosts\",\"sha256\":\"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\",\"version\":\"v1\"},\"ordering\":{\"id\":\"SyntheticOrdering\",\"sha256\":\"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\",\"version\":\"v1\"},\"schedule\":{\"id\":\"SyntheticSchedule\",\"sha256\":\"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\",\"version\":\"v1\"},\"source\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"}},\"lockMode\":\"scale\",\"maxPredecessorAgeMS\":1000,\"maxReceiptAgeMS\":1,\"priceGrid\":0.01,\"profile\":{\"clockAlignment\":\"UTC-epoch-millisecond-grid\",\"contracts\":{\"lifecycle\":\"frozen-level-lifecycle-v1\",\"primitives\":\"frozen-level-primitives-v1\",\"sourceCommit\":\"0ca22bf6493cd02e1f2adf13094981dfdcac148f\"},\"entryLevels\":{\"creation\":\"completed-boundary\",\"directionalIdentity\":\"independent-no-oco\",\"durationMS\":1800000,\"expiry\":\"next-clock-m30-boundary\",\"kind\":\"previous-clock-m30-range\"},\"execution\":{\"availability\":\"availableMS==eventMS;nondecreasing\",\"availabilityModel\":\"event-time-reference-assumption\",\"entryObservation\":\"strictly-subsequent-source-observation\",\"entrySide\":{\"long\":\"ask\",\"short\":\"bid\"},\"liquidationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"mode\":\"paired-quotes\",\"orderingBindings\":\"same-source-calendar-and-context-window-identities\",\"sequenceRange\":{\"max\":9007199254740991,\"min\":0},\"sourceOrder\":\"strict-lexicographic-(eventMS,sequence)\",\"stopFill\":\"observed-liquidation-with-price-gap\",\"targetFill\":\"threshold-no-improvement\",\"timeRange\":{\"max\":9007199254740991,\"min\":0},\"timeUnit\":\"UTC-Unix-milliseconds\",\"unverifiedCoverage\":\"unresolved-no-fill\"},\"id\":\"stored-m30-lock-isolation-v1\",\"initialRisk\":{\"R0\":\"direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded\",\"bufferGridSteps\":1,\"evidenceStatus\":\"unverified-research-control\",\"freeze\":\"signal\",\"kind\":\"opposite-six-m5-extreme\",\"rounding\":\"outward\",\"shortReference\":\"numerical-bid-high-used-as-liquidation-stop\",\"window\":\"rolling-six-completed-M5-slots-at-signal-not-stored-M30\"},\"lifecycle\":{\"busyPolicy\":\"skip-and-require-fresh-recross\",\"expiryBeforeAdmission\":true,\"reset\":\"inside-or-proved-fresh-predecessor\",\"triggerSide\":\"bid\",\"usePolicy\":\"one-success-no-retry\"},\"management\":{\"activation\":\"inclusive-direction*(liquidation-effective-entry)\\u003e=activationR*fixed-R0\",\"activationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"attempts\":1,\"lockContextCutoff\":\"frozenAtMS\\u003cactual-entry-eventMS\",\"minimumLockDistanceGridSteps\":1,\"noLockActivation\":\"inert\",\"oldProtectionBeforeAmendment\":true,\"retryAfterRejection\":false,\"sameMillisecondIntegration\":\"requires-separately-reviewed-common-opportunity-policy-across-all-managers\",\"stopWidening\":false,\"timeout\":\"elapsed-time\"},\"momentum\":{\"bars\":6,\"direction\":\"last-close\\u003efirst-open-long;\\u003cshort;equal-no-signal\",\"durationMS\":300000,\"enabled\":true,\"freeze\":\"signal\",\"kind\":\"first-open-to-last-close\",\"window\":\"rolling-six-completed-M5-slots-at-signal\"},\"pivot\":{\"comparison\":\"exact-shortest-decimal-input-rational-no-epsilon\",\"eligibility\":\"raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap\",\"formula\":\"primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2\",\"freeze\":\"signal\",\"kind\":\"camarilla\",\"levels\":[\"S4\",\"S3\",\"S2\",\"S1\",\"C\",\"R1\",\"R2\",\"R3\",\"R4\"],\"rounding\":\"towards-entry;then-profitable-tightening-and-one-grid-admissible\",\"selection\":\"most-protective-profitable-admissible\",\"side\":\"bid\",\"ties\":\"first-in-fixed-ladder-order-for-equal-snapped-stop\",\"window\":\"previous-clock-m15\"},\"position\":{\"additions\":false,\"compounding\":false,\"maxConcurrent\":1,\"plannedRiskUnits\":1,\"quantityModel\":\"continuous-research-only\"},\"scale\":{\"divisor\":3800,\"evidenceStatus\":\"location-only-convention\",\"freeze\":\"signal\",\"rounding\":\"decimal-float-quotient-half-even-cents-then-grid-toward-entry\",\"source\":\"prior-qualified-broker-trading-date-bid-opening\"},\"sourceBars\":{\"coverage\":\"all-consecutive-completed-slots\",\"durationMS\":300000,\"interval\":\"half-open-start-inclusive-end-exclusive\",\"knowledge\":\"complete-and-endMS\\u003c=knownAtMS\\u003c=decisionMS\",\"side\":\"bid\"},\"symbol\":\"XAUUSD\",\"target\":{\"kind\":\"fill-relative-R\",\"multiple\":2,\"rounding\":\"none-exact-research-control\"}},\"timeoutMinutes\":1},\"name\":\"Synthetic long-target-cap / scale\",\"setupType\":\"frozenLevelBreakout\"}",
+      "policy": "{\"dslVersion\":7,\"frozenLevelBreakout\":{\"activationR\":1,\"amendmentLatencyMS\":0,\"contractVersion\":\"frozen-level-compiler-v1\",\"controlProfile\":\"stored-m30-lock-isolation-v1\",\"entryLatencyMS\":0,\"inputRefs\":{\"calendar\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"costs\":{\"id\":\"SyntheticCosts\",\"sha256\":\"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\",\"version\":\"v1\"},\"ordering\":{\"id\":\"SyntheticOrdering\",\"sha256\":\"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\",\"version\":\"v1\"},\"schedule\":{\"id\":\"SyntheticSchedule\",\"sha256\":\"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\",\"version\":\"v1\"},\"source\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"}},\"lockMode\":\"scale\",\"maxPredecessorAgeMS\":1000,\"maxReceiptAgeMS\":1,\"priceGrid\":0.01,\"profile\":{\"clockAlignment\":\"UTC-epoch-millisecond-grid\",\"contracts\":{\"lifecycle\":\"frozen-level-lifecycle-v1\",\"primitives\":\"frozen-level-primitives-v1\",\"sourceCommit\":\"0ca22bf6493cd02e1f2adf13094981dfdcac148f\"},\"entryLevels\":{\"creation\":\"completed-boundary\",\"directionalIdentity\":\"independent-no-oco\",\"durationMS\":1800000,\"expiry\":\"next-clock-m30-boundary\",\"kind\":\"previous-clock-m30-range\"},\"execution\":{\"availability\":\"availableMS==eventMS;nondecreasing\",\"availabilityModel\":\"event-time-reference-assumption\",\"entryObservation\":\"strictly-subsequent-source-observation\",\"entrySide\":{\"long\":\"ask\",\"short\":\"bid\"},\"liquidationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"mode\":\"paired-quotes\",\"orderingBindings\":\"same-source-calendar-and-context-window-identities\",\"sequenceRange\":{\"max\":9007199254740991,\"min\":0},\"sourceOrder\":\"strict-lexicographic-(eventMS,sequence)\",\"stopFill\":\"observed-liquidation-with-price-gap\",\"targetFill\":\"threshold-no-improvement\",\"timeRange\":{\"max\":9007199254740991,\"min\":0},\"timeUnit\":\"UTC-Unix-milliseconds\",\"unverifiedCoverage\":\"unresolved-no-fill\"},\"id\":\"stored-m30-lock-isolation-v1\",\"initialRisk\":{\"R0\":\"direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded\",\"bufferGridSteps\":1,\"evidenceStatus\":\"unverified-research-control\",\"freeze\":\"signal\",\"kind\":\"opposite-six-m5-extreme\",\"rounding\":\"outward\",\"shortReference\":\"numerical-bid-high-used-as-liquidation-stop\",\"window\":\"rolling-six-completed-M5-slots-at-signal-not-stored-M30\"},\"lifecycle\":{\"busyPolicy\":\"skip-and-require-fresh-recross\",\"expiryBeforeAdmission\":true,\"reset\":\"inside-or-proved-fresh-predecessor\",\"triggerSide\":\"bid\",\"usePolicy\":\"one-success-no-retry\"},\"management\":{\"activation\":\"inclusive-direction*(liquidation-effective-entry)\\u003e=activationR*fixed-R0\",\"activationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"attempts\":1,\"lockContextCutoff\":\"frozenAtMS\\u003cactual-entry-eventMS\",\"minimumLockDistanceGridSteps\":1,\"noLockActivation\":\"inert\",\"oldProtectionBeforeAmendment\":true,\"retryAfterRejection\":false,\"sameMillisecondIntegration\":\"requires-separately-reviewed-common-opportunity-policy-across-all-managers\",\"stopWidening\":false,\"timeout\":\"elapsed-time\"},\"momentum\":{\"bars\":6,\"direction\":\"last-close\\u003efirst-open-long;\\u003cshort;equal-no-signal\",\"durationMS\":300000,\"enabled\":true,\"freeze\":\"signal\",\"kind\":\"first-open-to-last-close\",\"window\":\"rolling-six-completed-M5-slots-at-signal\"},\"pivot\":{\"comparison\":\"exact-shortest-decimal-input-rational-no-epsilon\",\"eligibility\":\"raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap\",\"formula\":\"primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2\",\"freeze\":\"signal\",\"kind\":\"camarilla\",\"levels\":[\"S4\",\"S3\",\"S2\",\"S1\",\"C\",\"R1\",\"R2\",\"R3\",\"R4\"],\"rounding\":\"towards-entry;then-profitable-tightening-and-one-grid-admissible\",\"selection\":\"most-protective-profitable-admissible\",\"side\":\"bid\",\"ties\":\"first-in-fixed-ladder-order-for-equal-snapped-stop\",\"window\":\"previous-clock-m15\"},\"position\":{\"additions\":false,\"compounding\":false,\"maxConcurrent\":1,\"plannedRiskUnits\":1,\"quantityModel\":\"continuous-research-only\"},\"scale\":{\"divisor\":3800,\"evidenceStatus\":\"location-only-convention\",\"freeze\":\"signal\",\"rounding\":\"decimal-float-quotient-half-even-cents-then-grid-toward-entry\",\"source\":\"prior-qualified-broker-trading-date-bid-opening\"},\"sourceBars\":{\"coverage\":\"all-consecutive-completed-slots\",\"durationMS\":300000,\"interval\":\"half-open-start-inclusive-end-exclusive\",\"knowledge\":\"complete-and-endMS\\u003c=knownAtMS\\u003c=decisionMS\",\"side\":\"bid\"},\"symbol\":\"XAUUSD\",\"target\":{\"kind\":\"fill-relative-R\",\"multiple\":2,\"rounding\":\"none-exact-research-control\"}},\"timeoutMinutes\":1},\"setupType\":\"frozenLevelBreakout\"}",
+      "assumptions": "{\"authority\":\"test-only-fixture\",\"fixtureRiskBudgetUSD\":\"1\",\"id\":\"SyntheticAssumptions-scale\",\"policyDigest\":\"9a1bd5e0d0387b10cbfaf5e8c9e5ddc953db12a565a2726f9499614d18bd587f\",\"qualification\":\"unverified-research-control\",\"schema\":\"synthetic-control-assumptions-v1\",\"version\":\"v1\"}",
+      "configDigest": "d13e8a91bad2eec1e5f0d97d520350a46f02d809b674bb7e7284439b03e66814",
+      "policyDigest": "9a1bd5e0d0387b10cbfaf5e8c9e5ddc953db12a565a2726f9499614d18bd587f"
+    },
+    {
+      "mode": "pivot",
+      "dsl": "dsl v7\nstrategy \"Synthetic long-target-cap / pivot\" {\n  description \"Invented mechanics fixture; execution remains unregistered.\"\n}\nmarket conditions {\n  frozen source \"SyntheticSource\" version \"v1\" sha256 \"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\"\n  frozen calendar \"SyntheticCalendar\" version \"v1\" sha256 \"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\"\n  frozen ordering \"SyntheticOrdering\" version \"v1\" sha256 \"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\"\n  frozen schedule \"SyntheticSchedule\" version \"v1\" sha256 \"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\"\n}\nsetup {\n  frozen control stored-m30-lock-isolation-v1\n  type: frozen level breakout\n}\nrisk {\n  frozen grid .01 price units\n}\nmanagement {\n  frozen lock pivot\n  frozen activation 1 R\n  frozen timeout 1 minutes\n}\nexecution {\n  frozen freshness predecessor 1000 ms receipt 1 ms\n  frozen latency entry 0 ms amendment 0 ms\n  frozen costs \"SyntheticCosts\" version \"v1\" sha256 \"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\"\n  frozen assumptions \"SyntheticAssumptions-pivot\" version \"v1\" sha256 \"811ec6fadd2ad9f6c5d2deac470f3ce748bd5cdbf91e258e33420904ecae28da\"\n}\n",
+      "config": "{\"description\":\"Invented mechanics fixture; execution remains unregistered.\",\"dslVersion\":7,\"frozenLevelBreakout\":{\"activationR\":1,\"amendmentLatencyMS\":0,\"contractVersion\":\"frozen-level-compiler-v1\",\"controlProfile\":\"stored-m30-lock-isolation-v1\",\"entryLatencyMS\":0,\"inputRefs\":{\"assumptions\":{\"id\":\"SyntheticAssumptions-pivot\",\"sha256\":\"811ec6fadd2ad9f6c5d2deac470f3ce748bd5cdbf91e258e33420904ecae28da\",\"version\":\"v1\"},\"calendar\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"costs\":{\"id\":\"SyntheticCosts\",\"sha256\":\"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\",\"version\":\"v1\"},\"ordering\":{\"id\":\"SyntheticOrdering\",\"sha256\":\"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\",\"version\":\"v1\"},\"schedule\":{\"id\":\"SyntheticSchedule\",\"sha256\":\"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\",\"version\":\"v1\"},\"source\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"}},\"lockMode\":\"pivot\",\"maxPredecessorAgeMS\":1000,\"maxReceiptAgeMS\":1,\"priceGrid\":0.01,\"profile\":{\"clockAlignment\":\"UTC-epoch-millisecond-grid\",\"contracts\":{\"lifecycle\":\"frozen-level-lifecycle-v1\",\"primitives\":\"frozen-level-primitives-v1\",\"sourceCommit\":\"0ca22bf6493cd02e1f2adf13094981dfdcac148f\"},\"entryLevels\":{\"creation\":\"completed-boundary\",\"directionalIdentity\":\"independent-no-oco\",\"durationMS\":1800000,\"expiry\":\"next-clock-m30-boundary\",\"kind\":\"previous-clock-m30-range\"},\"execution\":{\"availability\":\"availableMS==eventMS;nondecreasing\",\"availabilityModel\":\"event-time-reference-assumption\",\"entryObservation\":\"strictly-subsequent-source-observation\",\"entrySide\":{\"long\":\"ask\",\"short\":\"bid\"},\"liquidationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"mode\":\"paired-quotes\",\"orderingBindings\":\"same-source-calendar-and-context-window-identities\",\"sequenceRange\":{\"max\":9007199254740991,\"min\":0},\"sourceOrder\":\"strict-lexicographic-(eventMS,sequence)\",\"stopFill\":\"observed-liquidation-with-price-gap\",\"targetFill\":\"threshold-no-improvement\",\"timeRange\":{\"max\":9007199254740991,\"min\":0},\"timeUnit\":\"UTC-Unix-milliseconds\",\"unverifiedCoverage\":\"unresolved-no-fill\"},\"id\":\"stored-m30-lock-isolation-v1\",\"initialRisk\":{\"R0\":\"direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded\",\"bufferGridSteps\":1,\"evidenceStatus\":\"unverified-research-control\",\"freeze\":\"signal\",\"kind\":\"opposite-six-m5-extreme\",\"rounding\":\"outward\",\"shortReference\":\"numerical-bid-high-used-as-liquidation-stop\",\"window\":\"rolling-six-completed-M5-slots-at-signal-not-stored-M30\"},\"lifecycle\":{\"busyPolicy\":\"skip-and-require-fresh-recross\",\"expiryBeforeAdmission\":true,\"reset\":\"inside-or-proved-fresh-predecessor\",\"triggerSide\":\"bid\",\"usePolicy\":\"one-success-no-retry\"},\"management\":{\"activation\":\"inclusive-direction*(liquidation-effective-entry)\\u003e=activationR*fixed-R0\",\"activationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"attempts\":1,\"lockContextCutoff\":\"frozenAtMS\\u003cactual-entry-eventMS\",\"minimumLockDistanceGridSteps\":1,\"noLockActivation\":\"inert\",\"oldProtectionBeforeAmendment\":true,\"retryAfterRejection\":false,\"sameMillisecondIntegration\":\"requires-separately-reviewed-common-opportunity-policy-across-all-managers\",\"stopWidening\":false,\"timeout\":\"elapsed-time\"},\"momentum\":{\"bars\":6,\"direction\":\"last-close\\u003efirst-open-long;\\u003cshort;equal-no-signal\",\"durationMS\":300000,\"enabled\":true,\"freeze\":\"signal\",\"kind\":\"first-open-to-last-close\",\"window\":\"rolling-six-completed-M5-slots-at-signal\"},\"pivot\":{\"comparison\":\"exact-shortest-decimal-input-rational-no-epsilon\",\"eligibility\":\"raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap\",\"formula\":\"primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2\",\"freeze\":\"signal\",\"kind\":\"camarilla\",\"levels\":[\"S4\",\"S3\",\"S2\",\"S1\",\"C\",\"R1\",\"R2\",\"R3\",\"R4\"],\"rounding\":\"towards-entry;then-profitable-tightening-and-one-grid-admissible\",\"selection\":\"most-protective-profitable-admissible\",\"side\":\"bid\",\"ties\":\"first-in-fixed-ladder-order-for-equal-snapped-stop\",\"window\":\"previous-clock-m15\"},\"position\":{\"additions\":false,\"compounding\":false,\"maxConcurrent\":1,\"plannedRiskUnits\":1,\"quantityModel\":\"continuous-research-only\"},\"scale\":{\"divisor\":3800,\"evidenceStatus\":\"location-only-convention\",\"freeze\":\"signal\",\"rounding\":\"decimal-float-quotient-half-even-cents-then-grid-toward-entry\",\"source\":\"prior-qualified-broker-trading-date-bid-opening\"},\"sourceBars\":{\"coverage\":\"all-consecutive-completed-slots\",\"durationMS\":300000,\"interval\":\"half-open-start-inclusive-end-exclusive\",\"knowledge\":\"complete-and-endMS\\u003c=knownAtMS\\u003c=decisionMS\",\"side\":\"bid\"},\"symbol\":\"XAUUSD\",\"target\":{\"kind\":\"fill-relative-R\",\"multiple\":2,\"rounding\":\"none-exact-research-control\"}},\"timeoutMinutes\":1},\"name\":\"Synthetic long-target-cap / pivot\",\"setupType\":\"frozenLevelBreakout\"}",
+      "policy": "{\"dslVersion\":7,\"frozenLevelBreakout\":{\"activationR\":1,\"amendmentLatencyMS\":0,\"contractVersion\":\"frozen-level-compiler-v1\",\"controlProfile\":\"stored-m30-lock-isolation-v1\",\"entryLatencyMS\":0,\"inputRefs\":{\"calendar\":{\"id\":\"SyntheticCalendar\",\"sha256\":\"5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b\",\"version\":\"v1\"},\"costs\":{\"id\":\"SyntheticCosts\",\"sha256\":\"ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a\",\"version\":\"v1\"},\"ordering\":{\"id\":\"SyntheticOrdering\",\"sha256\":\"46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9\",\"version\":\"v1\"},\"schedule\":{\"id\":\"SyntheticSchedule\",\"sha256\":\"3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff\",\"version\":\"v1\"},\"source\":{\"id\":\"SyntheticSource\",\"sha256\":\"830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2\",\"version\":\"v1\"}},\"lockMode\":\"pivot\",\"maxPredecessorAgeMS\":1000,\"maxReceiptAgeMS\":1,\"priceGrid\":0.01,\"profile\":{\"clockAlignment\":\"UTC-epoch-millisecond-grid\",\"contracts\":{\"lifecycle\":\"frozen-level-lifecycle-v1\",\"primitives\":\"frozen-level-primitives-v1\",\"sourceCommit\":\"0ca22bf6493cd02e1f2adf13094981dfdcac148f\"},\"entryLevels\":{\"creation\":\"completed-boundary\",\"directionalIdentity\":\"independent-no-oco\",\"durationMS\":1800000,\"expiry\":\"next-clock-m30-boundary\",\"kind\":\"previous-clock-m30-range\"},\"execution\":{\"availability\":\"availableMS==eventMS;nondecreasing\",\"availabilityModel\":\"event-time-reference-assumption\",\"entryObservation\":\"strictly-subsequent-source-observation\",\"entrySide\":{\"long\":\"ask\",\"short\":\"bid\"},\"liquidationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"mode\":\"paired-quotes\",\"orderingBindings\":\"same-source-calendar-and-context-window-identities\",\"sequenceRange\":{\"max\":9007199254740991,\"min\":0},\"sourceOrder\":\"strict-lexicographic-(eventMS,sequence)\",\"stopFill\":\"observed-liquidation-with-price-gap\",\"targetFill\":\"threshold-no-improvement\",\"timeRange\":{\"max\":9007199254740991,\"min\":0},\"timeUnit\":\"UTC-Unix-milliseconds\",\"unverifiedCoverage\":\"unresolved-no-fill\"},\"id\":\"stored-m30-lock-isolation-v1\",\"initialRisk\":{\"R0\":\"direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded\",\"bufferGridSteps\":1,\"evidenceStatus\":\"unverified-research-control\",\"freeze\":\"signal\",\"kind\":\"opposite-six-m5-extreme\",\"rounding\":\"outward\",\"shortReference\":\"numerical-bid-high-used-as-liquidation-stop\",\"window\":\"rolling-six-completed-M5-slots-at-signal-not-stored-M30\"},\"lifecycle\":{\"busyPolicy\":\"skip-and-require-fresh-recross\",\"expiryBeforeAdmission\":true,\"reset\":\"inside-or-proved-fresh-predecessor\",\"triggerSide\":\"bid\",\"usePolicy\":\"one-success-no-retry\"},\"management\":{\"activation\":\"inclusive-direction*(liquidation-effective-entry)\\u003e=activationR*fixed-R0\",\"activationSide\":{\"long\":\"bid\",\"short\":\"ask\"},\"attempts\":1,\"lockContextCutoff\":\"frozenAtMS\\u003cactual-entry-eventMS\",\"minimumLockDistanceGridSteps\":1,\"noLockActivation\":\"inert\",\"oldProtectionBeforeAmendment\":true,\"retryAfterRejection\":false,\"sameMillisecondIntegration\":\"requires-separately-reviewed-common-opportunity-policy-across-all-managers\",\"stopWidening\":false,\"timeout\":\"elapsed-time\"},\"momentum\":{\"bars\":6,\"direction\":\"last-close\\u003efirst-open-long;\\u003cshort;equal-no-signal\",\"durationMS\":300000,\"enabled\":true,\"freeze\":\"signal\",\"kind\":\"first-open-to-last-close\",\"window\":\"rolling-six-completed-M5-slots-at-signal\"},\"pivot\":{\"comparison\":\"exact-shortest-decimal-input-rational-no-epsilon\",\"eligibility\":\"raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap\",\"formula\":\"primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2\",\"freeze\":\"signal\",\"kind\":\"camarilla\",\"levels\":[\"S4\",\"S3\",\"S2\",\"S1\",\"C\",\"R1\",\"R2\",\"R3\",\"R4\"],\"rounding\":\"towards-entry;then-profitable-tightening-and-one-grid-admissible\",\"selection\":\"most-protective-profitable-admissible\",\"side\":\"bid\",\"ties\":\"first-in-fixed-ladder-order-for-equal-snapped-stop\",\"window\":\"previous-clock-m15\"},\"position\":{\"additions\":false,\"compounding\":false,\"maxConcurrent\":1,\"plannedRiskUnits\":1,\"quantityModel\":\"continuous-research-only\"},\"scale\":{\"divisor\":3800,\"evidenceStatus\":\"location-only-convention\",\"freeze\":\"signal\",\"rounding\":\"decimal-float-quotient-half-even-cents-then-grid-toward-entry\",\"source\":\"prior-qualified-broker-trading-date-bid-opening\"},\"sourceBars\":{\"coverage\":\"all-consecutive-completed-slots\",\"durationMS\":300000,\"interval\":\"half-open-start-inclusive-end-exclusive\",\"knowledge\":\"complete-and-endMS\\u003c=knownAtMS\\u003c=decisionMS\",\"side\":\"bid\"},\"symbol\":\"XAUUSD\",\"target\":{\"kind\":\"fill-relative-R\",\"multiple\":2,\"rounding\":\"none-exact-research-control\"}},\"timeoutMinutes\":1},\"setupType\":\"frozenLevelBreakout\"}",
+      "assumptions": "{\"authority\":\"test-only-fixture\",\"fixtureRiskBudgetUSD\":\"1\",\"id\":\"SyntheticAssumptions-pivot\",\"policyDigest\":\"6ab78a08816f3ffd4ac84074b2d8a9372270418bb56b75c3c9e7da41d02a54e3\",\"qualification\":\"unverified-research-control\",\"schema\":\"synthetic-control-assumptions-v1\",\"version\":\"v1\"}",
+      "configDigest": "139d1b3cda550cdeb2c4365d5cbed34b330ca993710124975f70ffcf2063d769",
+      "policyDigest": "6ab78a08816f3ffd4ac84074b2d8a9372270418bb56b75c3c9e7da41d02a54e3"
+    }
+  ],
+  "context": {
+    "bars": [
+      {
+        "startMillis": 172800000,
+        "endMillis": 173100000,
+        "knownAtMillis": 173100000,
+        "complete": true,
+        "open": 95,
+        "high": 99.5,
+        "low": 94,
+        "close": 96,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 173100000,
+        "endMillis": 173400000,
+        "knownAtMillis": 173400000,
+        "complete": true,
+        "open": 96,
+        "high": 98,
+        "low": 94,
+        "close": 95,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 173400000,
+        "endMillis": 173700000,
+        "knownAtMillis": 173700000,
+        "complete": true,
+        "open": 95,
+        "high": 97,
+        "low": 93,
+        "close": 96,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 173700000,
+        "endMillis": 174000000,
+        "knownAtMillis": 174000000,
+        "complete": true,
+        "open": 95,
+        "high": 98,
+        "low": 90.01,
+        "close": 96,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 174000000,
+        "endMillis": 174300000,
+        "knownAtMillis": 174300000,
+        "complete": true,
+        "open": 96,
+        "high": 99,
+        "low": 94,
+        "close": 97,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 174300000,
+        "endMillis": 174600000,
+        "knownAtMillis": 174600000,
+        "complete": true,
+        "open": 97,
+        "high": 99.5,
+        "low": 95,
+        "close": 98,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 174600000,
+        "endMillis": 174900000,
+        "knownAtMillis": 174900000,
+        "complete": true,
+        "open": 98,
+        "high": 110,
+        "low": 95,
+        "close": 105,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 174900000,
+        "endMillis": 175200000,
+        "knownAtMillis": 175200000,
+        "complete": true,
+        "open": 105,
+        "high": 133.77,
+        "low": 90.01,
+        "close": 104,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      },
+      {
+        "startMillis": 175200000,
+        "endMillis": 175500000,
+        "knownAtMillis": 175500000,
+        "complete": true,
+        "open": 104,
+        "high": 120,
+        "low": 100,
+        "close": 106,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        }
+      }
+    ],
+    "contextCompletionKey": {
+      "atMillis": 175500000,
+      "sequence": 36
+    },
+    "entryCandidateKey": {
+      "atMillis": 175500002,
+      "sequence": 39
+    },
+    "initialStop": 90,
+    "ladder": {
+      "version": "frozen-level-primitives-v1",
+      "windowId": "cd3173139e22826ce9bbd27ace70ccf6fcff2e10bbc9cae773c24310ba6881a7",
+      "knownAtMillis": 175500000,
+      "frozenAtMillis": 175500001,
+      "levels": [
+        {
+          "name": "S4",
+          "price": 81.93199999999999
+        },
+        {
+          "name": "S3",
+          "price": 93.966
+        },
+        {
+          "name": "S2",
+          "price": 97.97733333333333
+        },
+        {
+          "name": "S1",
+          "price": 101.98866666666666
+        },
+        {
+          "name": "C",
+          "price": 106
+        },
+        {
+          "name": "R1",
+          "price": 110.01133333333334
+        },
+        {
+          "name": "R2",
+          "price": 114.02266666666667
+        },
+        {
+          "name": "R3",
+          "price": 118.034
+        },
+        {
+          "name": "R4",
+          "price": 130.068
+        }
+      ]
+    },
+    "levelSpec": {
+      "version": "frozen-level-lifecycle-v1",
+      "providerId": "synthetic-common-control-v1",
+      "sourceWindowId": "e175c7ccf29827cbc6d8699ddbb114d531090c82b267efeb785558fee1a34bc2",
+      "contextSource": {
+        "provider": "SyntheticFixture",
+        "dataset": "SyntheticManagerTrace",
+        "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+        "side": "bid"
+      },
+      "quoteSource": {
+        "provider": "SyntheticFixture",
+        "dataset": "SyntheticManagerTrace",
+        "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+        "side": "bid"
+      },
+      "orderingProof": "frozen-ordering:46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9",
+      "knownAt": {
+        "atMillis": 174600000,
+        "sequence": 24
+      },
+      "createdAt": {
+        "atMillis": 174600000,
+        "sequence": 24
+      },
+      "expiresAtMillis": 176400000,
+      "side": 1,
+      "price": 99.5,
+      "policy": {
+        "assumptionId": "synthetic-common-opportunity-v1",
+        "maxPredecessorAgeMillis": 1000,
+        "maxObservationAgeMillis": 1,
+        "submissionLatencyMillis": 0,
+        "usePolicy": "one-success-no-retry"
+      }
+    },
+    "lockLevels": {
+      "id": "fe3f9400ce737e5c93ea0bc263e0e11c0a74282b7f58e1d603155d1642c602b7",
+      "sourceWindowId": "cd3173139e22826ce9bbd27ace70ccf6fcff2e10bbc9cae773c24310ba6881a7",
+      "knownAtMillis": 175500000,
+      "frozenAtMillis": 175500001,
+      "prices": [
+        81.93199999999999,
+        93.966,
+        97.97733333333333,
+        101.98866666666666,
+        106,
+        110.01133333333334,
+        114.02266666666667,
+        118.034,
+        130.068
+      ]
+    },
+    "opening": {
+      "id": "fcc7ff0a4c61033da4b441139c5a099f33256c42c0e20a61cf4d3333442a3d15",
+      "version": "frozen-level-primitives-v1",
+      "frozenAtMillis": 175500001,
+      "calendarDigest": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+      "opening": {
+        "date": "1970-01-02",
+        "event": {
+          "atMillis": 86400000,
+          "sequence": 0
+        },
+        "knownAtMillis": 86400000,
+        "price": 3800,
+        "source": {
+          "provider": "SyntheticFixture",
+          "dataset": "SyntheticManagerTrace",
+          "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+          "side": "bid"
+        },
+        "calendarId": "SyntheticCalendar",
+        "calendarVersion": "v1",
+        "qualification": "test-only-all-changes-first-record-at-day-start"
+      }
+    },
+    "openingError": "",
+    "pivotWindow": {
+      "id": "cd3173139e22826ce9bbd27ace70ccf6fcff2e10bbc9cae773c24310ba6881a7",
+      "version": "frozen-level-primitives-v1",
+      "kind": "previous-clock-m15",
+      "startMillis": 174600000,
+      "endMillis": 175500000,
+      "knownAtMillis": 175500000,
+      "frozenAtMillis": 175500001,
+      "barCount": 3,
+      "source": {
+        "provider": "SyntheticFixture",
+        "dataset": "SyntheticManagerTrace",
+        "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+        "side": "bid"
+      },
+      "open": 98,
+      "high": 133.77,
+      "low": 90.01,
+      "close": 106
+    },
+    "quantityOz": "0.1",
+    "riskBudgetUSD": "1",
+    "rollingSixM5": {
+      "id": "3e416fccdd792e3aa7aefe2c6e2679dd03912309bf815214939ea7b5cc8f5bea",
+      "version": "frozen-level-primitives-v1",
+      "kind": "rolling-six-completed-m5",
+      "startMillis": 173700000,
+      "endMillis": 175500000,
+      "knownAtMillis": 175500000,
+      "frozenAtMillis": 175500001,
+      "barCount": 6,
+      "source": {
+        "provider": "SyntheticFixture",
+        "dataset": "SyntheticManagerTrace",
+        "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+        "side": "bid"
+      },
+      "open": 95,
+      "high": 133.77,
+      "low": 90.01,
+      "close": 106
+    },
+    "signalKey": {
+      "atMillis": 175500001,
+      "sequence": 38
+    },
+    "storedM30": {
+      "id": "e175c7ccf29827cbc6d8699ddbb114d531090c82b267efeb785558fee1a34bc2",
+      "version": "frozen-level-primitives-v1",
+      "kind": "previous-clock-m30",
+      "startMillis": 172800000,
+      "endMillis": 174600000,
+      "knownAtMillis": 174600000,
+      "frozenAtMillis": 174600000,
+      "barCount": 6,
+      "source": {
+        "provider": "SyntheticFixture",
+        "dataset": "SyntheticManagerTrace",
+        "sha256": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2",
+        "side": "bid"
+      },
+      "open": 95,
+      "high": 99.5,
+      "low": 90.01,
+      "close": 98
+    },
+    "target": 120
+  },
+  "lifecycle": [
+    {
+      "version": "frozen-level-lifecycle-v1",
+      "levelId": "bae619db4616401bc69dc066a066891b98837fe72aadcd0731c8de1001db834a",
+      "kind": "created",
+      "at": {
+        "atMillis": 174600000,
+        "sequence": 24
+      },
+      "availableAtMillis": 174600000,
+      "expiresAtMillis": 176400000
+    },
+    {
+      "version": "frozen-level-lifecycle-v1",
+      "levelId": "bae619db4616401bc69dc066a066891b98837fe72aadcd0731c8de1001db834a",
+      "kind": "reset",
+      "reason": "inside-observation",
+      "at": {
+        "atMillis": 175500000,
+        "sequence": 37
+      },
+      "availableAtMillis": 175500000,
+      "expiresAtMillis": 176400000
+    },
+    {
+      "version": "frozen-level-lifecycle-v1",
+      "levelId": "bae619db4616401bc69dc066a066891b98837fe72aadcd0731c8de1001db834a",
+      "kind": "crossed",
+      "reason": "bid-crossing",
+      "at": {
+        "atMillis": 175500001,
+        "sequence": 38
+      },
+      "availableAtMillis": 175500001,
+      "signalId": "190efb1d76b844d3a295c12d016d613b253768579784a98c813e05492ea0aab1",
+      "expiresAtMillis": 176400000
+    },
+    {
+      "version": "frozen-level-lifecycle-v1",
+      "levelId": "bae619db4616401bc69dc066a066891b98837fe72aadcd0731c8de1001db834a",
+      "kind": "submitted",
+      "reason": "admission-pending",
+      "at": {
+        "atMillis": 175500001,
+        "sequence": 38
+      },
+      "availableAtMillis": 175500001,
+      "signalId": "190efb1d76b844d3a295c12d016d613b253768579784a98c813e05492ea0aab1",
+      "expiresAtMillis": 176400000
+    },
+    {
+      "version": "frozen-level-lifecycle-v1",
+      "levelId": "bae619db4616401bc69dc066a066891b98837fe72aadcd0731c8de1001db834a",
+      "kind": "admission-ready",
+      "reason": "strictly-subsequent-source-observation",
+      "at": {
+        "atMillis": 175500002,
+        "sequence": 39
+      },
+      "availableAtMillis": 175500002,
+      "signalId": "190efb1d76b844d3a295c12d016d613b253768579784a98c813e05492ea0aab1",
+      "expiresAtMillis": 176400000
+    },
+    {
+      "version": "frozen-level-lifecycle-v1",
+      "levelId": "bae619db4616401bc69dc066a066891b98837fe72aadcd0731c8de1001db834a",
+      "kind": "consumed",
+      "reason": "external-successful-execution",
+      "at": {
+        "atMillis": 175500002,
+        "sequence": 39
+      },
+      "availableAtMillis": 175500002,
+      "signalId": "190efb1d76b844d3a295c12d016d613b253768579784a98c813e05492ea0aab1",
+      "expiresAtMillis": 176400000
+    }
+  ],
+  "managerEvents": {
+    "none": [
+      {
+        "kind": "exit-due",
+        "reason": "target",
+        "event": {
+          "atMillis": 175500004,
+          "sequence": 42
+        },
+        "availableAtMillis": 175500004,
+        "activeStop": 90
+      }
+    ],
+    "pivot": [
+      {
+        "kind": "activated",
+        "event": {
+          "atMillis": 175500003,
+          "sequence": 40
+        },
+        "availableAtMillis": 175500003,
+        "activeStop": 90
+      },
+      {
+        "kind": "submitted",
+        "event": {
+          "atMillis": 175500003,
+          "sequence": 40
+        },
+        "availableAtMillis": 175500003,
+        "activeStop": 90,
+        "proposedStop": 106
+      },
+      {
+        "kind": "accepted",
+        "event": {
+          "atMillis": 175500003,
+          "sequence": 41
+        },
+        "availableAtMillis": 175500003,
+        "activeStop": 106,
+        "proposedStop": 106
+      },
+      {
+        "kind": "exit-due",
+        "reason": "target",
+        "event": {
+          "atMillis": 175500004,
+          "sequence": 42
+        },
+        "availableAtMillis": 175500004,
+        "activeStop": 106,
+        "proposedStop": 106
+      }
+    ],
+    "scale": [
+      {
+        "kind": "activated",
+        "event": {
+          "atMillis": 175500003,
+          "sequence": 40
+        },
+        "availableAtMillis": 175500003,
+        "activeStop": 90
+      },
+      {
+        "kind": "submitted",
+        "event": {
+          "atMillis": 175500003,
+          "sequence": 40
+        },
+        "availableAtMillis": 175500003,
+        "activeStop": 90,
+        "proposedStop": 101
+      },
+      {
+        "kind": "accepted",
+        "event": {
+          "atMillis": 175500003,
+          "sequence": 41
+        },
+        "availableAtMillis": 175500003,
+        "activeStop": 101,
+        "proposedStop": 101
+      },
+      {
+        "kind": "exit-due",
+        "reason": "target",
+        "event": {
+          "atMillis": 175500004,
+          "sequence": 42
+        },
+        "availableAtMillis": 175500004,
+        "activeStop": 101,
+        "proposedStop": 101
+      }
+    ]
+  },
+  "counters": {
+    "none": {
+      "activations": 0,
+      "eligible": 0,
+      "submitted": 0,
+      "accepted": 0,
+      "rejected": 0,
+      "canceled": 0
+    },
+    "pivot": {
+      "activations": 1,
+      "eligible": 1,
+      "submitted": 1,
+      "accepted": 1,
+      "rejected": 0,
+      "canceled": 0
+    },
+    "scale": {
+      "activations": 1,
+      "eligible": 1,
+      "submitted": 1,
+      "accepted": 1,
+      "rejected": 0,
+      "canceled": 0
+    }
+  },
+  "expected": {
+    "entryCount": 1,
+    "entryFeeUSD": "0.003",
+    "entryPrice": "100",
+    "exitFeeUSD": "0.003",
+    "exitPrice": {
+      "none": "120",
+      "pivot": "120",
+      "scale": "120"
+    },
+    "initialStop": 90,
+    "netR": {
+      "none": "1.994",
+      "pivot": "1.994",
+      "scale": "1.994"
+    },
+    "quantityOz": "0.1",
+    "riskBudgetUSD": "1",
+    "target": 120,
+    "terminal": "closed"
+  },
+  "identities": {
+    "calendar": "5ddb816e67993c5968bf0fe7b020407b24993c605054101cf9b8e92f22e4509b",
+    "costs": "ea8047235e4fbf96a814dfcfcc8428cee9112091fa3e61b8281a4d24a0a6956a",
+    "normalizedSnapshot": "8a63f860a376b96ef7be6b587089ade36e8c556cb78e37b2f2dc78db2a66c1e4",
+    "ordering": "46675df7a7d99d62010880f0f7ab5743d25d54ef92a5b603cd600d7802846bc9",
+    "rawCSV": "0b4e4ead85cf2c1fe43f9ca121362a51513c92f810033819cb0fc78a0255453b",
+    "schedule": "3a54c3ea14006a06f815f52142fd2970191c6f5e5ccef8fbb75f92a554a326ff",
+    "snapshot": "da217b7d79571c49e207aefbb4dcd9573ebdcebb3dffec1519194eee9001be72",
+    "source": "830f1dc465483dc5dd8bfb15d6206db37de2d93cd31fe1aafc465a5e79f555d2"
+  }
+}
