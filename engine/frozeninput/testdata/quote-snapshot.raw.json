@@ -1,0 +1,16 @@
+{
+  "schema": "frozen-quote-snapshot-v1",
+  "id": "FixtureSnapshot",
+  "version": "v1",
+  "dataset": "SyntheticGoldTicks",
+  "symbol": "XAUUSD",
+  "priceUnits": "USD-per-troy-ounce",
+  "sides": "paired-bid-ask",
+  "sequenceMethod": "artifact-record-ordinal",
+  "rows": [
+    {"eventMS":999,"sequence":0,"availableMS":999,"bid":99.50,"ask":100.00,"sourceRecord":{"artifactId":"FixtureRawQuotes","artifactVersion":"v1","recordIndex":0}},
+    {"eventMS":1e3,"sequence":1.0,"availableMS":1000,"bid":100.00,"ask":100.50,"sourceRecord":{"artifactId":"FixtureRawQuotes","artifactVersion":"v1","recordIndex":1}},
+    {"eventMS":1000,"sequence":2,"availableMS":1e3,"bid":100.25,"ask":100.75,"sourceRecord":{"artifactId":"FixtureRawQuotes","artifactVersion":"v1","recordIndex":2}},
+    {"eventMS":1002,"sequence":3,"availableMS":1002,"bid":101.00,"ask":101.50,"sourceRecord":{"artifactId":"FixtureRawQuotes","artifactVersion":"v1","recordIndex":3}}
+  ]
+}

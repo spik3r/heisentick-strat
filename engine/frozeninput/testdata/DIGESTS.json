@@ -1,0 +1,105 @@
+{
+  "compiledRefs": {
+    "assumptions": {
+      "id": "FixtureAssumptions",
+      "sha256": "6d0347ef2da2d35bcf9f28a9de925f03cf67f0120a8a256514d3c5c37cdd35b1",
+      "version": "v1"
+    },
+    "calendar": {
+      "id": "FixtureCalendar",
+      "sha256": "b9fa5cd6a5fa1592f7ff46acfa0b80c96f7cc442947fed22a3928be7256e8ea1",
+      "version": "v1"
+    },
+    "costs": {
+      "id": "FixtureCosts",
+      "sha256": "4b334cc8581f33107a51df0a5ed4afa6e90c4222613d9d935c007f051ee8b2ce",
+      "version": "v1"
+    },
+    "ordering": {
+      "id": "FixtureOrdering",
+      "sha256": "df1f71c6c338d69af282e6c10c4cabade4eb491734115266c6daad5389ac83ed",
+      "version": "v1"
+    },
+    "schedule": {
+      "id": "FixtureSchedule",
+      "sha256": "7b516fcaceaa56712def9ed2c3628598ddc7883094d0a173c8672d7b49a220d1",
+      "version": "v1"
+    },
+    "source": {
+      "id": "FixtureQuoteSource",
+      "sha256": "03ae034f7be0acaccff2c01774e1fbc1699551bf4aeaf91f640dc16986218834",
+      "version": "v1"
+    }
+  },
+  "configDigest": "9dcc7dbfb02ce50726b80cfc44f32e91ebef40cde6ec5014aa7cb04bbcf0e401",
+  "expectedEvidence": {
+    "calendar": "unqualified",
+    "completedContext": "unqualified",
+    "continuityVerified": false,
+    "costs": "unqualified",
+    "coverageEvidenceState": "assertions-preserved",
+    "priorOpening": "unqualified",
+    "rawDecoderFidelity": "unqualified",
+    "runReady": false,
+    "schedule": "unqualified",
+    "sequenceEvidenceState": "asserted",
+    "sourceOrderVerified": false,
+    "status": "structurally-valid-input"
+  },
+  "externalHashRule": "SHA-256 of exact persisted bytes including any LF",
+  "files": {
+    "assumptions-opaque.raw.json": {
+      "bytes": 222,
+      "sha256": "6d0347ef2da2d35bcf9f28a9de925f03cf67f0120a8a256514d3c5c37cdd35b1"
+    },
+    "calendar-opaque.raw.json": {
+      "bytes": 134,
+      "sha256": "b9fa5cd6a5fa1592f7ff46acfa0b80c96f7cc442947fed22a3928be7256e8ea1"
+    },
+    "compiled-config.canonical.json": {
+      "bytes": 4888,
+      "sha256": "9dcc7dbfb02ce50726b80cfc44f32e91ebef40cde6ec5014aa7cb04bbcf0e401"
+    },
+    "compiled-policy.canonical.json": {
+      "bytes": 4629,
+      "sha256": "8a1ec4caa02f621b26e15b0f6be339e5cbb2a12fe3b9fb9149daf5159dd72623"
+    },
+    "costs-opaque.raw.json": {
+      "bytes": 259,
+      "sha256": "4b334cc8581f33107a51df0a5ed4afa6e90c4222613d9d935c007f051ee8b2ce"
+    },
+    "expected-projection.canonical.json": {
+      "bytes": 2316,
+      "sha256": "0a274cacb5253569b4f1cc57da74a2c546a40df3e0e6fe9e12193a3065c77ac1"
+    },
+    "ordering-manifest.raw.json": {
+      "bytes": 1227,
+      "sha256": "df1f71c6c338d69af282e6c10c4cabade4eb491734115266c6daad5389ac83ed"
+    },
+    "quote-snapshot.normalized.json": {
+      "bytes": 872,
+      "sha256": "2453504318f9298f5b799e8a99024feae6e62024926ca2f31ddba714444d3d09"
+    },
+    "quote-snapshot.raw.json": {
+      "bytes": 945,
+      "sha256": "91493495c07cc1246a74ae2365ca59d034678719e27cadae446b145f83399f66"
+    },
+    "raw-quotes.csv": {
+      "bytes": 90,
+      "sha256": "ed18adb1eec58a7813436df138f83bd84d87f7da0fa47c7ba7b1e1e65635aadf"
+    },
+    "schedule-opaque.raw.json": {
+      "bytes": 264,
+      "sha256": "7b516fcaceaa56712def9ed2c3628598ddc7883094d0a173c8672d7b49a220d1"
+    },
+    "source-manifest.raw.json": {
+      "bytes": 1524,
+      "sha256": "03ae034f7be0acaccff2c01774e1fbc1699551bf4aeaf91f640dc16986218834"
+    }
+  },
+  "inputBundleBytes": 8674,
+  "normalizedHashRule": "Go encoding/json.Marshal of typed snapshot projection; no final LF",
+  "policyDigest": "8a1ec4caa02f621b26e15b0f6be339e5cbb2a12fe3b9fb9149daf5159dd72623",
+  "schema": "frozen-quote-input-literal-vector-v1",
+  "status": "design vector only; no new input implementation"
+}
