@@ -1,0 +1,12 @@
+dsl v7
+strategy "Regime engine audit-baseline-v1 control" {
+  description "Synthetic parser fixture; dedicated native runner only"
+}
+market {
+  regime timeframe M30 from M5
+}
+setup {
+  type: regime engine
+  regime profile v9-floor-half-v1
+  regime mode audit-baseline-v1
+}

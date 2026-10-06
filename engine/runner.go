@@ -40,6 +40,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if len(parsed.Errors) > 0 {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
 	}
+	if err := rejectDedicatedRegimeExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateTimedCalendarFamily(parsed.Config, fixture.TimedCalendar); err != nil {
 		return RunResult{}, err
 	}

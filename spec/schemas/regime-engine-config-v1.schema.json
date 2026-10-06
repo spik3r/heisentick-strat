@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "regime-engine-config-v1.schema.json",
+  "title": "Regime engine closed native configuration v1",
+  "description": "Go-only dedicated offline runner contract. This is not a generic broker or parameter-grid configuration. Raw JSON must additionally pass DecodeRegimeEngineConfigJSON to reject duplicate decoded keys and preserve exact numeric values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dslVersion",
+    "name",
+    "description",
+    "setupType",
+    "regimeEngine"
+  ],
+  "properties": {
+    "dslVersion": {
+      "const": 7
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "setupType": {
+      "const": "regimeEngine"
+    },
+    "regimeEngine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "mode",
+        "profile"
+      ],
+      "properties": {
+        "contractVersion": {
+          "const": "regime-engine-config-v1"
+        },
+        "mode": {
+          "enum": [
+            "source-like-v1",
+            "audit-baseline-v1"
+          ]
+        },
+        "profile": {
+          "type": "object",
+          "const": {
+            "id": "v9-floor-half-v1",
+            "sourceTimeframe": "M5",
+            "nativeTimeframe": "M30",
+            "hma": {
+              "fast": 9,
+              "slow": 21,
+              "diagnostic": 25,
+              "halfLength": "floor",
+              "sqrtLength": "round-half-up"
+            },
+            "supertrend": {
+              "atrLength": 10,
+              "factor": 3,
+              "smoothing": "wilder-rma-sma-seed"
+            },
+            "volume": {
+              "smaLength": 20,
+              "comparison": "strict-greater",
+              "includeCurrent": true
+            },
+            "atr": {
+              "length": 14,
+              "smoothing": "wilder-rma-sma-seed"
+            },
+            "stopATR": 2,
+            "targetATR": 3.5,
+            "completeObservedBars": 40,
+            "completeness": "six-exact-M5-slots",
+            "notionalFraction": 0.1,
+            "pointValue": 1,
+            "quantity": "continuous",
+            "feePerUnitSide": 0.5,
+            "terminal": "keep-open",
+            "symbol": "XAUUSD"
+          }
+        }
+      }
+    }
+  }
+}
