@@ -1,0 +1,12 @@
+dsl v7
+strategy "Regime engine source-like-v1 control" {
+  description "Synthetic parser fixture; dedicated native runner only"
+}
+market {
+  regime timeframe M30 from M5
+}
+setup {
+  type: regime engine
+  regime profile v9-floor-half-v1
+  regime mode source-like-v1
+}

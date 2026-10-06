@@ -247,6 +247,14 @@
       "classification": "go-only",
       "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
       "since": 7
+    },
+    {
+      "id": "regimeEngine",
+      "canonicalSpelling": "regime engine",
+      "canonicalExample": "type: regime engine\n  regime profile v9-floor-half-v1\n  regime mode source-like-v1",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1612,6 +1620,24 @@
       "classification": "go-only",
       "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.regime-engine",
+      "source": "go-inline-setup-type",
+      "spelling": "regime engine",
+      "familyId": "regimeEngine",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.regime-engine",
+      "source": "go-canonical-setup-type",
+      "spelling": "regime engine",
+      "familyId": "regimeEngine",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2248,6 +2274,27 @@
       "spelling": "frozen",
       "classification": "go-only",
       "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
+      "since": 7
+    },
+    {
+      "id": "directive.regime-mode",
+      "spelling": "regime mode",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "directive.regime-profile",
+      "spelling": "regime profile",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "directive.regime-timeframe",
+      "spelling": "regime timeframe",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
       "since": 7
     }
   ],

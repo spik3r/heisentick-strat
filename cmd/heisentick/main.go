@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "regime-report":
+		return runRegimeReport(args[1:], out)
 	case "timed-report":
 		return runTimedReport(args[1:], out)
 	case "report":
@@ -38,6 +40,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick regime-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
+
+regime-report runs the fixed native offline Regime Engine interpretation. The dedicated result retains terminal exposure; generic report/grid/prefix and engine WASM do not support this family. Parameters, equity10000 and fee0.50/unit/side are fixed. Source quote side, contract/ounce mapping and Pine parity are unverified; financing is unmodeled.
+
   heisentick timed-report --dsl-file=<path> --calendar-file=<path> --symbol=<SYMBOL> --tf=<tf> --data-root=<path> --slippage=<points> [--slippage-bps=<basis-points>]
 
 timed-report is an offline, one-unit delayed-open OHLC proxy. It requires an explicit pinned calendar/TZif sidecar, rejects incomplete execution coverage before signals, and reports native price-unit P&L with no commission or financing. It does not support ordinary report/grid or forward-prefix modes.

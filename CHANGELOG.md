@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the fixed, Go-only Regime Engine DSL interpretation (HT-175), with
+  source-like-v1 and audit-baseline-v1 policies, a dedicated engine/regime API
+  and regime-report CLI, indicator/order/terminal-exposure audits, and strict
+  refusal from generic report/grid/prefix/WASM execution. Preserve existing
+  conformance goldens; new parser cases and invented native synthetic tests
+  qualify the bounded implementation. HMA floor-half arithmetic, native OHLC
+  path, notional sizing and conditional costs are explicit; Pine parity and
+  broker contract mapping remain unverified. This unreleased addition requires
+  a future minor release and separate consumer adoption; no tag/pin is included.
+
 - Add the clock range breakout setup family (`type: clock range breakout`,
   id `clockRangeBreakout`) specified by HT-167: a fixed-UTC-offset clock range,
   buy/sell stop orders with OCO and one entry per range day, a percent stop

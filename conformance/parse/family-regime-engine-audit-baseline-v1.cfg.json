@@ -1,0 +1,65 @@
+{
+  "case": "family-regime-engine-audit-baseline-v1",
+  "category": "family",
+  "cfg": {
+    "description": "Synthetic parser fixture; dedicated native runner only",
+    "dslVersion": 7,
+    "name": "Regime engine audit-baseline-v1 control",
+    "regimeEngine": {
+      "contractVersion": "regime-engine-config-v1",
+      "mode": "audit-baseline-v1",
+      "profile": {
+        "atr": {
+          "length": 14,
+          "smoothing": "wilder-rma-sma-seed"
+        },
+        "completeObservedBars": 40,
+        "completeness": "six-exact-M5-slots",
+        "feePerUnitSide": 0.5,
+        "hma": {
+          "diagnostic": 25,
+          "fast": 9,
+          "halfLength": "floor",
+          "slow": 21,
+          "sqrtLength": "round-half-up"
+        },
+        "id": "v9-floor-half-v1",
+        "nativeTimeframe": "M30",
+        "notionalFraction": 0.1,
+        "pointValue": 1,
+        "quantity": "continuous",
+        "sourceTimeframe": "M5",
+        "stopATR": 2,
+        "supertrend": {
+          "atrLength": 10,
+          "factor": 3,
+          "smoothing": "wilder-rma-sma-seed"
+        },
+        "symbol": "XAUUSD",
+        "targetATR": 3.5,
+        "terminal": "keep-open",
+        "volume": {
+          "comparison": "strict-greater",
+          "includeCurrent": true,
+          "smaLength": 20
+        }
+      }
+    },
+    "setupType": "regimeEngine"
+  },
+  "description": "Synthetic regime engine closed configuration for audit-baseline-v1; native dedicated runner only.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "regime-engine-native-dedicated-runner-required",
+      "severity": "warning"
+    }
+  ],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "spec/dsl-spec-families/regimeEngine.md",
+  "warnings": [
+    "regime-engine-native-dedicated-runner-required"
+  ]
+}
