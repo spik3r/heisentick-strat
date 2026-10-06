@@ -1,0 +1,341 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frozen-quote-source-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "provider",
+    "dataset",
+    "symbol",
+    "priceUnits",
+    "snapshotRef",
+    "normalizedSnapshotSHA256",
+    "rawArtifact",
+    "supportingArtifacts",
+    "decoder",
+    "normalizationVersion",
+    "windows",
+    "coverageSegments"
+  ],
+  "properties": {
+    "schema": {
+      "const": "frozen-quote-source-v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "dataset": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "symbol": {
+      "const": "XAUUSD"
+    },
+    "priceUnits": {
+      "const": "USD-per-troy-ounce"
+    },
+    "snapshotRef": {
+      "$ref": "#/$defs/reference"
+    },
+    "normalizedSnapshotSHA256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$",
+      "not": {
+        "pattern": "[^0-9a-f]"
+      }
+    },
+    "rawArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "format",
+        "byteCount",
+        "recordCount"
+      ],
+      "properties": {
+        "ref": {
+          "$ref": "#/$defs/reference"
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "byteCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "recordCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "supportingArtifacts": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ref",
+          "kind",
+          "scope"
+        ],
+        "properties": {
+          "ref": {
+            "$ref": "#/$defs/reference"
+          },
+          "kind": {
+            "enum": [
+              "coverage",
+              "closure",
+              "ordering"
+            ]
+          },
+          "scope": {
+            "$ref": "#/$defs/interval"
+          }
+        }
+      }
+    },
+    "decoder": {
+      "$ref": "#/$defs/decoder"
+    },
+    "normalizationVersion": {
+      "const": "frozen-quote-snapshot-normalization-v1"
+    },
+    "windows": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "warmup",
+        "evaluation"
+      ],
+      "properties": {
+        "warmup": {
+          "$ref": "#/$defs/interval"
+        },
+        "evaluation": {
+          "$ref": "#/$defs/interval"
+        }
+      }
+    },
+    "coverageSegments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "startMS",
+          "endMS",
+          "status",
+          "evidenceRefs"
+        ],
+        "properties": {
+          "startMS": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "endMS": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "status": {
+            "enum": [
+              "complete-claimed",
+              "gap",
+              "closure",
+              "unknown"
+            ]
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+              "$ref": "#/$defs/reference"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "complete-claimed",
+                    "gap",
+                    "closure"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "evidenceRefs": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "not": {
+            "pattern": "[^0-9a-f]"
+          }
+        }
+      }
+    },
+    "decoder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "method"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "method": {
+          "const": "preserve-all-records-in-original-order-without-sort-repair-or-drop"
+        }
+      }
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startMS",
+        "endMS"
+      ],
+      "properties": {
+        "startMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "endMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "eventKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eventMS",
+        "sequence"
+      ],
+      "properties": {
+        "eventMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  }
+}

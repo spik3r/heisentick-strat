@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frozen-quote-snapshot-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "dataset",
+    "symbol",
+    "priceUnits",
+    "sides",
+    "sequenceMethod",
+    "rows"
+  ],
+  "properties": {
+    "schema": {
+      "const": "frozen-quote-snapshot-v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "dataset": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "symbol": {
+      "const": "XAUUSD"
+    },
+    "priceUnits": {
+      "const": "USD-per-troy-ounce"
+    },
+    "sides": {
+      "const": "paired-bid-ask"
+    },
+    "sequenceMethod": {
+      "enum": [
+        "artifact-record-ordinal",
+        "provider-value"
+      ]
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "eventMS",
+          "sequence",
+          "availableMS",
+          "bid",
+          "ask"
+        ],
+        "properties": {
+          "eventMS": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "availableMS": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "bid": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "ask": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "sourceRecord": {
+            "$ref": "#/$defs/sourceRecord"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sourceRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactId",
+        "artifactVersion",
+        "recordIndex"
+      ],
+      "properties": {
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "artifactVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "recordIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sequenceMethod": {
+            "const": "artifact-record-ordinal"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "rows": {
+            "items": {
+              "required": [
+                "sourceRecord"
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "rows": {
+            "items": {
+              "not": {
+                "required": [
+                  "sourceRecord"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
