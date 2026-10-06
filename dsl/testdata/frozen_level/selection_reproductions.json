@@ -1,0 +1,8 @@
+{
+  "quoted_type": "dsl v7\nstrategy \"x\"\nsetup { type: \"frozen level breakout\" }\n",
+  "unclosed_description": "dsl v7\nstrategy \"x\"\ndescription \"missing end\nsetup { type: frozen level breakout type: flag continuation }\n",
+  "canonical_type": "dsl v7\nstrategy \"x\"\nsetup { type: frozenLevelBreakout }\n",
+  "old_symbols": "dsl v7\nstrategy \"x\"\nsymbols FROZEN\nsetup { type: flag continuation }\n",
+  "single_quoted_type": "dsl v7\nstrategy \"x\"\nsetup { type: 'frozen level breakout' }\n",
+  "description_backtick": "dsl v7\nstrategy \"x\"\ndescription `missing end\nsetup { type: frozen level breakout type: flag continuation }\n"
+}

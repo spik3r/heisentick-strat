@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-invalid-unicode",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: invalid-unicode.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: frozen-level JSON byte 20: invalid low surrogate",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: frozen-level JSON byte 20: invalid low surrogate"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}

@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-fractional-age",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: fractional-age.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: invalid unsigned integer \"5000.1\"",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: invalid unsigned integer \"5000.1\""
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}

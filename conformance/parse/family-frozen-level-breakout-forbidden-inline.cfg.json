@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-forbidden-inline",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: forbidden-inline.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: expected \"frozen\" at token 51",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: expected \"frozen\" at token 51"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}

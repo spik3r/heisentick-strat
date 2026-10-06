@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-unknown-profile",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: unknown-profile.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: expected \"stored-m30-lock-isolation-v1\" at token 45",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: expected \"stored-m30-lock-isolation-v1\" at token 45"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}

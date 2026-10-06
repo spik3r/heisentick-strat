@@ -1,5 +1,7 @@
 # DSL Phrase Reference
 
+
+The Go producer also supports a [compile-only frozen-level research control](../docs/frozen-level-compiler.md) (HT-171). Its exact typed schema and mandatory references use a family-specific grammar; runtime execution is explicitly unimplemented.
 Quick lookup for common Strat v7 directive phrases. The normative reference is
 [`dsl-spec.md`](dsl-spec.md); setup-family-specific phrases live in
 [`dsl-spec-families/`](dsl-spec-families/). Every fenced `dsl` block in this

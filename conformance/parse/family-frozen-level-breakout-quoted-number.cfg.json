@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-quoted-number",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: quoted-number.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: expected value at token 67",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: expected value at token 67"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}

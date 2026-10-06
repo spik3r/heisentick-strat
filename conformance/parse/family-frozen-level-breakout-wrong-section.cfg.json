@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-wrong-section",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: wrong-section.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: unknown or misplaced frozen lock directive in risk",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: unknown or misplaced frozen lock directive in risk"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}

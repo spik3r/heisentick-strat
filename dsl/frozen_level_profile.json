@@ -1,0 +1,136 @@
+{
+  "id": "stored-m30-lock-isolation-v1",
+  "symbol": "XAUUSD",
+  "sourceBars": {
+    "side": "bid",
+    "durationMS": 300000,
+    "coverage": "all-consecutive-completed-slots",
+    "interval": "half-open-start-inclusive-end-exclusive",
+    "knowledge": "complete-and-endMS<=knownAtMS<=decisionMS"
+  },
+  "entryLevels": {
+    "kind": "previous-clock-m30-range",
+    "durationMS": 1800000,
+    "creation": "completed-boundary",
+    "expiry": "next-clock-m30-boundary",
+    "directionalIdentity": "independent-no-oco"
+  },
+  "momentum": {
+    "kind": "first-open-to-last-close",
+    "bars": 6,
+    "durationMS": 300000,
+    "enabled": true,
+    "freeze": "signal",
+    "window": "rolling-six-completed-M5-slots-at-signal",
+    "direction": "last-close>first-open-long;<short;equal-no-signal"
+  },
+  "initialRisk": {
+    "kind": "opposite-six-m5-extreme",
+    "freeze": "signal",
+    "rounding": "outward",
+    "bufferGridSteps": 1,
+    "shortReference": "numerical-bid-high-used-as-liquidation-stop",
+    "evidenceStatus": "unverified-research-control",
+    "window": "rolling-six-completed-M5-slots-at-signal-not-stored-M30",
+    "R0": "direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded"
+  },
+  "target": {
+    "kind": "fill-relative-R",
+    "multiple": 2,
+    "rounding": "none-exact-research-control"
+  },
+  "scale": {
+    "source": "prior-qualified-broker-trading-date-bid-opening",
+    "divisor": 3800,
+    "rounding": "decimal-float-quotient-half-even-cents-then-grid-toward-entry",
+    "freeze": "signal",
+    "evidenceStatus": "location-only-convention"
+  },
+  "pivot": {
+    "kind": "camarilla",
+    "window": "previous-clock-m15",
+    "side": "bid",
+    "levels": [
+      "S4",
+      "S3",
+      "S2",
+      "S1",
+      "C",
+      "R1",
+      "R2",
+      "R3",
+      "R4"
+    ],
+    "freeze": "signal",
+    "selection": "most-protective-profitable-admissible",
+    "formula": "primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2",
+    "eligibility": "raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap",
+    "rounding": "towards-entry;then-profitable-tightening-and-one-grid-admissible",
+    "ties": "first-in-fixed-ladder-order-for-equal-snapped-stop",
+    "comparison": "exact-shortest-decimal-input-rational-no-epsilon"
+  },
+  "lifecycle": {
+    "triggerSide": "bid",
+    "reset": "inside-or-proved-fresh-predecessor",
+    "usePolicy": "one-success-no-retry",
+    "busyPolicy": "skip-and-require-fresh-recross",
+    "expiryBeforeAdmission": true
+  },
+  "execution": {
+    "mode": "paired-quotes",
+    "availabilityModel": "event-time-reference-assumption",
+    "entryObservation": "strictly-subsequent-source-observation",
+    "entrySide": {
+      "long": "ask",
+      "short": "bid"
+    },
+    "liquidationSide": {
+      "long": "bid",
+      "short": "ask"
+    },
+    "targetFill": "threshold-no-improvement",
+    "stopFill": "observed-liquidation-with-price-gap",
+    "unverifiedCoverage": "unresolved-no-fill",
+    "timeUnit": "UTC-Unix-milliseconds",
+    "timeRange": {
+      "min": 0,
+      "max": 9007199254740991
+    },
+    "sequenceRange": {
+      "min": 0,
+      "max": 9007199254740991
+    },
+    "sourceOrder": "strict-lexicographic-(eventMS,sequence)",
+    "availability": "availableMS==eventMS;nondecreasing",
+    "orderingBindings": "same-source-calendar-and-context-window-identities"
+  },
+  "management": {
+    "attempts": 1,
+    "retryAfterRejection": false,
+    "oldProtectionBeforeAmendment": true,
+    "minimumLockDistanceGridSteps": 1,
+    "stopWidening": false,
+    "timeout": "elapsed-time",
+    "activation": "inclusive-direction*(liquidation-effective-entry)>=activationR*fixed-R0",
+    "activationSide": {
+      "long": "bid",
+      "short": "ask"
+    },
+    "noLockActivation": "inert",
+    "lockContextCutoff": "frozenAtMS<actual-entry-eventMS",
+    "sameMillisecondIntegration": "requires-separately-reviewed-common-opportunity-policy-across-all-managers"
+  },
+  "position": {
+    "maxConcurrent": 1,
+    "additions": false,
+    "compounding": false,
+    "plannedRiskUnits": 1,
+    "quantityModel": "continuous-research-only"
+  },
+  "contracts": {
+    "primitives": "frozen-level-primitives-v1",
+    "lifecycle": "frozen-level-lifecycle-v1",
+    "sourceCommit": "0ca22bf6493cd02e1f2adf13094981dfdcac148f"
+  },
+  "clockAlignment": "UTC-epoch-millisecond-grid"
+}

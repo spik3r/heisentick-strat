@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-missing-costs",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: missing-costs.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: missing directive costs",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: missing directive costs"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}
