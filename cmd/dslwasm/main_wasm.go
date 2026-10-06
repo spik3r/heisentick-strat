@@ -2,7 +2,12 @@
 
 package main
 
-import "syscall/js"
+import (
+	"encoding/json"
+	"syscall/js"
+
+	"github.com/spik3r/heisentick-strat/internal/sourcetext"
+)
 
 // WASM entry point. Exposes a single global function `dslParse(source)` that
 // returns the parse envelope as a JSON string, then blocks to keep the Go
@@ -23,7 +28,12 @@ func dslParse(_ js.Value, args []js.Value) any {
 	if len(args) < 1 || args[0].Type() != js.TypeString {
 		return `{"version":1,"ok":false,"error":"dslParse expects one string source argument"}`
 	}
-	out, err := ParseEnvelopeJSON(args[0].String())
+	source, err := sourcetext.FromJS(args[0])
+	if err != nil {
+		out, _ := json.Marshal(map[string]any{"version": EnvelopeVersion, "ok": false, "error": err.Error()})
+		return string(out)
+	}
+	out, err := ParseEnvelopeJSON(source)
 	if err != nil {
 		return `{"version":1,"ok":false,"error":"failed to marshal parse envelope"}`
 	}

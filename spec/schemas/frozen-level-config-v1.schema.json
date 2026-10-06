@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frozen-level-normalized-root-v1.schema.json",
+  "title": "Frozen-level normalized root v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dslVersion",
+    "name",
+    "description",
+    "setupType",
+    "frozenLevelBreakout"
+  ],
+  "properties": {
+    "dslVersion": {
+      "const": 7
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "setupType": {
+      "const": "frozenLevelBreakout"
+    },
+    "frozenLevelBreakout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contractVersion",
+        "controlProfile",
+        "profile",
+        "lockMode",
+        "activationR",
+        "timeoutMinutes",
+        "priceGrid",
+        "maxPredecessorAgeMS",
+        "maxReceiptAgeMS",
+        "entryLatencyMS",
+        "amendmentLatencyMS",
+        "inputRefs"
+      ],
+      "properties": {
+        "contractVersion": {
+          "const": "frozen-level-compiler-v1"
+        },
+        "controlProfile": {
+          "const": "stored-m30-lock-isolation-v1"
+        },
+        "profile": {
+          "const": {
+            "id": "stored-m30-lock-isolation-v1",
+            "symbol": "XAUUSD",
+            "sourceBars": {
+              "side": "bid",
+              "durationMS": 300000,
+              "coverage": "all-consecutive-completed-slots",
+              "interval": "half-open-start-inclusive-end-exclusive",
+              "knowledge": "complete-and-endMS<=knownAtMS<=decisionMS"
+            },
+            "entryLevels": {
+              "kind": "previous-clock-m30-range",
+              "durationMS": 1800000,
+              "creation": "completed-boundary",
+              "expiry": "next-clock-m30-boundary",
+              "directionalIdentity": "independent-no-oco"
+            },
+            "momentum": {
+              "kind": "first-open-to-last-close",
+              "bars": 6,
+              "durationMS": 300000,
+              "enabled": true,
+              "freeze": "signal",
+              "window": "rolling-six-completed-M5-slots-at-signal",
+              "direction": "last-close>first-open-long;<short;equal-no-signal"
+            },
+            "initialRisk": {
+              "kind": "opposite-six-m5-extreme",
+              "freeze": "signal",
+              "rounding": "outward",
+              "bufferGridSteps": 1,
+              "shortReference": "numerical-bid-high-used-as-liquidation-stop",
+              "evidenceStatus": "unverified-research-control",
+              "window": "rolling-six-completed-M5-slots-at-signal-not-stored-M30",
+              "R0": "direction*(effective-entry-including-price-penalty-initial-stop);commission-excluded"
+            },
+            "target": {
+              "kind": "fill-relative-R",
+              "multiple": 2,
+              "rounding": "none-exact-research-control"
+            },
+            "scale": {
+              "source": "prior-qualified-broker-trading-date-bid-opening",
+              "divisor": 3800,
+              "rounding": "decimal-float-quotient-half-even-cents-then-grid-toward-entry",
+              "freeze": "signal",
+              "evidenceStatus": "location-only-convention"
+            },
+            "pivot": {
+              "kind": "camarilla",
+              "window": "previous-clock-m15",
+              "side": "bid",
+              "levels": [
+                "S4",
+                "S3",
+                "S2",
+                "S1",
+                "C",
+                "R1",
+                "R2",
+                "R3",
+                "R4"
+              ],
+              "freeze": "signal",
+              "selection": "most-protective-profitable-admissible",
+              "formula": "primitives-v1.Camarilla: float64 D=1.1*(H-L);C;R/S1=D/12;2=D/6;3=D/4;4=D/2",
+              "eligibility": "raw-profitable-and-at-least-one-grid-behind-liquidation-before-snap",
+              "rounding": "towards-entry;then-profitable-tightening-and-one-grid-admissible",
+              "ties": "first-in-fixed-ladder-order-for-equal-snapped-stop",
+              "comparison": "exact-shortest-decimal-input-rational-no-epsilon"
+            },
+            "lifecycle": {
+              "triggerSide": "bid",
+              "reset": "inside-or-proved-fresh-predecessor",
+              "usePolicy": "one-success-no-retry",
+              "busyPolicy": "skip-and-require-fresh-recross",
+              "expiryBeforeAdmission": true
+            },
+            "execution": {
+              "mode": "paired-quotes",
+              "availabilityModel": "event-time-reference-assumption",
+              "entryObservation": "strictly-subsequent-source-observation",
+              "entrySide": {
+                "long": "ask",
+                "short": "bid"
+              },
+              "liquidationSide": {
+                "long": "bid",
+                "short": "ask"
+              },
+              "targetFill": "threshold-no-improvement",
+              "stopFill": "observed-liquidation-with-price-gap",
+              "unverifiedCoverage": "unresolved-no-fill",
+              "timeUnit": "UTC-Unix-milliseconds",
+              "timeRange": {
+                "min": 0,
+                "max": 9007199254740991
+              },
+              "sequenceRange": {
+                "min": 0,
+                "max": 9007199254740991
+              },
+              "sourceOrder": "strict-lexicographic-(eventMS,sequence)",
+              "availability": "availableMS==eventMS;nondecreasing",
+              "orderingBindings": "same-source-calendar-and-context-window-identities"
+            },
+            "management": {
+              "attempts": 1,
+              "retryAfterRejection": false,
+              "oldProtectionBeforeAmendment": true,
+              "minimumLockDistanceGridSteps": 1,
+              "stopWidening": false,
+              "timeout": "elapsed-time",
+              "activation": "inclusive-direction*(liquidation-effective-entry)>=activationR*fixed-R0",
+              "activationSide": {
+                "long": "bid",
+                "short": "ask"
+              },
+              "noLockActivation": "inert",
+              "lockContextCutoff": "frozenAtMS<actual-entry-eventMS",
+              "sameMillisecondIntegration": "requires-separately-reviewed-common-opportunity-policy-across-all-managers"
+            },
+            "position": {
+              "maxConcurrent": 1,
+              "additions": false,
+              "compounding": false,
+              "plannedRiskUnits": 1,
+              "quantityModel": "continuous-research-only"
+            },
+            "contracts": {
+              "primitives": "frozen-level-primitives-v1",
+              "lifecycle": "frozen-level-lifecycle-v1",
+              "sourceCommit": "0ca22bf6493cd02e1f2adf13094981dfdcac148f"
+            },
+            "clockAlignment": "UTC-epoch-millisecond-grid"
+          }
+        },
+        "lockMode": {
+          "enum": [
+            "none",
+            "scale",
+            "pivot"
+          ]
+        },
+        "activationR": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "timeoutMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 150119987579
+        },
+        "priceGrid": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maxPredecessorAgeMS": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "maxReceiptAgeMS": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "entryLatencyMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "amendmentLatencyMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "inputRefs": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "calendar",
+            "ordering",
+            "schedule",
+            "costs",
+            "assumptions"
+          ],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/inputRef"
+            },
+            "calendar": {
+              "$ref": "#/$defs/inputRef"
+            },
+            "ordering": {
+              "$ref": "#/$defs/inputRef"
+            },
+            "schedule": {
+              "$ref": "#/$defs/inputRef"
+            },
+            "costs": {
+              "$ref": "#/$defs/inputRef"
+            },
+            "assumptions": {
+              "$ref": "#/$defs/inputRef"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "inputRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      }
+    }
+  },
+  "$comment": "Schema validates normalized JSON values. Strict raw decoding additionally validates UTF-8/surrogates, decoded duplicate keys, exact numeric token values, finite float64 normalization, no negative zero, and a single JSON document before map conversion."
+}

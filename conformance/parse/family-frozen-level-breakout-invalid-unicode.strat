@@ -1,0 +1,28 @@
+dsl v7
+strategy "Gold \"\ud800\u0026\u003e\" Ω" {
+  description "Synthetic # { } \\ frozen lock pivot \u2028 \u2029"
+}
+market conditions {
+  frozen source "FixtureSource" version "v1" sha256 "70f1259596653f461720d98d61d9b3c0dc84dd20c62100cdff9b38278dee6ab5"
+  frozen calendar "FixtureCalendar" version "v1" sha256 "d51a709e3e9c11cd3c6a37eef1783d044ed6e9dd2a08221bcc61eb9f081dfda5"
+  frozen ordering "FixtureOrdering" version "v1" sha256 "f91fa1630e0f2f4134203f3af11a914adbc10ef110c83bfa94a484cd9bfb6f3f"
+  frozen schedule "FixtureSchedule" version "v1" sha256 "b8434942c9090eaacdf182407b5141dc0ada65f20bc75164ac0bac8e830b2ed7"
+}
+setup {
+  frozen control stored-m30-lock-isolation-v1
+  type: frozen level breakout
+}
+risk {
+  frozen grid .01 price units
+}
+management {
+  frozen lock scale
+  frozen activation 1 R
+  frozen timeout 60 minutes
+}
+execution {
+  frozen freshness predecessor 5000 ms receipt 5000 ms
+  frozen latency entry 0 ms amendment 0 ms
+  frozen costs "FixtureCosts" version "v1" sha256 "f5c9f45ba3a9b2a4f98c26ab56231d6dd13741e0b34506113122ad05be577aed"
+  frozen assumptions "FixtureAssumptions" version "v1" sha256 "4c560e919585de028107658ccc183f0c1f087fc57b34a7c193a2d4a765dc0c1f"
+}

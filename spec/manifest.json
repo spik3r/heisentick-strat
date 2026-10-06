@@ -239,6 +239,14 @@
       "classification": "go-only",
       "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
       "since": 7
+    },
+    {
+      "id": "frozenLevelBreakout",
+      "canonicalSpelling": "frozen level breakout",
+      "canonicalExample": "type: frozen level breakout",
+      "classification": "go-only",
+      "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1586,6 +1594,24 @@
       "classification": "go-only",
       "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.frozen-level-breakout",
+      "source": "go-inline-setup-type",
+      "spelling": "frozen level breakout",
+      "familyId": "frozenLevelBreakout",
+      "classification": "go-only",
+      "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.frozen-level-breakout",
+      "source": "go-canonical-setup-type",
+      "spelling": "frozen level breakout",
+      "familyId": "frozenLevelBreakout",
+      "classification": "go-only",
+      "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2215,6 +2241,13 @@
       "spelling": "buffer",
       "classification": "go-only",
       "reason": "Native Go producer only until reviewed JS adoption; see clockRangeBreakout spec (HT-167).",
+      "since": 7
+    },
+    {
+      "id": "directive.frozen",
+      "spelling": "frozen",
+      "classification": "go-only",
+      "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
       "since": 7
     }
   ],

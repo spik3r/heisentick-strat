@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frozen-level-input-references-v1.schema.json",
+  "title": "Frozen-level immutable input references v1 (design proposal)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source",
+    "calendar",
+    "ordering",
+    "schedule",
+    "costs",
+    "assumptions"
+  ],
+  "properties": {
+    "source": {
+      "$ref": "#/$defs/inputRef"
+    },
+    "calendar": {
+      "$ref": "#/$defs/inputRef"
+    },
+    "ordering": {
+      "$ref": "#/$defs/inputRef"
+    },
+    "schedule": {
+      "$ref": "#/$defs/inputRef"
+    },
+    "costs": {
+      "$ref": "#/$defs/inputRef"
+    },
+    "assumptions": {
+      "$ref": "#/$defs/inputRef"
+    }
+  },
+  "$defs": {
+    "inputRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "minLength": 64,
+          "maxLength": 64
+        }
+      }
+    }
+  }
+}

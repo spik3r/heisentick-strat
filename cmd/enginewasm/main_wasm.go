@@ -8,6 +8,8 @@ import (
 	"runtime"
 	"syscall/js"
 	"unsafe"
+
+	"github.com/spik3r/heisentick-strat/internal/sourcetext"
 )
 
 func main() {
@@ -15,7 +17,12 @@ func main() {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return `{"error":"expected fixture JSON and source strings"}`
 		}
-		out, err := runFixture(args[0].String(), args[1].String())
+		source, err := sourcetext.FromJS(args[1])
+		if err != nil {
+			out, _ := json.Marshal(map[string]string{"error": err.Error()})
+			return string(out)
+		}
+		out, err := runFixture(args[0].String(), source)
 		if err != nil {
 			out, _ = json.Marshal(map[string]string{"error": err.Error()})
 		}
@@ -24,6 +31,10 @@ func main() {
 	js.Global().Set("engineRunColumns", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 8 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return columnError("expected metadata JSON, source, and six Float64Array columns")
+		}
+		source, err := sourcetext.FromJS(args[1])
+		if err != nil {
+			return columnError(err.Error())
 		}
 		copyStart := js.Global().Get("performance").Call("now").Float()
 		var columns [6]wasmColumn
@@ -36,7 +47,7 @@ func main() {
 		}
 		copyInDone := js.Global().Get("performance").Call("now").Float()
 		values := [6][]float64{columns[0].values, columns[1].values, columns[2].values, columns[3].values, columns[4].values, columns[5].values}
-		result, err := runColumns(args[0].String(), args[1].String(), values)
+		result, err := runColumns(args[0].String(), source, values)
 		if err != nil {
 			return columnError(err.Error())
 		}

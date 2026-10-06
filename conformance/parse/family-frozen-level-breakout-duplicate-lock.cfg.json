@@ -1,0 +1,20 @@
+{
+  "case": "family-frozen-level-breakout-duplicate-lock",
+  "category": "family",
+  "cfg": {},
+  "description": "Synthetic compile-only frozen-level contract: duplicate-lock.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "frozen level breakout: duplicate lock",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "frozen level breakout: duplicate lock"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-171 synthetic fixture; no historical market or account data.",
+  "warnings": []
+}
