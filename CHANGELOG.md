@@ -6,6 +6,17 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.25.0] — 2026-10-06
+
+- Add `engine/frozenlevels`, isolated causal primitives for frozen-level
+  research: source windows, prior-opening locks, a lock manager (HT-169) and a
+  level lifecycle with admission events (HT-170). They are not DSL syntax, a
+  strategy, an execution adapter or a result; all fixtures are invented and no
+  existing family or golden changes.
+
+- Add generic synthetic quote and clock preflight checks in `marketdata`. No
+  parser or engine semantics change.
+
 - Add the clock range breakout setup family (`type: clock range breakout`,
   id `clockRangeBreakout`) specified by HT-167: a fixed-UTC-offset clock range,
   buy/sell stop orders with OCO and one entry per range day, a percent stop
@@ -16,26 +27,26 @@ version and is named here.
   `orders expire`, `buffer N pips`, `close positions at`, and `stop N percent`
   and `range HH:MM to HH:MM` in this family. The reviewed pip registry moves to
   `dsl.ReviewedInstrumentPip` (engine behavior unchanged). Add 31 parse and
-  38 run conformance cases; all earlier goldens are unchanged. This is an
-  unreleased source addition that needs the next minor version. JavaScript
-  adoption, a producer tag, a consumer pin, strategy registration and the
-  historical comparison are separate, pending steps.
+  38 run conformance cases; all earlier goldens are unchanged. The app's
+  JavaScript runtime does not implement the family yet, so Go/WASM/JS parity is
+  pending; strategy registration and the historical comparison are separate,
+  pending steps. Prefix replay is supported; checkpoint resume stays
+  unsupported for this family.
 
 - Correct numeric Failed Breakout `target N R` lowering to `fallbackR`, the
   field the execution engine consumes. Previously the accepted phrase wrote
   an unused `r` field and silently retained the default 1R fallback. Opposite
   edge priority and the minimum-reward filter remain unchanged. Add invented
-  long/short trade-outcome and native/WASM regressions. This prospective
-  semantic correction requires a minor release and explicit consumer adoption;
-  no tag or consumer pin is included.
+  long/short trade-outcome and native/WASM regressions. This semantic
+  correction takes effect for a consumer only when it adopts this release.
 
 - Parse opening-range `first N minutes` as minutes and disable candle-count
   mode, as specified. Preserve candle/bar units and integer-hour UTC slots;
   reject malformed or ambiguous duration prefixes and non-positive,
   fractional or overflowing durations rather than silently coercing them.
   Add two synthetic parse goldens; no existing run golden changes. This is
-  a prospective parser-semantic correction requiring a minor release and
-  explicit consumer adoption; no tag or consumer pin is included.
+  a parser-semantic correction that takes effect for a consumer only when it
+  adopts this release.
 
 - Reject a supplied timed-return calendar on another strategy family before
   generic fixture execution or shared/native preparation. This closes mixed
@@ -45,8 +56,7 @@ version and is named here.
   typed opening/completed-close anchors, pinned timezone/calendar inputs,
   one-bar-delayed scheduled fills, one fixed unit and dated admission audit.
   Two invented run fixtures and one parse fixture exercise the new contract;
-  existing goldens retain their semantics. This addition requires the next
-  minor release (at least 0.25.0); no tag or consumer adoption is included.
+  existing goldens retain their semantics. Consumer adoption is separate.
 
 - Add exact-source Go run fixtures for four XAUUSD research strategies using
   frozen 5m/15m bars, and emit the causal seasonality diagnostics used by
