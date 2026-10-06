@@ -10,8 +10,15 @@ import (
 var ErrParserUnimplemented = errors.New("dsl parser is not implemented")
 
 func parse(source string) (ParseResult, error) {
+	if frozenSourceCandidate(source) {
+		return parseFrozenLevelSource(source), nil
+	}
 	parser := newParser(source)
 	parser.parse()
+	// A generated family alias must never bypass the complete family scanner.
+	if parser.config["setupType"] == string(FamilyFrozenLevelBreakout) {
+		return parseFrozenLevelSource(source), nil
+	}
 	return parser.result(), nil
 }
 
@@ -661,7 +668,14 @@ func canonicalSetupFamily(tokens []string) string {
 	if family := fairValueGapSetupFamilies[phrase]; family != "" {
 		return family
 	}
-	return generatedCanonicalSetupFamilies[phrase]
+	family := generatedCanonicalSetupFamilies[phrase]
+	// Frozen selectors belong exclusively to the strict front-end. The
+	// permissive legacy lexer must not acquire this family from text inside
+	// metadata; authored selectors are audited before this parser is entered.
+	if family == string(FamilyFrozenLevelBreakout) {
+		return ""
+	}
+	return family
 }
 
 func copyMap(value any) map[string]any {

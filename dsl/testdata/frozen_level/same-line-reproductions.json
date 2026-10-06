@@ -1,0 +1,17 @@
+{
+  "symbols XAUUSD / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { symbols XAUUSD type: frozen level breakout type: flag continuation }\n",
+  "symbols XAUUSD / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { symbols XAUUSD type: \"frozen level breakout\" type: flag continuation }\n",
+  "symbols FROZEN / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { symbols FROZEN type: frozen level breakout type: flag continuation }\n",
+  "symbols FROZEN / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { symbols FROZEN type: \"frozen level breakout\" type: flag continuation }\n",
+  "description free / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { description free type: frozen level breakout type: flag continuation }\n",
+  "description free / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { description free type: \"frozen level breakout\" type: flag continuation }\n",
+  "name x / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { name x type: frozen level breakout type: flag continuation }\n",
+  "name x / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { name x type: \"frozen level breakout\" type: flag continuation }\n",
+  "sessions london / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { sessions london type: frozen level breakout type: flag continuation }\n",
+  "sessions london / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { sessions london type: \"frozen level breakout\" type: flag continuation }\n",
+  "timeframes 1m / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { timeframes 1m type: frozen level breakout type: flag continuation }\n",
+  "timeframes 1m / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { timeframes 1m type: \"frozen level breakout\" type: flag continuation }\n",
+  "slices XAUUSD 1m / frozen level breakout": "dsl v7\nstrategy \"x\"\nsetup { slices XAUUSD 1m type: frozen level breakout type: flag continuation }\n",
+  "slices XAUUSD 1m / \"frozen level breakout\"": "dsl v7\nstrategy \"x\"\nsetup { slices XAUUSD 1m type: \"frozen level breakout\" type: flag continuation }\n",
+  "parenthesized selector": "dsl v7\nstrategy \"x\"\nsetup { (type: frozen level breakout) type: flag continuation }\n"
+}

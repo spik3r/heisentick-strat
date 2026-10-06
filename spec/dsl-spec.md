@@ -1,5 +1,7 @@
 # Strat Language Specification (v7)
 
+
+The Go producer also supports a [compile-only frozen-level research control](../docs/frozen-level-compiler.md) (HT-171). Its exact typed schema and mandatory references use a family-specific grammar; runtime execution is explicitly unimplemented.
 Status: normative for the core document model and the shared (non-setup)
 directive vocabulary. Setup-family phrase sets are indexed in §9 and specified
 in follow-up sections as they are written. Where this document and the JS

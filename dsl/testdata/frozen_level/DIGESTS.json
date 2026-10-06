@@ -1,0 +1,42 @@
+{
+  "canonicalEncoding": "Go encoding/json.Marshal, no LF",
+  "configBytes": 4864,
+  "configDigest": "55c56c3b9d50bdd3a026a77117d36033a276e4bfd15b49c43bd59a1f3194df8e",
+  "externalPayloadEncoding": "exact persisted bytes including final LF",
+  "externalPayloadHashes": {
+    "assumptions": {
+      "id": "FixtureAssumptions",
+      "sha256": "4c560e919585de028107658ccc183f0c1f087fc57b34a7c193a2d4a765dc0c1f",
+      "version": "v1"
+    },
+    "calendar": {
+      "id": "FixtureCalendar",
+      "sha256": "d51a709e3e9c11cd3c6a37eef1783d044ed6e9dd2a08221bcc61eb9f081dfda5",
+      "version": "v1"
+    },
+    "costs": {
+      "id": "FixtureCosts",
+      "sha256": "f5c9f45ba3a9b2a4f98c26ab56231d6dd13741e0b34506113122ad05be577aed",
+      "version": "v1"
+    },
+    "ordering": {
+      "id": "FixtureOrdering",
+      "sha256": "f91fa1630e0f2f4134203f3af11a914adbc10ef110c83bfa94a484cd9bfb6f3f",
+      "version": "v1"
+    },
+    "schedule": {
+      "id": "FixtureSchedule",
+      "sha256": "b8434942c9090eaacdf182407b5141dc0ada65f20bc75164ac0bac8e830b2ed7",
+      "version": "v1"
+    },
+    "source": {
+      "id": "FixtureSource",
+      "sha256": "70f1259596653f461720d98d61d9b3c0dc84dd20c62100cdff9b38278dee6ab5",
+      "version": "v1"
+    }
+  },
+  "hash": "SHA-256",
+  "policyBytes": 4624,
+  "policyDigest": "9b670f1a12f6e317234a5b3a0f8c77e4d00d3a9ba46bac618f2ccb3b74b6170d",
+  "status": "synthetic structural vectors; none is qualified market input"
+}
