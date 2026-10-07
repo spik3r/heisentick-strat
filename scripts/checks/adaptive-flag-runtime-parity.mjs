@@ -1,9 +1,10 @@
 // Exact full-report parity over frozen, invented Stage A transport bytes.
 // Usage: node scripts/checks/adaptive-flag-runtime-parity.mjs \
-//   <native CLI> <enginewasm.wasm> <wasm_exec.js> <matching Go tool>
+//   <native CLI> <enginewasm.wasm> <wasm_exec.js> <matching Go tool> [receipt.json]
 // No source/data generation, host transcendental functions, tolerance, report
 // normalization, or selection of windows based on observed output occurs here.
 import assert from 'node:assert/strict';
+import { emitAdaptiveReceipt } from './adaptive-runtime-receipt.mjs';
 import { createHash, webcrypto } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
@@ -11,8 +12,8 @@ import { createRequire } from 'node:module';
 import { tmpdir, platform, arch, release } from 'node:os';
 import { join, resolve } from 'node:path';
 
-const [nativePath, wasmPath, shimPath, goPath, ...extra] = process.argv.slice(2);
-assert(nativePath && wasmPath && shimPath && goPath && !extra.length, 'exactly four artifact/tool paths are required');
+const [nativePath, wasmPath, shimPath, goPath, receiptPath, ...extra] = process.argv.slice(2);
+assert(nativePath && wasmPath && shimPath && goPath && !extra.length, 'four artifact/tool paths and optionally one receipt path are required');
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const corpusRaw = readFileSync(new URL('../../testsupport/testdata/adaptive-flag-runtime-corpus-v1.json', import.meta.url));
 const corpusSha256 = hash(corpusRaw);
@@ -244,7 +245,7 @@ try {
   assert.equal(evidence.designatedLifecycles, 12); assert.equal(evidence.suffixInvariancePairs, 6);
   assert.equal(evidence.reports.length, 96);
   evidence.status = 'PASS';
-  console.log(JSON.stringify(evidence));
+  await emitAdaptiveReceipt(evidence, receiptPath);
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }

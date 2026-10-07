@@ -1,17 +1,18 @@
 // Dedicated adaptive runtime JS/WASM transport checks using invented bars only.
 // Usage: node scripts/checks/adaptive-flag-runtime-transport.mjs \
-//   <enginewasm.wasm> <wasm_exec.js>
+//   <enginewasm.wasm> <wasm_exec.js> [receipt.json]
 // The shared Go report and corpus parity checks qualify report execution;
 // these checks exercise the original JS call boundary and recovery behavior.
 import assert from 'node:assert/strict';
+import { emitAdaptiveReceipt } from './adaptive-runtime-receipt.mjs';
 import { createHash, webcrypto } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 import { runInNewContext } from 'node:vm';
 
-const [wasmPath, shimPath, ...extra] = process.argv.slice(2);
-assert(wasmPath && shimPath && !extra.length, 'exactly two paths are required');
+const [wasmPath, shimPath, receiptPath, ...extra] = process.argv.slice(2);
+assert(wasmPath && shimPath && !extra.length, 'two artifact paths and optionally one receipt path are required');
 globalThis.crypto ??= webcrypto;
 createRequire(import.meta.url)(resolve(shimPath));
 
@@ -227,5 +228,5 @@ assert(generic.error);
 evidence.genericRefusals++;
 assert.equal(run(metadata, source, data), baseline);
 evidence.status = 'PASS';
-console.log(JSON.stringify(evidence));
+await emitAdaptiveReceipt(evidence, receiptPath);
 process.exit(0);
