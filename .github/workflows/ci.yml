@@ -73,6 +73,16 @@ jobs:
           GOOS=js GOARCH=wasm go build -trimpath -o cmd/dslwasm/dslwasm.wasm ./cmd/dslwasm
           GOOS=js GOARCH=wasm go build -trimpath -o cmd/enginewasm/enginewasm.wasm ./cmd/enginewasm
 
+      - name: Set up Node for dedicated runtime parity
+        if: steps.mod.outputs.present == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Master native/WASM synthetic report parity
+        if: steps.mod.outputs.present == 'true'
+        run: node scripts/checks/master-runtime-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
       - name: Upload heisentick artifact
         if: steps.mod.outputs.present == 'true'
         uses: actions/upload-artifact@v4
