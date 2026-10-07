@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "gold-flag-report":
+		return runGoldFlagReport(args[1:], out)
 	case "master-report":
 		return runMasterReport(args[1:], out)
 	case "regime-report":
@@ -42,6 +44,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick gold-flag-report --dsl-file=<path> --m15-file=<BTB1 path> --from=<UTC RFC3339> --to=<UTC RFC3339> --cost=0|0.06|0.15|0.25|0.50
+
+gold-flag-report runs the fixed native offline PR388 causal stress scenario. It retains partial/gap evidence and unresolved local alternatives. It does not establish observed fills or an executable edge.
+
   heisentick master-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
 
 master-report runs the fixed native offline Master Structural v10 reference. Two closed policies only; aggregated M30 OHLC paths, continuous prices and illustrative 0.1-unit sizing. No Pine/broker parity, financing model, generic or browser execution is implied.

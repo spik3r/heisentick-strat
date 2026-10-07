@@ -40,6 +40,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if len(parsed.Errors) > 0 {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
 	}
+	if err := rejectDedicatedGoldFlagExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := rejectDedicatedMasterExecution(parsed.Config); err != nil {
 		return RunResult{}, err
 	}

@@ -9,21 +9,22 @@ import (
 )
 
 type position struct {
-	Side         side
-	Entry        float64
-	Size         float64
-	SL           float64
-	TP           float64
-	InitialSL    float64
-	InitialTP    float64
-	Meta         TradeMeta
-	EntryIndex   int
-	EntryT       float64
-	Tag          string
-	PartialTaken bool
-	GapAwareStop bool
-	NoTarget     bool
-	NoStop       bool
+	Side                    side
+	Entry                   float64
+	Size                    float64
+	SL                      float64
+	TP                      float64
+	InitialSL               float64
+	InitialTP               float64
+	Meta                    TradeMeta
+	EntryIndex              int
+	EntryT                  float64
+	Tag                     string
+	PartialTaken            bool
+	GapAwareStop            bool
+	OpeningTargetPrecedence bool // Dedicated reference opt-in; legacy defaults remain false.
+	NoTarget                bool
+	NoStop                  bool
 }
 
 type order struct {

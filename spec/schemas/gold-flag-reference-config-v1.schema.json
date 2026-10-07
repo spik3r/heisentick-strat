@@ -1,0 +1,173 @@
+{
+  "$id": "gold-flag-reference-config-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Go-only dedicated offline runner contract for the indivisible PR388_CAUSAL_STRESS_V1 reference policy. Raw JSON must also pass DecodeGoldFlagReferenceConfigJSON to reject duplicate decoded keys, malformed Unicode, negative zero, alternate fixed-zero lexical forms and exact numeric mutations before floating-point conversion.",
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "dslVersion": {
+      "const": 7
+    },
+    "goldFlagReference": {
+      "const": {
+        "contractVersion": "gold-flag-reference-config-v1",
+        "policy": "PR388_CAUSAL_STRESS_V1",
+        "profile": {
+          "atr": {
+            "firstValidIndex": 14,
+            "includeCurrent": true,
+            "length": 14,
+            "seed": "mean-TR-indices-1-through-14",
+            "smoothing": "wilder-rma",
+            "trueRange": "max-high-low-abs-high-prevClose-abs-low-prevClose"
+          },
+          "clock": {
+            "aggregation": "first-max-min-last-sum",
+            "availability": "nominal-bucket-close",
+            "decision": "M30-nominal-close",
+            "entryTimestamp": "first-actually-observed-M15-open",
+            "interpolation": false,
+            "missingDataCancelsPending": false,
+            "nativePhaseMinutes": 0,
+            "partialBars": "retain",
+            "preStartHistory": false,
+            "selection": "explicit-half-open-M30-aligned-range-before-aggregation",
+            "sourceRows": "strict-unique-exact-M15-opens",
+            "timezone": "UTC",
+            "wholeMissingBars": "skip-without-reset"
+          },
+          "context": {
+            "aggregation": "first-max-min-last-sum",
+            "daily": {
+              "availability": "next-UTC-midnight",
+              "lookback": 5,
+              "phaseHoursUTC": 0
+            },
+            "deATRFilter": false,
+            "distanceMaximumATR": 1,
+            "gate": "either-qualifying-directional-extreme",
+            "h4": {
+              "availability": "bucket-start-plus-4h",
+              "lookback": 12,
+              "phaseHoursUTC": 0
+            },
+            "long": "flagHigh-greater-or-equal-contextHigh-minus-signalATR",
+            "partialBuckets": "retain-at-nominal-close",
+            "selection": "latest-nominal-close-less-or-equal-decision-close",
+            "short": "flagLow-less-or-equal-contextLow-plus-signalATR",
+            "source": "observed-M30",
+            "volumeFilter": false
+          },
+          "costs": {
+            "effectsOnFillsBracketsRiskSignalsSizing": false,
+            "purpose": "diagnostic-stress-only",
+            "selection": "explicit-external-report-request",
+            "unit": "points-per-fill",
+            "values": [
+              0,
+              0.06,
+              0.15,
+              0.25,
+              0.5
+            ]
+          },
+          "evidence": {
+            "alternatives": "local-OHLC-feasible-not-propagated-portfolio-bounds",
+            "coarselySavedZeroGapFill": "half-open-[observedOpen,lastObservedClose)",
+            "latency": "unverified",
+            "nominalClose": "point-[close,close]",
+            "observedOpening": "point-[t,t]",
+            "provenNonopening": "open-interval-(observedOpen,lastObservedClose)"
+          },
+          "execution": {
+            "ambiguousPolicy": "entry-first-stop-first",
+            "equityFeedback": false,
+            "exitRow": "skip-new-signal",
+            "feasibleAlternatives": "retain",
+            "initialBracket": "attached-at-fill",
+            "intrabarOppositeOnly": "cancel",
+            "openingGap": "open-before-intrabar-at-actual-entry",
+            "openingOpposite": "cancel-before-later-intrabar-entry",
+            "openingTarget": "cap-at-target",
+            "priceArithmetic": "continuous-float64-reference",
+            "referenceUnits": 1,
+            "risk": "actual-fill-to-fixed-signal-stop",
+            "scenario": "deterministic-coarse-OHLC-stress-scenario-not-observed-execution",
+            "stopUpdates": "none",
+            "targetAnchor": "actual-fill",
+            "targetR": 2,
+            "terminalLiquidation": false,
+            "terminalPosition": "retain-open",
+            "tickRounding": false,
+            "timeExitIndex": "fill-index-plus-24",
+            "timeExitObservedRows": 24,
+            "timeExitPriority": "bracket-before-time-exit"
+          },
+          "id": "PR388_CAUSAL_STRESS_V1",
+          "nativeTimeframe": "M30",
+          "pattern": {
+            "direction": "pole-extrema-order",
+            "extremaTies": "first-observed-occurrence",
+            "flagBars": 6,
+            "flagMaximumATR": 1.5,
+            "flagMaximumPoleFraction": 0.6,
+            "flagWindow": "six-observed-rows-ending-at-signal",
+            "long": "first-pole-low-before-first-pole-high-and-flagLow-at-least-poleHigh-minus-half-pole",
+            "poleBars": 6,
+            "poleMinimumATR": 2,
+            "poleWindow": "six-observed-rows-immediately-before-flag",
+            "retraceMaximumPoleFraction": 0.5,
+            "short": "first-pole-high-before-first-pole-low-and-flagHigh-at-most-poleLow-plus-half-pole",
+            "thresholds": "inclusive"
+          },
+          "pending": {
+            "activation": "next-observed-row",
+            "eligibleOffsets": "signal-plus-1-through-signal-plus-4-inclusive",
+            "expiryObservedRows": 4,
+            "missingDataCancellation": false,
+            "terminal": "retain-pending"
+          },
+          "routes": {
+            "generic": false,
+            "grid": false,
+            "nativeOffline": true,
+            "prefix": false,
+            "wasm": false
+          },
+          "signal": {
+            "atrAnchor": "frozen-signal-ATR",
+            "cooldownIncludesInvalidRisk": true,
+            "cooldownObservedRows": 6,
+            "endCloseNewEntry": false,
+            "entryBufferATR": 0.1,
+            "flatOnly": true,
+            "minimumRiskATR": 0.4,
+            "nextEligibleSignal": "prior-signal-index-plus-7",
+            "onePosition": true,
+            "oppositeStopBufferATR": 0.1,
+            "warmupSignals": "do-not-carry"
+          },
+          "sourceTimeframe": "M15",
+          "symbol": "XAUUSD"
+        }
+      }
+    },
+    "name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "setupType": {
+      "const": "goldFlagReference"
+    }
+  },
+  "required": [
+    "dslVersion",
+    "name",
+    "description",
+    "setupType",
+    "goldFlagReference"
+  ],
+  "type": "object"
+}

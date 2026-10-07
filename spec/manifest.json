@@ -263,6 +263,14 @@
       "classification": "go-only",
       "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
       "since": 7
+    },
+    {
+      "id": "goldFlagReference",
+      "canonicalSpelling": "gold flag reference",
+      "canonicalExample": "type: gold flag reference\n  goldflag policy PR388_CAUSAL_STRESS_V1",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1664,6 +1672,24 @@
       "classification": "go-only",
       "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.gold-flag-reference",
+      "source": "go-inline-setup-type",
+      "spelling": "gold flag reference",
+      "familyId": "goldFlagReference",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.gold-flag-reference",
+      "source": "go-canonical-setup-type",
+      "spelling": "gold flag reference",
+      "familyId": "goldFlagReference",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2342,6 +2368,20 @@
       "spelling": "master timeframe",
       "classification": "go-only",
       "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "directive.goldflag-policy",
+      "spelling": "goldflag policy",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "directive.goldflag-timeframe",
+      "spelling": "goldflag timeframe",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
       "since": 7
     }
   ],

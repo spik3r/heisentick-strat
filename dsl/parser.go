@@ -10,6 +10,9 @@ import (
 var ErrParserUnimplemented = errors.New("dsl parser is not implemented")
 
 func parse(source string) (ParseResult, error) {
+	if goldFlagSourceCandidate(source) {
+		return parseGoldFlagReferenceSource(source), nil
+	}
 	if masterSourceCandidate(source) {
 		return parseMasterStructuralSource(source), nil
 	}
@@ -30,6 +33,9 @@ func parse(source string) (ParseResult, error) {
 	}
 	if IsMasterStructuralReserved(parser.config) {
 		return parseMasterStructuralSource(source), nil
+	}
+	if IsGoldFlagReferenceReserved(parser.config) {
+		return parseGoldFlagReferenceSource(source), nil
 	}
 	return parser.result(), nil
 }

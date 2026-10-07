@@ -6,6 +6,17 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the strict Go-only `goldFlagReference` family (HT-182), preserving the
+  fixed PR388 detector and observed-row clocks in the named causal coarse-OHLC
+  stress scenario. Reuse the canonical broker with a dedicated opening-target
+  precedence opt-in, leaving legacy defaults unchanged. Native `gold-flag-report`
+  only, with signal snapshots, order/event/coverage traces, local alternatives,
+  explicit terminal exposure and five fixed diagnostic costs. Generic, grid,
+  prefix and engine-WASM paths refuse execution. Invented fixtures preserve
+  prior goldens. No observed-fill, profitability, release, app adoption or live
+  readiness claim is included. Any future release requires a minor version and
+  separate review.
+
 - Add the fixed native-offline Master Structural v10 research family (HT-177),
   with separate historical-source and stable-protected policy bundles, explicit
   H4 clock horizons, continuous reference prices, rounded illustrative quantity,
