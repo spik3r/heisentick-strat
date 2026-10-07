@@ -68,10 +68,45 @@ function native(binary, meta, text, bytes) {
     `--warmup-from=${stamp(meta.warmupFromT)}`, `--trade-from=${stamp(meta.tradeFromT)}`,
     `--trade-to=${stamp(meta.tradeToT)}`, `--spread=${meta.spread}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 }
+// Diagnostic helpers: bounded synthetic field differences, never raw reports.
+function fieldDifferences(actual, expected) {
+  const samples = [];
+  let differingFields = 0;
+  const describe = (value) => {
+    if (value === undefined) return { type: 'missing' };
+    if (value === null || typeof value === 'number' || typeof value === 'boolean') return value;
+    if (typeof value === 'string') return { type: 'string', length: value.length };
+    return { type: Array.isArray(value) ? 'array' : 'object' };
+  };
+  const walk = (a, b, path) => {
+    if (Object.is(a, b)) return;
+    const objects = a !== null && b !== null && typeof a === 'object' && typeof b === 'object';
+    if (objects && Array.isArray(a) === Array.isArray(b)) {
+      for (const key of new Set([...Object.keys(a), ...Object.keys(b)])) {
+        walk(a[key], b[key], `${path}${Array.isArray(a) ? `[${key}]` : `.${key}`}`);
+      }
+      return;
+    }
+    differingFields++;
+    if (samples.length < 12) samples.push({ path: path.slice(0, 160), actual: describe(a), expected: describe(b) });
+  };
+  try {
+    walk(JSON.parse(actual), JSON.parse(expected), '$');
+    return { differingFields, samples, samplesTruncated: differingFields > samples.length, serializationOnly: differingFields === 0 };
+  } catch {
+    return { jsonParseFailed: true, differingFields: null, samples: [] };
+  }
+}
 function identical(actual, expected, label) {
   assert.equal(typeof actual, 'string', `${label}: expected a JSON string`);
-  if (actual !== expected) assert.fail(`${label}: byte mismatch (${digest(actual)} != ${digest(expected)})`);
+  if (actual !== expected) {
+    console.error(JSON.stringify({ schema: 'master-runtime-parity-difference-v1', case: label.slice(0, 160),
+      actualSha256: digest(actual), expectedSha256: digest(expected), ...fieldDifferences(actual, expected) }));
+    // Diagnostics never relax byte equality or allow a failing case to pass.
+    assert.fail(`${label}: byte mismatch (${digest(actual)} != ${digest(expected)})`);
+  }
 }
+// End diagnostic helpers.
 function compare(label, rows, meta = metadata, text = source(), suppliedBytes) {
   const bytes = suppliedBytes ?? encode(rows);
   const wasm = globalThis.engineRunMasterReport(JSON.stringify(meta), text, bytes);
