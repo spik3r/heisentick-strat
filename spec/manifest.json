@@ -271,6 +271,14 @@
       "classification": "go-only",
       "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
       "since": 7
+    },
+    {
+      "id": "adaptiveVolumeFlag",
+      "canonicalSpelling": "adaptive volume flag",
+      "canonicalExample": "type: adaptive volume flag\n  adaptiveflag policy DELAYED_OHLC_REFERENCE_V1",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1690,6 +1698,24 @@
       "classification": "go-only",
       "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.adaptive-volume-flag",
+      "source": "go-inline-setup-type",
+      "spelling": "adaptive volume flag",
+      "familyId": "adaptiveVolumeFlag",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.adaptive-volume-flag",
+      "source": "go-canonical-setup-type",
+      "spelling": "adaptive volume flag",
+      "familyId": "adaptiveVolumeFlag",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2382,6 +2408,153 @@
       "spelling": "goldflag timeframe",
       "classification": "go-only",
       "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-timeframe",
+      "spelling": "adaptiveflag timeframe",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-policy",
+      "spelling": "adaptiveflag policy",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-bundle",
+      "spelling": "adaptiveflag bundle",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-pivotsensitivity",
+      "spelling": "adaptiveflag pivotSensitivity",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-minpoleatr",
+      "spelling": "adaptiveflag minPoleATR",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-minflagbars",
+      "spelling": "adaptiveflag minFlagBars",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-maxflagbars",
+      "spelling": "adaptiveflag maxFlagBars",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-maxflagretrace",
+      "spelling": "adaptiveflag maxFlagRetrace",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-usevolumefilter",
+      "spelling": "adaptiveflag useVolumeFilter",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-useematrend",
+      "spelling": "adaptiveflag useEMATrend",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-fastemalen",
+      "spelling": "adaptiveflag fastEMALen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-slowemalen",
+      "spelling": "adaptiveflag slowEMALen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-targetr",
+      "spelling": "adaptiveflag targetR",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-atrstopmult",
+      "spelling": "adaptiveflag atrStopMult",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-validbars",
+      "spelling": "adaptiveflag validBars",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-maxhold",
+      "spelling": "adaptiveflag maxHold",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-atrlen",
+      "spelling": "adaptiveflag atrLen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-volumesmalen",
+      "spelling": "adaptiveflag volumeSMALen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-volumesmamult",
+      "spelling": "adaptiveflag volumeSMAMult",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-flagwidthpolemult",
+      "spelling": "adaptiveflag flagWidthPoleMult",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-entrybufferatr",
+      "spelling": "adaptiveflag entryBufferATR",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
       "since": 7
     }
   ],

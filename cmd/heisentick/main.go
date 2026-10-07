@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "adaptive-flag-report":
+		return runAdaptiveFlagReport(args[1:], out)
 	case "gold-flag-report":
 		return runGoldFlagReport(args[1:], out)
 	case "master-report":
@@ -44,6 +46,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick adaptive-flag-report --dsl-file=<path> --bars-file=<six-column BTB1 path> [--trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339>]
+
+adaptive-flag-report runs explicit supplied M30/H1 bars through the named delayed OHLC raw reference. It reports model prices and state only, without sizing, costs or account economics. Generic/browser execution and TradingView parity are not implied.
+
   heisentick gold-flag-report --dsl-file=<path> --m15-file=<BTB1 path> --from=<UTC RFC3339> --to=<UTC RFC3339> --cost=0|0.06|0.15|0.25|0.50
 
 gold-flag-report runs the fixed native offline PR388 causal stress scenario. It retains partial/gap evidence and unresolved local alternatives. It does not establish observed fills or an executable edge.

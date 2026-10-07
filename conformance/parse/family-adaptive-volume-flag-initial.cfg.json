@@ -1,0 +1,52 @@
+{
+  "case": "family-adaptive-volume-flag-initial",
+  "category": "family",
+  "cfg": {
+    "adaptiveVolumeFlag": {
+      "bundle": "INITIAL",
+      "contractVersion": "adaptive-volume-flag-config-v1",
+      "numericalPolicy": "BINARY64_ORDERED_V1",
+      "policy": "DELAYED_OHLC_REFERENCE_V1",
+      "rules": {
+        "atrLen": 14,
+        "atrStopMult": 1.2,
+        "entryBufferATR": 0.05,
+        "fastEMALen": 50,
+        "flagWidthPoleMult": 0.55,
+        "maxFlagBars": 16,
+        "maxFlagRetrace": 0.5,
+        "maxHold": 60,
+        "minFlagBars": 3,
+        "minPoleATR": 1.8,
+        "pivotSensitivity": 3,
+        "slowEMALen": 200,
+        "targetR": 2.5,
+        "useEMATrend": true,
+        "useVolumeFilter": true,
+        "validBars": 12,
+        "volumeSMALen": 20,
+        "volumeSMAMult": 0.9
+      },
+      "timeframe": "M30"
+    },
+    "description": "Input identity only; dedicated raw reference runner",
+    "dslVersion": 7,
+    "name": "Adaptive volume flag INITIAL synthetic control",
+    "setupType": "adaptiveVolumeFlag"
+  },
+  "description": "Explicit initial input identity for dedicated native raw adaptive-volume-flag reference",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "adaptive-volume-flag-native-dedicated-runner-required",
+      "severity": "warning"
+    }
+  ],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "family-adaptive-volume-flag-initial.strat",
+  "warnings": [
+    "adaptive-volume-flag-native-dedicated-runner-required"
+  ]
+}

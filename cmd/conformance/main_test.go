@@ -16,7 +16,7 @@ func TestCheckPassesOnTheCommittedCorpus(t *testing.T) {
 	if err := run([]string{"check", "--dir=" + testsupport.StratConformanceRoot()}, &out); err != nil {
 		t.Fatalf("check: %v", err)
 	}
-	if !strings.Contains(out.String(), "conformance OK: 119 parse goldens, 100 run goldens, 0 TODO") {
+	if !strings.Contains(out.String(), "conformance OK: 122 parse goldens, 100 run goldens, 0 TODO") {
 		t.Fatalf("unexpected check summary: %s", out.String())
 	}
 }
@@ -29,7 +29,7 @@ func TestRegenIsIdempotentAndWritesTheScoreboard(t *testing.T) {
 	if err := run([]string{"regen", "--dir=" + dir}, &out); err != nil {
 		t.Fatalf("regen: %v", err)
 	}
-	if !strings.Contains(out.String(), "wrote 119 parse goldens, 100 run goldens (0 TODO)") {
+	if !strings.Contains(out.String(), "wrote 122 parse goldens, 100 run goldens (0 TODO)") {
 		t.Fatalf("unexpected regen summary: %s", out.String())
 	}
 	after := snapshot(t, dir)
