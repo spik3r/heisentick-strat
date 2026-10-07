@@ -79,6 +79,10 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Release packaging and publication guard regression
+        if: steps.mod.outputs.present == 'true'
+        run: node --test scripts/checks/release-packaging.test.mjs
+
       - name: Down-shock source native report and WASM parity
         if: steps.mod.outputs.present == 'true'
         run: |
