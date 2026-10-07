@@ -1,20 +1,13 @@
 package main
 
 import (
-	"crypto/sha256"
-	"encoding/binary"
-	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
-	"github.com/spik3r/heisentick-strat/dsl"
-	"github.com/spik3r/heisentick-strat/engine/master"
-	"github.com/spik3r/heisentick-strat/marketdata"
+	"github.com/spik3r/heisentick-strat/report/masterstructural"
 )
 
 func runMasterReport(args []string, out io.Writer) error {
@@ -37,16 +30,6 @@ func runMasterReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	parsed, err := dsl.Parse(string(source))
-	if err != nil {
-		return err
-	}
-	if len(parsed.Errors) > 0 {
-		return fmt.Errorf("master DSL parse errors: %s", strings.Join(parsed.Errors, "; "))
-	}
-	if _, err = dsl.DecodeMasterStructural(parsed.Config); err != nil {
-		return err
-	}
 	endpoints := make([]int64, 3)
 	for i, key := range []string{"warmup-from", "trade-from", "trade-to"} {
 		raw := flags.one(key, "")
@@ -64,43 +47,10 @@ func runMasterReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	// The ordinary decoder permits absent volume and extra bytes. This study
-	// requires exactly six columns with no silently defaulted volume or suffix.
-	if len(data) < 16 || binary.LittleEndian.Uint32(data[12:16]) != 6 {
-		return fmt.Errorf("master requires exactly six BTB1 OHLCV columns")
-	}
-	count := uint64(binary.LittleEndian.Uint32(data[8:12]))
-	if uint64(len(data)) != 16+count*6*8 {
-		return fmt.Errorf("master BTB1 byte length mismatch")
-	}
-	series, err := marketdata.DecodeBTB1(data)
+	raw, err := masterstructural.Build(source, data, masterstructural.Options{WarmupFromT: endpoints[0], TradeFromT: endpoints[1], TradeToT: endpoints[2], Spread: spread})
 	if err != nil {
 		return err
 	}
-	result, err := master.Run(master.Request{Config: parsed.Config, M5: series, WarmupFromT: endpoints[0], TradeFromT: endpoints[1], TradeToT: endpoints[2], Costs: master.Costs{Spread: spread, FeePerUnitSide: .5, InitialEquity: 10000}})
-	if err != nil {
-		return err
-	}
-	cfg, err := json.Marshal(parsed.Config)
-	if err != nil {
-		return err
-	}
-	hash := func(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
-	envelope := struct {
-		Schema     string        `json:"schema"`
-		DSLHash    string        `json:"dslSha256"`
-		ConfigHash string        `json:"configSha256"`
-		DataHash   string        `json:"dataSha256"`
-		Config     dsl.Config    `json:"config"`
-		Run        master.Result `json:"run"`
-	}{"strat-master-structural-cli-v1", hash(source), hash(cfg), hash(data), parsed.Config, result}
-	// Marshal fully before writing so a validation/encoding failure produces
-	// no partial success-looking JSON.
-	raw, err := json.MarshalIndent(envelope, "", "  ")
-	if err != nil {
-		return err
-	}
-	raw = append(raw, '\n')
 	_, err = out.Write(raw)
 	return err
 }

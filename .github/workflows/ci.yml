@@ -73,6 +73,55 @@ jobs:
           GOOS=js GOARCH=wasm go build -trimpath -o cmd/dslwasm/dslwasm.wasm ./cmd/dslwasm
           GOOS=js GOARCH=wasm go build -trimpath -o cmd/enginewasm/enginewasm.wasm ./cmd/enginewasm
 
+      - name: Set up Node for dedicated runtime parity
+        if: steps.mod.outputs.present == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Down-shock source native report and WASM parity
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          native_engine="$(mktemp "$RUNNER_TEMP/down-shock-engine.XXXXXX")"
+          trap 'rm -f "$native_engine"' EXIT
+          go build -trimpath -o "$native_engine" ./cmd/enginewasm
+          node scripts/checks/down-shock-source-parity.mjs cmd/heisentick/heisentick "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+          GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestDownShock' ./engine ./report ./cmd/heisentick
+
+      - name: Master portable native/WASM frozen synthetic report parity
+        id: master_parity
+        if: steps.mod.outputs.present == 'true'
+        run: node scripts/checks/master-runtime-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
+      - name: Run portable arithmetic kernels under Go WASM
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestPortable' ./internal/float64contract ./engine/regime ./engine/master
+
+      # Separate pinned pre-portable source, same native compiler and host.
+      # This is a regression baseline only and is never a release artifact.
+      - name: Check out pinned legacy baseline
+        if: steps.mod.outputs.present == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: 38613eb8f4e8dd8afa5e68660d2f7b83937c64fb
+          path: .master-legacy-baseline
+
+      - name: Verify native legacy Master and v9 preservation
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 5
+        run: |
+          baseline_dir="$RUNNER_TEMP/master-legacy-baseline"
+          mkdir -p "$baseline_dir"
+          trap 'rm -rf "$baseline_dir" .master-legacy-baseline' EXIT
+          test "$(git -C .master-legacy-baseline rev-parse HEAD)" = 38613eb8f4e8dd8afa5e68660d2f7b83937c64fb
+          test -z "$(go env GOFLAGS)"
+          test -z "${GOCOMPILEDEBUG:-}"
+          go version
+          go env GOHOSTARCH GOARCH GOOS
+          (cd .master-legacy-baseline && go build -trimpath -o "$baseline_dir/heisentick" ./cmd/heisentick)
+          node scripts/checks/master-portable-legacy-parity.mjs cmd/heisentick/heisentick "$baseline_dir/heisentick"
+
       - name: Upload heisentick artifact
         if: steps.mod.outputs.present == 'true'
         uses: actions/upload-artifact@v4

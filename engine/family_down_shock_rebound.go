@@ -95,8 +95,8 @@ func downShockSignals(source marketdata.Series) []downShockSignal {
 
 // This family owns its source-close boundary explicitly. The generic source
 // scheduler waits for a later chart close, which would delay immediate entries.
-func (b *broker) runDownShockRebound() []Trade {
-	signals := downShockSignals(marketdata.SeriesFromBars(b.fixture.SourceBars))
+func (b *broker) runDownShockRebound(source marketdata.Series) []Trade {
+	signals := downShockSignals(source)
 	pointer := 0
 	var waiting *downShockSignal
 	var queued *downShockSignal

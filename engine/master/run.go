@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/spik3r/heisentick-strat/dsl"
 	"github.com/spik3r/heisentick-strat/engine/regime"
+	fp "github.com/spik3r/heisentick-strat/internal/float64contract"
 	"math"
 )
 
@@ -33,7 +34,9 @@ func validateRequest(r Request) error {
 
 // Run executes exactly one fixed native M30 reference policy. It performs no
 // external orders, registration, release or generic-broker execution.
-func Run(r Request) (Result, error) {
+func Run(r Request) (Result, error) { return runArithmetic(r, false) }
+
+func runArithmetic(r Request, portable bool) (Result, error) {
 	spec, err := dsl.DecodeMasterStructural(r.Config)
 	if err != nil {
 		return Result{}, err
@@ -41,11 +44,11 @@ func Run(r Request) (Result, error) {
 	if err = validateRequest(r); err != nil {
 		return Result{}, err
 	}
-	rows, h4, used, err := buildIndicators(r)
+	rows, h4, used, err := buildIndicatorsArithmetic(r, portable)
 	if err != nil {
 		return Result{}, err
 	}
-	out, err := execute(r, spec.Mode, rows)
+	out, err := executeArithmetic(r, spec.Mode, rows, portable)
 	if err != nil {
 		return Result{}, err
 	}
@@ -58,6 +61,21 @@ func Run(r Request) (Result, error) {
 }
 
 func literalOrders(anchor, atr, st float64, d int, locked bool) (sl, tp, base float64) {
+	return literalOrdersArithmetic(anchor, atr, st, d, locked, false)
+}
+
+func literalOrdersArithmetic(anchor, atr, st float64, d int, locked, portable bool) (sl, tp, base float64) {
+	if portable {
+		base = math.Max(fp.Sub(anchor, fp.Mul(2, atr)), st)
+		if d == -1 {
+			base = math.Min(fp.Add(anchor, fp.Mul(2, atr)), st)
+		}
+		sl = base
+		if locked {
+			sl = st
+		}
+		return sl, fp.Add(anchor, fp.Mul(fp.Mul(float64(d), 4), atr)), base
+	}
 	base = math.Max(anchor-2*atr, st)
 	if d == -1 {
 		base = math.Min(anchor+2*atr, st)
@@ -70,29 +88,56 @@ func literalOrders(anchor, atr, st float64, d int, locked bool) (sl, tp, base fl
 }
 
 func openPosition(s Signal, b NativeBar, mode string, cost Costs, equity float64) (*Position, float64, error) {
+	return openPositionArithmetic(s, b, mode, cost, equity, false)
+}
+
+func openPositionArithmetic(s Signal, b NativeBar, mode string, cost Costs, equity float64, portable bool) (*Position, float64, error) {
 	entry := b.Open
 	if s.Direction == 1 {
-		entry += cost.Spread
+		if portable {
+			entry = fp.Add(entry, cost.Spread)
+		} else {
+			entry += cost.Spread
+		}
 	}
 	if !finite(equity) || equity <= 0 || !finite(entry) || entry <= 0 {
 		return nil, equity, fmt.Errorf("master entry requires positive finite equity and price")
 	}
-	raw := equity * .1 / entry
-	qty := math.Floor((raw+1e-12)/.1) * .1
+	var qty float64
+	if portable {
+		raw := fp.Div(fp.Mul(equity, .1), entry)
+		qty = fp.Mul(math.Floor(fp.Div(fp.Add(raw, 1e-12), .1)), .1)
+	} else {
+		raw := equity * .1 / entry
+		qty = math.Floor((raw+1e-12)/.1) * .1
+	}
 	if !finite(qty) {
 		return nil, equity, fmt.Errorf("master quantity overflow")
 	}
 	if qty <= 0 {
 		return nil, equity, &QuantityBelowStepError{Equity: equity, Entry: entry}
 	}
-	fee := qty * cost.FeePerUnitSide
-	if !finite(fee) || !finite(equity-fee) {
-		return nil, equity, fmt.Errorf("master entry fee overflow")
+	var fee, cash float64
+	if portable {
+		fee = fp.Mul(qty, cost.FeePerUnitSide)
+		cash = fp.Sub(equity, fee)
+	} else {
+		fee = qty * cost.FeePerUnitSide
+		if !finite(fee) || !finite(equity-fee) {
+			return nil, equity, fmt.Errorf("master entry fee overflow")
+		}
+		cash = equity - fee
 	}
-	p := &Position{Signal: s, EntryBucketT: b.BucketT, EntryT: b.FirstObservedT, Entry: entry, Quantity: qty, EntryFee: fee, AnchorError: entry - s.Anchor, NakedEntryBar: mode == SourceMode, MaxHigh: s.High, MinLow: s.Low}
+	p := &Position{Signal: s, EntryBucketT: b.BucketT, EntryT: b.FirstObservedT, Entry: entry, Quantity: qty, EntryFee: fee, AnchorError: plainDifference(entry, s.Anchor, portable), NakedEntryBar: mode == SourceMode, MaxHigh: s.High, MinLow: s.Low}
 	if mode == ProtectedMode {
-		distance := 2 * s.ATR
-		structural := float64(s.Direction) * (s.Anchor - s.Supertrend)
+		var distance, structural float64
+		if portable {
+			distance = fp.Mul(2, s.ATR)
+			structural = fp.Mul(float64(s.Direction), fp.Sub(s.Anchor, s.Supertrend))
+		} else {
+			distance = 2 * s.ATR
+			structural = float64(s.Direction) * (s.Anchor - s.Supertrend)
+		}
 		if structural > 0 {
 			distance = math.Min(distance, structural)
 		}
@@ -100,8 +145,13 @@ func openPosition(s Signal, b NativeBar, mode string, cost Costs, equity float64
 			return nil, equity, fmt.Errorf("master invalid initial protection distance")
 		}
 		p.InitialDistance = pointer(distance)
-		p.SL = pointer(entry - float64(s.Direction)*distance)
-		p.TP = pointer(entry + float64(s.Direction)*4*s.ATR)
+		if portable {
+			p.SL = pointer(fp.Sub(entry, fp.Mul(float64(s.Direction), distance)))
+			p.TP = pointer(fp.Add(entry, fp.Mul(fp.Mul(float64(s.Direction), 4), s.ATR)))
+		} else {
+			p.SL = pointer(entry - float64(s.Direction)*distance)
+			p.TP = pointer(entry + float64(s.Direction)*4*s.ATR)
+		}
 		if !finite(*p.SL) || !finite(*p.TP) {
 			return nil, equity, fmt.Errorf("master initial bracket overflow")
 		}
@@ -113,10 +163,14 @@ func openPosition(s Signal, b NativeBar, mode string, cost Costs, equity float64
 		p.MaxHigh = entry
 		p.MinLow = entry
 	}
-	return p, equity - fee, nil
+	return p, cash, nil
 }
 
 func manage(p *Position, row IndicatorRow, previousRegime int, mode string, spread float64) (OrderEdit, error) {
+	return manageArithmetic(p, row, previousRegime, mode, spread, false)
+}
+
+func manageArithmetic(p *Position, row IndicatorRow, previousRegime int, mode string, spread float64, portable bool) (OrderEdit, error) {
 	if row.ATR14 == nil || row.Supertrend == nil {
 		return OrderEdit{}, fmt.Errorf("master position lacks completed indicators")
 	}
@@ -139,34 +193,58 @@ func manage(p *Position, row IndicatorRow, previousRegime int, mode string, spre
 	oldSL, oldTP := p.SL, p.TP
 	qclose := row.Close
 	if d == -1 {
-		qclose += spread
+		if portable {
+			qclose = fp.Add(qclose, spread)
+		} else {
+			qclose += spread
+		}
 	}
 	previousLocked := p.Locked
-	locked := p.MaxHigh >= p.Signal.Anchor+2**row.ATR14
-	postOnly := hi >= p.Signal.Anchor+2**row.ATR14
-	if d == -1 {
-		locked = p.MinLow <= p.Signal.Anchor-2**row.ATR14
-		postOnly = lo <= p.Signal.Anchor-2**row.ATR14
+	var locked, postOnly bool
+	if portable {
+		trigger := fp.Add(p.Signal.Anchor, fp.Mul(2, *row.ATR14))
+		locked, postOnly = p.MaxHigh >= trigger, hi >= trigger
+		if d == -1 {
+			trigger = fp.Sub(p.Signal.Anchor, fp.Mul(2, *row.ATR14))
+			locked, postOnly = p.MinLow <= trigger, lo <= trigger
+		}
+	} else {
+		locked = p.MaxHigh >= p.Signal.Anchor+2**row.ATR14
+		postOnly = hi >= p.Signal.Anchor+2**row.ATR14
+		if d == -1 {
+			locked = p.MinLow <= p.Signal.Anchor-2**row.ATR14
+			postOnly = lo <= p.Signal.Anchor-2**row.ATR14
+		}
 	}
 	newSL, newTP, base := 0., 0., 0.
 	rejected := false
 	if mode == SourceMode {
-		newSL, newTP, base = literalOrders(p.Signal.Anchor, *row.ATR14, *row.Supertrend, d, locked)
-		if float64(d)*(qclose-newSL) <= 0 {
+		newSL, newTP, base = literalOrdersArithmetic(p.Signal.Anchor, *row.ATR14, *row.Supertrend, d, locked, portable)
+		if directionalDifference(qclose, newSL, d, portable) <= 0 {
 			p.ForcedReason = "wrong_side_stop"
 		}
 	} else {
 		if oldSL == nil || oldTP == nil {
 			return OrderEdit{}, fmt.Errorf("master protected position missing attached bracket")
 		}
-		hit := hi >= p.Entry+2*p.Signal.ATR
-		if d == -1 {
-			hit = lo <= p.Entry-2*p.Signal.ATR
+		var hit bool
+		if portable {
+			threshold := fp.Add(p.Entry, fp.Mul(2, p.Signal.ATR))
+			hit = hi >= threshold
+			if d == -1 {
+				threshold = fp.Sub(p.Entry, fp.Mul(2, p.Signal.ATR))
+				hit = lo <= threshold
+			}
+		} else {
+			hit = hi >= p.Entry+2*p.Signal.ATR
+			if d == -1 {
+				hit = lo <= p.Entry-2*p.Signal.ATR
+			}
 		}
 		locked = previousLocked || hit
 		newSL, newTP, base = *oldSL, *oldTP, *oldSL
-		if locked && d == -row.Regime && float64(d)*(row.Close-*row.Supertrend) > 0 {
-			rejected = float64(d)*(*row.Supertrend-*oldSL) < -1e-9
+		if locked && d == -row.Regime && directionalDifference(row.Close, *row.Supertrend, d, portable) > 0 {
+			rejected = directionalDifference(*row.Supertrend, *oldSL, d, portable) < -1e-9
 			if d == 1 {
 				newSL = math.Max(newSL, *row.Supertrend)
 			} else {
@@ -180,13 +258,13 @@ func manage(p *Position, row IndicatorRow, previousRegime int, mode string, spre
 	if !finite(newSL) || !finite(newTP) {
 		return OrderEdit{}, fmt.Errorf("master nonfinite order edit")
 	}
-	widened := oldSL != nil && float64(d)*(newSL-*oldSL) < -1e-9
-	changed := oldTP != nil && math.Abs(newTP-*oldTP) > 1e-9
+	widened := oldSL != nil && directionalDifference(newSL, *oldSL, d, portable) < -1e-9
+	changed := oldTP != nil && math.Abs(plainDifference(newTP, *oldTP, portable)) > 1e-9
 	became := locked && !previousLocked
 	deactivated := previousLocked && !locked
-	relaxation := mode == SourceMode && became && float64(d)*(*row.Supertrend-base) < -1e-9
+	relaxation := mode == SourceMode && became && directionalDifference(*row.Supertrend, base, d, portable) < -1e-9
 	preentry := mode == SourceMode && became && !postOnly
-	marketable := float64(d)*(qclose-newTP) >= 0
+	marketable := directionalDifference(qclose, newTP, d, portable) >= 0
 	if widened {
 		p.StopWidenings++
 	}
@@ -208,7 +286,7 @@ func manage(p *Position, row IndicatorRow, previousRegime int, mode string, spre
 	if rejected {
 		p.RejectedWorseST++
 	}
-	if locked && float64(d)*(newSL-p.Entry) <= 0 {
+	if locked && directionalDifference(newSL, p.Entry, d, portable) <= 0 {
 		p.NonprofitLockEdits++
 	}
 	if marketable {
