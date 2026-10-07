@@ -10,6 +10,9 @@ import (
 var ErrParserUnimplemented = errors.New("dsl parser is not implemented")
 
 func parse(source string) (ParseResult, error) {
+	if masterSourceCandidate(source) {
+		return parseMasterStructuralSource(source), nil
+	}
 	if regimeSourceCandidate(source) {
 		return parseRegimeEngineSource(source), nil
 	}
@@ -24,6 +27,9 @@ func parse(source string) (ParseResult, error) {
 	}
 	if IsRegimeEngineReserved(parser.config) {
 		return parseRegimeEngineSource(source), nil
+	}
+	if IsMasterStructuralReserved(parser.config) {
+		return parseMasterStructuralSource(source), nil
 	}
 	return parser.result(), nil
 }
@@ -678,7 +684,7 @@ func canonicalSetupFamily(tokens []string) string {
 	// Frozen selectors belong exclusively to the strict front-end. The
 	// permissive legacy lexer must not acquire this family from text inside
 	// metadata; authored selectors are audited before this parser is entered.
-	if family == string(FamilyFrozenLevelBreakout) || family == string(FamilyRegimeEngine) {
+	if family == string(FamilyFrozenLevelBreakout) || family == string(FamilyRegimeEngine) || family == string(FamilyMasterStructural) {
 		return ""
 	}
 	return family

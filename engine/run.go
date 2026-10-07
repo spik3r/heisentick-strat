@@ -91,6 +91,9 @@ type SharedRunContext struct {
 
 // SharedContextKey returns a stable key for the context columns a request needs.
 func SharedContextKey(request RunRequest) (string, error) {
+	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
+		return "", err
+	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return "", err
 	}
@@ -129,6 +132,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 // PrepareSharedRunContext builds immutable context columns and higher-timeframe
 // state once for a route/config context group.
 func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
+	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
+		return nil, err
+	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return nil, err
 	}
@@ -174,6 +180,9 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 // PrepareVariant creates a per-variant runner that shares immutable context
 // state while owning its broker and trade buffers.
 func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) {
+	if err := rejectDedicatedMasterExecution(cfg); err != nil {
+		return nil, err
+	}
 	if err := rejectDedicatedRegimeExecution(cfg); err != nil {
 		return nil, err
 	}
@@ -241,6 +250,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 
 // PrepareRun builds the causal context columns and setup state for a strategy.
 func PrepareRun(request RunRequest) (*PreparedRun, error) {
+	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
+		return nil, err
+	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return nil, err
 	}
@@ -295,6 +307,9 @@ func sourceEntryRequest(request RunRequest) bool {
 }
 
 func validateRunRequest(request RunRequest) error {
+	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
+		return err
+	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return err
 	}
@@ -514,6 +529,9 @@ func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
 
 // Run executes a direct engine request in one call.
 func Run(request RunRequest) (RunResult, error) {
+	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return RunResult{}, err
 	}

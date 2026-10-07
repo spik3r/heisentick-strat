@@ -255,6 +255,14 @@
       "classification": "go-only",
       "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
       "since": 7
+    },
+    {
+      "id": "masterStructural",
+      "canonicalSpelling": "master structural",
+      "canonicalExample": "type: master structural\n  master profile v10-phase0-floor-half-reference-v1\n  master mode SOURCE_HISTORICAL_REFERENCE",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1638,6 +1646,24 @@
       "classification": "go-only",
       "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.master-structural",
+      "source": "go-inline-setup-type",
+      "spelling": "master structural",
+      "familyId": "masterStructural",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.master-structural",
+      "source": "go-canonical-setup-type",
+      "spelling": "master structural",
+      "familyId": "masterStructural",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2295,6 +2321,27 @@
       "spelling": "regime timeframe",
       "classification": "go-only",
       "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "directive.master-mode",
+      "spelling": "master mode",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "directive.master-profile",
+      "spelling": "master profile",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "directive.master-timeframe",
+      "spelling": "master timeframe",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
       "since": 7
     }
   ],

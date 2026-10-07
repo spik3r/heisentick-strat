@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the fixed native-offline Master Structural v10 research family (HT-177),
+  with separate historical-source and stable-protected policy bundles, explicit
+  H4 clock horizons, continuous reference prices, rounded illustrative quantity,
+  and full order/activation/terminal audits. Reuse qualified v9 primitives
+  without changing either v9 policy. Dedicated `master-report` only; generic and
+  engine-WASM execution remain refused. New parsing and invented synthetic
+  cases preserve all prior goldens. No Pine/broker parity, release, consumer
+  adoption, deployment or historical performance claim is included; future
+  release would require a minor version and separate review.
+
 - Add the fixed, Go-only Regime Engine DSL interpretation (HT-175), with
   source-like-v1 and audit-baseline-v1 policies, a dedicated engine/regime API
   and regime-report CLI, indicator/order/terminal-exposure audits, and strict
