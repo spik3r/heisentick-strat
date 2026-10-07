@@ -14,9 +14,10 @@ const (
 // AdaptiveFlagRequest accepts one explicit observed timeframe, with no provider,
 // aggregation, economics, or alternate execution-policy defaults.
 type AdaptiveFlagRequest struct {
-	Config dsl.Config
-	Series marketdata.Series
-	Window *AdaptiveFlagExecutionWindow
+	Config           dsl.Config
+	Series           marketdata.Series
+	Window           *AdaptiveFlagExecutionWindow
+	ResearchAblation AdaptiveFlagResearchAblation
 }
 
 // AdaptiveFlagExecutionWindow is evaluation metadata, not a signal setting.
@@ -183,4 +184,8 @@ type AdaptiveFlagResult struct {
 	Gaps                    []AdaptiveFlagGap            `json:"gaps"`
 	Terminal                AdaptiveFlagState            `json:"terminal"`
 	Assumptions             []string                     `json:"assumptions"`
+
+	ResearchPolicy       *AdaptiveFlagResearchPolicy   `json:"researchPolicy,omitempty"`
+	ResearchPolicySHA256 string                        `json:"researchPolicySha256,omitempty"`
+	ResearchProducer     *AdaptiveFlagResearchProducer `json:"researchProducer,omitempty"`
 }

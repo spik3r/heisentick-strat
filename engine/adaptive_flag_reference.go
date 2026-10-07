@@ -230,6 +230,10 @@ func RunAdaptiveVolumeFlag(request AdaptiveFlagRequest) (AdaptiveFlagResult, err
 	if err != nil {
 		return AdaptiveFlagResult{}, err
 	}
+	research, err := adaptiveFlagResearchPolicy(request.ResearchAblation, spec)
+	if err != nil {
+		return AdaptiveFlagResult{}, err
+	}
 	series, window, err := adaptiveFlagWindowPrefix(request.Series, spec.Timeframe, request.Window)
 	if err != nil {
 		return AdaptiveFlagResult{}, err
@@ -239,6 +243,9 @@ func RunAdaptiveVolumeFlag(request AdaptiveFlagRequest) (AdaptiveFlagResult, err
 		return AdaptiveFlagResult{}, err
 	}
 	rows := adaptiveFlagSnapshots(bars, spec.Rules)
+	if research != nil {
+		adaptiveFlagResearchOverlay(rows, spec.Rules, *research)
+	}
 	if _, err = json.Marshal(rows); err != nil {
 		return AdaptiveFlagResult{}, fmt.Errorf("adaptive volume flag nonfinite derived source state: %w", err)
 	}
@@ -278,6 +285,15 @@ func RunAdaptiveVolumeFlag(request AdaptiveFlagRequest) (AdaptiveFlagResult, err
 			"Raw prices and distances only: no costs, sizing, quantity, point value, cash PnL, return, equity, risk budget, margin, account properties or performance qualification.",
 			"Source snapshots compute causal predicates at each close for inspection; a candidate creates an order only when order state admits it. Explicit float64 rounding barriers do not establish cross-architecture qualification.",
 		},
+	}
+	if research != nil {
+		out.Schema = AdaptiveFlagResearchSchema
+		out.ResearchPolicy = research
+		out.ResearchPolicySHA256, err = adaptiveFlagHash(*research)
+		if err != nil {
+			return AdaptiveFlagResult{}, err
+		}
+		out.ResearchProducer = adaptiveFlagResearchBuild()
 	}
 	for i := 1; i < len(bars); i++ {
 		if bars[i].OpenT > bars[i-1].CloseT {
