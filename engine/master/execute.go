@@ -3,12 +3,17 @@ package master
 import (
 	"fmt"
 	"github.com/spik3r/heisentick-strat/engine/regime"
+	fp "github.com/spik3r/heisentick-strat/internal/float64contract"
 	"math"
 	"sort"
 	"time"
 )
 
 func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
+	return executeArithmetic(r, mode, rows, false)
+}
+
+func executeArithmetic(r Request, mode string, rows []IndicatorRow, portable bool) (Result, error) {
 	out := Result{Symbol: "XAUUSD", SourceTimeframe: "5m", NativeTimeframe: "30m", Schema: "strat-master-structural-report-v1", Mode: mode, ExecutionModel: "native-m30-ohlc-path-next-observed-open", QuantityModel: "floor-0.1-step-epsilon1e-12-10pct-equity-notional-pointvalue1", PriceModel: "continuous-reference-no-tick-rounding", WarmupFromT: r.WarmupFromT, TradeFromT: r.TradeFromT, TradeToT: r.TradeToT, Costs: r.Costs, Indicators: rows, Signals: []Signal{}, Trades: []Trade{}, Edits: []OrderEdit{}, Assumptions: []string{
 		"Owned reference OHLCV; provider, executable quote side and volume units unverified.",
 		"Spread scenarios conditionally treat reference bars as bid-style; this is not verified feed identity.",
@@ -30,13 +35,24 @@ func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
 		if p == nil {
 			return fmt.Errorf("master close without position")
 		}
-		gross := float64(p.Signal.Direction) * (price - p.Entry)
-		net := gross - 2*r.Costs.FeePerUnitSide
-		equity += p.Quantity * (gross - r.Costs.FeePerUnitSide)
-		if !finite(price) || !finite(equity) || !finite(net*p.Quantity) {
-			return fmt.Errorf("master exit overflow")
+		var gross, net, total, exitFee float64
+		if portable {
+			gross = fp.Mul(float64(p.Signal.Direction), fp.Sub(price, p.Entry))
+			net = fp.Sub(gross, fp.Mul(2, r.Costs.FeePerUnitSide))
+			equity = fp.Add(equity, fp.Mul(p.Quantity, fp.Sub(gross, r.Costs.FeePerUnitSide)))
+			total = fp.Mul(net, p.Quantity)
+			exitFee = fp.Mul(p.Quantity, r.Costs.FeePerUnitSide)
+		} else {
+			gross = float64(p.Signal.Direction) * (price - p.Entry)
+			net = gross - 2*r.Costs.FeePerUnitSide
+			equity += p.Quantity * (gross - r.Costs.FeePerUnitSide)
+			if !finite(price) || !finite(equity) || !finite(net*p.Quantity) {
+				return fmt.Errorf("master exit overflow")
+			}
+			total = net * p.Quantity
+			exitFee = p.Quantity * r.Costs.FeePerUnitSide
 		}
-		out.Trades = append(out.Trades, Trade{Position: *p, ExitT: when, Exit: price, Reason: reason, GrossPerUnit: gross, NetPerUnit: net, Net: net * p.Quantity, ExitFee: p.Quantity * r.Costs.FeePerUnitSide, EquityAfter: equity})
+		out.Trades = append(out.Trades, Trade{Position: *p, ExitT: when, Exit: price, Reason: reason, GrossPerUnit: gross, NetPerUnit: net, Net: total, ExitFee: exitFee, EquityAfter: equity})
 		p = nil
 		return nil
 	}
@@ -53,7 +69,7 @@ func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
 		}
 		if pending != nil {
 			var err error
-			p, equity, err = openPosition(*pending, row.NativeBar, mode, r.Costs, equity)
+			p, equity, err = openPositionArithmetic(*pending, row.NativeBar, mode, r.Costs, equity, portable)
 			if err != nil {
 				return Result{}, err
 			}
@@ -70,14 +86,29 @@ func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
 			if p.ForcedReason != "" {
 				q := row.Open
 				if p.Signal.Direction == -1 {
-					q += r.Costs.Spread
+					if portable {
+						q = fp.Add(q, r.Costs.Spread)
+					} else {
+						q += r.Costs.Spread
+					}
 				}
 				if err := closePosition(q, row.FirstObservedT, p.ForcedReason); err != nil {
 					return Result{}, err
 				}
 			} else {
 				if p.SL != nil {
-					price, reason, when := regime.ReferenceBarrier(row.NativeBar, *p.SL, *p.TP, p.Signal.Direction, r.Costs.Spread)
+					var price float64
+					var reason string
+					var when int64
+					if portable {
+						var err error
+						price, reason, when, err = regime.ReferenceBarrierPortableV1(row.NativeBar, *p.SL, *p.TP, p.Signal.Direction, r.Costs.Spread)
+						if err != nil {
+							return Result{}, err
+						}
+					} else {
+						price, reason, when = regime.ReferenceBarrier(row.NativeBar, *p.SL, *p.TP, p.Signal.Direction, r.Costs.Spread)
+					}
 					if reason != "" {
 						if err := closePosition(price, when, reason); err != nil {
 							return Result{}, err
@@ -95,7 +126,13 @@ func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
 			if h4 == nil || row.ATRPercent == nil {
 				return Result{}, fmt.Errorf("invalid master H4 candidate")
 			}
-			s := Signal{Signal: regime.Signal{Time: row.CloseT, Direction: candidate, Anchor: row.Close, ATR: *row.ATR14, Supertrend: *row.Supertrend, Regime: row.Regime, Volume: row.Volume, VolumeRatio: row.Volume / *row.VolumeMean, Accepted: p == nil}, High: row.High, Low: row.Low, H4: *h4, ATRPercent: *row.ATRPercent}
+			var ratio float64
+			if portable {
+				ratio = fp.Div(row.Volume, *row.VolumeMean)
+			} else {
+				ratio = row.Volume / *row.VolumeMean
+			}
+			s := Signal{Signal: regime.Signal{Time: row.CloseT, Direction: candidate, Anchor: row.Close, ATR: *row.ATR14, Supertrend: *row.Supertrend, Regime: row.Regime, Volume: row.Volume, VolumeRatio: ratio, Accepted: p == nil}, High: row.High, Low: row.Low, H4: *h4, ATRPercent: *row.ATRPercent}
 			out.Signals = append(out.Signals, s)
 			if s.Accepted {
 				pending = &s
@@ -106,7 +143,7 @@ func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
 			if i > 0 {
 				prev = rows[i-1].Regime
 			}
-			edit, err := manage(p, row, prev, mode, r.Costs.Spread)
+			edit, err := manageArithmetic(p, row, prev, mode, r.Costs.Spread, portable)
 			if err != nil {
 				return Result{}, err
 			}
@@ -117,12 +154,14 @@ func execute(r Request, mode string, rows []IndicatorRow) (Result, error) {
 		}
 	}
 	out.OpenPosition, out.PendingSignal = p, pending
-	summarize(&out, equity)
-	out.Monthly = monthly(out.Trades)
+	summarizeArithmetic(&out, equity, portable)
+	out.Monthly = monthlyArithmetic(out.Trades, portable)
 	return out, nil
 }
 
-func summarize(out *Result, cash float64) {
+func summarize(out *Result, cash float64) { summarizeArithmetic(out, cash, false) }
+
+func summarizeArithmetic(out *Result, cash float64, portable bool) {
 	s := &out.Summary
 	s.Trades = len(out.Trades)
 	equity, peak := out.Costs.InitialEquity, out.Costs.InitialEquity
@@ -130,38 +169,79 @@ func summarize(out *Result, cash float64) {
 	wins := 0
 	positive := []float64{}
 	for _, t := range out.Trades {
-		s.Net += t.Net
-		equity += t.Net
+		if portable {
+			s.Net = fp.Add(s.Net, t.Net)
+			equity = fp.Add(equity, t.Net)
+		} else {
+			s.Net += t.Net
+			equity += t.Net
+		}
 		peak = math.Max(peak, equity)
-		s.ClosedEquityDD = math.Max(s.ClosedEquityDD, peak-equity)
+		s.ClosedEquityDD = math.Max(s.ClosedEquityDD, plainDifference(peak, equity, portable))
 		if t.Net > 0 {
-			s.GrossProfit += t.Net
+			if portable {
+				s.GrossProfit = fp.Add(s.GrossProfit, t.Net)
+			} else {
+				s.GrossProfit += t.Net
+			}
 			wins++
 			positive = append(positive, t.Net)
 		} else if t.Net < 0 {
-			s.GrossLoss -= t.Net
+			if portable {
+				s.GrossLoss = fp.Sub(s.GrossLoss, t.Net)
+			} else {
+				s.GrossLoss -= t.Net
+			}
 		}
 		if t.NetPerUnit > 0 {
-			unitProfit += t.NetPerUnit
+			if portable {
+				unitProfit = fp.Add(unitProfit, t.NetPerUnit)
+			} else {
+				unitProfit += t.NetPerUnit
+			}
 		} else if t.NetPerUnit < 0 {
-			unitLoss -= t.NetPerUnit
+			if portable {
+				unitLoss = fp.Sub(unitLoss, t.NetPerUnit)
+			} else {
+				unitLoss -= t.NetPerUnit
+			}
 		}
 	}
 	if s.GrossLoss > 0 {
-		s.PF = pointer(s.GrossProfit / s.GrossLoss)
+		if portable {
+			s.PF = pointer(fp.Div(s.GrossProfit, s.GrossLoss))
+		} else {
+			s.PF = pointer(s.GrossProfit / s.GrossLoss)
+		}
 	}
 	if unitLoss > 0 {
-		s.EqualUnitPF = pointer(unitProfit / unitLoss)
+		if portable {
+			s.EqualUnitPF = pointer(fp.Div(unitProfit, unitLoss))
+		} else {
+			s.EqualUnitPF = pointer(unitProfit / unitLoss)
+		}
 	}
 	if len(out.Trades) > 0 {
-		s.WinRate = pointer(float64(wins) / float64(len(out.Trades)))
+		if portable {
+			s.WinRate = pointer(fp.Div(float64(wins), float64(len(out.Trades))))
+		} else {
+			s.WinRate = pointer(float64(wins) / float64(len(out.Trades)))
+		}
 	}
 	sort.Sort(sort.Reverse(sort.Float64Slice(positive)))
 	s.NetWithoutBest5 = s.Net
 	for i := 0; i < min(5, len(positive)); i++ {
-		s.NetWithoutBest5 -= positive[i]
+		if portable {
+			s.NetWithoutBest5 = fp.Sub(s.NetWithoutBest5, positive[i])
+		} else {
+			s.NetWithoutBest5 -= positive[i]
+		}
 	}
-	s.ClosedEquity = out.Costs.InitialEquity + s.Net
+	if portable {
+		s.ClosedEquity = fp.Add(out.Costs.InitialEquity, s.Net)
+	} else {
+		s.ClosedEquity = out.Costs.InitialEquity + s.Net
+	}
 	s.CashEquity = cash
 	if len(out.Indicators) > 0 {
 		last := out.Indicators[len(out.Indicators)-1]
@@ -169,19 +249,35 @@ func summarize(out *Result, cash float64) {
 		if p := out.OpenPosition; p != nil {
 			q := last.Close
 			if p.Signal.Direction == -1 {
-				q += out.Costs.Spread
+				if portable {
+					q = fp.Add(q, out.Costs.Spread)
+				} else {
+					q += out.Costs.Spread
+				}
 			}
 			s.FinalLiquidationReference = pointer(q)
 			s.OpenEntryFee = p.EntryFee
-			s.UnrealizedGross = float64(p.Signal.Direction) * (q - p.Entry) * p.Quantity
-			s.HypotheticalClosingFee = p.Quantity * out.Costs.FeePerUnitSide
+			if portable {
+				s.UnrealizedGross = fp.Mul(fp.Mul(float64(p.Signal.Direction), fp.Sub(q, p.Entry)), p.Quantity)
+				s.HypotheticalClosingFee = fp.Mul(p.Quantity, out.Costs.FeePerUnitSide)
+			} else {
+				s.UnrealizedGross = float64(p.Signal.Direction) * (q - p.Entry) * p.Quantity
+				s.HypotheticalClosingFee = p.Quantity * out.Costs.FeePerUnitSide
+			}
 		}
 	}
-	s.MarkedEquity = cash + s.UnrealizedGross
-	s.MarkedEquityAfterClosingFee = s.MarkedEquity - s.HypotheticalClosingFee
+	if portable {
+		s.MarkedEquity = fp.Add(cash, s.UnrealizedGross)
+		s.MarkedEquityAfterClosingFee = fp.Sub(s.MarkedEquity, s.HypotheticalClosingFee)
+	} else {
+		s.MarkedEquity = cash + s.UnrealizedGross
+		s.MarkedEquityAfterClosingFee = s.MarkedEquity - s.HypotheticalClosingFee
+	}
 }
 
-func monthly(trades []Trade) []MonthlySummary {
+func monthly(trades []Trade) []MonthlySummary { return monthlyArithmetic(trades, false) }
+
+func monthlyArithmetic(trades []Trade, portable bool) []MonthlySummary {
 	groups := map[string][]Trade{}
 	for _, t := range trades {
 		m := time.UnixMilli(t.EntryT).UTC().Format("2006-01")
@@ -197,23 +293,51 @@ func monthly(trades []Trade) []MonthlySummary {
 		s := MonthlySummary{EntryMonth: k, Trades: len(groups[k])}
 		up, ul := 0., 0.
 		for _, t := range groups[k] {
-			s.Net += t.Net
+			if portable {
+				s.Net = fp.Add(s.Net, t.Net)
+			} else {
+				s.Net += t.Net
+			}
 			if t.Net > 0 {
-				s.GrossProfit += t.Net
+				if portable {
+					s.GrossProfit = fp.Add(s.GrossProfit, t.Net)
+				} else {
+					s.GrossProfit += t.Net
+				}
 			} else if t.Net < 0 {
-				s.GrossLoss -= t.Net
+				if portable {
+					s.GrossLoss = fp.Sub(s.GrossLoss, t.Net)
+				} else {
+					s.GrossLoss -= t.Net
+				}
 			}
 			if t.NetPerUnit > 0 {
-				up += t.NetPerUnit
+				if portable {
+					up = fp.Add(up, t.NetPerUnit)
+				} else {
+					up += t.NetPerUnit
+				}
 			} else if t.NetPerUnit < 0 {
-				ul -= t.NetPerUnit
+				if portable {
+					ul = fp.Sub(ul, t.NetPerUnit)
+				} else {
+					ul -= t.NetPerUnit
+				}
 			}
 		}
 		if s.GrossLoss > 0 {
-			s.PF = pointer(s.GrossProfit / s.GrossLoss)
+			if portable {
+				s.PF = pointer(fp.Div(s.GrossProfit, s.GrossLoss))
+			} else {
+				s.PF = pointer(s.GrossProfit / s.GrossLoss)
+			}
 		}
 		if ul > 0 {
-			s.EqualUnitPF = pointer(up / ul)
+			if portable {
+				s.EqualUnitPF = pointer(fp.Div(up, ul))
+			} else {
+				s.EqualUnitPF = pointer(up / ul)
+			}
 		}
 		out = append(out, s)
 	}

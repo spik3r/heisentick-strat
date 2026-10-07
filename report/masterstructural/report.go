@@ -34,24 +34,9 @@ type Document struct {
 
 // Build returns the complete original CLI JSON document, including its final
 // newline. Validation and serialization finish before callers receive bytes.
-// Native input limits are unchanged; browser limits belong to BuildRuntime.
+// Native input limits are unchanged; portable transport limits belong to BuildPortableV1.
 func Build(source, data []byte, options Options) ([]byte, error) {
 	return build(source, data, options, false)
-}
-
-// BuildRuntime admits the closed, resource-bounded transport request only.
-func BuildRuntime(rawMeta, source string, data []byte) ([]byte, error) {
-	options, err := DecodeRuntimeRequest(rawMeta)
-	if err != nil {
-		return nil, err
-	}
-	if len(source) > MaxSourceBytes {
-		return nil, fmt.Errorf("master runtime source exceeds %d bytes", MaxSourceBytes)
-	}
-	if err := ValidateRuntimeHeader(data, len(data)); err != nil {
-		return nil, err
-	}
-	return build([]byte(source), data, options, true)
 }
 
 func build(source, data []byte, options Options, bounded bool) ([]byte, error) {
@@ -89,12 +74,22 @@ func build(source, data []byte, options Options, bounded bool) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	result, err := master.Run(master.Request{Config: parsed.Config, M5: series, WarmupFromT: options.WarmupFromT, TradeFromT: options.TradeFromT, TradeToT: options.TradeToT, Costs: master.Costs{Spread: options.Spread, FeePerUnitSide: .5, InitialEquity: 10000}})
+	request := master.Request{Config: parsed.Config, M5: series, WarmupFromT: options.WarmupFromT, TradeFromT: options.TradeFromT, TradeToT: options.TradeToT, Costs: master.Costs{Spread: options.Spread, FeePerUnitSide: .5, InitialEquity: 10000}}
+	var result master.Result
+	if bounded {
+		result, err = master.RunPortableV1(request)
+	} else {
+		result, err = master.Run(request)
+	}
 	if err != nil {
 		return nil, err
 	}
 	envelope := Document{"strat-master-structural-cli-v1", hash(source), hash(cfg), hash(data), parsed.Config, result}
-	raw, err := json.MarshalIndent(envelope, "", "  ")
+	var document any = envelope
+	if bounded {
+		document = portableDocument(source, cfg, data, parsed.Config, result)
+	}
+	raw, err := json.MarshalIndent(document, "", "  ")
 	if err != nil {
 		return nil, err
 	}

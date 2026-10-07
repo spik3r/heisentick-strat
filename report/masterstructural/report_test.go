@@ -48,7 +48,7 @@ func inventedRows(native int) marketdata.Series {
 }
 
 func requestJSON(options Options) string {
-	raw, _ := json.Marshal(map[string]any{"schema": RuntimeSchema, "warmupFromT": options.WarmupFromT, "tradeFromT": options.TradeFromT, "tradeToT": options.TradeToT, "spread": options.Spread})
+	raw, _ := json.Marshal(map[string]any{"schema": RuntimeSchema, "arithmeticContract": master.PortableArithmeticContract, "warmupFromT": options.WarmupFromT, "tradeFromT": options.TradeFromT, "tradeToT": options.TradeToT, "spread": options.Spread})
 	return string(raw)
 }
 
@@ -82,16 +82,9 @@ func TestSharedReportPreservesOriginalEnvelope(t *testing.T) {
 			}{"strat-master-structural-cli-v1", hash([]byte(source)), hash(cfg), hash(data), parsed.Config, run}
 			want, _ := json.MarshalIndent(original, "", "  ")
 			want = append(want, '\n')
-			for _, runtime := range []bool{false, true} {
-				var got []byte
-				if runtime {
-					got, err = BuildRuntime(requestJSON(options), source, data)
-				} else {
-					got, err = Build([]byte(source), data, options)
-				}
-				if err != nil || !bytes.Equal(got, want) {
-					t.Fatalf("mode %s spread %v runtime %v: %v byte identity=%v", mode, spread, runtime, err, bytes.Equal(got, want))
-				}
+			got, err := Build([]byte(source), data, options)
+			if err != nil || !bytes.Equal(got, want) {
+				t.Fatalf("mode %s spread %v: %v byte identity=%v", mode, spread, err, bytes.Equal(got, want))
 			}
 		}
 	}
@@ -104,7 +97,7 @@ func TestNativeSourceLimitUnchanged(t *testing.T) {
 	if raw, err := Build([]byte(source), data, options); err != nil || len(raw) == 0 {
 		t.Fatalf("native contract changed: %v", err)
 	}
-	if raw, err := BuildRuntime(requestJSON(options), source, data); err == nil || raw != nil {
+	if raw, err := BuildPortableV1(requestJSON(options), source, data); err == nil || raw != nil {
 		t.Fatal("runtime source limit absent")
 	}
 }
@@ -114,14 +107,19 @@ func TestNativeSourceLimitUnchanged(t *testing.T) {
 // requires explicit re-review of that proof, rather than silently retaining it.
 func TestOutputBoundFrozenConstructorContracts(t *testing.T) {
 	files := map[string]string{
-		"engine/master/execute.go":              "77fda0c3049e6f77fc82d23646b7626b602879c602f791d139e959220a5e29cf",
-		"engine/master/run.go":                  "b0751ddde971d9f2a33ab5efe19947f801877aabcb79a6317cda5b2f542f7de6",
-		"engine/master/types.go":                "0cf67ba2d7fe3fb3f97bc56cec09d6ee7185f61a3a0d28807a34c090f6a9cc7f",
-		"engine/master/indicators.go":           "75b71330c471cb0e3f3937a9146e15392c826c858e9fee882873be4d8b55c624",
-		"engine/regime/indicators.go":           "7df6d3d050900cd61a0296f39719e51cccbc70db7adb683a5349a336339ffa11",
+		"engine/master/execute.go":              "4316fb3246089ee174b612800fb30d24b229bddc0fd1493e4b7092ed76cee19a",
+		"engine/master/run.go":                  "f4add9f006f68e76074c442ebd00891c978b5eeb32745e2335a8bcca2656366c",
+		"engine/master/types.go":                "5f945abc3906bf046bd35683fb5ffcef466f232d40c9dfd92f17f7f3d796738d",
+		"engine/master/indicators.go":           "be925201659b7345d552f50250ff49fe4df9385a66bab405ed6830056b3843d4",
+		"engine/regime/indicators.go":           "ab76efb82b6568a7fed01ee85086153490ef0b2656058a8beb707a0e2f15658a",
 		"engine/regime/types.go":                "a5009107434e7d0ce7ebd364b6c068b368a017cfc00aebd5e9074f9d40c22fd1",
-		"engine/regime/reference_primitives.go": "2b4cfa732413442e51b07761fe7e6e1758faf2f15c5e05ec9172a66592cdb551",
+		"engine/regime/reference_primitives.go": "9c1d3dc442b76965d23ce272517a2187f90888048b81c69b4007be2e707729b2",
 		"engine/regime/run.go":                  "a20c91f0d11c0f7ded4208bfbfb1bdc9b0acd03df2ed99fcc70106365d324712",
+		"engine/master/portable.go":             "a7ad66637bef86c6ecec3c51f5df27023592da5e2ff563c002dce66d9b798459",
+		"internal/float64contract/separate.go":  "4af419002bb41bb1abc170297ef31211a9808b38c6edd83c7f9744958412bcfa",
+		"report/masterstructural/report.go":     "ae293cf8d5bd708b445a826f0953ff4b12f9d1d06cc354236ee8a807b4d8f8ed",
+		"report/masterstructural/portable.go":   "156933066014509e462dd12a4afd18a2fa3d0db1834d43600cb10619974ef074",
+		"report/masterstructural/request.go":    "921cda39629d5638916030a7b2be3e0a75ee78d98c0b878a1b03dc183eb6a4d5",
 	}
 	for path, want := range files {
 		raw, err := os.ReadFile(filepath.Join(testsupport.MustRepoRoot(), path))

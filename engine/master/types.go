@@ -121,6 +121,7 @@ type MonthlySummary struct {
 	EqualUnitPF *float64 `json:"closedEqualUnitPF"`
 }
 type Result struct {
+	ArithmeticContract string           `json:"arithmeticContract,omitempty"`
 	Symbol             string           `json:"symbol"`
 	SourceTimeframe    string           `json:"sourceTimeframe"`
 	NativeTimeframe    string           `json:"nativeTimeframe"`

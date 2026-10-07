@@ -94,6 +94,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
 		return "", err
 	}
+	if err := rejectDedicatedAdaptiveFlagExecution(request.Config); err != nil {
+		return "", err
+	}
 	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
 		return "", err
 	}
@@ -136,6 +139,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 // state once for a route/config context group.
 func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
+		return nil, err
+	}
+	if err := rejectDedicatedAdaptiveFlagExecution(request.Config); err != nil {
 		return nil, err
 	}
 	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
@@ -187,6 +193,9 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 // state while owning its broker and trade buffers.
 func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) {
 	if err := rejectDedicatedGoldFlagExecution(cfg); err != nil {
+		return nil, err
+	}
+	if err := rejectDedicatedAdaptiveFlagExecution(cfg); err != nil {
 		return nil, err
 	}
 	if err := rejectDedicatedMasterExecution(cfg); err != nil {
@@ -262,6 +271,9 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
 		return nil, err
 	}
+	if err := rejectDedicatedAdaptiveFlagExecution(request.Config); err != nil {
+		return nil, err
+	}
 	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
 		return nil, err
 	}
@@ -320,6 +332,9 @@ func sourceEntryRequest(request RunRequest) bool {
 
 func validateRunRequest(request RunRequest) error {
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
+		return err
+	}
+	if err := rejectDedicatedAdaptiveFlagExecution(request.Config); err != nil {
 		return err
 	}
 	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
@@ -545,6 +560,9 @@ func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
 // Run executes a direct engine request in one call.
 func Run(request RunRequest) (RunResult, error) {
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := rejectDedicatedAdaptiveFlagExecution(request.Config); err != nil {
 		return RunResult{}, err
 	}
 	if err := rejectDedicatedMasterExecution(request.Config); err != nil {

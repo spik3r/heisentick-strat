@@ -144,14 +144,14 @@ func TestRuntimeRejectsNonfiniteAndNegativeVolumeBeforeRun(t *testing.T) {
 				row = 330
 			}
 			binary.LittleEndian.PutUint64(data[16+(column*s.Len()+row)*8:], math.Float64bits(math.NaN()))
-			if raw, err := BuildRuntime(requestJSON(options), sourceFor(master.SourceMode), data); err == nil || raw != nil {
+			if raw, err := BuildPortableV1(requestJSON(options), sourceFor(master.SourceMode), data); err == nil || raw != nil {
 				t.Fatalf("nonfinite col%d future%v", column, future)
 			}
 		}
 	}
 	s := inventedRows(50)
 	s.V[1] = -1
-	if raw, err := BuildRuntime(requestJSON(options), sourceFor(master.SourceMode), marketdata.EncodeBTB1(s)); err == nil || raw != nil {
+	if raw, err := BuildPortableV1(requestJSON(options), sourceFor(master.SourceMode), marketdata.EncodeBTB1(s)); err == nil || raw != nil {
 		t.Fatal("negative volume")
 	}
 }

@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	RuntimeSchema    = "master-structural-runtime-request-v1"
+	RuntimeSchema    = "master-structural-portable-runtime-request-v1"
 	MaxMetadataBytes = 4096
 	MaxSourceBytes   = 65536
 	MaxRows          = 100000
@@ -58,6 +58,10 @@ func DecodeRuntimeRequest(raw string) (Options, error) {
 			if value != RuntimeSchema {
 				return options, fmt.Errorf("master runtime metadata schema must equal %s", RuntimeSchema)
 			}
+		case "arithmeticContract":
+			if value != master.PortableArithmeticContract {
+				return options, fmt.Errorf("master runtime arithmeticContract must equal %s", master.PortableArithmeticContract)
+			}
 		case "warmupFromT", "tradeFromT", "tradeToT":
 			number, ok := value.(json.Number)
 			if !ok {
@@ -80,24 +84,10 @@ func DecodeRuntimeRequest(raw string) (Options, error) {
 			if !ok {
 				return options, fmt.Errorf("master runtime spread requires 0 or 1")
 			}
-			// Compare the exact JSON decimal before float conversion. Rounding
-			// 1.00000000000000001 to 1 or underflowing 1e-999 to 0 must not
-			// admit a cost outside the fixed bundle. Metadata length bounds
-			// the token; bound exponents too before arbitrary-precision work.
-			if len(number.String()) > 64 {
-				return options, fmt.Errorf("master runtime spread requires exact 0 or 1")
+			options.Spread, err = DecodePortableSpread(number.String())
+			if err != nil {
+				return options, err
 			}
-			text := strings.ToLower(number.String())
-			if strings.Contains(text, "e") {
-				return options, fmt.Errorf("master runtime spread requires plain decimal 0 or 1")
-			}
-			exact, ok := new(big.Rat).SetString(text)
-			if !ok || (exact.Sign() != 0 && exact.Cmp(big.NewRat(1, 1)) != 0) {
-				return options, fmt.Errorf("master runtime spread requires exact 0 or 1")
-			}
-			// Preserve a signed zero just as the existing native flag parser
-			// does; exact policy admission above has already succeeded.
-			options.Spread, _ = number.Float64()
 		default:
 			return options, fmt.Errorf("master runtime unknown metadata field %q", key)
 		}
@@ -108,7 +98,7 @@ func DecodeRuntimeRequest(raw string) (Options, error) {
 	if _, err = decoder.Token(); err != io.EOF {
 		return options, fmt.Errorf("master runtime metadata has trailing input")
 	}
-	for _, key := range []string{"schema", "warmupFromT", "tradeFromT", "tradeToT", "spread"} {
+	for _, key := range []string{"schema", "arithmeticContract", "warmupFromT", "tradeFromT", "tradeToT", "spread"} {
 		if !seen[key] {
 			return options, fmt.Errorf("master runtime missing metadata field %s", key)
 		}
@@ -117,6 +107,30 @@ func DecodeRuntimeRequest(raw string) (Options, error) {
 		return options, fmt.Errorf("master runtime requires warmup < trade from < trade to")
 	}
 	return options, nil
+}
+
+// DecodePortableSpread validates the original token before float conversion.
+// Both native flags and JSON metadata use this exact closed admission rule.
+func DecodePortableSpread(token string) (float64, error) {
+	if len(token) == 0 || len(token) > 64 || strings.TrimSpace(token) != token || strings.ContainsAny(token, "eE") {
+		return 0, fmt.Errorf("master runtime spread requires plain decimal 0 or 1")
+	}
+	decoder := json.NewDecoder(strings.NewReader(token))
+	decoder.UseNumber()
+	value, err := decoder.Token()
+	number, ok := value.(json.Number)
+	if err != nil || !ok || number.String() != token {
+		return 0, fmt.Errorf("master runtime spread requires exact 0 or 1")
+	}
+	if _, err = decoder.Token(); err != io.EOF {
+		return 0, fmt.Errorf("master runtime spread requires exact 0 or 1")
+	}
+	// Token length and absence of exponents bound arbitrary-precision work.
+	exact, ok := new(big.Rat).SetString(token)
+	if !ok || (exact.Sign() != 0 && exact.Cmp(big.NewRat(1, 1)) != 0) {
+		return 0, fmt.Errorf("master runtime spread requires exact 0 or 1")
+	}
+	return number.Float64() // Preserve admitted negative zero.
 }
 
 // ValidateRuntimeHeader accepts only a bounded complete six-column BTB1. The
@@ -217,9 +231,10 @@ func runtimeOutputBound(cfg dsl.Config, nativeRows, higherRows, tradeRows uint64
 	if err != nil {
 		return 0, err
 	}
-	// 2048 covers the seven fixed envelope names, schema, three 64-byte hashes,
-	// punctuation, indentation and final newline (less than 512 actual bytes).
-	return result + uint64(len(config)) + 2048, nil
+	// 4096 covers all fixed portable envelope/provenance fields, including
+	// schemas, three 64-byte hashes, punctuation, indentation and newline.
+	// TestPortableEnvelopeFixedAllowance independently checks this allowance.
+	return result + uint64(len(config)) + portableEnvelopeAllowance, nil
 }
 
 // maximumJSON is a deliberately loose upper bound for the known finite report

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "master-structural-portable-envelope-v1.schema.json",
+  "title": "Portable Master Structural report provenance envelope",
+  "description": "Complete fixed Master report. This envelope schema freezes numerical provenance; engine/master Go result types define nested report fields and the preflight bound rejects unreviewed type/slice additions. Neither schema claims Pine/broker parity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "arithmetic",
+    "dslSha256",
+    "configSha256",
+    "dataSha256",
+    "config",
+    "run"
+  ],
+  "properties": {
+    "schema": {
+      "const": "strat-master-structural-portable-cli-v1"
+    },
+    "arithmetic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "rounding",
+        "implicitContraction",
+        "tickQuantization"
+      ],
+      "properties": {
+        "contract": {
+          "const": "master-binary64-separated-v1"
+        },
+        "rounding": {
+          "const": "IEEE-754 binary64 round-to-nearest ties-to-even after each evaluated arithmetic operation"
+        },
+        "implicitContraction": {
+          "const": false
+        },
+        "tickQuantization": {
+          "const": false
+        }
+      }
+    },
+    "dslSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "configSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "dataSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "config": {
+      "type": "object"
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "schema",
+        "arithmeticContract",
+        "pineParityVerified",
+        "costComplete"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-master-structural-portable-report-v1"
+        },
+        "arithmeticContract": {
+          "const": "master-binary64-separated-v1"
+        },
+        "pineParityVerified": {
+          "const": false
+        },
+        "costComplete": {
+          "const": false
+        }
+      }
+    }
+  }
+}

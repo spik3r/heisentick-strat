@@ -1,27 +1,30 @@
 // Dedicated Master Structural runtime parity, using invented data only.
 // Usage: node scripts/checks/master-runtime-parity.mjs \
-//   <native CLI> <enginewasm.wasm> <wasm_exec.js> [before-refactor CLI]
-// Both runtimes receive the same JS-generated BTB1 bytes, never historical data.
+//   <native CLI> <enginewasm.wasm> <wasm_exec.js>
+// All architectures read the same frozen invented BTB1 bytes and fixed windows.
 import assert from 'node:assert/strict';
 import { createHash, webcrypto } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-const [nativeCLI, engineWasm, shim, beforeCLI, ...extra] = process.argv.slice(2);
-assert(nativeCLI && engineWasm && shim && !extra.length, 'three paths and an optional before-refactor CLI are required');
+const [nativeCLI, engineWasm, shim, ...extra] = process.argv.slice(2);
+assert(nativeCLI && engineWasm && shim && !extra.length, 'exactly three paths are required');
 globalThis.crypto ??= webcrypto;
 createRequire(import.meta.url)(resolve(shim));
 const go = new globalThis.Go();
 const { instance } = await WebAssembly.instantiate(readFileSync(engineWasm), go.importObject);
 void go.run(instance);
-assert.equal(typeof globalThis.engineRunMasterReport, 'function', 'dedicated WASM export is absent');
+assert.equal(typeof globalThis.engineRunMasterPortableReport, 'function', 'dedicated WASM export is absent');
+
+assert.equal(globalThis.engineRunMasterReport, undefined, 'withdrawn nonportable export must not be an alias');
 
 const M5 = 300000, M30 = 6 * M5, H4 = 8 * M30;
 const modes = ['SOURCE_HISTORICAL_REFERENCE', 'PROTECTED_STABLE_REFERENCE'];
-const metadata = { schema: 'master-structural-runtime-request-v1', warmupFromT: 0, tradeFromT: 40 * M30, tradeToT: 500 * M30, spread: 0 };
+const metadata = { schema: 'master-structural-portable-runtime-request-v1', arithmeticContract: 'master-binary64-separated-v1', warmupFromT: 0, tradeFromT: 40 * M30, tradeToT: 500 * M30, spread: 0 };
 const source = (mode = modes[0], name = 'Invented Master runtime') => `dsl v7
 strategy "${name}" { description "Deterministic invented OHLCV only" }
 market { master timeframe M30 from M5 }
@@ -35,21 +38,30 @@ const sourcePath = join(scratch, 'invented.strat'), dataPath = join(scratch, 'in
 const evidence = { schema: 'master-runtime-native-wasm-parity-v1', comparisons: [], rejected: 0, genericRefusals: 0, legacyControls: 0 };
 const digest = (s) => createHash('sha256').update(s).digest('hex');
 
-// Same waveform as engine/master/master_test.go; evaluate it once in JS so
-// runtime parity cannot accidentally test different libm-generated inputs.
-function waveform(n) {
-  const rows = [];
-  let previous = 100;
-  for (let i = 0; i < n; i++) {
-    const close = 100 + .015 * i + 4 * Math.sin(i * .13) + .8 * Math.sin(i * .71);
-    for (let j = 0; j < 6; j++) {
-      const o = previous + (close - previous) * j / 6;
-      const c = previous + (close - previous) * (j + 1) / 6;
-      rows.push([(i * 6 + j) * M5, o, Math.max(o, c) + .08, Math.min(o, c) - .08, c, 10 + (i * 17) % 23]);
-    }
-    previous = close;
-  }
-  return rows;
+// Immutable synthetic bytes. No host transcendental generation or output-selected windows.
+const corpusRaw = readFileSync(new URL('../../testsupport/testdata/master-portable-corpus-v1.json', import.meta.url));
+assert(corpusRaw.length <= 2 * 1024 * 1024);
+assert.equal(digest(corpusRaw), '1dc35945d0822756ba1b2be70182858eff7c80f24ac315c23d6cda4cd8107b32', 'frozen corpus changed');
+const corpus = JSON.parse(corpusRaw);
+assert.equal(corpus.schema, 'master-portable-invented-corpus-v1');
+assert.equal(corpus.cases.length, 38); assert.equal(Object.keys(corpus.assets).length, 11);
+const assets = new Map();
+for (const [key, asset] of Object.entries(corpus.assets)) {
+  assert.equal(asset.encoding, 'gzip-base64-btb1');
+  assert(asset.rows > 0 && asset.rows <= 100000 && asset.byteLength === 16 + asset.rows * 48);
+  assert(asset.payload.length <= 6400024);
+  const bytes = new Uint8Array(gunzipSync(Buffer.from(asset.payload, 'base64'), { maxOutputLength: 4800016 }));
+  assert.equal(bytes.length, asset.byteLength); assert.equal(digest(bytes), key); assert.equal(asset.sha256, key);
+  assets.set(key, bytes);
+}
+for (const item of corpus.cases) {
+  assert.equal(digest(item.source), item.sourceSha256); assert(assets.has(item.dataSha256));
+  assert.equal(item.metadata.schema, metadata.schema); assert.equal(item.metadata.arithmeticContract, metadata.arithmeticContract);
+}
+evidence.corpusSha256 = digest(corpusRaw);
+function rowsFrom(bytes) {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength), n = view.getUint32(8, true);
+  return Array.from({length:n},(_,i)=>Array.from({length:6},(_,col)=>view.getFloat64(16+(col*n+i)*8,true)));
 }
 function encode(rows) {
   const bytes = new Uint8Array(16 + rows.length * 48);
@@ -64,12 +76,12 @@ function native(binary, meta, text, bytes) {
   writeFileSync(sourcePath, text);
   writeFileSync(dataPath, bytes);
   const stamp = (ms) => new Date(ms).toISOString().replace('.000Z', 'Z');
-  return execFileSync(resolve(binary), ['master-report', `--dsl-file=${sourcePath}`, `--m5-file=${dataPath}`,
+  return execFileSync(resolve(binary), ['master-portable-report', `--arithmetic-contract=${meta.arithmeticContract}`, `--dsl-file=${sourcePath}`, `--m5-file=${dataPath}`,
     `--warmup-from=${stamp(meta.warmupFromT)}`, `--trade-from=${stamp(meta.tradeFromT)}`,
     `--trade-to=${stamp(meta.tradeToT)}`, `--spread=${meta.spread}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 }
 // Diagnostic helpers: exact section fragments; never raw input/report dumps.
-let byteMismatchCount = 0, beforeAfterMismatchCount = 0;
+let byteMismatchCount = 0;
 const maxDiagnosticRecords = 80;
 function rawMembers(raw) {
   let i = 0;
@@ -168,7 +180,6 @@ function identical(actual, expected, label) {
   assert.equal(typeof actual, 'string', `${label}: expected a JSON string`);
   if (actual === expected) return true;
   byteMismatchCount++;
-  if (label.endsWith('/before-after')) beforeAfterMismatchCount++;
   if (byteMismatchCount <= maxDiagnosticRecords) {
     console.error(JSON.stringify({ schema: 'master-runtime-parity-difference-v2', case: label.slice(0, 160),
       actualSha256: digest(actual), expectedSha256: digest(expected), ...fieldDifferences(actual, expected) }));
@@ -181,23 +192,26 @@ function requireByteParity() {
 // End diagnostic helpers.
 function compare(label, rows, meta = metadata, text = source(), suppliedBytes) {
   const bytes = suppliedBytes ?? encode(rows);
-  const wasm = globalThis.engineRunMasterReport(JSON.stringify(meta), text, bytes);
+  const wasm = globalThis.engineRunMasterPortableReport(JSON.stringify(meta), text, bytes);
   const result = JSON.parse(wasm);
   assert.equal(result.error, undefined, `${label}: ${result.error}`);
   const cli = native(nativeCLI, meta, text, bytes);
   identical(wasm, cli, `${label}/native-WASM`); // Including indentation and trailing newline.
-  if (beforeCLI) identical(cli, native(beforeCLI, meta, text, bytes), `${label}/before-after`);
-  assert.equal(result.schema, 'strat-master-structural-cli-v1');
+  assert.equal(result.schema, 'strat-master-structural-portable-cli-v1');
+  assert.equal(result.arithmetic.contract, metadata.arithmeticContract);
+  assert.equal(result.arithmetic.implicitContraction, false); assert.equal(result.arithmetic.tickQuantization, false);
+  assert.equal(result.run.arithmeticContract, metadata.arithmeticContract);
+  assert.equal(result.run.schema, 'strat-master-structural-portable-report-v1');
   assert.equal(result.dslSha256, digest(Buffer.from(text, 'utf8')));
   assert.equal(result.dataSha256, digest(bytes));
   assert.equal(result.run.pineParityVerified, false);
   assert.equal(result.run.costComplete, false);
-  evidence.comparisons.push({ label, rows: rows.length, trades: result.run.trades.length, sha256: digest(wasm), nativeSha256: digest(cli), byteIdentical: wasm === cli });
+  evidence.comparisons.push({ label, sourceSha256: digest(text), dataSha256: digest(bytes), configSha256: result.configSha256, rows: rows.length, trades: result.run.trades.length, sha256: digest(wasm), nativeSha256: digest(cli), byteIdentical: wasm === cli });
   return { raw: wasm, envelope: result, run: result.run };
 }
 function reject(label, meta = JSON.stringify(metadata), text = source(), bytes = baseBytes) {
   let raw;
-  assert.doesNotThrow(() => { raw = globalThis.engineRunMasterReport(meta, text, bytes); }, `${label}: exception escaped the bridge`);
+  assert.doesNotThrow(() => { raw = globalThis.engineRunMasterPortableReport(meta, text, bytes); }, `${label}: exception escaped the bridge`);
   assert.equal(typeof raw, 'string', `${label}: rejection must be a JSON string`);
   const result = JSON.parse(raw);
   assert.deepEqual(Object.keys(result), ['error'], `${label}: rejection leaked a partial result`);
@@ -211,98 +225,69 @@ function mutateBytes(bytes, mutate) {
   mutate(new DataView(copy.buffer), copy);
   return copy;
 }
-const wave = waveform(700), base = wave.slice(0, 500 * 6), baseBytes = encode(base);
-const mirror = base.map(([t, o, h, l, c, v]) => [t, 250 - o, 250 - l, 250 - h, 250 - c, v]);
-
+const baseBytes = assets.get(corpus.cases[0].dataSha256), base = rowsFrom(baseBytes);
+const backing = new Uint8Array(baseBytes.length + 31).fill(0xa5); backing.set(baseBytes, 13);
+const fixedResults = new Map();
+function fixedCompare(item) {
+  let bytes = assets.get(item.dataSha256);
+  if (item.label === 'nonzero-byte-offset') bytes = backing.subarray(13, 13 + baseBytes.length);
+  const result = compare(item.label, rowsFrom(bytes), item.metadata, item.source, bytes);
+  fixedResults.set(item.label, result);
+  return result;
+}
 try {
-  for (const mode of modes) {
-    for (const spread of [0, 1]) {
-      const meta = { ...metadata, spread }, text = source(mode), label = `${mode}/spread-${spread}`;
-      const baseline = compare(label, base, meta, text);
-      const reflected = compare(`${label}/reflected`, mirror, meta, text);
-      for (const run of [baseline.run, reflected.run]) {
-        assert(run.trades.length > 0 && run.signals.length > 0, `${label}: vacuous trade coverage`);
-        for (const trade of run.trades) {
-          assert(trade.entryT >= trade.signal.time && trade.exitT >= trade.entryT && trade.exitT <= meta.tradeToT);
-        }
-      }
-      const directions = new Set([...baseline.run.trades, ...reflected.run.trades].map((trade) => trade.signal.direction));
-      assert(directions.has(1) && directions.has(-1), `${label}: must exercise both long and short trades`);
-      const future = compare(`${label}/future-appended`, wave, meta, text);
-      const changed = wave.map((row, i) => i < base.length ? row : row.map((v, col) => col === 0 ? v : v * (col === 5 ? 10 : 2)));
-      const mutated = compare(`${label}/future-mutated`, changed, meta, text);
-      assert.deepEqual(future.run, baseline.run, `${label}: future append changed the run`);
-      assert.deepEqual(mutated.run, baseline.run, `${label}: future mutation changed the run`);
-      assert.notEqual(future.envelope.dataSha256, baseline.envelope.dataSha256);
-      assert.notEqual(mutated.envelope.dataSha256, future.envelope.dataSha256);
-
-      // Remove a full native bucket and one interior M5 row. Coverage remains
-      // explicit: no invented candles and no false complete-bar certification.
-      const gapped = base.filter((row, i) => i !== 2 && !(i >= 200 * 6 && i < 201 * 6));
-      const gap = compare(`${label}/gaps-partial`, gapped, meta, text).run;
-      assert.equal(gap.usedM5Rows, gapped.length);
-      assert.equal(gap.indicators.length, 499);
-      assert.equal(gap.indicators[0].count, 5);
-      assert.equal(gap.indicators[0].complete, false);
-      assert.equal(gap.h4[0].count, 47);
-      assert.equal(gap.h4[0].complete, false);
-      assert(!gap.indicators.some((row) => row.bucketT === 200 * M30));
-
-      const firstTrade = baseline.run.trades[0];
-      const partialRows = base.filter((row) => row[0] !== firstTrade.entryBucketT);
-      const partial = compare(`${label}/partial-entry`, partialRows, meta, text).run;
-      const position = [...partial.trades, ...(partial.openPosition ? [partial.openPosition] : [])].find((p) => p.signal.time === firstTrade.signal.time);
-      assert(position, `${label}: partial future bar canceled an accepted entry`);
-      assert.equal(position.entryT, firstTrade.entryBucketT + M5);
-      assert(partial.summary.partialEntryFills > 0 && partial.summary.partialPositionBars > 0);
-
-      // Stop immediately after a real fill, before its future exit. Pick an
-      // existing multi-bar trade; this tests terminal exposure without a search.
-      const trade = baseline.run.trades.find((t) => t.exitT > t.entryBucketT + M30);
-      assert(trade, `${label}: no multi-bar trade available for terminal exposure`);
-      const until = trade.entryBucketT + M30;
-      const terminal = compare(`${label}/terminal-open`, base.filter((row) => row[0] < until), { ...meta, tradeToT: until }, text).run;
-      assert(terminal.openPosition, `${label}: terminal liquidation was fabricated`);
-      assert.equal(terminal.openPosition.entryT, trade.entryT);
-      assert(!terminal.trades.some((t) => t.entryT === trade.entryT));
-      assert.equal(terminal.summary.openEntryFee, terminal.openPosition.entryFee);
-      assert.equal(terminal.pendingSignal, null);
-      // A pending terminal signal is unreachable with a closed watermark:
-      // close==tradeTo is excluded; every earlier close has a later observed row.
-      const excluded = compare(`${label}/terminal-signal-excluded`, base.filter((row) => row[0] < trade.signal.time), { ...meta, tradeToT: trade.signal.time }, text).run;
-      assert(!excluded.signals.some((s) => s.time === trade.signal.time));
-      assert.equal(excluded.pendingSignal, null);
+  for (const item of corpus.cases.filter((item) => item.label !== 'transport-after-refusals')) fixedCompare(item);
+  for (const mode of modes) for (const spread of [0, 1]) {
+    const label = `${mode}/spread-${spread}`;
+    const baseline = fixedResults.get(label), reflected = fixedResults.get(`${label}/reflected`);
+    for (const {run} of [baseline,reflected]) {
+      assert(run.trades.length > 0 && run.signals.length > 0, `${label}: vacuous coverage`);
+      for (const trade of run.trades) assert(trade.entryT >= trade.signal.time && trade.exitT >= trade.entryT && trade.exitT <= metadata.tradeToT);
     }
+    const directions = new Set([...baseline.run.trades,...reflected.run.trades].map((trade)=>trade.signal.direction));
+    assert(directions.has(1) && directions.has(-1));
+    assert.deepEqual(fixedResults.get(`${label}/future-appended`).run,baseline.run);
+    assert.deepEqual(fixedResults.get(`${label}/future-mutated`).run,baseline.run);
+    assert.notEqual(fixedResults.get(`${label}/future-appended`).envelope.dataSha256,baseline.envelope.dataSha256);
+    assert.notEqual(fixedResults.get(`${label}/future-mutated`).envelope.dataSha256,fixedResults.get(`${label}/future-appended`).envelope.dataSha256);
+    const gap = fixedResults.get(`${label}/gaps-partial`).run;
+    assert.equal(gap.usedM5Rows,2993); assert.equal(gap.indicators.length,499);
+    assert.equal(gap.indicators[0].count,5);assert.equal(gap.indicators[0].complete,false);
+    assert.equal(gap.h4[0].count,47);assert.equal(gap.h4[0].complete,false);
+    assert(!gap.indicators.some((row)=>row.bucketT===200*M30));
+    const partial = fixedResults.get(`${label}/partial-entry`).run;
+    const firstTrade = baseline.run.trades[0];
+    const position = [...partial.trades,...(partial.openPosition?[partial.openPosition]:[])].find((p)=>p.signal.time===firstTrade.signal.time);
+    assert(position);assert.equal(position.entryT,firstTrade.entryBucketT+M5);
+    assert(partial.summary.partialEntryFills>0 && partial.summary.partialPositionBars>0);
+    const terminal = fixedResults.get(`${label}/terminal-open`).run;
+    assert(terminal.openPosition);assert.equal(terminal.summary.openEntryFee,terminal.openPosition.entryFee);
+    assert(!terminal.trades.some((t)=>t.entryT===terminal.openPosition.entryT));assert.equal(terminal.pendingSignal,null);
+    const excludedItem = corpus.cases.find((item)=>item.label===`${label}/terminal-signal-excluded`);
+    const excluded = fixedResults.get(excludedItem.label).run;
+    assert(!excluded.signals.some((signal)=>signal.time===excludedItem.metadata.tradeToT));assert.equal(excluded.pendingSignal,null);
   }
-
-  // Hand-derived H4 horizon transition from the Go unit test, in both modes.
-  const boundary = Array.from({ length: 96 * 6 }, (_, i) => {
-    const p = i >= 80 * 6 && i < 88 * 6 ? 110 : 100;
-    return [i * M5, p, p + 1, p - 1, p, 10];
-  });
   for (const mode of modes) {
-    const run = compare(`${mode}/H4-boundary`, boundary, { ...metadata, tradeToT: 96 * M30 }, source(mode)).run;
-    assert.equal(run.h4.length, 12);
-    assert.equal(run.indicators[6].historicalH4, null);
-    assert.equal(run.indicators[7].historicalH4.availableT, H4);
-    assert.equal(run.indicators[7].stableH4, null);
-    assert.equal(run.indicators[8].stableH4.availableT, H4);
-    assert.equal(run.indicators[87].historicalH4.regime, -1);
-    assert.equal(run.indicators[87].stableH4.regime, 1);
-    assert.equal(run.indicators[87].historicalH4.availableT, 11 * H4);
-    assert.equal(run.indicators[87].stableH4.availableT, 10 * H4);
-    assert.equal(run.indicators[88].stableH4.regime, -1);
+    const run = fixedResults.get(`${mode}/H4-boundary`).run;
+    assert.equal(run.h4.length,12);assert.equal(run.indicators[6].historicalH4,null);
+    assert.equal(run.indicators[7].historicalH4.availableT,H4);assert.equal(run.indicators[7].stableH4,null);
+    assert.equal(run.indicators[8].stableH4.availableT,H4);
+    assert.equal(run.indicators[87].historicalH4.regime,-1);assert.equal(run.indicators[87].stableH4.regime,1);
+    assert.equal(run.indicators[87].historicalH4.availableT,11*H4);assert.equal(run.indicators[87].stableH4.availableT,10*H4);
+    assert.equal(run.indicators[88].stableH4.regime,-1);
   }
-
-  // Correct byte offsets must ignore unrelated prefix and suffix bytes.
-  const backing = new Uint8Array(baseBytes.length + 31).fill(0xa5);
-  backing.set(baseBytes, 13);
-  compare('nonzero-byte-offset', base, metadata, source(), backing.subarray(13, 13 + baseBytes.length));
-  compare('valid-astral-source', base, metadata, source(modes[0], 'Invented Ω 😀 𝄞'));
-  const paddedSource = source() + '#' + ' '.repeat(65536 - Buffer.byteLength(source()) - 1);
-  compare('source-exact-byte-limit', base, metadata, paddedSource);
+  const paddedSource = corpus.cases.find((item)=>item.label==='source-exact-byte-limit').source;
+  for (const token of ['-0','0.000','1.000']) {
+    const rawMetadata = JSON.stringify(metadata).replace('"spread":0', `"spread":${token}`);
+    const wasm = globalThis.engineRunMasterPortableReport(rawMetadata, source(), baseBytes);
+    const cli = native(nativeCLI, { ...metadata, spread: token }, source(), baseBytes);
+    identical(wasm, cli, `plain-decimal-spread-${token}`);
+    assert.equal(JSON.parse(wasm).error, undefined);
+    if (token === '-0') assert(wasm.includes('"spread": -0'), 'signed zero was normalized');
+  }
+  evidence.plainDecimalControls = 3;
   const paddedMeta = JSON.stringify(metadata).padEnd(4096, ' ');
-  identical(globalThis.engineRunMasterReport(paddedMeta, source(), baseBytes), native(nativeCLI, metadata, source(), baseBytes), 'metadata-exact-byte-limit');
+  identical(globalThis.engineRunMasterPortableReport(paddedMeta, source(), baseBytes), native(nativeCLI, metadata, source(), baseBytes), 'metadata-exact-byte-limit');
   reject('metadata-over-byte-limit', paddedMeta + ' ');
   reject('source-over-byte-limit', JSON.stringify(metadata), paddedSource + ' ');
   reject('source-UTF8-byte-limit', JSON.stringify(metadata), source() + '# ' + '😀'.repeat(17000));
@@ -318,6 +303,8 @@ try {
   }
   reject('escaped-duplicate', JSON.stringify(metadata).replace(/}$/, ',"\\u0073chema":"master-structural-runtime-request-v1"}'));
   reject('unknown-field', JSON.stringify({ ...metadata, extra: true }));
+  reject('legacy-schema', JSON.stringify({ ...metadata, schema: 'master-structural-runtime-request-v1' }));
+  reject('wrong-arithmetic', JSON.stringify({ ...metadata, arithmeticContract: 'future-v2' }));
   reject('wrong-schema', JSON.stringify({ ...metadata, schema: 'master-structural-runtime-request-v2' }));
   for (const key of ['warmupFromT', 'tradeFromT', 'tradeToT']) {
     for (const value of [-M30, 9007199254740992, .5, 1, '0', true, [], {}]) reject(`bad-${key}`, JSON.stringify({ ...metadata, [key]: value }));
@@ -361,16 +348,16 @@ try {
   reject('detached-byte-buffer', undefined, undefined, detached);
   reject('proxied-byte-view', undefined, undefined, new Proxy(baseBytes, {}));
   reject('prototype-only-byte-imitation', undefined, undefined, Object.create(Uint8Array.prototype));
-  const recovered = compare('transport-after-refusals', base);
+  const recovered = fixedCompare(corpus.cases.find((item)=>item.label==='transport-after-refusals'));
   const shadowed = backing.subarray(13, 13 + baseBytes.length);
   for (const key of ['byteLength', 'byteOffset', 'buffer']) {
     Object.defineProperty(shadowed, key, { get() { throw new Error(`shadowed ${key} getter must not execute`); } });
   }
-  identical(globalThis.engineRunMasterReport(JSON.stringify(metadata), source(), shadowed), recovered.raw, 'intrinsic-accessors-ignore-shadowed-fields');
+  identical(globalThis.engineRunMasterPortableReport(JSON.stringify(metadata), source(), shadowed), recovered.raw, 'intrinsic-accessors-ignore-shadowed-fields');
   evidence.shadowedAccessorsVerified = true;
   for (const [meta, text] of [[metadata, source()], [null, source()], [JSON.stringify(metadata), null], [JSON.stringify(metadata), new String(source())]]) reject('wrong-string-type', meta, text);
   for (const args of [[], [JSON.stringify(metadata), source()], [JSON.stringify(metadata), source(), baseBytes, 'extra']]) {
-    const result = JSON.parse(globalThis.engineRunMasterReport(...args));
+    const result = JSON.parse(globalThis.engineRunMasterPortableReport(...args));
     assert.deepEqual(Object.keys(result), ['error']); assert(result.error); evidence.rejected++;
   }
   for (const units of [[0xd800], [0xdc00], [0xd800, 65], [0xdc00, 0xd800], [0xd800, 0xdc00, 0xdc00]]) {
@@ -399,7 +386,6 @@ try {
   const legacyColumns = globalThis.engineRunColumns(columnsMeta, legacy, ...columns);
   assert.equal(legacyColumns.ok, true); assert.equal(JSON.parse(legacyColumns.summaryJSON).tradeCount, 0); assert.equal(legacyColumns.trades.length, 0);
   evidence.legacyControls = 2;
-  evidence.beforeAfterVerified = Boolean(beforeCLI) && beforeAfterMismatchCount === 0;
   console.log(JSON.stringify({ ...evidence, byteMismatchCount, diagnosticsTruncated: byteMismatchCount > maxDiagnosticRecords, status: byteMismatchCount ? 'FAIL' : 'PASS' }, null, 2));
   requireByteParity();
 } finally {

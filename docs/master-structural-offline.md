@@ -138,8 +138,10 @@ Tests use invented data only and include mode-specific H4 boundaries, indicator
 initialization, lifecycle/lock failures, gap and both-touch order chronology,
 continuous-price preservation, quantity steps, watermark/future independence,
 strict configuration admission and generic/WASM fixture/column refusal.
-The dedicated WASM transport is qualified separately using invented byte-identical
-native/WASM report checks; it does not add historical or broker evidence. The two
+The separately versioned portable native/WASM route uses an explicit opt-in
+[binary64 contract](master-structural-portable-arithmetic.md). Its invented
+byte-parity tests do not change this legacy native contract or add historical
+or broker evidence. The two
 Master parse fixtures
 are separate from the unchanged 116 prior parse and 100 run goldens. Historical
 execution, if separately released after independent synthetic review, is limited

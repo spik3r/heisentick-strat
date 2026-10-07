@@ -14,10 +14,10 @@ import (
 // Registration is separate from the existing generic entry points. They retain
 // their dedicated-runner refusals for this family.
 func init() {
-	js.Global().Set("engineRunMasterReport", js.FuncOf(masterReportJS))
+	js.Global().Set("engineRunMasterPortableReport", js.FuncOf(masterPortableReportJS))
 }
 
-func masterReportJS(_ js.Value, args []js.Value) (response any) {
+func masterPortableReportJS(_ js.Value, args []js.Value) (response any) {
 	// Detached buffers and hostile JavaScript accessors can throw. One rejected
 	// invocation must not kill the runtime or leave a success-looking document.
 	defer func() {
@@ -43,7 +43,7 @@ func masterReportJS(_ js.Value, args []js.Value) (response any) {
 	if err != nil {
 		return masterError(err.Error())
 	}
-	out, err := runMasterReportBTB1(metadata, source, data)
+	out, err := runMasterPortableReportBTB1(metadata, source, data)
 	if err != nil {
 		return masterError(err.Error())
 	}
