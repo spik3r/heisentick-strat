@@ -79,6 +79,15 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Down-shock source native report and WASM parity
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          native_engine="$(mktemp "$RUNNER_TEMP/down-shock-engine.XXXXXX")"
+          trap 'rm -f "$native_engine"' EXIT
+          go build -trimpath -o "$native_engine" ./cmd/enginewasm
+          node scripts/checks/down-shock-source-parity.mjs cmd/heisentick/heisentick "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+          GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestDownShock' ./engine ./report ./cmd/heisentick
+
       - name: Master portable native/WASM frozen synthetic report parity
         id: master_parity
         if: steps.mod.outputs.present == 'true'
