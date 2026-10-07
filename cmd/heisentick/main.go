@@ -20,6 +20,8 @@ func run(args []string, out io.Writer) error {
 	switch args[0] {
 	case "range-reversion-report":
 		return runRangeReversionReport(args[1:], out)
+	case "adaptive-flag-runtime-report":
+		return runAdaptiveFlagRuntimeReport(args[1:], out)
 	case "adaptive-flag-report":
 		return runAdaptiveFlagReport(args[1:], out)
 	case "gold-flag-report":
@@ -53,6 +55,10 @@ Usage:
   heisentick range-reversion-report --dsl-file=<path> --entry-bars-file=<six-column BTB1 path> --source-bars-file=<six-column BTB1 path> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --slippage-per-fill=<price> --commission-per-unit-side=<cash> --units=<fixed quantity>
 
 range-reversion-report runs only the dedicated M30/H1 to H4 model. It requires fixed units and explicit slippage and per-unit commission inputs; point value, account sizing and browser/generic execution are not inferred.
+
+  heisentick adaptive-flag-runtime-report --request-file=<JSON path> --dsl-file=<path> --bars-file=<six-column BTB1 path>
+
+adaptive-flag-runtime-report runs the bounded Stage A named baseline profile. It requires an explicit runtime request and reports raw model state without account economics.
 
   heisentick adaptive-flag-report --dsl-file=<path> --bars-file=<six-column BTB1 path> [--trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339>]
 

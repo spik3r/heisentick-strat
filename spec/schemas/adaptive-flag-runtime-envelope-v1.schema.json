@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-flag-runtime-envelope-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "request",
+    "requestSha256",
+    "dslSha256",
+    "configSha256",
+    "btb1Sha256",
+    "rawOnly",
+    "economics",
+    "config",
+    "run"
+  ],
+  "properties": {
+    "schema": {
+      "const": "strat-adaptive-volume-flag-runtime-v1"
+    },
+    "request": {
+      "$ref": "adaptive-flag-runtime-request-v1.schema.json"
+    },
+    "requestSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "dslSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "configSha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "btb1Sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "rawOnly": {
+      "const": true
+    },
+    "economics": {
+      "const": "unavailable-stage-a"
+    },
+    "config": {
+      "allOf": [
+        {
+          "$ref": "adaptive-volume-flag-config-v1.schema.json"
+        },
+        {
+          "properties": {
+            "adaptiveVolumeFlag": {
+              "properties": {
+                "bundle": {
+                  "enum": [
+                    "INITIAL",
+                    "TWEAKED",
+                    "SNAPSHOT_C"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "run": {
+      "$ref": "adaptive-flag-raw-run-v1.schema.json"
+    }
+  }
+}

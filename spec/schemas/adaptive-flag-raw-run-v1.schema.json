@@ -1,0 +1,892 @@
+{
+  "$defs": {
+    "AdaptiveFlagEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "maxLength": 256,
+          "type": "string"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "orderId": {
+          "type": "integer"
+        },
+        "price": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rowIdx": {
+          "type": "integer"
+        },
+        "state": {
+          "maxLength": 32,
+          "type": "string"
+        },
+        "time": {
+          "$ref": "#/$defs/AdaptiveFlagEventTime"
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "rowIdx",
+        "state",
+        "time",
+        "price",
+        "basis"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagEventTime": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "maxLength": 64,
+          "type": "string"
+        },
+        "lowerInclusive": {
+          "type": "boolean"
+        },
+        "lowerMs": {
+          "type": "integer"
+        },
+        "upperInclusive": {
+          "type": "boolean"
+        },
+        "upperMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "lowerMs",
+        "upperMs",
+        "lowerInclusive",
+        "upperInclusive",
+        "kind"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagExecutionWindow": {
+      "additionalProperties": false,
+      "properties": {
+        "tradeFromMs": {
+          "type": "integer"
+        },
+        "tradeToMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tradeFromMs",
+        "tradeToMs"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagGap": {
+      "additionalProperties": false,
+      "properties": {
+        "fromMs": {
+          "type": "integer"
+        },
+        "missingSlots": {
+          "type": "integer"
+        },
+        "rowIdx": {
+          "type": "integer"
+        },
+        "toMs": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "rowIdx",
+        "fromMs",
+        "toMs",
+        "missingSlots"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagOrder": {
+      "additionalProperties": false,
+      "properties": {
+        "actualFillToStopDistance": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bracketCreationIdx": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entry": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entryAtOpen": {
+          "type": "boolean"
+        },
+        "eventIds": {
+          "items": {
+            "type": "integer"
+          },
+          "maxItems": 26,
+          "type": "array"
+        },
+        "exit": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exitIdx": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fillIdx": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fillOpportunities": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "pendingAge": {
+          "type": "integer"
+        },
+        "plannedTriggerToStopDistance": {
+          "type": "number"
+        },
+        "reason": {
+          "maxLength": 32,
+          "type": "string"
+        },
+        "side": {
+          "maxLength": 8,
+          "type": "string"
+        },
+        "signalIdx": {
+          "type": "integer"
+        },
+        "status": {
+          "maxLength": 16,
+          "type": "string"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "target": {
+          "type": "number"
+        },
+        "trigger": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "signalIdx",
+        "side",
+        "trigger",
+        "stop",
+        "target",
+        "plannedTriggerToStopDistance",
+        "id",
+        "status",
+        "pendingAge",
+        "fillOpportunities",
+        "fillIdx",
+        "entry",
+        "entryAtOpen",
+        "actualFillToStopDistance",
+        "bracketCreationIdx",
+        "exitIdx",
+        "exit",
+        "reason",
+        "eventIds"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagPivot": {
+      "additionalProperties": false,
+      "properties": {
+        "confirmationIdx": {
+          "type": "integer"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "index",
+        "confirmationIdx",
+        "price"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagQueuedExit": {
+      "additionalProperties": false,
+      "properties": {
+        "creationCloseMs": {
+          "type": "integer"
+        },
+        "creationIdx": {
+          "type": "integer"
+        },
+        "nextOpenIdx": {
+          "type": "integer"
+        },
+        "reason": {
+          "maxLength": 32,
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason",
+        "creationIdx",
+        "creationCloseMs",
+        "nextOpenIdx"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagResult": {
+      "additionalProperties": false,
+      "properties": {
+        "arithmeticQualification": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "assumptions": {
+          "items": {
+            "maxLength": 1024,
+            "type": "string"
+          },
+          "maxItems": 13,
+          "type": "array"
+        },
+        "configSha256": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "effectiveConfig": {
+          "$ref": "#/$defs/AdaptiveFlagSpec"
+        },
+        "eligibleTradeRows": {
+          "type": "integer"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/AdaptiveFlagEvent"
+          },
+          "maxItems": 16384,
+          "type": "array"
+        },
+        "evidenceStatus": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "executionSemantics": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "executionWindow": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagExecutionWindow"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "firstRetainedOpenMs": {
+          "type": "integer"
+        },
+        "gaps": {
+          "items": {
+            "$ref": "#/$defs/AdaptiveFlagGap"
+          },
+          "maxItems": 4096,
+          "type": "array"
+        },
+        "identityEncoding": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "ignoredSuffixRows": {
+          "type": "integer"
+        },
+        "inputSha256": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "lastRetainedCloseMs": {
+          "type": "integer"
+        },
+        "lastRetainedOpenMs": {
+          "type": "integer"
+        },
+        "numericalPolicy": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "orders": {
+          "items": {
+            "$ref": "#/$defs/AdaptiveFlagOrder"
+          },
+          "maxItems": 4096,
+          "type": "array"
+        },
+        "policy": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "preTradeRows": {
+          "type": "integer"
+        },
+        "providedSourceRows": {
+          "type": "integer"
+        },
+        "referenceSha256": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "schema": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "snapshots": {
+          "items": {
+            "$ref": "#/$defs/AdaptiveFlagSnapshot"
+          },
+          "maxItems": 4096,
+          "type": "array"
+        },
+        "sourcePineSha256": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "states": {
+          "items": {
+            "$ref": "#/$defs/AdaptiveFlagState"
+          },
+          "maxItems": 4096,
+          "type": "array"
+        },
+        "terminal": {
+          "$ref": "#/$defs/AdaptiveFlagState"
+        },
+        "timeframeMs": {
+          "type": "integer"
+        },
+        "usedSourceRows": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema",
+        "policy",
+        "executionSemantics",
+        "numericalPolicy",
+        "evidenceStatus",
+        "arithmeticQualification",
+        "sourcePineSha256",
+        "referenceSha256",
+        "configSha256",
+        "inputSha256",
+        "identityEncoding",
+        "effectiveConfig",
+        "executionWindow",
+        "providedSourceRows",
+        "ignoredSuffixRows",
+        "firstRetainedOpenMs",
+        "lastRetainedOpenMs",
+        "lastRetainedCloseMs",
+        "preTradeRows",
+        "eligibleTradeRows",
+        "usedSourceRows",
+        "timeframeMs",
+        "snapshots",
+        "orders",
+        "events",
+        "states",
+        "gaps",
+        "terminal",
+        "assumptions"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagRules": {
+      "additionalProperties": false,
+      "properties": {
+        "atrLen": {
+          "type": "integer"
+        },
+        "atrStopMult": {
+          "type": "number"
+        },
+        "entryBufferATR": {
+          "type": "number"
+        },
+        "fastEMALen": {
+          "type": "integer"
+        },
+        "flagWidthPoleMult": {
+          "type": "number"
+        },
+        "maxFlagBars": {
+          "type": "integer"
+        },
+        "maxFlagRetrace": {
+          "type": "number"
+        },
+        "maxHold": {
+          "type": "integer"
+        },
+        "minFlagBars": {
+          "type": "integer"
+        },
+        "minPoleATR": {
+          "type": "number"
+        },
+        "pivotSensitivity": {
+          "type": "integer"
+        },
+        "slowEMALen": {
+          "type": "integer"
+        },
+        "targetR": {
+          "type": "number"
+        },
+        "useEMATrend": {
+          "type": "boolean"
+        },
+        "useVolumeFilter": {
+          "type": "boolean"
+        },
+        "validBars": {
+          "type": "integer"
+        },
+        "volumeSMALen": {
+          "type": "integer"
+        },
+        "volumeSMAMult": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "pivotSensitivity",
+        "minPoleATR",
+        "minFlagBars",
+        "maxFlagBars",
+        "maxFlagRetrace",
+        "useVolumeFilter",
+        "useEMATrend",
+        "fastEMALen",
+        "slowEMALen",
+        "targetR",
+        "atrStopMult",
+        "validBars",
+        "maxHold",
+        "atrLen",
+        "volumeSMALen",
+        "volumeSMAMult",
+        "flagWidthPoleMult",
+        "entryBufferATR"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagSignal": {
+      "additionalProperties": false,
+      "properties": {
+        "plannedTriggerToStopDistance": {
+          "type": "number"
+        },
+        "side": {
+          "maxLength": 8,
+          "type": "string"
+        },
+        "signalIdx": {
+          "type": "integer"
+        },
+        "stop": {
+          "type": "number"
+        },
+        "target": {
+          "type": "number"
+        },
+        "trigger": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "signalIdx",
+        "side",
+        "trigger",
+        "stop",
+        "target",
+        "plannedTriggerToStopDistance"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "atr": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bearHeight": {
+          "type": "number"
+        },
+        "bearImpulse": {
+          "type": "boolean"
+        },
+        "bearRetrace": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bearValid": {
+          "type": "boolean"
+        },
+        "bullHeight": {
+          "type": "number"
+        },
+        "bullImpulse": {
+          "type": "boolean"
+        },
+        "bullRetrace": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bullValid": {
+          "type": "boolean"
+        },
+        "candidate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagSignal"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "close": {
+          "type": "number"
+        },
+        "closeT": {
+          "type": "integer"
+        },
+        "confirmedHigh": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagPivot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "confirmedLow": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagPivot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fastEma": {
+          "type": "number"
+        },
+        "flagBars": {
+          "type": "integer"
+        },
+        "flagHigh": {
+          "type": "number"
+        },
+        "flagLow": {
+          "type": "number"
+        },
+        "flagStartIdx": {
+          "type": "integer"
+        },
+        "flagWidth": {
+          "type": "number"
+        },
+        "high": {
+          "type": "number"
+        },
+        "index": {
+          "type": "integer"
+        },
+        "lastHigh": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagPivot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lastLow": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagPivot"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "low": {
+          "type": "number"
+        },
+        "open": {
+          "type": "number"
+        },
+        "openT": {
+          "type": "integer"
+        },
+        "poleEndpointIdx": {
+          "type": "integer"
+        },
+        "poleHigh": {
+          "type": "number"
+        },
+        "poleLow": {
+          "type": "number"
+        },
+        "sinceHigh": {
+          "type": "integer"
+        },
+        "slowEma": {
+          "type": "number"
+        },
+        "trendBear": {
+          "type": "boolean"
+        },
+        "trendBull": {
+          "type": "boolean"
+        },
+        "trueRange": {
+          "type": "number"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "volumeOk": {
+          "type": "boolean"
+        },
+        "volumeSma": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "index",
+        "openT",
+        "closeT",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "trueRange",
+        "atr",
+        "fastEma",
+        "slowEma",
+        "volumeSma",
+        "confirmedHigh",
+        "confirmedLow",
+        "lastHigh",
+        "lastLow",
+        "poleEndpointIdx",
+        "poleHigh",
+        "poleLow",
+        "bullHeight",
+        "bearHeight",
+        "bullImpulse",
+        "bearImpulse",
+        "sinceHigh",
+        "flagBars",
+        "flagStartIdx",
+        "flagHigh",
+        "flagLow",
+        "flagWidth",
+        "bullRetrace",
+        "bearRetrace",
+        "trendBull",
+        "trendBear",
+        "volumeOk",
+        "bullValid",
+        "bearValid",
+        "candidate"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "bundle": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "numericalPolicy": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "policy": {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        "rules": {
+          "$ref": "#/$defs/AdaptiveFlagRules"
+        },
+        "timeframe": {
+          "maxLength": 1024,
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy",
+        "numericalPolicy",
+        "timeframe",
+        "bundle",
+        "rules"
+      ],
+      "type": "object"
+    },
+    "AdaptiveFlagState": {
+      "additionalProperties": false,
+      "properties": {
+        "closeMs": {
+          "type": "integer"
+        },
+        "pendingAge": {
+          "type": "integer"
+        },
+        "pendingOrderId": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "positionOrderId": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "queuedExit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdaptiveFlagQueuedExit"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rowIdx": {
+          "type": "integer"
+        },
+        "status": {
+          "maxLength": 16,
+          "type": "string"
+        }
+      },
+      "required": [
+        "rowIdx",
+        "closeMs",
+        "status",
+        "pendingOrderId",
+        "positionOrderId",
+        "pendingAge",
+        "queuedExit"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "adaptive-flag-raw-run-v1.schema.json",
+  "$ref": "#/$defs/AdaptiveFlagResult",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
