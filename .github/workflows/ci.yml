@@ -80,8 +80,66 @@ jobs:
           node-version: "24"
 
       - name: Master native/WASM synthetic report parity
+        id: master_parity
         if: steps.mod.outputs.present == 'true'
         run: node scripts/checks/master-runtime-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
+      # Diagnostic only: a passing experiment never clears ordinary parity.
+      # qn is an internal Go 1.22.12 compiler control, not a release profile.
+      - name: Diagnose ARM64 implicit FMA on fixed synthetic cases
+        if: failure() && steps.master_parity.outcome == 'failure' && runner.arch == 'ARM64'
+        timeout-minutes: 5
+        env:
+          GOTOOLCHAIN: local
+          GOPROXY: "off"
+          GOSUMDB: "off"
+          GOMAXPROCS: "2"
+          GOMEMLIMIT: 512MiB
+        run: |
+          test "$(go env GOVERSION)" = "go1.22.12"
+          test "$(go env GOHOSTARCH)" = "arm64"
+          test "$(go env GOARCH)" = "arm64"
+          test "$(go env GOOS)" = "linux"
+          test "$(go env GOHOSTOS)" = "linux"
+          test -z "$(go env GOFLAGS)"
+          test -z "${GOCOMPILEDEBUG:-}"
+          command -v timeout
+          diagnostic_dir="$(mktemp -d "$RUNNER_TEMP/master-fma-XXXXXX")"
+          cleanup() {
+            status=$?
+            trap - EXIT
+            if [ -f "$diagnostic_dir/ordinary.sha256" ]; then
+              sha256sum -c "$diagnostic_dir/ordinary.sha256" || status=1
+            fi
+            rm -rf "$diagnostic_dir"
+            exit "$status"
+          }
+          trap cleanup EXIT
+          sha256sum cmd/heisentick/heisentick cmd/dslwasm/dslwasm.wasm cmd/enginewasm/enginewasm.wasm > "$diagnostic_dir/ordinary.sha256"
+          mkdir "$diagnostic_dir/tmp"
+          export GOCACHE="$diagnostic_dir/go-cache" GOTMPDIR="$diagnostic_dir/tmp"
+          go version -m cmd/heisentick/heisentick > "$diagnostic_dir/ordinary.buildinfo"
+          head -n 1 "$diagnostic_dir/ordinary.buildinfo" | grep -E ': go1[.]22[.]12$'
+          grep -E '[[:space:]]GOARCH=arm64$' "$diagnostic_dir/ordinary.buildinfo"
+          grep -E '[[:space:]]GOOS=linux$' "$diagnostic_dir/ordinary.buildinfo"
+          go tool objdump -s 'github.com/spik3r/heisentick-strat/engine/(master|regime)\.' cmd/heisentick/heisentick > "$diagnostic_dir/ordinary.asm"
+          grep -m 20 -E 'F(MADD|MSUB|NMADD|NMSUB)' "$diagnostic_dir/ordinary.asm"
+          echo "Diagnostic-only native build: Go 1.22.12 ARM64, -gcflags=all=-d=fmahash=qn"
+          timeout --kill-after=5s 180s go build -mod=readonly -p=2 -trimpath -gcflags=all=-d=fmahash=qn -o "$diagnostic_dir/heisentick-no-implicit-fma" ./cmd/heisentick
+          go tool objdump -s 'github.com/spik3r/heisentick-strat/engine/(master|regime)\.' "$diagnostic_dir/heisentick-no-implicit-fma" > "$diagnostic_dir/engine.asm"
+          test -s "$diagnostic_dir/engine.asm"
+          for symbol in master.Run regime.wma regime.rma regime.calculate; do
+            grep -F "TEXT github.com/spik3r/heisentick-strat/engine/$symbol(SB)" "$diagnostic_dir/ordinary.asm"
+            grep -F "TEXT github.com/spik3r/heisentick-strat/engine/$symbol(SB)" "$diagnostic_dir/engine.asm"
+          done
+          if grep -E 'F(MADD|MSUB|NMADD|NMSUB)' "$diagnostic_dir/engine.asm"; then
+            echo "Diagnostic build still contains fused engine instructions"
+            exit 1
+          fi
+          echo "Comparing the same fixed synthetic cases with unchanged WASM; ordinary parity remains failed"
+          parity_status=0
+          timeout --kill-after=5s 90s node scripts/checks/master-runtime-parity.mjs "$diagnostic_dir/heisentick-no-implicit-fma" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js" || parity_status=$?
+          exit "$parity_status"
 
       - name: Upload heisentick artifact
         if: steps.mod.outputs.present == 'true'

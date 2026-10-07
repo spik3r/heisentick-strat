@@ -68,43 +68,115 @@ function native(binary, meta, text, bytes) {
     `--warmup-from=${stamp(meta.warmupFromT)}`, `--trade-from=${stamp(meta.tradeFromT)}`,
     `--trade-to=${stamp(meta.tradeToT)}`, `--spread=${meta.spread}`], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 }
-// Diagnostic helpers: bounded synthetic field differences, never raw reports.
+// Diagnostic helpers: exact section fragments; never raw input/report dumps.
+let byteMismatchCount = 0, beforeAfterMismatchCount = 0;
+const maxDiagnosticRecords = 80;
+function rawMembers(raw) {
+  let i = 0;
+  const skip = () => { while (/\s/.test(raw[i] ?? '') && i < raw.length) i++; };
+  const stringEnd = () => {
+    i++;
+    while (i < raw.length) { if (raw[i] === '\\') i += 2; else if (raw[i++] === '"') return; }
+    throw new Error('unterminated string');
+  };
+  skip(); if (raw[i++] !== '{') throw new Error('expected object');
+  const members = new Map();
+  for (;;) {
+    skip(); if (raw[i] === '}') return members;
+    const start = i; if (raw[i] !== '"') throw new Error('expected key');
+    stringEnd(); const key = JSON.parse(raw.slice(start, i)); skip();
+    if (raw[i++] !== ':') throw new Error('expected colon'); skip();
+    const valueStart = i;
+    if (raw[i] === '"') stringEnd();
+    else if (raw[i] === '{' || raw[i] === '[') {
+      let depth = 0;
+      do {
+        if (raw[i] === '"') { stringEnd(); continue; }
+        if (raw[i] === '{' || raw[i] === '[') depth++;
+        if (raw[i] === '}' || raw[i] === ']') depth--;
+        i++;
+      } while (depth && i < raw.length);
+      if (depth) throw new Error('unclosed value');
+    } else { while (i < raw.length && !/[,}\s]/.test(raw[i])) i++; }
+    members.set(key, { value: raw.slice(valueStart, i), fragment: raw.slice(start, i) });
+    skip(); if (raw[i] === '}') return members;
+    if (raw[i++] !== ',') throw new Error('expected comma');
+  }
+}
+const runSections = ['indicators', 'h4', 'signals', 'trades', 'edits', 'openPosition', 'pendingSignal', 'summary', 'monthlyByEntry'];
+function sectionFragments(raw) {
+  const top = rawMembers(raw), run = rawMembers(top.get('run')?.value ?? '{}');
+  const selected = (members, omit) => [...members].filter(([key]) => !omit.includes(key)).map(([, value]) => value.fragment).join('\n');
+  return new Map([
+    ['envelope', selected(top, ['config', 'run'])], ['config', top.get('config')?.value ?? '<missing>'],
+    ['run.metadata', selected(run, runSections)],
+    ...runSections.map((key) => [`run.${key}`, run.get(key)?.value ?? '<missing>']),
+  ]);
+}
 function fieldDifferences(actual, expected) {
-  const samples = [];
-  let differingFields = 0;
-  const describe = (value) => {
-    if (value === undefined) return { type: 'missing' };
-    if (value === null || typeof value === 'number' || typeof value === 'boolean') return value;
-    if (typeof value === 'string') return { type: 'string', length: value.length };
-    return { type: Array.isArray(value) ? 'array' : 'object' };
-  };
-  const walk = (a, b, path) => {
-    if (Object.is(a, b)) return;
-    const objects = a !== null && b !== null && typeof a === 'object' && typeof b === 'object';
-    if (objects && Array.isArray(a) === Array.isArray(b)) {
-      for (const key of new Set([...Object.keys(a), ...Object.keys(b)])) {
-        walk(a[key], b[key], `${path}${Array.isArray(a) ? `[${key}]` : `.${key}`}`);
-      }
-      return;
-    }
-    differingFields++;
-    if (samples.length < 12) samples.push({ path: path.slice(0, 160), actual: describe(a), expected: describe(b) });
-  };
   try {
-    walk(JSON.parse(actual), JSON.parse(expected), '$');
-    return { differingFields, samples, samplesTruncated: differingFields > samples.length, serializationOnly: differingFields === 0 };
+    const a = JSON.parse(actual), b = JSON.parse(expected);
+    const af = sectionFragments(actual), bf = sectionFragments(expected);
+    const sectionOf = (parts) => parts[0] === 'run' ? (runSections.includes(parts[1]) ? `run.${parts[1]}` : 'run.metadata') : parts[0] === 'config' ? 'config' : 'envelope';
+    const sections = new Map([...af].map(([section, value]) => [section, { section, actualSha256: digest(value), expectedSha256: digest(bf.get(section)), differingFields: 0, numericFields: 0, identityDecisionFields: 0, otherFields: 0, maxAbsoluteDelta: 0, maxRelativeDelta: 0, numericSamples: [], identityDecisionSamples: [], otherSamples: [] }]));
+    const counters = new Set(['count', 'm30Count', 'usedM5Rows', 'trades', 'partialBars', 'stopWidenings', 'targetChanges', 'marketableTargetEdits', 'lockTransitions', 'lockDeactivations', 'hypotheticalLockRelaxations', 'rejectedWorseST', 'preentryOnlyActivations', 'nonprofitLockEdits', 'partialEntryFills', 'partialPositionBars']);
+    const discrete = new Set(['symbol', 'mode', 'schema', 'sourceTimeframe', 'nativeTimeframe', 'executionModel', 'quantityModel', 'priceModel', 'contractVersion', 'side', 'direction', 'regime', 'candidate', 'sourceCandidate', 'protectedCandidate', 'cross', 'reason', 'forcedReason', 'entryMonth']);
+    const isIdentity = (key, x, y) => /(^id$|Id$|ID$|Index$|^index$|T$|^time$)/.test(key) || discrete.has(key) || counters.has(key) || typeof x === 'boolean' || typeof y === 'boolean' || x === null || y === null || x === undefined || y === undefined;
+    const describe = (value, key) => {
+      if (value === undefined) return { type: 'missing' };
+      if (typeof value === 'number' && Object.is(value, -0)) return { type: 'number', value: '-0' };
+      if (value === null || typeof value === 'number' || typeof value === 'boolean') return value;
+      if (typeof value === 'string') return /reason|Reason|^id$|Id$|ID$/.test(key) ? value.slice(0, 80) : { type: 'string', length: value.length };
+      return { type: Array.isArray(value) ? 'array' : 'object' };
+    };
+    const walk = (x, y, parts) => {
+      if (Object.is(x, y)) return;
+      const objects = x !== null && y !== null && typeof x === 'object' && typeof y === 'object';
+      if (objects && Array.isArray(x) === Array.isArray(y)) {
+        for (const key of new Set([...Object.keys(x), ...Object.keys(y)])) walk(x[key], y[key], [...parts, key]);
+        return;
+      }
+      const section = sections.get(sectionOf(parts)), key = parts.at(-1) ?? '$';
+      const identity = isIdentity(key, x, y);
+      section.differingFields++;
+      if (identity) section.identityDecisionFields++;
+      else if (typeof x === 'number' && typeof y === 'number') section.numericFields++;
+      else section.otherFields++;
+      if (!identity && typeof x === 'number' && typeof y === 'number') {
+        const absolute = Math.abs(x - y), scale = Math.max(Math.abs(x), Math.abs(y), Number.MIN_VALUE);
+        const relative = Math.abs(x / scale - y / scale);
+        section.maxAbsoluteDelta = Math.max(section.maxAbsoluteDelta, absolute);
+        section.maxRelativeDelta = Math.max(section.maxRelativeDelta, relative);
+      }
+      const samples = identity ? section.identityDecisionSamples : (typeof x === 'number' && typeof y === 'number' ? section.numericSamples : section.otherSamples);
+      if (samples.length < 2) samples.push({ path: `$.${parts.join('.')}`.slice(0, 160), actual: describe(x, key), expected: describe(y, key) });
+    };
+    walk(a, b, []);
+    for (const section of sections.values()) {
+      const key = section.section.slice(4), x = a.run?.[key], y = b.run?.[key];
+      if (Array.isArray(x) || Array.isArray(y)) { section.actualCount = Array.isArray(x) ? x.length : null; section.expectedCount = Array.isArray(y) ? y.length : null; }
+      if (!Number.isFinite(section.maxAbsoluteDelta)) section.maxAbsoluteDelta = 'overflow';
+    }
+    const all = [...sections.values()];
+    const differingFields = all.reduce((sum, value) => sum + value.differingFields, 0);
+    return { differingFields, noParsedFieldDifferences: differingFields === 0, sectionHashEncoding: 'exact JSON value/member fragments joined by LF; excludes outer framing/separators', sections: all };
   } catch {
-    return { jsonParseFailed: true, differingFields: null, samples: [] };
+    return { diagnosticUnavailable: true, differingFields: null, sections: [] };
   }
 }
 function identical(actual, expected, label) {
   assert.equal(typeof actual, 'string', `${label}: expected a JSON string`);
-  if (actual !== expected) {
-    console.error(JSON.stringify({ schema: 'master-runtime-parity-difference-v1', case: label.slice(0, 160),
+  if (actual === expected) return true;
+  byteMismatchCount++;
+  if (label.endsWith('/before-after')) beforeAfterMismatchCount++;
+  if (byteMismatchCount <= maxDiagnosticRecords) {
+    console.error(JSON.stringify({ schema: 'master-runtime-parity-difference-v2', case: label.slice(0, 160),
       actualSha256: digest(actual), expectedSha256: digest(expected), ...fieldDifferences(actual, expected) }));
-    // Diagnostics never relax byte equality or allow a failing case to pass.
-    assert.fail(`${label}: byte mismatch (${digest(actual)} != ${digest(expected)})`);
   }
+  return false; // Continue fixed synthetic cases; the final gate always fails.
+}
+function requireByteParity() {
+  assert.equal(byteMismatchCount, 0, `${byteMismatchCount} exact byte-parity comparisons failed; no tolerance or normalization is permitted`);
 }
 // End diagnostic helpers.
 function compare(label, rows, meta = metadata, text = source(), suppliedBytes) {
@@ -120,7 +192,7 @@ function compare(label, rows, meta = metadata, text = source(), suppliedBytes) {
   assert.equal(result.dataSha256, digest(bytes));
   assert.equal(result.run.pineParityVerified, false);
   assert.equal(result.run.costComplete, false);
-  evidence.comparisons.push({ label, rows: rows.length, trades: result.run.trades.length, sha256: digest(wasm) });
+  evidence.comparisons.push({ label, rows: rows.length, trades: result.run.trades.length, sha256: digest(wasm), nativeSha256: digest(cli), byteIdentical: wasm === cli });
   return { raw: wasm, envelope: result, run: result.run };
 }
 function reject(label, meta = JSON.stringify(metadata), text = source(), bytes = baseBytes) {
@@ -327,8 +399,9 @@ try {
   const legacyColumns = globalThis.engineRunColumns(columnsMeta, legacy, ...columns);
   assert.equal(legacyColumns.ok, true); assert.equal(JSON.parse(legacyColumns.summaryJSON).tradeCount, 0); assert.equal(legacyColumns.trades.length, 0);
   evidence.legacyControls = 2;
-  evidence.beforeAfterVerified = Boolean(beforeCLI);
-  console.log(JSON.stringify({ ...evidence, status: 'PASS' }, null, 2));
+  evidence.beforeAfterVerified = Boolean(beforeCLI) && beforeAfterMismatchCount === 0;
+  console.log(JSON.stringify({ ...evidence, byteMismatchCount, diagnosticsTruncated: byteMismatchCount > maxDiagnosticRecords, status: byteMismatchCount ? 'FAIL' : 'PASS' }, null, 2));
+  requireByteParity();
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }
