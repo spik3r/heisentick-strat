@@ -6,6 +6,29 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.28.0] — 2026-10-08
+
+- Add bounded native research overlays for the exact adaptive `SNAPSHOT_C`
+  configuration (HT-191, [PR #102](https://github.com/spik3r/heisentick-strat/pull/102)).
+  The overlay bypasses only retrace and width numeric caps; EMA, volume, source
+  features and portfolio lifecycle remain enabled. It does not add historical
+  G execution, parameter search, or generic DSL, parser, app or default-route
+  support.
+- Add bounded Stage A native/WASM raw reports for exact adaptive `INITIAL`,
+  `TWEAKED` and `SNAPSHOT_C` configurations on M30 and H1 (HT-195,
+  [PR #103](https://github.com/spik3r/heisentick-strat/pull/103)). The route
+  shares the Go state machine and report construction. It refuses CUSTOM/F/G
+  overlays and economics or account-stat requests; this stage makes no P&L,
+  equity, cost or trading-performance claim.
+- Add a dedicated `engineRunR11Fixture` Go/WASM export for the two
+  source-pinned, one-unit R11 research rules ([PR #104](https://github.com/spik3r/heisentick-strat/pull/104)).
+  It checks exact DSL bytes, route, original M30/H1 and H4 OHLCV rows, UTC
+  window and explicit per-fill costs before calling the existing native
+  range-reversion runner. Its versioned response binds fixture and DSL byte
+  hashes and returns the native ledger and accounting summary. Generic
+  fixture and JavaScript execution still refuse the family. The known
+  synthetic Python/native entry-bar BE-close-latch difference is unchanged.
+
 ## [0.27.0] — 2026-10-07
 
 - Fix `IMMEDIATE_STOP_FIRST_V1` entry-gap handling for the Go-only

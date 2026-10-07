@@ -43,6 +43,16 @@ func main() {
 		}
 		return string(out)
 	}))
+	js.Global().Set("engineRunR11Fixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return string(r11Failure("R11_FIXTURE_INVALID", fmt.Errorf("expected fixture JSON and source strings")))
+		}
+		source, err := sourcetext.FromJS(args[1])
+		if err != nil {
+			return string(r11Failure("R11_DSL_INVALID", err))
+		}
+		return string(runR11Fixture(args[0].String(), source))
+	}))
 	js.Global().Set("engineRunColumns", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 8 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return columnError("expected metadata JSON, source, and six Float64Array columns")
