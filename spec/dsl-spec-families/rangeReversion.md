@@ -72,10 +72,12 @@ already through the stop, then a nearer-extreme OHLC path with an explicit
 high-first tie. The exact Pine preset also requires chart bounds and candle
 color. `IMMEDIATE_STOP_FIRST_V1` activates the bracket on the entry candle, uses
 stop-first resolution when both barriers are touched, and discards a bar that
-signals both directions before applying candle-color or trend gates. It
-cancels an entry whose fill leaves nonpositive stop risk and reports the
-cancel count. A positive-risk fill already through its stop or target is
-flattened at the raw open with both entry and exit execution costs. This is the
+signals both directions before applying candle-color or trend gates. Actual
+entry risk is the absolute fill-to-stop distance. It cancels only zero or
+near-zero distances (at most `1e-12`) and reports that count under the stable
+`canceledAtEntryNonpositiveRisk` field. A positive-distance fill already
+through its stop or target is flattened at the raw open with both entry and
+exit execution costs, and is labeled `stop-gap` or `target-gap`. This is the
 source-series research policy used by B1/B20; it is not Pine parity.
 
 ## Inputs and output
