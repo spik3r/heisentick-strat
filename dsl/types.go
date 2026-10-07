@@ -6,6 +6,7 @@ import "encoding/json"
 type FamilyID string
 
 const (
+	FamilyMasterStructural        FamilyID = "masterStructural"
 	FamilyRegimeEngine            FamilyID = "regimeEngine"
 	FamilyFrozenLevelBreakout     FamilyID = "frozenLevelBreakout"
 	FamilyTimedReturn             FamilyID = "timedReturn"

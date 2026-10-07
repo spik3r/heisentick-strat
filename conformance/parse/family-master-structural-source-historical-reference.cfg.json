@@ -1,0 +1,156 @@
+{
+  "case": "family-master-structural-source-historical-reference",
+  "category": "family",
+  "cfg": {
+    "description": "Synthetic parser fixture; dedicated native runner only",
+    "dslVersion": 7,
+    "masterStructural": {
+      "contractVersion": "master-structural-config-v1",
+      "mode": "SOURCE_HISTORICAL_REFERENCE",
+      "profile": {
+        "activationATR": 2,
+        "activationComparison": "greater-or-equal",
+        "atr": {
+          "length": 14,
+          "smoothing": "wilder-rma-sma-seed"
+        },
+        "clock": {
+          "aggregation": "first-max-min-last-sum",
+          "coverage": "first-open-at-warmup-last-close-at-exclusive-end",
+          "entryTimestamp": "first-actually-observed-M5-open",
+          "interpolation": false,
+          "nativePhaseMinutes": 0,
+          "partialBars": "retain-in-indicator-history",
+          "pendingEntryOnPartialBar": "fill-without-future-completeness-cancel",
+          "sourceRows": "strict-unique-exact-M5-opens",
+          "timezone": "UTC",
+          "warmupTradeEnd": "strictly-ordered-exact-M30-boundaries",
+          "wholeMissingBars": "do-not-reset-observed-readiness"
+        },
+        "completeObservedBars": 40,
+        "completeness": "six-exact-M5-slots",
+        "diagnostics": {
+          "comparisonThreshold": 1e-9,
+          "executionTolerance": "none",
+          "protectedWorseST": "rejected-candidate-only",
+          "sourceLockSwitchRelaxation": "hypothetical-identical-current-inputs",
+          "stopWidening": "actual-vs-prior-live-stop"
+        },
+        "entryFee": "debit-immediately",
+        "execution": {
+          "intrabarFillTimestamp": "native-close-interval-censored",
+          "longEntry": "reference-open-plus-spread",
+          "nearerExtreme": "strict-high-nearer-else-low-first-including-ties",
+          "openingGapFill": "actual-observed-open-target-improvement-allowed",
+          "path": "native-M30-OHLC",
+          "shortEntryLongExit": "reference-bid-style",
+          "shortExit": "reference-OHLC-plus-spread",
+          "slippage": 0,
+          "terminal": "keep-open"
+        },
+        "exitCashflow": "gross-less-exit-fee",
+        "feePerUnitSide": 0.5,
+        "h4": {
+          "aggregation": "first-max-min-last-sum",
+          "boundaryOrder": "H4-finalization-before-source-M30-decision",
+          "count": "sum-M5-counts",
+          "gate": "mapped-direction-alone",
+          "horizon": "M30-decision-close",
+          "nominalAvailability": "bucket-start-plus-4h",
+          "phaseHoursUTC": 0,
+          "requireComplete": false,
+          "selection": "latest-nominal-close-less-or-equal-horizon",
+          "source": "observed-M30",
+          "supertrend": "same-chart-recurrence-and-parameters",
+          "timeframe": "H4",
+          "unavailableLine": "null"
+        },
+        "hma": {
+          "diagnostic": 25,
+          "fast": 9,
+          "halfLength": "floor",
+          "slow": 21,
+          "sqrtLength": "round-half-up"
+        },
+        "id": "v10-phase0-floor-half-reference-v1",
+        "initialEquityUSD": 10000,
+        "lifecycle": {
+          "activatedStop": "bare-chart-ST",
+          "activation": "non-sticky-current-ATR",
+          "activationAnchor": "signal-close",
+          "anchor": "signal-close",
+          "atr": "current-ATR14",
+          "entryBarProtection": false,
+          "extrema": "signal-and-post-fill-separately",
+          "initialBracket": "after-entry-bar-close",
+          "marketableTarget": "non-latched-next-open-or-path-limit",
+          "preActivationStop": "directional-best-of-anchor-2ATR-and-chart-ST",
+          "regimeFlipExit": "none",
+          "stopRatchet": false,
+          "target": "signal-close-plus-directional-4-current-ATR",
+          "wrongSideStop": "next-observed-open-market-exit"
+        },
+        "nativeTimeframe": "M30",
+        "notionalFraction": 0.1,
+        "pointValue": 1,
+        "pricePrecision": {
+          "arithmetic": "continuous-float64-reference",
+          "tickRounding": false
+        },
+        "quantity": {
+          "epsilonBeforeStepDivision": 1e-12,
+          "formula": "floor((equity*0.1/actualEntry+1e-12)/0.1)*0.1",
+          "method": "floor-to-step",
+          "nonpositive": "terminate-quantity_below_step-before-fee-or-position",
+          "step": 0.1
+        },
+        "signal": {
+          "atrPercentComparison": "greater-or-equal",
+          "atrPercentMinimum": 0.08,
+          "chartSTAlignment": true,
+          "cross": "strict-signed-previous-equality-qualifies",
+          "endCloseNewEntry": false,
+          "entry": "next-observed-native-open",
+          "flatOnly": true,
+          "h4STAlignment": true,
+          "warmupSignals": "do-not-carry"
+        },
+        "sourceTimeframe": "M5",
+        "stopATR": 2,
+        "supertrend": {
+          "atrLength": 10,
+          "bearishDirection": 1,
+          "bullishDirection": -1,
+          "factor": 3,
+          "initialDirection": 1,
+          "recurrence": "qualified-v9",
+          "smoothing": "wilder-rma-sma-seed"
+        },
+        "symbol": "XAUUSD",
+        "targetATR": 4,
+        "volume": {
+          "comparison": "strict-greater",
+          "includeCurrent": true,
+          "smaLength": 20
+        }
+      }
+    },
+    "name": "Master structural source-historical-reference control",
+    "setupType": "masterStructural"
+  },
+  "description": "Synthetic master structural closed configuration for SOURCE_HISTORICAL_REFERENCE; native dedicated runner only.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "master-structural-native-dedicated-runner-required",
+      "severity": "warning"
+    }
+  ],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "spec/dsl-spec-families/masterStructural.md",
+  "warnings": [
+    "master-structural-native-dedicated-runner-required"
+  ]
+}

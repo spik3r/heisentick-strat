@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "master-report":
+		return runMasterReport(args[1:], out)
 	case "regime-report":
 		return runRegimeReport(args[1:], out)
 	case "timed-report":
@@ -40,6 +42,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick master-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
+
+master-report runs the fixed native offline Master Structural v10 reference. Two closed policies only; aggregated M30 OHLC paths, continuous prices and illustrative 0.1-unit sizing. No Pine/broker parity, financing model, generic or browser execution is implied.
+
   heisentick regime-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
 
 regime-report runs the fixed native offline Regime Engine interpretation. The dedicated result retains terminal exposure; generic report/grid/prefix and engine WASM do not support this family. Parameters, equity10000 and fee0.50/unit/side are fixed. Source quote side, contract/ounce mapping and Pine parity are unverified; financing is unmodeled.
