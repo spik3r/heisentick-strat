@@ -106,9 +106,6 @@ func SharedContextKey(request RunRequest) (string, error) {
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return "", err
 	}
-	if err := rejectDedicatedRangeReversionExecution(request.Config); err != nil {
-		return "", err
-	}
 	if err := rejectFrozenLevelExecution(request.Config); err != nil {
 		return "", err
 	}
