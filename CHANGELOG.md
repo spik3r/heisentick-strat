@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add a dedicated `engineRunR11Fixture` Go/WASM export for the two
+  source-pinned, one-unit R11 research rules. It checks the exact DSL source,
+  route, original M30/H1 and H4 OHLCV rows, UTC window and explicit per-fill
+  costs before calling the existing native range-reversion reference. The
+  versioned result binds fixture and DSL byte hashes and returns the native
+  ledger and accounting summary. Generic fixture, JavaScript and other
+  range-reversion routes remain unchanged and refuse the family; this does
+  not change the known synthetic Python/native entry-bar BE-close distinction.
+
 ## [0.27.0] — 2026-10-07
 
 - Fix `IMMEDIATE_STOP_FIRST_V1` entry-gap handling for the Go-only
