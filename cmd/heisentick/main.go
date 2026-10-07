@@ -22,6 +22,8 @@ func run(args []string, out io.Writer) error {
 		return runAdaptiveFlagReport(args[1:], out)
 	case "gold-flag-report":
 		return runGoldFlagReport(args[1:], out)
+	case "master-portable-report":
+		return runMasterPortableReport(args[1:], out)
 	case "master-report":
 		return runMasterReport(args[1:], out)
 	case "regime-report":
@@ -53,6 +55,10 @@ adaptive-flag-report runs explicit supplied M30/H1 bars through the named delaye
   heisentick gold-flag-report --dsl-file=<path> --m15-file=<BTB1 path> --from=<UTC RFC3339> --to=<UTC RFC3339> --cost=0|0.06|0.15|0.25|0.50
 
 gold-flag-report runs the fixed native offline PR388 causal stress scenario. It retains partial/gap evidence and unresolved local alternatives. It does not establish observed fills or an executable edge.
+
+  heisentick master-portable-report --arithmetic-contract=master-binary64-separated-v1 --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
+
+master-portable-report explicitly selects the bounded, versioned binary64-separated contract shared with engineRunMasterPortableReport. It is a distinct numerical contract, with no tick quantization or Pine/broker parity claim.
 
   heisentick master-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
 

@@ -3,6 +3,7 @@ package master
 import (
 	"fmt"
 	"github.com/spik3r/heisentick-strat/engine/regime"
+	fp "github.com/spik3r/heisentick-strat/internal/float64contract"
 	"math"
 )
 
@@ -10,7 +11,18 @@ func finite(v float64) bool      { return !math.IsNaN(v) && !math.IsInf(v, 0) }
 func pointer(v float64) *float64 { return &v }
 
 func buildIndicators(r Request) ([]IndicatorRow, []H4Row, int, error) {
-	rows, used, err := regime.ReferenceIndicators(r.M5, r.WarmupFromT, r.TradeToT)
+	return buildIndicatorsArithmetic(r, false)
+}
+
+func buildIndicatorsArithmetic(r Request, portable bool) ([]IndicatorRow, []H4Row, int, error) {
+	var rows []regime.IndicatorRow
+	var used int
+	var err error
+	if portable {
+		rows, used, err = regime.ReferenceIndicatorsPortableV1(r.M5, r.WarmupFromT, r.TradeToT)
+	} else {
+		rows, used, err = regime.ReferenceIndicators(r.M5, r.WarmupFromT, r.TradeToT)
+	}
 	if err != nil {
 		return nil, nil, 0, err
 	}
@@ -31,7 +43,11 @@ func buildIndicators(r Request) ([]IndicatorRow, []H4Row, int, error) {
 		b.High = math.Max(b.High, row.High)
 		b.Low = math.Min(b.Low, row.Low)
 		b.Close = row.Close
-		b.Volume += row.Volume
+		if portable {
+			b.Volume = fp.Add(b.Volume, row.Volume)
+		} else {
+			b.Volume += row.Volume
+		}
 		b.Count += row.Count
 		counts[len(counts)-1]++
 		b.Complete = b.Count == 48
@@ -39,7 +55,12 @@ func buildIndicators(r Request) ([]IndicatorRow, []H4Row, int, error) {
 			return nil, nil, 0, fmt.Errorf("master H4 volume overflow")
 		}
 	}
-	hr, err := regime.ReferenceBarIndicators(bars)
+	var hr []regime.IndicatorRow
+	if portable {
+		hr, err = regime.ReferenceBarIndicatorsPortableV1(bars)
+	} else {
+		hr, err = regime.ReferenceBarIndicators(bars)
+	}
 	if err != nil {
 		return nil, nil, 0, err
 	}
@@ -58,7 +79,12 @@ func buildIndicators(r Request) ([]IndicatorRow, []H4Row, int, error) {
 		}
 		o := IndicatorRow{IndicatorRow: row}
 		if row.ATR14 != nil {
-			v := 100 * *row.ATR14 / row.Close
+			var v float64
+			if portable {
+				v = fp.Div(fp.Mul(100, *row.ATR14), row.Close)
+			} else {
+				v = 100 * *row.ATR14 / row.Close
+			}
 			if !finite(v) {
 				return nil, nil, 0, fmt.Errorf("master ATR percent overflow")
 			}
