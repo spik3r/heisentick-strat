@@ -40,6 +40,13 @@ func (b *broker) resolveIntrabarExit(i int) {
 		b.closePosition(b.series.O[i], i, "sl", "")
 		return
 	}
+	// Dedicated reference policies may give a known opening target precedence
+	// over unordered later extremes. The legacy broker remains unchanged.
+	if pos.OpeningTargetPrecedence && gapFill && !pos.NoTarget &&
+		((pos.Side == sideLong && b.series.O[i] >= pos.TP) || (pos.Side == sideShort && b.series.O[i] <= pos.TP)) {
+		b.closePosition(pos.TP, i, "tp", "")
+		return
+	}
 	hitSL := !pos.NoStop && ((pos.Side == sideLong && b.series.L[i] <= pos.SL) ||
 		(pos.Side == sideShort && b.series.H[i] >= pos.SL))
 	hitTP := !pos.NoTarget && ((pos.Side == sideLong && b.series.H[i] >= pos.TP) ||

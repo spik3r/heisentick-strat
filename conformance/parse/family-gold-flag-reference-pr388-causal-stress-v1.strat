@@ -1,0 +1,11 @@
+dsl v7
+strategy "Gold flag reference synthetic control" {
+  description "Synthetic parser fixture; dedicated native runner only"
+}
+market {
+  goldflag timeframe M30 from M15
+}
+setup {
+  type: gold flag reference
+  goldflag policy PR388_CAUSAL_STRESS_V1
+}

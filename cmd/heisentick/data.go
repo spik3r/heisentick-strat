@@ -25,6 +25,9 @@ func loadDSLFile(path string) (dsl.ParseResult, error) {
 	if len(parsed.Errors) > 0 {
 		return dsl.ParseResult{}, fmt.Errorf("DSL parse errors: %s", strings.Join(parsed.Errors, "; "))
 	}
+	if dsl.IsGoldFlagReferenceReserved(parsed.Config) {
+		return dsl.ParseResult{}, fmt.Errorf("%s", dsl.GoldFlagReferenceDedicatedRunnerRequired)
+	}
 	if dsl.IsMasterStructuralReserved(parsed.Config) {
 		return dsl.ParseResult{}, fmt.Errorf("%s", dsl.MasterStructuralDedicatedRunnerRequired)
 	}
