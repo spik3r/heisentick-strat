@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# A retry must finish before another run can consider the same release.
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Build release artifacts
@@ -25,13 +30,26 @@ jobs:
           cache: true
           cache-dependency-path: go.mod
 
+      # Keep every generated file outside Git so later builds retain the same
+      # clean VCS stamp as the first build. Do not hide artifacts with gitignore.
+      - name: Prepare release directory
+        run: |
+          test -z "$(git status --porcelain)"
+          release_dir="$(mktemp -d "$RUNNER_TEMP/heisentick-release.XXXXXX")"
+          release_dir="$(realpath "$release_dir")"
+          source_dir="$(git rev-parse --show-toplevel)"
+          case "$release_dir/" in
+            "$source_dir/"*) echo "Release directory must be outside the source tree" >&2; exit 1 ;;
+          esac
+          echo "RELEASE_DIR=$release_dir" >> "$GITHUB_ENV"
+
       - name: Build release binaries
         run: |
-          GOOS=linux GOARCH=arm64 go build -trimpath -o heisentick-linux-arm64 ./cmd/heisentick
-          GOOS=linux GOARCH=amd64 go build -trimpath -o heisentick-linux-amd64 ./cmd/heisentick
-          GOOS=darwin GOARCH=arm64 go build -trimpath -o heisentick-darwin-arm64 ./cmd/heisentick
-          GOOS=js GOARCH=wasm go build -trimpath -o dslwasm.wasm ./cmd/dslwasm
-          GOOS=js GOARCH=wasm go build -trimpath -o enginewasm.wasm ./cmd/enginewasm
+          GOOS=linux GOARCH=arm64 go build -trimpath -o "$RELEASE_DIR/heisentick-linux-arm64" ./cmd/heisentick
+          GOOS=linux GOARCH=amd64 go build -trimpath -o "$RELEASE_DIR/heisentick-linux-amd64" ./cmd/heisentick
+          GOOS=darwin GOARCH=arm64 go build -trimpath -o "$RELEASE_DIR/heisentick-darwin-arm64" ./cmd/heisentick
+          GOOS=js GOARCH=wasm go build -trimpath -o "$RELEASE_DIR/dslwasm.wasm" ./cmd/dslwasm
+          GOOS=js GOARCH=wasm go build -trimpath -o "$RELEASE_DIR/enginewasm.wasm" ./cmd/enginewasm
 
       # The JS glue the Go toolchain ships for running its WASM builds. It
       # must come from the same toolchain as the .wasm files, so it is a
@@ -41,30 +59,65 @@ jobs:
         run: |
           goroot="$(go env GOROOT)"
           if [ -f "$goroot/misc/wasm/wasm_exec.js" ]; then
-            cp "$goroot/misc/wasm/wasm_exec.js" wasm_exec.js
+            cp "$goroot/misc/wasm/wasm_exec.js" "$RELEASE_DIR/wasm_exec.js"
           else
-            cp "$goroot/lib/wasm/wasm_exec.js" wasm_exec.js
+            cp "$goroot/lib/wasm/wasm_exec.js" "$RELEASE_DIR/wasm_exec.js"
           fi
 
       # Consumers unpack this instead of importing the Go module: the corpus,
       # the semantic fixtures, the spec manifest and schemas, the spec docs
       # and the example programs.
       - name: Build conformance archive
-        run: tar czf conformance.tar.gz conformance/ spec/ examples/
+        run: tar czf "$RELEASE_DIR/conformance.tar.gz" conformance/ spec/ examples/
 
       - name: Write checksums
-        run: sha256sum heisentick-linux-arm64 heisentick-linux-amd64 heisentick-darwin-arm64 dslwasm.wasm enginewasm.wasm wasm_exec.js conformance.tar.gz > SHA256SUMS
+        run: |
+          test -z "$(git status --porcelain)"
+          cd "$RELEASE_DIR"
+          sha256sum heisentick-linux-arm64 heisentick-linux-amd64 heisentick-darwin-arm64 dslwasm.wasm enginewasm.wasm wasm_exec.js conformance.tar.gz > SHA256SUMS
+          sha256sum --check SHA256SUMS
+
+      # Only a genuine not-found response permits initial publication. Existing
+      # releases (including partial/draft releases) need explicit recovery review.
+      - name: Refuse an existing release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = context.ref.replace(/^refs\/tags\//, '');
+            try {
+              await github.rest.repos.getReleaseByTag({ ...context.repo, tag });
+              throw new Error('Release already exists; refusing to replace published assets');
+            } catch (error) {
+              if (error.status !== 404) throw error;
+            }
+            // The tag endpoint can omit drafts. The existing contents-write
+            // token can see them through the authenticated paginated listing.
+            for await (const { data } of github.paginate.iterator(
+              github.rest.repos.listReleases, { ...context.repo, per_page: 100 },
+            )) {
+              if (!Array.isArray(data)) throw new Error('Malformed release listing');
+              for (const release of data) {
+                if (!release || typeof release.tag_name !== 'string') {
+                  throw new Error('Malformed release listing entry');
+                }
+                if (release.tag_name === tag) {
+                  throw new Error('Release already exists; refusing to replace published assets');
+                }
+              }
+            }
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          overwrite_files: false
+          fail_on_unmatched_files: true
           files: |
-            heisentick-linux-arm64
-            heisentick-linux-amd64
-            heisentick-darwin-arm64
-            dslwasm.wasm
-            enginewasm.wasm
-            wasm_exec.js
-            conformance.tar.gz
-            SHA256SUMS
+            ${{ env.RELEASE_DIR }}/heisentick-linux-arm64
+            ${{ env.RELEASE_DIR }}/heisentick-linux-amd64
+            ${{ env.RELEASE_DIR }}/heisentick-darwin-arm64
+            ${{ env.RELEASE_DIR }}/dslwasm.wasm
+            ${{ env.RELEASE_DIR }}/enginewasm.wasm
+            ${{ env.RELEASE_DIR }}/wasm_exec.js
+            ${{ env.RELEASE_DIR }}/conformance.tar.gz
+            ${{ env.RELEASE_DIR }}/SHA256SUMS
