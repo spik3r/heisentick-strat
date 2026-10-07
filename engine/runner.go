@@ -118,7 +118,11 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	var b broker
 	b.reset(series, cols, htfTrend, ema, emaSlope, params, fixture, nil)
 	trades := b.run()
-	return checkedResultEnvelope(fixture, trades)
+	result, err := checkedResultEnvelope(fixture, trades)
+	if setupTypeFromAny(parsed.Config["setupType"]) == "clockRangeBreakout" {
+		result.ClockRangeDays = append([]ClockRangeDay{}, b.clock.days...)
+	}
+	return result, err
 }
 
 func sourceEntryConfig(cfg dsl.Config, fixture RunFixture) bool {

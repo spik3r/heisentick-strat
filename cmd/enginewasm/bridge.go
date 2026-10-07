@@ -12,6 +12,25 @@ import (
 )
 
 func runFixture(raw, source string) ([]byte, error) {
+	return runFixtureEnvelope(raw, source, false)
+}
+
+// runClockRangeFixture exposes lifecycle diagnostics without changing goldens.
+func runClockRangeFixture(raw, source string) ([]byte, error) {
+	parsed, err := dsl.Parse(source)
+	if err != nil {
+		return nil, err
+	}
+	if len(parsed.Errors) != 0 {
+		return nil, fmt.Errorf("DSL parse errors: %v", parsed.Errors)
+	}
+	if parsed.Config["setupType"] != "clockRangeBreakout" {
+		return nil, fmt.Errorf("clock-range audit requires clockRangeBreakout")
+	}
+	return runFixtureEnvelope(raw, source, true)
+}
+
+func runFixtureEnvelope(raw, source string, audit bool) ([]byte, error) {
 	var fixture native.RunFixture
 	if err := json.Unmarshal([]byte(raw), &fixture); err != nil {
 		return nil, err
@@ -34,6 +53,13 @@ func runFixture(raw, source string) ([]byte, error) {
 	result, err := native.RunFixtureCase(fixture, source)
 	if err != nil {
 		return nil, err
+	}
+	if audit {
+		return json.Marshal(struct {
+			Schema string                 `json:"schema"`
+			Run    native.RunResult       `json:"run"`
+			Days   []native.ClockRangeDay `json:"days"`
+		}{"clock-range-fixture-audit-v1", result, result.ClockRangeDays})
 	}
 	return json.Marshal(result)
 }
