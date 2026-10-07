@@ -21,7 +21,7 @@ func runAdaptiveFlagReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	allowed := map[string]bool{"dsl-file": true, "bars-file": true, "trade-from": true, "trade-to": true}
+	allowed := map[string]bool{"dsl-file": true, "bars-file": true, "trade-from": true, "trade-to": true, "research-ablation": true}
 	for key, values := range flags {
 		if !allowed[key] || len(values) != 1 {
 			return fmt.Errorf("adaptive-flag-report rejects unknown/repeated --%s", key)
@@ -31,6 +31,10 @@ func runAdaptiveFlagReport(args []string, out io.Writer) error {
 		if _, err = flags.required(key); err != nil {
 			return err
 		}
+	}
+	ablation := engine.AdaptiveFlagResearchAblation(flags.one("research-ablation", ""))
+	if _, present := flags["research-ablation"]; present && ablation == "" {
+		return fmt.Errorf("adaptive --research-ablation requires a nonempty exact enum")
 	}
 	_, hasFrom := flags["trade-from"]
 	_, hasTo := flags["trade-to"]
@@ -79,7 +83,7 @@ func runAdaptiveFlagReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	result, err := engine.RunAdaptiveVolumeFlag(engine.AdaptiveFlagRequest{Config: parsed.Config, Series: series, Window: window})
+	result, err := engine.RunAdaptiveVolumeFlag(engine.AdaptiveFlagRequest{Config: parsed.Config, Series: series, Window: window, ResearchAblation: ablation})
 	if err != nil {
 		return err
 	}
@@ -96,6 +100,9 @@ func runAdaptiveFlagReport(args []string, out io.Writer) error {
 		Config       dsl.Config                `json:"config"`
 		Run          engine.AdaptiveFlagResult `json:"run"`
 	}{"strat-adaptive-volume-flag-cli-v1", hash(source), hash(config), hash(data), parsed.Config, result}
+	if result.ResearchPolicy != nil {
+		envelope.Schema = engine.AdaptiveFlagResearchCLISchema
+	}
 	// Never emit partial success-looking JSON after validation or encoding failure.
 	raw, err := json.MarshalIndent(envelope, "", "  ")
 	if err != nil {
