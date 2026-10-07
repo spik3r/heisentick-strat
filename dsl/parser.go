@@ -10,6 +10,9 @@ import (
 var ErrParserUnimplemented = errors.New("dsl parser is not implemented")
 
 func parse(source string) (ParseResult, error) {
+	if rangeReversionSourceCandidate(source) {
+		return parseRangeReversionSource(source), nil
+	}
 	if adaptiveFlagSourceCandidate(source) {
 		return parseAdaptiveVolumeFlagSource(source), nil
 	}
@@ -42,6 +45,9 @@ func parse(source string) (ParseResult, error) {
 	}
 	if IsAdaptiveVolumeFlagReserved(parser.config) {
 		return parseAdaptiveVolumeFlagSource(source), nil
+	}
+	if IsRangeReversionReserved(parser.config) {
+		return parseRangeReversionSource(source), nil
 	}
 	return parser.result(), nil
 }
