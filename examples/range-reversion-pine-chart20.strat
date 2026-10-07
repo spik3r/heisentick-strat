@@ -1,0 +1,23 @@
+dsl v7
+strategy "R11 Pine range reversion, chart 20" {
+  description "Causal chart-bar channel with the supplied completed 4h EMA gate"
+}
+market {
+  rangereversion timeframe M30
+  rangereversion source H4 availability next-native-row
+}
+setup {
+  type: range reversion
+  rangereversion policy DELAYED_PINE_OHLC_V1
+  rangereversion bounds chart 20
+  rangereversion candle-color true
+  rangereversion htf-ema true 200
+  rangereversion vector-gates true 14 30 48
+  rangereversion range-expansion true 1.1
+  rangereversion atr 14
+  rangereversion stop-atr 0.6
+  rangereversion target-r 2
+  rangereversion cooldown 2
+  rangereversion breakeven true 1 10
+  rangereversion tick-size 0.01
+}

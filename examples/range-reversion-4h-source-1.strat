@@ -1,0 +1,23 @@
+dsl v7
+strategy "4h source range reversion, B1" {
+  description "Sweep and reclaim of the prior completed 4h candle extremes"
+}
+market {
+  rangereversion timeframe M30
+  rangereversion source H4 availability next-native-row
+}
+setup {
+  type: range reversion
+  rangereversion policy IMMEDIATE_STOP_FIRST_V1
+  rangereversion bounds source 1
+  rangereversion candle-color false
+  rangereversion htf-ema false 200
+  rangereversion vector-gates false 14 30 48
+  rangereversion range-expansion false 1.1
+  rangereversion atr 14
+  rangereversion stop-atr 0.6
+  rangereversion target-r 2
+  rangereversion cooldown 2
+  rangereversion breakeven true 1 10
+  rangereversion tick-size 0.01
+}

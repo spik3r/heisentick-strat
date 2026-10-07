@@ -37,6 +37,9 @@ func loadDSLFile(path string) (dsl.ParseResult, error) {
 	if dsl.IsRegimeEngineReserved(parsed.Config) {
 		return dsl.ParseResult{}, fmt.Errorf("%s", dsl.RegimeEngineDedicatedRunnerRequired)
 	}
+	if dsl.IsRangeReversionReserved(parsed.Config) {
+		return dsl.ParseResult{}, fmt.Errorf("%s", dsl.RangeReversionDedicatedRunnerRequired)
+	}
 	return parsed, nil
 }
 

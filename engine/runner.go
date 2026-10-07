@@ -52,6 +52,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if err := rejectDedicatedRegimeExecution(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
+	if err := rejectDedicatedRangeReversionExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateTimedCalendarFamily(parsed.Config, fixture.TimedCalendar); err != nil {
 		return RunResult{}, err
 	}

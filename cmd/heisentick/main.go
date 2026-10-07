@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "range-reversion-report":
+		return runRangeReversionReport(args[1:], out)
 	case "adaptive-flag-report":
 		return runAdaptiveFlagReport(args[1:], out)
 	case "gold-flag-report":
@@ -48,6 +50,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick range-reversion-report --dsl-file=<path> --entry-bars-file=<six-column BTB1 path> --source-bars-file=<six-column BTB1 path> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --slippage-per-fill=<price> --commission-per-unit-side=<cash> --units=<fixed quantity>
+
+range-reversion-report runs only the dedicated M30/H1 to H4 model. It requires fixed units and explicit slippage and per-unit commission inputs; point value, account sizing and browser/generic execution are not inferred.
+
   heisentick adaptive-flag-report --dsl-file=<path> --bars-file=<six-column BTB1 path> [--trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339>]
 
 adaptive-flag-report runs explicit supplied M30/H1 bars through the named delayed OHLC raw reference. It reports model prices and state only, without sizing, costs or account economics. Generic/browser execution and TradingView parity are not implied.

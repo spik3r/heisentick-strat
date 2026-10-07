@@ -7,6 +7,7 @@ type FamilyID string
 
 const (
 	FamilyAdaptiveVolumeFlag      FamilyID = "adaptiveVolumeFlag"
+	FamilyRangeReversion          FamilyID = "rangeReversion"
 	FamilyGoldFlagReference       FamilyID = "goldFlagReference"
 	FamilyMasterStructural        FamilyID = "masterStructural"
 	FamilyRegimeEngine            FamilyID = "regimeEngine"

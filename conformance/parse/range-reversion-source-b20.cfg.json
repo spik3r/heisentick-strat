@@ -1,0 +1,50 @@
+{
+  "case": "range-reversion-source-b20",
+  "category": "setup-family",
+  "cfg": {
+    "description": "Fade a sweep and close-back-inside of the previous 20 completed 4h bars",
+    "dslVersion": 7,
+    "name": "Prior completed 4h range reversion",
+    "rangeReversion": {
+      "atrLength": 14,
+      "bounds": "SOURCE",
+      "boundsLookback": 20,
+      "breakEvenEnabled": true,
+      "breakEvenOffsetTicks": 10,
+      "breakEvenTriggerR": 1,
+      "cooldownBars": 2,
+      "htfEmaLength": 200,
+      "maxAdx": 30,
+      "minChop": 48,
+      "policy": "IMMEDIATE_STOP_FIRST_V1",
+      "rangeAtrMultiple": 1.1,
+      "requireCandleColor": false,
+      "sourceAvailability": "NEXT_NATIVE_ROW",
+      "sourceTimeframe": "H4",
+      "stopAtrMultiple": 0.6,
+      "targetR": 2,
+      "tickSize": 0.01,
+      "timeframe": "M30",
+      "useHtfEma": false,
+      "useRangeExpansion": false,
+      "useVectorGates": false,
+      "vectorLength": 14
+    },
+    "setupType": "rangeReversion"
+  },
+  "description": "Dedicated source-bound range-reversion DSL contract",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "range-reversion-native-dedicated-runner-required",
+      "severity": "warning"
+    }
+  ],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-190 XAUUSD R11 mean-reversion research",
+  "warnings": [
+    "range-reversion-native-dedicated-runner-required"
+  ]
+}

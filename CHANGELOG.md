@@ -6,6 +6,17 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.26.0] — 2026-10-07
+
+- Add the Go-only `rangeReversion` v7 research family (HT-190) and dedicated
+  `range-reversion-report` command for completed-source-range sweeps and the
+  supplied Pine chart-channel contract. The two order policies explicitly
+  model delayed Pine brackets or immediate stop-first brackets, with strict
+  configuration, next-native-row source availability, input hashes, fixed
+  units and request-level costs. Generic, grid, prefix, WASM and browser
+  execution reject the family. The release adds no browser, UI or broker
+  execution support.
+
 ## [0.25.0]
 
 This minor version includes clock-range fixture diagnostics, the down-shock

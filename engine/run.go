@@ -97,6 +97,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 	if err := rejectDedicatedAdaptiveFlagExecution(request.Config); err != nil {
 		return "", err
 	}
+	if err := rejectDedicatedRangeReversionExecution(request.Config); err != nil {
+		return "", err
+	}
 	if err := rejectDedicatedMasterExecution(request.Config); err != nil {
 		return "", err
 	}
@@ -148,6 +151,9 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 		return nil, err
 	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
+		return nil, err
+	}
+	if err := rejectDedicatedRangeReversionExecution(request.Config); err != nil {
 		return nil, err
 	}
 	if err := rejectFrozenLevelExecution(request.Config); err != nil {
@@ -202,6 +208,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 		return nil, err
 	}
 	if err := rejectDedicatedRegimeExecution(cfg); err != nil {
+		return nil, err
+	}
+	if err := rejectDedicatedRangeReversionExecution(cfg); err != nil {
 		return nil, err
 	}
 	if err := rejectFrozenLevelExecution(cfg); err != nil {
@@ -280,6 +289,9 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
 		return nil, err
 	}
+	if err := rejectDedicatedRangeReversionExecution(request.Config); err != nil {
+		return nil, err
+	}
 	if err := rejectFrozenLevelExecution(request.Config); err != nil {
 		return nil, err
 	}
@@ -341,6 +353,9 @@ func validateRunRequest(request RunRequest) error {
 		return err
 	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
+		return err
+	}
+	if err := rejectDedicatedRangeReversionExecution(request.Config); err != nil {
 		return err
 	}
 	if err := rejectFrozenLevelExecution(request.Config); err != nil {
@@ -569,6 +584,9 @@ func Run(request RunRequest) (RunResult, error) {
 		return RunResult{}, err
 	}
 	if err := rejectDedicatedRegimeExecution(request.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := rejectDedicatedRangeReversionExecution(request.Config); err != nil {
 		return RunResult{}, err
 	}
 	if err := rejectFrozenLevelExecution(request.Config); err != nil {

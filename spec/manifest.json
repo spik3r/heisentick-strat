@@ -279,6 +279,14 @@
       "classification": "go-only",
       "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
       "since": 7
+    },
+    {
+      "id": "rangeReversion",
+      "canonicalSpelling": "range reversion",
+      "canonicalExample": "type: range reversion\n  rangereversion policy DELAYED_PINE_OHLC_V1\n  rangereversion bounds chart 20",
+      "classification": "go-only",
+      "reason": "Dedicated native research runner only; generic, grid, prefix and browser execution refuse this family (HT-190).",
+      "since": 7
     }
   ],
   "aliases": [
