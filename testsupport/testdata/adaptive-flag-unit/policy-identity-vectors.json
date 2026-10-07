@@ -1,0 +1,31 @@
+{
+  "schema": "adaptive-unit-policy-identity-byte-vectors-v1",
+  "scope": "B0 exact compact Go JSON serialization identities; no accounting or oracle execution",
+  "encoding": "UTF-8 compact JSON, declared struct/key order, no trailing newline in hashed bytes",
+  "vectors": [
+    {
+      "id": "economic-RAW",
+      "compactJSON": "{\"schema\":\"UNIT_POINT_VALUE_1-go-v1\",\"scenario\":\"UNIT_POINT_VALUE_1\",\"pointValue\":1,\"plannedRiskU\":1,\"costPolicy\":{\"name\":\"RAW\",\"per_fill\":0,\"spread\":0,\"commission\":0,\"aggregate\":null},\"fundingStatus\":\"unknown_unmodeled\"}",
+      "utf8Bytes": 221,
+      "sha256": "6bfe9723b393e464ad036d40ecd0b1791a91baae6d7117bff6553ff762eca878"
+    },
+    {
+      "id": "economic-RAZOR_PROXY_BASIC",
+      "compactJSON": "{\"schema\":\"UNIT_POINT_VALUE_1-go-v1\",\"scenario\":\"UNIT_POINT_VALUE_1\",\"pointValue\":1,\"plannedRiskU\":1,\"costPolicy\":{\"name\":\"RAZOR_PROXY_BASIC\",\"per_fill\":0.095,\"spread\":0.06,\"commission\":0.035,\"aggregate\":null},\"fundingStatus\":\"unknown_unmodeled\"}",
+      "utf8Bytes": 246,
+      "sha256": "fb0d8ffb0a6c440437f4b86a7ac24c8eaa9dc55f6442ae9ad3a33c2ee4e21928"
+    },
+    {
+      "id": "economic-RAZOR_PROXY_HARSH_AGGREGATE",
+      "compactJSON": "{\"schema\":\"UNIT_POINT_VALUE_1-go-v1\",\"scenario\":\"UNIT_POINT_VALUE_1\",\"pointValue\":1,\"plannedRiskU\":1,\"costPolicy\":{\"name\":\"RAZOR_PROXY_HARSH_AGGREGATE\",\"per_fill\":0.155,\"spread\":null,\"commission\":null,\"aggregate\":0.155},\"fundingStatus\":\"unknown_unmodeled\"}",
+      "utf8Bytes": 256,
+      "sha256": "3e4f5de5cf6ef07019549039934e191296c9b43ca51876ce39707979dfeb7c00"
+    },
+    {
+      "id": "numerical-BINARY64_ORDERED_V1",
+      "compactJSON": "{\"schema\":\"adaptive-unit-numerical-policy-go-v1\",\"policy\":\"BINARY64_ORDERED_V1\",\"sums\":\"chronological positive-zero\",\"operations\":\"separate binary64\",\"comparisons\":\"direct\"}",
+      "utf8Bytes": 173,
+      "sha256": "0005b3c80f35d2e82e0710ed6a0309e9383f10ea894a5cbabb5a5afc8c234005"
+    }
+  ]
+}

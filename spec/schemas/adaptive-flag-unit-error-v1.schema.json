@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-flag-unit-error-v1.schema.json",
+  "title": "adaptive-flag-unit-error-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "maxLength": 64,
+      "x-maxUTF8Bytes": 64,
+      "const": "adaptive-flag-unit-error-v1"
+    },
+    "error": {
+      "$ref": "#/$defs/ErrorDetail"
+    }
+  },
+  "required": [
+    "schema",
+    "error"
+  ],
+  "x-goType": "ErrorEnvelope",
+  "$defs": {
+    "ErrorDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "enum": [
+            "raw_request_rejected",
+            "projection_request_rejected",
+            "raw_source_rejected",
+            "raw_input_rejected",
+            "projection_domain_rejected",
+            "resource_limit",
+            "raw_execution_rejected",
+            "internal_error",
+            "invalid_native_ledger",
+            "invalid_planned_risk",
+            "nonfinite_projection_arithmetic",
+            "ledger_reconciliation_failed",
+            "daily_reconciliation_failed"
+          ]
+        },
+        "phase": {
+          "type": "string",
+          "maxLength": 10,
+          "x-maxUTF8Bytes": 10,
+          "enum": [
+            "request",
+            "source",
+            "input",
+            "resource",
+            "execution",
+            "projection"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1024,
+          "x-maxUTF8Bytes": 1024
+        },
+        "location": {
+          "$ref": "#/$defs/ErrorLocation"
+        }
+      },
+      "required": [
+        "code",
+        "phase",
+        "message",
+        "location"
+      ],
+      "x-goType": "ErrorDetail",
+      "oneOf": [
+        {
+          "properties": {
+            "code": {
+              "const": "raw_request_rejected"
+            },
+            "phase": {
+              "const": "request"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "projection_request_rejected"
+            },
+            "phase": {
+              "const": "request"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "raw_source_rejected"
+            },
+            "phase": {
+              "const": "source"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "raw_input_rejected"
+            },
+            "phase": {
+              "const": "input"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "projection_domain_rejected"
+            },
+            "phase": {
+              "const": "input"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "resource_limit"
+            },
+            "phase": {
+              "const": "resource"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "raw_execution_rejected"
+            },
+            "phase": {
+              "const": "execution"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "internal_error"
+            },
+            "phase": {
+              "const": "execution"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "invalid_native_ledger"
+            },
+            "phase": {
+              "const": "projection"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "invalid_planned_risk"
+            },
+            "phase": {
+              "const": "projection"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "nonfinite_projection_arithmetic"
+            },
+            "phase": {
+              "const": "projection"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "ledger_reconciliation_failed"
+            },
+            "phase": {
+              "const": "projection"
+            }
+          }
+        },
+        {
+          "properties": {
+            "code": {
+              "const": "daily_reconciliation_failed"
+            },
+            "phase": {
+              "const": "projection"
+            }
+          }
+        }
+      ]
+    },
+    "ErrorLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "operation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 48,
+              "x-maxUTF8Bytes": 48,
+              "enum": [
+                "raw_request",
+                "projection_request",
+                "source",
+                "btb1_header",
+                "btb1_copy",
+                "raw_build",
+                "raw_decode",
+                "time_domain",
+                "calendar_count",
+                "output_bound",
+                "exposure_count",
+                "lifecycle",
+                "distance",
+                "quantity",
+                "entry_charge",
+                "exit_charge",
+                "cost_component",
+                "fill_risk_raw",
+                "display_adjustment",
+                "fill_risk_effective",
+                "gross",
+                "gross_realized",
+                "paid_cost",
+                "net",
+                "closed_net",
+                "open_gross",
+                "marked",
+                "alternate",
+                "reconciliation_delta",
+                "close_drawdown",
+                "closed_drawdown",
+                "summary_positive",
+                "summary_negative",
+                "summary_net",
+                "summary_mean",
+                "summary_pf",
+                "daily_change",
+                "daily_reconciliation",
+                "calendar_year_sum",
+                "hypothetical_exit_cost",
+                "hypothetical_liquidation",
+                "identity",
+                "serialize",
+                "transport",
+                "native_io"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rowIndex": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1023,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "orderId": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1023,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "eventId": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4095,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "operation",
+        "rowIndex",
+        "orderId",
+        "eventId"
+      ],
+      "x-goType": "ErrorLocation"
+    }
+  },
+  "x-runtimeConstraints": [
+    "All x-* fields are annotations, not standard JSON Schema validation keywords.",
+    "maxLength counts Unicode code points, not UTF-8 bytes. Runtime must enforce every x-maxUTF8Bytes limit after valid UTF-8 handling.",
+    "Runtime decoding rejects duplicate decoded keys, trailing documents, invalid UTF-8, unpaired surrogates and non-JSON numeric syntax.",
+    "Integer fields require integer JSON tokens without fraction/exponent; JSON Schema integer alone cannot enforce token spelling.",
+    "Wire limit is 8192 bytes including native trailing newline.",
+    "Message limit is 1024 UTF-8 bytes after invalid-sequence replacement with U+FFFD and truncation at a valid boundary.",
+    "Fixed wire key order follows the Go structs; JSON Schema validates key presence, not key order."
+  ],
+  "x-maxWireBytesIncludingNewline": 8192
+}

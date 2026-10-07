@@ -1,0 +1,5862 @@
+{
+  "schema": "adaptive-unit-reference-field-mapping-v1",
+  "status": "B0 frozen mapping; no oracle execution or accounting implementation authorized",
+  "referenceIdentity": {
+    "unit_projection.py": "76c58c46f80217baf68fbe4071077b61134a78bde1b12b9ee3439a0de51eadce",
+    "research_common.py": "0bbfb21c5ab6a121215ba5ec250b3f2fcbabed3a0cf357387a93fb538877bba8",
+    "test_unit_projection.py": "3bbd3d43331367535752866d4078a432f8e8a18b0ce8495154c40ff37b90f7fa"
+  },
+  "profile": {
+    "include_registry": false,
+    "producer_identity_keys": [
+      "kind",
+      "compiler"
+    ],
+    "data_source_keys": [
+      "id",
+      "source_sha256"
+    ],
+    "raw_envelope_file_identities": "All three wrapper hashes mandatory on the Stage B common runtime-envelope domain. Standalone raw-run inputs are not this profile.",
+    "unknownFields": "fail, including unknown fields present on both sides",
+    "ordering": "arrays retain order; maps require identical keys; JSON object property order is not economic equality",
+    "optionalFillFields": [
+      "raw_entry",
+      "fill_risk_raw_U",
+      "display_proxy_adjusted_entry",
+      "fill_risk_effective_U"
+    ],
+    "presenceAuthority": "Optional fill-only fields are all absent before fill and all present after fill. Closed trades and nonnull terminal open_position require all four. Nullable ancestors suppress descendants only while null. Null never equals absence.",
+    "integerDomain": "exact token with no decimal point or exponent; declared ranges checked without float conversion",
+    "floatDomain": "finite IEEE754 binary64 bits from original numeric token; preserve signed zero and subnormals; no tolerance",
+    "manifestEvidence": "evidence_only means retained and separately authenticated, never discarded. Comparator pass alone does not verify hashes/build provenance.",
+    "rawBytes": "Whole Stage A embedded byte segment is separately compared exactly; not parsed/remarshaled by this mapping."
+  },
+  "referenceRoot": {
+    "$ref": "#/$defs/ReferenceProjection"
+  },
+  "goRoot": {
+    "$ref": "#/$defs/GoProjection"
+  },
+  "$defs": {
+    "EventTime": {
+      "type": "object",
+      "properties": {
+        "lowerMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "upperMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "lowerInclusive": {
+          "type": "boolean"
+        },
+        "upperInclusive": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string",
+          "maxLength": 64,
+          "enum": [
+            "observed-open-point",
+            "nominal-close-point",
+            "nonopening-crossing-unknown-model-time",
+            "observed-bar-opportunity"
+          ]
+        }
+      },
+      "required": [
+        "lowerMs",
+        "upperMs",
+        "lowerInclusive",
+        "upperInclusive",
+        "kind"
+      ]
+    },
+    "QueuedExit": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "maxLength": 32,
+          "enum": [
+            "stop-activated-at-close",
+            "max-hold"
+          ]
+        },
+        "creationIdx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "creationCloseMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "nextOpenIdx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        }
+      },
+      "required": [
+        "reason",
+        "creationIdx",
+        "creationCloseMs",
+        "nextOpenIdx"
+      ]
+    },
+    "NativeState": {
+      "type": "object",
+      "properties": {
+        "rowIdx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "closeMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "status": {
+          "type": "string",
+          "maxLength": 16,
+          "enum": [
+            "flat",
+            "pending",
+            "open",
+            "queued-exit"
+          ]
+        },
+        "pendingOrderId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "nullable": true
+        },
+        "positionOrderId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "nullable": true
+        },
+        "pendingAge": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "queuedExit": {
+          "$ref": "#/$defs/QueuedExit",
+          "nullable": true
+        }
+      },
+      "required": [
+        "rowIdx",
+        "closeMs",
+        "status",
+        "pendingOrderId",
+        "positionOrderId",
+        "pendingAge",
+        "queuedExit"
+      ]
+    },
+    "ExposureGap": {
+      "type": "object",
+      "properties": {
+        "from_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "to_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        }
+      },
+      "required": [
+        "from_ms",
+        "to_ms",
+        "duration_ms"
+      ]
+    },
+    "Exposure": {
+      "type": "object",
+      "properties": {
+        "entry_time_bounds": {
+          "$ref": "#/$defs/EventTime"
+        },
+        "endpoint_time_bounds": {
+          "$ref": "#/$defs/EventTime"
+        },
+        "entry_bar_open_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "endpoint_bar_open_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "elapsed_ms_lower": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "elapsed_ms_upper": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "observed_bars_with_exposure": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "quote_gaps_bridged": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExposureGap"
+          },
+          "maxItems": 1024
+        },
+        "utc_midnights_definitely_crossed": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 253402300800000
+          },
+          "maxItems": 732
+        },
+        "utc_midnights_possibly_crossed": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 253402300800000
+          },
+          "maxItems": 732
+        },
+        "rollover_label": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "UTC exposure proxies, not broker charge counts"
+        },
+        "is_open_position": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "entry_time_bounds",
+        "endpoint_time_bounds",
+        "entry_bar_open_ms",
+        "endpoint_bar_open_ms",
+        "elapsed_ms_lower",
+        "elapsed_ms_upper",
+        "observed_bars_with_exposure",
+        "quote_gaps_bridged",
+        "utc_midnights_definitely_crossed",
+        "utc_midnights_possibly_crossed",
+        "rollover_label",
+        "is_open_position"
+      ]
+    },
+    "ProjectedOrder": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "episode_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "candidate_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "side": {
+          "type": "string",
+          "maxLength": 5,
+          "enum": [
+            "long",
+            "short"
+          ]
+        },
+        "creation_row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "raw_trigger": {
+          "type": "float64"
+        },
+        "frozen_stop": {
+          "type": "float64"
+        },
+        "frozen_target": {
+          "type": "float64"
+        },
+        "planned_distance": {
+          "type": "float64"
+        },
+        "quantity": {
+          "type": "float64",
+          "nullable": true
+        },
+        "planned_risk_U": {
+          "type": "float64",
+          "nullable": true
+        },
+        "rejection_reason": {
+          "type": "string",
+          "maxLength": 20,
+          "nullable": true,
+          "enum": [
+            "invalid_planned_risk"
+          ]
+        },
+        "raw_entry": {
+          "type": "float64"
+        },
+        "fill_risk_raw_U": {
+          "type": "float64"
+        },
+        "display_proxy_adjusted_entry": {
+          "type": "float64",
+          "nullable": true
+        },
+        "fill_risk_effective_U": {
+          "type": "float64",
+          "nullable": true
+        }
+      },
+      "required": [
+        "order_id",
+        "episode_id",
+        "candidate_id",
+        "side",
+        "creation_row_index",
+        "raw_trigger",
+        "frozen_stop",
+        "frozen_target",
+        "planned_distance",
+        "quantity",
+        "planned_risk_U",
+        "rejection_reason"
+      ],
+      "presenceGroups": [
+        [
+          "raw_entry",
+          "fill_risk_raw_U",
+          "display_proxy_adjusted_entry",
+          "fill_risk_effective_U"
+        ]
+      ]
+    },
+    "FilledOrder": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "episode_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "candidate_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "side": {
+          "type": "string",
+          "maxLength": 5,
+          "enum": [
+            "long",
+            "short"
+          ]
+        },
+        "creation_row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "raw_trigger": {
+          "type": "float64"
+        },
+        "frozen_stop": {
+          "type": "float64"
+        },
+        "frozen_target": {
+          "type": "float64"
+        },
+        "planned_distance": {
+          "type": "float64"
+        },
+        "quantity": {
+          "type": "float64",
+          "nullable": true
+        },
+        "planned_risk_U": {
+          "type": "float64",
+          "nullable": true
+        },
+        "rejection_reason": {
+          "type": "string",
+          "maxLength": 20,
+          "nullable": true,
+          "enum": [
+            "invalid_planned_risk"
+          ]
+        },
+        "raw_entry": {
+          "type": "float64"
+        },
+        "fill_risk_raw_U": {
+          "type": "float64"
+        },
+        "display_proxy_adjusted_entry": {
+          "type": "float64",
+          "nullable": true
+        },
+        "fill_risk_effective_U": {
+          "type": "float64",
+          "nullable": true
+        }
+      },
+      "required": [
+        "order_id",
+        "episode_id",
+        "candidate_id",
+        "side",
+        "creation_row_index",
+        "raw_trigger",
+        "frozen_stop",
+        "frozen_target",
+        "planned_distance",
+        "quantity",
+        "planned_risk_U",
+        "rejection_reason",
+        "raw_entry",
+        "fill_risk_raw_U",
+        "display_proxy_adjusted_entry",
+        "fill_risk_effective_U"
+      ]
+    },
+    "InvalidRiskRejection": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 20,
+          "const": "invalid_planned_risk"
+        }
+      },
+      "required": [
+        "order_id",
+        "reason"
+      ]
+    },
+    "CostEvent": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16383
+        },
+        "leg": {
+          "type": "string",
+          "maxLength": 5,
+          "enum": [
+            "entry",
+            "exit"
+          ]
+        },
+        "row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "time": {
+          "$ref": "#/$defs/EventTime"
+        },
+        "total_U": {
+          "type": "float64"
+        },
+        "spread_proxy_U": {
+          "type": "float64",
+          "nullable": true
+        },
+        "commission_proxy_U": {
+          "type": "float64",
+          "nullable": true
+        },
+        "unattributed_aggregate_U": {
+          "type": "float64",
+          "nullable": true
+        }
+      },
+      "required": [
+        "order_id",
+        "event_id",
+        "leg",
+        "row_index",
+        "time",
+        "total_U",
+        "spread_proxy_U",
+        "commission_proxy_U",
+        "unattributed_aggregate_U"
+      ]
+    },
+    "ClosedTrade": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "episode_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "candidate_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "side": {
+          "type": "string",
+          "maxLength": 5,
+          "enum": [
+            "long",
+            "short"
+          ]
+        },
+        "creation_row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "raw_trigger": {
+          "type": "float64"
+        },
+        "frozen_stop": {
+          "type": "float64"
+        },
+        "frozen_target": {
+          "type": "float64"
+        },
+        "planned_distance": {
+          "type": "float64"
+        },
+        "quantity": {
+          "type": "float64",
+          "nullable": true
+        },
+        "planned_risk_U": {
+          "type": "float64",
+          "nullable": true
+        },
+        "rejection_reason": {
+          "type": "string",
+          "maxLength": 20,
+          "nullable": true,
+          "enum": [
+            "invalid_planned_risk"
+          ]
+        },
+        "raw_entry": {
+          "type": "float64"
+        },
+        "fill_risk_raw_U": {
+          "type": "float64"
+        },
+        "display_proxy_adjusted_entry": {
+          "type": "float64",
+          "nullable": true
+        },
+        "fill_risk_effective_U": {
+          "type": "float64",
+          "nullable": true
+        },
+        "raw_exit": {
+          "type": "float64"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "gross_U": {
+          "type": "float64"
+        },
+        "entry_model_cost_U": {
+          "type": "float64"
+        },
+        "exit_model_cost_U": {
+          "type": "float64"
+        },
+        "net_U": {
+          "type": "float64"
+        },
+        "net_R": {
+          "type": "float64"
+        },
+        "display_proxy_adjusted_exit": {
+          "type": "float64",
+          "nullable": true
+        },
+        "entry_event_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16383
+        },
+        "exit_event_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16383
+        },
+        "entry_event_time": {
+          "$ref": "#/$defs/EventTime"
+        },
+        "exit_event_time": {
+          "$ref": "#/$defs/EventTime"
+        },
+        "entry_phase": {
+          "type": "string",
+          "maxLength": 12,
+          "enum": [
+            "open",
+            "intrabar"
+          ]
+        },
+        "exit_phase": {
+          "type": "string",
+          "maxLength": 12,
+          "enum": [
+            "open",
+            "intrabar"
+          ]
+        },
+        "entry_year_cohort": {
+          "type": "string",
+          "maxLength": 4,
+          "pattern": "[0-9]{4}"
+        },
+        "exposure": {
+          "$ref": "#/$defs/Exposure"
+        }
+      },
+      "required": [
+        "order_id",
+        "episode_id",
+        "candidate_id",
+        "side",
+        "creation_row_index",
+        "raw_trigger",
+        "frozen_stop",
+        "frozen_target",
+        "planned_distance",
+        "quantity",
+        "planned_risk_U",
+        "rejection_reason",
+        "raw_entry",
+        "fill_risk_raw_U",
+        "display_proxy_adjusted_entry",
+        "fill_risk_effective_U",
+        "raw_exit",
+        "reason",
+        "gross_U",
+        "entry_model_cost_U",
+        "exit_model_cost_U",
+        "net_U",
+        "net_R",
+        "display_proxy_adjusted_exit",
+        "entry_event_id",
+        "exit_event_id",
+        "entry_event_time",
+        "exit_event_time",
+        "entry_phase",
+        "exit_phase",
+        "entry_year_cohort",
+        "exposure"
+      ]
+    },
+    "Summary": {
+      "type": "object",
+      "properties": {
+        "closed_trades": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "wins": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "losses": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "zero_net_trades": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "net_R": {
+          "type": "float64"
+        },
+        "mean_net_R": {
+          "type": "float64",
+          "nullable": true
+        },
+        "positive_net_R": {
+          "type": "float64"
+        },
+        "absolute_negative_net_R": {
+          "type": "float64"
+        },
+        "profit_factor": {
+          "type": "float64",
+          "nullable": true
+        },
+        "profit_factor_status": {
+          "type": "string",
+          "maxLength": 27,
+          "enum": [
+            "finite",
+            "infinite_no_losses",
+            "undefined_no_nonzero_trades"
+          ]
+        }
+      },
+      "required": [
+        "closed_trades",
+        "wins",
+        "losses",
+        "zero_net_trades",
+        "net_R",
+        "mean_net_R",
+        "positive_net_R",
+        "absolute_negative_net_R",
+        "profit_factor",
+        "profit_factor_status"
+      ]
+    },
+    "CalendarYear": {
+      "type": "object",
+      "properties": {
+        "calendar_year_marked_change_R": {
+          "type": "float64"
+        }
+      },
+      "required": [
+        "calendar_year_marked_change_R"
+      ]
+    },
+    "Mark": {
+      "type": "object",
+      "properties": {
+        "row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "bar_open_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "nominal_close_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "raw_close": {
+          "type": "float64"
+        },
+        "gross_realized_closed_U": {
+          "type": "float64"
+        },
+        "modeled_execution_costs_paid_U": {
+          "type": "float64"
+        },
+        "open_raw_gross_U": {
+          "type": "float64"
+        },
+        "open_entry_model_cost_U": {
+          "type": "float64"
+        },
+        "closed_trade_net_U": {
+          "type": "float64"
+        },
+        "marked_pnl_U": {
+          "type": "float64"
+        },
+        "marked_pnl_R": {
+          "type": "float64"
+        },
+        "reconciliation_delta_U": {
+          "type": "float64"
+        },
+        "close_marked_drawdown_R": {
+          "type": "float64"
+        },
+        "open_order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "nullable": true
+        },
+        "pending_order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "nullable": true
+        },
+        "queued_exit": {
+          "$ref": "#/$defs/QueuedExit",
+          "nullable": true
+        }
+      },
+      "required": [
+        "row_index",
+        "bar_open_ms",
+        "nominal_close_ms",
+        "raw_close",
+        "gross_realized_closed_U",
+        "modeled_execution_costs_paid_U",
+        "open_raw_gross_U",
+        "open_entry_model_cost_U",
+        "closed_trade_net_U",
+        "marked_pnl_U",
+        "marked_pnl_R",
+        "reconciliation_delta_U",
+        "close_marked_drawdown_R",
+        "open_order_id",
+        "pending_order_id",
+        "queued_exit"
+      ]
+    },
+    "Daily": {
+      "type": "object",
+      "properties": {
+        "date_utc": {
+          "type": "string",
+          "maxLength": 10,
+          "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+        },
+        "as_of_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "marked_pnl_R": {
+          "type": "float64"
+        },
+        "daily_marked_change_R": {
+          "type": "float64"
+        },
+        "carried_no_quote": {
+          "type": "boolean"
+        },
+        "last_quote_close_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "nullable": true
+        },
+        "quote_gap_duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        }
+      },
+      "required": [
+        "date_utc",
+        "as_of_ms",
+        "marked_pnl_R",
+        "daily_marked_change_R",
+        "carried_no_quote",
+        "last_quote_close_ms",
+        "quote_gap_duration_ms"
+      ]
+    },
+    "Terminal": {
+      "type": "object",
+      "properties": {
+        "native_state": {
+          "$ref": "#/$defs/NativeState"
+        },
+        "marked_pnl_R": {
+          "type": "float64"
+        },
+        "hypothetical_liquidation_pnl_R": {
+          "type": "float64"
+        },
+        "remaining_hypothetical_exit_cost_U": {
+          "type": "float64"
+        },
+        "open_position": {
+          "$ref": "#/$defs/FilledOrder",
+          "nullable": true
+        },
+        "exposure": {
+          "$ref": "#/$defs/Exposure",
+          "nullable": true
+        },
+        "actual_closed_trade_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        }
+      },
+      "required": [
+        "native_state",
+        "marked_pnl_R",
+        "hypothetical_liquidation_pnl_R",
+        "remaining_hypothetical_exit_cost_U",
+        "open_position",
+        "exposure",
+        "actual_closed_trade_count"
+      ]
+    },
+    "CostPolicy": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 32,
+          "enum": [
+            "RAW",
+            "RAZOR_PROXY_BASIC",
+            "RAZOR_PROXY_HARSH_AGGREGATE"
+          ]
+        },
+        "per_fill": {
+          "type": "float64"
+        },
+        "spread": {
+          "type": "float64",
+          "nullable": true
+        },
+        "commission": {
+          "type": "float64",
+          "nullable": true
+        },
+        "aggregate": {
+          "type": "float64",
+          "nullable": true
+        }
+      },
+      "required": [
+        "name",
+        "per_fill",
+        "spread",
+        "commission",
+        "aggregate"
+      ]
+    },
+    "AdaptiveFlagSpec": {
+      "type": "object",
+      "properties": {
+        "bundle": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "numericalPolicy": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "policy": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "rules": {
+          "$ref": "#/$defs/AdaptiveFlagRules"
+        },
+        "timeframe": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "bundle",
+        "numericalPolicy",
+        "policy",
+        "rules",
+        "timeframe"
+      ]
+    },
+    "AdaptiveFlagRules": {
+      "type": "object",
+      "properties": {
+        "atrLen": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "atrStopMult": {
+          "type": "float64"
+        },
+        "entryBufferATR": {
+          "type": "float64"
+        },
+        "fastEMALen": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "flagWidthPoleMult": {
+          "type": "float64"
+        },
+        "maxFlagBars": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "maxFlagRetrace": {
+          "type": "float64"
+        },
+        "maxHold": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "minFlagBars": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "minPoleATR": {
+          "type": "float64"
+        },
+        "pivotSensitivity": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "slowEMALen": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "targetR": {
+          "type": "float64"
+        },
+        "useEMATrend": {
+          "type": "boolean"
+        },
+        "useVolumeFilter": {
+          "type": "boolean"
+        },
+        "validBars": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "volumeSMALen": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "volumeSMAMult": {
+          "type": "float64"
+        }
+      },
+      "required": [
+        "atrLen",
+        "atrStopMult",
+        "entryBufferATR",
+        "fastEMALen",
+        "flagWidthPoleMult",
+        "maxFlagBars",
+        "maxFlagRetrace",
+        "maxHold",
+        "minFlagBars",
+        "minPoleATR",
+        "pivotSensitivity",
+        "slowEMALen",
+        "targetR",
+        "useEMATrend",
+        "useVolumeFilter",
+        "validBars",
+        "volumeSMALen",
+        "volumeSMAMult"
+      ]
+    },
+    "ReferenceRuntime": {
+      "type": "object",
+      "properties": {
+        "implementation": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "version": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "compiler": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "machine": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "float_mantissa_bits": {
+          "type": "integer",
+          "minimum": 53,
+          "maximum": 53
+        },
+        "float_radix": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 2
+        },
+        "arithmetic": {
+          "type": "string",
+          "maxLength": 1024,
+          "const": "separate Python binary64 operations; positive-zero chronological accumulation; no FMA"
+        }
+      },
+      "required": [
+        "implementation",
+        "version",
+        "compiler",
+        "machine",
+        "float_mantissa_bits",
+        "float_radix",
+        "arithmetic"
+      ]
+    },
+    "ReferenceProducer": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "maxLength": 1024
+        },
+        "compiler": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      },
+      "required": [
+        "kind",
+        "compiler"
+      ]
+    },
+    "ReferenceDataSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "[A-Za-z0-9._:/-]{1,128}"
+        },
+        "source_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        }
+      },
+      "required": [
+        "id",
+        "source_sha256"
+      ]
+    },
+    "GoDataSource": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "[A-Za-z0-9._:/-]{1,128}"
+        },
+        "sourceSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        }
+      },
+      "required": [
+        "id",
+        "sourceSha256"
+      ]
+    },
+    "ReferenceWindow": {
+      "type": "object",
+      "properties": {
+        "trade_from_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "trade_to_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "basis": {
+          "type": "string",
+          "maxLength": 128,
+          "const": "bar-open timestamp in [start,end); nominal close may equal end"
+        }
+      },
+      "required": [
+        "trade_from_ms",
+        "trade_to_ms",
+        "basis"
+      ]
+    },
+    "GoWindow": {
+      "type": "object",
+      "properties": {
+        "tradeFromMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "tradeToMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000
+        },
+        "basis": {
+          "type": "string",
+          "maxLength": 128,
+          "const": "bar-open timestamp in [start,end); nominal close may equal end"
+        }
+      },
+      "required": [
+        "tradeFromMs",
+        "tradeToMs",
+        "basis"
+      ]
+    },
+    "ReferenceFileIdentities": {
+      "type": "object",
+      "properties": {
+        "dslSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "configSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "btb1Sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        }
+      },
+      "required": [
+        "dslSha256",
+        "configSha256",
+        "btb1Sha256"
+      ]
+    },
+    "ReferenceEconomicPolicy": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "UNIT_POINT_VALUE_1-v1"
+        },
+        "point_value": {
+          "type": "float64"
+        },
+        "planned_risk_U": {
+          "type": "float64"
+        },
+        "quantity": {
+          "type": "string",
+          "maxLength": 1024,
+          "const": "fixed at creation: 1/abs(raw trigger-frozen stop); no compounding or rounding"
+        },
+        "cost": {
+          "$ref": "#/$defs/CostPolicy"
+        },
+        "debit": {
+          "type": "string",
+          "maxLength": 1024,
+          "const": "one cash-equivalent event per actual entry/exit; raw physics unchanged"
+        },
+        "valuation": {
+          "type": "string",
+          "maxLength": 1024,
+          "const": "realized raw gross minus paid costs plus open raw gross at nominal close"
+        },
+        "funding": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "unknown_unmodeled"
+        },
+        "hypothetical_liquidation": {
+          "type": "string",
+          "maxLength": 1024,
+          "const": "separate mark minus remaining exit cost"
+        }
+      },
+      "required": [
+        "schema",
+        "point_value",
+        "planned_risk_U",
+        "quantity",
+        "cost",
+        "debit",
+        "valuation",
+        "funding",
+        "hypothetical_liquidation"
+      ]
+    },
+    "GoEconomicPolicy": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "UNIT_POINT_VALUE_1-go-v1"
+        },
+        "scenario": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "UNIT_POINT_VALUE_1"
+        },
+        "pointValue": {
+          "type": "float64"
+        },
+        "plannedRiskU": {
+          "type": "float64"
+        },
+        "costPolicy": {
+          "$ref": "#/$defs/CostPolicy"
+        },
+        "fundingStatus": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "unknown_unmodeled"
+        }
+      },
+      "required": [
+        "schema",
+        "scenario",
+        "pointValue",
+        "plannedRiskU",
+        "costPolicy",
+        "fundingStatus"
+      ]
+    },
+    "GoNumericalPolicy": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "adaptive-unit-numerical-policy-go-v1"
+        },
+        "policy": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "BINARY64_ORDERED_V1"
+        },
+        "sums": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "chronological positive-zero"
+        },
+        "operations": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "separate binary64"
+        },
+        "comparisons": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "direct"
+        }
+      },
+      "required": [
+        "schema",
+        "policy",
+        "sums",
+        "operations",
+        "comparisons"
+      ]
+    },
+    "GoBuildIdentity": {
+      "type": "object",
+      "properties": {
+        "goVersion": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "compiler": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "goos": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "goarch": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "vcsRevision": {
+          "type": "string",
+          "maxLength": 40,
+          "pattern": "(?:|[0-9a-f]{40})"
+        },
+        "vcsModified": {
+          "type": "boolean",
+          "nullable": true
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "goVersion",
+        "compiler",
+        "goos",
+        "goarch",
+        "vcsRevision",
+        "vcsModified",
+        "verified"
+      ]
+    },
+    "ReferenceManifest": {
+      "type": "object",
+      "properties": {
+        "implementation_contract_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "6bdbc2fbf38986a7c782fb342b733a428148a8f34199b2e8bb614efebf1e2665"
+        },
+        "reporting_definitions_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "5b9201efa5b071fe7a47603fdde95cb723767a9c760398afe72b139b7920f27b"
+        },
+        "scenario": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "UNIT_POINT_VALUE_1"
+        },
+        "units": {
+          "type": "string",
+          "maxLength": 128,
+          "const": "U research PnL and R; 1U planned risk; not account dollars"
+        },
+        "point_value": {
+          "type": "float64"
+        },
+        "planned_risk_U": {
+          "type": "float64"
+        },
+        "starting_cumulative_pnl_U": {
+          "type": "float64"
+        },
+        "cost_policy": {
+          "$ref": "#/$defs/CostPolicy"
+        },
+        "economic_policy_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "economic_policy": {
+          "$ref": "#/$defs/ReferenceEconomicPolicy"
+        },
+        "numerical_policy": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "BINARY64_ORDERED_V1"
+        },
+        "numerical_policy_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "projection_runtime": {
+          "$ref": "#/$defs/ReferenceRuntime"
+        },
+        "producer_identity": {
+          "$ref": "#/$defs/ReferenceProducer"
+        },
+        "data_source": {
+          "$ref": "#/$defs/ReferenceDataSource"
+        },
+        "raw_input_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "raw_config_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "source_pine_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "raw_ledger_canonical_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "raw_envelope_file_identities": {
+          "$ref": "#/$defs/ReferenceFileIdentities"
+        },
+        "effective_config": {
+          "$ref": "#/$defs/AdaptiveFlagSpec"
+        },
+        "execution_semantics": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "delayed-first-stop-activation-v1"
+        },
+        "execution_window": {
+          "$ref": "#/$defs/ReferenceWindow"
+        },
+        "window_sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "warmup_rows_excluded_from_accounting": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "funding_status": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "unknown_unmodeled"
+        },
+        "funding_cash_U": {
+          "type": "null"
+        },
+        "economics_qualification": {
+          "type": "string",
+          "maxLength": 192,
+          "const": "after modeled execution costs, before unmodeled funding; basic also before additional unmodeled slippage"
+        },
+        "costs_never_modify_raw_physics": {
+          "type": "boolean",
+          "const": true
+        },
+        "liquidation_is_hypothetical": {
+          "type": "boolean",
+          "const": true
+        },
+        "registry_enabled": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "required": [
+        "implementation_contract_sha256",
+        "reporting_definitions_sha256",
+        "scenario",
+        "units",
+        "point_value",
+        "planned_risk_U",
+        "starting_cumulative_pnl_U",
+        "cost_policy",
+        "economic_policy_sha256",
+        "economic_policy",
+        "numerical_policy",
+        "numerical_policy_sha256",
+        "projection_runtime",
+        "producer_identity",
+        "data_source",
+        "raw_input_sha256",
+        "raw_config_sha256",
+        "source_pine_sha256",
+        "raw_ledger_canonical_sha256",
+        "raw_envelope_file_identities",
+        "effective_config",
+        "execution_semantics",
+        "execution_window",
+        "window_sha256",
+        "warmup_rows_excluded_from_accounting",
+        "funding_status",
+        "funding_cash_U",
+        "economics_qualification",
+        "costs_never_modify_raw_physics",
+        "liquidation_is_hypothetical",
+        "registry_enabled"
+      ]
+    },
+    "GoManifest": {
+      "type": "object",
+      "properties": {
+        "contractId": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "adaptive-unit-projection-go-v1"
+        },
+        "referenceSourceSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "76c58c46f80217baf68fbe4071077b61134a78bde1b12b9ee3439a0de51eadce"
+        },
+        "referenceCommonSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "0bbfb21c5ab6a121215ba5ec250b3f2fcbabed3a0cf357387a93fb538877bba8"
+        },
+        "scenario": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "UNIT_POINT_VALUE_1"
+        },
+        "units": {
+          "type": "string",
+          "maxLength": 128,
+          "const": "U research PnL and R; 1U planned risk; not account dollars"
+        },
+        "pointValue": {
+          "type": "float64"
+        },
+        "plannedRiskU": {
+          "type": "float64"
+        },
+        "startingCumulativePnlU": {
+          "type": "float64"
+        },
+        "numericalPolicy": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "BINARY64_ORDERED_V1"
+        },
+        "costPolicy": {
+          "$ref": "#/$defs/CostPolicy"
+        },
+        "economicPolicy": {
+          "$ref": "#/$defs/GoEconomicPolicy"
+        },
+        "goEconomicPolicySha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "numericalDefinition": {
+          "$ref": "#/$defs/GoNumericalPolicy"
+        },
+        "goNumericalPolicySha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "fundingStatus": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "unknown_unmodeled"
+        },
+        "fundingCashU": {
+          "type": "null"
+        },
+        "economicsQualification": {
+          "type": "string",
+          "maxLength": 192,
+          "const": "after modeled execution costs, before unmodeled funding; basic also before additional unmodeled slippage"
+        },
+        "rawEnvelopeSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "rawInputSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "rawConfigSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "sourcePineSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "dslSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "compiledConfigSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "btb1Sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "[0-9a-f]{64}"
+        },
+        "effectiveConfig": {
+          "$ref": "#/$defs/AdaptiveFlagSpec"
+        },
+        "executionSemantics": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "delayed-first-stop-activation-v1"
+        },
+        "executionWindow": {
+          "$ref": "#/$defs/GoWindow"
+        },
+        "warmupRowsExcludedFromAccounting": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024
+        },
+        "dataSource": {
+          "$ref": "#/$defs/GoDataSource"
+        },
+        "dataSourceStatus": {
+          "type": "string",
+          "maxLength": 32,
+          "const": "declared_only"
+        },
+        "buildIdentity": {
+          "$ref": "#/$defs/GoBuildIdentity"
+        },
+        "registryEnabled": {
+          "type": "boolean",
+          "const": false
+        },
+        "costsNeverModifyRawPhysics": {
+          "type": "boolean",
+          "const": true
+        },
+        "liquidationIsHypothetical": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "contractId",
+        "referenceSourceSha256",
+        "referenceCommonSha256",
+        "scenario",
+        "units",
+        "pointValue",
+        "plannedRiskU",
+        "startingCumulativePnlU",
+        "numericalPolicy",
+        "costPolicy",
+        "economicPolicy",
+        "goEconomicPolicySha256",
+        "numericalDefinition",
+        "goNumericalPolicySha256",
+        "fundingStatus",
+        "fundingCashU",
+        "economicsQualification",
+        "rawEnvelopeSha256",
+        "rawInputSha256",
+        "rawConfigSha256",
+        "sourcePineSha256",
+        "dslSha256",
+        "compiledConfigSha256",
+        "btb1Sha256",
+        "effectiveConfig",
+        "executionSemantics",
+        "executionWindow",
+        "warmupRowsExcludedFromAccounting",
+        "dataSource",
+        "dataSourceStatus",
+        "buildIdentity",
+        "registryEnabled",
+        "costsNeverModifyRawPhysics",
+        "liquidationIsHypothetical"
+      ]
+    },
+    "ReferenceProjection": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "adaptive-native-unit-projection-v1"
+        },
+        "manifest": {
+          "$ref": "#/$defs/ReferenceManifest"
+        },
+        "source_authority": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "native Go raw strategy ledger"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProjectedOrder"
+          },
+          "maxItems": 1024
+        },
+        "invalid_planned_risk_rejections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InvalidRiskRejection"
+          },
+          "maxItems": 1024
+        },
+        "cost_events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CostEvent"
+          },
+          "maxItems": 2048
+        },
+        "closed_trades": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ClosedTrade"
+          },
+          "maxItems": 1024
+        },
+        "summary": {
+          "$ref": "#/$defs/Summary"
+        },
+        "by_entry_year_cohort": {
+          "type": "object",
+          "keyPattern": "[0-9]{4}",
+          "values": {
+            "$ref": "#/$defs/Summary"
+          },
+          "maxProperties": 366
+        },
+        "by_calendar_year_marked_change": {
+          "type": "object",
+          "keyPattern": "[0-9]{4}",
+          "values": {
+            "$ref": "#/$defs/CalendarYear"
+          },
+          "maxProperties": 366
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Mark"
+          },
+          "maxItems": 1024
+        },
+        "daily": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Daily"
+          },
+          "maxItems": 366,
+          "minItems": 1
+        },
+        "close_marked_max_drawdown_R": {
+          "type": "float64"
+        },
+        "closed_trade_max_drawdown_R": {
+          "type": "float64"
+        },
+        "terminal": {
+          "$ref": "#/$defs/Terminal"
+        }
+      },
+      "required": [
+        "schema",
+        "manifest",
+        "source_authority",
+        "orders",
+        "invalid_planned_risk_rejections",
+        "cost_events",
+        "closed_trades",
+        "summary",
+        "by_entry_year_cohort",
+        "by_calendar_year_marked_change",
+        "marks",
+        "daily",
+        "close_marked_max_drawdown_R",
+        "closed_trade_max_drawdown_R",
+        "terminal"
+      ]
+    },
+    "GoProjection": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "adaptive-unit-projection-go-v1"
+        },
+        "manifest": {
+          "$ref": "#/$defs/GoManifest"
+        },
+        "source_authority": {
+          "type": "string",
+          "maxLength": 64,
+          "const": "native Go raw strategy ledger"
+        },
+        "orders": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProjectedOrder"
+          },
+          "maxItems": 1024
+        },
+        "invalid_planned_risk_rejections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InvalidRiskRejection"
+          },
+          "maxItems": 1024
+        },
+        "cost_events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CostEvent"
+          },
+          "maxItems": 2048
+        },
+        "closed_trades": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ClosedTrade"
+          },
+          "maxItems": 1024
+        },
+        "summary": {
+          "$ref": "#/$defs/Summary"
+        },
+        "by_entry_year_cohort": {
+          "type": "object",
+          "keyPattern": "[0-9]{4}",
+          "values": {
+            "$ref": "#/$defs/Summary"
+          },
+          "maxProperties": 366
+        },
+        "by_calendar_year_marked_change": {
+          "type": "object",
+          "keyPattern": "[0-9]{4}",
+          "values": {
+            "$ref": "#/$defs/CalendarYear"
+          },
+          "maxProperties": 366
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Mark"
+          },
+          "maxItems": 1024
+        },
+        "daily": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Daily"
+          },
+          "maxItems": 366,
+          "minItems": 1
+        },
+        "close_marked_max_drawdown_R": {
+          "type": "float64"
+        },
+        "closed_trade_max_drawdown_R": {
+          "type": "float64"
+        },
+        "terminal": {
+          "$ref": "#/$defs/Terminal"
+        }
+      },
+      "required": [
+        "schema",
+        "manifest",
+        "source_authority",
+        "orders",
+        "invalid_planned_risk_rejections",
+        "cost_events",
+        "closed_trades",
+        "summary",
+        "by_entry_year_cohort",
+        "by_calendar_year_marked_change",
+        "marks",
+        "daily",
+        "close_marked_max_drawdown_R",
+        "closed_trade_max_drawdown_R",
+        "terminal"
+      ]
+    }
+  },
+  "fields": [
+    {
+      "reference": "",
+      "go": "",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/schema",
+      "go": "/schema",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Explicitly versioned Go schema replaces the reference schema; both exact constants are independently checked."
+    },
+    {
+      "reference": "/manifest",
+      "go": "/manifest",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/implementation_contract_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/reporting_definitions_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/scenario",
+      "go": "/manifest/scenario",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/units",
+      "go": "/manifest/units",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/point_value",
+      "go": "/manifest/pointValue",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/planned_risk_U",
+      "go": "/manifest/plannedRiskU",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/starting_cumulative_pnl_U",
+      "go": "/manifest/startingCumulativePnlU",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy",
+      "go": "/manifest/costPolicy",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/cost_policy/name",
+      "go": "/manifest/costPolicy/name",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/per_fill",
+      "go": "/manifest/costPolicy/per_fill",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/spread",
+      "go": "/manifest/costPolicy/spread",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/commission",
+      "go": "/manifest/costPolicy/commission",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/aggregate",
+      "go": "/manifest/costPolicy/aggregate",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/economic_policy",
+      "go": "/manifest/economicPolicy",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/economic_policy/schema",
+      "go": "/manifest/economicPolicy/schema",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Explicitly versioned Go schema replaces the reference schema; both exact constants are independently checked."
+    },
+    {
+      "reference": "/manifest/economic_policy/point_value",
+      "go": "/manifest/economicPolicy/pointValue",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/planned_risk_U",
+      "go": "/manifest/economicPolicy/plannedRiskU",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/quantity",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/economic_policy/cost",
+      "go": "/manifest/economicPolicy/costPolicy",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/name",
+      "go": "/manifest/economicPolicy/costPolicy/name",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/per_fill",
+      "go": "/manifest/economicPolicy/costPolicy/per_fill",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/spread",
+      "go": "/manifest/economicPolicy/costPolicy/spread",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/commission",
+      "go": "/manifest/economicPolicy/costPolicy/commission",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/aggregate",
+      "go": "/manifest/economicPolicy/costPolicy/aggregate",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/debit",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/economic_policy/valuation",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/economic_policy/funding",
+      "go": "/manifest/economicPolicy/fundingStatus",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/hypothetical_liquidation",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/numerical_policy",
+      "go": "/manifest/numericalPolicy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/numerical_policy_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/projection_runtime",
+      "go": null,
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed container is independently validated; every declared descendant is separately mapped below."
+    },
+    {
+      "reference": "/manifest/projection_runtime/implementation",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/version",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/compiler",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/machine",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/float_mantissa_bits",
+      "go": null,
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/float_radix",
+      "go": null,
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/arithmetic",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/producer_identity",
+      "go": null,
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed container is independently validated; every declared descendant is separately mapped below."
+    },
+    {
+      "reference": "/manifest/producer_identity/kind",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain the frozen invented producer declaration; Go build identity is separately observed evidence."
+    },
+    {
+      "reference": "/manifest/producer_identity/compiler",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain the frozen invented producer declaration; Go build identity is separately observed evidence."
+    },
+    {
+      "reference": "/manifest/data_source",
+      "go": "/manifest/dataSource",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/data_source/id",
+      "go": "/manifest/dataSource/id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/data_source/source_sha256",
+      "go": "/manifest/dataSource/sourceSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_input_sha256",
+      "go": "/manifest/rawInputSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_config_sha256",
+      "go": "/manifest/rawConfigSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/source_pine_sha256",
+      "go": "/manifest/sourcePineSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_ledger_canonical_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities",
+      "go": null,
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed container is independently validated; every declared descendant is separately mapped below."
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities/dslSha256",
+      "go": "/manifest/dslSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities/configSha256",
+      "go": "/manifest/compiledConfigSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities/btb1Sha256",
+      "go": "/manifest/btb1Sha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config",
+      "go": "/manifest/effectiveConfig",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/effective_config/bundle",
+      "go": "/manifest/effectiveConfig/bundle",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/numericalPolicy",
+      "go": "/manifest/effectiveConfig/numericalPolicy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/policy",
+      "go": "/manifest/effectiveConfig/policy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules",
+      "go": "/manifest/effectiveConfig/rules",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/atrLen",
+      "go": "/manifest/effectiveConfig/rules/atrLen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/atrStopMult",
+      "go": "/manifest/effectiveConfig/rules/atrStopMult",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/entryBufferATR",
+      "go": "/manifest/effectiveConfig/rules/entryBufferATR",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/fastEMALen",
+      "go": "/manifest/effectiveConfig/rules/fastEMALen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/flagWidthPoleMult",
+      "go": "/manifest/effectiveConfig/rules/flagWidthPoleMult",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/maxFlagBars",
+      "go": "/manifest/effectiveConfig/rules/maxFlagBars",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/maxFlagRetrace",
+      "go": "/manifest/effectiveConfig/rules/maxFlagRetrace",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/maxHold",
+      "go": "/manifest/effectiveConfig/rules/maxHold",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/minFlagBars",
+      "go": "/manifest/effectiveConfig/rules/minFlagBars",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/minPoleATR",
+      "go": "/manifest/effectiveConfig/rules/minPoleATR",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/pivotSensitivity",
+      "go": "/manifest/effectiveConfig/rules/pivotSensitivity",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/slowEMALen",
+      "go": "/manifest/effectiveConfig/rules/slowEMALen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/targetR",
+      "go": "/manifest/effectiveConfig/rules/targetR",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/useEMATrend",
+      "go": "/manifest/effectiveConfig/rules/useEMATrend",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/useVolumeFilter",
+      "go": "/manifest/effectiveConfig/rules/useVolumeFilter",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/validBars",
+      "go": "/manifest/effectiveConfig/rules/validBars",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/volumeSMALen",
+      "go": "/manifest/effectiveConfig/rules/volumeSMALen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/volumeSMAMult",
+      "go": "/manifest/effectiveConfig/rules/volumeSMAMult",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/timeframe",
+      "go": "/manifest/effectiveConfig/timeframe",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_semantics",
+      "go": "/manifest/executionSemantics",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_window",
+      "go": "/manifest/executionWindow",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/execution_window/trade_from_ms",
+      "go": "/manifest/executionWindow/tradeFromMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_window/trade_to_ms",
+      "go": "/manifest/executionWindow/tradeToMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_window/basis",
+      "go": "/manifest/executionWindow/basis",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/window_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/warmup_rows_excluded_from_accounting",
+      "go": "/manifest/warmupRowsExcludedFromAccounting",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/funding_status",
+      "go": "/manifest/fundingStatus",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/funding_cash_U",
+      "go": "/manifest/fundingCashU",
+      "type": "null",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economics_qualification",
+      "go": "/manifest/economicsQualification",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/costs_never_modify_raw_physics",
+      "go": "/manifest/costsNeverModifyRawPhysics",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/liquidation_is_hypothetical",
+      "go": "/manifest/liquidationIsHypothetical",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/registry_enabled",
+      "go": "/manifest/registryEnabled",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/source_authority",
+      "go": "/source_authority",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders",
+      "go": "/orders",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/orders/*",
+      "go": "/orders/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/orders/*/order_id",
+      "go": "/orders/*/order_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/episode_id",
+      "go": "/orders/*/episode_id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/candidate_id",
+      "go": "/orders/*/candidate_id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/side",
+      "go": "/orders/*/side",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/creation_row_index",
+      "go": "/orders/*/creation_row_index",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/raw_trigger",
+      "go": "/orders/*/raw_trigger",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/frozen_stop",
+      "go": "/orders/*/frozen_stop",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/frozen_target",
+      "go": "/orders/*/frozen_target",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/planned_distance",
+      "go": "/orders/*/planned_distance",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/quantity",
+      "go": "/orders/*/quantity",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/planned_risk_U",
+      "go": "/orders/*/planned_risk_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/rejection_reason",
+      "go": "/orders/*/rejection_reason",
+      "type": "string",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/raw_entry",
+      "go": "/orders/*/raw_entry",
+      "type": "float64",
+      "nullable": false,
+      "presence": "optional: all four fill-only fields present exactly when order filled",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/fill_risk_raw_U",
+      "go": "/orders/*/fill_risk_raw_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "optional: all four fill-only fields present exactly when order filled",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/display_proxy_adjusted_entry",
+      "go": "/orders/*/display_proxy_adjusted_entry",
+      "type": "float64",
+      "nullable": true,
+      "presence": "optional: all four fill-only fields present exactly when order filled",
+      "mode": "equal"
+    },
+    {
+      "reference": "/orders/*/fill_risk_effective_U",
+      "go": "/orders/*/fill_risk_effective_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "optional: all four fill-only fields present exactly when order filled",
+      "mode": "equal"
+    },
+    {
+      "reference": "/invalid_planned_risk_rejections",
+      "go": "/invalid_planned_risk_rejections",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/invalid_planned_risk_rejections/*",
+      "go": "/invalid_planned_risk_rejections/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/invalid_planned_risk_rejections/*/order_id",
+      "go": "/invalid_planned_risk_rejections/*/order_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/invalid_planned_risk_rejections/*/reason",
+      "go": "/invalid_planned_risk_rejections/*/reason",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events",
+      "go": "/cost_events",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/cost_events/*",
+      "go": "/cost_events/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/cost_events/*/order_id",
+      "go": "/cost_events/*/order_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/event_id",
+      "go": "/cost_events/*/event_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/leg",
+      "go": "/cost_events/*/leg",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/row_index",
+      "go": "/cost_events/*/row_index",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/time",
+      "go": "/cost_events/*/time",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/cost_events/*/time/lowerMs",
+      "go": "/cost_events/*/time/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/time/upperMs",
+      "go": "/cost_events/*/time/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/time/lowerInclusive",
+      "go": "/cost_events/*/time/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/time/upperInclusive",
+      "go": "/cost_events/*/time/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/time/kind",
+      "go": "/cost_events/*/time/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/total_U",
+      "go": "/cost_events/*/total_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/spread_proxy_U",
+      "go": "/cost_events/*/spread_proxy_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/commission_proxy_U",
+      "go": "/cost_events/*/commission_proxy_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/cost_events/*/unattributed_aggregate_U",
+      "go": "/cost_events/*/unattributed_aggregate_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades",
+      "go": "/closed_trades",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*",
+      "go": "/closed_trades/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/order_id",
+      "go": "/closed_trades/*/order_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/episode_id",
+      "go": "/closed_trades/*/episode_id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/candidate_id",
+      "go": "/closed_trades/*/candidate_id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/side",
+      "go": "/closed_trades/*/side",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/creation_row_index",
+      "go": "/closed_trades/*/creation_row_index",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/raw_trigger",
+      "go": "/closed_trades/*/raw_trigger",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/frozen_stop",
+      "go": "/closed_trades/*/frozen_stop",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/frozen_target",
+      "go": "/closed_trades/*/frozen_target",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/planned_distance",
+      "go": "/closed_trades/*/planned_distance",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/quantity",
+      "go": "/closed_trades/*/quantity",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/planned_risk_U",
+      "go": "/closed_trades/*/planned_risk_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/rejection_reason",
+      "go": "/closed_trades/*/rejection_reason",
+      "type": "string",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/raw_entry",
+      "go": "/closed_trades/*/raw_entry",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/fill_risk_raw_U",
+      "go": "/closed_trades/*/fill_risk_raw_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/display_proxy_adjusted_entry",
+      "go": "/closed_trades/*/display_proxy_adjusted_entry",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/fill_risk_effective_U",
+      "go": "/closed_trades/*/fill_risk_effective_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/raw_exit",
+      "go": "/closed_trades/*/raw_exit",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/reason",
+      "go": "/closed_trades/*/reason",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/gross_U",
+      "go": "/closed_trades/*/gross_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_model_cost_U",
+      "go": "/closed_trades/*/entry_model_cost_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_model_cost_U",
+      "go": "/closed_trades/*/exit_model_cost_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/net_U",
+      "go": "/closed_trades/*/net_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/net_R",
+      "go": "/closed_trades/*/net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/display_proxy_adjusted_exit",
+      "go": "/closed_trades/*/display_proxy_adjusted_exit",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_id",
+      "go": "/closed_trades/*/entry_event_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_id",
+      "go": "/closed_trades/*/exit_event_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_time",
+      "go": "/closed_trades/*/entry_event_time",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_time/lowerMs",
+      "go": "/closed_trades/*/entry_event_time/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_time/upperMs",
+      "go": "/closed_trades/*/entry_event_time/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_time/lowerInclusive",
+      "go": "/closed_trades/*/entry_event_time/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_time/upperInclusive",
+      "go": "/closed_trades/*/entry_event_time/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_event_time/kind",
+      "go": "/closed_trades/*/entry_event_time/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_time",
+      "go": "/closed_trades/*/exit_event_time",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_time/lowerMs",
+      "go": "/closed_trades/*/exit_event_time/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_time/upperMs",
+      "go": "/closed_trades/*/exit_event_time/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_time/lowerInclusive",
+      "go": "/closed_trades/*/exit_event_time/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_time/upperInclusive",
+      "go": "/closed_trades/*/exit_event_time/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_event_time/kind",
+      "go": "/closed_trades/*/exit_event_time/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_phase",
+      "go": "/closed_trades/*/entry_phase",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exit_phase",
+      "go": "/closed_trades/*/exit_phase",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/entry_year_cohort",
+      "go": "/closed_trades/*/entry_year_cohort",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure",
+      "go": "/closed_trades/*/exposure",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_time_bounds",
+      "go": "/closed_trades/*/exposure/entry_time_bounds",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_time_bounds/lowerMs",
+      "go": "/closed_trades/*/exposure/entry_time_bounds/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_time_bounds/upperMs",
+      "go": "/closed_trades/*/exposure/entry_time_bounds/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_time_bounds/lowerInclusive",
+      "go": "/closed_trades/*/exposure/entry_time_bounds/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_time_bounds/upperInclusive",
+      "go": "/closed_trades/*/exposure/entry_time_bounds/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_time_bounds/kind",
+      "go": "/closed_trades/*/exposure/entry_time_bounds/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_time_bounds",
+      "go": "/closed_trades/*/exposure/endpoint_time_bounds",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_time_bounds/lowerMs",
+      "go": "/closed_trades/*/exposure/endpoint_time_bounds/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_time_bounds/upperMs",
+      "go": "/closed_trades/*/exposure/endpoint_time_bounds/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_time_bounds/lowerInclusive",
+      "go": "/closed_trades/*/exposure/endpoint_time_bounds/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_time_bounds/upperInclusive",
+      "go": "/closed_trades/*/exposure/endpoint_time_bounds/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_time_bounds/kind",
+      "go": "/closed_trades/*/exposure/endpoint_time_bounds/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/entry_bar_open_ms",
+      "go": "/closed_trades/*/exposure/entry_bar_open_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/endpoint_bar_open_ms",
+      "go": "/closed_trades/*/exposure/endpoint_bar_open_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/elapsed_ms_lower",
+      "go": "/closed_trades/*/exposure/elapsed_ms_lower",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/elapsed_ms_upper",
+      "go": "/closed_trades/*/exposure/elapsed_ms_upper",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/observed_bars_with_exposure",
+      "go": "/closed_trades/*/exposure/observed_bars_with_exposure",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/quote_gaps_bridged",
+      "go": "/closed_trades/*/exposure/quote_gaps_bridged",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/quote_gaps_bridged/*",
+      "go": "/closed_trades/*/exposure/quote_gaps_bridged/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/quote_gaps_bridged/*/from_ms",
+      "go": "/closed_trades/*/exposure/quote_gaps_bridged/*/from_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/quote_gaps_bridged/*/to_ms",
+      "go": "/closed_trades/*/exposure/quote_gaps_bridged/*/to_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/quote_gaps_bridged/*/duration_ms",
+      "go": "/closed_trades/*/exposure/quote_gaps_bridged/*/duration_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/utc_midnights_definitely_crossed",
+      "go": "/closed_trades/*/exposure/utc_midnights_definitely_crossed",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/utc_midnights_definitely_crossed/*",
+      "go": "/closed_trades/*/exposure/utc_midnights_definitely_crossed/*",
+      "type": "integer",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/utc_midnights_possibly_crossed",
+      "go": "/closed_trades/*/exposure/utc_midnights_possibly_crossed",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/utc_midnights_possibly_crossed/*",
+      "go": "/closed_trades/*/exposure/utc_midnights_possibly_crossed/*",
+      "type": "integer",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/rollover_label",
+      "go": "/closed_trades/*/exposure/rollover_label",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trades/*/exposure/is_open_position",
+      "go": "/closed_trades/*/exposure/is_open_position",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary",
+      "go": "/summary",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/summary/closed_trades",
+      "go": "/summary/closed_trades",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/wins",
+      "go": "/summary/wins",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/losses",
+      "go": "/summary/losses",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/zero_net_trades",
+      "go": "/summary/zero_net_trades",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/net_R",
+      "go": "/summary/net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/mean_net_R",
+      "go": "/summary/mean_net_R",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/positive_net_R",
+      "go": "/summary/positive_net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/absolute_negative_net_R",
+      "go": "/summary/absolute_negative_net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/profit_factor",
+      "go": "/summary/profit_factor",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/summary/profit_factor_status",
+      "go": "/summary/profit_factor_status",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort",
+      "go": "/by_entry_year_cohort",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure",
+      "mapKeys": true
+    },
+    {
+      "reference": "/by_entry_year_cohort/*",
+      "go": "/by_entry_year_cohort/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every map member",
+      "mode": "structure"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/closed_trades",
+      "go": "/by_entry_year_cohort/*/closed_trades",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/wins",
+      "go": "/by_entry_year_cohort/*/wins",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/losses",
+      "go": "/by_entry_year_cohort/*/losses",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/zero_net_trades",
+      "go": "/by_entry_year_cohort/*/zero_net_trades",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/net_R",
+      "go": "/by_entry_year_cohort/*/net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/mean_net_R",
+      "go": "/by_entry_year_cohort/*/mean_net_R",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/positive_net_R",
+      "go": "/by_entry_year_cohort/*/positive_net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/absolute_negative_net_R",
+      "go": "/by_entry_year_cohort/*/absolute_negative_net_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/profit_factor",
+      "go": "/by_entry_year_cohort/*/profit_factor",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_entry_year_cohort/*/profit_factor_status",
+      "go": "/by_entry_year_cohort/*/profit_factor_status",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/by_calendar_year_marked_change",
+      "go": "/by_calendar_year_marked_change",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure",
+      "mapKeys": true
+    },
+    {
+      "reference": "/by_calendar_year_marked_change/*",
+      "go": "/by_calendar_year_marked_change/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every map member",
+      "mode": "structure"
+    },
+    {
+      "reference": "/by_calendar_year_marked_change/*/calendar_year_marked_change_R",
+      "go": "/by_calendar_year_marked_change/*/calendar_year_marked_change_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks",
+      "go": "/marks",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/marks/*",
+      "go": "/marks/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/marks/*/row_index",
+      "go": "/marks/*/row_index",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/bar_open_ms",
+      "go": "/marks/*/bar_open_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/nominal_close_ms",
+      "go": "/marks/*/nominal_close_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/raw_close",
+      "go": "/marks/*/raw_close",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/gross_realized_closed_U",
+      "go": "/marks/*/gross_realized_closed_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/modeled_execution_costs_paid_U",
+      "go": "/marks/*/modeled_execution_costs_paid_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/open_raw_gross_U",
+      "go": "/marks/*/open_raw_gross_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/open_entry_model_cost_U",
+      "go": "/marks/*/open_entry_model_cost_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/closed_trade_net_U",
+      "go": "/marks/*/closed_trade_net_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/marked_pnl_U",
+      "go": "/marks/*/marked_pnl_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/marked_pnl_R",
+      "go": "/marks/*/marked_pnl_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/reconciliation_delta_U",
+      "go": "/marks/*/reconciliation_delta_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/close_marked_drawdown_R",
+      "go": "/marks/*/close_marked_drawdown_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/open_order_id",
+      "go": "/marks/*/open_order_id",
+      "type": "integer",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/pending_order_id",
+      "go": "/marks/*/pending_order_id",
+      "type": "integer",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/queued_exit",
+      "go": "/marks/*/queued_exit",
+      "type": "object",
+      "nullable": true,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/marks/*/queued_exit/reason",
+      "go": "/marks/*/queued_exit/reason",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/queued_exit/creationIdx",
+      "go": "/marks/*/queued_exit/creationIdx",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/queued_exit/creationCloseMs",
+      "go": "/marks/*/queued_exit/creationCloseMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/marks/*/queued_exit/nextOpenIdx",
+      "go": "/marks/*/queued_exit/nextOpenIdx",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily",
+      "go": "/daily",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/daily/*",
+      "go": "/daily/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/daily/*/date_utc",
+      "go": "/daily/*/date_utc",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily/*/as_of_ms",
+      "go": "/daily/*/as_of_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily/*/marked_pnl_R",
+      "go": "/daily/*/marked_pnl_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily/*/daily_marked_change_R",
+      "go": "/daily/*/daily_marked_change_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily/*/carried_no_quote",
+      "go": "/daily/*/carried_no_quote",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily/*/last_quote_close_ms",
+      "go": "/daily/*/last_quote_close_ms",
+      "type": "integer",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/daily/*/quote_gap_duration_ms",
+      "go": "/daily/*/quote_gap_duration_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/close_marked_max_drawdown_R",
+      "go": "/close_marked_max_drawdown_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/closed_trade_max_drawdown_R",
+      "go": "/closed_trade_max_drawdown_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal",
+      "go": "/terminal",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/native_state",
+      "go": "/terminal/native_state",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/native_state/rowIdx",
+      "go": "/terminal/native_state/rowIdx",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/closeMs",
+      "go": "/terminal/native_state/closeMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/status",
+      "go": "/terminal/native_state/status",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/pendingOrderId",
+      "go": "/terminal/native_state/pendingOrderId",
+      "type": "integer",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/positionOrderId",
+      "go": "/terminal/native_state/positionOrderId",
+      "type": "integer",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/pendingAge",
+      "go": "/terminal/native_state/pendingAge",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/queuedExit",
+      "go": "/terminal/native_state/queuedExit",
+      "type": "object",
+      "nullable": true,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/native_state/queuedExit/reason",
+      "go": "/terminal/native_state/queuedExit/reason",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/queuedExit/creationIdx",
+      "go": "/terminal/native_state/queuedExit/creationIdx",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/queuedExit/creationCloseMs",
+      "go": "/terminal/native_state/queuedExit/creationCloseMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/native_state/queuedExit/nextOpenIdx",
+      "go": "/terminal/native_state/queuedExit/nextOpenIdx",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/marked_pnl_R",
+      "go": "/terminal/marked_pnl_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/hypothetical_liquidation_pnl_R",
+      "go": "/terminal/hypothetical_liquidation_pnl_R",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/remaining_hypothetical_exit_cost_U",
+      "go": "/terminal/remaining_hypothetical_exit_cost_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position",
+      "go": "/terminal/open_position",
+      "type": "object",
+      "nullable": true,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/open_position/order_id",
+      "go": "/terminal/open_position/order_id",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/episode_id",
+      "go": "/terminal/open_position/episode_id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/candidate_id",
+      "go": "/terminal/open_position/candidate_id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/side",
+      "go": "/terminal/open_position/side",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/creation_row_index",
+      "go": "/terminal/open_position/creation_row_index",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/raw_trigger",
+      "go": "/terminal/open_position/raw_trigger",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/frozen_stop",
+      "go": "/terminal/open_position/frozen_stop",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/frozen_target",
+      "go": "/terminal/open_position/frozen_target",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/planned_distance",
+      "go": "/terminal/open_position/planned_distance",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/quantity",
+      "go": "/terminal/open_position/quantity",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/planned_risk_U",
+      "go": "/terminal/open_position/planned_risk_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/rejection_reason",
+      "go": "/terminal/open_position/rejection_reason",
+      "type": "string",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/raw_entry",
+      "go": "/terminal/open_position/raw_entry",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/fill_risk_raw_U",
+      "go": "/terminal/open_position/fill_risk_raw_U",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/display_proxy_adjusted_entry",
+      "go": "/terminal/open_position/display_proxy_adjusted_entry",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/open_position/fill_risk_effective_U",
+      "go": "/terminal/open_position/fill_risk_effective_U",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure",
+      "go": "/terminal/exposure",
+      "type": "object",
+      "nullable": true,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/entry_time_bounds",
+      "go": "/terminal/exposure/entry_time_bounds",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/entry_time_bounds/lowerMs",
+      "go": "/terminal/exposure/entry_time_bounds/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/entry_time_bounds/upperMs",
+      "go": "/terminal/exposure/entry_time_bounds/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/entry_time_bounds/lowerInclusive",
+      "go": "/terminal/exposure/entry_time_bounds/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/entry_time_bounds/upperInclusive",
+      "go": "/terminal/exposure/entry_time_bounds/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/entry_time_bounds/kind",
+      "go": "/terminal/exposure/entry_time_bounds/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_time_bounds",
+      "go": "/terminal/exposure/endpoint_time_bounds",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_time_bounds/lowerMs",
+      "go": "/terminal/exposure/endpoint_time_bounds/lowerMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_time_bounds/upperMs",
+      "go": "/terminal/exposure/endpoint_time_bounds/upperMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_time_bounds/lowerInclusive",
+      "go": "/terminal/exposure/endpoint_time_bounds/lowerInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_time_bounds/upperInclusive",
+      "go": "/terminal/exposure/endpoint_time_bounds/upperInclusive",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_time_bounds/kind",
+      "go": "/terminal/exposure/endpoint_time_bounds/kind",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/entry_bar_open_ms",
+      "go": "/terminal/exposure/entry_bar_open_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/endpoint_bar_open_ms",
+      "go": "/terminal/exposure/endpoint_bar_open_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/elapsed_ms_lower",
+      "go": "/terminal/exposure/elapsed_ms_lower",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/elapsed_ms_upper",
+      "go": "/terminal/exposure/elapsed_ms_upper",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/observed_bars_with_exposure",
+      "go": "/terminal/exposure/observed_bars_with_exposure",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/quote_gaps_bridged",
+      "go": "/terminal/exposure/quote_gaps_bridged",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/quote_gaps_bridged/*",
+      "go": "/terminal/exposure/quote_gaps_bridged/*",
+      "type": "object",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/quote_gaps_bridged/*/from_ms",
+      "go": "/terminal/exposure/quote_gaps_bridged/*/from_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/quote_gaps_bridged/*/to_ms",
+      "go": "/terminal/exposure/quote_gaps_bridged/*/to_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/quote_gaps_bridged/*/duration_ms",
+      "go": "/terminal/exposure/quote_gaps_bridged/*/duration_ms",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/utc_midnights_definitely_crossed",
+      "go": "/terminal/exposure/utc_midnights_definitely_crossed",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/utc_midnights_definitely_crossed/*",
+      "go": "/terminal/exposure/utc_midnights_definitely_crossed/*",
+      "type": "integer",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/utc_midnights_possibly_crossed",
+      "go": "/terminal/exposure/utc_midnights_possibly_crossed",
+      "type": "array",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/terminal/exposure/utc_midnights_possibly_crossed/*",
+      "go": "/terminal/exposure/utc_midnights_possibly_crossed/*",
+      "type": "integer",
+      "nullable": false,
+      "presence": "every array member in order",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/rollover_label",
+      "go": "/terminal/exposure/rollover_label",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/exposure/is_open_position",
+      "go": "/terminal/exposure/is_open_position",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/terminal/actual_closed_trade_count",
+      "go": "/terminal/actual_closed_trade_count",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": null,
+      "go": "/manifest/contractId",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/referenceSourceSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/referenceCommonSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/economicPolicy/scenario",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/goEconomicPolicySha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed new container is independently validated; every declared descendant has an explicit leaf mapping."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/schema",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/policy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/sums",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/operations",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/comparisons",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/goNumericalPolicySha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/rawEnvelopeSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/dataSourceStatus",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed new container is independently validated; every declared descendant has an explicit leaf mapping."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/goVersion",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/compiler",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/goos",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/goarch",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/vcsRevision",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/vcsModified",
+      "type": "boolean",
+      "nullable": true,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/verified",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    }
+  ],
+  "manifestMapping": [
+    {
+      "reference": "/manifest",
+      "go": "/manifest",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/implementation_contract_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/reporting_definitions_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/scenario",
+      "go": "/manifest/scenario",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/units",
+      "go": "/manifest/units",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/point_value",
+      "go": "/manifest/pointValue",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/planned_risk_U",
+      "go": "/manifest/plannedRiskU",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/starting_cumulative_pnl_U",
+      "go": "/manifest/startingCumulativePnlU",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy",
+      "go": "/manifest/costPolicy",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/cost_policy/name",
+      "go": "/manifest/costPolicy/name",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/per_fill",
+      "go": "/manifest/costPolicy/per_fill",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/spread",
+      "go": "/manifest/costPolicy/spread",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/commission",
+      "go": "/manifest/costPolicy/commission",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/cost_policy/aggregate",
+      "go": "/manifest/costPolicy/aggregate",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/economic_policy",
+      "go": "/manifest/economicPolicy",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/economic_policy/schema",
+      "go": "/manifest/economicPolicy/schema",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Explicitly versioned Go schema replaces the reference schema; both exact constants are independently checked."
+    },
+    {
+      "reference": "/manifest/economic_policy/point_value",
+      "go": "/manifest/economicPolicy/pointValue",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/planned_risk_U",
+      "go": "/manifest/economicPolicy/plannedRiskU",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/quantity",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/economic_policy/cost",
+      "go": "/manifest/economicPolicy/costPolicy",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/name",
+      "go": "/manifest/economicPolicy/costPolicy/name",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/per_fill",
+      "go": "/manifest/economicPolicy/costPolicy/per_fill",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/spread",
+      "go": "/manifest/economicPolicy/costPolicy/spread",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/commission",
+      "go": "/manifest/economicPolicy/costPolicy/commission",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/cost/aggregate",
+      "go": "/manifest/economicPolicy/costPolicy/aggregate",
+      "type": "float64",
+      "nullable": true,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/debit",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/economic_policy/valuation",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/economic_policy/funding",
+      "go": "/manifest/economicPolicy/fundingStatus",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economic_policy/hypothetical_liquidation",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain and constant-check the reference policy explanation; the new typed Go policy definition has separately versioned fields."
+    },
+    {
+      "reference": "/manifest/numerical_policy",
+      "go": "/manifest/numericalPolicy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/numerical_policy_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/projection_runtime",
+      "go": null,
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed container is independently validated; every declared descendant is separately mapped below."
+    },
+    {
+      "reference": "/manifest/projection_runtime/implementation",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/version",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/compiler",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/machine",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/float_mantissa_bits",
+      "go": null,
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/float_radix",
+      "go": null,
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/projection_runtime/arithmetic",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain actual CPython runtime evidence; never equate it to Go runtime/build identity."
+    },
+    {
+      "reference": "/manifest/producer_identity",
+      "go": null,
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed container is independently validated; every declared descendant is separately mapped below."
+    },
+    {
+      "reference": "/manifest/producer_identity/kind",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain the frozen invented producer declaration; Go build identity is separately observed evidence."
+    },
+    {
+      "reference": "/manifest/producer_identity/compiler",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain the frozen invented producer declaration; Go build identity is separately observed evidence."
+    },
+    {
+      "reference": "/manifest/data_source",
+      "go": "/manifest/dataSource",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/data_source/id",
+      "go": "/manifest/dataSource/id",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/data_source/source_sha256",
+      "go": "/manifest/dataSource/sourceSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_input_sha256",
+      "go": "/manifest/rawInputSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_config_sha256",
+      "go": "/manifest/rawConfigSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/source_pine_sha256",
+      "go": "/manifest/sourcePineSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_ledger_canonical_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities",
+      "go": null,
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed container is independently validated; every declared descendant is separately mapped below."
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities/dslSha256",
+      "go": "/manifest/dslSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities/configSha256",
+      "go": "/manifest/compiledConfigSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/raw_envelope_file_identities/btb1Sha256",
+      "go": "/manifest/btb1Sha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config",
+      "go": "/manifest/effectiveConfig",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/effective_config/bundle",
+      "go": "/manifest/effectiveConfig/bundle",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/numericalPolicy",
+      "go": "/manifest/effectiveConfig/numericalPolicy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/policy",
+      "go": "/manifest/effectiveConfig/policy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules",
+      "go": "/manifest/effectiveConfig/rules",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/atrLen",
+      "go": "/manifest/effectiveConfig/rules/atrLen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/atrStopMult",
+      "go": "/manifest/effectiveConfig/rules/atrStopMult",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/entryBufferATR",
+      "go": "/manifest/effectiveConfig/rules/entryBufferATR",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/fastEMALen",
+      "go": "/manifest/effectiveConfig/rules/fastEMALen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/flagWidthPoleMult",
+      "go": "/manifest/effectiveConfig/rules/flagWidthPoleMult",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/maxFlagBars",
+      "go": "/manifest/effectiveConfig/rules/maxFlagBars",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/maxFlagRetrace",
+      "go": "/manifest/effectiveConfig/rules/maxFlagRetrace",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/maxHold",
+      "go": "/manifest/effectiveConfig/rules/maxHold",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/minFlagBars",
+      "go": "/manifest/effectiveConfig/rules/minFlagBars",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/minPoleATR",
+      "go": "/manifest/effectiveConfig/rules/minPoleATR",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/pivotSensitivity",
+      "go": "/manifest/effectiveConfig/rules/pivotSensitivity",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/slowEMALen",
+      "go": "/manifest/effectiveConfig/rules/slowEMALen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/targetR",
+      "go": "/manifest/effectiveConfig/rules/targetR",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/useEMATrend",
+      "go": "/manifest/effectiveConfig/rules/useEMATrend",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/useVolumeFilter",
+      "go": "/manifest/effectiveConfig/rules/useVolumeFilter",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/validBars",
+      "go": "/manifest/effectiveConfig/rules/validBars",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/volumeSMALen",
+      "go": "/manifest/effectiveConfig/rules/volumeSMALen",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/rules/volumeSMAMult",
+      "go": "/manifest/effectiveConfig/rules/volumeSMAMult",
+      "type": "float64",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/effective_config/timeframe",
+      "go": "/manifest/effectiveConfig/timeframe",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_semantics",
+      "go": "/manifest/executionSemantics",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_window",
+      "go": "/manifest/executionWindow",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "structure"
+    },
+    {
+      "reference": "/manifest/execution_window/trade_from_ms",
+      "go": "/manifest/executionWindow/tradeFromMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_window/trade_to_ms",
+      "go": "/manifest/executionWindow/tradeToMs",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/execution_window/basis",
+      "go": "/manifest/executionWindow/basis",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/window_sha256",
+      "go": null,
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "Retain reference-only canonical hash or source-definition evidence; a distinct Go provenance/hash domain is not declared equal."
+    },
+    {
+      "reference": "/manifest/warmup_rows_excluded_from_accounting",
+      "go": "/manifest/warmupRowsExcludedFromAccounting",
+      "type": "integer",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/funding_status",
+      "go": "/manifest/fundingStatus",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/funding_cash_U",
+      "go": "/manifest/fundingCashU",
+      "type": "null",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/economics_qualification",
+      "go": "/manifest/economicsQualification",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/costs_never_modify_raw_physics",
+      "go": "/manifest/costsNeverModifyRawPhysics",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/liquidation_is_hypothetical",
+      "go": "/manifest/liquidationIsHypothetical",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": "/manifest/registry_enabled",
+      "go": "/manifest/registryEnabled",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "equal"
+    },
+    {
+      "reference": null,
+      "go": "/manifest/contractId",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/referenceSourceSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/referenceCommonSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/economicPolicy/scenario",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/goEconomicPolicySha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed new container is independently validated; every declared descendant has an explicit leaf mapping."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/schema",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/policy",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/sums",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/operations",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/numericalDefinition/comparisons",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/goNumericalPolicySha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/rawEnvelopeSha256",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/dataSourceStatus",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity",
+      "type": "object",
+      "nullable": false,
+      "presence": "required",
+      "mode": "schema_only",
+      "reason": "Closed new container is independently validated; every declared descendant has an explicit leaf mapping."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/goVersion",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/compiler",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/goos",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/goarch",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/vcsRevision",
+      "type": "string",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/vcsModified",
+      "type": "boolean",
+      "nullable": true,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    },
+    {
+      "reference": null,
+      "go": "/manifest/buildIdentity/verified",
+      "type": "boolean",
+      "nullable": false,
+      "presence": "required",
+      "mode": "evidence_only",
+      "reason": "New Go provenance leaf must be independently checked against the frozen schema/policy/artifact/input; never compared to a Python hash/runtime domain."
+    }
+  ],
+  "nativeWasmIdentityAllowlist": [
+    {
+      "path": "/manifest/buildIdentity/goVersion",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    },
+    {
+      "path": "/manifest/buildIdentity/compiler",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    },
+    {
+      "path": "/manifest/buildIdentity/goos",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    },
+    {
+      "path": "/manifest/buildIdentity/goarch",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    },
+    {
+      "path": "/manifest/buildIdentity/vcsRevision",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    },
+    {
+      "path": "/manifest/buildIdentity/vcsModified",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    },
+    {
+      "path": "/manifest/buildIdentity/verified",
+      "verification": "Compare separately to actual executed artifact/host; preserve full value and evidence."
+    }
+  ],
+  "nativeWasmNonIdentityRequirement": "All other output bytes are identical. Preserve and independently verify every differing identity leaf; never exclude the full manifest.",
+  "sourceLocations": {
+    "ProjectedOrder": "unit_projection.py:212-226,269-281",
+    "CostEvent": "unit_projection.py:269-273,295-299",
+    "ClosedTrade": "unit_projection.py:300-308",
+    "Summary": "unit_projection.py:166-176",
+    "Exposure": "unit_projection.py:179-199",
+    "Mark": "unit_projection.py:338-345",
+    "Daily": "unit_projection.py:352-364",
+    "Terminal": "unit_projection.py:407-410",
+    "ReferenceManifest": "unit_projection.py:385-402,421",
+    "OriginIdentity": "research_common.py:57-75",
+    "CopiedStateTimeConfig": "producer/spec/schemas/adaptive-flag-raw-run-v1.schema.json; producer/engine/adaptive_flag_types.go; producer/dsl/adaptive_flag_config.go"
+  }
+}

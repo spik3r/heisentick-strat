@@ -138,6 +138,39 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Adaptive unit qualification bundle and receipt regressions
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          node --test scripts/checks/adaptive-flag-unit-evidence.test.mjs scripts/checks/adaptive-unit-receipt.test.mjs
+          unit_dir="$RUNNER_TEMP/adaptive-unit-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$unit_dir"
+          node scripts/checks/adaptive-flag-unit-evidence.mjs "$unit_dir/reference"
+
+      - name: Adaptive unit native and WASM qualification
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          unit_dir="$RUNNER_TEMP/adaptive-unit-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          node scripts/checks/adaptive-flag-unit-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js" "$(command -v go)" --bundle "$unit_dir/reference" "$unit_dir/reports" "$unit_dir/parity.json"
+          node scripts/checks/adaptive-flag-unit-transport.mjs cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js" "$unit_dir/transport.json"
+          GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" ./report/adaptiveflagunit
+          GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestAdaptiveFlagUnitBridge' ./cmd/enginewasm
+
+      - name: Validate adaptive unit qualification receipts
+        id: validate_adaptive_unit_receipts
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          unit_dir="$RUNNER_TEMP/adaptive-unit-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          node scripts/checks/adaptive-unit-receipt.mjs "$unit_dir/parity.json" "$unit_dir/transport.json" "$unit_dir/reports" cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js" "$(command -v go)" "$(git rev-parse HEAD)" "$(go env GOOS)-$(go env GOARCH)" > "$unit_dir/integrity.json"
+
+      - name: Upload adaptive unit qualification receipts
+        if: steps.validate_adaptive_unit_receipts.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: adaptive-unit-qualification-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/adaptive-unit-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+          if-no-files-found: error
+          retention-days: 14
+
       # Separate pinned pre-portable source, same native compiler and host.
       # This is a regression baseline only and is never a release artifact.
       - name: Check out pinned legacy baseline

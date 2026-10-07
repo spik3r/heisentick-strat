@@ -1,0 +1,2242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-flag-unit-envelope-v1.schema.json",
+  "title": "adaptive-flag-unit-envelope-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "maxLength": 64,
+      "x-maxUTF8Bytes": 64,
+      "const": "strat-adaptive-volume-flag-unit-runtime-v1"
+    },
+    "projectionRequest": {
+      "$ref": "adaptive-flag-unit-request-v1.schema.json"
+    },
+    "projectionRequestSha256": {
+      "type": "string",
+      "maxLength": 64,
+      "x-maxUTF8Bytes": 64,
+      "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+    },
+    "rawEnvelopeSha256": {
+      "type": "string",
+      "maxLength": 64,
+      "x-maxUTF8Bytes": 64,
+      "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+    },
+    "raw": {
+      "$ref": "adaptive-flag-runtime-envelope-v1.schema.json"
+    },
+    "projection": {
+      "$ref": "#/$defs/Projection"
+    }
+  },
+  "required": [
+    "schema",
+    "projectionRequest",
+    "projectionRequestSha256",
+    "rawEnvelopeSha256",
+    "raw",
+    "projection"
+  ],
+  "x-goType": "Envelope",
+  "$defs": {
+    "CostPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "enum": [
+            "RAW",
+            "RAZOR_PROXY_BASIC",
+            "RAZOR_PROXY_HARSH_AGGREGATE"
+          ]
+        },
+        "per_fill": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "spread": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "commission": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aggregate": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "per_fill",
+        "spread",
+        "commission",
+        "aggregate"
+      ],
+      "x-goType": "CostPolicy",
+      "oneOf": [
+        {
+          "properties": {
+            "name": {
+              "const": "RAW"
+            },
+            "per_fill": {
+              "const": 0
+            },
+            "spread": {
+              "const": 0
+            },
+            "commission": {
+              "const": 0
+            },
+            "aggregate": {
+              "const": null
+            }
+          }
+        },
+        {
+          "properties": {
+            "name": {
+              "const": "RAZOR_PROXY_BASIC"
+            },
+            "per_fill": {
+              "const": 0.095
+            },
+            "spread": {
+              "const": 0.06
+            },
+            "commission": {
+              "const": 0.035
+            },
+            "aggregate": {
+              "const": null
+            }
+          }
+        },
+        {
+          "properties": {
+            "name": {
+              "const": "RAZOR_PROXY_HARSH_AGGREGATE"
+            },
+            "per_fill": {
+              "const": 0.155
+            },
+            "spread": {
+              "const": null
+            },
+            "commission": {
+              "const": null
+            },
+            "aggregate": {
+              "const": 0.155
+            }
+          }
+        }
+      ]
+    },
+    "EconomicPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "UNIT_POINT_VALUE_1-go-v1"
+        },
+        "scenario": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "UNIT_POINT_VALUE_1"
+        },
+        "pointValue": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation.",
+          "const": 1
+        },
+        "plannedRiskU": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation.",
+          "const": 1
+        },
+        "costPolicy": {
+          "$ref": "#/$defs/CostPolicy"
+        },
+        "fundingStatus": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "unknown_unmodeled"
+        }
+      },
+      "required": [
+        "schema",
+        "scenario",
+        "pointValue",
+        "plannedRiskU",
+        "costPolicy",
+        "fundingStatus"
+      ],
+      "x-goType": "EconomicPolicy"
+    },
+    "NumericalPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "adaptive-unit-numerical-policy-go-v1"
+        },
+        "policy": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "BINARY64_ORDERED_V1"
+        },
+        "sums": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "chronological positive-zero"
+        },
+        "operations": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "separate binary64"
+        },
+        "comparisons": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "direct"
+        }
+      },
+      "required": [
+        "schema",
+        "policy",
+        "sums",
+        "operations",
+        "comparisons"
+      ],
+      "x-goType": "NumericalPolicy"
+    },
+    "BuildIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "goVersion": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64
+        },
+        "compiler": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64
+        },
+        "goos": {
+          "type": "string",
+          "maxLength": 16,
+          "x-maxUTF8Bytes": 16
+        },
+        "goarch": {
+          "type": "string",
+          "maxLength": 16,
+          "x-maxUTF8Bytes": 16
+        },
+        "vcsRevision": {
+          "type": "string",
+          "maxLength": 40,
+          "x-maxUTF8Bytes": 40,
+          "pattern": "^(?:|[a-f0-9]{40})(?![\\s\\S])"
+        },
+        "vcsModified": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "goVersion",
+        "compiler",
+        "goos",
+        "goarch",
+        "vcsRevision",
+        "vcsModified",
+        "verified"
+      ],
+      "x-goType": "BuildIdentity",
+      "description": "Actual artifact identity only; missing build information must set verified=false. UTF-8 byte caps require runtime checks; vcsModified=null means unknown."
+    },
+    "EffectiveWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tradeFromMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799999,
+          "x-numericType": "integer-token"
+        },
+        "tradeToMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "basis": {
+          "type": "string",
+          "maxLength": 128,
+          "x-maxUTF8Bytes": 128,
+          "const": "bar-open timestamp in [start,end); nominal close may equal end"
+        }
+      },
+      "required": [
+        "tradeFromMs",
+        "tradeToMs",
+        "basis"
+      ],
+      "x-goType": "EffectiveWindow"
+    },
+    "Manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contractId": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "adaptive-unit-projection-go-v1"
+        },
+        "referenceSourceSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "76c58c46f80217baf68fbe4071077b61134a78bde1b12b9ee3439a0de51eadce",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "referenceCommonSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "0bbfb21c5ab6a121215ba5ec250b3f2fcbabed3a0cf357387a93fb538877bba8",
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "scenario": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "UNIT_POINT_VALUE_1"
+        },
+        "units": {
+          "type": "string",
+          "maxLength": 128,
+          "x-maxUTF8Bytes": 128,
+          "const": "U research PnL and R; 1U planned risk; not account dollars"
+        },
+        "pointValue": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation.",
+          "const": 1
+        },
+        "plannedRiskU": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation.",
+          "const": 1
+        },
+        "startingCumulativePnlU": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation.",
+          "const": 0
+        },
+        "numericalPolicy": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "BINARY64_ORDERED_V1"
+        },
+        "costPolicy": {
+          "$ref": "#/$defs/CostPolicy"
+        },
+        "economicPolicy": {
+          "$ref": "#/$defs/EconomicPolicy"
+        },
+        "goEconomicPolicySha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "numericalDefinition": {
+          "$ref": "#/$defs/NumericalPolicy"
+        },
+        "goNumericalPolicySha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "fundingStatus": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "unknown_unmodeled"
+        },
+        "fundingCashU": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "const": null
+        },
+        "economicsQualification": {
+          "type": "string",
+          "maxLength": 192,
+          "x-maxUTF8Bytes": 192,
+          "const": "after modeled execution costs, before unmodeled funding; basic also before additional unmodeled slippage"
+        },
+        "rawEnvelopeSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "rawInputSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "rawConfigSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "sourcePineSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "dslSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "compiledConfigSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "btb1Sha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "effectiveConfig": {
+          "$ref": "#/$defs/dsl_AdaptiveFlagSpec"
+        },
+        "executionSemantics": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "delayed-first-stop-activation-v1"
+        },
+        "executionWindow": {
+          "$ref": "#/$defs/EffectiveWindow"
+        },
+        "warmupRowsExcludedFromAccounting": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "dataSource": {
+          "$ref": "adaptive-flag-unit-request-v1.schema.json#/$defs/DataSource"
+        },
+        "dataSourceStatus": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "const": "declared_only"
+        },
+        "buildIdentity": {
+          "$ref": "#/$defs/BuildIdentity"
+        },
+        "registryEnabled": {
+          "type": "boolean",
+          "const": false
+        },
+        "costsNeverModifyRawPhysics": {
+          "type": "boolean",
+          "const": true
+        },
+        "liquidationIsHypothetical": {
+          "type": "boolean",
+          "const": true
+        }
+      },
+      "required": [
+        "contractId",
+        "referenceSourceSha256",
+        "referenceCommonSha256",
+        "scenario",
+        "units",
+        "pointValue",
+        "plannedRiskU",
+        "startingCumulativePnlU",
+        "numericalPolicy",
+        "costPolicy",
+        "economicPolicy",
+        "goEconomicPolicySha256",
+        "numericalDefinition",
+        "goNumericalPolicySha256",
+        "fundingStatus",
+        "fundingCashU",
+        "economicsQualification",
+        "rawEnvelopeSha256",
+        "rawInputSha256",
+        "rawConfigSha256",
+        "sourcePineSha256",
+        "dslSha256",
+        "compiledConfigSha256",
+        "btb1Sha256",
+        "effectiveConfig",
+        "executionSemantics",
+        "executionWindow",
+        "warmupRowsExcludedFromAccounting",
+        "dataSource",
+        "dataSourceStatus",
+        "buildIdentity",
+        "registryEnabled",
+        "costsNeverModifyRawPhysics",
+        "liquidationIsHypothetical"
+      ],
+      "x-goType": "Manifest"
+    },
+    "ProjectedOrder": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "episode_id": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "candidate_id": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "side": {
+          "type": "string",
+          "maxLength": 5,
+          "x-maxUTF8Bytes": 5,
+          "enum": [
+            "long",
+            "short"
+          ]
+        },
+        "creation_row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "raw_trigger": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "frozen_stop": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "frozen_target": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "planned_distance": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "planned_risk_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rejection_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 20,
+              "x-maxUTF8Bytes": 20,
+              "const": "invalid_planned_risk"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_entry": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "fill_risk_raw_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "display_proxy_adjusted_entry": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fill_risk_effective_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "order_id",
+        "episode_id",
+        "candidate_id",
+        "side",
+        "creation_row_index",
+        "raw_trigger",
+        "frozen_stop",
+        "frozen_target",
+        "planned_distance",
+        "quantity",
+        "planned_risk_U",
+        "rejection_reason"
+      ],
+      "x-goType": "ProjectedOrder",
+      "dependentRequired": {
+        "raw_entry": [
+          "fill_risk_raw_U",
+          "display_proxy_adjusted_entry",
+          "fill_risk_effective_U"
+        ],
+        "fill_risk_raw_U": [
+          "raw_entry",
+          "display_proxy_adjusted_entry",
+          "fill_risk_effective_U"
+        ],
+        "display_proxy_adjusted_entry": [
+          "raw_entry",
+          "fill_risk_raw_U",
+          "fill_risk_effective_U"
+        ],
+        "fill_risk_effective_U": [
+          "raw_entry",
+          "fill_risk_raw_U",
+          "display_proxy_adjusted_entry"
+        ]
+      },
+      "description": "The four fill-only keys are omitted together before a fill and present together after a fill. Nullable display/effective values are distinct from omitted keys. Lifecycle and risk relationships are B1 runtime obligations."
+    },
+    "InvalidRiskRejection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 20,
+          "x-maxUTF8Bytes": 20,
+          "const": "invalid_planned_risk"
+        }
+      },
+      "required": [
+        "order_id",
+        "reason"
+      ],
+      "x-goType": "InvalidRiskRejection"
+    },
+    "CostEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4095,
+          "x-numericType": "integer-token"
+        },
+        "leg": {
+          "type": "string",
+          "maxLength": 5,
+          "x-maxUTF8Bytes": 5,
+          "enum": [
+            "entry",
+            "exit"
+          ]
+        },
+        "row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "time": {
+          "$ref": "#/$defs/engine_AdaptiveFlagEventTime"
+        },
+        "total_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "spread_proxy_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "commission_proxy_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unattributed_aggregate_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "order_id",
+        "event_id",
+        "leg",
+        "row_index",
+        "time",
+        "total_U",
+        "spread_proxy_U",
+        "commission_proxy_U",
+        "unattributed_aggregate_U"
+      ],
+      "x-goType": "CostEvent"
+    },
+    "ExposureGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "from_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "to_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        }
+      },
+      "required": [
+        "from_ms",
+        "to_ms",
+        "duration_ms"
+      ],
+      "x-goType": "ExposureGap"
+    },
+    "Exposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entry_time_bounds": {
+          "$ref": "#/$defs/engine_AdaptiveFlagEventTime"
+        },
+        "endpoint_time_bounds": {
+          "$ref": "#/$defs/engine_AdaptiveFlagEventTime"
+        },
+        "entry_bar_open_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799999,
+          "x-numericType": "integer-token"
+        },
+        "endpoint_bar_open_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799999,
+          "x-numericType": "integer-token"
+        },
+        "elapsed_ms_lower": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "elapsed_ms_upper": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "observed_bars_with_exposure": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "quote_gaps_bridged": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/ExposureGap"
+          }
+        },
+        "utc_midnights_definitely_crossed": {
+          "type": "array",
+          "maxItems": 732,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 253402300800000,
+            "x-numericType": "integer-token",
+            "multipleOf": 86400000
+          }
+        },
+        "utc_midnights_possibly_crossed": {
+          "type": "array",
+          "maxItems": 732,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 253402300800000,
+            "x-numericType": "integer-token",
+            "multipleOf": 86400000
+          }
+        },
+        "rollover_label": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "UTC exposure proxies, not broker charge counts"
+        },
+        "is_open_position": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "entry_time_bounds",
+        "endpoint_time_bounds",
+        "entry_bar_open_ms",
+        "endpoint_bar_open_ms",
+        "elapsed_ms_lower",
+        "elapsed_ms_upper",
+        "observed_bars_with_exposure",
+        "quote_gaps_bridged",
+        "utc_midnights_definitely_crossed",
+        "utc_midnights_possibly_crossed",
+        "rollover_label",
+        "is_open_position"
+      ],
+      "x-goType": "Exposure",
+      "x-runtimeConstraints": [
+        "Sum both midnight lists across all closed-trade and terminal exposures: E<=732.",
+        "Sum copied quote_gaps_bridged objects across all closed-trade and terminal exposures: G<=1024.",
+        "Lists remain ordered, complete and non-null; never clip them to meet budgets."
+      ]
+    },
+    "ClosedTrade": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "episode_id": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "candidate_id": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        },
+        "side": {
+          "type": "string",
+          "maxLength": 5,
+          "x-maxUTF8Bytes": 5,
+          "enum": [
+            "long",
+            "short"
+          ]
+        },
+        "creation_row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "raw_trigger": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "frozen_stop": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "frozen_target": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "planned_distance": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "planned_risk_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rejection_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 20,
+              "x-maxUTF8Bytes": 20,
+              "const": "invalid_planned_risk"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_entry": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "fill_risk_raw_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "display_proxy_adjusted_entry": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fill_risk_effective_U": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "raw_exit": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "enum": [
+            "stop",
+            "target",
+            "stop-gap",
+            "target-gap",
+            "stop-activated-at-close",
+            "max-hold"
+          ]
+        },
+        "gross_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "entry_model_cost_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "exit_model_cost_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "net_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "net_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "display_proxy_adjusted_exit": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entry_event_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4095,
+          "x-numericType": "integer-token"
+        },
+        "exit_event_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4095,
+          "x-numericType": "integer-token"
+        },
+        "entry_event_time": {
+          "$ref": "#/$defs/engine_AdaptiveFlagEventTime"
+        },
+        "exit_event_time": {
+          "$ref": "#/$defs/engine_AdaptiveFlagEventTime"
+        },
+        "entry_phase": {
+          "type": "string",
+          "maxLength": 12,
+          "x-maxUTF8Bytes": 12,
+          "enum": [
+            "open",
+            "intrabar"
+          ]
+        },
+        "exit_phase": {
+          "type": "string",
+          "maxLength": 12,
+          "x-maxUTF8Bytes": 12,
+          "enum": [
+            "open",
+            "intrabar"
+          ]
+        },
+        "entry_year_cohort": {
+          "type": "string",
+          "maxLength": 4,
+          "x-maxUTF8Bytes": 4,
+          "pattern": "^(?:197[0-9]|19[89][0-9]|[2-9][0-9]{3})(?![\\s\\S])"
+        },
+        "exposure": {
+          "$ref": "#/$defs/Exposure"
+        }
+      },
+      "required": [
+        "order_id",
+        "episode_id",
+        "candidate_id",
+        "side",
+        "creation_row_index",
+        "raw_trigger",
+        "frozen_stop",
+        "frozen_target",
+        "planned_distance",
+        "quantity",
+        "planned_risk_U",
+        "rejection_reason",
+        "raw_entry",
+        "fill_risk_raw_U",
+        "display_proxy_adjusted_entry",
+        "fill_risk_effective_U",
+        "raw_exit",
+        "reason",
+        "gross_U",
+        "entry_model_cost_U",
+        "exit_model_cost_U",
+        "net_U",
+        "net_R",
+        "display_proxy_adjusted_exit",
+        "entry_event_id",
+        "exit_event_id",
+        "entry_event_time",
+        "exit_event_time",
+        "entry_phase",
+        "exit_phase",
+        "entry_year_cohort",
+        "exposure"
+      ],
+      "x-goType": "ClosedTrade"
+    },
+    "Summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "closed_trades": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "wins": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "losses": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "zero_net_trades": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "net_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "mean_net_R": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "positive_net_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "absolute_negative_net_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "profit_factor": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308,
+              "x-numericType": "binary64",
+              "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "profit_factor_status": {
+          "type": "string",
+          "maxLength": 27,
+          "x-maxUTF8Bytes": 27,
+          "enum": [
+            "finite",
+            "infinite_no_losses",
+            "undefined_no_nonzero_trades"
+          ]
+        }
+      },
+      "required": [
+        "closed_trades",
+        "wins",
+        "losses",
+        "zero_net_trades",
+        "net_R",
+        "mean_net_R",
+        "positive_net_R",
+        "absolute_negative_net_R",
+        "profit_factor",
+        "profit_factor_status"
+      ],
+      "x-goType": "Summary"
+    },
+    "CalendarYear": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "calendar_year_marked_change_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        }
+      },
+      "required": [
+        "calendar_year_marked_change_R"
+      ],
+      "x-goType": "CalendarYear"
+    },
+    "Mark": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "row_index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "bar_open_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300799999,
+          "x-numericType": "integer-token"
+        },
+        "nominal_close_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "raw_close": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "gross_realized_closed_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "modeled_execution_costs_paid_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "open_raw_gross_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "open_entry_model_cost_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "closed_trade_net_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "marked_pnl_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "marked_pnl_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "reconciliation_delta_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "close_marked_drawdown_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "open_order_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1023,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pending_order_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1023,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "queued_exit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/engine_AdaptiveFlagQueuedExit"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "row_index",
+        "bar_open_ms",
+        "nominal_close_ms",
+        "raw_close",
+        "gross_realized_closed_U",
+        "modeled_execution_costs_paid_U",
+        "open_raw_gross_U",
+        "open_entry_model_cost_U",
+        "closed_trade_net_U",
+        "marked_pnl_U",
+        "marked_pnl_R",
+        "reconciliation_delta_U",
+        "close_marked_drawdown_R",
+        "open_order_id",
+        "pending_order_id",
+        "queued_exit"
+      ],
+      "x-goType": "Mark"
+    },
+    "Daily": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "date_utc": {
+          "type": "string",
+          "maxLength": 10,
+          "x-maxUTF8Bytes": 10,
+          "pattern": "^(?:197[0-9]|19[89][0-9]|[2-9][0-9]{3})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])(?![\\s\\S])",
+          "description": "UTC date in years 1970..9999; calendar validity is also checked at runtime."
+        },
+        "as_of_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "marked_pnl_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "daily_marked_change_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "carried_no_quote": {
+          "type": "boolean"
+        },
+        "last_quote_close_ms": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 253402300800000,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "quote_gap_duration_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        }
+      },
+      "required": [
+        "date_utc",
+        "as_of_ms",
+        "marked_pnl_R",
+        "daily_marked_change_R",
+        "carried_no_quote",
+        "last_quote_close_ms",
+        "quote_gap_duration_ms"
+      ],
+      "x-goType": "Daily"
+    },
+    "Terminal": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "native_state": {
+          "$ref": "#/$defs/engine_AdaptiveFlagState"
+        },
+        "marked_pnl_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "hypothetical_liquidation_pnl_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "remaining_hypothetical_exit_cost_U": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "open_position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FilledProjectedOrder"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exposure": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Exposure"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_closed_trade_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        }
+      },
+      "required": [
+        "native_state",
+        "marked_pnl_R",
+        "hypothetical_liquidation_pnl_R",
+        "remaining_hypothetical_exit_cost_U",
+        "open_position",
+        "exposure",
+        "actual_closed_trade_count"
+      ],
+      "x-goType": "Terminal"
+    },
+    "Projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "adaptive-unit-projection-go-v1"
+        },
+        "source_authority": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "native Go raw strategy ledger"
+        },
+        "manifest": {
+          "$ref": "#/$defs/Manifest"
+        },
+        "orders": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/ProjectedOrder"
+          }
+        },
+        "invalid_planned_risk_rejections": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/InvalidRiskRejection"
+          }
+        },
+        "cost_events": {
+          "type": "array",
+          "maxItems": 2048,
+          "items": {
+            "$ref": "#/$defs/CostEvent"
+          }
+        },
+        "closed_trades": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/ClosedTrade"
+          }
+        },
+        "summary": {
+          "$ref": "#/$defs/Summary"
+        },
+        "by_entry_year_cohort": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^(?:197[0-9]|19[89][0-9]|[2-9][0-9]{3})(?![\\s\\S])"
+          },
+          "maxProperties": 366,
+          "additionalProperties": {
+            "$ref": "#/$defs/Summary"
+          }
+        },
+        "by_calendar_year_marked_change": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^(?:197[0-9]|19[89][0-9]|[2-9][0-9]{3})(?![\\s\\S])"
+          },
+          "maxProperties": 366,
+          "additionalProperties": {
+            "$ref": "#/$defs/CalendarYear"
+          }
+        },
+        "marks": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": {
+            "$ref": "#/$defs/Mark"
+          }
+        },
+        "daily": {
+          "type": "array",
+          "maxItems": 366,
+          "items": {
+            "$ref": "#/$defs/Daily"
+          },
+          "minItems": 1
+        },
+        "close_marked_max_drawdown_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "closed_trade_max_drawdown_R": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "terminal": {
+          "$ref": "#/$defs/Terminal"
+        }
+      },
+      "required": [
+        "schema",
+        "source_authority",
+        "manifest",
+        "orders",
+        "invalid_planned_risk_rejections",
+        "cost_events",
+        "closed_trades",
+        "summary",
+        "by_entry_year_cohort",
+        "by_calendar_year_marked_change",
+        "marks",
+        "daily",
+        "close_marked_max_drawdown_R",
+        "closed_trade_max_drawdown_R",
+        "terminal"
+      ],
+      "x-goType": "Projection"
+    },
+    "engine_AdaptiveFlagEventTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lowerMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "upperMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "lowerInclusive": {
+          "type": "boolean"
+        },
+        "upperInclusive": {
+          "type": "boolean"
+        },
+        "kind": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "enum": [
+            "observed-open-point",
+            "nominal-close-point",
+            "nonopening-crossing-unknown-model-time",
+            "observed-bar-opportunity"
+          ]
+        }
+      },
+      "required": [
+        "lowerMs",
+        "upperMs",
+        "lowerInclusive",
+        "upperInclusive",
+        "kind"
+      ],
+      "x-goType": "engine.AdaptiveFlagEventTime"
+    },
+    "engine_AdaptiveFlagQueuedExit": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reason": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "enum": [
+            "stop-activated-at-close",
+            "max-hold"
+          ]
+        },
+        "creationIdx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "creationCloseMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "nextOpenIdx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        }
+      },
+      "required": [
+        "reason",
+        "creationIdx",
+        "creationCloseMs",
+        "nextOpenIdx"
+      ],
+      "x-goType": "engine.AdaptiveFlagQueuedExit"
+    },
+    "engine_AdaptiveFlagState": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rowIdx": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1023,
+          "x-numericType": "integer-token"
+        },
+        "closeMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 253402300800000,
+          "x-numericType": "integer-token"
+        },
+        "status": {
+          "type": "string",
+          "maxLength": 32,
+          "x-maxUTF8Bytes": 32,
+          "enum": [
+            "flat",
+            "pending",
+            "open",
+            "queued-exit"
+          ]
+        },
+        "pendingOrderId": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1023,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "positionOrderId": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1023,
+              "x-numericType": "integer-token"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pendingAge": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1024,
+          "x-numericType": "integer-token"
+        },
+        "queuedExit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/engine_AdaptiveFlagQueuedExit"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "rowIdx",
+        "closeMs",
+        "status",
+        "pendingOrderId",
+        "positionOrderId",
+        "pendingAge",
+        "queuedExit"
+      ],
+      "x-goType": "engine.AdaptiveFlagState"
+    },
+    "dsl_AdaptiveFlagRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pivotSensitivity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "minPoleATR": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "minFlagBars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "maxFlagBars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "maxFlagRetrace": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "useVolumeFilter": {
+          "type": "boolean"
+        },
+        "useEMATrend": {
+          "type": "boolean"
+        },
+        "fastEMALen": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "slowEMALen": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "targetR": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "atrStopMult": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "validBars": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "maxHold": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "atrLen": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "volumeSMALen": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000,
+          "x-numericType": "integer-token"
+        },
+        "volumeSMAMult": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "flagWidthPoleMult": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        },
+        "entryBufferATR": {
+          "type": "number",
+          "minimum": -1.7976931348623157e+308,
+          "maximum": 1.7976931348623157e+308,
+          "x-numericType": "binary64",
+          "description": "Finite binary64; preserve signed zero and finite subnormal values. Wire token/bit checks are a runtime obligation."
+        }
+      },
+      "required": [
+        "pivotSensitivity",
+        "minPoleATR",
+        "minFlagBars",
+        "maxFlagBars",
+        "maxFlagRetrace",
+        "useVolumeFilter",
+        "useEMATrend",
+        "fastEMALen",
+        "slowEMALen",
+        "targetR",
+        "atrStopMult",
+        "validBars",
+        "maxHold",
+        "atrLen",
+        "volumeSMALen",
+        "volumeSMAMult",
+        "flagWidthPoleMult",
+        "entryBufferATR"
+      ],
+      "x-goType": "dsl.AdaptiveFlagRules"
+    },
+    "dsl_AdaptiveFlagSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "DELAYED_OHLC_REFERENCE_V1"
+        },
+        "numericalPolicy": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "const": "BINARY64_ORDERED_V1"
+        },
+        "timeframe": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "enum": [
+            "M30",
+            "H1"
+          ]
+        },
+        "bundle": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "enum": [
+            "INITIAL",
+            "TWEAKED",
+            "SNAPSHOT_C"
+          ]
+        },
+        "rules": {
+          "$ref": "#/$defs/dsl_AdaptiveFlagRules"
+        }
+      },
+      "required": [
+        "policy",
+        "numericalPolicy",
+        "timeframe",
+        "bundle",
+        "rules"
+      ],
+      "x-goType": "dsl.AdaptiveFlagSpec",
+      "description": "Exact Go AdaptiveFlagSpec shape, which has no contractVersion key. Stage A admission and B1 lifecycle checks enforce the fixed bundle rules."
+    },
+    "FilledProjectedOrder": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/ProjectedOrder"
+        },
+        {
+          "required": [
+            "raw_entry",
+            "fill_risk_raw_U",
+            "display_proxy_adjusted_entry",
+            "fill_risk_effective_U"
+          ]
+        }
+      ],
+      "description": "Projected order used for a terminal open position, with every fill-only key required."
+    }
+  },
+  "x-runtimeConstraints": [
+    "All x-* fields are annotations, not standard JSON Schema validation keywords.",
+    "maxLength counts Unicode code points, not UTF-8 bytes. Runtime must enforce every x-maxUTF8Bytes limit after valid UTF-8 handling.",
+    "Runtime decoding rejects duplicate decoded keys, trailing documents, invalid UTF-8, unpaired surrogates and non-JSON numeric syntax.",
+    "Integer fields require integer JSON tokens without fraction/exponent; JSON Schema integer alone cannot enforce token spelling.",
+    "Retained N is in 1..1024 including warmup; observed output counts are each bounded by actual N (cost_events by 2*N).",
+    "Calendar D=floor((end-1)/86400000)-floor(start/86400000)+1 is in 1..366; daily length equals D and each year map has at most D entries.",
+    "Global E<=732 counts definite and possible midnight elements separately across every closed-trade and terminal exposure. Global G<=1024 counts copied gap objects across those exposures. Per-array schema bounds do not establish aggregate bounds.",
+    "Raw must be the unchanged owned Stage A envelope byte segment, including original whitespace and newline. Its $ref is unchanged; parsing, validation or JSON reserialization cannot prove raw-byte preservation or digest correctness.",
+    "The combined output is at most 64 MiB and respects the v2 B(N,D,E,G) bound (52429496 bytes at maxima). This is an encoded bound, not a peak-RSS claim.",
+    "Economic/lifecycle consistency, cross-field hashes/identities, chronological ordering, timeframe alignment, valid calendar dates and finite ordered arithmetic are B1 runtime obligations.",
+    "Fixed outer/policy/error wire key order follows typed Go declarations and requires separate byte tests."
+  ],
+  "x-resourceLimits": {
+    "N": 1024,
+    "D": 366,
+    "E": 732,
+    "G": 1024,
+    "maxOutputBytes": 67108864,
+    "maxCalendarEndpointMs": 253402300800000
+  }
+}

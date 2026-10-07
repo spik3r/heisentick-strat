@@ -1,0 +1,30 @@
+{
+  "schema": "adaptive-unit-hand-vector-contract-v2",
+  "provenance": "Exact independently reviewed scalar values; no projector execution; fixtures deliberately separate",
+  "vectors": [
+    {
+      "id": "price-derived-basic-long",
+      "trigger": 100,
+      "stop": 90,
+      "entry": 103,
+      "exit": 115,
+      "sign": 1,
+      "quantityHex": "0x1.999999999999ap-4",
+      "chargeHex": "0x1.374bc6a7ef9dcp-7",
+      "grossOperation": "((exit-entry)*sign)*quantity",
+      "grossHex": "0x1.3333333333334p+0",
+      "netOperation": "(gross-entryCharge)-exitCharge",
+      "netHex": "0x1.2e5604189374cp+0",
+      "forbiddenRegroupedNetHex": "0x1.2e5604189374dp+0"
+    },
+    {
+      "id": "literal-gross-basic-kernel",
+      "quantityHex": "0x1.999999999999ap-4",
+      "chargeHex": "0x1.374bc6a7ef9dcp-7",
+      "grossLiteral": "1.2",
+      "grossHex": "0x1.3333333333333p+0",
+      "netOperation": "(gross-charge)-charge",
+      "netHex": "0x1.2e5604189374bp+0"
+    }
+  ]
+}
