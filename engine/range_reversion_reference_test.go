@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"fmt"
 	"math"
 	"strings"
 	"testing"
@@ -57,6 +58,97 @@ func rrBars() []marketdata.Bar {
 }
 func rrSourceBars() []marketdata.Bar {
 	return []marketdata.Bar{{T: 0, O: 100, H: 101, L: 99, C: 100, V: 1}, {T: 14400000, O: 100, H: 102, L: 98, C: 100, V: 1}, {T: 43200000, O: 100, H: 103, L: 97, C: 100, V: 1}}
+}
+
+func rrImmediateGapBars() ([]marketdata.Bar, []marketdata.Bar) {
+	entry := make([]marketdata.Bar, 40)
+	for i := range entry {
+		entry[i] = marketdata.Bar{T: float64(i) * 1800000, O: 9, H: 10, L: 8, C: 9, V: 1}
+	}
+	entry[16] = marketdata.Bar{T: 16 * 1800000, O: 9.8, H: 10.5, L: 9.3, C: 9.5, V: 1}
+	entry[17] = marketdata.Bar{T: 17 * 1800000, O: 12, H: 12.2, L: 11.9, C: 12, V: 1}
+	source := []marketdata.Bar{
+		{T: 0, O: 9, H: 10.1, L: 8, C: 9, V: 1},
+		{T: 14400000, O: 9, H: 10, L: 8, C: 9, V: 1},
+		{T: 28800000, O: 9, H: 10.5, L: 8, C: 9, V: 1},
+		{T: 43200000, O: 9, H: 10.5, L: 8, C: 9, V: 1},
+	}
+	return entry, source
+}
+
+func TestRangeReversionImmediateEntryThroughStopFillsAndChargesBothSides(t *testing.T) {
+	bars, source := rrImmediateGapBars()
+	request := RangeReversionRequest{
+		Config:       rrFixtureConfig(t, dsl.RangeReversionImmediatePolicy),
+		EntrySeries:  rrFixtureSeries(bars),
+		SourceSeries: rrFixtureSeries(source),
+		Window:       RangeReversionWindow{TradeFromMS: 0, TradeToMS: 72000000},
+		Execution:    RangeReversionExecution{Units: 1},
+	}
+	result, err := RunRangeReversion(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Signals) != 1 || len(result.Trades) != 1 || result.CanceledAtEntryRisk != 0 {
+		t.Fatalf("signals=%d trades=%d canceled=%d", len(result.Signals), len(result.Trades), result.CanceledAtEntryRisk)
+	}
+	trade := result.Trades[0]
+	if trade.Side != "short" || trade.ExitReason != "stop-gap" || trade.EntryIndex != 17 || trade.ExitIndex != 17 || trade.EntryMS != trade.ExitMS {
+		t.Fatalf("unexpected immediate through-stop trade: %+v", trade)
+	}
+	if trade.Entry <= trade.Stop || math.Abs(trade.Entry-trade.Stop) <= 1e-12 || trade.Entry != 12 || trade.Exit != 12 || trade.GrossPnL != 0 || trade.NetPnL != 0 {
+		t.Fatalf("raw through-stop fill should flatten at the same open with zero P&L: %+v", trade)
+	}
+
+	request.Execution = RangeReversionExecution{SlippagePerFill: .06, CommissionPerUnitSide: .5, Units: 1}
+	withCosts, err := RunRangeReversion(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(withCosts.Trades) != 1 || withCosts.CanceledAtEntryRisk != 0 {
+		t.Fatalf("costed signals=%d trades=%d canceled=%d", len(withCosts.Signals), len(withCosts.Trades), withCosts.CanceledAtEntryRisk)
+	}
+	costed := withCosts.Trades[0]
+	if math.Abs(costed.Entry-11.94) > 1e-12 || math.Abs(costed.Exit-12.06) > 1e-12 || math.Abs(costed.GrossPnL-(-.12)) > 1e-12 || math.Abs(costed.CommissionPrice-1) > 1e-12 || math.Abs(costed.NetPnL-(-1.12)) > 1e-12 {
+		t.Fatalf("through-stop costs must hit both fills and commission sides: %+v", costed)
+	}
+}
+
+func TestRangeReversionImmediateCancelsOnlyZeroOrNearZeroFillRisk(t *testing.T) {
+	config := rrFixtureConfig(t, dsl.RangeReversionImmediatePolicy)
+	baseBars, source := rrImmediateGapBars()
+	base, err := RunRangeReversion(RangeReversionRequest{Config: config, EntrySeries: rrFixtureSeries(baseBars), SourceSeries: rrFixtureSeries(source), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: 72000000}, Execution: RangeReversionExecution{Units: 1}})
+	if err != nil || len(base.Signals) != 1 {
+		t.Fatalf("baseline signal setup: signals=%d err=%v", len(base.Signals), err)
+	}
+	stop := base.Signals[0].Stop
+	for _, delta := range []float64{0, 5e-13} {
+		t.Run(fmt.Sprintf("risk_%g", delta), func(t *testing.T) {
+			bars := append([]marketdata.Bar(nil), baseBars...)
+			open := stop - delta
+			bars[17] = marketdata.Bar{T: 17 * 1800000, O: open, H: open + .2, L: open - .2, C: open, V: 1}
+			result, err := RunRangeReversion(RangeReversionRequest{Config: config, EntrySeries: rrFixtureSeries(bars), SourceSeries: rrFixtureSeries(source), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: 72000000}, Execution: RangeReversionExecution{Units: 1}})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(result.Signals) != 1 || len(result.Trades) != 0 || result.CanceledAtEntryRisk != 1 {
+				t.Fatalf("risk=%g signals=%d trades=%d canceled=%d", delta, len(result.Signals), len(result.Trades), result.CanceledAtEntryRisk)
+			}
+		})
+	}
+
+	// A distance greater than the documented tolerance remains a valid fill,
+	// even when the entry candle then touches the stop.
+	bars := append([]marketdata.Bar(nil), baseBars...)
+	open := stop - 2e-12
+	bars[17] = marketdata.Bar{T: 17 * 1800000, O: open, H: open + .2, L: open - .2, C: open, V: 1}
+	result, err := RunRangeReversion(RangeReversionRequest{Config: config, EntrySeries: rrFixtureSeries(bars), SourceSeries: rrFixtureSeries(source), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: 72000000}, Execution: RangeReversionExecution{Units: 1}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Trades) != 1 || result.CanceledAtEntryRisk != 0 || result.Trades[0].ExitReason != "stop" {
+		t.Fatalf("positive-risk stop touch should execute, not cancel: trades=%+v canceled=%d", result.Trades, result.CanceledAtEntryRisk)
+	}
 }
 
 func TestRangeReversionDelayedEntryBarStopLatch(t *testing.T) {
@@ -171,15 +263,17 @@ func TestRangeReversionImmediateDiscardsDualSweepBeforeGates(t *testing.T) {
 	}
 }
 
-func TestRangeReversionImmediateCancelsNonpositiveEntryRisk(t *testing.T) {
+func TestRangeReversionImmediateCancelsZeroEntryRisk(t *testing.T) {
 	cfg := rrFixtureConfig(t, dsl.RangeReversionImmediatePolicy)
-	bars := make([]marketdata.Bar, 30)
-	for i := range bars {
-		bars[i] = marketdata.Bar{T: float64(i) * 1800000, O: 100, H: 101, L: 99, C: 100, V: 1}
+	bars, source := rrImmediateGapBars()
+	baseline, err := RunRangeReversion(RangeReversionRequest{Config: cfg, EntrySeries: rrFixtureSeries(bars), SourceSeries: rrFixtureSeries(source), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: 72000000}, Execution: RangeReversionExecution{Units: 1}})
+	if err != nil || len(baseline.Signals) != 1 {
+		t.Fatalf("baseline signals=%d err=%v", len(baseline.Signals), err)
 	}
-	bars[28] = marketdata.Bar{T: 28 * 1800000, O: 101, H: 103, L: 99, C: 100, V: 1}
-	bars[29] = marketdata.Bar{T: 29 * 1800000, O: 110, H: 111, L: 109, C: 110, V: 1}
-	result, err := RunRangeReversion(RangeReversionRequest{Config: cfg, EntrySeries: rrFixtureSeries(bars), SourceSeries: rrFixtureSeries(rrSourceBars()), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: 30 * 1800000}, Execution: RangeReversionExecution{SlippagePerFill: .06, Units: 1}})
+	stop := baseline.Signals[0].Stop
+	open := stop + .06 // Short-entry slippage brings the fill exactly to the stop.
+	bars[17] = marketdata.Bar{T: 17 * 1800000, O: open, H: open + .2, L: open - .2, C: open, V: 1}
+	result, err := RunRangeReversion(RangeReversionRequest{Config: cfg, EntrySeries: rrFixtureSeries(bars), SourceSeries: rrFixtureSeries(source), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: 72000000}, Execution: RangeReversionExecution{SlippagePerFill: .06, Units: 1}})
 	if err != nil {
 		t.Fatal(err)
 	}

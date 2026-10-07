@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.27.0] — 2026-10-07
+
+- Fix `IMMEDIATE_STOP_FIRST_V1` entry-gap handling for the Go-only
+  `rangeReversion` family (HT-190). A next-open fill through its stop now uses
+  absolute fill-to-stop risk and flattens at that open, charging both execution
+  sides and commission with `stop-gap` or `target-gap` reason labels; only zero
+  or near-zero risk (at most `1e-12`) is canceled. The report keeps the existing
+  cancellation-counter field name. `DELAYED_PINE_OHLC_V1` behavior is unchanged.
+
 ## [0.26.0] — 2026-10-07
 
 - Add the Go-only `rangeReversion` v7 research family (HT-190) and dedicated

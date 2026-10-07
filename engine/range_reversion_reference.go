@@ -435,9 +435,15 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 			if !isFinite(initialRisk) {
 				return RangeReversionResult{}, fmt.Errorf("nonfinite fill risk at entry row %d", i)
 			}
-			if r.Policy == dsl.RangeReversionImmediatePolicy && initialRisk <= 0 {
-				// A fill at or beyond its stop has no valid positive initial risk.
-				// Reject it before creating a position rather than aborting the report.
+			if r.Policy == dsl.RangeReversionImmediatePolicy {
+				// The immediate contract measures risk as the absolute distance to
+				// the stop. A fill through the stop remains a real fill and is handled
+				// by the entry-bar bracket below; only a zero-distance fill is invalid.
+				initialRisk = math.Abs(initialRisk)
+			}
+			if r.Policy == dsl.RangeReversionImmediatePolicy && initialRisk <= 1e-12 {
+				// Keep the historical counter name for report compatibility; these
+				// immediate-policy cancellations are zero or near-zero risk fills.
 				canceledAtEntryRisk++
 				rejectedAtEntry = true
 			} else {
@@ -447,11 +453,18 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 			// The immediate policy submits its bracket with the entry. If adverse
 			// slippage places the fill beyond either bracket level, the order is
 			// flattened at the raw open with both sides of execution cost charged.
-			// A zero-risk fill is rejected because its R denominator is undefined.
+			// A zero-distance fill is rejected because its fill-relative stop risk
+			// is undefined; positive-distance fills through either bracket flatten.
 			if pos != nil && r.Policy == dsl.RangeReversionImmediatePolicy {
 				pastStop := p.Side == "long" && entryPx <= pos.stop || p.Side == "short" && entryPx >= pos.stop
 				pastTarget := p.Side == "long" && entryPx >= pos.target || p.Side == "short" && entryPx <= pos.target
 				if pastStop || pastTarget {
+					exitReason := "target-gap"
+					if pastStop {
+						// Stop-first is also the classification when a fill crosses
+						// both barriers at once.
+						exitReason = "stop-gap"
+					}
 					exitFill := rawEntry
 					if p.Side == "long" {
 						exitFill -= request.Execution.SlippagePerFill
@@ -467,7 +480,7 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 					if !isFinite(exitFill) || !isFinite(gross) || !isFinite(net) {
 						return RangeReversionResult{}, fmt.Errorf("nonfinite entry-through-bracket result at row %d", i)
 					}
-					trades = append(trades, RangeReversionTrade{RangeReversionSignal: p, EntryIndex: i, EntryMS: b.t, Entry: entryPx, RawEntry: rawEntry, ExitIndex: i, ExitMS: b.t, Exit: exitFill, RawExit: rawEntry, ExitReason: "entry-fill-through-bracket", GrossPnL: gross, GrossR: gross / (p.PlannedRisk * request.Execution.Units), CommissionPrice: commission, NetPnL: net, NetR: net / (p.PlannedRisk * request.Execution.Units)})
+					trades = append(trades, RangeReversionTrade{RangeReversionSignal: p, EntryIndex: i, EntryMS: b.t, Entry: entryPx, RawEntry: rawEntry, ExitIndex: i, ExitMS: b.t, Exit: exitFill, RawExit: rawEntry, ExitReason: exitReason, GrossPnL: gross, GrossR: gross / (p.PlannedRisk * request.Execution.Units), CommissionPrice: commission, NetPnL: net, NetR: net / (p.PlannedRisk * request.Execution.Units)})
 					pos = nil
 					lastExit = i
 					exited = true
@@ -650,7 +663,7 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 		commissionTotal += t.CommissionPrice
 	}
 	summary := map[string]any{"trades": len(winTrades), "grossProfitFactorPrice": ratio(wins, losses), "netProfitFactorPrice": ratio(netWins, netLosses), "grossProfitFactorR": ratio(positive, negative), "netProfitFactorR": ratio(netPositiveR, netNegativeR), "grossPnlPrice": sumTradePnL(winTrades), "netPnlPrice": sumNetPnL(winTrades), "commissionPrice": commissionTotal, "censoredOpen": censored, "canceledAtEntryNonpositiveRisk": canceledAtEntryRisk}
-	out := RangeReversionResult{Schema: "strat-range-reversion-reference-v1", Policy: r.Policy, ConfigSHA256: hex.EncodeToString(ch[:]), EntrySHA256: hashSeries(entry), SourceSHA256: hashSeries(source), EffectiveConfig: spec, Execution: request.Execution, Window: request.Window, InputEntryBars: request.EntrySeries.Len(), InputSourceBars: request.SourceSeries.Len(), UsedEntryBars: len(entry), UsedSourceBars: len(source), Signals: signals, Trades: winTrades, CensoredOpen: censored, PendingAtWindowEnd: pending != nil, CanceledAtEntryRisk: canceledAtEntryRisk, Summary: summary, Assumptions: []string{"Fixed-unit model-price P&L; slippage is applied adversely to entry and exit fills and changes fill-relative breakeven; commission is an explicit per-unit, per-side projection. Point value, account sizing and financing are not inferred.", "The source series value is available from the next native 4h row timestamp; the final source row is unavailable without a successor.", "The Pine policy delays bracket activation until after the entry bar and uses nearer-extreme OHLC path; immediate policy activates entry-bar brackets, cancels fills with nonpositive stop risk, and resolves simultaneous touches stop-first.", "Only the supplied bars before tradeTo are evaluated; input suffix rows do not enter indicators or execution."}}
+	out := RangeReversionResult{Schema: "strat-range-reversion-reference-v1", Policy: r.Policy, ConfigSHA256: hex.EncodeToString(ch[:]), EntrySHA256: hashSeries(entry), SourceSHA256: hashSeries(source), EffectiveConfig: spec, Execution: request.Execution, Window: request.Window, InputEntryBars: request.EntrySeries.Len(), InputSourceBars: request.SourceSeries.Len(), UsedEntryBars: len(entry), UsedSourceBars: len(source), Signals: signals, Trades: winTrades, CensoredOpen: censored, PendingAtWindowEnd: pending != nil, CanceledAtEntryRisk: canceledAtEntryRisk, Summary: summary, Assumptions: []string{"Fixed-unit model-price P&L; slippage is applied adversely to entry and exit fills and changes fill-relative breakeven; commission is an explicit per-unit, per-side projection. Point value, account sizing and financing are not inferred.", "The source series value is available from the next native 4h row timestamp; the final source row is unavailable without a successor.", "The Pine policy delays bracket activation until after the entry bar and uses nearer-extreme OHLC path; immediate policy activates entry-bar brackets, measures actual risk as the absolute fill-to-stop distance, cancels zero or near-zero distances (at most 1e-12), and resolves simultaneous touches stop-first.", "Only the supplied bars before tradeTo are evaluated; input suffix rows do not enter indicators or execution."}}
 	return out, nil
 }
 
