@@ -1,19 +1,13 @@
 package main
 
 import (
-	"crypto/sha256"
-	"encoding/binary"
-	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
-	"strings"
 	"time"
 
-	"github.com/spik3r/heisentick-strat/dsl"
 	"github.com/spik3r/heisentick-strat/engine"
-	"github.com/spik3r/heisentick-strat/marketdata"
+	"github.com/spik3r/heisentick-strat/report/adaptiveflag"
 )
 
 func runAdaptiveFlagReport(args []string, out io.Writer) error {
@@ -58,56 +52,18 @@ func runAdaptiveFlagReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	parsed, err := dsl.Parse(string(source))
+	prepared, err := adaptiveflag.PrepareLegacy(source, adaptiveflag.Options{Window: window, ResearchAblation: ablation})
 	if err != nil {
-		return err
-	}
-	if len(parsed.Errors) > 0 {
-		return fmt.Errorf("adaptive flag DSL parse errors: %s", strings.Join(parsed.Errors, "; "))
-	}
-	if _, err = dsl.DecodeAdaptiveVolumeFlag(parsed.Config); err != nil {
 		return err
 	}
 	data, err := os.ReadFile(flags.one("bars-file", ""))
 	if err != nil {
 		return err
 	}
-	if len(data) < 16 || binary.LittleEndian.Uint32(data[12:16]) != 6 {
-		return fmt.Errorf("adaptive flag requires exactly six BTB1 OHLCV columns")
-	}
-	count := uint64(binary.LittleEndian.Uint32(data[8:12]))
-	if uint64(len(data)) != 16+count*6*8 {
-		return fmt.Errorf("adaptive flag BTB1 exact byte length mismatch")
-	}
-	series, err := marketdata.DecodeBTB1(data)
+	raw, err := prepared.Build(data)
 	if err != nil {
 		return err
 	}
-	result, err := engine.RunAdaptiveVolumeFlag(engine.AdaptiveFlagRequest{Config: parsed.Config, Series: series, Window: window, ResearchAblation: ablation})
-	if err != nil {
-		return err
-	}
-	config, err := json.Marshal(parsed.Config)
-	if err != nil {
-		return err
-	}
-	hash := func(data []byte) string { sum := sha256.Sum256(data); return hex.EncodeToString(sum[:]) }
-	envelope := struct {
-		Schema       string                    `json:"schema"`
-		DSLSHA256    string                    `json:"dslSha256"`
-		ConfigSHA256 string                    `json:"configSha256"`
-		BTB1SHA256   string                    `json:"btb1Sha256"`
-		Config       dsl.Config                `json:"config"`
-		Run          engine.AdaptiveFlagResult `json:"run"`
-	}{"strat-adaptive-volume-flag-cli-v1", hash(source), hash(config), hash(data), parsed.Config, result}
-	if result.ResearchPolicy != nil {
-		envelope.Schema = engine.AdaptiveFlagResearchCLISchema
-	}
-	// Never emit partial success-looking JSON after validation or encoding failure.
-	raw, err := json.MarshalIndent(envelope, "", "  ")
-	if err != nil {
-		return err
-	}
-	_, err = out.Write(append(raw, '\n'))
+	_, err = out.Write(raw)
 	return err
 }

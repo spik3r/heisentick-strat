@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-flag-runtime-request-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "numericalPolicy",
+    "symbol",
+    "timeframe",
+    "executionWindow"
+  ],
+  "properties": {
+    "schema": {
+      "const": "adaptive-flag-runtime-request-v1"
+    },
+    "numericalPolicy": {
+      "const": "BINARY64_ORDERED_V1"
+    },
+    "symbol": {
+      "const": "XAUUSD"
+    },
+    "timeframe": {
+      "enum": [
+        "M30",
+        "H1"
+      ]
+    },
+    "executionWindow": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "tradeFromMs",
+            "tradeToMs"
+          ],
+          "properties": {
+            "tradeFromMs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "tradeToMs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "timeframe": {
+            "const": "M30"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "executionWindow": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "tradeFromMs": {
+                    "multipleOf": 1800000
+                  },
+                  "tradeToMs": {
+                    "multipleOf": 1800000
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "timeframe": {
+            "const": "H1"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "executionWindow": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "tradeFromMs": {
+                    "multipleOf": 3600000
+                  },
+                  "tradeToMs": {
+                    "multipleOf": 3600000
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

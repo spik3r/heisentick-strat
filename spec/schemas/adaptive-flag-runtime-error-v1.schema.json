@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-flag-runtime-error-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "error"
+  ],
+  "properties": {
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "phase",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "const": "ADAPTIVE_RUNTIME_REJECTED"
+        },
+        "phase": {
+          "enum": [
+            "request",
+            "source",
+            "input",
+            "resource",
+            "execution"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      }
+    }
+  }
+}

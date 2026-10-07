@@ -29,7 +29,17 @@ jobs:
           echo "::group::Runner filesystem capacity"
           df -hP "$RUNNER_TEMP" "$GITHUB_WORKSPACE" "$HOME"
           df -iP "$RUNNER_TEMP" "$GITHUB_WORKSPACE" "$HOME"
-          echo "If free blocks or inodes are low, reclaim runner capacity before retrying this workload."
+          for path in "$RUNNER_TEMP" "$GITHUB_WORKSPACE" "$HOME"; do
+            available_kib="$(df -Pk "$path" | awk 'NR == 2 { print $4 }')"
+            available_inodes="$(df -Pi "$path" | awk 'NR == 2 { print $4 }')"
+            case "$available_kib:$available_inodes" in
+              *[!0-9:]*|:*|*:) echo "::error::Cannot verify runner capacity for $path"; exit 1 ;;
+            esac
+            if [ "$available_kib" -lt 1048576 ] || [ "$available_inodes" -lt 10000 ]; then
+              echo "::error::Insufficient runner capacity at $path: require at least 1 GiB free and 10000 free inodes. No cleanup was performed."
+              exit 1
+            fi
+          done
           echo "::endgroup::"
 
       - name: Set up Go
@@ -101,6 +111,13 @@ jobs:
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 3
         run: GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestPortable' ./internal/float64contract ./engine/regime ./engine/master
+
+      - name: Adaptive baseline raw native/WASM qualification
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          node scripts/checks/adaptive-flag-runtime-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js" "$(command -v go)"
+          node scripts/checks/adaptive-flag-runtime-transport.mjs cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+          GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestAdaptive(Numerical|Input|Indicators|Strict|Moving|Negative|Source|Arithmetic|Derived|Reference|Evaluation)' ./engine
 
       # Separate pinned pre-portable source, same native compiler and host.
       # This is a regression baseline only and is never a release artifact.

@@ -3,6 +3,10 @@
 Tracking: [HT-185](https://github.com/spik3r/heisentick-backlog/blob/main/tasks/HT-185-adaptive-volume-flag-dsl.md).
 This is a separate family from the fixed PR388 `goldFlagReference` strategy.
 
+This guide records the preserved legacy native interface. The separately bounded
+[A/B/C raw runtime](adaptive-flag-runtime.md) adds a dedicated native/WASM
+transport; it does not enable the generic routes described below or add economics.
+
 ## Run the implemented path
 
 ```sh
