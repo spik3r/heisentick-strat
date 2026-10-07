@@ -6,6 +6,20 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the separate `adaptiveVolumeFlag` native raw reference family (HT-185),
+  with strict explicit INITIAL/TWEAKED/SNAPSHOT_C/CUSTOM settings, causal
+  source snapshots, frozen pending stops, delayed brackets, close-activated
+  stop exits and retained terminal states. Reuse canonical position/close
+  machinery without altering existing broker semantics. Dedicated
+  `adaptive-flag-report` only; generic and engine-WASM routes fail closed.
+  No sizing, costs, account economics, TradingView parity, performance, release
+  or app adoption is claimed. New arithmetic uses explicit float64 barriers;
+  fixed `BINARY64_ORDERED_V1` records sequential seed/direct comparisons.
+  CPython-default/Pine bitwise parity is not claimed; cross-architecture
+  qualification remains a separate gate. Optional request-only evaluation
+  windows preserve continuous warmup with a flat pre-start broker and exclude
+  rows opening at or after the explicit end. Full-input mode remains.
+
 - Add the strict Go-only `goldFlagReference` family (HT-182), preserving the
   fixed PR388 detector and observed-row clocks in the named causal coarse-OHLC
   stress scenario. Reuse the canonical broker with a dedicated opening-target

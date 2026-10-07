@@ -1,0 +1,506 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-volume-flag-config-v1.schema.json",
+  "title": "Adaptive volume flag raw native reference config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dslVersion",
+    "name",
+    "description",
+    "setupType",
+    "adaptiveVolumeFlag"
+  ],
+  "properties": {
+    "dslVersion": {
+      "const": 7
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "setupType": {
+      "const": "adaptiveVolumeFlag"
+    },
+    "adaptiveVolumeFlag": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contractVersion",
+            "policy",
+            "numericalPolicy",
+            "timeframe",
+            "bundle",
+            "rules"
+          ],
+          "properties": {
+            "contractVersion": {
+              "const": "adaptive-volume-flag-config-v1"
+            },
+            "policy": {
+              "const": "DELAYED_OHLC_REFERENCE_V1"
+            },
+            "timeframe": {
+              "enum": [
+                "M30",
+                "H1"
+              ]
+            },
+            "bundle": {
+              "const": "INITIAL"
+            },
+            "rules": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pivotSensitivity",
+                "minPoleATR",
+                "minFlagBars",
+                "maxFlagBars",
+                "maxFlagRetrace",
+                "useVolumeFilter",
+                "useEMATrend",
+                "fastEMALen",
+                "slowEMALen",
+                "targetR",
+                "atrStopMult",
+                "validBars",
+                "maxHold",
+                "atrLen",
+                "volumeSMALen",
+                "volumeSMAMult",
+                "flagWidthPoleMult",
+                "entryBufferATR"
+              ],
+              "properties": {
+                "pivotSensitivity": {
+                  "const": 3
+                },
+                "minPoleATR": {
+                  "const": 1.8
+                },
+                "minFlagBars": {
+                  "const": 3
+                },
+                "maxFlagBars": {
+                  "const": 16
+                },
+                "maxFlagRetrace": {
+                  "const": 0.5
+                },
+                "useVolumeFilter": {
+                  "const": true
+                },
+                "useEMATrend": {
+                  "const": true
+                },
+                "fastEMALen": {
+                  "const": 50
+                },
+                "slowEMALen": {
+                  "const": 200
+                },
+                "targetR": {
+                  "const": 2.5
+                },
+                "atrStopMult": {
+                  "const": 1.2
+                },
+                "validBars": {
+                  "const": 12
+                },
+                "maxHold": {
+                  "const": 60
+                },
+                "atrLen": {
+                  "const": 14
+                },
+                "volumeSMALen": {
+                  "const": 20
+                },
+                "volumeSMAMult": {
+                  "const": 0.9
+                },
+                "flagWidthPoleMult": {
+                  "const": 0.55
+                },
+                "entryBufferATR": {
+                  "const": 0.05
+                }
+              }
+            },
+            "numericalPolicy": {
+              "const": "BINARY64_ORDERED_V1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contractVersion",
+            "policy",
+            "numericalPolicy",
+            "timeframe",
+            "bundle",
+            "rules"
+          ],
+          "properties": {
+            "contractVersion": {
+              "const": "adaptive-volume-flag-config-v1"
+            },
+            "policy": {
+              "const": "DELAYED_OHLC_REFERENCE_V1"
+            },
+            "timeframe": {
+              "enum": [
+                "M30",
+                "H1"
+              ]
+            },
+            "bundle": {
+              "const": "TWEAKED"
+            },
+            "rules": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pivotSensitivity",
+                "minPoleATR",
+                "minFlagBars",
+                "maxFlagBars",
+                "maxFlagRetrace",
+                "useVolumeFilter",
+                "useEMATrend",
+                "fastEMALen",
+                "slowEMALen",
+                "targetR",
+                "atrStopMult",
+                "validBars",
+                "maxHold",
+                "atrLen",
+                "volumeSMALen",
+                "volumeSMAMult",
+                "flagWidthPoleMult",
+                "entryBufferATR"
+              ],
+              "properties": {
+                "pivotSensitivity": {
+                  "const": 3
+                },
+                "minPoleATR": {
+                  "const": 1.8
+                },
+                "minFlagBars": {
+                  "const": 5
+                },
+                "maxFlagBars": {
+                  "const": 21
+                },
+                "maxFlagRetrace": {
+                  "const": 0.5
+                },
+                "useVolumeFilter": {
+                  "const": true
+                },
+                "useEMATrend": {
+                  "const": true
+                },
+                "fastEMALen": {
+                  "const": 55
+                },
+                "slowEMALen": {
+                  "const": 144
+                },
+                "targetR": {
+                  "const": 2.5
+                },
+                "atrStopMult": {
+                  "const": 2.2
+                },
+                "validBars": {
+                  "const": 20
+                },
+                "maxHold": {
+                  "const": 60
+                },
+                "atrLen": {
+                  "const": 14
+                },
+                "volumeSMALen": {
+                  "const": 20
+                },
+                "volumeSMAMult": {
+                  "const": 0.9
+                },
+                "flagWidthPoleMult": {
+                  "const": 0.55
+                },
+                "entryBufferATR": {
+                  "const": 0.05
+                }
+              }
+            },
+            "numericalPolicy": {
+              "const": "BINARY64_ORDERED_V1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contractVersion",
+            "policy",
+            "numericalPolicy",
+            "timeframe",
+            "bundle",
+            "rules"
+          ],
+          "properties": {
+            "contractVersion": {
+              "const": "adaptive-volume-flag-config-v1"
+            },
+            "policy": {
+              "const": "DELAYED_OHLC_REFERENCE_V1"
+            },
+            "timeframe": {
+              "enum": [
+                "M30",
+                "H1"
+              ]
+            },
+            "bundle": {
+              "const": "SNAPSHOT_C"
+            },
+            "rules": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pivotSensitivity",
+                "minPoleATR",
+                "minFlagBars",
+                "maxFlagBars",
+                "maxFlagRetrace",
+                "useVolumeFilter",
+                "useEMATrend",
+                "fastEMALen",
+                "slowEMALen",
+                "targetR",
+                "atrStopMult",
+                "validBars",
+                "maxHold",
+                "atrLen",
+                "volumeSMALen",
+                "volumeSMAMult",
+                "flagWidthPoleMult",
+                "entryBufferATR"
+              ],
+              "properties": {
+                "pivotSensitivity": {
+                  "const": 3
+                },
+                "minPoleATR": {
+                  "const": 1.8
+                },
+                "minFlagBars": {
+                  "const": 5
+                },
+                "maxFlagBars": {
+                  "const": 21
+                },
+                "maxFlagRetrace": {
+                  "const": 0.5
+                },
+                "useVolumeFilter": {
+                  "const": true
+                },
+                "useEMATrend": {
+                  "const": true
+                },
+                "fastEMALen": {
+                  "const": 55
+                },
+                "slowEMALen": {
+                  "const": 144
+                },
+                "targetR": {
+                  "const": 2.5
+                },
+                "atrStopMult": {
+                  "const": 2.0
+                },
+                "validBars": {
+                  "const": 20
+                },
+                "maxHold": {
+                  "const": 60
+                },
+                "atrLen": {
+                  "const": 14
+                },
+                "volumeSMALen": {
+                  "const": 20
+                },
+                "volumeSMAMult": {
+                  "const": 0.9
+                },
+                "flagWidthPoleMult": {
+                  "const": 0.55
+                },
+                "entryBufferATR": {
+                  "const": 0.05
+                }
+              }
+            },
+            "numericalPolicy": {
+              "const": "BINARY64_ORDERED_V1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "contractVersion",
+            "policy",
+            "numericalPolicy",
+            "timeframe",
+            "bundle",
+            "rules"
+          ],
+          "properties": {
+            "contractVersion": {
+              "const": "adaptive-volume-flag-config-v1"
+            },
+            "policy": {
+              "const": "DELAYED_OHLC_REFERENCE_V1"
+            },
+            "timeframe": {
+              "enum": [
+                "M30",
+                "H1"
+              ]
+            },
+            "bundle": {
+              "const": "CUSTOM"
+            },
+            "rules": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "pivotSensitivity",
+                "minPoleATR",
+                "minFlagBars",
+                "maxFlagBars",
+                "maxFlagRetrace",
+                "useVolumeFilter",
+                "useEMATrend",
+                "fastEMALen",
+                "slowEMALen",
+                "targetR",
+                "atrStopMult",
+                "validBars",
+                "maxHold",
+                "atrLen",
+                "volumeSMALen",
+                "volumeSMAMult",
+                "flagWidthPoleMult",
+                "entryBufferATR"
+              ],
+              "properties": {
+                "pivotSensitivity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "minPoleATR": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "minFlagBars": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "maxFlagBars": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "maxFlagRetrace": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "useVolumeFilter": {
+                  "type": "boolean"
+                },
+                "useEMATrend": {
+                  "type": "boolean"
+                },
+                "fastEMALen": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "slowEMALen": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "targetR": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "atrStopMult": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "validBars": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "maxHold": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "atrLen": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "volumeSMALen": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000000
+                },
+                "volumeSMAMult": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "flagWidthPoleMult": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "entryBufferATR": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            },
+            "numericalPolicy": {
+              "const": "BINARY64_ORDERED_V1"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

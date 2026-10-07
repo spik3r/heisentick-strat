@@ -43,6 +43,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if err := rejectDedicatedGoldFlagExecution(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
+	if err := rejectDedicatedAdaptiveFlagExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := rejectDedicatedMasterExecution(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
