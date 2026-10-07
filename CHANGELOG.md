@@ -4,34 +4,66 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Versions follow
 semver; a semantic change to the parser, engine or corpus bumps the minor
 version and is named here.
 
-## [Unreleased]
+## [0.25.0]
 
-## [0.25.0] — not yet tagged (candidate; date set when tagged)
+Proposed release; undated until publication. Includes the merged native
+references listed below, without enabling them in any browser catalogue.
 
-- Add `engine/frozenlevels`, isolated causal primitives for frozen-level
-  research: source windows, prior-opening locks, a lock manager (HT-169) and a
-  level lifecycle with admission events (HT-170). They are building blocks,
-  not a complete backtester: no DSL syntax, strategy, quote execution adapter
-  or result; all fixtures are invented and no existing family or golden
-  changes.
+- Add `engineRunClockRangeFixture`, a dedicated Go/WASM fixture export with
+  unchanged ordinary trades and per-day entered/rejected/expired/pending
+  diagnostics. Ordinary envelopes and all prior goldens remain unchanged.
+  Clock-range checkpoint resume is unsupported. Column route is not qualified.
 
-- Add generic synthetic quote and clock preflight checks in `marketdata`. No
-  parser or engine semantics change.
+- Include reviewed frozen-level primitives/lifecycle, compile-only
+  `frozenLevelBreakout` and its runtime refusal, strict source transport,
+  quote-input admission and synthetic lifecycle/fee traces (PR86–91).
+  These components do not supply a runnable frozen-level browser strategy.
 
-- Add `frozenLevelBreakout` (`type: frozen level breakout`, HT-171), a
-  compile-only research control. It parses an explicit typed profile
-  (`stored-m30-lock-isolation-v1`) with required, authored settings and opaque
-  input identities, and every successful parse reports
-  `frozen-level-quote-execution-unimplemented`. It is not a runnable strategy:
-  every engine entry (`Run`, `PrepareRun`, shared and variant preparation)
-  refuses it with that error, and nothing supplies quote execution. Its
-  grammar is family-specific; other families' parsing is unchanged. Adds 12
-  parse conformance cases; no run golden changes.
 
-- The WASM entry points `dslParse`, `engineRunFixture` and `engineRunColumns`
-  reject DSL source that is not valid UTF-16 (an unpaired surrogate) instead of
-  letting the JavaScript-to-Go string conversion repair it. This applies to
-  every family and is visible to consumers of the WASM builds.
+- Add the separate `adaptiveVolumeFlag` native raw reference family (HT-185),
+  with strict explicit INITIAL/TWEAKED/SNAPSHOT_C/CUSTOM settings, causal
+  source snapshots, frozen pending stops, delayed brackets, close-activated
+  stop exits and retained terminal states. Reuse canonical position/close
+  machinery without altering existing broker semantics. Dedicated
+  `adaptive-flag-report` only; generic and engine-WASM routes fail closed.
+  No sizing, costs, account economics, TradingView parity, performance, release
+  or app adoption is claimed. New arithmetic uses explicit float64 barriers;
+  fixed `BINARY64_ORDERED_V1` records sequential seed/direct comparisons.
+  CPython-default/Pine bitwise parity is not claimed; cross-architecture
+  qualification remains a separate gate. Optional request-only evaluation
+  windows preserve continuous warmup with a flat pre-start broker and exclude
+  rows opening at or after the explicit end. Full-input mode remains.
+
+- Add the strict Go-only `goldFlagReference` family (HT-182), preserving the
+  fixed PR388 detector and observed-row clocks in the named causal coarse-OHLC
+  stress scenario. Reuse the canonical broker with a dedicated opening-target
+  precedence opt-in, leaving legacy defaults unchanged. Native `gold-flag-report`
+  only, with signal snapshots, order/event/coverage traces, local alternatives,
+  explicit terminal exposure and five fixed diagnostic costs. Generic, grid,
+  prefix and engine-WASM paths refuse execution. Invented fixtures preserve
+  prior goldens. No observed-fill, profitability, release, app adoption or live
+  readiness claim is included. Any future release requires a minor version and
+  separate review.
+
+- Add the fixed native-offline Master Structural v10 research family (HT-177),
+  with separate historical-source and stable-protected policy bundles, explicit
+  H4 clock horizons, continuous reference prices, rounded illustrative quantity,
+  and full order/activation/terminal audits. Reuse qualified v9 primitives
+  without changing either v9 policy. Dedicated `master-report` only; generic and
+  engine-WASM execution remain refused. New parsing and invented synthetic
+  cases preserve all prior goldens. No Pine/broker parity, release, consumer
+  adoption, deployment or historical performance claim is included; future
+  release would require a minor version and separate review.
+
+- Add the fixed, Go-only Regime Engine DSL interpretation (HT-175), with
+  source-like-v1 and audit-baseline-v1 policies, a dedicated engine/regime API
+  and regime-report CLI, indicator/order/terminal-exposure audits, and strict
+  refusal from generic report/grid/prefix/WASM execution. Preserve existing
+  conformance goldens; new parser cases and invented native synthetic tests
+  qualify the bounded implementation. HMA floor-half arithmetic, native OHLC
+  path, notional sizing and conditional costs are explicit; Pine parity and
+  broker contract mapping remain unverified. This unreleased addition requires
+  a future minor release and separate consumer adoption; no tag/pin is included.
 
 - Add the clock range breakout setup family (`type: clock range breakout`,
   id `clockRangeBreakout`) specified by HT-167: a fixed-UTC-offset clock range,
@@ -43,26 +75,26 @@ version and is named here.
   `orders expire`, `buffer N pips`, `close positions at`, and `stop N percent`
   and `range HH:MM to HH:MM` in this family. The reviewed pip registry moves to
   `dsl.ReviewedInstrumentPip` (engine behavior unchanged). Add 31 parse and
-  38 run conformance cases; all earlier goldens are unchanged. The app's
-  JavaScript runtime does not implement the family yet, so Go/WASM/JS parity is
-  pending; strategy registration and the historical comparison are separate,
-  pending steps. Prefix replay is supported; checkpoint resume stays
-  unsupported for this family.
+  38 run conformance cases; all earlier goldens are unchanged. This is an
+  unreleased source addition that needs the next minor version. JavaScript
+  adoption, a producer tag, a consumer pin, strategy registration and the
+  historical comparison are separate, pending steps.
 
 - Correct numeric Failed Breakout `target N R` lowering to `fallbackR`, the
   field the execution engine consumes. Previously the accepted phrase wrote
   an unused `r` field and silently retained the default 1R fallback. Opposite
   edge priority and the minimum-reward filter remain unchanged. Add invented
-  long/short trade-outcome and native/WASM regressions. This semantic
-  correction takes effect for a consumer only when it adopts this release.
+  long/short trade-outcome and native/WASM regressions. This prospective
+  semantic correction requires a minor release and explicit consumer adoption;
+  no tag or consumer pin is included.
 
 - Parse opening-range `first N minutes` as minutes and disable candle-count
   mode, as specified. Preserve candle/bar units and integer-hour UTC slots;
   reject malformed or ambiguous duration prefixes and non-positive,
   fractional or overflowing durations rather than silently coercing them.
   Add two synthetic parse goldens; no existing run golden changes. This is
-  a parser-semantic correction that takes effect for a consumer only when it
-  adopts this release.
+  a prospective parser-semantic correction requiring a minor release and
+  explicit consumer adoption; no tag or consumer pin is included.
 
 - Reject a supplied timed-return calendar on another strategy family before
   generic fixture execution or shared/native preparation. This closes mixed
@@ -72,7 +104,8 @@ version and is named here.
   typed opening/completed-close anchors, pinned timezone/calendar inputs,
   one-bar-delayed scheduled fills, one fixed unit and dated admission audit.
   Two invented run fixtures and one parse fixture exercise the new contract;
-  existing goldens retain their semantics. Consumer adoption is separate.
+  existing goldens retain their semantics. This addition requires the next
+  minor release (at least 0.25.0); no tag or consumer adoption is included.
 
 ## [0.24.1] — 2026-10-01
 

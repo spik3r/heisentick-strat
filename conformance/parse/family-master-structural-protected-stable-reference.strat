@@ -1,0 +1,12 @@
+dsl v7
+strategy "Master structural protected-stable-reference control" {
+  description "Synthetic parser fixture; dedicated native runner only"
+}
+market {
+  master timeframe M30 from M5
+}
+setup {
+  type: master structural
+  master profile v10-phase0-floor-half-reference-v1
+  master mode PROTECTED_STABLE_REFERENCE
+}

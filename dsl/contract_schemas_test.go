@@ -183,7 +183,7 @@ var supportedContractSchemaKeywords = map[string]bool{
 	"additionalProperties": true, "anyOf": true, "const": true,
 	"description": true, "enum": true, "items": true, "maxItems": true,
 	"minItems": true, "minLength": true, "minProperties": true,
-	"minimum": true, "properties": true, "required": true, "title": true,
+	"maximum": true, "exclusiveMinimum": true, "minimum": true, "properties": true, "required": true, "title": true,
 	"type": true,
 }
 
@@ -209,6 +209,14 @@ func assertSupportedContractSchemaKeywords(schema contractSchema, location strin
 	if additional, present := schema["additionalProperties"]; present {
 		if _, ok := additional.(bool); !ok {
 			return fmt.Errorf("%s: object additionalProperties schemas are unsupported", location)
+		}
+	}
+	for _, key := range []string{"maximum", "exclusiveMinimum"} {
+		if value, present := schema[key]; present {
+			number, ok := value.(float64)
+			if !ok || math.IsNaN(number) || math.IsInf(number, 0) {
+				return fmt.Errorf("%s.%s: finite numeric bound expected", location, key)
+			}
 		}
 	}
 	for key, value := range schema {
@@ -361,6 +369,17 @@ func validateContract(value any, schema contractSchema, schemaPath string, root 
 	if minimum, ok := schema["minimum"].(float64); ok {
 		if number, ok := value.(float64); !ok || number < minimum {
 			return fmt.Errorf("%s: below minimum", location)
+		}
+	}
+
+	if maximum, ok := schema["maximum"].(float64); ok {
+		if number, ok := value.(float64); !ok || math.IsNaN(number) || math.IsInf(number, 0) || number > maximum {
+			return fmt.Errorf("%s: above maximum or not finite numeric", location)
+		}
+	}
+	if minimum, ok := schema["exclusiveMinimum"].(float64); ok {
+		if number, ok := value.(float64); !ok || math.IsNaN(number) || math.IsInf(number, 0) || number <= minimum {
+			return fmt.Errorf("%s: not above exclusiveMinimum", location)
 		}
 	}
 

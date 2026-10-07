@@ -1,0 +1,33 @@
+package dsl
+
+const adaptiveFlagTestSource = `dsl v7
+strategy "Adaptive volume flag INITIAL synthetic control" {
+  description "Input identity only; dedicated raw reference runner"
+}
+market {
+  adaptiveflag timeframe M30
+}
+setup {
+  type: adaptive volume flag
+  adaptiveflag policy DELAYED_OHLC_REFERENCE_V1
+  adaptiveflag bundle INITIAL
+  adaptiveflag pivotSensitivity 3
+  adaptiveflag minPoleATR 1.8
+  adaptiveflag minFlagBars 3
+  adaptiveflag maxFlagBars 16
+  adaptiveflag maxFlagRetrace 0.5
+  adaptiveflag useVolumeFilter true
+  adaptiveflag useEMATrend true
+  adaptiveflag fastEMALen 50
+  adaptiveflag slowEMALen 200
+  adaptiveflag targetR 2.5
+  adaptiveflag atrStopMult 1.2
+  adaptiveflag validBars 12
+  adaptiveflag maxHold 60
+  adaptiveflag atrLen 14
+  adaptiveflag volumeSMALen 20
+  adaptiveflag volumeSMAMult 0.9
+  adaptiveflag flagWidthPoleMult 0.55
+  adaptiveflag entryBufferATR 0.05
+}
+`

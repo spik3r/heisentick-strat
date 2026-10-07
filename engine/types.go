@@ -63,6 +63,8 @@ type RunFixture struct {
 
 // RunResult mirrors strat/conformance/run/*.trades.json.
 type RunResult struct {
+	// ClockRangeDays is an execution audit, excluded from the conformance envelope.
+	ClockRangeDays  []ClockRangeDay   `json:"-"`
 	TimedAudit      *TimedReturnAudit `json:"timedReturn,omitempty"`
 	Case            string            `json:"case"`
 	Costs           Costs             `json:"costs"`

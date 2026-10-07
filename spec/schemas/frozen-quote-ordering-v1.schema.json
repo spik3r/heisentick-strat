@@ -1,0 +1,358 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frozen-quote-ordering-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "sourceRef",
+    "snapshotRef",
+    "calendarRef",
+    "sequence",
+    "scope",
+    "contextBindings",
+    "availabilityModel"
+  ],
+  "properties": {
+    "schema": {
+      "const": "frozen-quote-ordering-v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "sourceRef": {
+      "$ref": "#/$defs/reference"
+    },
+    "snapshotRef": {
+      "$ref": "#/$defs/reference"
+    },
+    "calendarRef": {
+      "$ref": "#/$defs/reference"
+    },
+    "sequence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "counterPolicy",
+        "domainId",
+        "rawArtifactRef",
+        "decoder",
+        "evidenceState",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "artifact-record-ordinal",
+            "provider-value"
+          ]
+        },
+        "counterPolicy": {
+          "enum": [
+            "zero-based-data-record-index",
+            "global-strict",
+            "per-event-millisecond"
+          ]
+        },
+        "domainId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "rawArtifactRef": {
+          "$ref": "#/$defs/reference"
+        },
+        "decoder": {
+          "$ref": "#/$defs/decoder"
+        },
+        "evidenceState": {
+          "enum": [
+            "asserted",
+            "unqualified"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "artifact-record-ordinal"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "counterPolicy": {
+                "const": "zero-based-data-record-index"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "counterPolicy": {
+                "enum": [
+                  "global-strict",
+                  "per-event-millisecond"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidenceState": {
+                "const": "asserted"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidenceRefs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startMS",
+        "endMS",
+        "rowCount",
+        "firstEvent",
+        "lastEvent"
+      ],
+      "properties": {
+        "startMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "endMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "rowCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "firstEvent": {
+          "$ref": "#/$defs/eventKey"
+        },
+        "lastEvent": {
+          "$ref": "#/$defs/eventKey"
+        }
+      }
+    },
+    "contextBindings": {
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "windowId",
+          "kind",
+          "sourceRef",
+          "calendarRef",
+          "sourceSide",
+          "interval",
+          "evidenceState",
+          "evidenceRefs"
+        ],
+        "properties": {
+          "windowId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "not": {
+              "pattern": "[^A-Za-z0-9._-]"
+            }
+          },
+          "kind": {
+            "enum": [
+              "stored-clock-M30",
+              "rolling-six-M5",
+              "completed-clock-M15",
+              "prior-broker-opening"
+            ]
+          },
+          "sourceRef": {
+            "$ref": "#/$defs/reference"
+          },
+          "calendarRef": {
+            "$ref": "#/$defs/reference"
+          },
+          "sourceSide": {
+            "const": "bid"
+          },
+          "interval": {
+            "$ref": "#/$defs/interval"
+          },
+          "evidenceState": {
+            "const": "unqualified"
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "minItems": 0,
+            "items": {
+              "$ref": "#/$defs/reference"
+            }
+          }
+        }
+      }
+    },
+    "availabilityModel": {
+      "const": "event-time-reference-assumption"
+    }
+  },
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "not": {
+            "pattern": "[^0-9a-f]"
+          }
+        }
+      }
+    },
+    "decoder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "method"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "method": {
+          "const": "preserve-all-records-in-original-order-without-sort-repair-or-drop"
+        }
+      }
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startMS",
+        "endMS"
+      ],
+      "properties": {
+        "startMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "endMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "eventKey": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eventMS",
+        "sequence"
+      ],
+      "properties": {
+        "eventMS": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  }
+}

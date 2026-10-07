@@ -4,6 +4,37 @@ package dsl
 // the existing apply/setup dispatch area; parser behavior remains in those
 // handwritten functions rather than this audit metadata.
 var parserDirectiveHandlerBindings = map[string]string{
+	"directive.adaptiveflag-timeframe":         "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-policy":            "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-bundle":            "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-pivotsensitivity":  "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-minpoleatr":        "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-minflagbars":       "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-maxflagbars":       "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-maxflagretrace":    "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-usevolumefilter":   "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-useematrend":       "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-fastemalen":        "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-slowemalen":        "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-targetr":           "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-atrstopmult":       "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-validbars":         "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-maxhold":           "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-atrlen":            "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-volumesmalen":      "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-volumesmamult":     "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-flagwidthpolemult": "adaptiveFlagSourceParser.directive",
+	"directive.adaptiveflag-entrybufferatr":    "adaptiveFlagSourceParser.directive",
+
+	"directive.goldflag-policy":    "goldFlagSourceParser.directive",
+	"directive.goldflag-timeframe": "goldFlagSourceParser.directive",
+	"directive.master-mode":        "masterSourceParser.directive",
+	"directive.master-profile":     "masterSourceParser.directive",
+	"directive.master-timeframe":   "masterSourceParser.directive",
+	"directive.regime-mode":        "regimeSourceParser.directive",
+	"directive.regime-profile":     "regimeSourceParser.directive",
+	"directive.regime-timeframe":   "regimeSourceParser.directive",
+
 	"directive.timed":          "parser.apply:parseTimedReturn",
 	"directive.shock":          "parser.apply:parseDownShockRebound",
 	"directive.strategy":       "parser.apply:setString",
@@ -80,6 +111,10 @@ var parserDirectiveHandlerBindings = map[string]string{
 }
 
 var parserFamilyHandlerBindings = map[string]string{
+	"adaptiveVolumeFlag":      "parseAdaptiveVolumeFlagSource",
+	"goldFlagReference":       "parseGoldFlagReferenceSource",
+	"masterStructural":        "parseMasterStructuralSource",
+	"regimeEngine":            "parseRegimeEngineSource",
 	"timedReturn":             "parser.parseSetupType",
 	"downShockRebound":        "parser.parseSetupType",
 	"failedBreakout":          "parser.parseSetupType",

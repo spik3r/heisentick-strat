@@ -40,6 +40,18 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if len(parsed.Errors) > 0 {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
 	}
+	if err := rejectDedicatedGoldFlagExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := rejectDedicatedAdaptiveFlagExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := rejectDedicatedMasterExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := rejectDedicatedRegimeExecution(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateTimedCalendarFamily(parsed.Config, fixture.TimedCalendar); err != nil {
 		return RunResult{}, err
 	}
@@ -106,7 +118,11 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	var b broker
 	b.reset(series, cols, htfTrend, ema, emaSlope, params, fixture, nil)
 	trades := b.run()
-	return checkedResultEnvelope(fixture, trades)
+	result, err := checkedResultEnvelope(fixture, trades)
+	if setupTypeFromAny(parsed.Config["setupType"]) == "clockRangeBreakout" {
+		result.ClockRangeDays = append([]ClockRangeDay{}, b.clock.days...)
+	}
+	return result, err
 }
 
 func sourceEntryConfig(cfg dsl.Config, fixture RunFixture) bool {

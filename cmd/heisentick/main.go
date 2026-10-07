@@ -18,6 +18,14 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "adaptive-flag-report":
+		return runAdaptiveFlagReport(args[1:], out)
+	case "gold-flag-report":
+		return runGoldFlagReport(args[1:], out)
+	case "master-report":
+		return runMasterReport(args[1:], out)
+	case "regime-report":
+		return runRegimeReport(args[1:], out)
 	case "timed-report":
 		return runTimedReport(args[1:], out)
 	case "report":
@@ -38,6 +46,22 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick adaptive-flag-report --dsl-file=<path> --bars-file=<six-column BTB1 path> [--trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339>]
+
+adaptive-flag-report runs explicit supplied M30/H1 bars through the named delayed OHLC raw reference. It reports model prices and state only, without sizing, costs or account economics. Generic/browser execution and TradingView parity are not implied.
+
+  heisentick gold-flag-report --dsl-file=<path> --m15-file=<BTB1 path> --from=<UTC RFC3339> --to=<UTC RFC3339> --cost=0|0.06|0.15|0.25|0.50
+
+gold-flag-report runs the fixed native offline PR388 causal stress scenario. It retains partial/gap evidence and unresolved local alternatives. It does not establish observed fills or an executable edge.
+
+  heisentick master-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
+
+master-report runs the fixed native offline Master Structural v10 reference. Two closed policies only; aggregated M30 OHLC paths, continuous prices and illustrative 0.1-unit sizing. No Pine/broker parity, financing model, generic or browser execution is implied.
+
+  heisentick regime-report --dsl-file=<path> --m5-file=<BTB1 path> --warmup-from=<UTC RFC3339> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --spread=0|1
+
+regime-report runs the fixed native offline Regime Engine interpretation. The dedicated result retains terminal exposure; generic report/grid/prefix and engine WASM do not support this family. Parameters, equity10000 and fee0.50/unit/side are fixed. Source quote side, contract/ounce mapping and Pine parity are unverified; financing is unmodeled.
+
   heisentick timed-report --dsl-file=<path> --calendar-file=<path> --symbol=<SYMBOL> --tf=<tf> --data-root=<path> --slippage=<points> [--slippage-bps=<basis-points>]
 
 timed-report is an offline, one-unit delayed-open OHLC proxy. It requires an explicit pinned calendar/TZif sidecar, rejects incomplete execution coverage before signals, and reports native price-unit P&L with no commission or financing. It does not support ordinary report/grid or forward-prefix modes.

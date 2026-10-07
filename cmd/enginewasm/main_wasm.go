@@ -28,6 +28,21 @@ func main() {
 		}
 		return string(out)
 	}))
+	js.Global().Set("engineRunClockRangeFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return `{"error":"expected fixture JSON and source strings"}`
+		}
+		source, err := sourcetext.FromJS(args[1])
+		if err != nil {
+			out, _ := json.Marshal(map[string]string{"error": err.Error()})
+			return string(out)
+		}
+		out, err := runClockRangeFixture(args[0].String(), source)
+		if err != nil {
+			out, _ = json.Marshal(map[string]string{"error": err.Error()})
+		}
+		return string(out)
+	}))
 	js.Global().Set("engineRunColumns", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 8 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return columnError("expected metadata JSON, source, and six Float64Array columns")

@@ -115,11 +115,11 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 114,
+  "parseCases": 122,
   "parseCategories": {
     "deployed-book-dsl": 9,
     "diagnostic": 43,
-    "family": 12,
+    "family": 20,
     "filters": 6,
     "setup-family": 44
   },

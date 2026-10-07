@@ -247,6 +247,38 @@
       "classification": "go-only",
       "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
       "since": 7
+    },
+    {
+      "id": "regimeEngine",
+      "canonicalSpelling": "regime engine",
+      "canonicalExample": "type: regime engine\n  regime profile v9-floor-half-v1\n  regime mode source-like-v1",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "masterStructural",
+      "canonicalSpelling": "master structural",
+      "canonicalExample": "type: master structural\n  master profile v10-phase0-floor-half-reference-v1\n  master mode SOURCE_HISTORICAL_REFERENCE",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "goldFlagReference",
+      "canonicalSpelling": "gold flag reference",
+      "canonicalExample": "type: gold flag reference\n  goldflag policy PR388_CAUSAL_STRESS_V1",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "adaptiveVolumeFlag",
+      "canonicalSpelling": "adaptive volume flag",
+      "canonicalExample": "type: adaptive volume flag\n  adaptiveflag policy DELAYED_OHLC_REFERENCE_V1",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
     }
   ],
   "aliases": [
@@ -1612,6 +1644,78 @@
       "classification": "go-only",
       "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
       "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.regime-engine",
+      "source": "go-inline-setup-type",
+      "spelling": "regime engine",
+      "familyId": "regimeEngine",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.regime-engine",
+      "source": "go-canonical-setup-type",
+      "spelling": "regime engine",
+      "familyId": "regimeEngine",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.master-structural",
+      "source": "go-inline-setup-type",
+      "spelling": "master structural",
+      "familyId": "masterStructural",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.master-structural",
+      "source": "go-canonical-setup-type",
+      "spelling": "master structural",
+      "familyId": "masterStructural",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.gold-flag-reference",
+      "source": "go-inline-setup-type",
+      "spelling": "gold flag reference",
+      "familyId": "goldFlagReference",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.gold-flag-reference",
+      "source": "go-canonical-setup-type",
+      "spelling": "gold flag reference",
+      "familyId": "goldFlagReference",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.adaptive-volume-flag",
+      "source": "go-inline-setup-type",
+      "spelling": "adaptive volume flag",
+      "familyId": "adaptiveVolumeFlag",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.adaptive-volume-flag",
+      "source": "go-canonical-setup-type",
+      "spelling": "adaptive volume flag",
+      "familyId": "adaptiveVolumeFlag",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
     }
   ],
   "directiveHeads": [
@@ -2248,6 +2352,209 @@
       "spelling": "frozen",
       "classification": "go-only",
       "reason": "Compile-only Go control; quote execution remains unimplemented (HT-171).",
+      "since": 7
+    },
+    {
+      "id": "directive.regime-mode",
+      "spelling": "regime mode",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "directive.regime-profile",
+      "spelling": "regime profile",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "directive.regime-timeframe",
+      "spelling": "regime timeframe",
+      "classification": "go-only",
+      "reason": "Native offline regime runner only; generic broker, grid and browser adoption are unsupported (HT-175).",
+      "since": 7
+    },
+    {
+      "id": "directive.master-mode",
+      "spelling": "master mode",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "directive.master-profile",
+      "spelling": "master profile",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "directive.master-timeframe",
+      "spelling": "master timeframe",
+      "classification": "go-only",
+      "reason": "Native offline master structural runner only; generic broker, grid and browser execution are unsupported (HT-177).",
+      "since": 7
+    },
+    {
+      "id": "directive.goldflag-policy",
+      "spelling": "goldflag policy",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "directive.goldflag-timeframe",
+      "spelling": "goldflag timeframe",
+      "classification": "go-only",
+      "reason": "Native offline gold flag reference runner only; generic broker, grid, prefix and browser execution are unsupported (HT182).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-timeframe",
+      "spelling": "adaptiveflag timeframe",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-policy",
+      "spelling": "adaptiveflag policy",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-bundle",
+      "spelling": "adaptiveflag bundle",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-pivotsensitivity",
+      "spelling": "adaptiveflag pivotSensitivity",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-minpoleatr",
+      "spelling": "adaptiveflag minPoleATR",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-minflagbars",
+      "spelling": "adaptiveflag minFlagBars",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-maxflagbars",
+      "spelling": "adaptiveflag maxFlagBars",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-maxflagretrace",
+      "spelling": "adaptiveflag maxFlagRetrace",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-usevolumefilter",
+      "spelling": "adaptiveflag useVolumeFilter",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-useematrend",
+      "spelling": "adaptiveflag useEMATrend",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-fastemalen",
+      "spelling": "adaptiveflag fastEMALen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-slowemalen",
+      "spelling": "adaptiveflag slowEMALen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-targetr",
+      "spelling": "adaptiveflag targetR",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-atrstopmult",
+      "spelling": "adaptiveflag atrStopMult",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-validbars",
+      "spelling": "adaptiveflag validBars",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-maxhold",
+      "spelling": "adaptiveflag maxHold",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-atrlen",
+      "spelling": "adaptiveflag atrLen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-volumesmalen",
+      "spelling": "adaptiveflag volumeSMALen",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-volumesmamult",
+      "spelling": "adaptiveflag volumeSMAMult",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-flagwidthpolemult",
+      "spelling": "adaptiveflag flagWidthPoleMult",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
+      "since": 7
+    },
+    {
+      "id": "directive.adaptiveflag-entrybufferatr",
+      "spelling": "adaptiveflag entryBufferATR",
+      "classification": "go-only",
+      "reason": "Dedicated native raw reference runner only; generic, grid, prefix and WASM execution refuse this family (HT-185).",
       "since": 7
     }
   ],

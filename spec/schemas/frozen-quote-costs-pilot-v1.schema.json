@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frozen-quote-costs-pilot-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "sourceRef",
+    "currency",
+    "quantityUnits",
+    "spread",
+    "commissionPerOzPerFillUSD",
+    "commissionTiming",
+    "extraAdversePricePenalty",
+    "financing"
+  ],
+  "properties": {
+    "schema": {
+      "const": "frozen-quote-costs-pilot-v1"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._-]"
+      }
+    },
+    "sourceRef": {
+      "$ref": "#/$defs/reference"
+    },
+    "currency": {
+      "const": "USD"
+    },
+    "quantityUnits": {
+      "const": "troy-ounce"
+    },
+    "spread": {
+      "const": "observed-paired-quotes-no-second-charge"
+    },
+    "commissionPerOzPerFillUSD": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Raw token retained for exact arithmetic; positive values must also convert to a finite positive float64 at the strict boundary. Negative zero is forbidden."
+    },
+    "commissionTiming": {
+      "const": "entry-and-exit-on-fill"
+    },
+    "extraAdversePricePenalty": {
+      "const": 0,
+      "description": "Only exactly zero is implemented in this synthetic pilot; negative zero is forbidden."
+    },
+    "financing": {
+      "const": "not-applicable-synthetic-intraday-fixture"
+    }
+  },
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "not": {
+            "pattern": "[^A-Za-z0-9._-]"
+          }
+        },
+        "sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$",
+          "not": {
+            "pattern": "[^0-9a-f]"
+          }
+        }
+      }
+    }
+  }
+}

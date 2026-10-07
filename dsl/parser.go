@@ -10,6 +10,18 @@ import (
 var ErrParserUnimplemented = errors.New("dsl parser is not implemented")
 
 func parse(source string) (ParseResult, error) {
+	if adaptiveFlagSourceCandidate(source) {
+		return parseAdaptiveVolumeFlagSource(source), nil
+	}
+	if goldFlagSourceCandidate(source) {
+		return parseGoldFlagReferenceSource(source), nil
+	}
+	if masterSourceCandidate(source) {
+		return parseMasterStructuralSource(source), nil
+	}
+	if regimeSourceCandidate(source) {
+		return parseRegimeEngineSource(source), nil
+	}
 	if frozenSourceCandidate(source) {
 		return parseFrozenLevelSource(source), nil
 	}
@@ -18,6 +30,18 @@ func parse(source string) (ParseResult, error) {
 	// A generated family alias must never bypass the complete family scanner.
 	if parser.config["setupType"] == string(FamilyFrozenLevelBreakout) {
 		return parseFrozenLevelSource(source), nil
+	}
+	if IsRegimeEngineReserved(parser.config) {
+		return parseRegimeEngineSource(source), nil
+	}
+	if IsMasterStructuralReserved(parser.config) {
+		return parseMasterStructuralSource(source), nil
+	}
+	if IsGoldFlagReferenceReserved(parser.config) {
+		return parseGoldFlagReferenceSource(source), nil
+	}
+	if IsAdaptiveVolumeFlagReserved(parser.config) {
+		return parseAdaptiveVolumeFlagSource(source), nil
 	}
 	return parser.result(), nil
 }
@@ -672,7 +696,7 @@ func canonicalSetupFamily(tokens []string) string {
 	// Frozen selectors belong exclusively to the strict front-end. The
 	// permissive legacy lexer must not acquire this family from text inside
 	// metadata; authored selectors are audited before this parser is entered.
-	if family == string(FamilyFrozenLevelBreakout) {
+	if family == string(FamilyFrozenLevelBreakout) || family == string(FamilyRegimeEngine) || family == string(FamilyMasterStructural) {
 		return ""
 	}
 	return family
