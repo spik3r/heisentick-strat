@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/spik3r/heisentick-strat/dsl"
+	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
 func (b *broker) slippageAt(price float64) float64 {
@@ -13,7 +14,7 @@ func (b *broker) slippageAt(price float64) float64 {
 func (b *broker) runSpecialSetup() ([]Trade, bool) {
 	switch b.params.SetupType {
 	case string(dsl.FamilyDownShockRebound):
-		return b.runDownShockRebound(), true
+		return b.runDownShockRebound(marketdata.SeriesFromBars(b.fixture.SourceBars)), true
 	case string(dsl.FamilyDailyFlushFailure):
 		return b.runDailyFlushFailure(), true
 	case string(dsl.FamilyWeekendExtremeFade):

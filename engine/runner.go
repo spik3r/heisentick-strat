@@ -146,7 +146,7 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 		if windowed {
 			b.setExecutionWindow(execution)
 		}
-		return b.runDownShockRebound(), nil
+		return b.runDownShockRebound(source), nil
 	}
 	sourceFixture := fixture
 	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
