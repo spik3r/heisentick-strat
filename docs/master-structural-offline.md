@@ -9,10 +9,13 @@ adoption, registration, deployment, data purchase or orders are included.
 
 ## Runnable boundary
 
-Only `engine/master.Run` and `heisentick master-report` execute this family.
-The generic broker, report/grid, prepared/shared/prefix/checkpoint and engine
-WASM paths fail closed with `master-structural-native-dedicated-runner-required`.
-Parsing does not authorize browser execution. Exactly two mode bundles exist:
+`engine/master.Run`, `heisentick master-report`, and the separately bounded
+[`engineRunMasterReport` WASM report route](master-structural-runtime.md) execute
+this family through the same Go implementation. The generic broker, report/grid,
+prepared/shared/prefix/checkpoint and generic engine-WASM fixture/column paths
+fail closed with `master-structural-native-dedicated-runner-required`.
+Parsing does not authorize generic browser execution or app adoption. Exactly
+two mode bundles exist:
 `SOURCE_HISTORICAL_REFERENCE` and `PROTECTED_STABLE_REFERENCE`. Signal periods,
 H4 phase, precision, costs, sizing and management cannot be combined or tuned.
 
@@ -134,7 +137,12 @@ scenarios cannot be summed or treated as paired causal effects.
 Tests use invented data only and include mode-specific H4 boundaries, indicator
 initialization, lifecycle/lock failures, gap and both-touch order chronology,
 continuous-price preservation, quantity steps, watermark/future independence,
-strict configuration admission and generic/WASM refusal. Two new parse fixtures
+strict configuration admission and generic/WASM fixture/column refusal.
+The separately versioned portable native/WASM route uses an explicit opt-in
+[binary64 contract](master-structural-portable-arithmetic.md). Its invented
+byte-parity tests do not change this legacy native contract or add historical
+or broker evidence. The two
+Master parse fixtures
 are separate from the unchanged 116 prior parse and 100 run goldens. Historical
 execution, if separately released after independent synthetic review, is limited
 to the four fixed mode/spread cases on already inspected owned history. Stop on

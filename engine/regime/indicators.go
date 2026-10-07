@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 
+	fp "github.com/spik3r/heisentick-strat/internal/float64contract"
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
@@ -68,6 +69,10 @@ func rma(values []float64, n int) []float64 {
 }
 
 func aggregate(s marketdata.Series, warmup, until int64) ([]NativeBar, int, error) {
+	return aggregateArithmetic(s, warmup, until, false)
+}
+
+func aggregateArithmetic(s marketdata.Series, warmup, until int64, portable bool) ([]NativeBar, int, error) {
 	n := s.Len()
 	if n == 0 || len(s.O) != n || len(s.H) != n || len(s.L) != n || len(s.C) != n || len(s.V) != n {
 		return nil, 0, fmt.Errorf("regime requires nonempty equal-length OHLCV including volume")
@@ -95,7 +100,11 @@ func aggregate(s marketdata.Series, warmup, until int64) ([]NativeBar, int, erro
 		b.High = math.Max(b.High, h)
 		b.Low = math.Min(b.Low, l)
 		b.Close = c
-		b.Volume += v
+		if portable {
+			b.Volume = fp.Add(b.Volume, v)
+		} else {
+			b.Volume += v
+		}
 		b.Count++
 		if !finite(b.Volume) {
 			return nil, 0, fmt.Errorf("native volume overflow")
@@ -122,6 +131,10 @@ func aggregate(s marketdata.Series, warmup, until int64) ([]NativeBar, int, erro
 }
 
 func calculate(bars []NativeBar) ([]IndicatorRow, error) {
+	return calculateArithmetic(bars, false)
+}
+
+func calculateArithmetic(bars []NativeBar, portable bool) ([]IndicatorRow, error) {
 	n := len(bars)
 	close := make([]float64, n)
 	volume := make([]float64, n)
@@ -129,13 +142,29 @@ func calculate(bars []NativeBar) ([]IndicatorRow, error) {
 	for i, b := range bars {
 		close[i] = b.Close
 		volume[i] = b.Volume
-		tr[i] = b.High - b.Low
-		if i > 0 {
-			tr[i] = math.Max(tr[i], math.Max(math.Abs(b.High-close[i-1]), math.Abs(b.Low-close[i-1])))
+		if portable {
+			fp.Check(b.Open, "bar open")
+			fp.Check(b.Close, "bar close")
+			fp.Check(b.Volume, "bar volume")
+			tr[i] = fp.Sub(b.High, b.Low)
+			if i > 0 {
+				tr[i] = math.Max(tr[i], math.Max(math.Abs(fp.Sub(b.High, close[i-1])), math.Abs(fp.Sub(b.Low, close[i-1]))))
+			}
+		} else {
+			tr[i] = b.High - b.Low
+			if i > 0 {
+				tr[i] = math.Max(tr[i], math.Max(math.Abs(b.High-close[i-1]), math.Abs(b.Low-close[i-1])))
+			}
 		}
 	}
-	h9, h21, h25 := hma(close, 9), hma(close, 21), hma(close, 25)
-	a10, a14 := rma(tr, 10), rma(tr, 14)
+	var h9, h21, h25, a10, a14 []float64
+	if portable {
+		h9, h21, h25 = portableHMA(close, 9), portableHMA(close, 21), portableHMA(close, 25)
+		a10, a14 = portableRMA(tr, 10), portableRMA(tr, 14)
+	} else {
+		h9, h21, h25 = hma(close, 9), hma(close, 21), hma(close, 25)
+		a10, a14 = rma(tr, 10), rma(tr, 14)
+	}
 	upper, lower, st := nanSlice(n), nanSlice(n), nanSlice(n)
 	direction := make([]int, n)
 	out := make([]IndicatorRow, n)
@@ -143,7 +172,14 @@ func calculate(bars []NativeBar) ([]IndicatorRow, error) {
 	for i, b := range bars {
 		direction[i] = 1
 		if finite(a10[i]) {
-			bu, bl := (b.High+b.Low)/2+3*a10[i], (b.High+b.Low)/2-3*a10[i]
+			var bu, bl float64
+			if portable {
+				mid := fp.Div(fp.Add(b.High, b.Low), 2)
+				width := fp.Mul(3, a10[i])
+				bu, bl = fp.Add(mid, width), fp.Sub(mid, width)
+			} else {
+				bu, bl = (b.High+b.Low)/2+3*a10[i], (b.High+b.Low)/2-3*a10[i]
+			}
 			upper[i], lower[i] = bu, bl
 			if i > 0 {
 				if finite(upper[i-1]) && bu >= upper[i-1] && close[i-1] <= upper[i-1] {
@@ -174,13 +210,25 @@ func calculate(bars []NativeBar) ([]IndicatorRow, error) {
 		if i >= 19 {
 			sum := 0.
 			for j := i - 19; j <= i; j++ {
-				sum += volume[j]
+				if portable {
+					sum = fp.Add(sum, volume[j])
+				} else {
+					sum += volume[j]
+				}
 			}
-			mean = sum / 20
+			if portable {
+				mean = fp.Div(sum, 20)
+			} else {
+				mean = sum / 20
+			}
 		}
 		cross := 0
 		if i > 0 {
-			cross = crossDirection(h9[i]-h21[i], h9[i-1]-h21[i-1])
+			if portable {
+				cross = portableCrossAt(h9, h21, i)
+			} else {
+				cross = crossDirection(h9[i]-h21[i], h9[i-1]-h21[i-1])
+			}
 		}
 		if b.Complete {
 			fullCount++
@@ -204,6 +252,19 @@ func calculate(bars []NativeBar) ([]IndicatorRow, error) {
 	return out, nil
 }
 
+// HMA21 first becomes ready at index24. Its current difference is already
+// finite-input arithmetic there, even while the previous difference is unready.
+func portableCrossAt(h9, h21 []float64, i int) int {
+	if i < 24 {
+		return 0
+	}
+	current := fp.Sub(h9[i], h21[i])
+	if i < 25 {
+		return 0
+	}
+	return crossDirection(current, fp.Sub(h9[i-1], h21[i-1]))
+}
+
 func crossDirection(current, previous float64) int {
 	if current > 0 && previous <= 0 {
 		return 1
@@ -218,4 +279,55 @@ func candidateSignal(cross, regime int, volumeOK, complete bool) int {
 		return cross
 	}
 	return 0
+}
+
+// Portable windows explicitly distinguish leading uncomputed slots from errors.
+func portableWMA(values []float64, n, inputReady int) []float64 {
+	out := nanSlice(len(values))
+	den := fp.Div(float64(n*(n+1)), 2)
+	for i := n - 1; i < len(values); i++ {
+		if i-n+1 < inputReady {
+			continue
+		}
+		sum := 0.
+		for j := 0; j < n; j++ {
+			sum = fp.Add(sum, fp.Mul(values[i-n+1+j], fp.Div(float64(j+1), den)))
+		}
+		out[i] = sum
+	}
+	return out
+}
+func portableHMA(values []float64, n int) []float64 {
+	halfLength := max(1, n/2)
+	half, whole := portableWMA(values, halfLength, 0), portableWMA(values, n, 0)
+	mixed := nanSlice(len(values))
+	for i := halfLength - 1; i < len(values); i++ {
+		// The half-window product is already finite-input arithmetic even
+		// while the whole window is uncomputed. Check it now; a warm-up
+		// sentinel in the other operand must not hide its overflow.
+		doubled := fp.Mul(2, half[i])
+		if i >= n-1 {
+			mixed[i] = fp.Sub(doubled, whole[i])
+		}
+	}
+	width := max(1, int(math.Floor(fp.Add(math.Sqrt(float64(n)), .5))))
+	return portableWMA(mixed, width, n-1)
+}
+func portableRMA(values []float64, n int) []float64 {
+	out := nanSlice(len(values))
+	sum := 0.
+	last := 0.
+	for i, v := range values {
+		if i < n {
+			sum = fp.Add(sum, v)
+			if i == n-1 {
+				last = fp.Div(sum, float64(n))
+				out[i] = last
+			}
+		} else {
+			last = fp.Div(fp.Add(fp.Mul(last, float64(n-1)), v), float64(n))
+			out[i] = last
+		}
+	}
+	return out
 }
