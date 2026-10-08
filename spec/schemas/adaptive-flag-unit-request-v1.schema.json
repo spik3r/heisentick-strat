@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "adaptive-flag-unit-request-v1.schema.json",
+  "title": "adaptive-flag-unit-request-v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "maxLength": 64,
+      "x-maxUTF8Bytes": 64,
+      "const": "adaptive-flag-unit-request-v1"
+    },
+    "scenario": {
+      "type": "string",
+      "maxLength": 32,
+      "x-maxUTF8Bytes": 32,
+      "const": "UNIT_POINT_VALUE_1"
+    },
+    "numericalPolicy": {
+      "type": "string",
+      "maxLength": 32,
+      "x-maxUTF8Bytes": 32,
+      "const": "BINARY64_ORDERED_V1"
+    },
+    "costPolicy": {
+      "type": "string",
+      "maxLength": 32,
+      "x-maxUTF8Bytes": 32,
+      "enum": [
+        "RAW",
+        "RAZOR_PROXY_BASIC",
+        "RAZOR_PROXY_HARSH_AGGREGATE"
+      ]
+    },
+    "dataSource": {
+      "$ref": "#/$defs/DataSource"
+    }
+  },
+  "required": [
+    "schema",
+    "scenario",
+    "numericalPolicy",
+    "costPolicy",
+    "dataSource"
+  ],
+  "x-goType": "Request",
+  "$defs": {
+    "DataSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "x-maxUTF8Bytes": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9._:/-]{1,128}(?![\\s\\S])"
+        },
+        "sourceSha256": {
+          "type": "string",
+          "maxLength": 64,
+          "x-maxUTF8Bytes": 64,
+          "pattern": "^[a-f0-9]{64}(?![\\s\\S])"
+        }
+      },
+      "required": [
+        "id",
+        "sourceSha256"
+      ],
+      "x-goType": "DataSource"
+    }
+  },
+  "x-runtimeConstraints": [
+    "All x-* fields are annotations, not standard JSON Schema validation keywords.",
+    "maxLength counts Unicode code points, not UTF-8 bytes. Runtime must enforce every x-maxUTF8Bytes limit after valid UTF-8 handling.",
+    "Runtime decoding rejects duplicate decoded keys, trailing documents, invalid UTF-8, unpaired surrogates and non-JSON numeric syntax.",
+    "Integer fields require integer JSON tokens without fraction/exponent; JSON Schema integer alone cannot enforce token spelling.",
+    "Input is at most 1024 UTF-8 bytes, including all whitespace; hash exact original bytes."
+  ],
+  "x-maxInputUTF8Bytes": 1024
+}

@@ -1,0 +1,233 @@
+{
+  "schema": "strat-adaptive-volume-flag-reference-v1",
+  "policy": "DELAYED_OHLC_REFERENCE_V1",
+  "numericalPolicy": "BINARY64_ORDERED_V1",
+  "executionSemantics": "delayed-first-stop-activation-v1",
+  "sourcePineSha256": "3333333333333333333333333333333333333333333333333333333333333333",
+  "inputSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+  "configSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "effectiveConfig": {
+    "policy": "DELAYED_OHLC_REFERENCE_V1",
+    "numericalPolicy": "BINARY64_ORDERED_V1",
+    "timeframe": "M30",
+    "bundle": "INITIAL",
+    "rules": {
+      "pivotSensitivity": 3,
+      "minPoleATR": 1.8,
+      "minFlagBars": 3,
+      "maxFlagBars": 16,
+      "maxFlagRetrace": 0.5,
+      "useVolumeFilter": true,
+      "useEMATrend": true,
+      "fastEMALen": 50,
+      "slowEMALen": 200,
+      "targetR": 2.5,
+      "atrStopMult": 1.2,
+      "validBars": 12,
+      "maxHold": 60,
+      "atrLen": 14,
+      "volumeSMALen": 20,
+      "volumeSMAMult": 0.9,
+      "flagWidthPoleMult": 0.55,
+      "entryBufferATR": 0.05
+    }
+  },
+  "timeframeMs": 1800000,
+  "snapshots": [
+    {
+      "index": 0,
+      "openT": 1767225600000,
+      "closeT": 1767227400000,
+      "open": 100.0,
+      "high": 101.0,
+      "low": 99.0,
+      "close": 100.0,
+      "volume": 100.0,
+      "lastHigh": {
+        "index": 0,
+        "confirmationIdx": 0,
+        "price": 101.0
+      },
+      "lastLow": {
+        "index": 0,
+        "confirmationIdx": 0,
+        "price": 99.0
+      }
+    },
+    {
+      "index": 1,
+      "openT": 1767227400000,
+      "closeT": 1767229200000,
+      "open": 97.0,
+      "high": 98.0,
+      "low": 94.0,
+      "close": 95.0,
+      "volume": 100.0,
+      "lastHigh": {
+        "index": 0,
+        "confirmationIdx": 0,
+        "price": 101.0
+      },
+      "lastLow": {
+        "index": 0,
+        "confirmationIdx": 0,
+        "price": 99.0
+      }
+    },
+    {
+      "index": 2,
+      "openT": 1767229200000,
+      "closeT": 1767231000000,
+      "open": 85.0,
+      "high": 86.0,
+      "low": 84.0,
+      "close": 85.0,
+      "volume": 100.0,
+      "lastHigh": {
+        "index": 0,
+        "confirmationIdx": 0,
+        "price": 101.0
+      },
+      "lastLow": {
+        "index": 0,
+        "confirmationIdx": 0,
+        "price": 99.0
+      }
+    }
+  ],
+  "orders": [
+    {
+      "id": 0,
+      "signalIdx": 0,
+      "side": "short",
+      "trigger": 100.0,
+      "stop": 110.0,
+      "target": 75.0,
+      "plannedTriggerToStopDistance": 10.0,
+      "status": "closed",
+      "fillIdx": 1,
+      "entry": 97.0,
+      "entryAtOpen": true,
+      "actualFillToStopDistance": 13.0,
+      "bracketCreationIdx": 1,
+      "exitIdx": 2,
+      "exit": 85.0,
+      "reason": "synthetic-exit",
+      "eventIds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "pendingAge": 0,
+      "fillOpportunities": 1
+    }
+  ],
+  "events": [
+    {
+      "id": 0,
+      "orderId": 0,
+      "rowIdx": 0,
+      "state": "pending",
+      "price": null,
+      "basis": "invented adapter fixture",
+      "time": {
+        "lowerMs": 1767227400000,
+        "upperMs": 1767227400000,
+        "lowerInclusive": true,
+        "upperInclusive": true,
+        "kind": "nominal-close-point"
+      }
+    },
+    {
+      "id": 1,
+      "orderId": 0,
+      "rowIdx": 1,
+      "state": "filled",
+      "price": 97.0,
+      "basis": "invented adapter fixture",
+      "time": {
+        "lowerMs": 1767227400000,
+        "upperMs": 1767227400000,
+        "lowerInclusive": true,
+        "upperInclusive": true,
+        "kind": "observed-open-point"
+      }
+    },
+    {
+      "id": 2,
+      "orderId": 0,
+      "rowIdx": 1,
+      "state": "bracket-created",
+      "price": null,
+      "basis": "invented adapter fixture",
+      "time": {
+        "lowerMs": 1767229200000,
+        "upperMs": 1767229200000,
+        "lowerInclusive": true,
+        "upperInclusive": true,
+        "kind": "nominal-close-point"
+      }
+    },
+    {
+      "id": 3,
+      "orderId": 0,
+      "rowIdx": 2,
+      "state": "closed",
+      "price": 85.0,
+      "basis": "invented adapter fixture",
+      "time": {
+        "lowerMs": 1767229200000,
+        "upperMs": 1767229200000,
+        "lowerInclusive": true,
+        "upperInclusive": true,
+        "kind": "observed-open-point"
+      }
+    }
+  ],
+  "states": [
+    {
+      "rowIdx": 0,
+      "closeMs": 1767227400000,
+      "status": "pending",
+      "pendingOrderId": 0,
+      "positionOrderId": null,
+      "pendingAge": 0,
+      "queuedExit": null
+    },
+    {
+      "rowIdx": 1,
+      "closeMs": 1767229200000,
+      "status": "open",
+      "pendingOrderId": null,
+      "positionOrderId": 0,
+      "pendingAge": 0,
+      "queuedExit": null
+    },
+    {
+      "rowIdx": 2,
+      "closeMs": 1767231000000,
+      "status": "flat",
+      "pendingOrderId": null,
+      "positionOrderId": null,
+      "pendingAge": 0,
+      "queuedExit": null
+    }
+  ],
+  "terminal": {
+    "rowIdx": 2,
+    "closeMs": 1767231000000,
+    "status": "flat",
+    "pendingOrderId": null,
+    "positionOrderId": null,
+    "pendingAge": 0,
+    "queuedExit": null
+  },
+  "gaps": [],
+  "executionWindow": {
+    "tradeFromMs": 1767225600000,
+    "tradeToMs": 1767231000000
+  },
+  "preTradeRows": 0,
+  "eligibleTradeRows": 3
+}
