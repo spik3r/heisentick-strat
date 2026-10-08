@@ -126,6 +126,23 @@ func TestRunR11FixtureReturnsPinnedNativeLedgerAndIdentity(t *testing.T) {
 	}
 }
 
+func TestPinnedR11StrategyRejectsDailyCHOPExtension(t *testing.T) {
+	source := r11TestSource(t, "r11-entry-chop-45-1h")
+	parsed, err := dsl.Parse(source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	spec, err := dsl.DecodeRangeReversion(parsed.Config)
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture := r11TestFixture("1h", "r11-entry-chop-45-1h")
+	spec.Rules.DailyCHOP = &dsl.RangeReversionDailyCHOP{Period: 14, Min: 38.2, Max: 61.8}
+	if err := validateR11Strategy(fixture, spec); err == nil {
+		t.Fatal("pinned R11 browser identity accepted a Daily CHOP extension")
+	}
+}
+
 func TestRunR11FixtureRejectsInvalidIdentityAndStrictJSON(t *testing.T) {
 	source := r11TestSource(t, "r11-management-target-3r-30m")
 	fixture := r11TestFixture("30m", "r11-management-target-3r-30m")

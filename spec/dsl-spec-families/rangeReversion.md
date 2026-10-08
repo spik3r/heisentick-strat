@@ -31,6 +31,7 @@ setup {
   rangereversion htf-ema false 200
   rangereversion vector-gates false 14 30 48
   rangereversion range-expansion false 1.1
+  rangereversion daily-chop 14 38.2 61.8
   rangereversion atr 14
   rangereversion stop-atr 0.6
   rangereversion target-r 2
@@ -51,10 +52,22 @@ without inventing nominal closes.
 
 A short signal needs a high above the upper bound and a close below it. A long
 needs a low below the lower bound and a close above it. Candle-color, completed
-H4 EMA(200), custom vector gates and range expansion are independent optional
-gates. The vector gate matches this strategy's custom raw-DM sums, DX and
-Wilder RMA ADX calculation; it is not the platform's built-in ADX. CHOP waits
-for a complete set of non-NA true ranges. Exact Pine preset values are in
+H4 EMA(200), custom vector gates, range expansion and daily CHOP are independent
+optional gates. The vector gate matches this strategy's custom raw-DM sums, DX
+and Wilder RMA ADX calculation; it is not the platform's built-in ADX. CHOP
+waits for a complete set of non-NA true ranges. The optional
+`rangereversion daily-chop <period> <min> <max>` gate requires finite ordered
+bounds (`min < max`) and admits values inside the inclusive range. Its daily
+series is native D1 OHLCV on UTC-midnight timestamps. A row becomes available
+at the next native daily row timestamp, and gate lookup uses availability no
+later than the LTF signal close. Daily gaps, Sunday rows and flat weekend bars
+remain in the sequence. The final daily row without a successor and CHOP
+warmup rows reject only that new signal. Daily CHOP uses the native range
+reversion convention where the first row's TR is missing without a prior
+close; period 14 first warms on row 15. The earlier descriptive Daily
+attribution used high-low TR for its first row and therefore warms one row
+earlier. The gate is never applied to open positions or to a completed ledger.
+Exact Pine preset values are in
 `examples/range-reversion-pine-chart20.strat`; they use chart bounds over 20
 bars, require candle color, enable the completed H4 EMA and custom vector/range
 gates.
@@ -83,7 +96,10 @@ source-series research policy used by B1/B20; it is not Pine parity.
 ## Inputs and output
 
 `range-reversion-report` requires separate six-column BTB1 files for the entry
-and H4 source series, exact UTC evaluation bounds, adverse slippage per fill,
+and H4 source series, and requires `--daily-bars-file` only when the daily CHOP
+gate is enabled. The CLI rejects a daily file when the gate is absent. Daily
+input is clipped strictly before `tradeTo` before indicators or decision joins.
+The command also requires exact UTC evaluation bounds, adverse slippage per fill,
 commission per unit per side, and a positive fixed unit size. Slippage affects
 entry/exit prices and fill-relative breakeven. The result includes DSL and raw
 BTB1 hashes, canonical consumed-series hashes, effective config, signal/trade

@@ -18,6 +18,7 @@ type RangeReversionWindow struct {
 type RangeReversionRequest struct {
 	Config                    dsl.Config
 	EntrySeries, SourceSeries marketdata.Series
+	DailySeries               marketdata.Series
 	Window                    RangeReversionWindow
 	Execution                 RangeReversionExecution
 }
@@ -62,6 +63,7 @@ type RangeReversionResult struct {
 	ConfigSHA256        string                  `json:"configSha256"`
 	EntrySHA256         string                  `json:"entrySha256"`
 	SourceSHA256        string                  `json:"sourceSha256"`
+	DailySHA256         string                  `json:"dailySha256,omitempty"`
 	EffectiveConfig     dsl.RangeReversionSpec  `json:"effectiveConfig"`
 	Execution           RangeReversionExecution `json:"execution"`
 	Window              RangeReversionWindow    `json:"window"`
@@ -69,6 +71,8 @@ type RangeReversionResult struct {
 	InputSourceBars     int                     `json:"inputSourceBars"`
 	UsedEntryBars       int                     `json:"usedEntryBars"`
 	UsedSourceBars      int                     `json:"usedSourceBars"`
+	InputDailyBars      int                     `json:"inputDailyBars,omitempty"`
+	UsedDailyBars       int                     `json:"usedDailyBars,omitempty"`
 	Signals             []RangeReversionSignal  `json:"signals"`
 	Trades              []RangeReversionTrade   `json:"trades"`
 	CensoredOpen        bool                    `json:"censoredOpen"`
@@ -146,6 +150,74 @@ func rrSource(s marketdata.Series, beforeMS int64) ([]rrBar, error) {
 		out = append(out, rrBar{int64(t), int64(t) + step, o, h, l, c, v})
 	}
 	return out, nil
+}
+
+func rrDailySeries(s marketdata.Series, beforeMS int64) ([]rrBar, error) {
+	if s.Len() == 0 || len(s.O) != s.Len() || len(s.H) != s.Len() || len(s.L) != s.Len() || len(s.C) != s.Len() || len(s.V) != s.Len() {
+		return nil, fmt.Errorf("daily CHOP requires nonempty equal six-column daily series")
+	}
+	const step = int64(24 * 3600000)
+	out := make([]rrBar, 0, s.Len())
+	prev := int64(-1)
+	for i := 0; i < s.Len(); i++ {
+		t := s.T[i]
+		if isFinite(t) && t >= float64(beforeMS) {
+			break
+		}
+		if !isFinite(t) || t < 0 || math.Trunc(t) != t || t > float64(9007199254740991-step) || int64(t)%step != 0 || int64(t) <= prev {
+			return nil, fmt.Errorf("invalid or off-grid UTC-midnight daily timestamp at row %d", i)
+		}
+		prev = int64(t)
+		o, h, l, c, v := s.O[i], s.H[i], s.L[i], s.C[i], s.V[i]
+		if !isFinite(o) || !isFinite(h) || !isFinite(l) || !isFinite(c) || !isFinite(v) || l <= 0 || o < l || o > h || c < l || c > h || v < 0 {
+			return nil, fmt.Errorf("invalid daily OHLCV at row %d", i)
+		}
+		out = append(out, rrBar{int64(t), int64(t) + step, o, h, l, c, v})
+	}
+	if len(out) == 0 {
+		return nil, fmt.Errorf("daily CHOP has no rows before tradeTo")
+	}
+	return out, nil
+}
+
+func rrDailyCHOP(b []rrBar, period int) ([]float64, []bool) {
+	values := make([]float64, len(b))
+	valid := make([]bool, len(b))
+	tr := make([]float64, len(b))
+	trOK := make([]bool, len(b))
+	for i, row := range b {
+		if i == 0 {
+			continue
+		}
+		prevClose := b[i-1].c
+		tr[i] = math.Max(row.h-row.l, math.Max(math.Abs(row.h-prevClose), math.Abs(row.l-prevClose)))
+		trOK[i] = true
+	}
+	for i := period; i < len(b); i++ {
+		hi, lo, sum := b[i-period+1].h, b[i-period+1].l, 0.0
+		for j := i - period + 1; j <= i; j++ {
+			if !trOK[j] {
+				sum = 0
+				break
+			}
+			hi = math.Max(hi, b[j].h)
+			lo = math.Min(lo, b[j].l)
+			sum += tr[j]
+		}
+		width := hi - lo
+		if width == 0 {
+			values[i], valid[i] = 50, true
+			continue
+		}
+		if width < 0 || sum <= 0 {
+			continue
+		}
+		v := 100 * math.Log10(sum/width) / math.Log10(float64(period))
+		if isFinite(v) {
+			values[i], valid[i] = v, true
+		}
+	}
+	return values, valid
 }
 
 func rrEMA(v []rrBar, n int) []float64 {
@@ -389,6 +461,9 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 	if !isFinite(request.Execution.SlippagePerFill) || request.Execution.SlippagePerFill < 0 || !isFinite(request.Execution.CommissionPerUnitSide) || request.Execution.CommissionPerUnitSide < 0 || !isFinite(request.Execution.Units) || request.Execution.Units <= 0 {
 		return RangeReversionResult{}, fmt.Errorf("range-reversion execution requires finite nonnegative slippage/commission and positive fixed units")
 	}
+	if r.DailyCHOP == nil && (len(request.DailySeries.T) != 0 || len(request.DailySeries.O) != 0 || len(request.DailySeries.H) != 0 || len(request.DailySeries.L) != 0 || len(request.DailySeries.C) != 0 || len(request.DailySeries.V) != 0) {
+		return RangeReversionResult{}, fmt.Errorf("daily-bars input is unexpected when rangereversion daily-chop is disabled")
+	}
 	entry, _, err := rrSeries(request.EntrySeries, r.Timeframe, request.Window.TradeToMS)
 	if err != nil {
 		return RangeReversionResult{}, err
@@ -399,6 +474,18 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 	}
 	if len(entry) == 0 || len(source) < 2 {
 		return RangeReversionResult{}, fmt.Errorf("range reversion requires entry history and at least two source rows before trade end")
+	}
+	var daily []rrBar
+	var dailyCHOP []float64
+	var dailyCHOPOK []bool
+	var dailyAvail []int64
+	if r.DailyCHOP != nil {
+		daily, err = rrDailySeries(request.DailySeries, request.Window.TradeToMS)
+		if err != nil {
+			return RangeReversionResult{}, err
+		}
+		dailyCHOP, dailyCHOPOK = rrDailyCHOP(daily, r.DailyCHOP.Period)
+		dailyAvail = rrSourceAvailability(daily)
 	}
 	atr, adx, chop, atrOK, adxOK, chopOK := rrIndicators(entry, r)
 	htfEMA := rrEMA(source, r.HTFEMALength)
@@ -411,9 +498,13 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 	censored := false
 	canceledAtEntryRisk := 0
 	srcIdx := -1
+	dailyIdx := -1
 	for i, b := range entry {
 		for srcIdx+1 < len(sourceAvail) && sourceAvail[srcIdx+1] <= b.t {
 			srcIdx++
+		}
+		for r.DailyCHOP != nil && dailyIdx+1 < len(dailyAvail) && dailyAvail[dailyIdx+1] <= b.closeT {
+			dailyIdx++
 		}
 		justEntered := false
 		rejectedAtEntry := false
@@ -596,6 +687,9 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 		if side == "" {
 			continue
 		}
+		if r.DailyCHOP != nil && (dailyIdx < 0 || !dailyCHOPOK[dailyIdx] || dailyCHOP[dailyIdx] < r.DailyCHOP.Min || dailyCHOP[dailyIdx] > r.DailyCHOP.Max) {
+			continue
+		}
 		stop := b.h + atr[i]*r.StopATRMultiple
 		if side == "long" {
 			stop = b.l - atr[i]*r.StopATRMultiple
@@ -642,6 +736,10 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 		sum := sha256.Sum256(mustJSON(rows))
 		return hex.EncodeToString(sum[:])
 	}
+	dailyHash := ""
+	if r.DailyCHOP != nil {
+		dailyHash = hashSeries(daily)
+	}
 	netWins, netLosses := 0.0, 0.0
 	for _, t := range winTrades {
 		if t.NetPnL > 0 {
@@ -663,7 +761,11 @@ func RunRangeReversion(request RangeReversionRequest) (RangeReversionResult, err
 		commissionTotal += t.CommissionPrice
 	}
 	summary := map[string]any{"trades": len(winTrades), "grossProfitFactorPrice": ratio(wins, losses), "netProfitFactorPrice": ratio(netWins, netLosses), "grossProfitFactorR": ratio(positive, negative), "netProfitFactorR": ratio(netPositiveR, netNegativeR), "grossPnlPrice": sumTradePnL(winTrades), "netPnlPrice": sumNetPnL(winTrades), "commissionPrice": commissionTotal, "censoredOpen": censored, "canceledAtEntryNonpositiveRisk": canceledAtEntryRisk}
-	out := RangeReversionResult{Schema: "strat-range-reversion-reference-v1", Policy: r.Policy, ConfigSHA256: hex.EncodeToString(ch[:]), EntrySHA256: hashSeries(entry), SourceSHA256: hashSeries(source), EffectiveConfig: spec, Execution: request.Execution, Window: request.Window, InputEntryBars: request.EntrySeries.Len(), InputSourceBars: request.SourceSeries.Len(), UsedEntryBars: len(entry), UsedSourceBars: len(source), Signals: signals, Trades: winTrades, CensoredOpen: censored, PendingAtWindowEnd: pending != nil, CanceledAtEntryRisk: canceledAtEntryRisk, Summary: summary, Assumptions: []string{"Fixed-unit model-price P&L; slippage is applied adversely to entry and exit fills and changes fill-relative breakeven; commission is an explicit per-unit, per-side projection. Point value, account sizing and financing are not inferred.", "The source series value is available from the next native 4h row timestamp; the final source row is unavailable without a successor.", "The Pine policy delays bracket activation until after the entry bar and uses nearer-extreme OHLC path; immediate policy activates entry-bar brackets, measures actual risk as the absolute fill-to-stop distance, cancels zero or near-zero distances (at most 1e-12), and resolves simultaneous touches stop-first.", "Only the supplied bars before tradeTo are evaluated; input suffix rows do not enter indicators or execution."}}
+	assumptions := []string{"Fixed-unit model-price P&L; slippage is applied adversely to entry and exit fills and changes fill-relative breakeven; commission is an explicit per-unit, per-side projection. Point value, account sizing and financing are not inferred.", "The source series value is available from the next native 4h row timestamp; the final source row is unavailable without a successor.", "The Pine policy delays bracket activation until after the entry bar and uses nearer-extreme OHLC path; immediate policy activates entry-bar brackets, measures actual risk as the absolute fill-to-stop distance, cancels zero or near-zero distances (at most 1e-12), and resolves simultaneous touches stop-first.", "Only the supplied bars before tradeTo are evaluated; input suffix rows do not enter indicators or execution."}
+	if r.DailyCHOP != nil {
+		assumptions = append(assumptions, "Daily CHOP uses native UTC-midnight rows, preserves source gaps and weekend rows, leaves the first true range unavailable without a prior close, and uses prior-close gap true range thereafter. CHOP is available only at the next native daily row timestamp no later than the LTF signal close; the final row has no successor and is unavailable. Zero-width windows use the native fallback value 50. The gate is checked only before a signal is queued and does not alter open positions.")
+	}
+	out := RangeReversionResult{Schema: "strat-range-reversion-reference-v1", Policy: r.Policy, ConfigSHA256: hex.EncodeToString(ch[:]), EntrySHA256: hashSeries(entry), SourceSHA256: hashSeries(source), DailySHA256: dailyHash, EffectiveConfig: spec, Execution: request.Execution, Window: request.Window, InputEntryBars: request.EntrySeries.Len(), InputSourceBars: request.SourceSeries.Len(), UsedEntryBars: len(entry), UsedSourceBars: len(source), InputDailyBars: map[bool]int{true: request.DailySeries.Len()}[r.DailyCHOP != nil], UsedDailyBars: len(daily), Signals: signals, Trades: winTrades, CensoredOpen: censored, PendingAtWindowEnd: pending != nil, CanceledAtEntryRisk: canceledAtEntryRisk, Summary: summary, Assumptions: assumptions}
 	return out, nil
 }
 

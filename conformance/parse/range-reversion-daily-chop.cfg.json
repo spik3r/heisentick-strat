@@ -1,0 +1,55 @@
+{
+  "case": "range-reversion-daily-chop",
+  "category": "setup-family",
+  "cfg": {
+    "description": "Completed daily CHOP gate on the frozen H1 CHOP45 R11 baseline",
+    "dslVersion": 7,
+    "name": "R11 H1 daily CHOP gate",
+    "rangeReversion": {
+      "atrLength": 14,
+      "bounds": "CHART",
+      "boundsLookback": 20,
+      "breakEvenEnabled": true,
+      "breakEvenOffsetTicks": 10,
+      "breakEvenTriggerR": 1,
+      "cooldownBars": 2,
+      "dailyChop": {
+        "max": 61.8,
+        "min": 38.2,
+        "period": 14
+      },
+      "htfEmaLength": 200,
+      "maxAdx": 30,
+      "minChop": 45,
+      "policy": "DELAYED_PINE_OHLC_V1",
+      "rangeAtrMultiple": 1.1,
+      "requireCandleColor": true,
+      "sourceAvailability": "NEXT_NATIVE_ROW",
+      "sourceTimeframe": "H4",
+      "stopAtrMultiple": 0.6,
+      "targetR": 2,
+      "tickSize": 0.01,
+      "timeframe": "H1",
+      "useHtfEma": true,
+      "useRangeExpansion": true,
+      "useVectorGates": true,
+      "vectorLength": 14
+    },
+    "setupType": "rangeReversion"
+  },
+  "description": "Dedicated native range-reversion parse case with optional completed daily CHOP gate",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "range-reversion-native-dedicated-runner-required",
+      "severity": "warning"
+    }
+  ],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT-190 XAUUSD R11 daily-context gate",
+  "warnings": [
+    "range-reversion-native-dedicated-runner-required"
+  ]
+}

@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+## [0.29.0] — 2026-10-08
+
+- Add an optional native daily CHOP band to the dedicated `rangeReversion`
+  research runner (HT-190). The separate D1 input preserves native UTC-midnight
+  rows and uses next-native-row completion; the gate applies only before new
+  signal queueing. Gate-off configuration and output fields remain unchanged.
+  `range-reversion-report` requires `--daily-bars-file` only when enabled.
+  The Daily-gated definition remains unsupported by generic, WASM and browser
+  execution.
+
 ## [0.28.0] — 2026-10-08
 
 - Add bounded native research overlays for the exact adaptive `SNAPSHOT_C`

@@ -54,9 +54,9 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
-  heisentick range-reversion-report --dsl-file=<path> --entry-bars-file=<six-column BTB1 path> --source-bars-file=<six-column BTB1 path> --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --slippage-per-fill=<price> --commission-per-unit-side=<cash> --units=<fixed quantity>
+  heisentick range-reversion-report --dsl-file=<path> --entry-bars-file=<six-column BTB1 path> --source-bars-file=<six-column BTB1 path> [--daily-bars-file=<UTC-midnight daily BTB1 path>] --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --slippage-per-fill=<price> --commission-per-unit-side=<cash> --units=<fixed quantity>
 
-range-reversion-report runs only the dedicated M30/H1 to H4 model. It requires fixed units and explicit slippage and per-unit commission inputs; point value, account sizing and browser/generic execution are not inferred.
+range-reversion-report runs only the dedicated M30/H1 to H4 model. A configured daily-chop gate requires a separate UTC-midnight daily series; the flag is rejected when that gate is absent. It requires fixed units and explicit slippage and per-unit commission inputs; point value, account sizing and browser/generic execution are not inferred.
 
   heisentick adaptive-flag-runtime-report --request-file=<JSON path> --dsl-file=<path> --bars-file=<six-column BTB1 path>
 

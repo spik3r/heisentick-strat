@@ -112,6 +112,19 @@ func (p *rangeReversionSourceParser) directive(section string) error {
 		}
 		p.rules.RangeATRMultiple, err = p.decimal()
 		return err
+	case "daily-chop":
+		gate := RangeReversionDailyCHOP{}
+		if gate.Period, err = p.integer(); err != nil {
+			return err
+		}
+		if gate.Min, err = p.decimal(); err != nil {
+			return err
+		}
+		if gate.Max, err = p.decimal(); err != nil {
+			return err
+		}
+		p.rules.DailyCHOP = &gate
+		return nil
 	case "atr":
 		p.rules.ATRLength, err = p.integer()
 		return err

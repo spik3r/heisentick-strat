@@ -1,0 +1,24 @@
+dsl v7
+strategy "R11 H1 range reversion with daily CHOP gate" {
+  description "Pine R11 chart-20 sweep reclaim with a research-only completed daily CHOP entry gate"
+}
+market {
+  rangereversion timeframe H1
+  rangereversion source H4 availability next-native-row
+}
+setup {
+  type: range reversion
+  rangereversion policy DELAYED_PINE_OHLC_V1
+  rangereversion bounds chart 20
+  rangereversion candle-color true
+  rangereversion htf-ema true 200
+  rangereversion vector-gates true 14 30 45
+  rangereversion range-expansion true 1.1
+  rangereversion daily-chop 14 38.2 61.8
+  rangereversion atr 14
+  rangereversion stop-atr 0.6
+  rangereversion target-r 2
+  rangereversion cooldown 2
+  rangereversion breakeven true 1 10
+  rangereversion tick-size 0.01
+}
