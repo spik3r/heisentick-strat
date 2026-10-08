@@ -8,6 +8,18 @@ version and is named here.
 
 ## [0.29.0] — 2026-10-08
 
+- Add the bounded `UNIT_POINT_VALUE_1` Go research-accounting projection and
+  dedicated native/WASM routes for exact adaptive `INITIAL`, `TWEAKED` and
+  `SNAPSHOT_C` baselines (HT-195,
+  [PR #105](https://github.com/spik3r/heisentick-strat/pull/105)).
+  Preserve creation-time quantity, marked/open/closed accounting and explicit
+  RAW/BASIC/HARSH cost policies; report hypothetical liquidation separately
+  and keep funding unknown. The initial unit profile admits at most 1,024
+  retained rows, including all warmup, and 366 UTC calendar dates. CUSTOM/F/G
+  overlays, generic engine routes and account-dollar/percentage claims remain
+  refused. Native and Node-hosted Go/WASM qualification uses the retained
+  invented corpus; browser capacity, Backtester adoption and deployment remain
+  separate gates.
 - Add an optional native daily CHOP band to the dedicated `rangeReversion`
   research runner (HT-190). The separate D1 input preserves native UTC-midnight
   rows and uses next-native-row completion; the gate applies only before new
