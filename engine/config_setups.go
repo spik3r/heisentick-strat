@@ -30,6 +30,7 @@ type supplyDemandParams struct {
 	FlipBrokenZones         bool
 	MinWaitCandles          int
 	SkipOverlappingZones    bool
+	RetestOnEntryTimeframe  bool
 	UseTrigger              bool
 }
 

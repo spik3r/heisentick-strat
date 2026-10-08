@@ -131,7 +131,7 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 func sourceEntryConfig(cfg dsl.Config, fixture RunFixture) bool {
 	entryTf, _ := cfg["entryTf"].(string)
 	sourceTf, _ := cfg["sourceTimeframe"].(string)
-	return fixture.Timeframe == entryTf && supportedSourceEntryRoute(fixture.Symbol, sourceTf, entryTf)
+	return fixture.Timeframe == entryTf && sourceEntryRouteAllowed(cfg, fixture.Symbol, sourceTf, entryTf)
 }
 
 func runSourceEntryFixture(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series) (RunResult, error) {
@@ -150,6 +150,9 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 			b.setExecutionWindow(execution)
 		}
 		return b.runDownShockRebound(source), nil
+	}
+	if params.SupplyDemand.RetestOnEntryTimeframe {
+		return runSourceRetestSeries(fixture, cfg, params, chart, source, sourceHTF, execution, windowed), nil
 	}
 	sourceFixture := fixture
 	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
@@ -175,6 +178,27 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 	}
 	trades := chartBroker.runScheduled(entries, orders)
 	return trades, nil
+}
+
+// runSourceRetestSeries runs supply/demand with zones from the source series and
+// the retest judged on the chart series (`retest on entry timeframe`).
+func runSourceRetestSeries(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed bool) []Trade {
+	sourceFixture := fixture
+	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
+	sourceFixture.SourceTimeframe = ""
+	sourceFixture.Bars = fixture.SourceBars
+	sourceFixture.HTFBars = fixture.SourceHTFBars
+	sourceCols := contextcols.Build(source, contextOptions(sourceFixture, cfg))
+	sourceHTFTrend := computeHTFTrendForConfig(source, sourceHTF, cfg)
+	sourceBroker := new(broker)
+	sourceBroker.reset(source, sourceCols, sourceHTFTrend, nil, nil, params, sourceFixture, nil)
+	var chartBroker broker
+	chartBroker.reset(chart, projectSourceColumns(chart, source, sourceCols), projectSourceInt8(chart, source, sourceHTFTrend), nil, nil, params, fixture, nil)
+	if windowed {
+		chartBroker.setExecutionWindow(execution)
+	}
+	run := sdEntryRetestRun{src: sourceBroker, idx: sourceProjectionIndexes(chart, source), done: -1}
+	return run.run(&chartBroker)
 }
 
 func implementedFamily(setupType string) bool {

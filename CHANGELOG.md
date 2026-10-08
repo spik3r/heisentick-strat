@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add `retest on entry timeframe` to the `supply demand` family. With
+  `source timeframe 4h` and `entryTf 15m`, `30m` or `1h`, zones are made,
+  flipped and expired on completed 4h candles while the touch, rejection and
+  entry are judged on the entry candles' own closes. The existing
+  `source timeframe` + `entryTf` behaviour (the whole setup runs on the source
+  series and the finished signal is dispatched on the first entry close) is
+  unchanged without the phrase. `entryTf 1h` is admitted only with the phrase.
+  New parse and run fixtures; no existing golden changes. Browser runtime and
+  WASM adoption follow the release.
+
 ## [0.29.0] — 2026-10-08
 
 - Add the bounded `UNIT_POINT_VALUE_1` Go research-accounting projection and

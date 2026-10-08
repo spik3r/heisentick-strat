@@ -1,6 +1,9 @@
 package engine
 
-import "github.com/spik3r/heisentick-strat/marketdata"
+import (
+	"github.com/spik3r/heisentick-strat/dsl"
+	"github.com/spik3r/heisentick-strat/marketdata"
+)
 
 type sourceEntryRoute struct {
 	source string
@@ -21,6 +24,17 @@ func supportedSourceEntryRoute(symbol, source, entry string) bool {
 		}
 	}
 	return false
+}
+
+// sourceEntryRouteAllowed adds the retest-on-entry-timeframe routes (4h source
+// with a 15m, 30m or 1h chart) to the dispatch routes above.
+func sourceEntryRouteAllowed(cfg dsl.Config, symbol, source, entry string) bool {
+	if supportedSourceEntryRoute(symbol, source, entry) {
+		return true
+	}
+	supplyDemand, _ := cfg["supplyDemand"].(map[string]any)
+	retest, _ := supplyDemand["retestOnEntryTimeframe"].(int)
+	return retest != 0 && source == "4h" && (entry == "15m" || entry == "30m" || entry == "1h")
 }
 
 // ScheduledEntry is a causal source setup decision assigned to one actual

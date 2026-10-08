@@ -339,7 +339,7 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 
 func sourceEntryRequest(request RunRequest) bool {
 	entry := stringValue(request.Config, "entryTf", "current")
-	return request.Timeframe == entry && supportedSourceEntryRoute(request.Symbol, sourceTimeframeFromConfig(request.Config), entry)
+	return request.Timeframe == entry && sourceEntryRouteAllowed(request.Config, request.Symbol, sourceTimeframeFromConfig(request.Config), entry)
 }
 
 func validateRunRequest(request RunRequest) error {

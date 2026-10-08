@@ -1,0 +1,36 @@
+dsl v7
+strategy "Retest on entry timeframe" { description "Synthetic zone retested on the entry candles." }
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(london, ny)
+  day type in (trending, ranging, choppy)
+  movement below 1.0
+}
+setup {
+  type: supply demand
+  source timeframe 4h
+  retest on entry timeframe
+  patterns(DBR, RBR, RBD, DBD)
+  base 1 to 4 candles
+  impulse at least 2.5 ATR within 4 candles
+  zone width max 1.0 ATR
+  retest within 96 candles
+  retest first touch only
+  retest must reject zone
+  wait 0 candles after zone
+}
+filters {
+  higher timeframe off
+  side both
+}
+risk {
+  stop: beyond zone + 0.3 ATR min 0.4 ATR max 3 ATR
+}
+target {
+  target 2R
+}
+management {
+  breakeven off
+  wait 6 candles after trade
+}
+entryTf 1h

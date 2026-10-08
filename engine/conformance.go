@@ -28,6 +28,7 @@ var implementedRunCases = []string{
 	"deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
 	"family-break-retest",
 	"family-supply-demand",
+	"family-supply-demand-retest-entry-timeframe",
 	"family-double-top-bottom",
 	"deployed-dsl-dual-ema-resumption-xauusd-four-hour",
 	"research-dsl-dual-ema-resumption-xauusd-daily",
