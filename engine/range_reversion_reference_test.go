@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"strings"
@@ -235,6 +236,155 @@ func TestRangeReversionInputHashesIncludeEveryObservedColumn(t *testing.T) {
 	}
 	if base.EntrySHA256 == changedEntry.EntrySHA256 || base.SourceSHA256 == changedSource.SourceSHA256 {
 		t.Fatal("input hashes omitted an observed value")
+	}
+}
+
+func rrDailyGateConfig(t *testing.T, min, max string) dsl.Config {
+	t.Helper()
+	source := strings.Replace(rrTestSource, "rangereversion atr 2", "rangereversion daily-chop 2 "+min+" "+max+"\n rangereversion atr 2", 1)
+	return rrFixtureConfigFromSource(t, source, dsl.RangeReversionImmediatePolicy)
+}
+
+func rrFixtureConfigFromSource(t *testing.T, source, policy string) dsl.Config {
+	t.Helper()
+	source = strings.Replace(source, dsl.RangeReversionDelayedPinePolicy, policy, 1)
+	if policy == dsl.RangeReversionImmediatePolicy {
+		source = strings.Replace(source, "rangereversion bounds chart 2", "rangereversion bounds source 1", 1)
+		source = strings.Replace(source, "rangereversion candle-color true", "rangereversion candle-color false", 1)
+	}
+	parsed, err := dsl.Parse(source)
+	if err != nil || len(parsed.Errors) != 0 {
+		t.Fatalf("parse config: %v %v", err, parsed.Errors)
+	}
+	return parsed.Config
+}
+
+func rrDailyGateFixture(t *testing.T, dailyCount int) ([]marketdata.Bar, []marketdata.Bar, []marketdata.Bar, int64) {
+	t.Helper()
+	const (
+		halfHour = int64(1800000)
+		hour     = int64(3600000)
+		day      = int64(24 * 3600000)
+		tradeTo  = int64(100 * 3600000)
+	)
+	start := 3*day - 15*halfHour
+	entry := make([]marketdata.Bar, 0, int((tradeTo-start)/halfHour))
+	for tm := start; tm < tradeTo; tm += halfHour {
+		entry = append(entry, marketdata.Bar{T: float64(tm), O: 100, H: 101, L: 99, C: 100, V: 1})
+	}
+	// Index 13 closes immediately before the daily-row successor at 72h;
+	// index 14 closes exactly at that availability boundary.
+	entry[13] = marketdata.Bar{T: float64(start + 13*halfHour), O: 105, H: 110, L: 99, C: 104, V: 1}
+	entry[14] = marketdata.Bar{T: float64(start + 14*halfHour), O: 105, H: 110, L: 99, C: 104, V: 1}
+	entry[15] = marketdata.Bar{T: float64(start + 15*halfHour), O: 100, H: 104, L: 99, C: 102, V: 1}
+	// At 96h the completed daily CHOP leaves the configured band, but the
+	// open short stays managed by its stop and exits on this bar.
+	exitIndex := int((96*hour - start) / halfHour)
+	entry[exitIndex] = marketdata.Bar{T: float64(start + int64(exitIndex)*halfHour), O: 100, H: 120, L: 99, C: 110, V: 1}
+	source := make([]marketdata.Bar, 0, 26)
+	for tm := int64(0); tm <= tradeTo; tm += 4 * hour {
+		source = append(source, marketdata.Bar{T: float64(tm), O: 100, H: 105, L: 95, C: 100, V: 1})
+	}
+	daily := make([]marketdata.Bar, 0, dailyCount)
+	for i := 0; i < dailyCount; i++ {
+		tm := int64(i) * day
+		bar := marketdata.Bar{T: float64(tm), O: 100, H: 101, L: 99, C: 100, V: 1}
+		if i == 3 {
+			bar = marketdata.Bar{T: float64(tm), O: 101, H: 102, L: 101, C: 102, V: 1}
+		}
+		daily = append(daily, bar)
+	}
+	return entry, source, daily, tradeTo
+}
+
+func TestRangeReversionDailyCHOPUsesNativeWarmupFlatFallbackAndGapAvailability(t *testing.T) {
+	flat := []rrBar{{t: 0, h: 100, l: 100, c: 100}, {t: 86400000, h: 100, l: 100, c: 100}, {t: 2 * 86400000, h: 100, l: 100, c: 100}}
+	values, valid := rrDailyCHOP(flat, 2)
+	if valid[0] || valid[1] || !valid[2] || values[2] != 50 {
+		t.Fatalf("flat daily CHOP warmup/fallback = values %v valid %v", values, valid)
+	}
+	gaps := []rrBar{{t: 0}, {t: 86400000}, {t: 3 * 86400000}, {t: 7 * 86400000}}
+	availability := rrSourceAvailability(gaps)
+	if availability[0] != 86400000 || availability[1] != 3*86400000 || availability[2] != 7*86400000 || availability[3] != int64(^uint64(0)>>1) {
+		t.Fatalf("daily availability must use the next actual source row: %v", availability)
+	}
+}
+
+func TestRangeReversionDailyCHOPBoundaryWarmupAndInclusiveBounds(t *testing.T) {
+	entry, source, daily, tradeTo := rrDailyGateFixture(t, 5)
+	config := rrDailyGateConfig(t, "99", "100")
+	request := RangeReversionRequest{Config: config, EntrySeries: rrFixtureSeries(entry), SourceSeries: rrFixtureSeries(source), DailySeries: rrFixtureSeries(daily), Window: RangeReversionWindow{TradeFromMS: 0, TradeToMS: tradeTo}, Execution: RangeReversionExecution{Units: 1}}
+	result, err := RunRangeReversion(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Signals) != 1 || result.Signals[0].SignalCloseMS != 72*3600000 || result.InputDailyBars != len(daily) || result.UsedDailyBars != 5 || result.DailySHA256 == "" {
+		t.Fatalf("signal at exact daily successor boundary was not admitted: %+v", result)
+	}
+	// CHOP is 100; equality with the configured upper edge is inclusive.
+	config = rrDailyGateConfig(t, "100", "101")
+	request.Config = config
+	result, err = RunRangeReversion(request)
+	if err != nil || len(result.Signals) != 1 {
+		t.Fatalf("inclusive lower bound failed: signals=%d err=%v", len(result.Signals), err)
+	}
+
+	// Before the successor row timestamp, the period-2 value remains unavailable.
+	entry[14] = marketdata.Bar{T: entry[14].T, O: 100, H: 101, L: 99, C: 100, V: 1}
+	request.EntrySeries = rrFixtureSeries(entry)
+	result, err = RunRangeReversion(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Signals) != 0 {
+		t.Fatalf("warmup/missing daily value admitted a signal: %+v", result.Signals)
+	}
+}
+
+func TestRangeReversionDailyCHOPMissingInputSuffixAndOpenPositionManagement(t *testing.T) {
+	entry, source, daily, tradeTo := rrDailyGateFixture(t, 5)
+	config := rrDailyGateConfig(t, "99", "101")
+	window := RangeReversionWindow{TradeFromMS: 0, TradeToMS: tradeTo}
+	execution := RangeReversionExecution{Units: 1}
+	request := RangeReversionRequest{Config: config, EntrySeries: rrFixtureSeries(entry), SourceSeries: rrFixtureSeries(source), Window: window, Execution: execution}
+	if _, err := RunRangeReversion(request); err == nil {
+		t.Fatal("enabled daily gate accepted missing daily bars")
+	}
+	request.DailySeries = rrFixtureSeries(daily)
+	withGate, err := RunRangeReversion(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ungated, err := RunRangeReversion(RangeReversionRequest{Config: rrFixtureConfig(t, dsl.RangeReversionImmediatePolicy), EntrySeries: request.EntrySeries, SourceSeries: request.SourceSeries, Window: window, Execution: execution})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(withGate.Trades) != 1 || len(ungated.Trades) != 1 || withGate.Trades[0].ExitReason != "stop" || withGate.Trades[0].ExitMS != ungated.Trades[0].ExitMS || withGate.Trades[0].ExitReason != ungated.Trades[0].ExitReason {
+		t.Fatalf("later daily context changed an open trade: gated=%+v ungated=%+v", withGate.Trades, ungated.Trades)
+	}
+	if _, err := RunRangeReversion(RangeReversionRequest{Config: rrFixtureConfig(t, dsl.RangeReversionImmediatePolicy), EntrySeries: request.EntrySeries, SourceSeries: request.SourceSeries, DailySeries: rrFixtureSeries(daily), Window: window, Execution: execution}); err == nil {
+		t.Fatal("gate-off config accepted an unexpected daily series")
+	}
+
+	// A suffix row exactly at tradeTo is not decoded into the daily calculation.
+	suffix := append(append([]marketdata.Bar(nil), daily...), marketdata.Bar{T: float64(tradeTo), O: math.NaN(), H: 0, L: 0, C: 0, V: 0})
+	request.DailySeries = rrFixtureSeries(suffix)
+	withSuffix, err := RunRangeReversion(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if withSuffix.DailySHA256 != withGate.DailySHA256 || withSuffix.UsedDailyBars != withGate.UsedDailyBars || len(withSuffix.Signals) != len(withGate.Signals) || len(withSuffix.Trades) != len(withGate.Trades) {
+		t.Fatalf("daily suffix changed consumed result: base=%+v suffix=%+v", withGate, withSuffix)
+	}
+
+	// The old gate-off result stays byte-for-byte identical under the same config.
+	oldA, err := RunRangeReversion(RangeReversionRequest{Config: rrFixtureConfig(t, dsl.RangeReversionImmediatePolicy), EntrySeries: request.EntrySeries, SourceSeries: request.SourceSeries, Window: window, Execution: execution})
+	if err != nil {
+		t.Fatal(err)
+	}
+	legacyJSON, _ := json.Marshal(oldA)
+	if oldA.DailySHA256 != "" || oldA.UsedDailyBars != 0 || strings.Contains(string(legacyJSON), "dailySha256") || strings.Contains(string(legacyJSON), "inputDailyBars") || strings.Contains(string(legacyJSON), "usedDailyBars") {
+		t.Fatalf("gate-off result serialized daily-only fields: %s", legacyJSON)
 	}
 }
 

@@ -22,7 +22,7 @@ func runRangeReversionReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	allowed := map[string]bool{"dsl-file": true, "entry-bars-file": true, "source-bars-file": true, "trade-from": true, "trade-to": true, "slippage-per-fill": true, "commission-per-unit-side": true, "units": true}
+	allowed := map[string]bool{"dsl-file": true, "entry-bars-file": true, "source-bars-file": true, "daily-bars-file": true, "trade-from": true, "trade-to": true, "slippage-per-fill": true, "commission-per-unit-side": true, "units": true}
 	for key, values := range flags {
 		if !allowed[key] || len(values) != 1 {
 			return fmt.Errorf("range-reversion-report rejects unknown or repeated --%s", key)
@@ -85,8 +85,17 @@ func runRangeReversionReport(args []string, out io.Writer) error {
 	if len(parsed.Errors) > 0 {
 		return fmt.Errorf("range reversion DSL errors: %s", strings.Join(parsed.Errors, "; "))
 	}
-	if _, err = dsl.DecodeRangeReversion(parsed.Config); err != nil {
+	spec, err := dsl.DecodeRangeReversion(parsed.Config)
+	if err != nil {
 		return err
+	}
+	dailyPathValues, hasDailyPath := flags["daily-bars-file"]
+	if spec.Rules.DailyCHOP != nil {
+		if _, err = flags.required("daily-bars-file"); err != nil {
+			return fmt.Errorf("daily-chop requires --daily-bars-file: %w", err)
+		}
+	} else if hasDailyPath {
+		return fmt.Errorf("--daily-bars-file is only accepted when rangereversion daily-chop is configured")
 	}
 	readBars := func(path string) (marketdata.Series, string, error) {
 		raw, e := os.ReadFile(path)
@@ -115,7 +124,15 @@ func runRangeReversionReport(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	run, err := engine.RunRangeReversion(engine.RangeReversionRequest{Config: parsed.Config, EntrySeries: entry, SourceSeries: source, Window: engine.RangeReversionWindow{TradeFromMS: from, TradeToMS: to}, Execution: engine.RangeReversionExecution{SlippagePerFill: slippage, CommissionPerUnitSide: commission, Units: units}})
+	daily := marketdata.Series{}
+	dailyHash := ""
+	if spec.Rules.DailyCHOP != nil {
+		daily, dailyHash, err = readBars(dailyPathValues[0])
+		if err != nil {
+			return err
+		}
+	}
+	run, err := engine.RunRangeReversion(engine.RangeReversionRequest{Config: parsed.Config, EntrySeries: entry, SourceSeries: source, DailySeries: daily, Window: engine.RangeReversionWindow{TradeFromMS: from, TradeToMS: to}, Execution: engine.RangeReversionExecution{SlippagePerFill: slippage, CommissionPerUnitSide: commission, Units: units}})
 	if err != nil {
 		return err
 	}
@@ -131,9 +148,10 @@ func runRangeReversionReport(args []string, out io.Writer) error {
 		ConfigSHA256     string                      `json:"configSha256"`
 		EntryBTB1SHA256  string                      `json:"entryBtb1Sha256"`
 		SourceBTB1SHA256 string                      `json:"sourceBtb1Sha256"`
+		DailyBTB1SHA256  string                      `json:"dailyBtb1Sha256,omitempty"`
 		Config           dsl.Config                  `json:"config"`
 		Run              engine.RangeReversionResult `json:"run"`
-	}{"strat-range-reversion-report-v1", hex.EncodeToString(dslHash[:]), hex.EncodeToString(cfgHash[:]), entryHash, sourceHash, parsed.Config, run}
+	}{"strat-range-reversion-report-v1", hex.EncodeToString(dslHash[:]), hex.EncodeToString(cfgHash[:]), entryHash, sourceHash, dailyHash, parsed.Config, run}
 	raw, err := json.MarshalIndent(envelope, "", "  ")
 	if err != nil {
 		return err

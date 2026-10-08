@@ -17,33 +17,42 @@ const (
 )
 
 type RangeReversionRules struct {
-	Policy               string  `json:"policy"`
-	Timeframe            string  `json:"timeframe"`
-	SourceTimeframe      string  `json:"sourceTimeframe"`
-	Bounds               string  `json:"bounds"`
-	BoundsLookback       int     `json:"boundsLookback"`
-	SourceAvailability   string  `json:"sourceAvailability"`
-	RequireCandleColor   bool    `json:"requireCandleColor"`
-	UseHTFEMA            bool    `json:"useHtfEma"`
-	HTFEMALength         int     `json:"htfEmaLength"`
-	UseVectorGates       bool    `json:"useVectorGates"`
-	VectorLength         int     `json:"vectorLength"`
-	MaxADX               float64 `json:"maxAdx"`
-	MinCHOP              float64 `json:"minChop"`
-	UseRangeExpansion    bool    `json:"useRangeExpansion"`
-	RangeATRMultiple     float64 `json:"rangeAtrMultiple"`
-	ATRLength            int     `json:"atrLength"`
-	StopATRMultiple      float64 `json:"stopAtrMultiple"`
-	TargetR              float64 `json:"targetR"`
-	CooldownBars         int     `json:"cooldownBars"`
-	BreakEvenEnabled     bool    `json:"breakEvenEnabled"`
-	BreakEvenTriggerR    float64 `json:"breakEvenTriggerR"`
-	BreakEvenOffsetTicks int     `json:"breakEvenOffsetTicks"`
-	TickSize             float64 `json:"tickSize"`
+	Policy               string                   `json:"policy"`
+	Timeframe            string                   `json:"timeframe"`
+	SourceTimeframe      string                   `json:"sourceTimeframe"`
+	Bounds               string                   `json:"bounds"`
+	BoundsLookback       int                      `json:"boundsLookback"`
+	SourceAvailability   string                   `json:"sourceAvailability"`
+	RequireCandleColor   bool                     `json:"requireCandleColor"`
+	UseHTFEMA            bool                     `json:"useHtfEma"`
+	HTFEMALength         int                      `json:"htfEmaLength"`
+	UseVectorGates       bool                     `json:"useVectorGates"`
+	VectorLength         int                      `json:"vectorLength"`
+	MaxADX               float64                  `json:"maxAdx"`
+	MinCHOP              float64                  `json:"minChop"`
+	UseRangeExpansion    bool                     `json:"useRangeExpansion"`
+	RangeATRMultiple     float64                  `json:"rangeAtrMultiple"`
+	ATRLength            int                      `json:"atrLength"`
+	StopATRMultiple      float64                  `json:"stopAtrMultiple"`
+	TargetR              float64                  `json:"targetR"`
+	CooldownBars         int                      `json:"cooldownBars"`
+	BreakEvenEnabled     bool                     `json:"breakEvenEnabled"`
+	BreakEvenTriggerR    float64                  `json:"breakEvenTriggerR"`
+	BreakEvenOffsetTicks int                      `json:"breakEvenOffsetTicks"`
+	TickSize             float64                  `json:"tickSize"`
+	DailyCHOP            *RangeReversionDailyCHOP `json:"dailyChop,omitempty"`
+}
+
+// RangeReversionDailyCHOP gates new signals using the latest causally
+// completed native daily row. Its absence preserves the original config.
+type RangeReversionDailyCHOP struct {
+	Period int     `json:"period"`
+	Min    float64 `json:"min"`
+	Max    float64 `json:"max"`
 }
 
 func (r RangeReversionRules) projection() map[string]any {
-	return map[string]any{
+	out := map[string]any{
 		"policy": r.Policy, "timeframe": r.Timeframe, "sourceTimeframe": r.SourceTimeframe,
 		"bounds": r.Bounds, "boundsLookback": int64(r.BoundsLookback), "sourceAvailability": r.SourceAvailability,
 		"requireCandleColor": r.RequireCandleColor, "useHtfEma": r.UseHTFEMA, "htfEmaLength": int64(r.HTFEMALength),
@@ -53,6 +62,10 @@ func (r RangeReversionRules) projection() map[string]any {
 		"breakEvenEnabled": r.BreakEvenEnabled, "breakEvenTriggerR": r.BreakEvenTriggerR,
 		"breakEvenOffsetTicks": int64(r.BreakEvenOffsetTicks), "tickSize": r.TickSize,
 	}
+	if r.DailyCHOP != nil {
+		out["dailyChop"] = map[string]any{"period": int64(r.DailyCHOP.Period), "min": r.DailyCHOP.Min, "max": r.DailyCHOP.Max}
+	}
+	return out
 }
 
 type RangeReversionSpec struct {
@@ -80,13 +93,29 @@ func DecodeRangeReversion(cfg Config) (RangeReversionSpec, error) {
 	if !ok {
 		return spec, fmt.Errorf("rangeReversion object required")
 	}
-	allowed := map[string]bool{"policy": true, "timeframe": true, "sourceTimeframe": true, "bounds": true, "boundsLookback": true, "sourceAvailability": true, "requireCandleColor": true, "useHtfEma": true, "htfEmaLength": true, "useVectorGates": true, "vectorLength": true, "maxAdx": true, "minChop": true, "useRangeExpansion": true, "rangeAtrMultiple": true, "atrLength": true, "stopAtrMultiple": true, "targetR": true, "cooldownBars": true, "breakEvenEnabled": true, "breakEvenTriggerR": true, "breakEvenOffsetTicks": true, "tickSize": true}
-	if len(obj) != len(allowed) {
+	allowed := map[string]bool{"policy": true, "timeframe": true, "sourceTimeframe": true, "bounds": true, "boundsLookback": true, "sourceAvailability": true, "requireCandleColor": true, "useHtfEma": true, "htfEmaLength": true, "useVectorGates": true, "vectorLength": true, "maxAdx": true, "minChop": true, "useRangeExpansion": true, "rangeAtrMultiple": true, "atrLength": true, "stopAtrMultiple": true, "targetR": true, "cooldownBars": true, "breakEvenEnabled": true, "breakEvenTriggerR": true, "breakEvenOffsetTicks": true, "tickSize": true, "dailyChop": true}
+	if len(obj) != len(allowed)-1 && len(obj) != len(allowed) {
 		return spec, fmt.Errorf("rangeReversion has unknown or missing keys")
 	}
 	for key := range obj {
 		if !allowed[key] {
 			return spec, fmt.Errorf("rangeReversion has unknown key %s", key)
+		}
+	}
+	for _, key := range []string{"policy", "timeframe", "sourceTimeframe", "bounds", "boundsLookback", "sourceAvailability", "requireCandleColor", "useHtfEma", "htfEmaLength", "useVectorGates", "vectorLength", "maxAdx", "minChop", "useRangeExpansion", "rangeAtrMultiple", "atrLength", "stopAtrMultiple", "targetR", "cooldownBars", "breakEvenEnabled", "breakEvenTriggerR", "breakEvenOffsetTicks", "tickSize"} {
+		if _, ok := obj[key]; !ok {
+			return spec, fmt.Errorf("rangeReversion is missing key %s", key)
+		}
+	}
+	if daily, ok := obj["dailyChop"]; ok {
+		nested, ok := daily.(map[string]any)
+		if !ok || len(nested) != 3 {
+			return spec, fmt.Errorf("rangeReversion.dailyChop requires exactly period, min and max")
+		}
+		for key := range nested {
+			if key != "period" && key != "min" && key != "max" {
+				return spec, fmt.Errorf("rangeReversion.dailyChop has unknown key %s", key)
+			}
 		}
 	}
 	raw, err := json.Marshal(obj)
@@ -132,8 +161,17 @@ func DecodeRangeReversion(cfg Config) (RangeReversionSpec, error) {
 	if r.BreakEvenOffsetTicks < 0 || r.BreakEvenOffsetTicks > 100000 {
 		return spec, fmt.Errorf("rangeReversion break-even offset ticks are outside supported bounds")
 	}
+	if r.DailyCHOP != nil {
+		if r.DailyCHOP.Period < 2 || r.DailyCHOP.Period > 10000 ||
+			!isFiniteRangeReversion(r.DailyCHOP.Min) || !isFiniteRangeReversion(r.DailyCHOP.Max) ||
+			r.DailyCHOP.Min >= r.DailyCHOP.Max {
+			return spec, fmt.Errorf("rangeReversion.dailyChop requires period 2..10000 and finite min < max bounds")
+		}
+	}
 	return spec, nil
 }
+
+func isFiniteRangeReversion(v float64) bool { return !math.IsNaN(v) && !math.IsInf(v, 0) }
 
 func IsRangeReversionReserved(cfg Config) bool {
 	var inspect func(map[string]any) bool
