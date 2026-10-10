@@ -3,19 +3,19 @@
  "convention_id": "seq-exec-e1e2.v1",
  "profile_id": "seq.full.public_approx.v1",
  "mirror": "price -> 200 - price, high and low swapped, sides swapped",
- "family": "provisional",
+ "family": "excluded",
  "cases": [
   {
-   "id": "pv.target_gap_open_beyond",
-   "group": "provisional",
+   "id": "pv.entry_straddle_open_below_stop",
+   "group": "excluded",
    "policy": "E1",
-   "status": "provisional",
-   "open_question": "OQ-2",
-   "title": "Bar opens beyond the target: fill at the target level",
+   "status": "excluded",
+   "open_question": "OQ-4",
+   "title": "EXCLUDED PROPOSAL: raw-open guard on a slipped fill above the stop",
    "previous_id": null,
    "added_in": null,
    "allow_nonpositive_prices": false,
-   "derivation": "Open[15]=103 > TP 100.5. Recommended and existing-broker reading: the target level 100.5 is the fill level (no gap credit), less slippage 0.5 = 100.0. The alternative credits the open (103 less 0.5 = 102.5). Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "derivation": "NOT APPROVED. Open[14]=86.75 < S=87, slip 0.5 -> F=87.25 > S. The approved rule tests the actual fill (S>=F) and admits this entry; what the entry bar then does is not specified. This record shows the unapproved proposal (also reject when the raw open is on the wrong side): stop_breached_at_entry. Do not implement it to satisfy this record.",
    "prefix_group": null,
    "series": {
     "symbol": "SYN",
@@ -126,16 +126,10 @@
        "c": 91
       },
       {
-       "o": 91,
-       "h": 93,
-       "l": 90,
-       "c": 92
-      },
-      {
-       "o": 103,
-       "h": 104,
-       "l": 102,
-       "c": 103
+       "o": 86.75,
+       "h": 88,
+       "l": 86.5,
+       "c": 87.5
       }
      ],
      "expected": {
@@ -169,35 +163,13 @@
        {
         "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
         "entry_bar_index": 14,
-        "entry_open": 91,
-        "entry_fill": 91.5,
-        "status": "filled"
+        "entry_open": 86.75,
+        "entry_fill": 87.25,
+        "status": "rejected",
+        "reason": "stop_breached_at_entry"
        }
       ],
-      "trades": [
-       {
-        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
-        "entry_bar_index": 14,
-        "entry_open": 91,
-        "entry_fill": 91.5,
-        "side": "long",
-        "stop": 87,
-        "target": 100.5,
-        "risk_distance": 4.5,
-        "size_unconstrained": 20,
-        "size": 20,
-        "notional": 1830,
-        "cap_binds": false,
-        "exit": {
-         "bar_index": 15,
-         "reason": "target",
-         "price": 100,
-         "held_bars": 2
-        },
-        "gross_pnl": 170,
-        "r_multiple": 1.8888888889
-       }
-      ]
+      "trades": []
      }
     },
     "short": {
@@ -287,16 +259,10 @@
        "c": 109
       },
       {
-       "o": 109,
-       "h": 110,
-       "l": 107,
-       "c": 108
-      },
-      {
-       "o": 97,
-       "h": 98,
-       "l": 96,
-       "c": 97
+       "o": 113.25,
+       "h": 113.5,
+       "l": 112,
+       "c": 112.5
       }
      ],
      "expected": {
@@ -330,35 +296,13 @@
        {
         "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
         "entry_bar_index": 14,
-        "entry_open": 109,
-        "entry_fill": 108.5,
-        "status": "filled"
+        "entry_open": 113.25,
+        "entry_fill": 112.75,
+        "status": "rejected",
+        "reason": "stop_breached_at_entry"
        }
       ],
-      "trades": [
-       {
-        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
-        "entry_bar_index": 14,
-        "entry_open": 109,
-        "entry_fill": 108.5,
-        "side": "short",
-        "stop": 113,
-        "target": 99.5,
-        "risk_distance": 4.5,
-        "size_unconstrained": 20,
-        "size": 20,
-        "notional": 2170,
-        "cap_binds": false,
-        "exit": {
-         "bar_index": 15,
-         "reason": "target",
-         "price": 100,
-         "held_bars": 2
-        },
-        "gross_pnl": 170,
-        "r_multiple": 1.8888888889
-       }
-      ]
+      "trades": []
      }
     }
    }

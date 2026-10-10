@@ -132,6 +132,7 @@ jobs:
         run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards)' ./dsl ./engine ./cmd/enginewasm
 
       - name: Sequential companion actual native and Node-WASM export parity
+        id: sequential_parity
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 5
         run: |
@@ -142,7 +143,17 @@ jobs:
           test "$(git rev-parse FETCH_HEAD)" = "$baseline_commit"
           test "$(git rev-parse "$baseline_commit^{tree}")" = 8e4ef994a636f2125bab2bb909c28fca5db2351d
           git archive "$baseline_commit" | tar -x -C "$baseline_dir"
-          node scripts/checks/sequential-backtest-parity.mjs --baseline-repo "$baseline_dir"
+          diagnostic_dir="$RUNNER_TEMP/sequential-diagnostics-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          node scripts/checks/sequential-backtest-parity.mjs --baseline-repo "$baseline_dir" --out "$diagnostic_dir"
+
+      - name: Upload Sequential synthetic qualification diagnostics
+        if: always() && (steps.sequential_parity.outcome == 'success' || steps.sequential_parity.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: sequential-diagnostics-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sequential-diagnostics-${{ github.run_id }}-${{ github.run_attempt }}/
+          if-no-files-found: error
+          retention-days: 3
 
       - name: Run portable arithmetic kernels under Go WASM
         if: steps.mod.outputs.present == 'true'

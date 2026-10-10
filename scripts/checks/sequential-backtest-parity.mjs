@@ -7,7 +7,7 @@
 import assert from 'node:assert/strict';
 import { createHash, webcrypto } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -64,6 +64,87 @@ const hashes = {
   dslSequentialFullE2: '94086f5b62ed6abd89265754572f838e3c024226666d99ceb730f4537e0c8ec2',
 };
 const records = [];
+const mismatches = [];
+const attemptedCases = [];
+let activeCase = null, activeStage = 'build', shim;
+const checks = Object.fromEntries(['nativePrechangeToCurrent', 'nativeCaptureOffToOn', 'wasmPrechangeToCurrent', 'wasmCaptureOffToOn', 'wasmRepeat', 'wasmColumnsToCompanion', 'wasmPrechangeColumns'].map((key) => [key, 0]));
+function beginCase(name) { activeCase = name; activeStage = 'execution'; attemptedCases.push(name); }
+function checked(name, fn) { activeStage = name; fn(); checks[name]++; activeStage = 'case-invariants'; }
+
+function save(label, suffix, value) {
+  if (output) writeFileSync(join(output, `${label}.${suffix}`), typeof value === 'string' ? value : JSON.stringify(value));
+}
+function floatBits(value) {
+  const bytes = new ArrayBuffer(8), data = new DataView(bytes);
+  data.setFloat64(0, value, false);
+  return data.getBigUint64(0, false).toString(16).padStart(16, '0');
+}
+function exactLeaves(native, wasm, path = '$') {
+  if (Object.is(native, wasm)) return [];
+  if (Array.isArray(native) && Array.isArray(wasm)) {
+    const leaves = native.length === wasm.length ? [] : [{ path: `${path}.length`, native: native.length, wasm: wasm.length }];
+    for (let i = 0; i < Math.max(native.length, wasm.length); i++) leaves.push(...exactLeaves(native[i], wasm[i], `${path}[${i}]`));
+    return leaves;
+  }
+  if (native !== null && wasm !== null && typeof native === 'object' && typeof wasm === 'object' && !Array.isArray(native) && !Array.isArray(wasm)) {
+    return [...new Set([...Object.keys(native), ...Object.keys(wasm)])].sort().flatMap((key) => exactLeaves(native[key], wasm[key], `${path}.${key}`));
+  }
+  const leaf = { path, native: native === undefined ? { missing: true } : native, wasm: wasm === undefined ? { missing: true } : wasm };
+  if (typeof native === 'number' && typeof wasm === 'number') {
+    const delta = native - wasm;
+    Object.assign(leaf, { nativeMinusWasm: Number.isFinite(delta) ? delta : String(delta), nativeSign: Math.sign(native), wasmSign: Math.sign(wasm), nativeBits: floatBits(native), wasmBits: floatBits(wasm) });
+  }
+  return [leaf];
+}
+function classifications(result) {
+  try { return classifyResult(result); }
+  catch (error) { return { outcome: 'invalid-envelope', shapeError: error.message }; }
+}
+function classifyResult(result) {
+  if (result.error) return { outcome: 'refusal', error: result.error };
+  const run = result.run ?? (Array.isArray(result.trades) ? result : null);
+  if (!run) return null;
+  const snapshot = {
+    outcome: result.metrics ? 'companion-success' : 'generic-success',
+    identity: result.identity ?? null,
+    runIdentity: Object.fromEntries(['schema', 'case', 'strategyId', 'symbol', 'timeframe', 'higherTimeframe', 'rangeMethod', 'costs'].map((key) => [key, run[key] ?? null])),
+    runTradeCount: run.tradeCount,
+    tradeOrder: run.trades.map((trade, index) => ({ index, ...Object.fromEntries(['entryIndex', 'exitIndex', 'entryT', 'exitT', 'side', 'reason', 'rule', 'tag', 'partial'].map((key) => [key, trade[key] ?? null])) })),
+  };
+  const audit = run.sequentialFull;
+  snapshot.sequentialFull = audit ? {
+    ...Object.fromEntries(['schema', 'profile', 'policy', 'symbol', 'timeframe'].map((key) => [key, audit[key] ?? null])),
+    opportunities: audit.opportunities.map((opportunity, index) => ({ index,
+      ...Object.fromEntries(['id', 'episodeId', 'trigger', 'side', 'setupIndex', 'setupFirstIndex', 'decisionIndex', 'decisionOpenMs', 'decisionMs', 'nextOpenIndex', 'status', 'reason', 'fillIndex', 'capBinds'].map((key) => [key, opportunity[key] ?? null])),
+    })),
+  } : null;
+  if (!result.metrics) return snapshot;
+  const h = result.metrics.headline;
+  const signs = result.metrics.tradeAccounting.map((trade) => Math.sign(trade.netPnl));
+  return { ...snapshot,
+    trades: h.trades, tradeNetSigns: signs,
+    accountNetSign: Math.sign(h.net), returnPctSign: Math.sign(h.returnPct), expectancySign: h.expectancy === null ? null : Math.sign(h.expectancy),
+    wins: signs.filter((sign) => sign > 0).length, nonWinners: signs.filter((sign) => sign <= 0).length,
+    winRate: h.winRate, maxWinStreak: h.maxWinStreak, maxLossStreak: h.maxLossStreak,
+    nullsAndReasons: Object.fromEntries(['winRate', 'profitFactor', 'expectancy', 'avgWin', 'avgLoss', 'avgHoldBars'].map((field) => [field, { isNull: h[field] === null, reason: h[`${field}Reason`] ?? null }])),
+  };
+}
+function compareTargets(name, surface, nativeRaw, wasmRaw) {
+  if (nativeRaw === wasmRaw) return;
+  const parse = (raw) => { try { return JSON.parse(raw); } catch (error) { return { error: { code: 'INVALID_JSON_OUTPUT', message: error.message }, rawSha256: sha(raw) }; } };
+  const native = parse(nativeRaw), wasm = parse(wasmRaw);
+  const leaves = exactLeaves(native, wasm);
+  if (!leaves.length) leaves.push({ path: '$serialization', native: sha(nativeRaw), wasm: sha(wasmRaw) });
+  const nativeClasses = classifications(native), wasmClasses = classifications(wasm);
+  const categoryLeaves = exactLeaves(nativeClasses, wasmClasses);
+  const numericSignChangeLeaves = leaves.filter((leaf) => typeof leaf.native === 'number' && typeof leaf.wasm === 'number' && Math.sign(leaf.native) !== Math.sign(leaf.wasm));
+  const mismatch = { name, surface, nativeSha256: sha(nativeRaw), wasmSha256: sha(wasmRaw), categoricalMismatch: categoryLeaves.length > 0 || numericSignChangeLeaves.length > 0, classifications: { native: nativeClasses, wasm: wasmClasses }, leaves, categoryLeaves, numericSignChangeLeaves };
+  mismatches.push(mismatch);
+  // One compact leaf per log line; never print two entire result envelopes.
+  console.log(JSON.stringify({ kind: 'exact-cross-target-mismatch', name, surface, nativeSha256: mismatch.nativeSha256, wasmSha256: mismatch.wasmSha256, categoricalMismatch: mismatch.categoricalMismatch, classifications: mismatch.classifications, numericSignChanges: numericSignChangeLeaves.map(({ path, nativeSign, wasmSign }) => ({ path, nativeSign, wasmSign })) }));
+  for (const leaf of leaves) console.log(JSON.stringify({ kind: 'exact-cross-target-leaf', name, surface, ...leaf }));
+}
+
 const fixturePath = join(scratch, 'fixture.json'), sourcePath = join(scratch, 'source.strat');
 const nativeEngine = join(scratch, 'engine'), nativeDsl = join(scratch, 'dsl');
 const engineWasm = join(scratch, 'engine.wasm'), dslWasm = join(scratch, 'dsl.wasm');
@@ -91,7 +172,9 @@ function columnsUnchanged(fixture, source, run, label) {
   const meta = { schema: 'enginewasm-columnar-v1', case: fixture.case, strategyId: fixture.strategyId,
     symbol: fixture.symbol, timeframe: fixture.timeframe, rangeMethod: fixture.rangeMethod, costs: fixture.costs };
   const columns = Array.from({ length: 6 }, (_, col) => Float64Array.from(fixture.bars, (row) => row[col]));
+  activeStage = 'wasmColumnsToCompanion';
   const result = globalThis.engineRunColumns(JSON.stringify(meta), source, ...columns);
+  save(label, 'wasm.columns.json', { ...result, trades: Array.from(result.trades ?? []) });
   assert.equal(result.ok, true, `${label}: column export refused`);
   const { trades, ...summary } = run;
   // The pre-existing column summary spells an absent HTF as an empty string.
@@ -99,9 +182,13 @@ function columnsUnchanged(fixture, source, run, label) {
   assert.deepEqual(JSON.parse(result.summaryJSON), summary, `${label}: column summary changed`);
   if (baselineColumns) {
     const before = baselineColumns(JSON.stringify(meta), source, ...columns);
+    save(label, 'wasm.prechange-columns.json', { ...before, trades: Array.from(before.trades ?? []) });
     assert.equal(before.ok, true);
-    for (const field of ['summaryJSON', 'stringsJSON']) assert.equal(result[field], before[field], `${label}: prechange column ${field} changed`);
-    assert.deepEqual(Array.from(result.trades), Array.from(before.trades), `${label}: prechange column values changed`);
+    checked('wasmPrechangeColumns', () => {
+      for (const field of ['summaryJSON', 'stringsJSON']) assert.equal(result[field], before[field], `${label}: prechange column ${field} changed`);
+      assert.deepEqual(Array.from(result.trades), Array.from(before.trades), `${label}: prechange column values changed`);
+    });
+    activeStage = 'wasmColumnsToCompanion';
   }
   const text = JSON.parse(result.stringsJSON);
   assert.equal(text.length, trades.length);
@@ -110,18 +197,10 @@ function columnsUnchanged(fixture, source, run, label) {
     numeric.forEach((field, j) => assert.equal(result.trades[i * 13 + j], trade[field], `${label}: column trade ${i}.${field}`));
     for (const field of ['side', 'reason', 'tag', 'meta']) assert.deepEqual(text[i][field], trade[field]);
   });
+  checks.wasmColumnsToCompanion++;
 }
 let baselineWasm, baselineColumns;
-function success(label, fixture, source, { meaningful = false, noTrades = false, fixtureJSON } = {}) {
-  const raw = fixtureJSON ?? JSON.stringify(fixture);
-  const native = nativeRun(raw, source);
-  assert.equal(native.status, 0, `${label}: ${native.raw} ${native.stderr}`);
-  const wasmRaw = globalThis.engineRunSequentialFixture(raw, source);
-  // Intentionally exact on both supported hosts: no blanket epsilon and no
-  // cross-target sign/classification exception is permitted. ARM64 rounding
-  // differences halt this gate pending independently reviewed operand bounds.
-  assert.equal(wasmRaw, native.raw, `${label}: native/actual WASM companion differs`);
-  const result = JSON.parse(native.raw);
+function validateSuccess(result, raw, fixture, source, label, { meaningful, noTrades }) {
   assert.deepEqual(Object.keys(result).sort(), ['capabilities', 'contractVersion', 'identity', 'metrics', 'run', 'schema']);
   assert.equal(result.schema, 'strat-sequential-backtest-result-v1'); assert.equal(result.contractVersion, 1);
   assert.equal(result.identity.fixtureSha256, sha(raw)); assert.equal(result.identity.dslSha256, sha(source));
@@ -146,40 +225,98 @@ function success(label, fixture, source, { meaningful = false, noTrades = false,
     for (const field of ['winRate', 'profitFactor', 'expectancy', 'avgHoldBars']) { assert.equal(metrics.headline[field], null); assert.equal(metrics.headline[`${field}Reason`], 'no-trades'); }
     metrics.equity.forEach((point) => assert.equal(point.equity, metrics.headline.startEquity));
   }
+}
+function success(label, fixture, source, { meaningful = false, noTrades = false, fixtureJSON } = {}) {
+  beginCase(label);
+  const raw = fixtureJSON ?? JSON.stringify(fixture);
+  const native = nativeRun(raw, source);
+  const wasmRaw = globalThis.engineRunSequentialFixture(raw, source);
+  save(label, 'fixture.json', raw); save(label, 'source.strat', source);
+  save(label, 'native.json', native.raw); save(label, 'wasm.json', wasmRaw);
+  compareTargets(label, 'companion', native.raw, wasmRaw);
+  activeStage = 'per-runtime-invariants';
+  assert.equal(native.status, 0, `${label}: native companion failed: ${native.stderr}`);
+  const result = JSON.parse(native.raw), wasmResult = JSON.parse(wasmRaw);
+  validateSuccess(result, raw, fixture, source, `${label}/native`, { meaningful, noTrades });
+  validateSuccess(wasmResult, raw, fixture, source, `${label}/wasm`, { meaningful, noTrades });
+  // Cross-target mismatches accumulate so later cancellation scenarios run.
+  // They remain unconditional qualification failures at the final gate.
   const generic = nativeRun(raw, source, nativeEngine, false);
+  save(label, 'native.capture-off.json', generic.raw);
   assert.equal(generic.status, 0, generic.stderr);
-  assert.deepEqual(JSON.parse(generic.raw), run, `${label}: native capture-off changed`);
+  checked('nativeCaptureOffToOn', () => assert.deepEqual(JSON.parse(generic.raw), result.run, `${label}: native capture-off changed`));
   const wasmGeneric = globalThis.engineRunFixture(raw, source);
-  assert.equal(wasmGeneric, generic.raw, `${label}: generic native/WASM changed`);
-  assert.deepEqual(JSON.parse(wasmGeneric), run, `${label}: WASM capture-off changed`);
-  columnsUnchanged(fixture, source, run, label);
-  assert.equal(globalThis.engineRunSequentialFixture(raw, source), wasmRaw, `${label}: repeat run changed`);
+  save(label, 'wasm.capture-off.json', wasmGeneric);
+  checked('wasmCaptureOffToOn', () => assert.deepEqual(JSON.parse(wasmGeneric), wasmResult.run, `${label}: WASM capture-off changed`));
+  compareTargets(label, 'generic', generic.raw, wasmGeneric);
+  columnsUnchanged(fixture, source, wasmResult.run, label);
+  checked('wasmRepeat', () => assert.equal(globalThis.engineRunSequentialFixture(raw, source), wasmRaw, `${label}: WASM repeat run changed`));
   if (options['--baseline-engine']) {
     const baseline = nativeRun(raw, source, resolve(options['--baseline-engine']), false);
-    assert.equal(baseline.status, 0, baseline.stderr); assert.equal(baseline.raw, generic.raw, `${label}: prechange native changed`);
+    save(label, 'native.prechange.json', baseline.raw);
+    checked('nativePrechangeToCurrent', () => { assert.equal(baseline.status, 0, baseline.stderr); assert.equal(baseline.raw, generic.raw, `${label}: prechange native changed`); });
   }
-  if (baselineWasm) assert.equal(baselineWasm(raw, source), wasmGeneric, `${label}: prechange WASM changed`);
-  if (output) {
-    writeFileSync(join(output, `${label}.fixture.json`), raw);
-    writeFileSync(join(output, `${label}.native.json`), native.raw);
-    writeFileSync(join(output, `${label}.wasm.json`), wasmRaw);
+  if (baselineWasm) {
+    const before = baselineWasm(raw, source);
+    save(label, 'wasm.prechange.json', before);
+    checked('wasmPrechangeToCurrent', () => assert.equal(before, wasmGeneric, `${label}: prechange WASM changed`));
   }
-  records.push({ name: label, kind: 'success', trades: run.tradeCount, bars: fixture.bars.length, sha256: sha(native.raw), tradeNetSigns: metrics.tradeAccounting.map((t) => Math.sign(t.netPnl)) });
+  records.push({ name: label, kind: 'success', trades: result.run.tradeCount, bars: fixture.bars.length, fixtureSha256: sha(raw), sourceSha256: sha(source), nativeSha256: sha(native.raw), wasmSha256: sha(wasmRaw), classifications: { native: classifications(result), wasm: classifications(wasmResult) } });
   return result;
 }
 function refusal(label, raw, source, code) {
+  beginCase(label);
   const native = nativeRun(raw, source);
-  assert.notEqual(native.status, 0, `${label}: native accepted invalid input`);
   const wasm = globalThis.engineRunSequentialFixture(raw, source);
-  assert.equal(wasm, native.raw, `${label}: native/WASM refusal differs`);
-  const result = JSON.parse(wasm);
-  assert.deepEqual(Object.keys(result).sort(), ['contractVersion', 'error', 'schema']);
-  assert.equal(result.schema, 'strat-sequential-backtest-result-v1'); assert.equal(result.contractVersion, 1);
-  assert.equal(typeof result.error.code, 'string'); assert.equal(typeof result.error.message, 'string');
-  if (code) assert.equal(result.error.code, code);
-  if (output) writeFileSync(join(output, `${label}.refusal.json`), wasm);
-  records.push({ name: label, kind: 'refusal', ...result.error });
+  save(label, 'fixture.json', raw); save(label, 'source.strat', source);
+  save(label, 'native.refusal.json', native.raw); save(label, 'wasm.refusal.json', wasm);
+  compareTargets(label, 'refusal', native.raw, wasm);
+  activeStage = 'per-runtime-invariants';
+  assert.notEqual(native.status, 0, `${label}: native accepted invalid input`);
+  for (const [target, text] of [['native', native.raw], ['wasm', wasm]]) {
+    const result = JSON.parse(text);
+    assert.deepEqual(Object.keys(result).sort(), ['contractVersion', 'error', 'schema']);
+    assert.equal(result.schema, 'strat-sequential-backtest-result-v1'); assert.equal(result.contractVersion, 1);
+    assert.equal(typeof result.error.code, 'string'); assert.equal(typeof result.error.message, 'string');
+    if (code) assert.equal(result.error.code, code, `${label}/${target}: refusal code`);
+  }
+  records.push({ name: label, kind: 'refusal', fixtureSha256: sha(raw), sourceSha256: sha(source), nativeSha256: sha(native.raw), wasmSha256: sha(wasm), nativeError: JSON.parse(native.raw).error, wasmError: JSON.parse(wasm).error });
 }
+
+function artifactHash(path) { return path && existsSync(path) ? sha(readFileSync(path)) : null; }
+function emitReceipt(complete, failure = null) {
+  const receipt = {
+    schema: 'sequential-backtest-parity-receipt-v1', go: go(['version']).trim(), node: process.version,
+    nativeArch, runtime: 'native-and-actual-node-go-wasm', comparison: 'exact; no numeric tolerance',
+    prechangeNative: Boolean(options['--baseline-engine']), prechangeWasm: Boolean(baselineWasm),
+    browser: 'unrun', release: 'unpublished-local-qualification',
+    status: complete && !mismatches.length ? 'passed' : 'failed', complete,
+    expectedCaseCount: 88, attemptedCaseCount: attemptedCases.length,
+    failure: failure ? { name: failure.name, message: failure.message, code: failure.code ?? null, operator: failure.operator ?? null, activeCase, activeStage, actual: failure.actual, expected: failure.expected } : null,
+    caseCount: records.length, mismatchComparisons: mismatches.length,
+    mismatchCases: [...new Set(mismatches.map((mismatch) => mismatch.name))].length,
+    categoricalMismatchCases: complete ? [...new Set(mismatches.filter((mismatch) => mismatch.categoricalMismatch).map((mismatch) => mismatch.name))].length : null,
+    observedCategoricalMismatchCases: [...new Set(mismatches.filter((mismatch) => mismatch.categoricalMismatch).map((mismatch) => mismatch.name))].length,
+    sameArchitectureChecks: Object.fromEntries(Object.entries(checks).map(([name, passedCases]) => {
+      const available = name === 'nativePrechangeToCurrent' ? Boolean(options['--baseline-engine']) : name === 'wasmPrechangeToCurrent' ? Boolean(baselineWasm) : name === 'wasmPrechangeColumns' ? Boolean(baselineColumns) : true;
+      return [name, { status: !available ? 'unrun' : failure && activeStage === name ? 'failed' : complete && passedCases === 64 ? 'passed' : 'incomplete', passedCases }];
+    })),
+    compiler: JSON.parse(go(['env', '-json', 'GOARCH', 'GOOS', 'GOHOSTARCH', 'GOHOSTOS', 'GOAMD64', 'GOEXPERIMENT', 'GOFLAGS'])),
+    scriptSha256: sha(readFileSync(fileURLToPath(import.meta.url))),
+    artifacts: { engineNative: artifactHash(nativeEngine), engineWasm: artifactHash(engineWasm), parserNative: artifactHash(nativeDsl), parserWasm: artifactHash(dslWasm), wasmExec: artifactHash(shim),
+      ...(options['--baseline-engine'] ? { baselineEngineNative: artifactHash(options['--baseline-engine']) } : {}),
+      ...(options['--baseline-wasm'] ? { baselineEngineWasm: artifactHash(options['--baseline-wasm']) } : {}) }, records, mismatches,
+  };
+  if (output) writeFileSync(join(output, 'receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
+  const { records: caseRecords, mismatches: mismatchRecords, ...summary } = receipt;
+  if (summary.failure) summary.failure = { name: summary.failure.name, message: summary.failure.message.split('\n')[0], code: summary.failure.code, activeCase, activeStage };
+  console.log(JSON.stringify({ kind: 'qualification-summary', ...summary }));
+  if (!complete || mismatches.length) {
+    console.error(`Sequential exact parity FAILED: ${receipt.mismatchCases} case(s), ${receipt.mismatchComparisons} comparison(s), ${receipt.categoricalMismatchCases} categorical case(s); ${records.length}/88 cases completed${complete ? '' : '; INCOMPLETE after hard failure'}. No tolerance was applied.`);
+    process.exitCode = 1;
+  }
+}
+
 try {
   if (options['--baseline-repo']) {
     const baseline = resolve(options['--baseline-repo']);
@@ -192,7 +329,7 @@ try {
   go(['build', '-buildvcs=false', '-trimpath', '-o', nativeDsl, './cmd/dslwasm']);
   go(['build', '-buildvcs=false', '-trimpath', '-o', engineWasm, './cmd/enginewasm'], { GOOS: 'js', GOARCH: 'wasm' });
   go(['build', '-buildvcs=false', '-trimpath', '-o', dslWasm, './cmd/dslwasm'], { GOOS: 'js', GOARCH: 'wasm' });
-  const shim = join(go(['env', 'GOROOT']).trim(), 'misc/wasm/wasm_exec.js');
+  shim = join(go(['env', 'GOROOT']).trim(), 'misc/wasm/wasm_exec.js');
   globalThis.crypto ??= webcrypto;
   createRequire(import.meta.url)(shim);
   if (options['--baseline-wasm']) { await load(resolve(options['--baseline-wasm'])); baselineWasm = globalThis.engineRunFixture; baselineColumns = globalThis.engineRunColumns; }
@@ -203,10 +340,14 @@ try {
     const [name, id] = descriptor;
     const { fixture, source } = prepare(descriptor);
     if (!parsedSources.has(id)) {
+      beginCase(id);
       writeFileSync(sourcePath, source);
       const native = execFileSync(nativeDsl, [sourcePath], { encoding: 'utf8' }).trim();
-      assert.equal(globalThis.dslParse(source), native, `${id}: parser export differs`);
-      const parsed = JSON.parse(native); assert.equal(parsed.ok, true); assert.deepEqual(parsed.result.errors, []);
+      const wasm = globalThis.dslParse(source);
+      save(id, 'native.parser.json', native); save(id, 'wasm.parser.json', wasm);
+      compareTargets(id, 'parser', native, wasm);
+      activeStage = 'per-runtime-invariants';
+      for (const text of [native, wasm]) { const parsed = JSON.parse(text); assert.equal(parsed.ok, true); assert.deepEqual(parsed.result.errors, []); }
       parsedSources.add(id); records.push({ name: id, kind: 'parser', sha256: sha(source) });
     }
     const original = success(name, fixture, source, { meaningful: true });
@@ -253,6 +394,7 @@ try {
   const escapedJSON = JSON.stringify(unicodeFixture).replace('λ', '\\u03bb').replace('😀', '\\ud83d\\ude00');
   success('unicode-escaped', unicodeFixture, source, { meaningful: true, fixtureJSON: escapedJSON });
   for (const [name, surrogate] of [['high', '\ud800'], ['low', '\udc00']]) {
+    beginCase(`wasm-raw-${name}-surrogate`);
     const malformed = JSON.stringify({ ...full, case: 'raw-surrogate-placeholder' }).replace('raw-surrogate-placeholder', surrogate);
     const refused = globalThis.engineRunSequentialFixture(malformed, source);
     const result = JSON.parse(refused);
@@ -281,17 +423,11 @@ try {
   for (const fee of [0, 1.9999999999999998, 2, 2.0000000000000004, 3]) {
     success(`full-fee-boundary-${fee}`, { ...profit, costs: { ...profit.costs, feePerUnit: fee } }, source, { meaningful: true });
   }
-  const receipt = {
-    schema: 'sequential-backtest-parity-receipt-v1', go: go(['version']).trim(), node: process.version,
-    nativeArch, runtime: 'native-and-actual-node-go-wasm', comparison: 'exact; no numeric tolerance',
-    prechangeNative: Boolean(options['--baseline-engine']), prechangeWasm: Boolean(baselineWasm),
-    browser: 'unrun', release: 'unpublished-local-qualification',
-    artifacts: { engineNative: sha(readFileSync(nativeEngine)), engineWasm: sha(readFileSync(engineWasm)), parserNative: sha(readFileSync(nativeDsl)), parserWasm: sha(readFileSync(dslWasm)), wasmExec: sha(readFileSync(shim)),
-      ...(options['--baseline-engine'] ? { baselineEngineNative: sha(readFileSync(options['--baseline-engine'])) } : {}),
-      ...(options['--baseline-wasm'] ? { baselineEngineWasm: sha(readFileSync(options['--baseline-wasm'])) } : {}) }, records,
-  };
-  if (output) writeFileSync(join(output, 'receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
-  console.log(JSON.stringify(receipt, null, 2));
+  assert.equal(records.length, 88, 'all frozen qualification cases must execute');
+  emitReceipt(true);
+} catch (error) {
+  emitReceipt(false, error);
+
 } finally {
   rmSync(scratch, { recursive: true, force: true });
 }

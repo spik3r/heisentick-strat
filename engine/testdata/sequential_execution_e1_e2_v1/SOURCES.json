@@ -1,23 +1,23 @@
 {
   "schema": "seq-exec-sources.v1",
   "repository": "spik3r/heisentick-backlog",
-  "commit": "3fd7209859c5fa7df4df0b0bb781673230b84610",
+  "commit": "3e4694ea088703ebf6a696287127b50cdbf8b6f7",
   "root": "fixtures/sequential-execution-e1-e2.v1",
   "files": {
     "DERIVATIONS.md": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/DERIVATIONS.md",
-      "git_blob": "890b80def188f32d745980f6d425ad003112cf1e",
-      "sha256": "60ede30f36d7619fa261916ee9527ff2ce4435b0e91489a83208a5f3340c458e"
+      "git_blob": "479e917666fd678f972f7239639d8ad8a7189df3",
+      "sha256": "4042cd413df602f64261d6fe702d34922d8bc5987b38184a0f0f5b9a05b8fe19"
     },
     "MANIFEST.json": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/MANIFEST.json",
-      "git_blob": "c50ada932489cd3a9c396389ec9d1ee2df0cbe9b",
-      "sha256": "026e8efaab9f6abc0fba72a2dee764c2950099833c5034f7c7e64f6300c4cf17"
+      "git_blob": "0a3dd83317a1448e4844b9b395a0436ec01bd33f",
+      "sha256": "2342d9014f1c718dee7c0a853580489450aea0d5de7c81a416f0068429687379"
     },
     "README.md": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/README.md",
-      "git_blob": "e4f2c18dd7da9b699a10e33505fbcf63fbc58c4e",
-      "sha256": "294a99dd271f8df53b1972ab423d00c83f83ebc4b8ad2ea1620f4ffb9b63fe4c"
+      "git_blob": "f628f84bf01709e315a9f70cd0a9565d174f0fca",
+      "sha256": "d9f62cc99143655d00abf082ac31d74cdd5c14ef57c461866cbb49b79d63e109"
     },
     "cases/atr.json": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/atr.json",
@@ -26,23 +26,28 @@
     },
     "cases/e1.json": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/e1.json",
-      "git_blob": "3272a753063ba90af7dc36f571fde6b71a704fca",
-      "sha256": "1296e585d9988acb0d7250dae3996670ad49dc4d7909beb72252c771fa73518a"
+      "git_blob": "c21b1a81ec0ff6c2650b3ecd517f345e0e038803",
+      "sha256": "27b00294e93266bcfe90ac7d0466bd674562f25b0203023ef213e21359ce570c"
     },
     "cases/e2.json": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/e2.json",
-      "git_blob": "507cbec8643664523c8c8a75ee79c8edc043c6ee",
-      "sha256": "5f24edeb008e084bf4366099418e3d0d2accca6d37c01bbef5ce0fd8556baca6"
+      "git_blob": "c3be393c05aea9ea222cf0125e8d291e5d7829c8",
+      "sha256": "636545cee6386720379113b87dc8bdb02ccceae7675ac21e86823f800770b384"
+    },
+    "cases/excluded.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/excluded.json",
+      "git_blob": "75b05a2a7b5e1a5df2104741122c01729259528c",
+      "sha256": "9d33efb1c7dc6b362108faf6dcc399179f20ef9598e7db0f45f59c6516906e3b"
     },
     "cases/provisional.json": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/provisional.json",
-      "git_blob": "08350edd18c2f2ef812201d53632637f3a89f92f",
-      "sha256": "65ef13e4d412970034427c5c7fd24f7e501db91bf8abcb3c72ba21eb8a6f097b"
+      "git_blob": "d96a7336138188b76b5f5ffd6a1a1f204665d5f2",
+      "sha256": "35735440a670a6f327347eb7731e04f6b9ee319eda409bffe5a30ab3b4c3228e"
     },
     "cases/refusals.json": {
       "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/refusals.json",
-      "git_blob": "06d1178b5e6dec1a33568541e1cf5858bf6a95c1",
-      "sha256": "74104998d7dfbf072f1cb4fb8fd6b829ae073fe828d8769106da1801f7094b9b"
+      "git_blob": "25a739cc64621a997ba513fa493c40f39bed1fc0",
+      "sha256": "6526df43a4142eed80bcbfe68d62f7830c1b7aec5abb107ff7ab08fef61a7ef5"
     }
   }
 }

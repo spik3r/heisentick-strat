@@ -93,3 +93,29 @@ intentionally stale broker fingerprint before the independent proof review.
 After renewal, the full uncached native suite passed all 24 packages. Exact-head
 CI and native ARM64 parity are mandatory and pending. Browser execution is unrun.
 This is test-artifact evidence, not published-release or consumer activation.
+
+### Native ARM64 gate stopped — 2026-10-10T11:08:29Z
+
+Producer draft PR #113 head `5849fc3686c548b00b17f74c3c25baa968b67997`
+failed the new exact comparison in CI run `38047049563`. The first mismatch was
+`family-legacy-setup9-fall-costs`: raw account net was
+`-123.62037356029629` on native ARM64 and `-123.62037356029626` on WASM.
+The shown retained trades, nominal per-trade accounting, counts and streaks
+matched. Return and expectancy propagated the account-net difference. This is
+an actual failed gate, not accepted tolerance or a qualified ARM64 result.
+
+Independent official Go 1.22.12 optimized ARM64 cross-compilation shows the
+same entry `FMSUBD` in baseline broker.go and the observed candidate. Capture
+branches converge before that inherited mutation. An explanatory `math.FMA`
+replay using captured sizes and exit credits reproduces both totals exactly,
+with the first divergence at the second entry, original bar 250. Cross-compiled
+assembly and replay explain the mechanism; neither substitutes for native
+execution or proves the later cancellation cases.
+
+The next diagnostic revision evaluates all frozen cases before failing on any
+exact cross-target mismatch. Same-architecture prechange/capture-off/capture-on,
+input/result invariants, signs, counts, streaks and null categories remain strict.
+No tolerance, rounding, shadow account or broker arithmetic change is introduced.
+Any cross-architecture bound for account net, prefix equity, MTM or derived
+metrics needs its own independent operation/operand propagation review. A
+canonical arithmetic change is a separate HT-245 compatibility decision.

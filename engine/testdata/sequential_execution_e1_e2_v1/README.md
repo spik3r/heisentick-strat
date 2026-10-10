@@ -1,4 +1,4 @@
-# Sequential E1/E2 execution acceptance corpus (`seq-exec-e1e2.v1`)
+# Sequential E1/E2 execution acceptance corpus (`seq-exec-e1e2.v1`, revision v1.2)
 
 Synthetic, valid, finite OHLC fixtures with expected decision, order, fill, stop,
 target, sizing and exit records for the owner-approved E1/E2 execution rules.
@@ -48,8 +48,11 @@ author's calculator. The JSON files are the authority.
    the fill (long `S >= F`, short `S <= F`). A last-eligible decision still fills
    at `d + 1`. A decision on the final bar gets no order (`no_next_bar`).
 5. **Target and size.** `R = |F - S|`, target `F +/- 2R` from the slipped fill.
-   `size = risk_amount / R`, then the notional cap: if `size * F > max_notional`,
-   `size = max_notional / F` and `cap_binds` is true (OQ-1).
+   Quantity `q = min(risk_amount / R, max_notional / |F|)`: fractional, no lot rounding,
+   reduced to fit the cap (owner decision, 2026-10-10). At `F = 0` the cap quantity is
+   unbounded, so `q = risk_amount / R` and the notional is 0. `cap_binds` is true only
+   when the cap strictly reduces `q`; equality does not bind. `notional = q * |F|`.
+   Stop and target are not changed by the cap.
 6. **Held bars and exits.** The entry bar is held bar 1. Bars `e .. e+N-1` are
    checked (`N` = 4 for E1, 12 for E2): stop touched when `low <= S` (long) /
    `high >= S` (short); target touched when `high >= TP` / `low <= TP`; touching
@@ -83,15 +86,14 @@ author's calculator. The JSON files are the authority.
     Cases that rely on these: `e1.stop_touch_equal`, `e1.entry_bar_target_touch`,
     `e1.tiny_distance_entry_bar_target`, `*.entry_bar_*`. The gap-to-the-open stop
     rule is written in the contract (Panel C), and stop-first on the entry bar is in PR 464.
-    **Target exits slip too.** Contract section 3.5 says both "exits also slip" and "TP fills
-    at exactly tp" (the legacy JS broker). The corpus follows the Go broker's reported
-    behaviour (Astra's review of head `2b106e1`: adverse slippage on every exit, target
-    included). Every binding case with a target exit and non-zero slippage depends on this
-    (`e1.target_basic`, `e1.slip_large`, `e2.target_basic`, and others); the owner should
-    confirm it. If the owner prefers unslipped target fills, those expected exits and P&L
-    change by `slippage` and `slippage * size`.
+    **Target exits slip too** (settled). E1/E2 retains the Go broker's adverse slippage on
+    every exit, targets included. Trigger detection uses the raw level; the executed exit
+    and P&L include slippage. Contract section 3.5 also records that the legacy JS broker
+    fills a target at exactly `tp`; that is historical context for the legacy comparison,
+    not a competing E1/E2 policy.
 11. **Mirror.** Each case has a long variant and a short variant. For `mirror.exact`
-    cases the short bars are `price -> 200 - price` with high and low swapped, and
+    cases the short bars are `price -> K - price` (`K` is `mirror.constant`: 200, or 0 for
+    the two non-positive-price cases) with high and low swapped, and
     every price in the expected records mirrors; ATR, size, P&L and R are equal.
 
 ## Files
@@ -102,13 +104,15 @@ author's calculator. The JSON files are the authority.
 | `cases/e1.json` | E1 stops, entry, held-bar and exit boundaries, delayed ages 1/4/5, no-decision cases |
 | `cases/e2.json` | E2 anchors (Setup, Countdown, pre-Setup, entry bar, overlap), deferral, collision, boundaries |
 | `cases/refusals.json` | Missing intervals and open positions at the end of data, both policies |
-| `cases/provisional.json` | Cases that depend on an open question; not binding |
+| `cases/provisional.json` | One case that depends on an unsettled question (OQ-2); not binding |
+| `cases/excluded.json` | One record of an unapproved proposal (OQ-4); do not implement |
 | `DERIVATIONS.md` | The derivation of every case in words and numbers |
 | `MANIFEST.json` | File hashes and the corpus hash |
 | `tools/validate.mjs` | Schema and internal-consistency validator |
 | `tools/harness.mjs` | Independent recalculation harness |
 
-Case record: `id, group, policy, status (binding|provisional), open_question,
+Case record: `id, previous_id, added_in, allow_nonpositive_prices, group, policy, status
+(binding|provisional|excluded), open_question,
 title, derivation, prefix_group, series, config, mirror, source_fixture, variants
 {long, short: {bars[{o,h,l,c}], expected}}`. `expected` is either `{outcome: "ok",
 decisions, orders, trades}` or `{outcome: "refused", refusal}`. Compare numbers with a
@@ -131,39 +135,52 @@ Last eligible: `e1.delayed_age4_fill_outside_window`, `e1.delayed_age5_expired`,
 `*.no_next_bar`. Next-open fills, gaps, slippage: `e1.gap_up_entry`,
 `e1.stop_gap_open_through`, `e1.slip_*`, `e2.slip_target_from_fill`. Wrong-side and
 zero distance: `e1.wrong_side_*`, `e2.wrong_side_gap_through`. Target after
-slippage: the slip cases. Exposure caps: `pv.cap_*` (provisional). Held-bar
+slippage: the slip cases. Exposure caps: `e1.cap_binds_reduces_size`, `e1.cap_equal_not_binding`, `e1.cap_fill_zero`, `e1.cap_fill_negative`. Held-bar
 boundaries: `*.time_exit_*`, `*.stop_last_checked_bar`, `*.target_last_checked_bar`,
 `*.entry_bar_*`. Anchor edges: `e1.anchor_excludes_pre_setup_bar`, `e1.anchor_includes_setup_bar1`, `e1.anchor_includes_setup9_bar`, `e2.anchor_*`. Stop/target ambiguity: `*.stop_target_same_bar`, `e1.entry_bar_both`.
 End of data: `refusals.json`. Future-bar changes: `prefix_group` cases.
 
 ## Open questions (reported, not frozen)
 
-Cases that depend on one are `provisional` and carry its ID. Their expected values
-follow the recommendation.
+Cases that depend on an unsettled question are `provisional` and carry its ID. Settled
+questions stay listed so the history is visible.
 
-- **OQ-1 Exposure cap.** The contract says "the notional cap applies" and nothing more.
-  Unresolved: reduce or reject an oversize trade, how notional is measured, and lot
-  rounding. If the owner accepts the recommendation, the exact rule is:
-  `size_unconstrained = risk_amount / |F - S|`; `notional_unconstrained = size_unconstrained * F`
-  with `F` the slipped entry fill; if `notional_unconstrained > max_notional` then
-  `size = max_notional / F` and `cap_binds = true`, else `size = size_unconstrained`;
-  equality does not bind; size is not rounded; the stop and 2R target are not changed by the
-  cap; realised risk then falls below `risk_amount`. The alternative is to reject the entry
-  (no trade) when the cap would bind. Only `pv.cap_binds_reduces_size` and
-  `pv.cap_equal_not_binding` use the rule; they stay provisional until the owner chooses.
+- **OQ-1 Exposure cap. Settled (owner, 2026-10-10).** Reduce the quantity to fit the cap,
+  fractional, no lot rounding: `q = min(risk / R, cap / |fill|)` (convention 5). Equality
+  does not bind. At fill zero a finite risk-sized quantity has zero notional. Stop and target
+  are unchanged. The two cap cases were promoted to binding after independent
+  recalculation (`e1.cap_binds_reduces_size`, formerly `pv.cap_binds_reduces_size`;
+  `e1.cap_equal_not_binding`, formerly `pv.cap_equal_not_binding`). Two bounded fixtures
+  were added for non-positive fills, built by shifting `e1.target_basic` so its
+  structure is unchanged: `e1.cap_fill_zero` (fill exactly 0) and `e1.cap_fill_negative`
+  (fill -8.5, cap uses `|fill|`). Existing cases were not altered. These two are new in v1.2
+  and have not been run by Astra's implementation.
 - **OQ-2 Target when a bar opens beyond it.** The existing broker fills at the target
   level (no gap credit); the contract only specifies gaps for stops.
   Recommendation: keep the broker behaviour. `pv.target_gap_open_beyond`.
-- **OQ-3 Exit slippage. Closed.** Version 1 of this corpus gave entry-only slippage; Astra's
-  review of head `2b106e1` showed the retained broker slips every fill, and contract
-  section 3.5 already says so. All binding cases now use one adverse offset on every fill
-  (convention 7). Still open inside it: whether a limit-style target exit should slip.
-  The retained broker does, so the corpus follows it; a separate target-exit rule would need
-  an owner-approved cost API.
-- **OQ-4 Open below the stop but slipped fill above it.** The rule tests the fill, so
-  `open 86.75, slip 0.5, stop 87` accepts a long that has already gapped through its
-  stop and then stops out on its first bar. Recommendation: reject when either the
-  open or the fill is on the wrong side. `pv.entry_straddle_open_below_stop`.
+- **OQ-3 Exit slippage. Settled.** E1/E2 retains the Go broker's adverse slippage on every
+  exit, including targets (convention 7). Version 1 of this corpus gave entry-only
+  slippage; Astra's review of head `2b106e1` corrected that and v1.1 follows it. The
+  independent v1.1 expectations and the `exit_unslipped` mutant are kept.
+- **OQ-4 Raw-open guard. Excluded proposal, not approved.** The approved wrong-side-stop
+  admission tests the actual fill (`S >= F` long, `S <= F` short). A proposal to also reject
+  when the raw open is on the wrong side (open 86.75, slippage 0.5, stop 87 admits a long
+  that has already gapped through its stop) was not approved and must not be implemented.
+  `cases/excluded.json` records the proposal's outcome only so that the choice stays
+  visible; it has status `excluded`, and no producer should change to satisfy it.
+- **OQ-8 Entry bar after a straddle entry. Open, not tested.** Under the approved fill-based
+  admission, a long can be admitted whose raw open is already below the stop (open 86.75,
+  slippage 0.5, stop 87: fill 87.25). Conventions 6 and 10 give the entry-bar stop a level of `S`,
+  but they were written for entries whose open is on the right side. What the entry bar
+  then does (exit at `S`, at `min(open, S)`, or not at all) is unspecified, so no binding
+  fixture pins it. Recommendation: the owner decides, then one bounded fixture is added.
+- **OQ-9 Non-positive prices as input. Assumption.** `e1.cap_fill_zero` and
+  `e1.cap_fill_negative` use bars with zero and negative prices (well-formed, finite OHLC).
+  The owner's "fill zero" wording implies they are valid input, but no document defines
+  "valid synthetic OHLC". The cases are binding on the cap rule and carry this assumption;
+  a producer that rejects non-positive bars should say so rather than pass them. A fixture
+  with a zero fill from all-positive bars (a short, open 0.5, slippage 0.5) would avoid the
+  assumption and was not added.
 - **OQ-5 Refusal shape.** Names (`unsupported-missing-interval` is the author's
   guess; `unsupported-incomplete-terminal-run` is from PR 464), whether the run is
   refused up front or at the offending bar, and whether earlier records are kept.
@@ -186,6 +203,34 @@ follow the recommendation.
 - **OQ-7 Broker fee distinction.** PR 464 keeps the broker's `trade.pnl` versus
   realized entry-fee difference. All fixtures use no fees, so `gross_pnl` is not
   affected; a fee case needs the owner's cost inputs.
+
+## Version history
+
+| Revision | PR 465 head | Corpus sha256 | Change |
+| --- | --- | --- | --- |
+| v1 | `2b106e162eeffb5a85d1390ba512314762cc36fc` | `76fde2d5465aef764ad1be1b2987aaf0971775a605f75583a88a473565d366d1` | 67 cases (62 binding, 5 provisional); entry-only slippage |
+| v1.1 | `3fd7209859c5fa7df4df0b0bb781673230b84610` | `3885ca9b7a42a53ae4f0f5276f11f3486c8ff65837d94c809c4dd95b97d3a3c0` | 66 cases (62 binding, 4 provisional); one adverse slippage on every fill |
+| v1.2 | recorded in the PR | `MANIFEST.json` | 68 cases (66 binding, 1 provisional, 1 excluded); cap rule settled, cap cases promoted, two non-positive-fill fixtures added, OQ-3 and OQ-4 relabelled |
+
+Counts: 66 + 2 = 68 because two bounded fixtures were added; promoting the two cap
+cases alone would give 66 cases, 64 binding. The straddle case moved from `provisional`
+to `excluded`, so provisional drops from 4 to 1 (`pv.target_gap_open_beyond`, OQ-2).
+
+## Evidence
+
+Independent corpus review (this task; validator, harness and mutants re-run on v1.2 by the author): the
+dependency-free validator; the independent harness written from the written rules (a separate
+Sonnet agent) with 16 mutants; a structural audit; and an Opus reviewer who wrote a second
+implementation from the freeze, contract section 7 and PR 464, and later the owner's cap text
+and README convention 7 (on costs and the cap the reviewer checked consistency with the stated
+rules; it did not derive them separately). None used Astra's code or output.
+
+Not rerun by the author (reported by Astra): native and WASM implementation results, all 124
+v1.1 binding long/short variants passing, Strat PR 112 merged as
+`f8aba9ef13e22ace21ce31f2ed06cd86ad53464d` with a green `Go checks` post-merge run (the merge
+and the check status were read back from GitHub; the test results were not rerun). That
+evidence covers v1.1; it does not cover the v1.2 changes. Neither the corpus nor the
+producer is declared acceptance-qualified by this review.
 
 ## How to check
 

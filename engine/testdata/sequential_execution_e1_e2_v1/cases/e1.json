@@ -12,6 +12,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Immediate E1 hits 2R target",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "ATR14(13)=10 (TR=10 on bars 0-13). Setup bars 5-13; lowest low 88 (bar 7). S=88-1.0=87.0. Open[14]=91, slip 0.5 -> F=91.5, R=4.5, TP=100.5, size 90/4.5=20. High[16]=101>=100.5: exit 100.5, held 3, +2R, 180. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": {
     "id": "e1.future_change",
@@ -382,6 +385,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Immediate E1 stopped out",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Same entry as e1.target_basic. Low[15]=86.5<=87 and open 92>87 so exit at 87.0: -4.5*20=-90, -1R. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 86.5; gross P&L -100, -1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": {
     "id": "e1.future_change",
@@ -740,6 +746,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Low exactly equal to stop counts as a hit",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Low[15]=87.0 == S. Touch is a hit (broker uses l<=sl). Exit 87.0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 86.5; gross P&L -100, -1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -1095,6 +1104,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Bar opens below carried stop: exit at open",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open[15]=85<=S=87: exit at the open 85 (worse of stop and open). pnl=(85-91.5)*20=-130, R=-6.5/4.5. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 84.5; gross P&L -140, -1.5555555556R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -1450,6 +1462,9 @@
    "status": "binding",
    "open_question": null,
    "title": "One bar reaches both stop and target: stop first",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 15 high 101>=TP 100.5 and low 86<=S 87. Stop-first, exit 87.0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 86.5; gross P&L -100, -1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -1805,6 +1820,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Stop touched on the entry bar",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Entry bar is held bar 1 and is checked. Low[14]=86.5<=87: exit 87.0 on bar 14, held 1, -90. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 86.5; gross P&L -100, -1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -2148,6 +2166,9 @@
    "status": "binding",
    "open_question": null,
    "title": "High exactly equal to target on the entry bar",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "High[14]=100.5 == TP: hit. Exit 100.5 on bar 14, held 1, +180. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -2491,6 +2512,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Entry bar reaches both stop and target: stop first",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 14 high 101 and low 86: stop first, exit 87.0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 86.5; gross P&L -100, -1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -2834,6 +2858,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Time exit at the open of e+4",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "e=14. Bars 14-17 are held bars 1-4 with no hit. Bar 18 open 96 exits (time_exit), held 4: (96-91.5)*20=90, R=1.0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 95.5; gross P&L 80, 0.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -3225,6 +3252,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Time exit precedes the stop check of bar e+4",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 18 opens 95 then trades to 80 (would hit the stop). Time exit first at open 95: 70. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 94.5; gross P&L 60, 0.6666666667R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -3616,6 +3646,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Time exit precedes the target check of bar e+4",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 18 opens 97, high 105>=100.5. Time exit at 97, no target credit: 110. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 96.5; gross P&L 100, 1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -4007,6 +4040,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Time exit wins when bar e+4 gaps through the stop",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 18 opens 85<=S. Reason is time_exit (not stop); price is the open 85: -130. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 84.5; gross P&L -140, -1.5555555556R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -4398,6 +4434,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Stop on bar e+3 is a stop, not a time exit",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 17 low 86<=87: stop at 87.0, held 4. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 86.5; gross P&L -100, -1.1111111111R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -4777,6 +4816,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Target on bar e+3",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 17 high 101>=100.5: target 100.5, held 4. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -5156,6 +5198,9 @@
    "status": "binding",
    "open_question": null,
    "title": "No slippage: target from the unslipped fill",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "slip 0: F=91, R=4, TP=99, size 22.5. High[16]=101: exit 99, +180. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0 gives 99; gross P&L 180, 2R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -5523,6 +5568,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Slippage 1.5: target measured from the slipped fill",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "F=92.5, R=5.5, TP=103.5, risk 110 -> size 20. Pre-slippage R (4.0) would give TP 99.0 or 100.0. High[16]=104: exit 103.5, +220. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 1.5 gives 102; gross P&L 190, 1.7272727273R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -5890,6 +5938,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Entry opens far above the close (price gap)",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open[14]=99 slip 0.5: F=99.5, R=12.5, TP=124.5, risk 125 -> size 10. No hit through bar 17; time exit at open[18]=103: 35. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 102.5; gross P&L 30, 0.24R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -6281,6 +6332,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Open gaps below the stop: entry rejected",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open[14]=80, F=80.5 < S=87 (long: S>=F is wrong side). Rejected, no trade.",
    "prefix_group": null,
    "series": {
@@ -6580,6 +6634,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Fill exactly on the stop (zero distance): rejected",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open 86.5 + slip 0.5 = 87.0 == S. Zero risk distance, rejected.",
    "prefix_group": null,
    "series": {
@@ -6879,6 +6936,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Open exactly on the stop, no slippage: rejected",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open 87.0 == S, slip 0: F==S, rejected.",
    "prefix_group": null,
    "series": {
@@ -7178,6 +7238,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Smallest accepted distance, target on entry bar",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open 87.25 slip 0.5: F=87.75, R=0.75, TP=89.25, risk 75 -> size 100. Low[14]=87.25>87, high 89.5>=89.25: target on bar 14, +150. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 88.75; gross P&L 100, 1.3333333333R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -7521,6 +7584,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Decision on the final bar has no next bar",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Series ends at bar 13 (the Setup-9 bar). Decision recorded, no order: no_next_bar.",
    "prefix_group": null,
    "series": {
@@ -7802,6 +7868,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Delayed perfection at age 1; ATR frozen at the decision bar",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Setup 9 at 13 is imperfect (min(l8,l9)=91 !< min(l6,l7)=90). Bar 14 low 86 < 90: delayed perfection, d=14, age 1. ATR14(14)=(13*10+24)/14=11 (not 10). Anchor stays bars 5-13: lowest low 88, so S=88-1.1=86.9 (bar 14 low 86 is outside the anchor). Open[15]=95, F=95.5, R=8.6, TP=112.7, risk 86 -> size 10. Time exit at open[19]=101: 55. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100.5; gross P&L 50, 0.5813953488R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -8205,6 +8274,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Delayed perfection at age 4 is eligible and fills after the window",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bars 14-16 have lows 90, 91, 91 (90 is equal to the threshold, not below). Bar 17 low 89.5<90: d=17, age 4, eligible. Fill at open[18] (age 5, outside the window). ATR14(17)=(100+10+10+10+24)/14=11, S=88-1.1=86.9. Open[18]=100, F=100.5, R=13.6, TP=127.7, risk 136 -> size 10. Time exit at open[22]=105: 45. Bar 20 closes at 97, equal to close[16], so the rising closes of bars 14-19 cannot grow into an incidental sell Setup 9. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 104.5; gross P&L 40, 0.2941176471R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -8644,6 +8716,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Delayed perfection at age 5 is expired: no order",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bars 14-17 have lows >= 90. Bar 18 low 89.5<90: delayed perfection fires once at age 5. E1 treats it as signal_expired: no order, no trade. Bar 19 low 89 does not create a second opportunity (one per episode).",
    "prefix_group": null,
    "series": {
@@ -8985,6 +9060,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Imperfect Setup 9 and no later qualifying low: no decision",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Same imperfect Setup as the delayed cases. Bars 14-19 keep lows >= 90 (threshold is strict), so no perfection event occurs and E1 records nothing.",
    "prefix_group": null,
    "series": {
@@ -9278,6 +9356,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Equal lows do not perfect the Setup: no immediate decision",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 11 low 91 and bar 13 low 91: min(l8,l9)=91 is not < min(l6,l7)=91. Strict inequality fails, so no immediate E1. Bars 14-15 keep lows >= 91 so no delayed event.",
    "prefix_group": null,
    "series": {
@@ -9523,6 +9604,9 @@
    "status": "binding",
    "open_question": null,
    "title": "A deep low one bar before Setup bar 1 is not in the E1 anchor",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 4 (the bar before Setup bar 1) has low 81 and TR 20; bar 0 is flat (TR 0) so ATR14(13)=(0+20+12*10)/14=10. Anchor bars 5-13: lowest low 88, S=87.0. A start at bar 4 would give 80.0. Entry and target as e1.target_basic: +180. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -9890,6 +9974,9 @@
    "status": "binding",
    "open_question": null,
    "title": "The lowest low is on Setup bar 1",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 5 (Setup bar 1) has low 81 and TR 20; bar 0 is flat so ATR14(13)=10. Anchor bars 5-13 includes it: S=81-1.0=80.0. F=91.5, R=11.5, TP=114.5, risk 115 -> size 10. No hit; time exit at open[18]=96: 45. A start at bar 6 would give 87.0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 95.5; gross P&L 40, 0.347826087R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -10281,6 +10368,9 @@
    "status": "binding",
    "open_question": null,
    "title": "The lowest low is on the Setup-9 bar",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "No early wick: lows fall 98 to 90 across bars 5-13, so the extreme is the Setup-9 bar low 90. S=90-1.0=89.0. F=91.5, R=2.5, TP=96.5, risk 50 -> size 20. High[15]=97: target, +100. An anchor ending at bar 12 would give 90.0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 96; gross P&L 90, 1.8R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -10636,6 +10726,9 @@
    "status": "binding",
    "open_question": null,
    "title": "A decision on the bar whose open closed the previous position is not blocked",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "First episode: delayed age 4 (d=17), fill at open[18]=100 (F=100.5), time exit at open[22]=105. Closes 95..105 on bars 14-22 are a sell run: sell Setup 9 completes at bar 22 and is perfected (max(h21,h22)=107 > max(h19,h20)=106). The first position left at the open of bar 22, so at that close the book is flat and the second opportunity is accepted. Second: sell side, anchor bars 14-22 (highest high 113.5, bar 17), ATR14(22) from bars 9-22, entry at open[23]=105 with slip 0.5 (F=104.5), time exit at open[27]. The long variant therefore also holds a short trade; the short variant a long trade. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 104.5; gross P&L 29.4117647059, 0.2941176471R. Exit levels and P&L quoted earlier in this entry are before the exit offset. Exit fill, trade 2 (short in the long variant): the exit level moved against the trade by slippage 0.5 gives 107.5; gross P&L -30.3907380608, -0.3039073806R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
    "prefix_group": null,
    "series": {
@@ -11226,6 +11319,1510 @@
         },
         "gross_pnl": -30.3907380608,
         "r_multiple": -0.3039073806
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.cap_binds_reduces_size",
+   "group": "e1_execution",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Notional cap binds: quantity reduced to cap/|fill|",
+   "previous_id": "pv.cap_binds_reduces_size",
+   "added_in": "v1.2 (promoted)",
+   "allow_nonpositive_prices": false,
+   "derivation": "As e1.target_basic but max_notional 1500. Risk quantity 90/4.5=20 would have notional 20*91.5=1830>1500, so q=min(20, 1500/91.5)=16.3934426 and cap_binds=true. Stop and 2R target are unchanged (S=87, TP=100.5). Short variant is not an exact mirror: F=108.5, q=1500/108.5. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 139.3442622951, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1500,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": false
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 96,
+       "l": 91,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 101,
+       "l": 94,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 88
+        },
+        "stop_buffer": 1,
+        "stop_price": 87,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 91,
+        "entry_fill": 91.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 91,
+        "entry_fill": 91.5,
+        "side": "long",
+        "stop": 87,
+        "target": 100.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 16.393442623,
+        "notional": 1500,
+        "cap_binds": true,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 100,
+         "held_bars": 3
+        },
+        "gross_pnl": 139.3442622951,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 106,
+       "l": 99,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 112
+        },
+        "stop_buffer": 1,
+        "stop_price": 113,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 109,
+        "entry_fill": 108.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 109,
+        "entry_fill": 108.5,
+        "side": "short",
+        "stop": 113,
+        "target": 99.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 13.8248847926,
+        "notional": 1500,
+        "cap_binds": true,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 100,
+         "held_bars": 3
+        },
+        "gross_pnl": 117.5115207373,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.cap_equal_not_binding",
+   "group": "e1_execution",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Notional exactly equal to the cap does not bind",
+   "previous_id": "pv.cap_equal_not_binding",
+   "added_in": "v1.2 (promoted)",
+   "allow_nonpositive_prices": false,
+   "derivation": "Open[14]=99.5, slip 0.5: F=100 (also 100 after mirroring). S=87, R=13, risk 130 -> q=10, notional 1000 == cap 1000: cap_binds=false, q unchanged. Time exit at open[18]=103: 30. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 102.5; gross P&L 25, 0.1923076923R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 130,
+    "max_notional": 1000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 99.5,
+       "h": 102,
+       "l": 98,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 103,
+       "l": 99,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 104,
+       "l": 100,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 105,
+       "l": 101,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 104,
+       "l": 102,
+       "c": 103
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 88
+        },
+        "stop_buffer": 1,
+        "stop_price": 87,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 99.5,
+        "entry_fill": 100,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 99.5,
+        "entry_fill": 100,
+        "side": "long",
+        "stop": 87,
+        "target": 126,
+        "risk_distance": 13,
+        "size_unconstrained": 10,
+        "size": 10,
+        "notional": 1000,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 18,
+         "reason": "time_exit",
+         "price": 102.5,
+         "held_bars": 4
+        },
+        "gross_pnl": 25,
+        "r_multiple": 0.1923076923
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 100.5,
+       "h": 102,
+       "l": 98,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 101,
+       "l": 97,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 100,
+       "l": 96,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 99,
+       "l": 95,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 98,
+       "l": 96,
+       "c": 97
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 112
+        },
+        "stop_buffer": 1,
+        "stop_price": 113,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 100.5,
+        "entry_fill": 100,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 100.5,
+        "entry_fill": 100,
+        "side": "short",
+        "stop": 113,
+        "target": 74,
+        "risk_distance": 13,
+        "size_unconstrained": 10,
+        "size": 10,
+        "notional": 1000,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 18,
+         "reason": "time_exit",
+         "price": 97.5,
+         "held_bars": 4
+        },
+        "gross_pnl": 25,
+        "r_multiple": 0.1923076923
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.cap_fill_zero",
+   "group": "e1_execution",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Fill exactly zero: risk-sized quantity, zero notional, cap does not bind",
+   "previous_id": null,
+   "added_in": "v1.2",
+   "allow_nonpositive_prices": true,
+   "derivation": "e1.target_basic with every price shifted by -91.5 (comparisons, ATR and ranges are unchanged). Open[14]=-0.5, slip 0.5: F=0. Stop 87-91.5=-4.5, R=4.5, TP=9, risk quantity 20. With max_notional 100 the cap quantity is 100/|0| = unbounded, so q=20, notional 0, cap_binds=false. Target level 9 fills at 8.5; P&L (8.5-0)*20=170. Mirror constant is 0 (price -> -price), so the short fill is also 0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 8.5; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 100,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 0,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 8.5,
+       "h": 13.5,
+       "l": 3.5,
+       "c": 8.5
+      },
+      {
+       "o": 8.5,
+       "h": 13.5,
+       "l": 3.5,
+       "c": 8.5
+      },
+      {
+       "o": 8.5,
+       "h": 13.5,
+       "l": 3.5,
+       "c": 8.5
+      },
+      {
+       "o": 8.5,
+       "h": 13.5,
+       "l": 3.5,
+       "c": 8.5
+      },
+      {
+       "o": 8.5,
+       "h": 13.5,
+       "l": 3.5,
+       "c": 9.5
+      },
+      {
+       "o": 9.5,
+       "h": 16.5,
+       "l": 6.5,
+       "c": 7.5
+      },
+      {
+       "o": 7.5,
+       "h": 15.5,
+       "l": 5.5,
+       "c": 6.5
+      },
+      {
+       "o": 6.5,
+       "h": 6.5,
+       "l": -3.5,
+       "c": 5.5
+      },
+      {
+       "o": 5.5,
+       "h": 13.5,
+       "l": 3.5,
+       "c": 4.5
+      },
+      {
+       "o": 4.5,
+       "h": 12.5,
+       "l": 2.5,
+       "c": 3.5
+      },
+      {
+       "o": 3.5,
+       "h": 11.5,
+       "l": 1.5,
+       "c": 2.5
+      },
+      {
+       "o": 2.5,
+       "h": 10.5,
+       "l": 0.5,
+       "c": 1.5
+      },
+      {
+       "o": 1.5,
+       "h": 9.5,
+       "l": -0.5,
+       "c": 0.5
+      },
+      {
+       "o": 0.5,
+       "h": 8.5,
+       "l": -1.5,
+       "c": -0.5
+      },
+      {
+       "o": -0.5,
+       "h": 1.5,
+       "l": -1.5,
+       "c": 0.5
+      },
+      {
+       "o": 0.5,
+       "h": 4.5,
+       "l": -0.5,
+       "c": 3.5
+      },
+      {
+       "o": 3.5,
+       "h": 9.5,
+       "l": 2.5,
+       "c": 8.5
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": -3.5
+        },
+        "stop_buffer": 1,
+        "stop_price": -4.5,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": -0.5,
+        "entry_fill": 0,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": -0.5,
+        "entry_fill": 0,
+        "side": "long",
+        "stop": -4.5,
+        "target": 9,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 20,
+        "notional": 0,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 8.5,
+         "held_bars": 3
+        },
+        "gross_pnl": 170,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": -8.5,
+       "h": -3.5,
+       "l": -13.5,
+       "c": -8.5
+      },
+      {
+       "o": -8.5,
+       "h": -3.5,
+       "l": -13.5,
+       "c": -8.5
+      },
+      {
+       "o": -8.5,
+       "h": -3.5,
+       "l": -13.5,
+       "c": -8.5
+      },
+      {
+       "o": -8.5,
+       "h": -3.5,
+       "l": -13.5,
+       "c": -8.5
+      },
+      {
+       "o": -8.5,
+       "h": -3.5,
+       "l": -13.5,
+       "c": -9.5
+      },
+      {
+       "o": -9.5,
+       "h": -6.5,
+       "l": -16.5,
+       "c": -7.5
+      },
+      {
+       "o": -7.5,
+       "h": -5.5,
+       "l": -15.5,
+       "c": -6.5
+      },
+      {
+       "o": -6.5,
+       "h": 3.5,
+       "l": -6.5,
+       "c": -5.5
+      },
+      {
+       "o": -5.5,
+       "h": -3.5,
+       "l": -13.5,
+       "c": -4.5
+      },
+      {
+       "o": -4.5,
+       "h": -2.5,
+       "l": -12.5,
+       "c": -3.5
+      },
+      {
+       "o": -3.5,
+       "h": -1.5,
+       "l": -11.5,
+       "c": -2.5
+      },
+      {
+       "o": -2.5,
+       "h": -0.5,
+       "l": -10.5,
+       "c": -1.5
+      },
+      {
+       "o": -1.5,
+       "h": 0.5,
+       "l": -9.5,
+       "c": -0.5
+      },
+      {
+       "o": -0.5,
+       "h": 1.5,
+       "l": -8.5,
+       "c": 0.5
+      },
+      {
+       "o": 0.5,
+       "h": 1.5,
+       "l": -1.5,
+       "c": -0.5
+      },
+      {
+       "o": -0.5,
+       "h": 0.5,
+       "l": -4.5,
+       "c": -3.5
+      },
+      {
+       "o": -3.5,
+       "h": -2.5,
+       "l": -9.5,
+       "c": -8.5
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 3.5
+        },
+        "stop_buffer": 1,
+        "stop_price": 4.5,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 0.5,
+        "entry_fill": 0,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 0.5,
+        "entry_fill": 0,
+        "side": "short",
+        "stop": 4.5,
+        "target": -9,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 20,
+        "notional": 0,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": -8.5,
+         "held_bars": 3
+        },
+        "gross_pnl": 170,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.cap_fill_negative",
+   "group": "e1_execution",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Negative fill: the cap uses the absolute fill",
+   "previous_id": null,
+   "added_in": "v1.2",
+   "allow_nonpositive_prices": true,
+   "derivation": "e1.target_basic with every price shifted by -100. Open[14]=-9, slip 0.5: F=-8.5. Stop -13, R=4.5, TP=0.5, risk quantity 20. Cap 100: cap quantity 100/|-8.5|=11.7647059 < 20, so q=11.7647059, notional 100, cap_binds=true. Target level 0.5 fills at 0.0; P&L (0-(-8.5))*q=100. Mirror constant 0 gives a short fill of +8.5 with the same quantity. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 0; gross P&L 100, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 100,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 0,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 1
+      },
+      {
+       "o": 1,
+       "h": 8,
+       "l": -2,
+       "c": -1
+      },
+      {
+       "o": -1,
+       "h": 7,
+       "l": -3,
+       "c": -2
+      },
+      {
+       "o": -2,
+       "h": -2,
+       "l": -12,
+       "c": -3
+      },
+      {
+       "o": -3,
+       "h": 5,
+       "l": -5,
+       "c": -4
+      },
+      {
+       "o": -4,
+       "h": 4,
+       "l": -6,
+       "c": -5
+      },
+      {
+       "o": -5,
+       "h": 3,
+       "l": -7,
+       "c": -6
+      },
+      {
+       "o": -6,
+       "h": 2,
+       "l": -8,
+       "c": -7
+      },
+      {
+       "o": -7,
+       "h": 1,
+       "l": -9,
+       "c": -8
+      },
+      {
+       "o": -8,
+       "h": 0,
+       "l": -10,
+       "c": -9
+      },
+      {
+       "o": -9,
+       "h": -7,
+       "l": -10,
+       "c": -8
+      },
+      {
+       "o": -8,
+       "h": -4,
+       "l": -9,
+       "c": -5
+      },
+      {
+       "o": -5,
+       "h": 1,
+       "l": -6,
+       "c": 0
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": -12
+        },
+        "stop_buffer": 1,
+        "stop_price": -13,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": -9,
+        "entry_fill": -8.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": -9,
+        "entry_fill": -8.5,
+        "side": "long",
+        "stop": -13,
+        "target": 0.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 11.7647058824,
+        "notional": 100,
+        "cap_binds": true,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 0,
+         "held_bars": 3
+        },
+        "gross_pnl": 100,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": 0
+      },
+      {
+       "o": 0,
+       "h": 5,
+       "l": -5,
+       "c": -1
+      },
+      {
+       "o": -1,
+       "h": 2,
+       "l": -8,
+       "c": 1
+      },
+      {
+       "o": 1,
+       "h": 3,
+       "l": -7,
+       "c": 2
+      },
+      {
+       "o": 2,
+       "h": 12,
+       "l": 2,
+       "c": 3
+      },
+      {
+       "o": 3,
+       "h": 5,
+       "l": -5,
+       "c": 4
+      },
+      {
+       "o": 4,
+       "h": 6,
+       "l": -4,
+       "c": 5
+      },
+      {
+       "o": 5,
+       "h": 7,
+       "l": -3,
+       "c": 6
+      },
+      {
+       "o": 6,
+       "h": 8,
+       "l": -2,
+       "c": 7
+      },
+      {
+       "o": 7,
+       "h": 9,
+       "l": -1,
+       "c": 8
+      },
+      {
+       "o": 8,
+       "h": 10,
+       "l": 0,
+       "c": 9
+      },
+      {
+       "o": 9,
+       "h": 10,
+       "l": 7,
+       "c": 8
+      },
+      {
+       "o": 8,
+       "h": 9,
+       "l": 4,
+       "c": 5
+      },
+      {
+       "o": 5,
+       "h": 6,
+       "l": -1,
+       "c": 0
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 12
+        },
+        "stop_buffer": 1,
+        "stop_price": 13,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 9,
+        "entry_fill": 8.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 9,
+        "entry_fill": 8.5,
+        "side": "short",
+        "stop": 13,
+        "target": -0.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 11.7647058824,
+        "notional": 100,
+        "cap_binds": true,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 0,
+         "held_bars": 3
+        },
+        "gross_pnl": 100,
+        "r_multiple": 1.8888888889
        }
       ]
      }
