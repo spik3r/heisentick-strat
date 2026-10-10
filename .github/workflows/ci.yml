@@ -131,6 +131,19 @@ jobs:
         timeout-minutes: 3
         run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards)' ./dsl ./engine ./cmd/enginewasm
 
+      - name: Sequential companion actual native and Node-WASM export parity
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 5
+        run: |
+          baseline_dir="$(mktemp -d "$RUNNER_TEMP/sequential-baseline.XXXXXX")"
+          trap 'rm -rf "$baseline_dir"' EXIT
+          baseline_commit=f8aba9ef13e22ace21ce31f2ed06cd86ad53464d
+          git fetch --depth=1 origin "$baseline_commit"
+          test "$(git rev-parse FETCH_HEAD)" = "$baseline_commit"
+          test "$(git rev-parse "$baseline_commit^{tree}")" = 8e4ef994a636f2125bab2bb909c28fca5db2351d
+          git archive "$baseline_commit" | tar -x -C "$baseline_dir"
+          node scripts/checks/sequential-backtest-parity.mjs --baseline-repo "$baseline_dir"
+
       - name: Run portable arithmetic kernels under Go WASM
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 3

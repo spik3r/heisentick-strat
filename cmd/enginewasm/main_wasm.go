@@ -13,6 +13,30 @@ import (
 )
 
 func main() {
+	js.Global().Set("engineRunSequentialFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
+		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
+			return string(sequentialFailure(sequentialInvalid("arguments", "expected fixture JSON and source strings")))
+		}
+		if js.Global().Get("Object").Invoke(args[0]).Length() > sequentialMaxFixture {
+			return string(sequentialFailure(sequentialInvalid("fixture", "fixture JSON exceeds 64 MiB")))
+		}
+		if js.Global().Get("Object").Invoke(args[1]).Length() > sequentialMaxSource {
+			return string(sequentialFailure(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", sequentialSourceLimitMessage}))
+		}
+		source, err := sourcetext.FromJS(args[1])
+		if err != nil {
+			return string(sequentialFailure(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()}))
+		}
+		raw, err := sourcetext.FromJS(args[0])
+		if err != nil {
+			return string(sequentialFailure(sequentialInvalid("fixture", "fixture JSON must contain valid UTF-16")))
+		}
+		out, err := runSequentialFixture(raw, source)
+		if err != nil {
+			return string(sequentialFailure(err))
+		}
+		return string(out)
+	}))
 	js.Global().Set("engineRunFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return `{"error":"expected fixture JSON and source strings"}`

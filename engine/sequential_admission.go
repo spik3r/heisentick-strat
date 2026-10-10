@@ -139,12 +139,16 @@ func prepareSequentialFull(request RunRequest) (*PreparedRun, error) {
 }
 
 func (r *PreparedRun) runSequentialFullChecked(costs Costs) (RunResult, error) {
+	return r.runSequentialFullCheckedWithCapture(costs, nil)
+}
+
+func (r *PreparedRun) runSequentialFullCheckedWithCapture(costs Costs, capture *sequentialAccountingCollector) (RunResult, error) {
 	if err := validateSequentialFullCosts(costs); err != nil {
 		return RunResult{}, err
 	}
 	fixture := r.fixture
 	fixture.Costs = costs.normalized()
-	trades, audit, err := runSequentialFull(r.sequentialFull.spec, r.series, fixture)
+	trades, audit, err := runSequentialFullWithCapture(r.sequentialFull.spec, r.series, fixture, true, capture)
 	if err != nil {
 		return RunResult{}, err
 	}
@@ -157,6 +161,10 @@ func (r *PreparedRun) runSequentialFullChecked(costs Costs) (RunResult, error) {
 }
 
 func runSequentialFullFixture(fixture RunFixture, cfg dsl.Config) (RunResult, error) {
+	return runSequentialFullFixtureWithCapture(fixture, cfg, nil)
+}
+
+func runSequentialFullFixtureWithCapture(fixture RunFixture, cfg dsl.Config, capture *sequentialAccountingCollector) (RunResult, error) {
 	if _, err := dsl.DecodeSequentialFullConfig(cfg); err != nil {
 		return RunResult{}, err
 	}
@@ -183,13 +191,17 @@ func runSequentialFullFixture(fixture RunFixture, cfg dsl.Config) (RunResult, er
 	if len(fixture.RawSourceBars)+len(fixture.RawHTFBars)+len(fixture.RawSourceHTFBars) != 0 {
 		return RunResult{}, sequentialAdmissionError("unsupported-sequential-route", "sourceBars", -1)
 	}
-	result, err := Run(RunRequest{
+	prepared, err := prepareSequentialFull(RunRequest{
 		Config: cfg, Series: marketdata.SeriesFromBars(fixture.Bars), StrategyID: fixture.StrategyID,
 		Symbol: fixture.Symbol, Timeframe: fixture.Timeframe, Costs: fixture.Costs, RangeMethod: fixture.RangeMethod,
 		SourceTimeframe: fixture.SourceTimeframe, HigherTimeframe: fixture.HigherTimeframe,
 		TimedCalendar: fixture.TimedCalendar, SourceSeries: marketdata.SeriesFromBars(fixture.SourceBars),
 		HTFSeries: marketdata.SeriesFromBars(fixture.HTFBars), SourceHTFSeries: marketdata.SeriesFromBars(fixture.SourceHTFBars),
 	})
+	if err != nil {
+		return RunResult{}, err
+	}
+	result, err := prepared.runSequentialFullCheckedWithCapture(fixture.Costs, capture)
 	if err != nil {
 		return RunResult{}, err
 	}

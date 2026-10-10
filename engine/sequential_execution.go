@@ -19,13 +19,21 @@ func runSequentialFull(spec dsl.SequentialFullSpec, series marketdata.Series, fi
 // Non-finalizing mode exists only for internal causality tests. It is not a
 // public execution-prefix/checkpoint capability and does not liquidate a trade.
 func runSequentialFullMode(spec dsl.SequentialFullSpec, series marketdata.Series, fixture RunFixture, finalize bool) ([]Trade, SequentialFullAudit, error) {
+	return runSequentialFullWithCapture(spec, series, fixture, finalize, nil)
+}
+
+func runSequentialFullWithCapture(spec dsl.SequentialFullSpec, series marketdata.Series, fixture RunFixture, finalize bool, capture *sequentialAccountingCollector) ([]Trade, SequentialFullAudit, error) {
 	s, err := newSequentialFullScheduler(spec, series, fixture)
 	if err != nil {
 		return nil, SequentialFullAudit{}, err
 	}
+	s.broker.sequentialAccounting = capture
 	for i := 0; i < series.Len(); i++ {
 		if err := s.step(i); err != nil {
 			return nil, s.audit, err
+		}
+		if capture != nil {
+			capture.mark(&s.broker, i, false)
 		}
 	}
 	if finalize {
