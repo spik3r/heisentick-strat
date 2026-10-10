@@ -66,7 +66,10 @@ func checkpointUnsupportedPath(prepared *PreparedRun, request RunRequest) string
 	if prepared.offRoute {
 		return "off-route request"
 	}
-	if prepared.params.SetupType != string(dsl.FamilyOpeningRangeBreakout) {
+	// The legacy Setup-9 counter is recomputed from the supplied closes on each
+	// call and the family keeps no other cross-bar state, so the broker fields
+	// the checkpoint already restores are enough for it.
+	if setupType := prepared.params.SetupType; setupType != string(dsl.FamilyOpeningRangeBreakout) && setupType != string(dsl.FamilyLegacySetup9) {
 		return "ordinary family " + prepared.params.SetupType
 	}
 	if request.SourceSeries.Len() != 0 || request.SourceHTFSeries.Len() != 0 {
