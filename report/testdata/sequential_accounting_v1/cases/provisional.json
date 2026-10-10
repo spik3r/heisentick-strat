@@ -1,0 +1,1031 @@
+{
+  "schema": "seq-accounting-public-projection.v1",
+  "convention_id": "seq-acct.v1",
+  "file": "provisional.json",
+  "marks_t_note": "Marks use original input bar-open timestamps; each value is post-execution close-bar MTM.",
+  "cases": [
+    {
+      "id": "leg.same_bar_exit_reentry",
+      "title": "Stop exit and a new Setup 9 entry on the same bar",
+      "group": "legacy_accounting",
+      "profile": {
+        "family": "legacy setup 9",
+        "id": "seq.legacy.setup9.v1",
+        "source_id": "dslSequentialLegacySetup9"
+      },
+      "series": {
+        "symbol": "XAUUSD",
+        "timeframe": "1h",
+        "timeframe_ms": 3600000,
+        "start_open_ms": 1767571200000,
+        "volume": 100
+      },
+      "costs": {
+        "feePerUnit": "0.25",
+        "slippage": "0.5",
+        "fillOn": "close",
+        "startEquity_input": "1024",
+        "startEquity_effective": "1024"
+      },
+      "risk": {
+        "riskUsd": 200,
+        "pinned_by": "legacySetup9.md: riskUsd default 200"
+      },
+      "inputs": {
+        "decision": null,
+        "decision_side_long_variant": "long"
+      },
+      "mirror": {
+        "constant": 600,
+        "exact": true
+      },
+      "variants": {
+        "long": {
+          "bars": [
+            {
+              "o": "224",
+              "h": "232",
+              "l": "216",
+              "c": "224"
+            },
+            {
+              "o": "224",
+              "h": "230",
+              "l": "214",
+              "c": "222"
+            },
+            {
+              "o": "222",
+              "h": "228",
+              "l": "212",
+              "c": "220"
+            },
+            {
+              "o": "220",
+              "h": "226",
+              "l": "210",
+              "c": "218"
+            },
+            {
+              "o": "218",
+              "h": "224",
+              "l": "208",
+              "c": "216"
+            },
+            {
+              "o": "216",
+              "h": "222",
+              "l": "206",
+              "c": "214"
+            },
+            {
+              "o": "214",
+              "h": "220",
+              "l": "204",
+              "c": "212"
+            },
+            {
+              "o": "212",
+              "h": "218",
+              "l": "202",
+              "c": "210"
+            },
+            {
+              "o": "210",
+              "h": "216",
+              "l": "200",
+              "c": "208"
+            },
+            {
+              "o": "208",
+              "h": "214",
+              "l": "198",
+              "c": "206"
+            },
+            {
+              "o": "206",
+              "h": "212",
+              "l": "196",
+              "c": "204"
+            },
+            {
+              "o": "204",
+              "h": "210",
+              "l": "194",
+              "c": "202"
+            },
+            {
+              "o": "202",
+              "h": "208.5",
+              "l": "192.5",
+              "c": "200"
+            },
+            {
+              "o": "200",
+              "h": "214",
+              "l": "198",
+              "c": "206"
+            },
+            {
+              "o": "206",
+              "h": "211",
+              "l": "195",
+              "c": "203"
+            },
+            {
+              "o": "203",
+              "h": "209",
+              "l": "193",
+              "c": "201"
+            },
+            {
+              "o": "201",
+              "h": "207",
+              "l": "191",
+              "c": "199"
+            },
+            {
+              "o": "199",
+              "h": "213",
+              "l": "197",
+              "c": "205"
+            },
+            {
+              "o": "205",
+              "h": "210",
+              "l": "194",
+              "c": "202"
+            },
+            {
+              "o": "202",
+              "h": "208",
+              "l": "192",
+              "c": "200"
+            },
+            {
+              "o": "200",
+              "h": "206",
+              "l": "190",
+              "c": "198"
+            },
+            {
+              "o": "198",
+              "h": "212",
+              "l": "196",
+              "c": "204"
+            },
+            {
+              "o": "204",
+              "h": "204",
+              "l": "174",
+              "c": "197"
+            },
+            {
+              "o": "197",
+              "h": "203",
+              "l": "195",
+              "c": "200"
+            },
+            {
+              "o": "200",
+              "h": "206",
+              "l": "199",
+              "c": "205"
+            }
+          ],
+          "expected": {
+            "outcome": "ok",
+            "signals": [
+              {
+                "index": 12,
+                "side": "long",
+                "atr14": "16",
+                "stop": "184.5",
+                "target": "231",
+                "fill": "200.5",
+                "size": "12.5",
+                "executed": true
+              },
+              {
+                "index": 22,
+                "side": "long",
+                "atr14": "17",
+                "stop": "165.5",
+                "target": "260",
+                "fill": "197.5",
+                "size": "6.25",
+                "executed": true
+              }
+            ],
+            "trades": [
+              {
+                "index": 0,
+                "side": "long",
+                "entry_bar": 12,
+                "exit_bar": 22,
+                "exit_reason": "sl",
+                "hold_bars": 10,
+                "entry_fill": "200.5",
+                "exit_level": "184.5",
+                "exit_fill": "184",
+                "size": "12.5",
+                "gross_pnl": "-206.25",
+                "entry_fee": "3.125",
+                "exit_fee": "3.125",
+                "trade_pnl": "-209.375",
+                "net_pnl": "-212.5"
+              },
+              {
+                "index": 1,
+                "side": "long",
+                "entry_bar": 22,
+                "exit_bar": 24,
+                "exit_reason": "end-of-test",
+                "hold_bars": 2,
+                "entry_fill": "197.5",
+                "exit_level": "205",
+                "exit_fill": "204.5",
+                "size": "6.25",
+                "gross_pnl": "43.75",
+                "entry_fee": "1.5625",
+                "exit_fee": "1.5625",
+                "trade_pnl": "42.1875",
+                "net_pnl": "40.625"
+              }
+            ],
+            "marks": [
+              {
+                "index": 0,
+                "t": 1767571200000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 1,
+                "t": 1767574800000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 2,
+                "t": 1767578400000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 3,
+                "t": 1767582000000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 4,
+                "t": 1767585600000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 5,
+                "t": 1767589200000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 6,
+                "t": 1767592800000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 7,
+                "t": 1767596400000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 8,
+                "t": 1767600000000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 9,
+                "t": 1767603600000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 10,
+                "t": 1767607200000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 11,
+                "t": 1767610800000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 12,
+                "t": 1767614400000,
+                "realized": "-3.125",
+                "unrealized": "-6.25",
+                "equity": "1014.625"
+              },
+              {
+                "index": 13,
+                "t": 1767618000000,
+                "realized": "-3.125",
+                "unrealized": "68.75",
+                "equity": "1089.625"
+              },
+              {
+                "index": 14,
+                "t": 1767621600000,
+                "realized": "-3.125",
+                "unrealized": "31.25",
+                "equity": "1052.125"
+              },
+              {
+                "index": 15,
+                "t": 1767625200000,
+                "realized": "-3.125",
+                "unrealized": "6.25",
+                "equity": "1027.125"
+              },
+              {
+                "index": 16,
+                "t": 1767628800000,
+                "realized": "-3.125",
+                "unrealized": "-18.75",
+                "equity": "1002.125"
+              },
+              {
+                "index": 17,
+                "t": 1767632400000,
+                "realized": "-3.125",
+                "unrealized": "56.25",
+                "equity": "1077.125"
+              },
+              {
+                "index": 18,
+                "t": 1767636000000,
+                "realized": "-3.125",
+                "unrealized": "18.75",
+                "equity": "1039.625"
+              },
+              {
+                "index": 19,
+                "t": 1767639600000,
+                "realized": "-3.125",
+                "unrealized": "-6.25",
+                "equity": "1014.625"
+              },
+              {
+                "index": 20,
+                "t": 1767643200000,
+                "realized": "-3.125",
+                "unrealized": "-31.25",
+                "equity": "989.625"
+              },
+              {
+                "index": 21,
+                "t": 1767646800000,
+                "realized": "-3.125",
+                "unrealized": "43.75",
+                "equity": "1064.625"
+              },
+              {
+                "index": 22,
+                "t": 1767650400000,
+                "realized": "-214.0625",
+                "unrealized": "-3.125",
+                "equity": "806.8125"
+              },
+              {
+                "index": 23,
+                "t": 1767654000000,
+                "realized": "-214.0625",
+                "unrealized": "15.625",
+                "equity": "825.5625"
+              },
+              {
+                "index": 24,
+                "t": 1767657600000,
+                "realized": "-171.875",
+                "unrealized": "0",
+                "equity": "852.125",
+                "replaced_by_liquidation": true
+              }
+            ],
+            "headline": {
+              "startEquity": "1024",
+              "endEquity": "852.125",
+              "net": "-171.875",
+              "returnPct": "-16.78466796875",
+              "worstLoss": "-212.5",
+              "maxDD": "282.8125",
+              "maxDDpct": "226250/8717",
+              "trades": 2,
+              "maxWinStreak": 1,
+              "maxLossStreak": 1,
+              "winRate": "50",
+              "profitFactor": "13/68",
+              "expectancy": "-85.9375",
+              "avgWin": "40.625",
+              "avgLoss": "-212.5",
+              "avgHoldBars": "6"
+            },
+            "trade_accounting": [
+              {
+                "index": 0,
+                "entryFee": "3.125",
+                "exitFee": "3.125",
+                "netPnl": "-212.5"
+              },
+              {
+                "index": 1,
+                "entryFee": "1.5625",
+                "exitFee": "1.5625",
+                "netPnl": "40.625"
+              }
+            ],
+            "run_trade_pnl": [
+              {
+                "index": 0,
+                "pnl": "-209.375"
+              },
+              {
+                "index": 1,
+                "pnl": "42.1875"
+              }
+            ],
+            "drawdown_points": {
+              "maxDD": {
+                "bar": 22,
+                "peak": "1089.625",
+                "peak_bar": 13,
+                "equity": "806.8125",
+                "drawdown": "282.8125"
+              },
+              "maxDDpct": {
+                "bar": 22,
+                "peak": "1089.625",
+                "peak_bar": 13,
+                "equity": "806.8125",
+                "drawdown": "282.8125",
+                "percent": "226250/8717"
+              },
+              "note": "peak_bar -1 means the initial equity, before the first mark. Derivation only; not an exported field."
+            }
+          },
+          "binary64_probe": {
+            "money_identical": true,
+            "money_differences": [],
+            "ratio_matches_correct_rounding_in_plain_order": {
+              "returnPct": true,
+              "maxDDpct": false,
+              "winRate": true,
+              "profitFactor": true,
+              "expectancy": true,
+              "avgWin": true,
+              "avgLoss": true,
+              "avgHoldBars": true
+            },
+            "returnPct_alternate_order_matches": true,
+            "ratio_rational_is_dyadic": {
+              "returnPct": true,
+              "maxDDpct": false,
+              "winRate": true,
+              "profitFactor": false,
+              "expectancy": true,
+              "avgWin": true,
+              "avgLoss": true,
+              "avgHoldBars": true
+            }
+          }
+        },
+        "short": {
+          "bars": [
+            {
+              "o": "376",
+              "h": "384",
+              "l": "368",
+              "c": "376"
+            },
+            {
+              "o": "376",
+              "h": "386",
+              "l": "370",
+              "c": "378"
+            },
+            {
+              "o": "378",
+              "h": "388",
+              "l": "372",
+              "c": "380"
+            },
+            {
+              "o": "380",
+              "h": "390",
+              "l": "374",
+              "c": "382"
+            },
+            {
+              "o": "382",
+              "h": "392",
+              "l": "376",
+              "c": "384"
+            },
+            {
+              "o": "384",
+              "h": "394",
+              "l": "378",
+              "c": "386"
+            },
+            {
+              "o": "386",
+              "h": "396",
+              "l": "380",
+              "c": "388"
+            },
+            {
+              "o": "388",
+              "h": "398",
+              "l": "382",
+              "c": "390"
+            },
+            {
+              "o": "390",
+              "h": "400",
+              "l": "384",
+              "c": "392"
+            },
+            {
+              "o": "392",
+              "h": "402",
+              "l": "386",
+              "c": "394"
+            },
+            {
+              "o": "394",
+              "h": "404",
+              "l": "388",
+              "c": "396"
+            },
+            {
+              "o": "396",
+              "h": "406",
+              "l": "390",
+              "c": "398"
+            },
+            {
+              "o": "398",
+              "h": "407.5",
+              "l": "391.5",
+              "c": "400"
+            },
+            {
+              "o": "400",
+              "h": "402",
+              "l": "386",
+              "c": "394"
+            },
+            {
+              "o": "394",
+              "h": "405",
+              "l": "389",
+              "c": "397"
+            },
+            {
+              "o": "397",
+              "h": "407",
+              "l": "391",
+              "c": "399"
+            },
+            {
+              "o": "399",
+              "h": "409",
+              "l": "393",
+              "c": "401"
+            },
+            {
+              "o": "401",
+              "h": "403",
+              "l": "387",
+              "c": "395"
+            },
+            {
+              "o": "395",
+              "h": "406",
+              "l": "390",
+              "c": "398"
+            },
+            {
+              "o": "398",
+              "h": "408",
+              "l": "392",
+              "c": "400"
+            },
+            {
+              "o": "400",
+              "h": "410",
+              "l": "394",
+              "c": "402"
+            },
+            {
+              "o": "402",
+              "h": "404",
+              "l": "388",
+              "c": "396"
+            },
+            {
+              "o": "396",
+              "h": "426",
+              "l": "396",
+              "c": "403"
+            },
+            {
+              "o": "403",
+              "h": "405",
+              "l": "397",
+              "c": "400"
+            },
+            {
+              "o": "400",
+              "h": "401",
+              "l": "394",
+              "c": "395"
+            }
+          ],
+          "expected": {
+            "outcome": "ok",
+            "signals": [
+              {
+                "index": 12,
+                "side": "short",
+                "atr14": "16",
+                "stop": "415.5",
+                "target": "369",
+                "fill": "399.5",
+                "size": "12.5",
+                "executed": true
+              },
+              {
+                "index": 22,
+                "side": "short",
+                "atr14": "17",
+                "stop": "434.5",
+                "target": "340",
+                "fill": "402.5",
+                "size": "6.25",
+                "executed": true
+              }
+            ],
+            "trades": [
+              {
+                "index": 0,
+                "side": "short",
+                "entry_bar": 12,
+                "exit_bar": 22,
+                "exit_reason": "sl",
+                "hold_bars": 10,
+                "entry_fill": "399.5",
+                "exit_level": "415.5",
+                "exit_fill": "416",
+                "size": "12.5",
+                "gross_pnl": "-206.25",
+                "entry_fee": "3.125",
+                "exit_fee": "3.125",
+                "trade_pnl": "-209.375",
+                "net_pnl": "-212.5"
+              },
+              {
+                "index": 1,
+                "side": "short",
+                "entry_bar": 22,
+                "exit_bar": 24,
+                "exit_reason": "end-of-test",
+                "hold_bars": 2,
+                "entry_fill": "402.5",
+                "exit_level": "395",
+                "exit_fill": "395.5",
+                "size": "6.25",
+                "gross_pnl": "43.75",
+                "entry_fee": "1.5625",
+                "exit_fee": "1.5625",
+                "trade_pnl": "42.1875",
+                "net_pnl": "40.625"
+              }
+            ],
+            "marks": [
+              {
+                "index": 0,
+                "t": 1767571200000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 1,
+                "t": 1767574800000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 2,
+                "t": 1767578400000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 3,
+                "t": 1767582000000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 4,
+                "t": 1767585600000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 5,
+                "t": 1767589200000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 6,
+                "t": 1767592800000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 7,
+                "t": 1767596400000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 8,
+                "t": 1767600000000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 9,
+                "t": 1767603600000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 10,
+                "t": 1767607200000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 11,
+                "t": 1767610800000,
+                "realized": "0",
+                "unrealized": "0",
+                "equity": "1024"
+              },
+              {
+                "index": 12,
+                "t": 1767614400000,
+                "realized": "-3.125",
+                "unrealized": "-6.25",
+                "equity": "1014.625"
+              },
+              {
+                "index": 13,
+                "t": 1767618000000,
+                "realized": "-3.125",
+                "unrealized": "68.75",
+                "equity": "1089.625"
+              },
+              {
+                "index": 14,
+                "t": 1767621600000,
+                "realized": "-3.125",
+                "unrealized": "31.25",
+                "equity": "1052.125"
+              },
+              {
+                "index": 15,
+                "t": 1767625200000,
+                "realized": "-3.125",
+                "unrealized": "6.25",
+                "equity": "1027.125"
+              },
+              {
+                "index": 16,
+                "t": 1767628800000,
+                "realized": "-3.125",
+                "unrealized": "-18.75",
+                "equity": "1002.125"
+              },
+              {
+                "index": 17,
+                "t": 1767632400000,
+                "realized": "-3.125",
+                "unrealized": "56.25",
+                "equity": "1077.125"
+              },
+              {
+                "index": 18,
+                "t": 1767636000000,
+                "realized": "-3.125",
+                "unrealized": "18.75",
+                "equity": "1039.625"
+              },
+              {
+                "index": 19,
+                "t": 1767639600000,
+                "realized": "-3.125",
+                "unrealized": "-6.25",
+                "equity": "1014.625"
+              },
+              {
+                "index": 20,
+                "t": 1767643200000,
+                "realized": "-3.125",
+                "unrealized": "-31.25",
+                "equity": "989.625"
+              },
+              {
+                "index": 21,
+                "t": 1767646800000,
+                "realized": "-3.125",
+                "unrealized": "43.75",
+                "equity": "1064.625"
+              },
+              {
+                "index": 22,
+                "t": 1767650400000,
+                "realized": "-214.0625",
+                "unrealized": "-3.125",
+                "equity": "806.8125"
+              },
+              {
+                "index": 23,
+                "t": 1767654000000,
+                "realized": "-214.0625",
+                "unrealized": "15.625",
+                "equity": "825.5625"
+              },
+              {
+                "index": 24,
+                "t": 1767657600000,
+                "realized": "-171.875",
+                "unrealized": "0",
+                "equity": "852.125",
+                "replaced_by_liquidation": true
+              }
+            ],
+            "headline": {
+              "startEquity": "1024",
+              "endEquity": "852.125",
+              "net": "-171.875",
+              "returnPct": "-16.78466796875",
+              "worstLoss": "-212.5",
+              "maxDD": "282.8125",
+              "maxDDpct": "226250/8717",
+              "trades": 2,
+              "maxWinStreak": 1,
+              "maxLossStreak": 1,
+              "winRate": "50",
+              "profitFactor": "13/68",
+              "expectancy": "-85.9375",
+              "avgWin": "40.625",
+              "avgLoss": "-212.5",
+              "avgHoldBars": "6"
+            },
+            "trade_accounting": [
+              {
+                "index": 0,
+                "entryFee": "3.125",
+                "exitFee": "3.125",
+                "netPnl": "-212.5"
+              },
+              {
+                "index": 1,
+                "entryFee": "1.5625",
+                "exitFee": "1.5625",
+                "netPnl": "40.625"
+              }
+            ],
+            "run_trade_pnl": [
+              {
+                "index": 0,
+                "pnl": "-209.375"
+              },
+              {
+                "index": 1,
+                "pnl": "42.1875"
+              }
+            ],
+            "drawdown_points": {
+              "maxDD": {
+                "bar": 22,
+                "peak": "1089.625",
+                "peak_bar": 13,
+                "equity": "806.8125",
+                "drawdown": "282.8125"
+              },
+              "maxDDpct": {
+                "bar": 22,
+                "peak": "1089.625",
+                "peak_bar": 13,
+                "equity": "806.8125",
+                "drawdown": "282.8125",
+                "percent": "226250/8717"
+              },
+              "note": "peak_bar -1 means the initial equity, before the first mark. Derivation only; not an exported field."
+            }
+          },
+          "binary64_probe": {
+            "money_identical": true,
+            "money_differences": [],
+            "ratio_matches_correct_rounding_in_plain_order": {
+              "returnPct": true,
+              "maxDDpct": false,
+              "winRate": true,
+              "profitFactor": true,
+              "expectancy": true,
+              "avgWin": true,
+              "avgLoss": true,
+              "avgHoldBars": true
+            },
+            "returnPct_alternate_order_matches": true,
+            "ratio_rational_is_dyadic": {
+              "returnPct": true,
+              "maxDDpct": false,
+              "winRate": true,
+              "profitFactor": false,
+              "expectancy": true,
+              "avgWin": true,
+              "avgLoss": true,
+              "avgHoldBars": true
+            }
+          }
+        }
+      },
+      "status": "provisional",
+      "initial_status": "provisional",
+      "provisional_assertions": [],
+      "defects_detected": [
+        "D01",
+        "D02",
+        "D03",
+        "D04",
+        "D05",
+        "D08",
+        "D09",
+        "D10",
+        "D11",
+        "D12",
+        "D13",
+        "D14",
+        "D15",
+        "D18",
+        "D23",
+        "D24",
+        "D25",
+        "D26",
+        "D27",
+        "D30",
+        "D34"
+      ],
+      "status_history": [],
+      "assertion_history": [],
+      "provisional_reason": "Faithful legacy exit/reentry ordering on the same bar remains a separately documented acceptance item; this case is not promoted."
+    }
+  ]
+}

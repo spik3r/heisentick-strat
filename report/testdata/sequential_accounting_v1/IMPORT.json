@@ -1,0 +1,46 @@
+{
+  "schema": "seq-accounting-public-import.v1",
+  "projectionVersion": "1.1-public.1",
+  "authorship": {
+    "expectations": "Claude",
+    "publicProjection": "Astra"
+  },
+  "byteIdenticalToAuthoredCorpus": false,
+  "economicFields": [
+    "id",
+    "profile",
+    "series",
+    "costs",
+    "risk",
+    "inputs",
+    "mirror",
+    "variants"
+  ],
+  "economicProjectionSha256": "d512d8c9b1ee16cf93269efc580369ce60918dc5bb2607d286ff0d950cb45d66",
+  "economicProjectionEncoding": "UTF-8 JSON, sorted object keys, no whitespace, cases sorted by id",
+  "caseCount": 30,
+  "binding": 29,
+  "provisional": 1,
+  "injectedOnly": 8,
+  "statusFieldsPreserved": [
+    "status",
+    "initial_status",
+    "provisional_assertions",
+    "refusal_type"
+  ],
+  "statusTransitionsPreserved": true,
+  "assertionTransitionsPreserved": true,
+  "assertionTransitionFields": [
+    "path",
+    "from",
+    "to"
+  ],
+  "transformations": [
+    "Allowlist synthetic case identity, economic inputs, exact expectations and semantic status fields.",
+    "Replace private history provenance with the pinned public accepted contract while preserving from/to transitions.",
+    "Replace shared prefix file paths with already public producer testdata paths; preserve numeric prefix index/hash.",
+    "Exclude free-form authoring discussion and private provenance; provide new public-source documentation.",
+    "Preserve injected id/title/test/expected descriptions; label them injected-only and unimplemented by this packet."
+  ],
+  "qualification": "Preparation only; independent public-projection review, permanent Go adapter and actual native ARM64 corpus checks pending."
+}

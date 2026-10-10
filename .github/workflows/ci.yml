@@ -131,6 +131,13 @@ jobs:
         timeout-minutes: 3
         run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards)' ./dsl ./engine ./cmd/enginewasm
 
+      # Independent accounting expectations: 58 binding variants, 2 diagnostic
+      # provisional variants; injected-only descriptions are not execution gates.
+      - name: Sequential accounting corpus under Node-hosted Go WASM
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequentialAccountingCorpus' ./report
+
       - name: Sequential companion actual native and Node-WASM export parity
         id: sequential_parity
         if: steps.mod.outputs.present == 'true'
