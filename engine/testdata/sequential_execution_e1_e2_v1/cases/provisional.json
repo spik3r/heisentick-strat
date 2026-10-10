@@ -1,0 +1,1421 @@
+{
+ "schema": "seq-exec-fixtures.v1",
+ "convention_id": "seq-exec-e1e2.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "mirror": "price -> 200 - price, high and low swapped, sides swapped",
+ "family": "provisional",
+ "cases": [
+  {
+   "id": "pv.cap_binds_reduces_size",
+   "group": "provisional",
+   "policy": "E1",
+   "status": "provisional",
+   "open_question": "OQ-1",
+   "title": "Notional cap binds: size reduced to cap/fill",
+   "derivation": "As e1.target_basic but max_notional 1500. Risk size 20 gives notional 20*91.5=1830>1500, so size=1500/91.5=16.3934426 and cap_binds=true. Short mirror: F=108.5, size 1500/108.5. Assumes reduce-not-reject and notional = size*fill price (OQ-1). Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 139.3442622951, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1500,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": false
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 96,
+       "l": 91,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 101,
+       "l": 94,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 88
+        },
+        "stop_buffer": 1,
+        "stop_price": 87,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 91,
+        "entry_fill": 91.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 91,
+        "entry_fill": 91.5,
+        "side": "long",
+        "stop": 87,
+        "target": 100.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 16.393442623,
+        "notional": 1500,
+        "cap_binds": true,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 100,
+         "held_bars": 3
+        },
+        "gross_pnl": 139.3442622951,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 106,
+       "l": 99,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 112
+        },
+        "stop_buffer": 1,
+        "stop_price": 113,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 109,
+        "entry_fill": 108.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 109,
+        "entry_fill": 108.5,
+        "side": "short",
+        "stop": 113,
+        "target": 99.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 13.8248847926,
+        "notional": 1500,
+        "cap_binds": true,
+        "exit": {
+         "bar_index": 16,
+         "reason": "target",
+         "price": 100,
+         "held_bars": 3
+        },
+        "gross_pnl": 117.5115207373,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "pv.cap_equal_not_binding",
+   "group": "provisional",
+   "policy": "E1",
+   "status": "provisional",
+   "open_question": "OQ-1",
+   "title": "Notional exactly equal to the cap does not bind",
+   "derivation": "Open[14]=99.5, slip 0.5: F=100 (also 100 after mirroring). S=87, R=13, risk 130 -> size 10, notional 1000 == cap 1000: cap_binds=false, size unchanged. Time exit at open[18]=103: 30. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 102.5; gross P&L 25, 0.1923076923R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 130,
+    "max_notional": 1000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 99.5,
+       "h": 102,
+       "l": 98,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 103,
+       "l": 99,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 104,
+       "l": 100,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 105,
+       "l": 101,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 104,
+       "l": 102,
+       "c": 103
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 88
+        },
+        "stop_buffer": 1,
+        "stop_price": 87,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 99.5,
+        "entry_fill": 100,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 99.5,
+        "entry_fill": 100,
+        "side": "long",
+        "stop": 87,
+        "target": 126,
+        "risk_distance": 13,
+        "size_unconstrained": 10,
+        "size": 10,
+        "notional": 1000,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 18,
+         "reason": "time_exit",
+         "price": 102.5,
+         "held_bars": 4
+        },
+        "gross_pnl": 25,
+        "r_multiple": 0.1923076923
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 100.5,
+       "h": 102,
+       "l": 98,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 101,
+       "l": 97,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 100,
+       "l": 96,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 99,
+       "l": 95,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 98,
+       "l": 96,
+       "c": 97
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 112
+        },
+        "stop_buffer": 1,
+        "stop_price": 113,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 100.5,
+        "entry_fill": 100,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 100.5,
+        "entry_fill": 100,
+        "side": "short",
+        "stop": 113,
+        "target": 74,
+        "risk_distance": 13,
+        "size_unconstrained": 10,
+        "size": 10,
+        "notional": 1000,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 18,
+         "reason": "time_exit",
+         "price": 97.5,
+         "held_bars": 4
+        },
+        "gross_pnl": 25,
+        "r_multiple": 0.1923076923
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "pv.target_gap_open_beyond",
+   "group": "provisional",
+   "policy": "E1",
+   "status": "provisional",
+   "open_question": "OQ-2",
+   "title": "Bar opens beyond the target: fill at the target level",
+   "derivation": "Open[15]=103 > TP 100.5. Recommended and existing-broker reading: the target level 100.5 is the fill level (no gap credit), less slippage 0.5 = 100.0. The alternative credits the open (103 less 0.5 = 102.5). Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 103,
+       "h": 104,
+       "l": 102,
+       "c": 103
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 88
+        },
+        "stop_buffer": 1,
+        "stop_price": 87,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 91,
+        "entry_fill": 91.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 91,
+        "entry_fill": 91.5,
+        "side": "long",
+        "stop": 87,
+        "target": 100.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 20,
+        "notional": 1830,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 15,
+         "reason": "target",
+         "price": 100,
+         "held_bars": 2
+        },
+        "gross_pnl": 170,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 97,
+       "h": 98,
+       "l": 96,
+       "c": 97
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 112
+        },
+        "stop_buffer": 1,
+        "stop_price": 113,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 109,
+        "entry_fill": 108.5,
+        "status": "filled"
+       }
+      ],
+      "trades": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 109,
+        "entry_fill": 108.5,
+        "side": "short",
+        "stop": 113,
+        "target": 99.5,
+        "risk_distance": 4.5,
+        "size_unconstrained": 20,
+        "size": 20,
+        "notional": 2170,
+        "cap_binds": false,
+        "exit": {
+         "bar_index": 15,
+         "reason": "target",
+         "price": 100,
+         "held_bars": 2
+        },
+        "gross_pnl": 170,
+        "r_multiple": 1.8888888889
+       }
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "pv.entry_straddle_open_below_stop",
+   "group": "provisional",
+   "policy": "E1",
+   "status": "provisional",
+   "open_question": "OQ-4",
+   "title": "Open below the stop but slipped fill above it",
+   "derivation": "Open[14]=86.75 < S=87, slip 0.5 -> F=87.25 > S. The contract rule tests the fill (S>=F), which would accept; the open already gapped through the stop. Recommendation: reject (test both open and fill). Expectation: stop_breached_at_entry.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 86.75,
+       "h": 88,
+       "l": 86.5,
+       "c": 87.5
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+        "policy": "E1",
+        "setup_side": "buy",
+        "trade_side": "long",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 88
+        },
+        "stop_buffer": 1,
+        "stop_price": 87,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 86.75,
+        "entry_fill": 87.25,
+        "status": "rejected",
+        "reason": "stop_breached_at_entry"
+       }
+      ],
+      "trades": []
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 113.25,
+       "h": 113.5,
+       "l": 112,
+       "c": 112.5
+      }
+     ],
+     "expected": {
+      "outcome": "ok",
+      "decisions": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+        "policy": "E1",
+        "setup_side": "sell",
+        "trade_side": "short",
+        "trigger": "perfection",
+        "setup_bar1_index": 5,
+        "setup_bar9_index": 13,
+        "admitting_setup_bar9_index": 13,
+        "decision_bar_index": 13,
+        "atr14": 10,
+        "anchor": {
+         "from_index": 5,
+         "to_index": 13,
+         "price": 112
+        },
+        "stop_buffer": 1,
+        "stop_price": 113,
+        "eligible": true,
+        "age": 0,
+        "fill_outside_window": false
+       }
+      ],
+      "orders": [
+       {
+        "opportunity_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000:perf",
+        "entry_bar_index": 14,
+        "entry_open": 113.25,
+        "entry_fill": 112.75,
+        "status": "rejected",
+        "reason": "stop_breached_at_entry"
+       }
+      ],
+      "trades": []
+     }
+    }
+   }
+  }
+ ]
+}
