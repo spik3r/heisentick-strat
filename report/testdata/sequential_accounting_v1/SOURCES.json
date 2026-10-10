@@ -1,0 +1,63 @@
+{
+  "schema": "seq-accounting-public-sources.v1",
+  "repository": "spik3r/heisentick-strat",
+  "commit": "b574bfc903e3c6c8303c58ef34a0587df6e54968",
+  "tree": "df6da00e7bc79f8523040cdcf2597ec424a8eb19",
+  "files": {
+    "docs/sequential-metrics-contract.md": {
+      "blob": "b19db80d4f5b9c1629c728d080056ad4e96f42cb",
+      "sha256": "37f77951358ab6038c011efd6093a926e69611d64f1cdbd1a7e837a5413f203e",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/docs/sequential-metrics-contract.md"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "e502bedf80d45711b9840abd973edb86a3964898",
+      "sha256": "5bcdcbdfdee7d338e272c1033bb9d2f38bb3c8d6c8b12d6efa1f1fa9a140b0d7",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/scripts/checks/sequential-arithmetic-schedules.json"
+    },
+    "spec/schemas/sequential-backtest-result-v1.schema.json": {
+      "blob": "82f6298b842fce965add323ae43096c2bfa5b360",
+      "sha256": "e31ca23cf59234974c7645d8e154b5e1d25b3e795af6cfac2419e54ca6ccccf2",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/spec/schemas/sequential-backtest-result-v1.schema.json"
+    },
+    "docs/sequential-source-freeze.json": {
+      "blob": "248286264f20ee9bfd865559e028ee0e06064dc8",
+      "sha256": "bff98759dbd6300cd14ee61d2a9bf579ad1a6ac68f046cc808acf7e9af458aa9",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/docs/sequential-source-freeze.json"
+    },
+    "spec/dsl-spec-families/legacySetup9.md": {
+      "blob": "24665458a36152ec20b2643935dc0adce0e6c183",
+      "sha256": "fde17dea8c3e1affa13304ed68c0d87eede6577c3691c4bdb4d9baf9af577514",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/spec/dsl-spec-families/legacySetup9.md"
+    },
+    "spec/dsl-spec-families/sequentialFull.md": {
+      "blob": "c7eed059b7cfa5e5414be558de39ae34d08946e5",
+      "sha256": "dbc5d5faa617186670c322bf044ef1e1a64bf3d32c750cc49f415a80e745a307",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/spec/dsl-spec-families/sequentialFull.md"
+    },
+    "spec/schemas/run-fixture-v1.schema.json": {
+      "blob": "cef94143455b992c83b0bf45960ef36171e04514",
+      "sha256": "54bd3db7ae73e86d213903209be026cb6946cfc226cf4c369a8c433038c80f2e",
+      "url": "https://github.com/spik3r/heisentick-strat/blob/b574bfc903e3c6c8303c58ef34a0587df6e54968/spec/schemas/run-fixture-v1.schema.json"
+    }
+  },
+  "strategy_sources": [
+    {
+      "strategyId": "dslSequentialLegacySetup9",
+      "producerPath": "conformance/parse/setup-legacy-setup9.strat",
+      "sha256": "e2995b9057bc091ce5061bb66d5a06b35c33ebd621a8bef4e00f4496d774dc44",
+      "bytes": 243
+    },
+    {
+      "strategyId": "dslSequentialFullE1",
+      "producerPath": "conformance/run/family-sequential-full-e1-long.strat",
+      "sha256": "6ffd40ee4ffc3ba5c606a1e23e203757972e5742263a694fcc373de8d92cf8ac",
+      "bytes": 351
+    },
+    {
+      "strategyId": "dslSequentialFullE2",
+      "producerPath": "conformance/run/family-sequential-full-e2-long.strat",
+      "sha256": "94086f5b62ed6abd89265754572f838e3c024226666d99ceb730f4537e0c8ec2",
+      "bytes": 351
+    }
+  ]
+}

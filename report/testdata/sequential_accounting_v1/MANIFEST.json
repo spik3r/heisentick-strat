@@ -1,0 +1,22 @@
+{
+  "schema": "seq-accounting-public-manifest.v1",
+  "projectionVersion": "1.1-public.1",
+  "corpus_sha256": "f9751c4f85cf123f86e74ebe3712310be0588a6b6ec451c6d54e0a927adedb4b",
+  "hash_rule": "sha256 of listed <sha256>  <path>\\n lines in listed order; manifest excluded",
+  "files": {
+    "DERIVATIONS.md": "8f46c8a70c65561f8f6d394575dfd4a7516a33d9cee785fca9e649cb1e838757",
+    "IMPORT.json": "1e4f886dcda38af6882aa44c108bb8e906c1227f2b5c0f7dcb8ba561786115a8",
+    "README.md": "5d07f66a8b5dd73440d58cab824d87d3b79cdf69f1c74956af72faf8917ef874",
+    "SOURCES.json": "33067eb969c0610471afab89ce5aec3f43c99aa399d25f8a4e8c4a6f65b70fb4",
+    "cases/full.json": "57912db97a1a000c1605d7c79ffc17c1f0f94bd98d25d69a53f96d360f86707b",
+    "cases/injected.json": "25fd2becdd7774e044c667b0f4ae31f62b4ee93e1fc2424082ff8d6afb42db12",
+    "cases/legacy.json": "7bbbc64c28e301356c4bb06fac47c5345c62fb7315718ef031d4758286c580a9",
+    "cases/provisional.json": "ae2f39b11de069835a34c29b568b092ba3e3c91e67aa0dd171b02c7753e0e159",
+    "cases/refusals.json": "f088e9c2111940db7270d23a46190f2d6a94ebd84d4217e787ae00745bdcad24",
+    "coverage.json": "c14183837683e3b3febb8c90770acd0eb8710a768663569ff236b794fb10fe6a"
+  },
+  "cases": 30,
+  "binding": 29,
+  "provisional": 1,
+  "injected_items": 8
+}

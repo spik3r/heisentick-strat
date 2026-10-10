@@ -1,0 +1,1967 @@
+{
+  "schema": "seq-accounting-coverage.v1",
+  "note": "Authored expectation-level mutation coverage; this is not a claim of mutation coverage against the Go implementation.",
+  "defects": {
+    "D01": {
+      "defect": "Entry fee omitted",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "omit_entry_fee"
+      ],
+      "observed_kills": {
+        "omit_entry_fee": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D02": {
+      "defect": "Entry fee counted twice",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "double_entry_fee"
+      ],
+      "observed_kills": {
+        "double_entry_fee": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D03": {
+      "defect": "Exit fee omitted",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "omit_exit_fee"
+      ],
+      "observed_kills": {
+        "omit_exit_fee": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D04": {
+      "defect": "Exit fee counted twice",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "double_exit_fee"
+      ],
+      "observed_kills": {
+        "double_exit_fee": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D05": {
+      "defect": "All-fee net equals raw trade.pnl (entry debit missing from the net)",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "net_equals_trade_pnl"
+      ],
+      "observed_kills": {
+        "net_equals_trade_pnl": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D06": {
+      "defect": "Win or loss decided on gross P&L or raw trade.pnl instead of all-fee net",
+      "claimed_cases": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.winner_then_flat",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat"
+      ],
+      "mutants": [
+        "win_by_gross",
+        "win_by_trade_pnl"
+      ],
+      "observed_kills": {
+        "win_by_gross": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.winner_then_flat",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat"
+        ],
+        "win_by_trade_pnl": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.winner_then_flat",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat"
+        ]
+      }
+    },
+    "D07": {
+      "defect": "A zero-net trade counted as a win, or not as non-winning",
+      "claimed_cases": [
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "full.e1_exact_flat"
+      ],
+      "mutants": [
+        "zero_is_win"
+      ],
+      "observed_kills": {
+        "zero_is_win": [
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.winner_then_flat",
+          "full.e1_exact_flat"
+        ]
+      }
+    },
+    "D08": {
+      "defect": "Hypothetical exit fee or exit slippage subtracted from an open-position mark",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "mark_charges_exit_cost"
+      ],
+      "observed_kills": {
+        "mark_charges_exit_cost": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D09": {
+      "defect": "Open-position unrealized P&L left out of the mark (cash-only equity)",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "mark_cash_only"
+      ],
+      "observed_kills": {
+        "mark_cash_only": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D10": {
+      "defect": "Entry fee debit left out of the mark while the position is open",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "mark_ignores_entry_fee"
+      ],
+      "observed_kills": {
+        "mark_ignores_entry_fee": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D11": {
+      "defect": "Short-side unrealized P&L has the wrong sign",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "short_mark_sign"
+      ],
+      "observed_kills": {
+        "short_mark_sign": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D12": {
+      "defect": "An extra equity mark after legacy final-bar liquidation",
+      "claimed_cases": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "extra_final_mark"
+      ],
+      "observed_kills": {
+        "extra_final_mark": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.liq_zero_costs_flat",
+          "leg.winner_then_flat",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D13": {
+      "defect": "Final mark not replaced by the post-liquidation value",
+      "claimed_cases": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.winner_then_flat",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "final_mark_not_replaced"
+      ],
+      "observed_kills": {
+        "final_mark_not_replaced": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.liq_zero_costs_flat",
+          "leg.winner_then_flat",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D14": {
+      "defect": "Liquidation without exit fee or exit slippage",
+      "claimed_cases": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.winner_then_flat",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "liquidation_no_exit_cost"
+      ],
+      "observed_kills": {
+        "liquidation_no_exit_cost": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.winner_then_flat",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D15": {
+      "defect": "Stale drawdown peak: never raised, or raised only at trade closes",
+      "claimed_cases": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "peak_never_raised",
+        "peak_raised_on_close_only"
+      ],
+      "observed_kills": {
+        "peak_never_raised": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ],
+        "peak_raised_on_close_only": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D17": {
+      "defect": "Percent drawdown taken at the bar of the maximum currency drawdown",
+      "claimed_cases": [
+        "leg.dd_split_four_trades"
+      ],
+      "mutants": [
+        "pct_at_max_currency_dd"
+      ],
+      "observed_kills": {
+        "pct_at_max_currency_dd": [
+          "leg.dd_split_four_trades"
+        ]
+      }
+    },
+    "D18": {
+      "defect": "Percent drawdown measured against start equity instead of the peak",
+      "claimed_cases": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "pct_vs_start_equity"
+      ],
+      "observed_kills": {
+        "pct_vs_start_equity": [
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D19": {
+      "defect": "Unavailable ratio reported as zero",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.no_trades_default_equity",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "full.e1_decision_no_trade",
+        "full.e1_no_next_bar"
+      ],
+      "mutants": [
+        "unavailable_as_zero"
+      ],
+      "observed_kills": {
+        "unavailable_as_zero": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.liq_zero_costs_flat",
+          "leg.no_trades_default_equity",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "full.e1_decision_no_trade",
+          "full.e1_no_next_bar"
+        ]
+      }
+    },
+    "D20": {
+      "defect": "Genuine zero reported as unavailable (all-flat, flat-only losses, zero drawdown)",
+      "claimed_cases": [
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.no_trades_default_equity",
+        "leg.winner_then_flat",
+        "full.e1_target_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_exact_flat",
+        "full.e2_target_fees",
+        "full.e1_decision_no_trade",
+        "full.e1_no_next_bar"
+      ],
+      "mutants": [
+        "zero_as_unavailable"
+      ],
+      "observed_kills": {
+        "zero_as_unavailable": [
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.no_trades_default_equity",
+          "leg.winner_then_flat",
+          "full.e1_target_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_exact_flat",
+          "full.e2_target_fees",
+          "full.e1_decision_no_trade",
+          "full.e1_no_next_bar"
+        ]
+      }
+    },
+    "D21": {
+      "defect": "Negative equity clamped, or drawdown above 100 percent clamped",
+      "claimed_cases": [
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "full.e2_stop_equity_negative_end"
+      ],
+      "mutants": [
+        "clamp_negative_equity"
+      ],
+      "observed_kills": {
+        "clamp_negative_equity": [
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "full.e2_stop_equity_negative_end"
+        ]
+      }
+    },
+    "D22": {
+      "defect": "Start equity input 0 not normalized to 10000, or a negative input accepted",
+      "claimed_cases": [
+        "leg.no_trades_default_equity",
+        "leg.default_start_equity_trade",
+        "ref.nonpositive_start_equity"
+      ],
+      "mutants": [
+        "start_zero_not_normalized"
+      ],
+      "observed_kills": {
+        "start_zero_not_normalized": [
+          "leg.no_trades_default_equity",
+          "leg.default_start_equity_trade",
+          "ref.nonpositive_start_equity"
+        ]
+      }
+    },
+    "D23": {
+      "defect": "Marks not exactly one per original bar",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.no_trades_default_equity",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "full.e1_decision_no_trade",
+        "full.e1_no_next_bar",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "skip_flat_marks"
+      ],
+      "observed_kills": {
+        "skip_flat_marks": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.liq_zero_costs_flat",
+          "leg.no_trades_default_equity",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "full.e1_decision_no_trade",
+          "full.e1_no_next_bar",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D24": {
+      "defect": "Same-bar exit and re-entry blocked or marked twice",
+      "claimed_cases": [
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "block_same_bar_reentry"
+      ],
+      "observed_kills": {
+        "block_same_bar_reentry": [
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D25": {
+      "defect": "Hold bars off by one, or a same-bar hold not zero",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "hold_bars_plus_one"
+      ],
+      "observed_kills": {
+        "hold_bars_plus_one": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D26": {
+      "defect": "Account net computed without fees",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "net_excludes_fees"
+      ],
+      "observed_kills": {
+        "net_excludes_fees": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D27": {
+      "defect": "Return percent on the wrong base",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "return_pct_on_end_equity"
+      ],
+      "observed_kills": {
+        "return_pct_on_end_equity": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D28": {
+      "defect": "Worst loss without its zero floor, or from the wrong quantity",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.equity_below_zero_transient",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_time_exit_fees",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees"
+      ],
+      "mutants": [
+        "worst_loss_no_floor"
+      ],
+      "observed_kills": {
+        "worst_loss_no_floor": [
+          "leg.target_fees_open_marks",
+          "leg.equity_below_zero_transient",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_time_exit_fees",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees"
+        ]
+      }
+    },
+    "D29": {
+      "defect": "Streak errors (a flat resets the non-winning streak)",
+      "claimed_cases": [
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "full.e1_exact_flat"
+      ],
+      "mutants": [
+        "flat_resets_loss_streak"
+      ],
+      "observed_kills": {
+        "flat_resets_loss_streak": [
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.winner_then_flat",
+          "full.e1_exact_flat"
+        ]
+      }
+    },
+    "D30": {
+      "defect": "Fractional position size truncated or rounded",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "truncate_size"
+      ],
+      "observed_kills": {
+        "truncate_size": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.liq_zero_costs_flat",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ]
+      }
+    },
+    "D31": {
+      "defect": "Negative zero exported (only a raw -0 that a product with the short sign can produce; see leg.liq_zero_costs_flat)",
+      "claimed_cases": [
+        "leg.liq_zero_costs_flat"
+      ],
+      "mutants": [
+        "negative_zero_exported"
+      ],
+      "observed_kills": {
+        "negative_zero_exported": [
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_exact_flat",
+          "leg.liq_zero_costs_flat",
+          "leg.winner_then_flat",
+          "leg.equity_negative_end",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees"
+        ]
+      }
+    },
+    "D32": {
+      "defect": "Incomplete terminal run liquidated, or partial result returned with the refusal",
+      "claimed_cases": [
+        "ref.e1_open_at_end_entry_bar",
+        "ref.e1_open_at_end_last_checked_bar",
+        "ref.e2_open_at_end_last_checked_bar",
+        "ref.nonpositive_start_equity",
+        "ref.overflow_entry_fee"
+      ],
+      "mutants": [
+        "terminal_liquidates",
+        "partial_result_on_refusal"
+      ],
+      "observed_kills": {
+        "terminal_liquidates": [
+          "ref.e1_open_at_end_entry_bar",
+          "ref.e1_open_at_end_last_checked_bar",
+          "ref.e2_open_at_end_last_checked_bar"
+        ],
+        "partial_result_on_refusal": [
+          "ref.e1_open_at_end_entry_bar",
+          "ref.e1_open_at_end_last_checked_bar",
+          "ref.e2_open_at_end_last_checked_bar",
+          "ref.nonpositive_start_equity",
+          "ref.overflow_entry_fee"
+        ]
+      }
+    },
+    "D33": {
+      "defect": "Nonfinite value exported as zero or as a success",
+      "claimed_cases": [
+        "ref.overflow_entry_fee"
+      ],
+      "mutants": [
+        "overflow_as_zero"
+      ],
+      "observed_kills": {
+        "overflow_as_zero": [
+          "ref.overflow_entry_fee"
+        ]
+      }
+    },
+    "D34": {
+      "defect": "Exit level wrong: stop gap fill ignored, or exit slippage dropped",
+      "claimed_cases": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ],
+      "mutants": [
+        "exit_no_slippage",
+        "stop_gap_ignored"
+      ],
+      "observed_kills": {
+        "exit_no_slippage": [
+          "leg.target_fees_open_marks",
+          "leg.stop_fees_loser",
+          "leg.stop_gap_open_fees",
+          "leg.liq_gross_win_net_loss",
+          "leg.liq_exact_flat",
+          "leg.signal_on_last_bar",
+          "leg.dd_split_four_trades",
+          "leg.winner_then_flat",
+          "leg.equity_below_zero_transient",
+          "leg.equity_negative_end",
+          "leg.default_start_equity_trade",
+          "full.e1_target_fees",
+          "full.e1_stop_fees",
+          "full.e1_stop_gap_fees",
+          "full.e1_time_exit_fees",
+          "full.e1_gross_win_net_loss",
+          "full.e1_exact_flat",
+          "full.e2_time_exit_fees",
+          "full.e2_target_fees",
+          "full.e2_stop_equity_negative_end",
+          "leg.same_bar_exit_reentry"
+        ],
+        "stop_gap_ignored": [
+          "leg.stop_gap_open_fees",
+          "full.e1_stop_gap_fees"
+        ]
+      }
+    }
+  },
+  "mutants": {
+    "omit_entry_fee": {
+      "defect": "D01",
+      "description": "No entry fee is debited (fee 0 on entry; exit fee unchanged)",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "double_entry_fee": {
+      "defect": "D02",
+      "description": "The entry fee is debited twice",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "omit_exit_fee": {
+      "defect": "D03",
+      "description": "No exit fee is charged",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "double_exit_fee": {
+      "defect": "D04",
+      "description": "The exit fee is charged twice",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "net_equals_trade_pnl": {
+      "defect": "D05",
+      "description": "tradeAccounting netPnl and win/loss use the exit credit (entry fee not subtracted); account net is still the realized balance",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "win_by_gross": {
+      "defect": "D06",
+      "description": "A trade is a win when gross P&L > 0",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.winner_then_flat",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat"
+      ]
+    },
+    "win_by_trade_pnl": {
+      "defect": "D06",
+      "description": "A trade is a win when the exit credit (trade.pnl) > 0",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.winner_then_flat",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat"
+      ]
+    },
+    "zero_is_win": {
+      "defect": "D07",
+      "description": "A trade with net >= 0 is a win",
+      "killed_by": [
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "full.e1_exact_flat"
+      ]
+    },
+    "mark_charges_exit_cost": {
+      "defect": "D08",
+      "description": "An open mark also subtracts the exit fee and the exit slippage",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "mark_cash_only": {
+      "defect": "D09",
+      "description": "Marks use start + realized only (no unrealized)",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "mark_ignores_entry_fee": {
+      "defect": "D10",
+      "description": "Marks add the open position's entry fee back",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "short_mark_sign": {
+      "defect": "D11",
+      "description": "Short unrealized P&L is (close - entry) * size",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "extra_final_mark": {
+      "defect": "D12",
+      "description": "An extra mark is appended after a liquidation",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "final_mark_not_replaced": {
+      "defect": "D13",
+      "description": "The final mark keeps the pre-liquidation value",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "liquidation_no_exit_cost": {
+      "defect": "D14",
+      "description": "Liquidation has no exit fee and no exit slippage",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.winner_then_flat",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "peak_never_raised": {
+      "defect": "D15",
+      "description": "The drawdown peak stays at the initial equity",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "peak_raised_on_close_only": {
+      "defect": "D15",
+      "description": "The peak is raised only by the realized balance at a trade close, not by marks",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "pct_at_max_currency_dd": {
+      "defect": "D17",
+      "description": "maxDDpct is the percent at the bar of the maximum currency drawdown",
+      "killed_by": [
+        "leg.dd_split_four_trades"
+      ]
+    },
+    "pct_vs_start_equity": {
+      "defect": "D18",
+      "description": "Percent drawdown is drawdown / start equity * 100",
+      "killed_by": [
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "unavailable_as_zero": {
+      "defect": "D19",
+      "description": "Every null ratio is reported as 0",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.no_trades_default_equity",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "full.e1_decision_no_trade",
+        "full.e1_no_next_bar"
+      ]
+    },
+    "zero_as_unavailable": {
+      "defect": "D20",
+      "description": "All-flat profit factor and flat-only average loss are null; zero drawdown is null",
+      "killed_by": [
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.no_trades_default_equity",
+        "leg.winner_then_flat",
+        "full.e1_target_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_exact_flat",
+        "full.e2_target_fees",
+        "full.e1_decision_no_trade",
+        "full.e1_no_next_bar"
+      ]
+    },
+    "clamp_negative_equity": {
+      "defect": "D21",
+      "description": "Marks and totals below zero are clamped to 0, and percent drawdown to 100",
+      "killed_by": [
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "full.e2_stop_equity_negative_end"
+      ]
+    },
+    "start_zero_not_normalized": {
+      "defect": "D22",
+      "description": "Start equity 0 is used as 0, a negative input is accepted",
+      "killed_by": [
+        "leg.no_trades_default_equity",
+        "leg.default_start_equity_trade",
+        "ref.nonpositive_start_equity"
+      ]
+    },
+    "skip_flat_marks": {
+      "defect": "D23",
+      "description": "A mark is written only when the position or the realized balance changed",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.no_trades_default_equity",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "full.e1_decision_no_trade",
+        "full.e1_no_next_bar",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "block_same_bar_reentry": {
+      "defect": "D24",
+      "description": "A signal on a bar where the position just exited is dropped",
+      "killed_by": [
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "hold_bars_plus_one": {
+      "defect": "D25",
+      "description": "avgHoldBars counts exit - entry + 1 and hold_bars likewise",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "net_excludes_fees": {
+      "defect": "D26",
+      "description": "Account net is the sum of gross P&L",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "return_pct_on_end_equity": {
+      "defect": "D27",
+      "description": "returnPct = net / end equity * 100",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "worst_loss_no_floor": {
+      "defect": "D28",
+      "description": "worstLoss is the minimum net with no zero floor",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.equity_below_zero_transient",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_time_exit_fees",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees"
+      ]
+    },
+    "flat_resets_loss_streak": {
+      "defect": "D29",
+      "description": "A zero-net trade resets the non-winning streak",
+      "killed_by": [
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "full.e1_exact_flat"
+      ]
+    },
+    "truncate_size": {
+      "defect": "D30",
+      "description": "Position size is rounded down to an integer",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.liq_zero_costs_flat",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "negative_zero_exported": {
+      "defect": "D31",
+      "description": "Exact zero values of a short position are exported as \"-0\"",
+      "killed_by": [
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_exact_flat",
+        "leg.liq_zero_costs_flat",
+        "leg.winner_then_flat",
+        "leg.equity_negative_end",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees"
+      ]
+    },
+    "terminal_liquidates": {
+      "defect": "D32",
+      "description": "A held Full position at the end of data is liquidated at the last close instead of refused",
+      "killed_by": [
+        "ref.e1_open_at_end_entry_bar",
+        "ref.e1_open_at_end_last_checked_bar",
+        "ref.e2_open_at_end_last_checked_bar"
+      ]
+    },
+    "partial_result_on_refusal": {
+      "defect": "D32",
+      "description": "A refusal also carries the marks computed so far",
+      "killed_by": [
+        "ref.e1_open_at_end_entry_bar",
+        "ref.e1_open_at_end_last_checked_bar",
+        "ref.e2_open_at_end_last_checked_bar",
+        "ref.nonpositive_start_equity",
+        "ref.overflow_entry_fee"
+      ]
+    },
+    "overflow_as_zero": {
+      "defect": "D33",
+      "description": "A nonfinite fee, equity or net is treated as 0 and the run succeeds",
+      "killed_by": [
+        "ref.overflow_entry_fee"
+      ]
+    },
+    "exit_no_slippage": {
+      "defect": "D34",
+      "description": "Exit fills carry no slippage (entry still does)",
+      "killed_by": [
+        "leg.target_fees_open_marks",
+        "leg.stop_fees_loser",
+        "leg.stop_gap_open_fees",
+        "leg.liq_gross_win_net_loss",
+        "leg.liq_exact_flat",
+        "leg.signal_on_last_bar",
+        "leg.dd_split_four_trades",
+        "leg.winner_then_flat",
+        "leg.equity_below_zero_transient",
+        "leg.equity_negative_end",
+        "leg.default_start_equity_trade",
+        "full.e1_target_fees",
+        "full.e1_stop_fees",
+        "full.e1_stop_gap_fees",
+        "full.e1_time_exit_fees",
+        "full.e1_gross_win_net_loss",
+        "full.e1_exact_flat",
+        "full.e2_time_exit_fees",
+        "full.e2_target_fees",
+        "full.e2_stop_equity_negative_end",
+        "leg.same_bar_exit_reentry"
+      ]
+    },
+    "stop_gap_ignored": {
+      "defect": "D34",
+      "description": "A stop gap fills at the stop level, not the worse open",
+      "killed_by": [
+        "leg.stop_gap_open_fees",
+        "full.e1_stop_gap_fees"
+      ]
+    }
+  }
+}

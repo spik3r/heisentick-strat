@@ -1,0 +1,56 @@
+{
+  "schema": "seq-accounting-public-projection.v1",
+  "convention_id": "seq-acct.v1",
+  "file": "injected.json",
+  "note": "Eight injected-only acceptance descriptions, not OHLC run fixtures or a claim those unit tests have been implemented.",
+  "items": [
+    {
+      "id": "inj.realized_chain_break",
+      "title": "Realized-before/after snapshots that do not chain",
+      "test": "Feed an accounting capture whose second snapshot starts at a value different from the first snapshot's result.",
+      "expected": "Typed refusal; no partial metrics."
+    },
+    {
+      "id": "inj.nonfinite_equity_sum",
+      "title": "Finite cash and finite unrealized P&L whose sum overflows",
+      "test": "Inject cash 1.7e308 and unrealized 1.7e308.",
+      "expected": "Typed refusal before serialization; never 0 or Infinity in the curve."
+    },
+    {
+      "id": "inj.drawdown_nonfinite",
+      "title": "Nonfinite drawdown or percent drawdown",
+      "test": "Inject peak = 0, or equity = -Infinity.",
+      "expected": "Typed refusal."
+    },
+    {
+      "id": "inj.alignment_mismatch",
+      "title": "tradeAccounting length or index differs from run.trades; equity length differs from barCount",
+      "test": "Drop one record from each list in turn.",
+      "expected": "Typed refusal."
+    },
+    {
+      "id": "inj.negative_zero_fields",
+      "title": "Raw -0 in net, worstLoss, avgLoss, expectancy, a mark or a tradeAccounting field",
+      "test": "Inject -0 into each exported number.",
+      "expected": "Serialized as 0, never -0."
+    },
+    {
+      "id": "inj.tiny_positive_net",
+      "title": "Net of +5e-324 or -5e-324",
+      "test": "Inject a raw trade net of 5e-324.",
+      "expected": "Classified as a win; no epsilon."
+    },
+    {
+      "id": "inj.invalid_effective_start",
+      "title": "Effective start equity NaN or Infinity",
+      "test": "Inject at the Go call boundary.",
+      "expected": "Typed refusal."
+    },
+    {
+      "id": "inj.blocked_in_position",
+      "title": "blocked_in_position and simultaneous_signal in a Full run",
+      "test": "Inject two decisions closer than the hold.",
+      "expected": "Second decision is recorded as blocked; no extra mark and no extra trade."
+    }
+  ]
+}
