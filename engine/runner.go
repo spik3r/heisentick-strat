@@ -37,8 +37,14 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if err != nil {
 		return RunResult{}, err
 	}
+	if err := dsl.SequentialFullParseError(parsed); err != nil {
+		return RunResult{}, err
+	}
 	if len(parsed.Errors) > 0 {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
+	}
+	if dsl.IsSequentialFullReserved(parsed.Config) {
+		return runSequentialFullFixture(fixture, parsed.Config)
 	}
 	if err := rejectDedicatedGoldFlagExecution(parsed.Config); err != nil {
 		return RunResult{}, err
@@ -212,6 +218,7 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyNamedLevelSweep),
 		string(dsl.FamilyNamedLevelFlag),
 		string(dsl.FamilyLegacySetup9),
+		string(dsl.FamilySequentialFull),
 		string(dsl.FamilyClockRangeBreakout):
 		return true
 	default:
@@ -233,6 +240,7 @@ type PreparedRunner struct {
 }
 
 func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
+	sequentialFullUnsupportedPreparedRunner(cfg)
 	series := marketdata.SeriesFromBars(fixture.Bars)
 	sourceSeries, sourceHTFSeries, err := sourceSeriesForFixture(fixture, cfg)
 	if err != nil {

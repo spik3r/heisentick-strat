@@ -217,6 +217,14 @@
       "since": 7
     },
     {
+      "id": "sequentialFull",
+      "canonicalSpelling": "sequential full",
+      "canonicalExample": "type: sequential full\n  sequential profile seq.full.public_approx.v1\n  sequential policy E1",
+      "classification": "go-only",
+      "reason": "Native Go synthetic Sequential E1/E2 execution (HT-228); closed full-profile family, separate from the archived legacy Setup-9 controls.",
+      "since": 7
+    },
+    {
       "id": "legacySetup9",
       "canonicalSpelling": "legacy setup 9",
       "canonicalExample": "type: legacy setup 9\n  sequential profile seq.legacy.setup9.v1",
@@ -299,12 +307,30 @@
   ],
   "aliases": [
     {
+      "id": "alias.go-inline-setup-type.sequential-full",
+      "source": "go-inline-setup-type",
+      "spelling": "sequential full",
+      "familyId": "sequentialFull",
+      "classification": "go-only",
+      "reason": "Native Go synthetic Sequential E1/E2 execution (HT-228); closed full-profile family, separate from the archived legacy Setup-9 controls.",
+      "since": 7
+    },
+    {
       "id": "alias.go-inline-setup-type.legacy-setup-9",
       "source": "go-inline-setup-type",
       "spelling": "legacy setup 9",
       "familyId": "legacySetup9",
       "classification": "go-only",
       "reason": "Native Go legacy Setup-9 controls only (HT-227); selected by an explicit sequential profile; no browser adoption.",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.sequential-full",
+      "source": "go-canonical-setup-type",
+      "spelling": "sequential full",
+      "familyId": "sequentialFull",
+      "classification": "go-only",
+      "reason": "Native Go synthetic Sequential E1/E2 execution (HT-228); closed full-profile family, separate from the archived legacy Setup-9 controls.",
       "since": 7
     },
     {
@@ -2338,7 +2364,7 @@
       "id": "directive.sequential",
       "spelling": "sequential",
       "classification": "go-only",
-      "reason": "Native Go legacy Setup-9 controls only (HT-227); selected by an explicit sequential profile; no browser adoption.",
+      "reason": "Native Go named legacy Setup-9 profiles and closed synthetic full Sequential E1/E2 policies (HT-227/HT-228); no browser adoption.",
       "since": 7
     },
     {

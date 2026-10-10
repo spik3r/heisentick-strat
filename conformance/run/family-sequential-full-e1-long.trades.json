@@ -1,0 +1,74 @@
+{
+  "case": "family-sequential-full-e1-long",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "open",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "sequentialFull": {
+    "opportunities": [
+      {
+        "capBinds": false,
+        "decisionIndex": 13,
+        "decisionMs": 4200000,
+        "decisionOpenMs": 3900000,
+        "episodeId": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000",
+        "fill": 100,
+        "fillIndex": 14,
+        "id": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000:perf",
+        "nextOpenIndex": 14,
+        "riskDistance": 10.207142857142856,
+        "setupFirstIndex": 5,
+        "setupIndex": 13,
+        "side": "long",
+        "signalAtr": 2.0714285714285716,
+        "size": 9.797060881735481,
+        "status": "filled",
+        "stop": 89.79285714285714,
+        "target": 120.41428571428571,
+        "trigger": "perf"
+      }
+    ],
+    "policy": "E1",
+    "profile": "seq.full.public_approx.v1",
+    "schema": "sequential-full-execution.v1",
+    "symbol": "SYNTH",
+    "timeframe": "5m"
+  },
+  "strategyId": "family-sequential-full-e1-long",
+  "symbol": "SYNTH",
+  "timeframe": "5m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 100,
+      "entryIndex": 14,
+      "entryT": 4200000,
+      "exit": 100,
+      "exitIndex": 18,
+      "exitT": 5400000,
+      "initialSl": 89.7928571428571,
+      "initialTp": 120.414285714286,
+      "meta": {
+        "episodeId": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000",
+        "opportunityId": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000:perf",
+        "policy": "E1",
+        "profile": "seq.full.public_approx.v1",
+        "signalAtr": 2.07142857142857,
+        "signalIndex": 13
+      },
+      "pnl": 0,
+      "points": 0,
+      "reason": "time",
+      "side": "long",
+      "size": 9.79706088173548,
+      "sl": 89.7928571428571,
+      "tag": "SEQUENTIAL-E1",
+      "tp": 120.414285714286
+    }
+  ]
+}

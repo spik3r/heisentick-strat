@@ -70,6 +70,7 @@ func rowsToBars(rows [][]float64) []marketdata.Bar {
 // fixture with such a defect. Other families ignore it. Callers that decode a
 // fixture themselves should call this with the same bytes.
 func (f *RunFixture) ScanRawBarRows(data []byte) {
+	f.sequentialEnvelopeError = ValidateSequentialFullJSONEnvelope(data, false)
 	f.rawRowDefect = ""
 	var container struct {
 		Bars json.RawMessage `json:"bars"`

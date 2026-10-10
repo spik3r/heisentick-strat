@@ -40,22 +40,23 @@ type RunRequest struct {
 // PreparedRun holds context columns and derived setup state for repeated runs
 // of one config/route. It is not safe for concurrent use.
 type PreparedRun struct {
-	series      marketdata.Series
-	cols        contextcols.Columns
-	htfTrend    []int8
-	ema         []float64
-	emaSlope    []float64
-	params      flagParams
-	fixture     RunFixture
-	offRoute    bool
-	broker      broker
-	trades      []Trade
-	c5Source    marketdata.Series
-	c5SourceHTF marketdata.Series
-	c5Config    dsl.Config
-	c5          bool
-	execution   ExecutionBounds
-	windowed    bool
+	sequentialFull *sequentialPrepared
+	series         marketdata.Series
+	cols           contextcols.Columns
+	htfTrend       []int8
+	ema            []float64
+	emaSlope       []float64
+	params         flagParams
+	fixture        RunFixture
+	offRoute       bool
+	broker         broker
+	trades         []Trade
+	c5Source       marketdata.Series
+	c5SourceHTF    marketdata.Series
+	c5Config       dsl.Config
+	c5             bool
+	execution      ExecutionBounds
+	windowed       bool
 }
 
 // ReportTradeContext exposes the canonical context labels for one executed
@@ -91,6 +92,9 @@ type SharedRunContext struct {
 
 // SharedContextKey returns a stable key for the context columns a request needs.
 func SharedContextKey(request RunRequest) (string, error) {
+	if err := rejectSequentialFullSurface(request.Config, "shared-context-key"); err != nil {
+		return "", err
+	}
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
 		return "", err
 	}
@@ -141,6 +145,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 // PrepareSharedRunContext builds immutable context columns and higher-timeframe
 // state once for a route/config context group.
 func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
+	if err := rejectSequentialFullSurface(request.Config, "shared/grid"); err != nil {
+		return nil, err
+	}
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
 		return nil, err
 	}
@@ -198,6 +205,9 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 // PrepareVariant creates a per-variant runner that shares immutable context
 // state while owning its broker and trade buffers.
 func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) {
+	if err := rejectSequentialFullSurface(cfg, "shared-variant"); err != nil {
+		return nil, err
+	}
 	if err := rejectDedicatedGoldFlagExecution(cfg); err != nil {
 		return nil, err
 	}
@@ -280,6 +290,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 
 // PrepareRun builds the causal context columns and setup state for a strategy.
 func PrepareRun(request RunRequest) (*PreparedRun, error) {
+	if dsl.IsSequentialFullReserved(request.Config) {
+		return prepareSequentialFull(request)
+	}
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
 		return nil, err
 	}
@@ -571,6 +584,13 @@ func (r *PreparedRun) runRaw(costs Costs) []Trade {
 // costs.fillOn=close, it panics on any other fill like the other prepared-run
 // programming errors; use RunChecked to receive the error.
 func (r *PreparedRun) Run(costs Costs) RunResult {
+	if r.sequentialFull != nil {
+		result, err := r.runSequentialFullChecked(costs)
+		if err != nil {
+			panic(err)
+		}
+		return result
+	}
 	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
 		if err := r.legacySetup9CostsError(costs); err != nil {
 			panic(err)
@@ -583,6 +603,9 @@ func (r *PreparedRun) Run(costs Costs) RunResult {
 // RunChecked executes this prepared strategy and rejects non-finite derived
 // output before applying the existing JSON serialization.
 func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
+	if r.sequentialFull != nil {
+		return r.runSequentialFullChecked(costs)
+	}
 	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
 		if err := r.legacySetup9CostsError(costs); err != nil {
 			return RunResult{}, err
@@ -594,6 +617,13 @@ func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
 
 // Run executes a direct engine request in one call.
 func Run(request RunRequest) (RunResult, error) {
+	if dsl.IsSequentialFullReserved(request.Config) {
+		prepared, err := prepareSequentialFull(request)
+		if err != nil {
+			return RunResult{}, err
+		}
+		return prepared.RunChecked(request.Costs)
+	}
 	if err := rejectDedicatedGoldFlagExecution(request.Config); err != nil {
 		return RunResult{}, err
 	}

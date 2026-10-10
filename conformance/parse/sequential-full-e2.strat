@@ -1,0 +1,5 @@
+dsl v7
+strategy "Synthetic Sequential E2" { description "Producer regression input; independent HT249 acceptance is separate." }
+market { sequential symbol SYNTH sequential timeframe 5m }
+setup { type: sequential full sequential profile seq.full.public_approx.v1 sequential policy E2 }
+risk { sequential riskUsd 100 sequential maxNotionalUsd 100000 }

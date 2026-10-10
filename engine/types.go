@@ -40,29 +40,32 @@ func (c Costs) fillsMarketAtNextOpen() bool {
 
 // RunFixture is the language-agnostic fixture shape under strat/conformance/run.
 type RunFixture struct {
-	TimedCalendar    *TimedReturnCalendar `json:"timedCalendar,omitempty"`
-	Schema           string               `json:"schema"`
-	Case             string               `json:"case"`
-	StrategyID       string               `json:"strategyId"`
-	Symbol           string               `json:"symbol"`
-	Timeframe        string               `json:"timeframe"`
-	SourceTimeframe  string               `json:"sourceTimeframe,omitempty"`
-	HigherTimeframe  string               `json:"higherTimeframe"`
-	RangeMethod      string               `json:"rangeMethod"`
-	Costs            Costs                `json:"costs"`
-	Bars             []marketdata.Bar     `json:"-"`
-	RawBars          [][]float64          `json:"bars"`
-	rawRowDefect     string
-	SourceBars       []marketdata.Bar `json:"-"`
-	RawSourceBars    [][]float64      `json:"sourceBars,omitempty"`
-	HTFBars          []marketdata.Bar `json:"-"`
-	RawHTFBars       [][]float64      `json:"htfBars,omitempty"`
-	SourceHTFBars    []marketdata.Bar `json:"-"`
-	RawSourceHTFBars [][]float64      `json:"sourceHtfBars,omitempty"`
+	TimedCalendar           *TimedReturnCalendar `json:"timedCalendar,omitempty"`
+	Schema                  string               `json:"schema"`
+	Case                    string               `json:"case"`
+	StrategyID              string               `json:"strategyId"`
+	Symbol                  string               `json:"symbol"`
+	Timeframe               string               `json:"timeframe"`
+	SourceTimeframe         string               `json:"sourceTimeframe,omitempty"`
+	HigherTimeframe         string               `json:"higherTimeframe"`
+	RangeMethod             string               `json:"rangeMethod"`
+	Costs                   Costs                `json:"costs"`
+	Bars                    []marketdata.Bar     `json:"-"`
+	RawBars                 [][]float64          `json:"bars"`
+	rawRowDefect            string
+	sequentialEnvelopeError error
+	SourceBars              []marketdata.Bar `json:"-"`
+	RawSourceBars           [][]float64      `json:"sourceBars,omitempty"`
+	HTFBars                 []marketdata.Bar `json:"-"`
+	RawHTFBars              [][]float64      `json:"htfBars,omitempty"`
+	SourceHTFBars           []marketdata.Bar `json:"-"`
+	RawSourceHTFBars        [][]float64      `json:"sourceHtfBars,omitempty"`
 }
 
 // RunResult mirrors strat/conformance/run/*.trades.json.
 type RunResult struct {
+	// SequentialFull reports only this synthetic family; omitted for every existing family.
+	SequentialFull *SequentialFullAudit `json:"sequentialFull,omitempty"`
 	// ClockRangeDays is an execution audit, excluded from the conformance envelope.
 	ClockRangeDays  []ClockRangeDay   `json:"-"`
 	TimedAudit      *TimedReturnAudit `json:"timedReturn,omitempty"`

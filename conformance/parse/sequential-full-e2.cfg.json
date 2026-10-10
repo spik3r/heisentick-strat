@@ -1,0 +1,25 @@
+{
+  "case": "sequential-full-e2",
+  "category": "setup-family",
+  "cfg": {
+    "description": "Producer regression input; independent HT249 acceptance is separate.",
+    "dslVersion": 7,
+    "name": "Synthetic Sequential E2",
+    "sequentialFull": {
+      "contractVersion": "sequential-full-config-v1",
+      "maxNotionalUsd": 100000,
+      "policy": "E2",
+      "profile": "seq.full.public_approx.v1",
+      "riskUsd": 100,
+      "symbol": "SYNTH",
+      "timeframe": "5m"
+    },
+    "setupType": "sequentialFull"
+  },
+  "description": "Closed synthetic E2 configuration, explicit route, risk and exposure inputs.",
+  "diagnostics": [],
+  "errors": [],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "invented HT-228 producer regression; not independent acceptance",
+  "warnings": []
+}

@@ -16,7 +16,7 @@ func TestCheckPassesOnTheCommittedCorpus(t *testing.T) {
 	if err := run([]string{"check", "--dir=" + testsupport.StratConformanceRoot()}, &out); err != nil {
 		t.Fatalf("check: %v", err)
 	}
-	if !strings.Contains(out.String(), "conformance OK: 131 parse goldens, 104 run goldens, 0 TODO") {
+	if !strings.Contains(out.String(), "conformance OK: 133 parse goldens, 108 run goldens, 0 TODO") {
 		t.Fatalf("unexpected check summary: %s", out.String())
 	}
 }
@@ -29,7 +29,7 @@ func TestRegenIsIdempotentAndWritesTheScoreboard(t *testing.T) {
 	if err := run([]string{"regen", "--dir=" + dir}, &out); err != nil {
 		t.Fatalf("regen: %v", err)
 	}
-	if !strings.Contains(out.String(), "wrote 131 parse goldens, 104 run goldens (0 TODO)") {
+	if !strings.Contains(out.String(), "wrote 133 parse goldens, 108 run goldens (0 TODO)") {
 		t.Fatalf("unexpected regen summary: %s", out.String())
 	}
 	after := snapshot(t, dir)
@@ -53,7 +53,7 @@ func TestRegenIsIdempotentAndWritesTheScoreboard(t *testing.T) {
 	if err := json.Unmarshal(raw, &metadata); err != nil {
 		t.Fatal(err)
 	}
-	if len(metadata.GoRun.Implemented) != 104 || metadata.RunCases != 104 || len(metadata.GoRun.TODO) != 0 {
+	if len(metadata.GoRun.Implemented) != 108 || metadata.RunCases != 108 || len(metadata.GoRun.TODO) != 0 {
 		t.Fatalf("scoreboard = %+v", metadata)
 	}
 	if !bytes.Contains(raw, []byte(`"todo": {}`)) {
