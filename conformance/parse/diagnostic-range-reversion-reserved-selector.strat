@@ -1,0 +1,3 @@
+dsl v7
+strategy "Invented reserved selector" {}
+setup { type: "range reversion" type: price momentum }

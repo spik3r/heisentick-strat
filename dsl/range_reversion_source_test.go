@@ -1,6 +1,7 @@
 package dsl
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -230,6 +231,94 @@ func TestRangeReversionClosedConfigAndReservedAliases(t *testing.T) {
 	for _, family := range []string{"RANGEREVERSION", "range-reversion", "range_reversion"} {
 		if !IsRangeReversionReserved(Config{"setupType": family}) {
 			t.Errorf("family alias %q escaped reservation", family)
+		}
+	}
+}
+
+// These spellings express reserved intent, not additional accepted aliases.
+func TestRangeReversionReservedSelectorCannotBeOverwritten(t *testing.T) {
+	selectors := []string{
+		`type "range reversion"`, "type 'range reversion'", "type `range reversion`",
+		`type "range\u0020reversion"`, `type "range" "reversion"`, `type "range" reversion`, `type range "reversion"`, `type range-reversion`, `type range_reversion`,
+		`type range.reversion`, `type range/reversion`, `type range:reversion`,
+		`type range | reversion`, `type (range reversion)`, `type [range reversion]`,
+		`type = range reversion`, `type=range-reversion`, `type rangeReversion`,
+		"type range\u00a0reversion", "type range\u2003reversion", "type range\u202freversion",
+		"type range\vreversion", "type range\freversion", "type range\u2028reversion",
+		"type\n:\nrange reversion", `type range reversion`,
+	}
+	for _, selector := range selectors {
+		for _, sep := range []string{"\n", " "} {
+			for _, before := range []bool{false, true} {
+				body := selector + sep + "type: price momentum"
+				if !before {
+					body = "type: price momentum" + sep + selector
+				}
+				source := "dsl v7\nstrategy \"Invented reservation control\" {}\nsetup { " + body + " }"
+				p, err := Parse(source)
+				if err != nil || len(p.Errors) == 0 || len(p.Config) != 0 {
+					t.Errorf("selector=%q separator=%q before=%v became runnable: err=%v errors=%v family=%v", selector, sep, before, err, p.Errors, p.Config["setupType"])
+				}
+			}
+		}
+	}
+}
+
+func TestRangeReversionReservedNamespaceAndDiscardedTails(t *testing.T) {
+	for _, clause := range []string{
+		`unknown rangereversion policy X`, `stop 2 ATR rangereversion target-r 2`,
+		`unknown type "range reversion"`, `(type range-reversion)`,
+		`unknown { type range_reversion }`, `rangereversion: target-r 2`,
+		`range:reversion target-r 2`, `range.reversion target-r 2`,
+	} {
+		source := "dsl v7\nstrategy \"Invented\" {}\nsetup { " + clause + " type: price momentum }"
+		p, err := Parse(source)
+		if err != nil || len(p.Errors) == 0 || len(p.Config) != 0 {
+			t.Errorf("tail %q escaped: %v %+v", clause, err, p)
+		}
+	}
+	// A damaged metadata quote must not hide a later authored selector.
+	source := "dsl v7\nstrategy \"unfinished\nsetup { type \"range reversion\" type: price momentum }"
+	if !rangeReversionSourceCandidate(source) {
+		t.Fatal("damaged quote hid reserved selector")
+	}
+}
+
+func TestRangeReversionReservationKeepsDataOpaque(t *testing.T) {
+	for _, source := range []string{
+		"dsl v7\nstrategy \"range reversion setup { type range-reversion }\"\nsetup { type: price momentum }",
+		"dsl v7\nstrategy \"Plain\" { description \"rangereversion type range reversion\" }\nsetup { type: price momentum }",
+		"dsl v7\nname range reversion\ndescription rangereversion\nsetup { type: price momentum }",
+		"dsl v7\nstrategy range reversion\nsetup { type: price momentum }",
+		"dsl v7\nsymbols(rangereversion, range, reversion)\nsetup { type: price momentum }",
+		"dsl v7\nsymbols rangereversion range reversion\nsetup { type: price momentum }",
+		"dsl v7\nsetup { type: price momentum symbols(rangereversion, range, reversion) }",
+		"dsl v7\nsetup { type: price momentum } # type range reversion\n",
+		"dsl v7\nsetup { type: range break fake }",
+		"dsl v7\nsetup { range high low type: price momentum }",
+	} {
+		if rangeReversionSourceCandidate(source) {
+			t.Errorf("data/legacy source falsely reserved: %q", source)
+		}
+	}
+}
+
+func TestRangeReversionRefusalConfigIsAnEmptyObject(t *testing.T) {
+	for _, source := range []string{
+		`dsl v7
+strategy "Invented" {}
+setup { type: "range reversion" type: price momentum }`,
+		strings.Replace(rangeReversionTestSource, "rangereversion atr 14", "rangereversion atr NaN", 1),
+		strings.Replace(rangeReversionTestSource, "rangereversion atr 14", "rangereversion atr 14\n rangereversion atr 14", 1),
+		"dsl v7\nsetup { type: range reversion }\nstrategy \"unfinished",
+	} {
+		result, err := Parse(source)
+		if err != nil || len(result.Errors) == 0 || result.Config == nil || len(result.Config) != 0 {
+			t.Fatalf("invalid refusal projection: err=%v result=%+v", err, result)
+		}
+		raw, err := json.Marshal(result.Config)
+		if err != nil || string(raw) != "{}" {
+			t.Fatalf("refusal config must be a JSON object: %s %v", raw, err)
 		}
 	}
 }
