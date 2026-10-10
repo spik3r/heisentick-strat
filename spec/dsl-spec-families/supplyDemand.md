@@ -86,7 +86,15 @@ dispatched on the first 15m decision close after the 4h close. With
   close; a chart bar with no such candle, or one separated from it by a missing
   interval, is skipped. A zone is tradable once `wait N candles after zone`
   further source candles have closed after the one that made (or flipped) it;
-  `wait 0` allows the first entry close after the zone candle closes.
+  `wait 0` allows the first entry close after the zone candle closes. The
+  entire entry candle must begin at or after that formation or flip close,
+  because its earlier high/low cannot count as a retest of a zone that did
+  not yet exist. Entry open equal to the source close is allowed; this does
+  not require waiting for a further source candle. Positive waits keep their
+  decision-close interpretation: once the Nth further source candle closes,
+  that decision may use the entry candle ending at the same close, including
+  its earlier touch of the already-existing zone. The whole-entry-candle
+  guard applies to formation or flip, not to wait maturity.
 - Touch, `retest first touch only`, `retest must reject zone`, `reaction
   within`, CHOCH, `retest max`, trigger candles, stop, target and management
   are the ones above, applied to entry candles. Touch counting and reaction
@@ -99,7 +107,13 @@ dispatched on the first 15m decision close after the 4h close. With
 
 Admitted routes: source `4h` with entry `15m`, `30m` or `1h`. `entryTf` must
 have a market slice. Any other route with the phrase is a parse error, and
-`entryTf 1h` without the phrase stays an error.
+`entryTf 1h` without the phrase stays an error. The final setup family must
+remain supply demand, including after any later type declaration. Direct
+engine requests and fixtures also reject an active mode with the wrong family,
+source/entry pair, or actual chart timeframe; force-route does not bypass this
+contract. Native and JSON-decoded flags use the same boolean/numeric semantics;
+malformed present flag values are errors rather than fallback execution. Shared
+grid contexts and variants remain unsupported for this source-entry mode.
 
 ## Example
 

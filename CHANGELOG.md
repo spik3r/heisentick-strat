@@ -6,6 +6,30 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the distinct `sequential full` DSL family for the versioned synthetic
+  `seq.full.public_approx.v1` E1/E2 policies. Bind explicit symbol, timeframe,
+  risk and exposure inputs; reuse the accepted core and existing broker for
+  next-open execution, fixed signal ATR14, structural stops, 2R targets and
+  natural time exits. Preserve legacy Setup-9 and existing regression goldens.
+  Ordinary native/fixture and existing WASM bridge routes return a typed
+  opportunity audit. Missing intervals/calendar declarations, incomplete
+  terminal exposure, P1, source/HTF projection and shared/prefix/checkpoint
+  execution are explicitly refused. Add two parse and four invented producer
+  run regressions plus native/Node-WASM tests; the independent HT249 acceptance
+  corpus, browser/consumer qualification and historical approval remain gates.
+  This unreleased semantic addition requires a minor version at release.
+
+- Add the `legacy setup 9` family (go-only) with the frozen profiles
+  `seq.legacy.setup9.v1` and `seq.legacy.setup9_perf_seasonal.v1`, selected by
+  a required `sequential profile <id>` line. They port two archived
+  strategies faithfully, including the stored Int8 count wrap. Entries fill at
+  the signal-bar close only; other fills are refused. Resumable prefix
+  checkpoints now accept this family. Add parse and run conformance cases; no
+  existing golden changes. A `type:` that switches to another family after
+  `sequential profile` is a parse error, and the engine refuses a config that
+  carries a legacy profile under another family. In setup bodies written on one
+  line, `sequential` now starts a new directive.
+
 - Add `retest on entry timeframe` to the `supply demand` family. With
   `source timeframe 4h` and `entryTf 15m`, `30m` or `1h`, zones are made,
   flipped and expired on completed 4h candles while the touch, rejection and
@@ -13,6 +37,10 @@ version and is named here.
   `source timeframe` + `entryTf` behaviour (the whole setup runs on the source
   series and the finished signal is dispatched on the first entry close) is
   unchanged without the phrase. `entryTf 1h` is admitted only with the phrase.
+  Retest candles begin at or after the completed source formation/flip close;
+  no preceding intrabar movement is counted as a retest. Preserve mode selection
+  through JSON config transport and reject contradictory family/routes or shared
+  variants instead of silently falling back to another execution path.
   New parse and run fixtures; no existing golden changes. Browser runtime and
   WASM adoption follow the release.
 

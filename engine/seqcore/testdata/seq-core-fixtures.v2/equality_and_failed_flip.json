@@ -1,0 +1,486 @@
+{
+ "schema": "seq-core-fixtures.v2",
+ "freeze_id": "seq-core-freeze.v1",
+ "event_schema": "seq-core-events.v1",
+ "checkpoint_schema": "seq-core-checkpoint.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "family": "equality_and_failed_flip",
+ "description": "Equality resets both runs; a buy comparison after equality or after a failed gate does not start a run.",
+ "cases": [
+  {
+   "id": "equality_and_failed_flip.main.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 97,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "9": {
+      "buy": {
+       "setup_run": 5
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "10": {
+      "buy": {
+       "setup_run": 0
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "11": {
+      "buy": {
+       "setup_run": 0
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "12": {
+      "buy": {
+       "setup_run": 0
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "13": {
+      "buy": {
+       "setup_run": 0
+      },
+      "sell": {
+       "setup_run": 1
+      }
+     },
+     "14": {
+      "buy": {
+       "setup_run": 1
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "15": {
+      "buy": {
+       "setup_run": 2
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "16": {
+      "buy": {
+       "setup_run": 3
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ]
+    }
+   },
+   "derivation": "Buy run 1..5 at 5..9. 10: c10=98==c6=98 equality, both runs 0. 11: 96<c7=97 buy comparison after equality: gate fails, run 0 (not 1). 12: 95<c8=96 buy after a buy comparison: prior comparison not opposite, run 0. 13: 96>c9=95 sell after buy comparison -> sell run 1. 14: 97<c10=98 buy after sell -> buy run 1; 15: 2; 16: 3. No Setup 9: diagnostics only."
+  },
+  {
+   "id": "equality_and_failed_flip.main.sell",
+   "side": "sell",
+   "mirror_of": "equality_and_failed_flip.main.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 103,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "9": {
+      "sell": {
+       "setup_run": 5
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "10": {
+      "sell": {
+       "setup_run": 0
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "11": {
+      "sell": {
+       "setup_run": 0
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "12": {
+      "sell": {
+       "setup_run": 0
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "13": {
+      "sell": {
+       "setup_run": 0
+      },
+      "buy": {
+       "setup_run": 1
+      }
+     },
+     "14": {
+      "sell": {
+       "setup_run": 1
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "15": {
+      "sell": {
+       "setup_run": 2
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "16": {
+      "sell": {
+       "setup_run": 3
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ]
+    }
+   },
+   "derivation": "Buy run 1..5 at 5..9. 10: c10=98==c6=98 equality, both runs 0. 11: 96<c7=97 buy comparison after equality: gate fails, run 0 (not 1). 12: 95<c8=96 buy after a buy comparison: prior comparison not opposite, run 0. 13: 96>c9=95 sell after buy comparison -> sell run 1. 14: 97<c10=98 buy after sell -> buy run 1; 15: 2; 16: 3. No Setup 9: diagnostics only."
+  }
+ ]
+}

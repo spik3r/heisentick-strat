@@ -1,0 +1,90 @@
+{
+  "case": "family-legacy-setup9-fall",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.05,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "legacy-setup9-fall",
+  "symbol": "XAUUSD",
+  "timeframe": "1h",
+  "tradeCount": 3,
+  "trades": [
+    {
+      "entry": 988.05,
+      "entryIndex": 12,
+      "entryT": 1767614400000,
+      "exit": 985.95,
+      "exitIndex": 13,
+      "exitT": 1767618000000,
+      "initialSl": 986,
+      "initialTp": 992,
+      "meta": {
+        "profile": "seq.legacy.setup9.v1",
+        "setup": "legacySetup9",
+        "signalAtr": 2,
+        "signalIndex": 12
+      },
+      "pnl": -204.878048780483,
+      "points": -2.09999999999991,
+      "reason": "sl",
+      "side": "long",
+      "size": 97.5609756097583,
+      "sl": 986,
+      "tag": "TD-BUY-9",
+      "tp": 992
+    },
+    {
+      "entry": 749.95,
+      "entryIndex": 250,
+      "entryT": 1768471200000,
+      "exit": 746.05,
+      "exitIndex": 253,
+      "exitT": 1768482000000,
+      "initialSl": 752,
+      "initialTp": 746,
+      "meta": {
+        "profile": "seq.legacy.setup9.v1",
+        "setup": "legacySetup9",
+        "signalAtr": 2,
+        "signalIndex": 250
+      },
+      "pnl": 380.487804878066,
+      "points": 3.90000000000009,
+      "reason": "tp",
+      "side": "short",
+      "size": 97.5609756097583,
+      "sl": 752,
+      "tag": "TD-SELL-9",
+      "tp": 746
+    },
+    {
+      "entry": 732.05,
+      "entryIndex": 268,
+      "entryT": 1768536000000,
+      "exit": 729.95,
+      "exitIndex": 269,
+      "exitT": 1768539600000,
+      "initialSl": 730,
+      "initialTp": 736,
+      "meta": {
+        "profile": "seq.legacy.setup9.v1",
+        "setup": "legacySetup9",
+        "signalAtr": 2,
+        "signalIndex": 268
+      },
+      "pnl": -204.878048780483,
+      "points": -2.09999999999991,
+      "reason": "sl",
+      "side": "long",
+      "size": 97.5609756097583,
+      "sl": 730,
+      "tag": "TD-BUY-9",
+      "tp": 736
+    }
+  ]
+}

@@ -1,0 +1,2681 @@
+{
+ "schema": "seq-core-fixtures.v2",
+ "freeze_id": "seq-core-freeze.v1",
+ "event_schema": "seq-core-events.v1",
+ "checkpoint_schema": "seq-core-checkpoint.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "family": "config_unsupported",
+ "description": "Unsupported configuration is a typed construction error.",
+ "cases": [
+  {
+   "id": "config_unsupported.eight_vs_five_enabled.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "qualifier_8_vs_5": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "qualifier_8_vs_5",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value qualifier_8_vs_5=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.eight_vs_five_enabled.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.eight_vs_five_enabled.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "qualifier_8_vs_5": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "qualifier_8_vs_5",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value qualifier_8_vs_5=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.intersection_enabled.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "intersection": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "intersection",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value intersection=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.intersection_enabled.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.intersection_enabled.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "intersection": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "intersection",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value intersection=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_countdown_12.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "countdown_count": 12
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "countdown_count",
+     "value": 12,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value countdown_count=12 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_countdown_12.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.nondefault_countdown_12.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "countdown_count": 12
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "countdown_count",
+     "value": 12,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value countdown_count=12 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_setup_lookback_5.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "setup_lookback": 5
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "setup_lookback",
+     "value": 5,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value setup_lookback=5 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_setup_lookback_5.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.nondefault_setup_lookback_5.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "setup_lookback": 5
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "setup_lookback",
+     "value": 5,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value setup_lookback=5 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.combo_enabled.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "combo": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "combo",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value combo=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.combo_enabled.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.combo_enabled.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "combo": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "combo",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value combo=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.risk_level_enabled.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "risk_level": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "risk_level",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value risk_level=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.risk_level_enabled.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.risk_level_enabled.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "risk_level": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "risk_level",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value risk_level=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.tdst_cancel_enabled.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "tdst_cancel": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "tdst_cancel",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value tdst_cancel=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.tdst_cancel_enabled.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.tdst_cancel_enabled.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "tdst_cancel": true
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "tdst_cancel",
+     "value": true,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value tdst_cancel=True fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_setup_count_8.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "setup_count": 8
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "setup_count",
+     "value": 8,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value setup_count=8 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_setup_count_8.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.nondefault_setup_count_8.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "setup_count": 8
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "setup_count",
+     "value": 8,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value setup_count=8 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_countdown_lookback_3.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "countdown_lookback": 3
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "countdown_lookback",
+     "value": 3,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value countdown_lookback=3 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_countdown_lookback_3.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.nondefault_countdown_lookback_3.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "countdown_lookback": 3
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "countdown_lookback",
+     "value": 3,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value countdown_lookback=3 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_recycle_21.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "recycle_at": 21
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "recycle_at",
+     "value": 21,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value recycle_at=21 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  },
+  {
+   "id": "config_unsupported.nondefault_recycle_21.sell",
+   "side": "sell",
+   "mirror_of": "config_unsupported.nondefault_recycle_21.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "config": {
+     "recycle_at": 21
+    },
+    "error": {
+     "type": "UnsupportedConfigError",
+     "field": "recycle_at",
+     "value": 21,
+     "reason": "unsupported_config",
+     "raised_at": "construction",
+     "bars_consumed": 0,
+     "events": [],
+     "snapshots": [],
+     "event_seq_consumed": 0
+    }
+   },
+   "derivation": "Unsupported value recycle_at=21 fails at construction before any bar: typed UnsupportedConfigError{Field, Value, Reason}; bars_consumed 0, no event, no snapshot, event_seq not consumed (the init diagnostics of the default profile are NOT emitted either, because no bar is processed)."
+  }
+ ]
+}

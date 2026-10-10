@@ -10,6 +10,9 @@ import (
 var ErrParserUnimplemented = errors.New("dsl parser is not implemented")
 
 func parse(source string) (ParseResult, error) {
+	if sequentialFullSourceCandidate(source) {
+		return parseSequentialFullSource(source), nil
+	}
 	if rangeReversionSourceCandidate(source) {
 		return parseRangeReversionSource(source), nil
 	}
@@ -30,6 +33,12 @@ func parse(source string) (ParseResult, error) {
 	}
 	parser := newParser(source)
 	parser.parse()
+	// Source selection has already distinguished authored intent from opaque
+	// metadata/list values. Do not rediscover source intent from their normalized
+	// values; direct native configs are guarded independently at engine admission.
+	if parser.config["setupType"] == string(FamilySequentialFull) {
+		return parseSequentialFullSource(source), nil
+	}
 	// A generated family alias must never bypass the complete family scanner.
 	if parser.config["setupType"] == string(FamilyFrozenLevelBreakout) {
 		return parseFrozenLevelSource(source), nil
@@ -66,6 +75,7 @@ type parser struct {
 	entryTfLine         *logicalLine
 	dualEMAAudit        dualEMAParseAudit
 	smaGoldenCrossAudit smaGoldenCrossParseAudit
+	legacySetup9Audit   legacySetup9ParseAudit
 	rmvFields           map[string]bool
 	clockRange          clockRangeParse
 }
@@ -138,6 +148,7 @@ func (p *parser) parse() {
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+	p.validateLegacySetup9()
 	p.validateRMVSourceTimeframe()
 	p.validateTimedReturn()
 	p.validateClockRangeBreakout()
@@ -155,6 +166,7 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	head := strings.ToLower(tokens[0])
 	p.recordDualEMAAuthored(line, tokens, head)
 	p.recordSMAGoldenCrossAuthored(line, head)
+	p.recordLegacySetup9Authored(line, head, tokens)
 	if head != "dsl" {
 		p.reportMalformedNumbers(line, tokens)
 		p.reportDeprecatedSpellings(line, tokens)
@@ -392,6 +404,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		} else if p.config["setupType"] != string(FamilySMAGoldenCross) {
 			p.unknownDirective(line, tokens[0])
 		}
+	case "sequential":
+		p.parseLegacySetup9(line, tokens)
 	case "swing":
 		p.parseSwing(tokens)
 	case "pullback":
@@ -702,7 +716,7 @@ func canonicalSetupFamily(tokens []string) string {
 	// Frozen selectors belong exclusively to the strict front-end. The
 	// permissive legacy lexer must not acquire this family from text inside
 	// metadata; authored selectors are audited before this parser is entered.
-	if family == string(FamilyFrozenLevelBreakout) || family == string(FamilyRegimeEngine) || family == string(FamilyMasterStructural) {
+	if family == string(FamilyFrozenLevelBreakout) || family == string(FamilyRegimeEngine) || family == string(FamilyMasterStructural) || family == string(FamilySequentialFull) {
 		return ""
 	}
 	return family

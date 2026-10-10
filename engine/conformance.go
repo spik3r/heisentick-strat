@@ -5,6 +5,10 @@ package engine
 // scoreboard: every conformance/run fixture must appear in exactly one of the
 // two, and cmd/conformance writes both lists into conformance/metadata.json.
 var implementedRunCases = []string{
+	"family-sequential-full-e1-long",
+	"family-sequential-full-e1-short",
+	"family-sequential-full-e2-long",
+	"family-sequential-full-e2-short",
 	"family-timed-return",
 	"family-timed-return-predecessor",
 	"rmv-named-level-allow",
@@ -64,6 +68,10 @@ var implementedRunCases = []string{
 	"family-keltner-expansion",
 	"family-named-level-sweep",
 	"family-named-level-flag",
+	"family-legacy-setup9",
+	"family-legacy-setup9-fall",
+	"family-legacy-setup9-perf-seasonal-long",
+	"family-legacy-setup9-perf-seasonal-short",
 	"family-clock-range-breakout-post-range-quote-after-expiry",
 	"family-clock-range-breakout-range-end-bar-excluded",
 	"family-clock-range-breakout-empty-range-rejected",

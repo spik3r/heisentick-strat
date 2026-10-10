@@ -493,6 +493,8 @@ are errors. The `type` value itself is written in trading language
 | `intra hour run exhaustion` | intraHourRunExhaustion |
 | `named level sweep` | namedLevelSweep |
 | `named level flag` | namedLevelFlag |
+| `legacy setup 9` | legacySetup9 |
+| `sequential full` | sequentialFull (Go-only, synthetic E1/E2) |
 | `clock range breakout` | clockRangeBreakout |
 
 Per-family phrase sets live in one standalone file per family under
@@ -503,6 +505,12 @@ enforces that specified files carry compiling examples. Until a family file
 leaves TODO status, its normative sources are
 `strat/implementations/browser-runtime/compiler/parseSetups.js` + `engine/dsl/setups/*` and the family's
 case in `strat/conformance/parse/`.
+
+The Go-only [`sequential full`](dsl-spec-families/sequentialFull.md) family uses
+a strict closed grammar with an explicit profile, E1/E2 policy, single synthetic
+route, risk and absolute notional cap. It does not inherit generic defaults or
+reuse either archived legacy profile. Its family specification defines the
+temporary execution capabilities and typed refusal boundaries.
 
 The `volume profile` section configures the VP context (scope
 session/day/week/rolling/fixed — `visible` is rejected as

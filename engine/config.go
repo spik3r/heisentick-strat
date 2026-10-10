@@ -173,6 +173,7 @@ type flagParams struct {
 	PriorDayMinRangeATR        float64
 	NamedLevelSweep            namedLevelSweepParams
 	NamedLevelFlag             namedLevelFlagParams
+	LegacySetup9               legacySetup9Params
 	NLSUseTrigger              bool
 	ClockRange                 dsl.ClockRangeSpec
 }
@@ -526,6 +527,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		PriorDayMinRangeATR:       numberValue(mapValue(cfg, "priorDay"), "minRangeAtr", 0),
 		NamedLevelSweep:           namedLevelSweepParamsFromConfig(cfg),
 		NamedLevelFlag:            namedLevelFlagParamsFromConfig(cfg),
+		LegacySetup9:              legacySetup9ParamsFromConfig(cfg),
 		NLSUseTrigger:             triggerExplicit && !containsString(triggerCandles, "any"),
 	}
 	applyExtractedSetupParams(&p, cfg, stop, orb, setupType)

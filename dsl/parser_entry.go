@@ -60,6 +60,10 @@ func (p *parser) validateEntryTimeframe() {
 	source, _ := p.config["sourceTimeframe"].(string)
 	sd, _ := p.config["supplyDemand"].(map[string]any)
 	if retest, _ := sd["retestOnEntryTimeframe"].(int); retest != 0 {
+		if p.config["setupType"] != string(FamilySupplyDemand) {
+			p.errorAt(nil, nil, "retest on entry timeframe requires supply demand.", "")
+			return
+		}
 		if source != "4h" || (entryTf != "15m" && entryTf != "30m" && entryTf != "1h") {
 			message := "retest on entry timeframe requires source timeframe 4h and entryTf 15m, 30m or 1h."
 			if p.entryTfLine != nil {

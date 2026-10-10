@@ -543,7 +543,12 @@ func (r *sdEntryRetestRun) onBar(b *broker, i int) {
 		zone := &src.sdZones[idx]
 		lastCreatedAt = zone.CreatedAt
 		lastIdx = idx
-		ready := r.done >= zone.CreatedAt+p.SupplyDemand.MinWaitCandles
+		// This opt-in route has a declared four-hour source. A completed
+		// formation/flip close cannot make the preceding entry-bar range a retest.
+		// Equality at the entry open is allowed, so the next entry candle need not
+		// wait for another source candle. Keep this independent of future spacings.
+		zoneClose := src.series.T[zone.CreatedAt] + 4*60*60*1000
+		ready := r.done >= zone.CreatedAt+p.SupplyDemand.MinWaitCandles && b.series.T[i] >= zoneClose
 		stop, target, meta, ok := b.supplyDemandRetestAt(i, zone, atr, ready)
 		if !ok {
 			continue

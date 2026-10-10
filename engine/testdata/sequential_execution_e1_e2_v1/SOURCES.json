@@ -1,0 +1,53 @@
+{
+  "schema": "seq-exec-sources.v1",
+  "repository": "spik3r/heisentick-backlog",
+  "commit": "3e4694ea088703ebf6a696287127b50cdbf8b6f7",
+  "root": "fixtures/sequential-execution-e1-e2.v1",
+  "files": {
+    "DERIVATIONS.md": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/DERIVATIONS.md",
+      "git_blob": "479e917666fd678f972f7239639d8ad8a7189df3",
+      "sha256": "4042cd413df602f64261d6fe702d34922d8bc5987b38184a0f0f5b9a05b8fe19"
+    },
+    "MANIFEST.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/MANIFEST.json",
+      "git_blob": "0a3dd83317a1448e4844b9b395a0436ec01bd33f",
+      "sha256": "2342d9014f1c718dee7c0a853580489450aea0d5de7c81a416f0068429687379"
+    },
+    "README.md": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/README.md",
+      "git_blob": "f628f84bf01709e315a9f70cd0a9565d174f0fca",
+      "sha256": "d9f62cc99143655d00abf082ac31d74cdd5c14ef57c461866cbb49b79d63e109"
+    },
+    "cases/atr.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/atr.json",
+      "git_blob": "4fe18132f6e1793a4a3083ae464308ce1e68757c",
+      "sha256": "1f7ada5debb76d032f9970996990967c47a1eda2bc8b312f1a2c1d7a14e5e3d4"
+    },
+    "cases/e1.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/e1.json",
+      "git_blob": "c21b1a81ec0ff6c2650b3ecd517f345e0e038803",
+      "sha256": "27b00294e93266bcfe90ac7d0466bd674562f25b0203023ef213e21359ce570c"
+    },
+    "cases/e2.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/e2.json",
+      "git_blob": "c3be393c05aea9ea222cf0125e8d291e5d7829c8",
+      "sha256": "636545cee6386720379113b87dc8bdb02ccceae7675ac21e86823f800770b384"
+    },
+    "cases/excluded.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/excluded.json",
+      "git_blob": "75b05a2a7b5e1a5df2104741122c01729259528c",
+      "sha256": "9d33efb1c7dc6b362108faf6dcc399179f20ef9598e7db0f45f59c6516906e3b"
+    },
+    "cases/provisional.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/provisional.json",
+      "git_blob": "d96a7336138188b76b5f5ffd6a1a1f204665d5f2",
+      "sha256": "35735440a670a6f327347eb7731e04f6b9ee319eda409bffe5a30ab3b4c3228e"
+    },
+    "cases/refusals.json": {
+      "source_path": "fixtures/sequential-execution-e1-e2.v1/cases/refusals.json",
+      "git_blob": "25a739cc64621a997ba513fa493c40f39bed1fc0",
+      "sha256": "6526df43a4142eed80bcbfe68d62f7830c1b7aec5abb107ff7ab08fef61a7ef5"
+    }
+  }
+}

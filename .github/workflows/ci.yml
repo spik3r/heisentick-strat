@@ -102,10 +102,34 @@ jobs:
           node scripts/checks/down-shock-source-parity.mjs cmd/heisentick/heisentick "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
           GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestDownShock' ./engine ./report ./cmd/heisentick
 
+      - name: Legacy Setup-9 native/WASM oracle parity
+        if: steps.mod.outputs.present == 'true'
+        run: |
+          native_dir="$(mktemp -d "$RUNNER_TEMP/legacy-setup9.XXXXXX")"
+          trap 'rm -rf "$native_dir"' EXIT
+          go build -trimpath -o "$native_dir/engine" ./cmd/enginewasm
+          go build -trimpath -o "$native_dir/dsl" ./cmd/dslwasm
+          node scripts/checks/legacy-setup9-parity.mjs "$native_dir/engine" cmd/enginewasm/enginewasm.wasm "$native_dir/dsl" cmd/dslwasm/dslwasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
       - name: Master portable native/WASM frozen synthetic report parity
         id: master_parity
         if: steps.mod.outputs.present == 'true'
         run: node scripts/checks/master-runtime-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
+      # HT-229 partial qualification: unchanged synthetic core and fixture suite.
+      # This runs a Go test binary in Node; it does not export a trading API or
+      # establish browser/full-policy/release support.
+      - name: Synthetic Sequential core under Node-hosted Go WASM
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" ./engine/seqcore
+
+      # Synthetic E1/E2 execution and strict existing-bridge admission only.
+      # No historical, browser, consumer or release qualification is implied.
+      - name: Synthetic Sequential E1/E2 under Node-hosted Go WASM
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards)' ./dsl ./engine ./cmd/enginewasm
 
       - name: Run portable arithmetic kernels under Go WASM
         if: steps.mod.outputs.present == 'true'

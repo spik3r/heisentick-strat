@@ -1,0 +1,52 @@
+{
+ "convention_id": "seq-exec-e1e2.v1",
+ "schema": "seq-exec-fixtures.v1",
+ "corpus_sha256": "40951963bd91f1c542ac598d3ee0b17aa5a758bf2ecc1a7f413900cb1eaf15ae",
+ "hash_rule": "sha256 of the lines \"<sha256>  <path>\\n\" for cases/*.json (sorted), README.md, DERIVATIONS.md",
+ "files": {
+  "cases/atr.json": "1f7ada5debb76d032f9970996990967c47a1eda2bc8b312f1a2c1d7a14e5e3d4",
+  "cases/e1.json": "27b00294e93266bcfe90ac7d0466bd674562f25b0203023ef213e21359ce570c",
+  "cases/e2.json": "636545cee6386720379113b87dc8bdb02ccceae7675ac21e86823f800770b384",
+  "cases/excluded.json": "9d33efb1c7dc6b362108faf6dcc399179f20ef9598e7db0f45f59c6516906e3b",
+  "cases/provisional.json": "35735440a670a6f327347eb7731e04f6b9ee319eda409bffe5a30ab3b4c3228e",
+  "cases/refusals.json": "6526df43a4142eed80bcbfe68d62f7830c1b7aec5abb107ff7ab08fef61a7ef5",
+  "README.md": "d9f62cc99143655d00abf082ac31d74cdd5c14ef57c461866cbb49b79d63e109",
+  "DERIVATIONS.md": "4042cd413df602f64261d6fe702d34922d8bc5987b38184a0f0f5b9a05b8fe19"
+ },
+ "cases": 68,
+ "binding": 66,
+ "provisional": 1,
+ "authority": {
+  "backlog_main": "0306afaeaff015e934c8beff487f91a311dfae64",
+  "pr464_head": "12c7d8087142dc2ea2af9e8ce510d4e3a60f1958",
+  "strat_pr109": "2ea7f63c686489dcbba09ec482a119dd2af17d9b",
+  "strat_pr110": "c7e90c7b9293f4dfd2bb9f7bbcf95dc9b5ddefbe",
+  "strat_pr111": "ade7be648afd00073a4714b2941ddf5641524761",
+  "reused_core_fixtures_blobs": {
+   "terminal_13_deferral.json": "5211cf66c8adf0c9ee9f5aec7527ddaa02f1a4a5",
+   "countdown_overlap.json": "50bf7fbb52287de96b559d549be9e7ac90462858",
+   "terminal_13_setup_22_collision.json": "190d039a5f592d6c8d38dafd022e91696168e9f9"
+  },
+  "strat_pr112_merge": "f8aba9ef13e22ace21ce31f2ed06cd86ad53464d"
+ },
+ "revision": "v1.2: owner cap decision, exit costs settled, OQ-4 excluded, two non-positive-fill fixtures",
+ "excluded": 1,
+ "history": [
+  {
+   "revision": "v1",
+   "pr465_head": "2b106e162eeffb5a85d1390ba512314762cc36fc",
+   "corpus_sha256": "76fde2d5465aef764ad1be1b2987aaf0971775a605f75583a88a473565d366d1",
+   "cases": 67,
+   "binding": 62,
+   "provisional": 5
+  },
+  {
+   "revision": "v1.1",
+   "pr465_head": "3fd7209859c5fa7df4df0b0bb781673230b84610",
+   "corpus_sha256": "3885ca9b7a42a53ae4f0f5276f11f3486c8ff65837d94c809c4dd95b97d3a3c0",
+   "cases": 66,
+   "binding": 62,
+   "provisional": 4
+  }
+ ]
+}

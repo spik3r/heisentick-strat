@@ -1,0 +1,569 @@
+{
+ "schema": "seq-exec-fixtures.v1",
+ "convention_id": "seq-exec-e1e2.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "mirror": "price -> 200 - price, high and low swapped, sides swapped",
+ "family": "atr",
+ "cases": [
+  {
+   "id": "atr.warmup_boundary",
+   "group": "atr",
+   "policy": "both",
+   "status": "binding",
+   "open_question": null,
+   "title": "ATR14 is unavailable before bar 13 and exact from bar 13",
+   "derivation": "Every bar has TR=10, including bar 0 (TR[0]=high-low). Index 12 has only 13 bars: unavailable. Index 13 is the first with 14 TRs: 10.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "atr_length": 14
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 106,
+       "l": 96,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 99,
+       "l": 89,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 98,
+       "l": 88,
+       "c": 89
+      },
+      {
+       "o": 89,
+       "h": 97,
+       "l": 87,
+       "c": 88
+      }
+     ],
+     "expected": {
+      "atr14": [
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 104,
+       "l": 94,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 111,
+       "l": 101,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 112,
+       "l": 102,
+       "c": 111
+      },
+      {
+       "o": 111,
+       "h": 113,
+       "l": 103,
+       "c": 112
+      }
+     ],
+     "expected": {
+      "atr14": [
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       10,
+       10,
+       10,
+       10
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "atr.true_range_gaps",
+   "group": "atr",
+   "policy": "both",
+   "status": "binding",
+   "open_question": null,
+   "title": "True range uses the previous close across price gaps",
+   "derivation": "Opens gap from the prior close by -4..+4, so TR often exceeds high-low via |high-prevClose| or |low-prevClose|. Values come from the SMA of the last 14 TRs; bar 0 uses high-low.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "atr_length": 14
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 102,
+       "l": 99,
+       "c": 101
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 99,
+       "c": 102
+      },
+      {
+       "o": 99,
+       "h": 104,
+       "l": 97,
+       "c": 101
+      },
+      {
+       "o": 102,
+       "h": 103,
+       "l": 99,
+       "c": 100
+      },
+      {
+       "o": 104,
+       "h": 107,
+       "l": 101,
+       "c": 105
+      },
+      {
+       "o": 103,
+       "h": 106,
+       "l": 101,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 104,
+       "l": 101,
+       "c": 102
+      },
+      {
+       "o": 105,
+       "h": 109,
+       "l": 102,
+       "c": 107
+      },
+      {
+       "o": 103,
+       "h": 106,
+       "l": 99,
+       "c": 101
+      },
+      {
+       "o": 102,
+       "h": 104,
+       "l": 101,
+       "c": 103
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 101,
+       "c": 104
+      },
+      {
+       "o": 103,
+       "h": 108,
+       "l": 101,
+       "c": 105
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 101,
+       "c": 104
+      },
+      {
+       "o": 106,
+       "h": 110,
+       "l": 104,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 108,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 106,
+       "h": 110,
+       "l": 103,
+       "c": 108
+      }
+     ],
+     "expected": {
+      "atr14": [
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       5.5,
+       5.7142857143,
+       5.5714285714,
+       5.5714285714
+      ]
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 101,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 97,
+       "h": 101,
+       "l": 95,
+       "c": 98
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 96,
+       "c": 99
+      },
+      {
+       "o": 98,
+       "h": 101,
+       "l": 97,
+       "c": 100
+      },
+      {
+       "o": 96,
+       "h": 99,
+       "l": 93,
+       "c": 95
+      },
+      {
+       "o": 97,
+       "h": 99,
+       "l": 94,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 99,
+       "l": 96,
+       "c": 98
+      },
+      {
+       "o": 95,
+       "h": 98,
+       "l": 91,
+       "c": 93
+      },
+      {
+       "o": 97,
+       "h": 101,
+       "l": 94,
+       "c": 99
+      },
+      {
+       "o": 98,
+       "h": 99,
+       "l": 96,
+       "c": 97
+      },
+      {
+       "o": 95,
+       "h": 99,
+       "l": 93,
+       "c": 96
+      },
+      {
+       "o": 97,
+       "h": 99,
+       "l": 92,
+       "c": 95
+      },
+      {
+       "o": 92,
+       "h": 93,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 95,
+       "h": 99,
+       "l": 93,
+       "c": 96
+      },
+      {
+       "o": 94,
+       "h": 96,
+       "l": 90,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 96,
+       "l": 92,
+       "c": 95
+      },
+      {
+       "o": 94,
+       "h": 97,
+       "l": 90,
+       "c": 92
+      }
+     ],
+     "expected": {
+      "atr14": [
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       5.5,
+       5.7142857143,
+       5.5714285714,
+       5.5714285714
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

@@ -206,3 +206,52 @@ func TestBridgeRejectsNullBarValuesForClockRangeBreakout(t *testing.T) {
 		}
 	}
 }
+
+// The existing fixture transport must retain the opt-in source-entry mode and
+// refuse contradictory metadata instead of silently returning an empty run.
+func TestRetestFixtureBridgeAdmission(t *testing.T) {
+	const path = "../../conformance/run/family-supply-demand-retest-entry-timeframe"
+	raw, err := os.ReadFile(path + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(path + ".strat")
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture, err := native.LoadRunFixture(path + ".fixture.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	result, err := native.RunFixtureCase(fixture, string(source))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(result.Trades) == 0 {
+		t.Fatal("fixture control must execute a retest")
+	}
+	want, _ := json.Marshal(result)
+	got, err := runFixture(string(raw), string(source))
+	if err != nil || string(got) != string(want) {
+		t.Fatalf("fixture bridge differs: err=%v got=%s want=%s", err, got, want)
+	}
+	for _, field := range []string{"timeframe", "sourceTimeframe"} {
+		var metadata map[string]any
+		if err := json.Unmarshal(raw, &metadata); err != nil {
+			t.Fatal(err)
+		}
+		metadata[field] = "30m"
+		bad, _ := json.Marshal(metadata)
+		if _, err := runFixture(string(bad), string(source)); err == nil {
+			t.Fatalf("contradictory %s metadata admitted", field)
+		}
+	}
+	wrongFamily := strings.Replace(string(source), "retest on entry timeframe", "retest on entry timeframe\n  type: break retest", 1)
+	if _, err := runFixture(string(raw), wrongFamily); err == nil {
+		t.Fatal("contradictory final setup family admitted")
+	}
+	unsupported := strings.Replace(string(source), "source timeframe 4h", "source timeframe 1h", 1)
+	if _, err := runFixture(string(raw), unsupported); err == nil {
+		t.Fatal("unsupported retest source admitted")
+	}
+}

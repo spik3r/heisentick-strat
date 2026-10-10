@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -31,8 +32,21 @@ func runClockRangeFixture(raw, source string) ([]byte, error) {
 }
 
 func runFixtureEnvelope(raw, source string, audit bool) ([]byte, error) {
+	full, err := sequentialFullSourceIntent(source)
+	if err != nil {
+		return nil, err
+	}
+	if full {
+		if err := native.ValidateSequentialFullJSONEnvelope([]byte(raw), false); err != nil {
+			return nil, err
+		}
+	}
+
 	var fixture native.RunFixture
 	if err := json.Unmarshal([]byte(raw), &fixture); err != nil {
+		if full {
+			return nil, &native.SequentialFullExecutionError{Kind: "invalid-sequential-input", Field: "fixture", BarIndex: -1}
+		}
 		return nil, err
 	}
 	if fixture.Schema != "dsl-conformance-run-fixture-v1" {
@@ -118,21 +132,40 @@ type columnRunOutput struct {
 const columnTradeWidth = 13
 
 func runColumns(rawMeta, source string, columns [6][]float64) (columnRunOutput, error) {
+	full, intentErr := sequentialFullSourceIntent(source)
+	if intentErr != nil {
+		return columnRunOutput{}, intentErr
+	}
+	if full {
+		if err := native.ValidateSequentialFullJSONEnvelope([]byte(rawMeta), true); err != nil {
+			return columnRunOutput{}, err
+		}
+	}
+
 	adapterStart := time.Now()
 	decoder := json.NewDecoder(bytes.NewBufferString(rawMeta))
 	decoder.DisallowUnknownFields()
 	var meta columnRunMeta
 	if err := decoder.Decode(&meta); err != nil {
+		if full {
+			return columnRunOutput{}, &native.SequentialFullExecutionError{Kind: "invalid-sequential-input", Field: "metadata", BarIndex: -1}
+		}
 		return columnRunOutput{}, fmt.Errorf("column metadata: %w", err)
 	}
 	if meta.Schema != "enginewasm-columnar-v1" {
 		return columnRunOutput{}, fmt.Errorf("unsupported column schema %q", meta.Schema)
 	}
 	if meta.SourceTimeframe != "" || meta.HigherTimeframe != "" || len(meta.Context) != 0 {
+		if full {
+			return columnRunOutput{}, &native.SequentialFullExecutionError{Kind: "unsupported-sequential-route", Field: "metadata.context", BarIndex: -1}
+		}
 		return columnRunOutput{}, fmt.Errorf("column bridge supports only one chart-timeframe series; source, higher-timeframe, and precomputed context inputs are unsupported")
 	}
 	for index, column := range columns {
 		if len(column) != len(columns[0]) {
+			if full {
+				return columnRunOutput{}, &native.SequentialFullExecutionError{Kind: "invalid-sequential-input", Field: "columns.shape", BarIndex: -1}
+			}
 			return columnRunOutput{}, fmt.Errorf("column %d length %d does not match timestamp length %d", index, len(column), len(columns[0]))
 		}
 	}
@@ -184,18 +217,51 @@ func packColumnResult(result native.RunResult) ([]float64, string, string, error
 		return nil, "", "", err
 	}
 	summaryJSON, err := json.Marshal(struct {
-		Case            string       `json:"case"`
-		Costs           native.Costs `json:"costs"`
-		HigherTimeframe string       `json:"higherTimeframe"`
-		RangeMethod     string       `json:"rangeMethod"`
-		Schema          string       `json:"schema"`
-		StrategyID      string       `json:"strategyId"`
-		Symbol          string       `json:"symbol"`
-		Timeframe       string       `json:"timeframe"`
-		TradeCount      int          `json:"tradeCount"`
-	}{result.Case, result.Costs, result.HigherTimeframe, result.RangeMethod, result.Schema, result.StrategyID, result.Symbol, result.Timeframe, result.TradeCount})
+		Case            string                      `json:"case"`
+		Costs           native.Costs                `json:"costs"`
+		HigherTimeframe string                      `json:"higherTimeframe"`
+		RangeMethod     string                      `json:"rangeMethod"`
+		Schema          string                      `json:"schema"`
+		StrategyID      string                      `json:"strategyId"`
+		Symbol          string                      `json:"symbol"`
+		Timeframe       string                      `json:"timeframe"`
+		TradeCount      int                         `json:"tradeCount"`
+		SequentialFull  *native.SequentialFullAudit `json:"sequentialFull,omitempty"`
+	}{result.Case, result.Costs, result.HigherTimeframe, result.RangeMethod, result.Schema, result.StrategyID, result.Symbol, result.Timeframe, result.TradeCount, result.SequentialFull})
 	if err != nil {
 		return nil, "", "", err
 	}
 	return values, string(stringsJSON), string(summaryJSON), nil
+}
+
+// Preserve existing error strings while retaining this closed family's stable
+// native refusal identity through the existing JSON and column transports.
+func bridgeErrorEnvelope(err error) map[string]any {
+	out := map[string]any{"error": err.Error()}
+	var cfg *dsl.SequentialFullConfigError
+	var execution *native.SequentialFullExecutionError
+	switch {
+	case errors.As(err, &cfg):
+		out["code"], out["field"] = cfg.Code, cfg.Field
+	case errors.As(err, &execution):
+		out["code"], out["field"] = execution.Kind, execution.Field
+		if execution.BarIndex >= 0 {
+			out["barIndex"] = execution.BarIndex
+		}
+		if execution.OpportunityID != "" {
+			out["opportunityId"] = execution.OpportunityID
+		}
+	}
+	return out
+}
+func columnFailure(err error) any { out := bridgeErrorEnvelope(err); out["ok"] = false; return out }
+func sequentialFullSourceIntent(source string) (bool, error) {
+	parsed, err := dsl.Parse(source)
+	if err != nil {
+		return false, nil
+	} // preserve the ordinary parser's existing path
+	if err := dsl.SequentialFullParseError(parsed); err != nil {
+		return true, err
+	}
+	return dsl.IsSequentialFullReserved(parsed.Config), nil
 }

@@ -1,0 +1,3082 @@
+{
+ "schema": "seq-exec-fixtures.v1",
+ "convention_id": "seq-exec-e1e2.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "mirror": "price -> 200 - price, high and low swapped, sides swapped",
+ "family": "refusals",
+ "cases": [
+  {
+   "id": "e1.refuse_open_at_end_entry_bar",
+   "group": "refusals",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Dataset ends on the entry bar with the position open",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "Entry fills at open[14]; bar 14 has no stop or target hit and the series ends. No end-of-test liquidation: typed unsupported-incomplete-terminal-run.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 14,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 14,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.refuse_open_at_end_last_checked_bar",
+   "group": "refusals",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Dataset ends on bar e+3 with no exit: refused, not time-exited",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "Bars 14-17 are held bars 1-4 with no hit. The time exit would be at open[18], which does not exist. The dataset ends with an open position: refusal. (With a bar 18 the same series time-exits, see e1.time_exit_open_e4.)",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 95,
+       "l": 91,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 96,
+       "l": 93,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 97,
+       "l": 94,
+       "c": 96
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 17,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 105,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 107,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 106,
+       "l": 103,
+       "c": 104
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 17,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.refuse_open_at_end_gap_entry",
+   "group": "refusals",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Gap entry then dataset end: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "Open[14]=99 gap entry fills, nothing hits, series ends at bar 16 with the position open.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 125,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 98,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 103,
+       "l": 99,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 104,
+       "l": 100,
+       "c": 102
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 16,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 101,
+       "h": 102,
+       "l": 98,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 101,
+       "l": 97,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 100,
+       "l": 96,
+       "c": 98
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 16,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.refuse_missing_interval_before_decision",
+   "group": "refusals",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Missing interval inside the Setup: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "open_ms skips one 5m step before bar 10 (bars 0-9 contiguous, bar 10 opens two steps after bar 9). The run is refused as unsupported input; no data_gap reset and no calendar handling.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "open_ms": [
+     1699999800000,
+     1700000100000,
+     1700000400000,
+     1700000700000,
+     1700001000000,
+     1700001300000,
+     1700001600000,
+     1700001900000,
+     1700002200000,
+     1700002500000,
+     1700003100000,
+     1700003400000,
+     1700003700000,
+     1700004000000,
+     1700004300000,
+     1700004600000,
+     1700004900000
+    ]
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 96,
+       "l": 91,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 101,
+       "l": 94,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 10,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 106,
+       "l": 99,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 10,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.refuse_missing_interval_during_position",
+   "group": "refusals",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Missing interval after entry: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "Hole before bar 16 (after the fill). The run is refused although a stop or target follows; no exit is inferred across the hole.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "open_ms": [
+     1699999800000,
+     1700000100000,
+     1700000400000,
+     1700000700000,
+     1700001000000,
+     1700001300000,
+     1700001600000,
+     1700001900000,
+     1700002200000,
+     1700002500000,
+     1700002800000,
+     1700003100000,
+     1700003400000,
+     1700003700000,
+     1700004000000,
+     1700004300000,
+     1700004900000
+    ]
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 96,
+       "l": 91,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 101,
+       "l": 94,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 16,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 106,
+       "l": 99,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 16,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e1.refuse_missing_interval_after_exit",
+   "group": "refusals",
+   "policy": "E1",
+   "status": "binding",
+   "open_question": null,
+   "title": "Missing interval after the trade closed: still refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "The target exits at bar 16, then a hole precedes bar 17. Refusal is dataset-wide: a hole anywhere refuses the run.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "open_ms": [
+     1699999800000,
+     1700000100000,
+     1700000400000,
+     1700000700000,
+     1700001000000,
+     1700001300000,
+     1700001600000,
+     1700001900000,
+     1700002200000,
+     1700002500000,
+     1700002800000,
+     1700003100000,
+     1700003400000,
+     1700003700000,
+     1700004000000,
+     1700004300000,
+     1700004600000,
+     1700005200000
+    ]
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E1",
+    "time_exit_bars": 4
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 98,
+       "l": 88,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 93,
+       "l": 90,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 96,
+       "l": 91,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 101,
+       "l": 94,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 101,
+       "l": 99,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 17,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 112,
+       "l": 102,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 110,
+       "l": 107,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 109,
+       "l": 104,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 106,
+       "l": 99,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 101,
+       "l": 99,
+       "c": 100
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 17,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e2.refuse_open_at_end_last_checked_bar",
+   "group": "refusals",
+   "policy": "E2",
+   "status": "binding",
+   "open_question": null,
+   "title": "Dataset ends on bar e+11 with no exit: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "e=28; bars 28-39 are held bars 1-12 with no hit; bar 40 (the time exit) does not exist. Refusal, no liquidation.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E2",
+    "time_exit_bars": 12
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 106,
+       "l": 96,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 99,
+       "l": 89,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 98,
+       "l": 88,
+       "c": 89
+      },
+      {
+       "o": 89,
+       "h": 97,
+       "l": 87,
+       "c": 88
+      },
+      {
+       "o": 88,
+       "h": 96,
+       "l": 86,
+       "c": 87
+      },
+      {
+       "o": 87,
+       "h": 95,
+       "l": 85,
+       "c": 86
+      },
+      {
+       "o": 86,
+       "h": 94,
+       "l": 84,
+       "c": 85
+      },
+      {
+       "o": 85,
+       "h": 93,
+       "l": 83,
+       "c": 84
+      },
+      {
+       "o": 84,
+       "h": 93,
+       "l": 83,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 96,
+       "l": 86,
+       "c": 87
+      },
+      {
+       "o": 87,
+       "h": 91,
+       "l": 81,
+       "c": 82
+      },
+      {
+       "o": 82,
+       "h": 90,
+       "l": 80,
+       "c": 81
+      },
+      {
+       "o": 81,
+       "h": 89,
+       "l": 79,
+       "c": 80
+      },
+      {
+       "o": 80,
+       "h": 88,
+       "l": 78,
+       "c": 79
+      },
+      {
+       "o": 79,
+       "h": 87,
+       "l": 77,
+       "c": 78
+      },
+      {
+       "o": 80,
+       "h": 83,
+       "l": 79,
+       "c": 82
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      },
+      {
+       "o": 83,
+       "h": 85,
+       "l": 81,
+       "c": 83
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 39,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 104,
+       "l": 94,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 111,
+       "l": 101,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 112,
+       "l": 102,
+       "c": 111
+      },
+      {
+       "o": 111,
+       "h": 113,
+       "l": 103,
+       "c": 112
+      },
+      {
+       "o": 112,
+       "h": 114,
+       "l": 104,
+       "c": 113
+      },
+      {
+       "o": 113,
+       "h": 115,
+       "l": 105,
+       "c": 114
+      },
+      {
+       "o": 114,
+       "h": 116,
+       "l": 106,
+       "c": 115
+      },
+      {
+       "o": 115,
+       "h": 117,
+       "l": 107,
+       "c": 116
+      },
+      {
+       "o": 116,
+       "h": 117,
+       "l": 107,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 114,
+       "l": 104,
+       "c": 113
+      },
+      {
+       "o": 113,
+       "h": 119,
+       "l": 109,
+       "c": 118
+      },
+      {
+       "o": 118,
+       "h": 120,
+       "l": 110,
+       "c": 119
+      },
+      {
+       "o": 119,
+       "h": 121,
+       "l": 111,
+       "c": 120
+      },
+      {
+       "o": 120,
+       "h": 122,
+       "l": 112,
+       "c": 121
+      },
+      {
+       "o": 121,
+       "h": 123,
+       "l": 113,
+       "c": 122
+      },
+      {
+       "o": 120,
+       "h": 121,
+       "l": 117,
+       "c": 118
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      },
+      {
+       "o": 117,
+       "h": 119,
+       "l": 115,
+       "c": 117
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 39,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e2.refuse_open_at_end_entry_bar",
+   "group": "refusals",
+   "policy": "E2",
+   "status": "binding",
+   "open_question": null,
+   "title": "Dataset ends on the entry bar with the position open",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "Bar 28 fills and nothing hits; the series ends.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E2",
+    "time_exit_bars": 12
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 106,
+       "l": 96,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 99,
+       "l": 89,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 98,
+       "l": 88,
+       "c": 89
+      },
+      {
+       "o": 89,
+       "h": 97,
+       "l": 87,
+       "c": 88
+      },
+      {
+       "o": 88,
+       "h": 96,
+       "l": 86,
+       "c": 87
+      },
+      {
+       "o": 87,
+       "h": 95,
+       "l": 85,
+       "c": 86
+      },
+      {
+       "o": 86,
+       "h": 94,
+       "l": 84,
+       "c": 85
+      },
+      {
+       "o": 85,
+       "h": 93,
+       "l": 83,
+       "c": 84
+      },
+      {
+       "o": 84,
+       "h": 93,
+       "l": 83,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 96,
+       "l": 86,
+       "c": 87
+      },
+      {
+       "o": 87,
+       "h": 91,
+       "l": 81,
+       "c": 82
+      },
+      {
+       "o": 82,
+       "h": 90,
+       "l": 80,
+       "c": 81
+      },
+      {
+       "o": 81,
+       "h": 89,
+       "l": 79,
+       "c": 80
+      },
+      {
+       "o": 80,
+       "h": 88,
+       "l": 78,
+       "c": 79
+      },
+      {
+       "o": 79,
+       "h": 87,
+       "l": 77,
+       "c": 78
+      },
+      {
+       "o": 80,
+       "h": 83,
+       "l": 79,
+       "c": 82
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 28,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 104,
+       "l": 94,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 111,
+       "l": 101,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 112,
+       "l": 102,
+       "c": 111
+      },
+      {
+       "o": 111,
+       "h": 113,
+       "l": 103,
+       "c": 112
+      },
+      {
+       "o": 112,
+       "h": 114,
+       "l": 104,
+       "c": 113
+      },
+      {
+       "o": 113,
+       "h": 115,
+       "l": 105,
+       "c": 114
+      },
+      {
+       "o": 114,
+       "h": 116,
+       "l": 106,
+       "c": 115
+      },
+      {
+       "o": 115,
+       "h": 117,
+       "l": 107,
+       "c": 116
+      },
+      {
+       "o": 116,
+       "h": 117,
+       "l": 107,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 114,
+       "l": 104,
+       "c": 113
+      },
+      {
+       "o": 113,
+       "h": 119,
+       "l": 109,
+       "c": 118
+      },
+      {
+       "o": 118,
+       "h": 120,
+       "l": 110,
+       "c": 119
+      },
+      {
+       "o": 119,
+       "h": 121,
+       "l": 111,
+       "c": 120
+      },
+      {
+       "o": 120,
+       "h": 122,
+       "l": 112,
+       "c": 121
+      },
+      {
+       "o": 121,
+       "h": 123,
+       "l": 113,
+       "c": 122
+      },
+      {
+       "o": 120,
+       "h": 121,
+       "l": 117,
+       "c": 118
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-incomplete-terminal-run",
+       "at_bar_index": 28,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  },
+  {
+   "id": "e2.refuse_missing_interval_in_countdown",
+   "group": "refusals",
+   "policy": "E2",
+   "status": "binding",
+   "open_question": null,
+   "title": "Missing interval inside the Countdown: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
+   "derivation": "A hole before bar 18 refuses the run. No reset, no completion across the hole.",
+   "prefix_group": null,
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "open_ms": [
+     1699999800000,
+     1700000100000,
+     1700000400000,
+     1700000700000,
+     1700001000000,
+     1700001300000,
+     1700001600000,
+     1700001900000,
+     1700002200000,
+     1700002500000,
+     1700002800000,
+     1700003100000,
+     1700003400000,
+     1700003700000,
+     1700004000000,
+     1700004300000,
+     1700004600000,
+     1700004900000,
+     1700005500000,
+     1700005800000,
+     1700006100000,
+     1700006400000,
+     1700006700000,
+     1700007000000,
+     1700007300000,
+     1700007600000,
+     1700007900000,
+     1700008200000,
+     1700008500000,
+     1700008800000,
+     1700009100000
+    ]
+   },
+   "config": {
+    "slippage": 0.5,
+    "risk_amount": 90,
+    "max_notional": 1000000,
+    "atr_length": 14,
+    "stop_buffer_atr": 0.1,
+    "reward_risk": 2,
+    "policy": "E2",
+    "time_exit_bars": 12
+   },
+   "mirror": {
+    "constant": 200,
+    "exact": true
+   },
+   "source_fixture": null,
+   "variants": {
+    "long": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 108,
+       "l": 98,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 107,
+       "l": 97,
+       "c": 98
+      },
+      {
+       "o": 98,
+       "h": 106,
+       "l": 96,
+       "c": 97
+      },
+      {
+       "o": 97,
+       "h": 105,
+       "l": 95,
+       "c": 96
+      },
+      {
+       "o": 96,
+       "h": 104,
+       "l": 94,
+       "c": 95
+      },
+      {
+       "o": 95,
+       "h": 103,
+       "l": 93,
+       "c": 94
+      },
+      {
+       "o": 94,
+       "h": 102,
+       "l": 92,
+       "c": 93
+      },
+      {
+       "o": 93,
+       "h": 101,
+       "l": 91,
+       "c": 92
+      },
+      {
+       "o": 92,
+       "h": 100,
+       "l": 90,
+       "c": 91
+      },
+      {
+       "o": 91,
+       "h": 99,
+       "l": 89,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 98,
+       "l": 88,
+       "c": 89
+      },
+      {
+       "o": 89,
+       "h": 97,
+       "l": 87,
+       "c": 88
+      },
+      {
+       "o": 88,
+       "h": 96,
+       "l": 86,
+       "c": 87
+      },
+      {
+       "o": 87,
+       "h": 95,
+       "l": 85,
+       "c": 86
+      },
+      {
+       "o": 86,
+       "h": 94,
+       "l": 84,
+       "c": 85
+      },
+      {
+       "o": 85,
+       "h": 93,
+       "l": 83,
+       "c": 84
+      },
+      {
+       "o": 84,
+       "h": 93,
+       "l": 83,
+       "c": 90
+      },
+      {
+       "o": 90,
+       "h": 96,
+       "l": 86,
+       "c": 87
+      },
+      {
+       "o": 87,
+       "h": 91,
+       "l": 81,
+       "c": 82
+      },
+      {
+       "o": 82,
+       "h": 90,
+       "l": 80,
+       "c": 81
+      },
+      {
+       "o": 81,
+       "h": 89,
+       "l": 79,
+       "c": 80
+      },
+      {
+       "o": 80,
+       "h": 88,
+       "l": 78,
+       "c": 79
+      },
+      {
+       "o": 79,
+       "h": 87,
+       "l": 77,
+       "c": 78
+      },
+      {
+       "o": 80,
+       "h": 83,
+       "l": 79,
+       "c": 82
+      },
+      {
+       "o": 82,
+       "h": 86,
+       "l": 81,
+       "c": 85
+      },
+      {
+       "o": 85,
+       "h": 90,
+       "l": 84,
+       "c": 89
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 18,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    },
+    "short": {
+     "bars": [
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 100
+      },
+      {
+       "o": 100,
+       "h": 105,
+       "l": 95,
+       "c": 99
+      },
+      {
+       "o": 99,
+       "h": 102,
+       "l": 92,
+       "c": 101
+      },
+      {
+       "o": 101,
+       "h": 103,
+       "l": 93,
+       "c": 102
+      },
+      {
+       "o": 102,
+       "h": 104,
+       "l": 94,
+       "c": 103
+      },
+      {
+       "o": 103,
+       "h": 105,
+       "l": 95,
+       "c": 104
+      },
+      {
+       "o": 104,
+       "h": 106,
+       "l": 96,
+       "c": 105
+      },
+      {
+       "o": 105,
+       "h": 107,
+       "l": 97,
+       "c": 106
+      },
+      {
+       "o": 106,
+       "h": 108,
+       "l": 98,
+       "c": 107
+      },
+      {
+       "o": 107,
+       "h": 109,
+       "l": 99,
+       "c": 108
+      },
+      {
+       "o": 108,
+       "h": 110,
+       "l": 100,
+       "c": 109
+      },
+      {
+       "o": 109,
+       "h": 111,
+       "l": 101,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 112,
+       "l": 102,
+       "c": 111
+      },
+      {
+       "o": 111,
+       "h": 113,
+       "l": 103,
+       "c": 112
+      },
+      {
+       "o": 112,
+       "h": 114,
+       "l": 104,
+       "c": 113
+      },
+      {
+       "o": 113,
+       "h": 115,
+       "l": 105,
+       "c": 114
+      },
+      {
+       "o": 114,
+       "h": 116,
+       "l": 106,
+       "c": 115
+      },
+      {
+       "o": 115,
+       "h": 117,
+       "l": 107,
+       "c": 116
+      },
+      {
+       "o": 116,
+       "h": 117,
+       "l": 107,
+       "c": 110
+      },
+      {
+       "o": 110,
+       "h": 114,
+       "l": 104,
+       "c": 113
+      },
+      {
+       "o": 113,
+       "h": 119,
+       "l": 109,
+       "c": 118
+      },
+      {
+       "o": 118,
+       "h": 120,
+       "l": 110,
+       "c": 119
+      },
+      {
+       "o": 119,
+       "h": 121,
+       "l": 111,
+       "c": 120
+      },
+      {
+       "o": 120,
+       "h": 122,
+       "l": 112,
+       "c": 121
+      },
+      {
+       "o": 121,
+       "h": 123,
+       "l": 113,
+       "c": 122
+      },
+      {
+       "o": 120,
+       "h": 121,
+       "l": 117,
+       "c": 118
+      },
+      {
+       "o": 118,
+       "h": 119,
+       "l": 114,
+       "c": 115
+      },
+      {
+       "o": 115,
+       "h": 116,
+       "l": 110,
+       "c": 111
+      }
+     ],
+     "expected": {
+      "outcome": "refused",
+      "refusal": {
+       "kind": "unsupported-missing-interval",
+       "at_bar_index": 18,
+       "kind_binding": false,
+       "index_binding": false
+      }
+     }
+    }
+   }
+  }
+ ]
+}

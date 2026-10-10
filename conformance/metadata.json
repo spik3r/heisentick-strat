@@ -69,6 +69,10 @@
       "family-intra-hour-run-exhaustion",
       "family-keltner-expansion",
       "family-keltner-reversion",
+      "family-legacy-setup9",
+      "family-legacy-setup9-fall",
+      "family-legacy-setup9-perf-seasonal-long",
+      "family-legacy-setup9-perf-seasonal-short",
       "family-level-sweep",
       "family-named-level-flag",
       "family-named-level-flag-short-only",
@@ -77,6 +81,10 @@
       "family-price-momentum",
       "family-price-momentum-guarded",
       "family-range-break-fake",
+      "family-sequential-full-e1-long",
+      "family-sequential-full-e1-short",
+      "family-sequential-full-e2-long",
+      "family-sequential-full-e2-short",
       "family-sma-golden-cross",
       "family-sma-golden-cross-protected",
       "family-supply-demand",
@@ -116,14 +124,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 125,
+  "parseCases": 134,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 43,
+    "diagnostic": 48,
     "family": 20,
     "filters": 6,
-    "setup-family": 47
+    "setup-family": 51
   },
-  "runCases": 101,
+  "runCases": 109,
   "schema": "dsl-conformance-metadata-v1"
 }
