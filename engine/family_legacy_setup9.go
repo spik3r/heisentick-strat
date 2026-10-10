@@ -21,9 +21,15 @@ import (
 // The counter is a pure function of the closes up to each bar. It is computed
 // once per run, so full runs, prefix replays and checkpoint resumes agree.
 
-type legacySetup9State struct {
+// legacySetup9CounterCache holds the stored counter for one series. It hangs
+// off the run's params, not off the broker, so a run never leaks it into
+// another prepared run and the fingerprinted broker source stays unchanged.
+// The counter depends only on the closes, so a hit on the same backing array
+// and length is always valid; any other series recomputes it.
+type legacySetup9CounterCache struct {
 	stored []int8
-	ready  bool
+	first  *float64
+	n      int
 }
 
 // legacySetup9Counter mirrors computeTDSetup. The returned slice holds the
@@ -81,11 +87,15 @@ func legacySetup9SeasonAgrees(p legacySetup9Profile, next *contextcols.Seasonali
 }
 
 func (b *broker) legacySetup9Counter() []int8 {
-	if !b.legacy9.ready || len(b.legacy9.stored) != b.series.Len() {
-		b.legacy9.stored = legacySetup9Counter(b.series.C)
-		b.legacy9.ready = true
+	cache := b.params.LegacySetup9.cache
+	n := len(b.series.C)
+	if n == 0 {
+		return nil
 	}
-	return b.legacy9.stored
+	if cache.first != &b.series.C[0] || cache.n != n {
+		cache.stored, cache.first, cache.n = legacySetup9Counter(b.series.C), &b.series.C[0], n
+	}
+	return cache.stored
 }
 
 // legacySetup9Signal evaluates the strategy rules at bar i without looking at

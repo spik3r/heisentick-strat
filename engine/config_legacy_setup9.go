@@ -98,6 +98,7 @@ var legacySetup9Profiles = map[string]legacySetup9Profile{
 type legacySetup9Params struct {
 	Enabled bool
 	Profile legacySetup9Profile
+	cache   *legacySetup9CounterCache
 }
 
 func legacySetup9ParamsFromConfig(cfg dsl.Config) legacySetup9Params {
@@ -109,7 +110,7 @@ func legacySetup9ParamsFromConfig(cfg dsl.Config) legacySetup9Params {
 	if !ok {
 		return legacySetup9Params{}
 	}
-	return legacySetup9Params{Enabled: true, Profile: profile}
+	return legacySetup9Params{Enabled: true, Profile: profile, cache: &legacySetup9CounterCache{}}
 }
 
 // validateLegacySetup9Execution refuses configurations the frozen profiles

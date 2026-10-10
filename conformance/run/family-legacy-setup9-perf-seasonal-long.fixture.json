@@ -983,13 +983,12 @@
   "schema": "dsl-conformance-run-fixture-v1",
   "source": {
     "bars": {
-      "kind": "invented-ht227-legacy-setup9",
-      "oracleCase": "seas-long-60pct-10samples",
-      "oracleFile": "engine/testdata/legacy_setup9/oracle.json"
+      "barCount": 121,
+      "kind": "invented-seas-long-60pct-10samples",
+      "path": "engine/testdata/legacy_setup9/oracle.json",
+      "startIndex": 0
     },
-    "htfBars": {
-      "kind": "none"
-    }
+    "htfBars": null
   },
   "strategyId": "legacy-setup9-perf-seasonal-long",
   "symbol": "XAUUSD",

@@ -2415,13 +2415,12 @@
   "schema": "dsl-conformance-run-fixture-v1",
   "source": {
     "bars": {
-      "kind": "invented-ht227-legacy-setup9",
-      "oracleCase": "trace-e-fall-300",
-      "oracleFile": "engine/testdata/legacy_setup9/oracle.json"
+      "barCount": 300,
+      "kind": "invented-trace-e-fall-300",
+      "path": "engine/testdata/legacy_setup9/oracle.json",
+      "startIndex": 0
     },
-    "htfBars": {
-      "kind": "none"
-    }
+    "htfBars": null
   },
   "strategyId": "legacy-setup9-fall",
   "symbol": "XAUUSD",
