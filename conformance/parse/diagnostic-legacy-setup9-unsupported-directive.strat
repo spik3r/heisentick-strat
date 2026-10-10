@@ -1,0 +1,10 @@
+dsl v7
+strategy "x" { description "x" }
+market conditions { slices(XAUUSD 1h) }
+setup {
+  type: legacy setup 9
+  sequential profile seq.legacy.setup9.v1
+}
+filters {
+  side long only
+}

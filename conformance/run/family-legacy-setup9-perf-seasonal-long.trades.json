@@ -1,0 +1,42 @@
+{
+  "case": "family-legacy-setup9-perf-seasonal-long",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0.05,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "legacy-setup9-perf-seasonal-long",
+  "symbol": "XAUUSD",
+  "timeframe": "1h",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 91.05,
+      "entryIndex": 118,
+      "entryT": 1776240000000,
+      "exit": 94.5928571428571,
+      "exitIndex": 119,
+      "exitT": 1776243600000,
+      "initialSl": 89.1785714285714,
+      "initialTp": 94.6428571428571,
+      "meta": {
+        "profile": "seq.legacy.setup9_perf_seasonal.v1",
+        "setup": "legacySetup9",
+        "signalAtr": 1.64285714285714,
+        "signalIndex": 118
+      },
+      "pnl": 378.625954198474,
+      "points": 3.54285714285714,
+      "reason": "tp",
+      "side": "long",
+      "size": 106.870229007634,
+      "sl": 89.1785714285714,
+      "tag": "TD-BUY-9-SEASONAL",
+      "tp": 94.6428571428571
+    }
+  ]
+}

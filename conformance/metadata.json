@@ -69,6 +69,10 @@
       "family-intra-hour-run-exhaustion",
       "family-keltner-expansion",
       "family-keltner-reversion",
+      "family-legacy-setup9",
+      "family-legacy-setup9-fall",
+      "family-legacy-setup9-perf-seasonal-long",
+      "family-legacy-setup9-perf-seasonal-short",
       "family-level-sweep",
       "family-named-level-flag",
       "family-named-level-flag-short-only",
@@ -115,14 +119,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 124,
+  "parseCases": 129,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 43,
+    "diagnostic": 46,
     "family": 20,
     "filters": 6,
-    "setup-family": 46
+    "setup-family": 48
   },
-  "runCases": 100,
+  "runCases": 104,
   "schema": "dsl-conformance-metadata-v1"
 }
