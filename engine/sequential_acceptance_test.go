@@ -6,8 +6,8 @@ package engine_test
 // No regeneration mode, private scheduler access, new runtime API, or dependencies.
 //
 // Coverage is deliberately bounded:
-//   - only binding cases are executed; the four named provisional cases below
-//     are explicitly excluded, including cap sizing and the open-price guard;
+//   - all 66 binding cases execute; OQ-2 remains explicitly provisional and
+//     the OQ-4 raw-open guard is an excluded proposal, never an acceptance target;
 //   - ATR nulls before index 13 express decision eligibility, not ComputeATR's
 //     raw output, which contains early averages;
 //   - not_placed/no_next_bar is a rejection audit record, not a broker order;
@@ -48,15 +48,18 @@ const seqAcceptanceConvention = "seq-exec-e1e2.v1"
 const seqAcceptanceProfile = "seq.full.public_approx.v1"
 const seqAcceptanceRelative = 1e-9
 
+const seqAcceptanceSourceCommit = "3e4694ea088703ebf6a696287127b50cdbf8b6f7"
+const seqAcceptanceCorpusHash = "40951963bd91f1c542ac598d3ee0b17aa5a758bf2ecc1a7f413900cb1eaf15ae"
+
 var seqAcceptanceProvisional = map[string]string{
-	"pv.cap_binds_reduces_size":         "OQ-1",
-	"pv.cap_equal_not_binding":          "OQ-1",
-	"pv.target_gap_open_beyond":         "OQ-2",
+	"pv.target_gap_open_beyond": "OQ-2",
+}
+var seqAcceptanceExcluded = map[string]string{
 	"pv.entry_straddle_open_below_stop": "OQ-4",
 }
 
 // SOURCES pins the independently authored repository revision and every imported
-// byte in the eight claimed files (MANIFEST, README, DERIVATIONS, five case
+// byte in the nine claimed files (MANIFEST, README, DERIVATIONS, six case
 // files). Author tools stay in the source repository. The importer verifies the commit
 // -> path -> blob relationship against Git before committing SOURCES. Offline
 // tests recompute both blob-object SHA-1 and SHA-256; a digest alone cannot prove
@@ -83,24 +86,69 @@ type seqAcceptanceManifest struct {
 	Cases        int               `json:"cases"`
 	Binding      int               `json:"binding"`
 	Provisional  int               `json:"provisional"`
-	Authority    struct {
-		BacklogMain string            `json:"backlog_main"`
-		PR464Head   string            `json:"pr464_head"`
-		StratPR109  string            `json:"strat_pr109"`
-		StratPR110  string            `json:"strat_pr110"`
-		StratPR111  string            `json:"strat_pr111"`
-		CoreBlobs   map[string]string `json:"reused_core_fixtures_blobs"`
+	Excluded     int               `json:"excluded"`
+	History      []struct {
+		Revision     string `json:"revision"`
+		PR465Head    string `json:"pr465_head"`
+		CorpusSHA256 string `json:"corpus_sha256"`
+		Cases        int    `json:"cases"`
+		Binding      int    `json:"binding"`
+		Provisional  int    `json:"provisional"`
+	} `json:"history"`
+	Authority struct {
+		BacklogMain     string            `json:"backlog_main"`
+		PR464Head       string            `json:"pr464_head"`
+		StratPR109      string            `json:"strat_pr109"`
+		StratPR110      string            `json:"strat_pr110"`
+		StratPR111      string            `json:"strat_pr111"`
+		StratPR112Merge string            `json:"strat_pr112_merge"`
+		CoreBlobs       map[string]string `json:"reused_core_fixtures_blobs"`
 	} `json:"authority"`
 }
 type seqAcceptanceFile struct {
-	Schema     string              `json:"schema"`
-	Convention string              `json:"convention_id"`
-	Profile    string              `json:"profile_id"`
-	Mirror     string              `json:"mirror"`
-	Family     string              `json:"family"`
-	Cases      []seqAcceptanceCase `json:"cases"`
+	Schema     string            `json:"schema"`
+	Convention string            `json:"convention_id"`
+	Profile    string            `json:"profile_id"`
+	Mirror     string            `json:"mirror"`
+	Family     string            `json:"family"`
+	Cases      []json.RawMessage `json:"cases"`
 }
 type seqAcceptanceCase struct {
+	ID                     string  `json:"id"`
+	PreviousID             *string `json:"previous_id"`
+	AddedIn                *string `json:"added_in"`
+	AllowNonpositivePrices *bool   `json:"allow_nonpositive_prices"`
+	Group                  string  `json:"group"`
+	Policy                 string  `json:"policy"`
+	Status                 string  `json:"status"`
+	OpenQuestion           *string `json:"open_question"`
+	Title                  string  `json:"title"`
+	Derivation             string  `json:"derivation"`
+	PrefixGroup            *struct {
+		ID            string `json:"id"`
+		SharedThrough int    `json:"shared_through_index"`
+	} `json:"prefix_group"`
+	Series struct {
+		Symbol      string  `json:"symbol"`
+		Timeframe   string  `json:"timeframe"`
+		TimeframeMS int64   `json:"timeframe_ms"`
+		StartOpenMS int64   `json:"start_open_ms"`
+		OpenMS      []int64 `json:"open_ms,omitempty"`
+	} `json:"series"`
+	Config json.RawMessage `json:"config"`
+	Mirror struct {
+		Constant float64 `json:"constant"`
+		Exact    bool    `json:"exact"`
+	} `json:"mirror"`
+	SourceFixture *struct {
+		File string `json:"file"`
+		Case string `json:"case"`
+		Bars string `json:"bars"`
+		Blob string `json:"blob"`
+	} `json:"source_fixture"`
+	Variants map[string]seqAcceptanceVariant `json:"variants"`
+}
+type seqAcceptanceATRCase struct {
 	ID           string  `json:"id"`
 	Group        string  `json:"group"`
 	Policy       string  `json:"policy"`
@@ -240,8 +288,8 @@ func TestSequentialIndependentAcceptance(t *testing.T) {
 	for _, c := range cases {
 		c := c
 		t.Run(c.ID, func(t *testing.T) {
-			if c.Status == "provisional" {
-				t.Skipf("explicit nonbinding exclusion: %s (%s); no producer behavior frozen", c.ID, *c.OpenQuestion)
+			if c.Status == "provisional" || c.Status == "excluded" {
+				t.Skipf("explicit %s record: %s (%s); no producer behavior frozen", c.Status, c.ID, *c.OpenQuestion)
 			}
 			for _, side := range []string{"long", "short"} {
 				v := c.Variants[side]
@@ -759,12 +807,12 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 	}
 	var sources seqAcceptanceSources
 	seqAcceptanceReadJSON(t, read("SOURCES.json"), &sources)
-	if sources.Schema != "seq-exec-sources.v1" || sources.Repository != "spik3r/heisentick-backlog" || sources.Root != "fixtures/sequential-execution-e1-e2.v1" || !seqAcceptanceDigest(sources.Commit, 20) {
+	if sources.Schema != "seq-exec-sources.v1" || sources.Repository != "spik3r/heisentick-backlog" || sources.Root != "fixtures/sequential-execution-e1-e2.v1" || sources.Commit != seqAcceptanceSourceCommit {
 		t.Fatal("invalid independent SOURCES identity")
 	}
-	claimed := map[string]bool{"MANIFEST.json": true, "README.md": true, "DERIVATIONS.md": true, "cases/atr.json": true, "cases/e1.json": true, "cases/e2.json": true, "cases/provisional.json": true, "cases/refusals.json": true}
+	claimed := map[string]bool{"MANIFEST.json": true, "README.md": true, "DERIVATIONS.md": true, "cases/atr.json": true, "cases/e1.json": true, "cases/e2.json": true, "cases/excluded.json": true, "cases/provisional.json": true, "cases/refusals.json": true}
 	if len(sources.Files) != len(claimed) {
-		t.Fatal("SOURCES must pin exactly the eight claimed source files; no author tools")
+		t.Fatal("SOURCES must pin exactly the nine claimed source files; no author tools")
 	}
 	for name, pin := range sources.Files {
 		if !claimed[name] || !seqAcceptanceSafePath(name) || name == "SOURCES.json" || pin.SourcePath != sources.Root+"/"+name || !seqAcceptanceDigest(pin.GitBlob, 20) || !seqAcceptanceDigest(pin.SHA256, 32) {
@@ -808,10 +856,10 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 	var manifest seqAcceptanceManifest
 	seqAcceptanceReadJSON(t, read("MANIFEST.json"), &manifest)
 	seqAcceptanceExact(t, "manifest.schema", manifest.Schema, seqAcceptanceSchema)
-	seqAcceptanceExact(t, "manifest.revision", manifest.Revision, "v1.1: single adverse slippage on every fill (Astra review of 2b106e1)")
+	seqAcceptanceExact(t, "manifest.revision", manifest.Revision, "v1.2: owner cap decision, exit costs settled, OQ-4 excluded, two non-positive-fill fixtures")
 	seqAcceptanceExact(t, "manifest.convention", manifest.Convention, seqAcceptanceConvention)
 	seqAcceptanceExact(t, "manifest.hash_rule", manifest.HashRule, "sha256 of the lines \"<sha256>  <path>\\n\" for cases/*.json (sorted), README.md, DERIVATIONS.md")
-	casePaths := []string{"cases/atr.json", "cases/e1.json", "cases/e2.json", "cases/provisional.json", "cases/refusals.json"}
+	casePaths := []string{"cases/atr.json", "cases/e1.json", "cases/e2.json", "cases/excluded.json", "cases/provisional.json", "cases/refusals.json"}
 	manifestPaths := append(append([]string{}, casePaths...), "README.md", "DERIVATIONS.md")
 	if len(manifest.Files) != len(manifestPaths) {
 		t.Fatalf("manifest inventory changed: got %d, want %d; review the adapter", len(manifest.Files), len(manifestPaths))
@@ -831,9 +879,11 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 		fmt.Fprintf(&corpusHash, "%s  %s\n", digest, name)
 	}
 	seqAcceptanceExact(t, "manifest.corpus_sha256", fmt.Sprintf("%x", sha256.Sum256(corpusHash.Bytes())), manifest.CorpusSHA256)
+	seqAcceptanceExact(t, "pinned corpus hash", manifest.CorpusSHA256, seqAcceptanceCorpusHash)
 	var all []seqAcceptanceCase
 	ids := map[string]bool{}
 	provisional := map[string]bool{}
+	excluded := map[string]bool{}
 	binding := 0
 	for _, name := range casePaths {
 		var f seqAcceptanceFile
@@ -845,7 +895,19 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 		if len(f.Cases) == 0 {
 			t.Fatalf("empty case file %s", name)
 		}
-		for _, c := range f.Cases {
+		for _, raw := range f.Cases {
+			var c seqAcceptanceCase
+			if name == "cases/atr.json" {
+				// ATR metadata is the unchanged v1.1 schema; do not invent authored fields.
+				var atr seqAcceptanceATRCase
+				seqAcceptanceReadJSON(t, raw, &atr)
+				c = seqAcceptanceCase{ID: atr.ID, Group: atr.Group, Policy: atr.Policy, Status: atr.Status, OpenQuestion: atr.OpenQuestion, Title: atr.Title, Derivation: atr.Derivation, PrefixGroup: atr.PrefixGroup, Series: atr.Series, Config: atr.Config, Mirror: atr.Mirror, SourceFixture: atr.SourceFixture, Variants: atr.Variants}
+			} else {
+				seqAcceptanceReadJSON(t, raw, &c)
+			}
+			if err := seqAcceptanceMetadata(c); err != nil {
+				t.Fatal(err)
+			}
 			if c.ID == "" || ids[c.ID] {
 				t.Fatalf("empty/duplicate case identity %q", c.ID)
 			}
@@ -892,9 +954,10 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 				}
 			}
 			oq, wasProvisional := seqAcceptanceProvisional[c.ID]
+			excludedOQ, wasExcluded := seqAcceptanceExcluded[c.ID]
 			switch c.Status {
 			case "binding":
-				if c.OpenQuestion != nil || wasProvisional {
+				if c.OpenQuestion != nil || wasProvisional || wasExcluded {
 					t.Fatalf("%s: provisional status promotion requires explicit adapter review", c.ID)
 				}
 				binding++
@@ -903,6 +966,11 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 					t.Fatalf("%s: unexpected provisional exclusion", c.ID)
 				}
 				provisional[c.ID] = true
+			case "excluded":
+				if !wasExcluded || c.OpenQuestion == nil || *c.OpenQuestion != excludedOQ {
+					t.Fatalf("%s: unexpected excluded proposal", c.ID)
+				}
+				excluded[c.ID] = true
 			default:
 				t.Fatalf("%s: unsupported status %q", c.ID, c.Status)
 			}
@@ -912,13 +980,14 @@ func seqAcceptanceLoad(t *testing.T, root string) []seqAcceptanceCase {
 	seqAcceptanceExact(t, "manifest.cases", manifest.Cases, len(all))
 	seqAcceptanceExact(t, "manifest.binding", manifest.Binding, binding)
 	seqAcceptanceExact(t, "manifest.provisional", manifest.Provisional, len(provisional))
-	if binding == 0 || len(provisional) != len(seqAcceptanceProvisional) {
-		t.Fatal("binding cases or named provisional exclusions disappeared")
+	seqAcceptanceExact(t, "manifest.excluded", manifest.Excluded, len(excluded))
+	if len(all) != 68 || binding != 66 || len(provisional) != 1 || len(excluded) != 1 || len(provisional) != len(seqAcceptanceProvisional) || len(excluded) != len(seqAcceptanceExcluded) {
+		t.Fatal("reviewed 68/66/1/1 case inventory or named nonbinding records changed")
 	}
 	if t.Failed() {
 		t.Fatal("corpus identity/integrity validation failed; no engine run performed")
 	}
-	t.Logf("verified independent corpus: commit=%s corpus=%s; %d binding cases, %d explicit provisional exclusions", sources.Commit, manifest.CorpusSHA256, binding, len(provisional))
+	t.Logf("verified independent corpus: commit=%s corpus=%s; %d binding cases, %d provisional and %d excluded records", sources.Commit, manifest.CorpusSHA256, binding, len(provisional), len(excluded))
 	return all
 }
 func seqAcceptanceDigest(s string, n int) bool {
@@ -1149,8 +1218,55 @@ func TestSequentialAcceptanceAdapterGuards(t *testing.T) {
 	if _, err := seqAcceptanceCosts("E1", cfg); err == nil {
 		t.Fatal("negative shared slippage silently admitted")
 	}
+	boolPointer := func(value bool) *bool { return &value }
+	stringPointer := func(value string) *string { return &value }
+	for _, c := range []seqAcceptanceCase{
+		{ID: "atr.warmup_boundary", Policy: "both"},
+		{ID: "e1.target_basic", Policy: "E1", AllowNonpositivePrices: boolPointer(false)},
+		{ID: "e1.cap_fill_zero", Policy: "E1", AddedIn: stringPointer("v1.2"), AllowNonpositivePrices: boolPointer(true)},
+		{ID: "e1.cap_fill_negative", Policy: "E1", AddedIn: stringPointer("v1.2"), AllowNonpositivePrices: boolPointer(true)},
+		{ID: "e1.cap_binds_reduces_size", Policy: "E1", PreviousID: stringPointer("pv.cap_binds_reduces_size"), AddedIn: stringPointer("v1.2 (promoted)"), AllowNonpositivePrices: boolPointer(false)},
+		{ID: "e1.cap_equal_not_binding", Policy: "E1", PreviousID: stringPointer("pv.cap_equal_not_binding"), AddedIn: stringPointer("v1.2 (promoted)"), AllowNonpositivePrices: boolPointer(false)},
+	} {
+		if err := seqAcceptanceMetadata(c); err != nil {
+			t.Errorf("reviewed metadata rejected: %v", err)
+		}
+		bad := c
+		bad.AddedIn = stringPointer("unreviewed revision")
+		if seqAcceptanceMetadata(bad) == nil {
+			t.Errorf("changed revision metadata accepted: %s", c.ID)
+		}
+		bad = c
+		bad.AllowNonpositivePrices = boolPointer(c.AllowNonpositivePrices == nil || !*c.AllowNonpositivePrices)
+		if seqAcceptanceMetadata(bad) == nil {
+			t.Errorf("changed price assumption accepted: %s", c.ID)
+		}
+	}
 	legacy := []byte(`{"entry_slippage":0.5,"exit_slippage":0,"risk_amount":90,"max_notional":1000000,"atr_length":14,"stop_buffer_atr":0.1,"reward_risk":2,"policy":"E1","time_exit_bars":4}`)
 	if err := seqAcceptanceDecode(legacy, &cfg); err == nil {
 		t.Fatal("legacy split-cost schema silently admitted")
 	}
+}
+
+func seqAcceptanceMetadata(c seqAcceptanceCase) error {
+	previous, added, nonpositive := "", "", false
+	switch c.ID {
+	case "e1.cap_binds_reduces_size":
+		previous, added = "pv.cap_binds_reduces_size", "v1.2 (promoted)"
+	case "e1.cap_equal_not_binding":
+		previous, added = "pv.cap_equal_not_binding", "v1.2 (promoted)"
+	case "e1.cap_fill_zero", "e1.cap_fill_negative":
+		added, nonpositive = "v1.2", true
+	}
+	if (c.PreviousID != nil) != (previous != "") || (c.PreviousID != nil && *c.PreviousID != previous) || (c.AddedIn != nil) != (added != "") || (c.AddedIn != nil && *c.AddedIn != added) {
+		return fmt.Errorf("%s: unreviewed revision metadata", c.ID)
+	}
+	if c.Policy == "both" {
+		if c.AllowNonpositivePrices != nil {
+			return fmt.Errorf("%s: unexpected ATR metadata", c.ID)
+		}
+	} else if c.AllowNonpositivePrices == nil || *c.AllowNonpositivePrices != nonpositive {
+		return fmt.Errorf("%s: unreviewed nonpositive-price metadata", c.ID)
+	}
+	return nil
 }

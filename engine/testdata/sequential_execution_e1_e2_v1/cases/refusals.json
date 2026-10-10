@@ -12,6 +12,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Dataset ends on the entry bar with the position open",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Entry fills at open[14]; bar 14 has no stop or target hit and the series ends. No end-of-test liquidation: typed unsupported-incomplete-terminal-run.",
    "prefix_group": null,
    "series": {
@@ -251,6 +254,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Dataset ends on bar e+3 with no exit: refused, not time-exited",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bars 14-17 are held bars 1-4 with no hit. The time exit would be at open[18], which does not exist. The dataset ends with an open position: refusal. (With a bar 18 the same series time-exits, see e1.time_exit_open_e4.)",
    "prefix_group": null,
    "series": {
@@ -526,6 +532,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Gap entry then dataset end: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Open[14]=99 gap entry fills, nothing hits, series ends at bar 16 with the position open.",
    "prefix_group": null,
    "series": {
@@ -789,6 +798,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Missing interval inside the Setup: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "open_ms skips one 5m step before bar 10 (bars 0-9 contiguous, bar 10 opens two steps after bar 9). The run is refused as unsupported input; no data_gap reset and no calendar handling.",
    "prefix_group": null,
    "series": {
@@ -1071,6 +1083,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Missing interval after entry: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Hole before bar 16 (after the fill). The run is refused although a stop or target follows; no exit is inferred across the hole.",
    "prefix_group": null,
    "series": {
@@ -1353,6 +1368,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Missing interval after the trade closed: still refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "The target exits at bar 16, then a hole precedes bar 17. Refusal is dataset-wide: a hole anywhere refuses the run.",
    "prefix_group": null,
    "series": {
@@ -1648,6 +1666,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Dataset ends on bar e+11 with no exit: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "e=28; bars 28-39 are held bars 1-12 with no hit; bar 40 (the time exit) does not exist. Refusal, no liquidation.",
    "prefix_group": null,
    "series": {
@@ -2187,6 +2208,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Dataset ends on the entry bar with the position open",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "Bar 28 fills and nothing hits; the series ends.",
    "prefix_group": null,
    "series": {
@@ -2594,6 +2618,9 @@
    "status": "binding",
    "open_question": null,
    "title": "Missing interval inside the Countdown: refused",
+   "previous_id": null,
+   "added_in": null,
+   "allow_nonpositive_prices": false,
    "derivation": "A hole before bar 18 refuses the run. No reset, no completion across the hole.",
    "prefix_group": null,
    "series": {
