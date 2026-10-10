@@ -1,8 +1,8 @@
 # Derivations
 
-One entry per case. Numbers are for the long variant; the short variant is the exact mirror (price -> 200 - price) unless the case says otherwise. ATR is 10 unless stated, so the buffer is 1.0. Setup: closes 100,100,100,100,101, then 104-i from bar 5, so a buy Setup 9 completes at bar 13 (flip gate met at bar 5).
+One entry per case. Numbers are for the long variant; the short variant is the exact mirror (price -> 200 - price, or the case's own constant) unless the case says otherwise. ATR is 10 unless stated, so the buffer is 1.0. Setup: closes 100,100,100,100,101, then 104-i from bar 5, so a buy Setup 9 completes at bar 13 (flip gate met at bar 5).
 
-Costs: one adverse slippage applies to every fill (entry and each exit). Where an entry quotes an exit level and a P&L, those are before the exit offset; the last sentence of the entry gives the exit fill and the P&L after it.
+Costs: one adverse slippage applies to every fill (entry and each exit). Where an entry quotes an exit level and a P&L, those are before the exit offset; the last sentence of the entry gives the exit fill and the P&L after it. Quantity is min(risk/R, cap/|fill|).
 
 ## atr.json
 
@@ -206,6 +206,30 @@ A decision on the bar whose open closed the previous position is not blocked.
 
 First episode: delayed age 4 (d=17), fill at open[18]=100 (F=100.5), time exit at open[22]=105. Closes 95..105 on bars 14-22 are a sell run: sell Setup 9 completes at bar 22 and is perfected (max(h21,h22)=107 > max(h19,h20)=106). The first position left at the open of bar 22, so at that close the book is flat and the second opportunity is accepted. Second: sell side, anchor bars 14-22 (highest high 113.5, bar 17), ATR14(22) from bars 9-22, entry at open[23]=105 with slip 0.5 (F=104.5), time exit at open[27]. The long variant therefore also holds a short trade; the short variant a long trade. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 104.5; gross P&L 29.4117647059, 0.2941176471R. Exit levels and P&L quoted earlier in this entry are before the exit offset. Exit fill, trade 2 (short in the long variant): the exit level moved against the trade by slippage 0.5 gives 107.5; gross P&L -30.3907380608, -0.3039073806R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
 
+### e1.cap_binds_reduces_size (previously pv.cap_binds_reduces_size)
+
+Notional cap binds: quantity reduced to cap/|fill|.
+
+As e1.target_basic but max_notional 1500. Risk quantity 90/4.5=20 would have notional 20*91.5=1830>1500, so q=min(20, 1500/91.5)=16.3934426 and cap_binds=true. Stop and 2R target are unchanged (S=87, TP=100.5). Short variant is not an exact mirror: F=108.5, q=1500/108.5. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 139.3442622951, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
+
+### e1.cap_equal_not_binding (previously pv.cap_equal_not_binding)
+
+Notional exactly equal to the cap does not bind.
+
+Open[14]=99.5, slip 0.5: F=100 (also 100 after mirroring). S=87, R=13, risk 130 -> q=10, notional 1000 == cap 1000: cap_binds=false, q unchanged. Time exit at open[18]=103: 30. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 102.5; gross P&L 25, 0.1923076923R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
+
+### e1.cap_fill_zero
+
+Fill exactly zero: risk-sized quantity, zero notional, cap does not bind.
+
+e1.target_basic with every price shifted by -91.5 (comparisons, ATR and ranges are unchanged). Open[14]=-0.5, slip 0.5: F=0. Stop 87-91.5=-4.5, R=4.5, TP=9, risk quantity 20. With max_notional 100 the cap quantity is 100/|0| = unbounded, so q=20, notional 0, cap_binds=false. Target level 9 fills at 8.5; P&L (8.5-0)*20=170. Mirror constant is 0 (price -> -price), so the short fill is also 0. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 8.5; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
+
+### e1.cap_fill_negative
+
+Negative fill: the cap uses the absolute fill.
+
+e1.target_basic with every price shifted by -100. Open[14]=-9, slip 0.5: F=-8.5. Stop -13, R=4.5, TP=0.5, risk quantity 20. Cap 100: cap quantity 100/|-8.5|=11.7647059 < 20, so q=11.7647059, notional 100, cap_binds=true. Target level 0.5 fills at 0.0; P&L (0-(-8.5))*q=100. Mirror constant 0 gives a short fill of +8.5 with the same quantity. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 0; gross P&L 100, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
+
 ## e2.json
 
 ### e2.target_basic
@@ -392,27 +416,17 @@ A hole before bar 18 refuses the run. No reset, no completion across the hole.
 
 ## provisional.json
 
-### pv.cap_binds_reduces_size (provisional, OQ-1)
-
-Notional cap binds: size reduced to cap/fill.
-
-As e1.target_basic but max_notional 1500. Risk size 20 gives notional 20*91.5=1830>1500, so size=1500/91.5=16.3934426 and cap_binds=true. Short mirror: F=108.5, size 1500/108.5. Assumes reduce-not-reject and notional = size*fill price (OQ-1). Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 139.3442622951, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
-
-### pv.cap_equal_not_binding (provisional, OQ-1)
-
-Notional exactly equal to the cap does not bind.
-
-Open[14]=99.5, slip 0.5: F=100 (also 100 after mirroring). S=87, R=13, risk 130 -> size 10, notional 1000 == cap 1000: cap_binds=false, size unchanged. Time exit at open[18]=103: 30. Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 102.5; gross P&L 25, 0.1923076923R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
-
 ### pv.target_gap_open_beyond (provisional, OQ-2)
 
 Bar opens beyond the target: fill at the target level.
 
 Open[15]=103 > TP 100.5. Recommended and existing-broker reading: the target level 100.5 is the fill level (no gap credit), less slippage 0.5 = 100.0. The alternative credits the open (103 less 0.5 = 102.5). Exit fill, trade 1 (long in the long variant): the exit level moved against the trade by slippage 0.5 gives 100; gross P&L 170, 1.8888888889R. Exit levels and P&L quoted earlier in this entry are before the exit offset.
 
-### pv.entry_straddle_open_below_stop (provisional, OQ-4)
+## excluded.json
 
-Open below the stop but slipped fill above it.
+### pv.entry_straddle_open_below_stop (excluded, OQ-4)
 
-Open[14]=86.75 < S=87, slip 0.5 -> F=87.25 > S. The contract rule tests the fill (S>=F), which would accept; the open already gapped through the stop. Recommendation: reject (test both open and fill). Expectation: stop_breached_at_entry.
+EXCLUDED PROPOSAL: raw-open guard on a slipped fill above the stop.
+
+NOT APPROVED. Open[14]=86.75 < S=87, slip 0.5 -> F=87.25 > S. The approved rule tests the actual fill (S>=F) and admits this entry; what the entry bar then does is not specified. This record shows the unapproved proposal (also reject when the raw open is on the wrong side): stop_breached_at_entry. Do not implement it to satisfy this record.
 
