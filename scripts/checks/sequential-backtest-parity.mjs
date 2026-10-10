@@ -66,8 +66,9 @@ const hashes = {
 const records = [];
 const mismatches = [];
 const attemptedCases = [];
-let activeCase = null, activeStage = 'build', shim;
-const checks = Object.fromEntries(['nativePrechangeToCurrent', 'nativeCaptureOffToOn', 'wasmPrechangeToCurrent', 'wasmCaptureOffToOn', 'wasmRepeat', 'wasmColumnsToCompanion', 'wasmPrechangeColumns'].map((key) => [key, 0]));
+const rawEvidenceGuardChecks = { native: 0, wasm: 0 };
+let activeCase = null, activeStage = 'build', shim, nodeShim;
+const checks = Object.fromEntries(['nativePrechangeToCurrent', 'nativeCaptureOffToOn', 'wasmPrechangeToCurrent', 'wasmCaptureOffToOn', 'wasmRepeat', 'wasmColumnsToCompanion', 'wasmPrechangeColumns', 'nativeRawToCompanion', 'wasmRawToCompanion'].map((key) => [key, 0]));
 function beginCase(name) { activeCase = name; activeStage = 'execution'; attemptedCases.push(name); }
 function checked(name, fn) { activeStage = name; fn(); checks[name]++; activeStage = 'case-invariants'; }
 
@@ -118,6 +119,15 @@ function classifyResult(result) {
       ...Object.fromEntries(['id', 'episodeId', 'trigger', 'side', 'setupIndex', 'setupFirstIndex', 'decisionIndex', 'decisionOpenMs', 'decisionMs', 'nextOpenIndex', 'status', 'reason', 'fillIndex', 'capBinds'].map((key) => [key, opportunity[key] ?? null])),
     })),
   } : null;
+  if (result.accounting) {
+    const a = result.accounting;
+    snapshot.rawAccounting = {
+      profile: a.profile, policy: a.policy ?? null, finalRealizedSign: Math.sign(a.finalRealized),
+      trades: a.trades.map((trade) => ({ ...Object.fromEntries(['tradeIndex', 'entryIndex', 'exitIndex', 'entryT', 'exitT', 'side'].map((key) => [key, trade[key]])), netSign: Math.sign(trade.netPnl) })),
+      events: a.events.map((event) => Object.fromEntries(['kind', 'tradeIndex', 'index', 't'].map((key) => [key, event[key]]))),
+      marks: a.marks.map(({ index, t }) => ({ index, t })),
+    };
+  }
   if (!result.metrics) return snapshot;
   const h = result.metrics.headline;
   const signs = result.metrics.tradeAccounting.map((trade) => Math.sign(trade.netPnl));
@@ -148,6 +158,221 @@ function compareTargets(name, surface, nativeRaw, wasmRaw) {
 const fixturePath = join(scratch, 'fixture.json'), sourcePath = join(scratch, 'source.strat');
 const nativeEngine = join(scratch, 'engine'), nativeDsl = join(scratch, 'dsl');
 const engineWasm = join(scratch, 'engine.wasm'), dslWasm = join(scratch, 'dsl.wasm');
+const rawSource = join(scratch, 'raw-accounting.go');
+const nativeRaw = join(scratch, 'raw-accounting'), wasmRaw = join(scratch, 'raw-accounting.wasm');
+// Diagnostic-only executable, generated outside the repository. This is a
+// separate run of each already-admitted success, not another public API or a
+// decoder/refusal oracle. Exact per-target reconciliation binds its evidence
+// to the real companion exports before the case can count as successful.
+const rawHelperSource = `package main
+
+import (
+    "crypto/sha256"
+    "encoding/json"
+    "fmt"
+    "math"
+    "os"
+    "reflect"
+    "strings"
+
+    "github.com/spik3r/heisentick-strat/engine"
+    "github.com/spik3r/heisentick-strat/report"
+)
+
+// Inspect Go values directly, before encoding/json or any output projection.
+func floatBits(value reflect.Value, path string, bits map[string]string) {
+    switch value.Kind() {
+    case reflect.Interface, reflect.Pointer:
+        if !value.IsNil() { floatBits(value.Elem(), path, bits) }
+    case reflect.Float64:
+        bits[path] = fmt.Sprintf("%016x", math.Float64bits(value.Float()))
+    case reflect.Struct:
+        for i := 0; i < value.NumField(); i++ {
+            field := value.Type().Field(i)
+            tag := strings.Split(field.Tag.Get("json"), ",")
+            if field.PkgPath != "" || tag[0] == "-" { continue }
+            if len(tag) > 1 && tag[1] == "omitempty" && value.Field(i).IsZero() { continue }
+            name := tag[0]
+            if name == "" { name = field.Name }
+            floatBits(value.Field(i), path+"."+name, bits)
+        }
+    case reflect.Slice, reflect.Array:
+        for i := 0; i < value.Len(); i++ { floatBits(value.Index(i), fmt.Sprintf("%s[%d]", path, i), bits) }
+    case reflect.Map:
+        iter := value.MapRange()
+        for iter.Next() { floatBits(iter.Value(), path+"."+iter.Key().String(), bits) }
+    }
+}
+
+func capture() error {
+    if len(os.Args) != 3 { return fmt.Errorf("expected fixture and source paths") }
+    fixtureBytes, err := os.ReadFile(os.Args[1])
+    if err != nil { return err }
+    source, err := os.ReadFile(os.Args[2])
+    if err != nil { return err }
+    fixture, err := engine.LoadRunFixture(os.Args[1])
+    if err != nil { return err }
+    run, accounting, err := engine.RunSequentialFixtureWithAccounting(fixture, string(source))
+    if err != nil { return err }
+    metrics, err := report.ProjectSequentialMetrics(run, accounting)
+    if err != nil { return err }
+    result := map[string]any{
+        "schema": "sequential-raw-accounting-diagnostic-v1",
+        "fixtureSha256": fmt.Sprintf("%x", sha256.Sum256(fixtureBytes)),
+        "dslSha256": fmt.Sprintf("%x", sha256.Sum256(source)),
+        "run": run, "accounting": accounting, "metrics": metrics,
+        "operands": map[string]any{"normalizedCosts": fixture.Costs, "bars": fixture.RawBars},
+    }
+    bits := map[string]string{}
+    for _, key := range []string{"accounting", "metrics", "operands"} {
+        floatBits(reflect.ValueOf(result[key]), "$."+key, bits)
+    }
+    result["float64bits"] = bits
+    return json.NewEncoder(os.Stdout).Encode(result)
+}
+
+func main() {
+    if err := capture(); err != nil { fmt.Fprintln(os.Stderr, err); os.Exit(1) }
+}
+`;
+// Independent JSON field types, not inferred from the supplied bit manifest or
+// the generated Go reflection walk. Adding a raw DTO field requires updating
+// this closed diagnostic shape; integer counters never masquerade as floats.
+const rawEvidenceShape = {
+  accounting: {
+    profile: 'string', policy: 'string?', startEquity: 'float', endEquity: 'float', finalRealized: 'float',
+    marks: [{ index: 'int', t: 'float', realized: 'float', unrealized: 'float', equity: 'float' }],
+    trades: [{ tradeIndex: 'int', entryIndex: 'int', exitIndex: 'int', entryT: 'float', exitT: 'float', side: 'string',
+      entry: 'float', exit: 'float', size: 'float', points: 'float', entryFee: 'float', exitFee: 'float', exitCredit: 'float', netPnl: 'float' }],
+    events: [{ kind: 'string', tradeIndex: 'int', index: 'int', t: 'float', realizedBefore: 'float', realizedAfter: 'float', amount: 'float' }],
+  },
+  metrics: {
+    basis: 'string',
+    headline: {
+      startEquity: 'float', endEquity: 'float', net: 'float', returnPct: 'float', trades: 'int',
+      winRate: 'nullable-float', winRateReason: 'string?', profitFactor: 'nullable-float', profitFactorReason: 'string?',
+      expectancy: 'nullable-float', expectancyReason: 'string?', avgWin: 'nullable-float', avgWinReason: 'string?',
+      avgLoss: 'nullable-float', avgLossReason: 'string?', worstLoss: 'float', maxDD: 'float', maxDDpct: 'float',
+      maxWinStreak: 'int', maxLossStreak: 'int', avgHoldBars: 'nullable-float', avgHoldBarsReason: 'string?',
+    },
+    tradeAccounting: [{ index: 'int', entryFee: 'float', exitFee: 'float', netPnl: 'float' }],
+    equity: [{ index: 'int', t: 'float', equity: 'float' }],
+  },
+  operands: {
+    normalizedCosts: { feePerUnit: 'float', fillOn: 'string', slippage: 'float', slippageBps: 'float?', startEquity: 'float' },
+    bars: [['float']],
+  },
+};
+function validateRawEvidence(captured, label) {
+  const object = (value, path) => assert(value !== null && typeof value === 'object' && !Array.isArray(value), `${label}: expected object at ${path}`);
+  object(captured, '$');
+  assert.deepEqual(Object.keys(captured).sort(), ['accounting', 'dslSha256', 'fixtureSha256', 'float64bits', 'metrics', 'operands', 'run', 'schema'], `${label}: raw envelope keys`);
+  const values = new Map();
+  function visit(value, shape, path) {
+    if (Array.isArray(shape)) {
+      assert(Array.isArray(value), `${label}: expected array at ${path}`);
+      value.forEach((item, index) => visit(item, shape[0], `${path}[${index}]`));
+    } else if (typeof shape === 'object') {
+      object(value, path);
+      for (const key of Object.keys(value)) assert(Object.hasOwn(shape, key), `${label}: unknown raw field ${path}.${key}`);
+      for (const [key, type] of Object.entries(shape)) {
+        const optional = typeof type === 'string' && type.endsWith('?');
+        if (!Object.hasOwn(value, key)) { assert(optional, `${label}: missing raw field ${path}.${key}`); continue; }
+        visit(value[key], optional ? type.slice(0, -1) : type, `${path}.${key}`);
+      }
+    } else if (shape === 'float' || shape === 'nullable-float') {
+      if (shape === 'nullable-float' && value === null) return;
+      assert(typeof value === 'number' && Number.isFinite(value), `${label}: expected finite float at ${path}`);
+      values.set(path, value);
+    } else if (shape === 'int') {
+      assert(Number.isSafeInteger(value), `${label}: expected integer at ${path}`);
+    } else {
+      assert.equal(shape, 'string');
+      assert.equal(typeof value, 'string', `${label}: expected string at ${path}`);
+    }
+  }
+  for (const [key, shape] of Object.entries(rawEvidenceShape)) visit(captured[key], shape, `$.${key}`);
+  const tradeCount = captured.metrics.headline.trades, barCount = captured.operands.bars.length;
+  assert.equal(captured.accounting.trades.length, tradeCount, `${label}: raw trade count`);
+  assert.equal(captured.accounting.events.length, 2 * tradeCount, `${label}: raw event count`);
+  assert.equal(captured.accounting.marks.length, barCount, `${label}: raw mark count`);
+  assert.equal(captured.metrics.tradeAccounting.length, tradeCount, `${label}: raw metric trade count`);
+  assert.equal(captured.metrics.equity.length, barCount, `${label}: raw metric mark count`);
+  captured.operands.bars.forEach((row, index) => assert.equal(row.length, 6, `${label}: expected six operands at bars[${index}]`));
+  for (const field of ['winRate', 'profitFactor', 'expectancy', 'avgWin', 'avgLoss', 'avgHoldBars']) {
+    assert.equal(Object.hasOwn(captured.metrics.headline, `${field}Reason`), captured.metrics.headline[field] === null, `${label}: raw nullable reason for ${field}`);
+  }
+  object(captured.float64bits, '$.float64bits');
+  assert.deepEqual(Object.keys(captured.float64bits).sort(), [...values.keys()].sort(), `${label}: incomplete or extra raw float-bit paths`);
+  for (const [path, value] of values) {
+    const bits = captured.float64bits[path];
+    assert(typeof bits === 'string' && /^[0-9a-f]{16}$/.test(bits), `${label}: invalid float bits at ${path}`);
+    assert.equal(bits, floatBits(value), `${label}: raw float bits changed at ${path}`);
+  }
+}
+function testRawEvidenceGuards(captured, target) {
+  // Run these mutations against an authentic native AND an authentic WASM
+  // capture. Equal corruption in both manifests must still be refused.
+  const faults = [
+    (x) => { delete x.float64bits['$.accounting.startEquity']; },
+    (x) => { x.float64bits['$.accounting.unknown'] = '0000000000000000'; },
+    (x) => { x.accounting.unknown = 0; x.float64bits['$.accounting.unknown'] = '0000000000000000'; },
+    (x) => { x.accounting.startEquity = '10000'; },
+    (x) => { x.accounting.startEquity = null; },
+    (x) => { x.accounting.startEquity = Infinity; },
+    (x) => { delete x.accounting.startEquity; },
+    (x) => { x.accounting.marks[0].index = 0.5; },
+    (x) => { x.accounting.marks = {}; },
+    (x) => { x.accounting.marks.pop(); },
+    (x) => { x.accounting.trades.pop(); },
+    (x) => { x.accounting.events.pop(); },
+    (x) => { x.accounting.profile = 1; },
+    (x) => { x.metrics.headline.expectancy = '0'; },
+    (x) => { delete x.metrics.headline.expectancy; },
+    (x) => { x.operands.normalizedCosts.slippageBps = '0'; },
+    (x) => { x.operands.bars[0].push(0); },
+    (x) => { x.float64bits['$.accounting.startEquity'] = 0; },
+    (x) => { x.unknown = 0; },
+  ];
+  for (const [index, fault] of faults.entries()) {
+    const changed = structuredClone(captured); fault(changed);
+    assert.throws(() => validateRawEvidence(changed, `${target}/guard-${index}`), { code: 'ERR_ASSERTION' });
+  }
+  rawEvidenceGuardChecks[target] = faults.length;
+}
+function rawCapture(label, raw, source, fixture, nativeCompanion, wasmCompanion) {
+  activeStage = 'raw-accounting-execution';
+  writeFileSync(fixturePath, raw); writeFileSync(sourcePath, source);
+  const run = (binary, args) => spawnSync(binary, args, { env, encoding: 'utf8', maxBuffer: 1 << 28 });
+  const native = run(nativeRaw, [fixturePath, sourcePath]);
+  const wasm = run(process.execPath, ['--stack-size=8192', nodeShim, wasmRaw, fixturePath, sourcePath]);
+  for (const [target, execution] of [['native', native], ['wasm', wasm]]) {
+    // Keep stdout exactly as produced, including its final newline.
+    save(label, `${target}.raw-accounting.json`, execution.stdout ?? '');
+    save(label, `${target}.raw-process.json`, { status: execution.status, signal: execution.signal, stderr: execution.stderr, error: execution.error?.message ?? null });
+  }
+  compareTargets(label, 'raw-accounting', native.stdout ?? '', wasm.stdout ?? '');
+  for (const [target, execution, companion] of [['native', native, nativeCompanion], ['wasm', wasm, wasmCompanion]]) {
+    checked(`${target}RawToCompanion`, () => {
+      assert.ifError(execution.error);
+      assert.equal(execution.status, 0, `${label}/${target}: raw helper failed: ${execution.stderr}`);
+      const captured = JSON.parse(execution.stdout);
+      validateRawEvidence(captured, `${label}/${target}`);
+      if (!rawEvidenceGuardChecks[target]) testRawEvidenceGuards(captured, target);
+      assert.equal(captured.schema, 'sequential-raw-accounting-diagnostic-v1');
+      assert.equal(captured.fixtureSha256, companion.identity.fixtureSha256);
+      assert.equal(captured.dslSha256, companion.identity.dslSha256);
+      assert.deepEqual(captured.operands.normalizedCosts, companion.identity.costs);
+      assert.deepEqual(captured.operands.bars, fixture.bars);
+      // strict deep equality retains binary64 and signed-zero distinctions.
+      assert.deepEqual(captured.run, companion.run, `${label}/${target}: raw helper run differs from companion`);
+      assert.deepEqual(captured.metrics, companion.metrics, `${label}/${target}: raw helper metrics differ from companion`);
+      assert.equal(captured.accounting.profile, companion.identity.profile);
+      assert.equal(captured.accounting.policy, companion.identity.policy);
+    });
+  }
+  return { nativeSha256: sha(native.stdout), wasmSha256: sha(wasm.stdout) };
+}
 function nativeRun(raw, source, binary = nativeEngine, companion = true) {
   writeFileSync(fixturePath, raw); writeFileSync(sourcePath, source);
   const result = spawnSync(binary, [...(companion ? ['--sequential-backtest'] : []), fixturePath, sourcePath], { encoding: 'utf8', maxBuffer: 1 << 28 });
@@ -261,7 +486,8 @@ function success(label, fixture, source, { meaningful = false, noTrades = false,
     save(label, 'wasm.prechange.json', before);
     checked('wasmPrechangeToCurrent', () => assert.equal(before, wasmGeneric, `${label}: prechange WASM changed`));
   }
-  records.push({ name: label, kind: 'success', trades: result.run.tradeCount, bars: fixture.bars.length, fixtureSha256: sha(raw), sourceSha256: sha(source), nativeSha256: sha(native.raw), wasmSha256: sha(wasmRaw), classifications: { native: classifications(result), wasm: classifications(wasmResult) } });
+  const rawAccounting = rawCapture(label, raw, source, fixture, result, wasmResult);
+  records.push({ name: label, kind: 'success', trades: result.run.tradeCount, bars: fixture.bars.length, fixtureSha256: sha(raw), sourceSha256: sha(source), nativeSha256: sha(native.raw), wasmSha256: sha(wasmRaw), rawAccounting, classifications: { native: classifications(result), wasm: classifications(wasmResult) } });
   return result;
 }
 function refusal(label, raw, source, code) {
@@ -293,7 +519,7 @@ function emitReceipt(complete, failure = null) {
     status: complete && !mismatches.length ? 'passed' : 'failed', complete,
     expectedCaseCount: 88, attemptedCaseCount: attemptedCases.length,
     failure: failure ? { name: failure.name, message: failure.message, code: failure.code ?? null, operator: failure.operator ?? null, activeCase, activeStage, actual: failure.actual, expected: failure.expected } : null,
-    caseCount: records.length, mismatchComparisons: mismatches.length,
+    caseCount: records.length, mismatchComparisons: mismatches.length, rawEvidenceGuardChecks,
     mismatchCases: [...new Set(mismatches.map((mismatch) => mismatch.name))].length,
     categoricalMismatchCases: complete ? [...new Set(mismatches.filter((mismatch) => mismatch.categoricalMismatch).map((mismatch) => mismatch.name))].length : null,
     observedCategoricalMismatchCases: [...new Set(mismatches.filter((mismatch) => mismatch.categoricalMismatch).map((mismatch) => mismatch.name))].length,
@@ -304,6 +530,7 @@ function emitReceipt(complete, failure = null) {
     compiler: JSON.parse(go(['env', '-json', 'GOARCH', 'GOOS', 'GOHOSTARCH', 'GOHOSTOS', 'GOAMD64', 'GOEXPERIMENT', 'GOFLAGS'])),
     scriptSha256: sha(readFileSync(fileURLToPath(import.meta.url))),
     artifacts: { engineNative: artifactHash(nativeEngine), engineWasm: artifactHash(engineWasm), parserNative: artifactHash(nativeDsl), parserWasm: artifactHash(dslWasm), wasmExec: artifactHash(shim),
+      rawHelperSource: artifactHash(rawSource), rawHelperNative: artifactHash(nativeRaw), rawHelperWasm: artifactHash(wasmRaw), wasmExecNode: artifactHash(nodeShim),
       ...(options['--baseline-engine'] ? { baselineEngineNative: artifactHash(options['--baseline-engine']) } : {}),
       ...(options['--baseline-wasm'] ? { baselineEngineWasm: artifactHash(options['--baseline-wasm']) } : {}) }, records, mismatches,
   };
@@ -329,7 +556,12 @@ try {
   go(['build', '-buildvcs=false', '-trimpath', '-o', nativeDsl, './cmd/dslwasm']);
   go(['build', '-buildvcs=false', '-trimpath', '-o', engineWasm, './cmd/enginewasm'], { GOOS: 'js', GOARCH: 'wasm' });
   go(['build', '-buildvcs=false', '-trimpath', '-o', dslWasm, './cmd/dslwasm'], { GOOS: 'js', GOARCH: 'wasm' });
+  writeFileSync(rawSource, rawHelperSource);
+  save('raw-accounting-helper', 'go', rawHelperSource);
+  go(['build', '-buildvcs=false', '-trimpath', '-o', nativeRaw, rawSource]);
+  go(['build', '-buildvcs=false', '-trimpath', '-o', wasmRaw, rawSource], { GOOS: 'js', GOARCH: 'wasm' });
   shim = join(go(['env', 'GOROOT']).trim(), 'misc/wasm/wasm_exec.js');
+  nodeShim = join(dirname(shim), 'wasm_exec_node.js');
   globalThis.crypto ??= webcrypto;
   createRequire(import.meta.url)(shim);
   if (options['--baseline-wasm']) { await load(resolve(options['--baseline-wasm'])); baselineWasm = globalThis.engineRunFixture; baselineColumns = globalThis.engineRunColumns; }
