@@ -182,7 +182,7 @@ func directiveStartsForSection(section string) []string {
 		return []string{"description", "name"}
 	}
 	if section == "setup" {
-		starts = append(starts, "type", "departure", "consolidation", "zone", "structure", "patterns", "pattern", "base", "source", "impulse", "displacement minimum", "gap minimum", "retest", "choch", "lookback", "neutral", "swing", "ema")
+		starts = append(starts, "type", "departure", "consolidation", "zone", "structure", "patterns", "pattern", "base", "source", "impulse", "displacement minimum", "gap minimum", "retest", "choch", "lookback", "neutral", "swing", "ema", "sequential")
 	}
 	return starts
 }

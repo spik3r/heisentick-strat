@@ -42,6 +42,7 @@ const (
 	FamilyKeltnerExpansion        FamilyID = "keltnerExpansion"
 	FamilyNamedLevelSweep         FamilyID = "namedLevelSweep"
 	FamilyNamedLevelFlag          FamilyID = "namedLevelFlag"
+	FamilyLegacySetup9            FamilyID = "legacySetup9"
 	FamilyClockRangeBreakout      FamilyID = "clockRangeBreakout"
 )
 

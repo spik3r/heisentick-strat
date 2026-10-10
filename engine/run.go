@@ -229,6 +229,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if !implementedFamily(setupType) {
 		return nil, fmt.Errorf("setup family %q is not implemented", setupType)
 	}
+	if err := validateLegacySetup9Execution(cfg, s.fixture.Costs); err != nil {
+		return nil, err
+	}
 	if err := validateRMVConfig(cfg); err != nil {
 		return nil, err
 	}
@@ -373,6 +376,9 @@ func validateRunRequest(request RunRequest) error {
 	setupType := setupTypeFromAny(request.Config["setupType"])
 	if !implementedFamily(setupType) {
 		return fmt.Errorf("setup family %q is not implemented", setupType)
+	}
+	if err := validateLegacySetup9Execution(request.Config, request.Costs); err != nil {
+		return err
 	}
 	if err := validateRMVConfig(request.Config); err != nil {
 		return err
@@ -560,7 +566,16 @@ func (r *PreparedRun) runRaw(costs Costs) []Trade {
 
 // Run executes this prepared strategy with the supplied costs and preserves
 // the legacy JSON-safe serialization behavior for derived non-finite values.
+//
+// Run has no error result. For the legacy Setup-9 family, which supports only
+// costs.fillOn=close, it panics on any other fill like the other prepared-run
+// programming errors; use RunChecked to receive the error.
 func (r *PreparedRun) Run(costs Costs) RunResult {
+	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
+		if err := r.legacySetup9CostsError(costs); err != nil {
+			panic(err)
+		}
+	}
 	trades := r.runRaw(costs)
 	return resultEnvelope(r.fixture, trades)
 }
@@ -568,6 +583,11 @@ func (r *PreparedRun) Run(costs Costs) RunResult {
 // RunChecked executes this prepared strategy and rejects non-finite derived
 // output before applying the existing JSON serialization.
 func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
+	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
+		if err := r.legacySetup9CostsError(costs); err != nil {
+			return RunResult{}, err
+		}
+	}
 	trades := r.runRaw(costs)
 	return checkedResultEnvelope(r.fixture, trades)
 }
