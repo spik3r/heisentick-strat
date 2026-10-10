@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add a source-frozen Sequential companion backtest export with one-pass raw
+  broker accounting, all-fee trade net, headline statistics and explicitly
+  versioned close-bar MTM equity/drawdown. Keep existing run/trade envelopes,
+  execution policies and generic callers unchanged. Typed refusals exclude
+  incomplete Full terminal runs and invalid/unrepresentable metrics. Initial
+  capabilities cover headline/trades/equity only; grouped/monthly/portfolio
+  projections, published assets and consumer activation remain separate gates.
+  This semantic addition requires a minor version when qualified for release.
+
 - Add the distinct `sequential full` DSL family for the versioned synthetic
   `seq.full.public_approx.v1` E1/E2 policies. Bind explicit symbol, timeframe,
   risk and exposure inputs; reuse the accepted core and existing broker for

@@ -1,0 +1,31 @@
+{
+  "schema": "sequential-source-freeze.v1",
+  "producerBaseline": "f8aba9ef13e22ace21ce31f2ed06cd86ad53464d",
+  "scope": "Fixed synthetic qualification inputs; no registration or publication implied",
+  "sources": [
+    {
+      "strategyId": "dslSequentialLegacySetup9",
+      "producerPath": "conformance/parse/setup-legacy-setup9.strat",
+      "sha256": "e2995b9057bc091ce5061bb66d5a06b35c33ebd621a8bef4e00f4496d774dc44",
+      "bytes": 243
+    },
+    {
+      "strategyId": "dslSequentialLegacySetup9PerfSeasonal",
+      "producerPath": "conformance/parse/setup-legacy-setup9-perf-seasonal.strat",
+      "sha256": "f16afb623842d05ef85db179e25138bf75ac1778396a4cb72563333e043658eb",
+      "bytes": 262
+    },
+    {
+      "strategyId": "dslSequentialFullE1",
+      "producerPath": "conformance/run/family-sequential-full-e1-long.strat",
+      "sha256": "6ffd40ee4ffc3ba5c606a1e23e203757972e5742263a694fcc373de8d92cf8ac",
+      "bytes": 351
+    },
+    {
+      "strategyId": "dslSequentialFullE2",
+      "producerPath": "conformance/run/family-sequential-full-e2-long.strat",
+      "sha256": "94086f5b62ed6abd89265754572f838e3c024226666d99ceb730f4537e0c8ec2",
+      "bytes": 351
+    }
+  ]
+}

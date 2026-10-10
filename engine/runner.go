@@ -33,6 +33,10 @@ func spansWeekendClosure(startMs, endMs float64) bool {
 
 // RunFixture executes the fixture's DSL source and returns the conformance envelope.
 func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
+	return runFixtureCase(fixture, source, nil)
+}
+
+func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccountingCollector) (RunResult, error) {
 	parsed, err := dsl.Parse(source)
 	if err != nil {
 		return RunResult{}, err
@@ -44,7 +48,7 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 		return RunResult{}, fmt.Errorf("%s: DSL parse errors: %v", fixture.Case, parsed.Errors)
 	}
 	if dsl.IsSequentialFullReserved(parsed.Config) {
-		return runSequentialFullFixture(fixture, parsed.Config)
+		return runSequentialFullFixtureWithCapture(fixture, parsed.Config, capture)
 	}
 	if err := rejectDedicatedGoldFlagExecution(parsed.Config); err != nil {
 		return RunResult{}, err
@@ -132,6 +136,7 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	}
 	var b broker
 	b.reset(series, cols, htfTrend, ema, emaSlope, params, fixture, nil)
+	b.sequentialAccounting = capture
 	trades := b.run()
 	result, err := checkedResultEnvelope(fixture, trades)
 	if setupTypeFromAny(parsed.Config["setupType"]) == "clockRangeBreakout" {

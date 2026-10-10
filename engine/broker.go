@@ -60,6 +60,7 @@ type pendingExit struct {
 }
 
 type broker struct {
+	sequentialAccounting   *sequentialAccountingCollector
 	series                 marketdata.Series
 	cols                   contextcols.Columns
 	htfTrend               []int8
@@ -169,6 +170,7 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.limitOrders = b.limitOrders[:0]
 	b.trades = trades[:0]
 	b.realized = 0
+	b.sequentialAccounting = nil
 	b.flagLastEntry = 0
 	b.hasFlagEntry = false
 	b.rbfLastEntry = 0
@@ -303,12 +305,18 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 		b.closeExpiredWindowPosition(i)
 		b.resolveIntrabarExit(i)
 		b.onBar(i)
+		if b.sequentialAccounting != nil {
+			b.sequentialAccounting.mark(b, i, false)
+		}
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
 		}
 	}
 	if liquidateAtEnd && n > 0 && end >= 0 && b.hasPosition {
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
+		if b.sequentialAccounting != nil {
+			b.sequentialAccounting.mark(b, end, true)
+		}
 	}
 	return b.trades
 }
@@ -562,7 +570,14 @@ func (b *broker) openPosition(s side, fillPrice float64, ord order, index int) {
 		NoStop:       ord.NoStop,
 	}
 	b.hasPosition = true
+	var realizedBefore float64
+	if b.sequentialAccounting != nil {
+		realizedBefore = b.realized
+	}
 	b.realized -= b.costs.FeePerUnit * size
+	if b.sequentialAccounting != nil {
+		b.sequentialAccounting.entry(b, realizedBefore)
+	}
 }
 
 // closePosition records one closed trade. reason is the D-20 reason
@@ -574,6 +589,10 @@ func (b *broker) closePosition(exitPrice float64, index int, reason, rule string
 	px := exitPrice - sign*b.slippageAt(exitPrice)
 	points := (px - pos.Entry) * sign
 	pnl := points*pos.Size - b.costs.FeePerUnit*pos.Size
+	var realizedBefore float64
+	if b.sequentialAccounting != nil {
+		realizedBefore = b.realized
+	}
 	b.realized += pnl
 	b.trades = append(b.trades, Trade{
 		Side:       pos.Side.String(),
@@ -604,6 +623,9 @@ func (b *broker) closePosition(exitPrice float64, index int, reason, rule string
 	}
 	b.lastExitIndex = index
 	b.hasPosition = false
+	if b.sequentialAccounting != nil {
+		b.sequentialAccounting.exit(b, realizedBefore, pnl, index)
+	}
 }
 
 func (b *broker) tightenStop(price float64) {
