@@ -116,6 +116,14 @@ jobs:
         if: steps.mod.outputs.present == 'true'
         run: node scripts/checks/master-runtime-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
 
+      # HT-229 partial qualification: unchanged synthetic core and fixture suite.
+      # This runs a Go test binary in Node; it does not export a trading API or
+      # establish browser/full-policy/release support.
+      - name: Synthetic Sequential core under Node-hosted Go WASM
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" ./engine/seqcore
+
       - name: Run portable arithmetic kernels under Go WASM
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 3
