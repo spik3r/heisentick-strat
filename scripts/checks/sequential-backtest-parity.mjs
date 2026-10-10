@@ -1,13 +1,18 @@
 // Exact-source native and actual Node-hosted Go/WASM companion qualification.
+// Cross-target accounting differences require an independently reproduced exact
+// pinned-target result. No epsilon or runtime arithmetic change is permitted.
+// Installed CPython 3.12.x (standard library only) and Go 1.22.12 are required.
 // Usage: node scripts/checks/sequential-backtest-parity.mjs [--go <go binary>]
 //   [--baseline-engine <prechange native engine>] [--baseline-wasm <prechange WASM>]
-//   [--baseline-repo <prechange archived repository>] [--out <directory outside the repository>]
+//   [--baseline-repo <prechange archived repository>] [--python <python3.12 binary>]
+//   [--out <directory outside the repository>]
+// Without both prechange targets, evidence is diagnostic only and cannot pass.
 // Builds use the installed toolchain only, in an OS temporary directory. No
 // release/consumer/browser or historical-outcome qualification is implied.
 import assert from 'node:assert/strict';
 import { createHash, webcrypto } from 'node:crypto';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, readlinkSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -17,12 +22,16 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const options = {};
 for (let i = 2; i < process.argv.length; i += 2) {
   const key = process.argv[i];
-  assert(['--go', '--baseline-engine', '--baseline-wasm', '--baseline-repo', '--out'].includes(key) && process.argv[i + 1], `unknown/missing argument ${key}`);
+  assert(['--go', '--baseline-engine', '--baseline-wasm', '--baseline-repo', '--python', '--out'].includes(key) && process.argv[i + 1], `unknown/missing argument ${key}`);
   assert(!(key in options), `duplicate option ${key}`);
   options[key] = process.argv[i + 1];
 }
 const goBinary = options['--go'] || 'go';
-const env = { ...process.env, CGO_ENABLED: '0', GOTOOLCHAIN: 'local', GOPROXY: 'off' };
+const pythonBinary = options['--python'] || 'python3';
+const proofScript = join(root, 'scripts/checks/sequential-accounting-proof.py');
+const proofTestScript = join(root, 'scripts/checks/sequential-accounting-proof-test.py');
+const scheduleFile = join(root, 'scripts/checks/sequential-arithmetic-schedules.json');
+const env = { ...process.env, CGO_ENABLED: '0', GOTOOLCHAIN: 'local', GOPROXY: 'off', GOWORK: 'off' };
 const go = (args, extra = {}, cwd = root) => execFileSync(goBinary, args, { cwd, env: { ...env, ...extra }, encoding: 'utf8', maxBuffer: 1 << 28 });
 assert.equal(go(['env', 'GOFLAGS']).trim(), '', 'qualification requires ordinary compiler flags');
 assert(!env.GOCOMPILEDEBUG, 'qualification cannot override compiler/FMA behavior');
@@ -67,6 +76,8 @@ const records = [];
 const mismatches = [];
 const attemptedCases = [];
 const rawEvidenceGuardChecks = { native: 0, wasm: 0 };
+const arithmeticProofs = [];
+let codegenProof = null, proofSelfTests = null, baselineProof = null;
 let activeCase = null, activeStage = 'build', shim, nodeShim;
 const checks = Object.fromEntries(['nativePrechangeToCurrent', 'nativeCaptureOffToOn', 'wasmPrechangeToCurrent', 'wasmCaptureOffToOn', 'wasmRepeat', 'wasmColumnsToCompanion', 'wasmPrechangeColumns', 'nativeRawToCompanion', 'wasmRawToCompanion'].map((key) => [key, 0]));
 function beginCase(name) { activeCase = name; activeStage = 'execution'; attemptedCases.push(name); }
@@ -340,7 +351,7 @@ function testRawEvidenceGuards(captured, target) {
   }
   rawEvidenceGuardChecks[target] = faults.length;
 }
-function rawCapture(label, raw, source, fixture, nativeCompanion, wasmCompanion) {
+function rawCapture(label, raw, source, fixture, nativeCompanion, wasmCompanion, nativeCompanionRaw, wasmCompanionRaw) {
   activeStage = 'raw-accounting-execution';
   writeFileSync(fixturePath, raw); writeFileSync(sourcePath, source);
   const run = (binary, args) => spawnSync(binary, args, { env, encoding: 'utf8', maxBuffer: 1 << 28 });
@@ -371,7 +382,43 @@ function rawCapture(label, raw, source, fixture, nativeCompanion, wasmCompanion)
       assert.equal(captured.accounting.policy, companion.identity.policy);
     });
   }
+  activeStage = 'exact-target-arithmetic';
+  const proof = pythonProof(['pair', `linux-${nativeArch}`], {
+    nativeRaw: native.stdout, wasmRaw: wasm.stdout, nativeCompanion: nativeCompanionRaw,
+    wasmCompanion: wasmCompanionRaw, fixture: raw, source,
+  });
+  assert.equal(proof.qualificationPass, true, `${label}: exact arithmetic proof did not pass`);
+  assert.equal(proof.rawCrossTargetExact, native.stdout === wasm.stdout);
+  save(label, 'exact-arithmetic-proof.json', proof);
+  arithmeticProofs.push({ name: label, ...proof });
+  const predicted = new Map(proof.explainedNumericLeaves.map((leaf) => [leaf.path, leaf]));
+  const bitPaths = new Set(proof.explainedBitLeaves);
+  for (const mismatch of mismatches.filter((item) => item.name === label && ['raw-accounting', 'companion'].includes(item.surface))) {
+    // Preserve every observed mismatch. Mark it explained only AFTER both full
+    // replays, complete raw-bit validation and same-target binding have passed.
+    assert.equal(mismatch.categoricalMismatch, false, `${label}: categorical mismatch cannot be qualified`);
+    for (const leaf of mismatch.leaves) {
+      if (mismatch.surface === 'raw-accounting' && bitPaths.has(leaf.path)) {
+        const expected = predicted.get(leaf.path.slice('$.float64bits.'.length));
+        assert(expected && leaf.native === expected.nativeBits && leaf.wasm === expected.wasmBits, `${label}: unexplained raw bit leaf ${leaf.path}`);
+      } else {
+        const expected = predicted.get(leaf.path);
+        assert(mismatch.surface === 'raw-accounting' || leaf.path.startsWith('$.metrics.'), `${label}: unequal upstream companion field ${leaf.path}`);
+        assert(expected && leaf.nativeBits === expected.nativeBits && leaf.wasmBits === expected.wasmBits, `${label}: unexplained numeric leaf ${leaf.path}`);
+      }
+    }
+    mismatch.explainedByExactArithmetic = true;
+  }
   return { nativeSha256: sha(native.stdout), wasmSha256: sha(wasm.stdout) };
+}
+function pythonProof(args, input) {
+  const execution = spawnSync(pythonBinary, ['-B', proofScript, ...args], {
+    cwd: root, env, encoding: 'utf8', maxBuffer: 1 << 28,
+    ...(input === undefined ? {} : { input: JSON.stringify(input) }),
+  });
+  assert.ifError(execution.error && Object.assign(execution.error, { message: `Installed CPython 3.12.x is required: ${execution.error.message}` }));
+  assert.equal(execution.status, 0, `Exact accounting verifier failed: ${execution.stderr}`);
+  return JSON.parse(execution.stdout);
 }
 function nativeRun(raw, source, binary = nativeEngine, companion = true) {
   writeFileSync(fixturePath, raw); writeFileSync(sourcePath, source);
@@ -465,7 +512,8 @@ function success(label, fixture, source, { meaningful = false, noTrades = false,
   validateSuccess(result, raw, fixture, source, `${label}/native`, { meaningful, noTrades });
   validateSuccess(wasmResult, raw, fixture, source, `${label}/wasm`, { meaningful, noTrades });
   // Cross-target mismatches accumulate so later cancellation scenarios run.
-  // They remain unconditional qualification failures at the final gate.
+  // Every mismatch remains in the receipt; only an exact per-target proof can
+  // explain downstream arithmetic. Refusal/parser/generic equality stays strict.
   const generic = nativeRun(raw, source, nativeEngine, false);
   save(label, 'native.capture-off.json', generic.raw);
   assert.equal(generic.status, 0, generic.stderr);
@@ -486,7 +534,7 @@ function success(label, fixture, source, { meaningful = false, noTrades = false,
     save(label, 'wasm.prechange.json', before);
     checked('wasmPrechangeToCurrent', () => assert.equal(before, wasmGeneric, `${label}: prechange WASM changed`));
   }
-  const rawAccounting = rawCapture(label, raw, source, fixture, result, wasmResult);
+  const rawAccounting = rawCapture(label, raw, source, fixture, result, wasmResult, native.raw, wasmRaw);
   records.push({ name: label, kind: 'success', trades: result.run.tradeCount, bars: fixture.bars.length, fixtureSha256: sha(raw), sourceSha256: sha(source), nativeSha256: sha(native.raw), wasmSha256: sha(wasmRaw), rawAccounting, classifications: { native: classifications(result), wasm: classifications(wasmResult) } });
   return result;
 }
@@ -509,14 +557,57 @@ function refusal(label, raw, source, code) {
   records.push({ name: label, kind: 'refusal', fixtureSha256: sha(raw), sourceSha256: sha(source), nativeSha256: sha(native.raw), wasmSha256: sha(wasm), nativeError: JSON.parse(native.raw).error, wasmError: JSON.parse(wasm).error });
 }
 
+function verifyBaselineRepo(baseline) {
+  // A caller's directory/ref name is not provenance. Require every archived
+  // path and Git blob to match the authenticated, immutable prechange tree.
+  const commit = 'f8aba9ef13e22ace21ce31f2ed06cd86ad53464d';
+  const tree = '8e4ef994a636f2125bab2bb909c28fca5db2351d';
+  const git = (args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 1 << 26 });
+  assert.equal(git(['rev-parse', `${commit}^{tree}`]).trim(), tree, 'unavailable or incorrect pinned prechange tree');
+  const entries = git(['ls-tree', '-r', '-z', '--full-tree', commit]).split('\0').filter(Boolean).map((line) => {
+    const match = /^(100644|100755|120000) blob ([0-9a-f]{40})\t(.+)$/.exec(line);
+    assert(match, 'unsupported prechange tree entry');
+    return { mode: match[1], blob: match[2], path: match[3] };
+  });
+  const actual = [];
+  function walk(directory, prefix = '') {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (!prefix && entry.name === '.git') continue;
+      const relative = prefix + entry.name;
+      if (entry.isDirectory()) walk(join(directory, entry.name), relative + '/');
+      else { assert(entry.isFile() || entry.isSymbolicLink(), 'unsupported baseline filesystem entry'); actual.push(relative); }
+    }
+  }
+  walk(baseline);
+  assert.deepEqual(actual.sort(), entries.map((entry) => entry.path).sort(), 'prechange archive has missing/extra files');
+  for (const entry of entries) {
+    const path = join(baseline, entry.path);
+    const bytes = entry.mode === '120000' ? Buffer.from(readlinkSync(path)) : readFileSync(path);
+    const blob = createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex');
+    assert.equal(blob, entry.blob, `unverified prechange source ${entry.path}`);
+  }
+  return { commit, tree, verifiedFiles: entries.length, comparison: 'complete Git blob identities; no extra files' };
+}
 function artifactHash(path) { return path && existsSync(path) ? sha(readFileSync(path)) : null; }
 function emitReceipt(complete, failure = null) {
+  const unexplained = mismatches.filter((mismatch) => !mismatch.explainedByExactArithmetic);
+  const sameTargetComplete = Object.values(checks).every((count) => count === 64);
+  const qualificationPass = complete && !failure && !unexplained.length && sameTargetComplete &&
+    codegenProof !== null && proofSelfTests !== null && baselineProof !== null && arithmeticProofs.length === 64;
   const receipt = {
     schema: 'sequential-backtest-parity-receipt-v1', go: go(['version']).trim(), node: process.version,
-    nativeArch, runtime: 'native-and-actual-node-go-wasm', comparison: 'exact; no numeric tolerance',
+    nativeArch, runtime: 'native-and-actual-node-go-wasm', comparison: 'exact same-target and upstream; exact pinned-target downstream replay; no numeric tolerance',
     prechangeNative: Boolean(options['--baseline-engine']), prechangeWasm: Boolean(baselineWasm),
     browser: 'unrun', release: 'unpublished-local-qualification',
-    status: complete && !mismatches.length ? 'passed' : 'failed', complete,
+    status: qualificationPass ? 'passed' : 'failed', qualificationPass, rawCrossTargetExact: complete && !mismatches.length, complete,
+    unexplainedMismatchComparisons: unexplained.length, explainedMismatchComparisons: mismatches.length - unexplained.length,
+    missingEvidence: [...Object.keys(checks).filter((key) => checks[key] !== 64), ...(baselineProof ? [] : ['authenticatedPrechangeSource'])],
+    baselineSource: baselineProof,
+    exactArithmetic: { codegen: codegenProof, selfTests: proofSelfTests, pairs: arithmeticProofs.length,
+      exactArithmeticChecks: arithmeticProofs.reduce((sum, proof) => sum + proof.exactArithmeticChecks, 0),
+      completeFloatBitChecks: arithmeticProofs.reduce((sum, proof) => sum + proof.completeFloatBitChecks, 0),
+      explainedRawNumericLeaves: arithmeticProofs.reduce((sum, proof) => sum + proof.explainedNumericLeaves.length, 0),
+      verifierSha256: artifactHash(proofScript), testSha256: artifactHash(proofTestScript), scheduleSha256: artifactHash(scheduleFile) },
     expectedCaseCount: 88, attemptedCaseCount: attemptedCases.length,
     failure: failure ? { name: failure.name, message: failure.message, code: failure.code ?? null, operator: failure.operator ?? null, activeCase, activeStage, actual: failure.actual, expected: failure.expected } : null,
     caseCount: records.length, mismatchComparisons: mismatches.length, rawEvidenceGuardChecks,
@@ -538,15 +629,27 @@ function emitReceipt(complete, failure = null) {
   const { records: caseRecords, mismatches: mismatchRecords, ...summary } = receipt;
   if (summary.failure) summary.failure = { name: summary.failure.name, message: summary.failure.message.split('\n')[0], code: summary.failure.code, activeCase, activeStage };
   console.log(JSON.stringify({ kind: 'qualification-summary', ...summary }));
-  if (!complete || mismatches.length) {
-    console.error(`Sequential exact parity FAILED: ${receipt.mismatchCases} case(s), ${receipt.mismatchComparisons} comparison(s), ${receipt.categoricalMismatchCases} categorical case(s); ${records.length}/88 cases completed${complete ? '' : '; INCOMPLETE after hard failure'}. No tolerance was applied.`);
+  if (!qualificationPass) {
+    console.error(`Sequential exact arithmetic qualification FAILED: ${unexplained.length} unexplained comparison(s), ${receipt.missingEvidence.length} incomplete same-target check(s); ${records.length}/88 cases completed${complete ? '' : '; INCOMPLETE after hard failure'}. Raw cross-target exact: ${receipt.rawCrossTargetExact}. No tolerance was applied.`);
     process.exitCode = 1;
   }
 }
 
 try {
+  activeStage = 'pinned-source-compiler-schedule';
+  codegenProof = pythonProof(['codegen', root, goBinary, ...(output ? [output] : [])]);
+  assert.equal(codegenProof.nativeTarget, `linux-${nativeArch}`);
+  activeStage = 'arithmetic-reference-self-tests';
+  const selfTest = spawnSync(pythonBinary, ['-B', proofTestScript], { cwd: root, env, encoding: 'utf8', maxBuffer: 1 << 20 });
+  assert.ifError(selfTest.error);
+  assert.equal(selfTest.status, 0, `Exact arithmetic reference tests failed: ${selfTest.stderr}`);
+  proofSelfTests = JSON.parse(selfTest.stdout);
+  activeStage = 'build';
   if (options['--baseline-repo']) {
     const baseline = resolve(options['--baseline-repo']);
+    activeStage = 'prechange-source-provenance';
+    baselineProof = verifyBaselineRepo(baseline);
+    activeStage = 'build';
     options['--baseline-engine'] = join(scratch, 'baseline-engine');
     options['--baseline-wasm'] = join(scratch, 'baseline-engine.wasm');
     go(['build', '-buildvcs=false', '-trimpath', '-o', options['--baseline-engine'], './cmd/enginewasm'], {}, baseline);

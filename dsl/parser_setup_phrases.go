@@ -99,6 +99,9 @@ func (p *parser) parseRetest(tokens []string) {
 		if containsLower(tokens, "first") {
 			sd["maxRetests"] = 1
 		}
+		if len(tokens) >= 4 && strings.EqualFold(tokens[1], "on") && strings.EqualFold(tokens[2], "entry") && strings.EqualFold(tokens[3], "timeframe") {
+			sd["retestOnEntryTimeframe"] = 1
+		}
 		if containsLower(tokens, "must") && containsLower(tokens, "reject") {
 			sd["requireRejectionClose"] = 1
 		}

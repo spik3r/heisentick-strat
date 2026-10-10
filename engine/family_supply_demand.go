@@ -222,10 +222,18 @@ func (b *broker) pruneSupplyDemandZones(i int) {
 }
 
 func (b *broker) supplyDemandRetestSetup(i int, zoneIdx int) (float64, float64, TradeMeta, bool) {
-	p := b.params.SupplyDemand
 	zone := &b.sdZones[zoneIdx]
 	atr := finiteOrZero(b.cols.ATR[i])
-	if atr == 0 || i <= zone.CreatedAt+p.MinWaitCandles {
+	return b.supplyDemandRetestAt(i, zone, atr, i > zone.CreatedAt+b.params.SupplyDemand.MinWaitCandles)
+}
+
+// supplyDemandRetestAt evaluates one zone against chart bar i. atr is the
+// volatility used for the touch tolerance and stop; ready says whether the zone
+// may be traded yet. The zone's own indices may belong to another series (retest
+// on the entry timeframe), so nothing here reads zone indices against b.series.
+func (b *broker) supplyDemandRetestAt(i int, zone *sdZone, atr float64, ready bool) (float64, float64, TradeMeta, bool) {
+	p := b.params.SupplyDemand
+	if atr == 0 || !ready {
 		return 0, 0, nil, false
 	}
 	s := sideLong
@@ -447,4 +455,112 @@ func sdZoneBounds(zoneType string, stats sdBaseStats, mode string) (float64, flo
 
 func sdZoneKey(zoneType string, start int, end int, lo float64, hi float64) string {
 	return zoneType + ":" + strconv.Itoa(start) + ":" + strconv.Itoa(end) + ":" + strconv.Itoa(int(math.Round(lo*10))) + ":" + strconv.Itoa(int(math.Round(hi*10)))
+}
+
+// sdEntryRetestRun holds the state of `retest on entry timeframe`: the source
+// broker whose zones are traded, the completed source index for each chart bar
+// (-1 when unavailable) and how far the source has been processed. It lives
+// outside broker so the shared broker type is untouched.
+type sdEntryRetestRun struct {
+	src  *broker
+	idx  []int
+	done int
+}
+
+// run drives the chart broker bar by bar with the same ordering as
+// runRangeWithFinalization, replacing only the per-bar setup handler.
+func (r *sdEntryRetestRun) run(b *broker) []Trade {
+	n := b.series.Len()
+	end := b.executionEnd()
+	if end >= n {
+		end = n - 1
+	}
+	for i := 0; i <= end; i++ {
+		if b.windowed && i < b.executionStart() {
+			b.clearExecutionOrders()
+		}
+		b.fillPendingExits(i)
+		b.fillPending(i)
+		b.fillLimits(i)
+		b.closeExpiredWindowPosition(i)
+		b.resolveIntrabarExit(i)
+		b.applyPreHandlerTrail(i)
+		r.onBar(b, i)
+		if b.windowed && i < b.executionStart() {
+			b.clearExecutionOrders()
+		}
+	}
+	if n > 0 && end >= 0 && b.hasPosition {
+		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
+	}
+	return b.trades
+}
+
+// onBar runs one chart bar. Zones are made, flipped and expired on completed
+// source candles by the source broker; the touch, rejection and entry are judged
+// on this chart's own closes. The source index for a chart bar is the latest
+// source candle whose close is at or before the chart bar's close, so no forming
+// source candle is ever read; a bar with no valid source projection is skipped.
+func (r *sdEntryRetestRun) onBar(b *broker, i int) {
+	src := r.src
+	if target := r.idx[i]; target >= 0 {
+		for r.done < target {
+			r.done++
+			src.detectSupplyDemandZones(r.done)
+			src.pruneSupplyDemandZones(r.done)
+		}
+	}
+	if b.hasPosition {
+		b.applyPartialManagement(i)
+		b.moveStopToBreakeven(i)
+		b.exitAfterBars(i)
+		return
+	}
+	if r.idx[i] < 0 || r.done < 0 {
+		return
+	}
+	p := b.params
+	if b.hasFlagEntry && i-b.flagLastEntry < p.CooldownBars {
+		return
+	}
+	if len(p.DayTypes) > 0 && !regimeAllowed(b.cols.Regime[i], p.DayTypes) && finiteOrZero(b.cols.ER[i]) > p.DayTypeEREscape {
+		return
+	}
+	if finiteOrZero(b.cols.ER[i]) > p.MaxMovementER {
+		return
+	}
+	if !inSetupTradeWindow(b.series.T[i], p, 0) {
+		return
+	}
+	atr := finiteOrZero(src.cols.ATR[r.done])
+	lastCreatedAt := math.MaxInt
+	lastIdx := len(src.sdZones)
+	for {
+		idx := src.nextSupplyDemandZone(lastCreatedAt, lastIdx)
+		if idx < 0 {
+			break
+		}
+		zone := &src.sdZones[idx]
+		lastCreatedAt = zone.CreatedAt
+		lastIdx = idx
+		// This opt-in route has a declared four-hour source. A completed
+		// formation/flip close cannot make the preceding entry-bar range a retest.
+		// Equality at the entry open is allowed, so the next entry candle need not
+		// wait for another source candle. Keep this independent of future spacings.
+		zoneClose := src.series.T[zone.CreatedAt] + 4*60*60*1000
+		ready := r.done >= zone.CreatedAt+p.SupplyDemand.MinWaitCandles && b.series.T[i] >= zoneClose
+		stop, target, meta, ok := b.supplyDemandRetestAt(i, zone, atr, ready)
+		if !ok {
+			continue
+		}
+		zone.Used = true
+		s := sideLong
+		if zone.Type == "supply" {
+			s = sideShort
+		}
+		b.enterSetup(i, setupPlan{Side: s, Stop: stop, Target: target, Tag: "DSL-SD:" + zone.Type, Meta: meta})
+		b.flagLastEntry = i
+		b.hasFlagEntry = true
+		break
+	}
 }

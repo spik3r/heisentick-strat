@@ -119,3 +119,98 @@ No tolerance, rounding, shadow account or broker arithmetic change is introduced
 Any cross-architecture bound for account net, prefix equity, MTM or derived
 metrics needs its own independent operation/operand propagation review. A
 canonical arithmetic change is a separate HT-245 compatibility decision.
+
+### Approved qualification refinement and integrated source — 2026-10-10
+
+At 12:59:03 UTC the owner approved preserving engine outputs while replacing
+the former universal raw accounting equality check with exact results for each
+verified target's arithmetic. No tolerance allowance or runtime change was
+approved. Backlog HT229 PR467 records the genuine decision, three test-only
+path amendment and implementation start at head
+`ae185f797233a6a67339b21f0bd171034cc9e454`.
+
+The historical ARM64 failures above remain failures under their former gate.
+The complete raw diagnostic at head
+`668c1b24cf9b30ff65aed9722e8ba068bbc18951`, run `38050061077`, evaluated all
+88 cases; all nine same-target checks passed 64 cases each. The independent
+prospective exact replay reproduced all 87 differing raw numeric leaves after
+actual ARM evidence arrived, with no unexplained or categorical difference.
+This evidence motivated the approved refinement; it is not a retrospectively
+changed CI result.
+
+The final candidate integrates producer main
+`2196722113496a5ccd88850cbb441c02f120a66f`, tree
+`89c1ca1fafce0978ca7dac26bd3803b7ebd6ce3e`, including separately qualified
+PR108 supply/demand fixes. All 23 main paths are preserved; shared runner and
+CHANGELOG changes are combined. Conformance is now 134 parse / 109 run cases.
+The new source/instruction pins and every affected check must be qualified on
+this final union; the prior source's passing analyses do not transfer by name.
+
+The stdlib-only exact verifier requires CPython 3.12.x and pinned Go1.22.12
+ordinary builds. Unknown/missing tools, options, sources or instruction
+schedules fail explicitly. Arithmetic self-tests and malformed/corrupted-proof
+tests must pass before the real native/Node-WASM run. The receipt keeps raw
+cross-target equality distinct from exact target-arithmetic qualification.
+All same-target, upstream operand, identity, category/sign, refusal, old-golden
+and generic-output gates remain exact. No broken or incomplete evidence is
+converted to an explained mismatch.
+
+Independent verifier review and fresh actual amd64, ARM64 and Node-WASM runs
+are pending at the time this section is authored. No new pass, release or
+activation is asserted here. Claude's independent HT250 economic corpus remains
+pinned separately with its authored binding/provisional/injected-only labels;
+its local diagnostic success is not an ARM64 or release qualification.
+
+### Final-union local runtime checks — 2026-10-10T13:15Z
+
+Before verifier publication, official Go1.22.12 linux/amd64 passed all 24
+uncached packages, full vet, formatting and conformance (134 parse / 109 run,
+zero TODOs) on the working source union above. No golden was regenerated.
+Focused Sequential/SupplyDemand engine/report race tests passed, and the full
+seqcore race suite passed separately in 40.091 seconds. These race checks use
+race instrumentation and are separate from ordinary-build numeric evidence.
+
+Independent final-union resource review measured broker size again on actual
+amd64 and actual Node-hosted Go/WASM: main219 is 9,680 bytes; the union is
+9,688; flagParams is 3,192 on both. The one-pointer delta and unchanged private
+Sequential-only collector admission remain verified. This is fixed-size
+resource evidence, not a new RSS or whole-runtime allocation bound.
+
+Independent instruction regeneration and rounding-oracle checks are preliminary
+while the verifier is being reviewed. Final verifier hashes, exact-head CI and
+actual ARM64 qualification are still pending; these local results do not clear
+those gates.
+
+### Frozen verifier review and AMD64/WASM evidence — 2026-10-10T13:21Z
+
+Independent review accepted the four frozen test-only verifier files after
+19 self-test groups, 4,272 independent rounding-oracle checks, 31 corrupted
+evidence probes, 16 source/schedule/options probes and six baseline provenance
+probes. Missing Python produces an explicit failed, incomplete receipt.
+The reviewer independently rebound and replayed all 64 saved successful pairs:
+47,740 exact arithmetic checks and 92,156 complete raw-bit checks passed.
+
+The fresh final-union run used official Go1.22.12 linux/amd64, Node24.19.0 and
+CPython3.12.14. All 88 cases completed, each of the nine same-target checks
+passed 64 cases, and 19 raw-evidence guards passed per target. Both
+`qualificationPass` and `rawCrossTargetExact` are true on these actual AMD64
+and Node-hosted Go/WASM executions. Receipt SHA256:
+`f26cdc67752aa9b47188348502e5427707d47b56f7722ff5b2f84b82557231a6`.
+
+Frozen verifier SHA256 identities:
+- parity script: `16144e04619c1251ca227330678d612e42d3b30c28a632c26ac0d2b066d415e8`
+- exact replay: `3637cb29d408aa3dbc2e9c1bec73e42d45b52c5b59a4791135dfefeffa1476d4`
+- self-tests: `e3e1a5686c6844623b885f35613f237e14c943d37d7313aa7b045d7b9e7a98a3`
+- source/schedule manifest: `5bcdcbdfdee7d338e272c1033bb9d2f38bb3c8d6c8b12d6efa1f1fa9a140b0d7`
+
+Count correction: the earlier local paragraph's “148 emitted success/failure
+envelopes” is inconsistent with the stated 88-case breakdown. That complete
+breakdown produces 166 companion envelopes: 128 successful, 36 shared-refusal
+and two WASM-only refusal envelopes; source-parser records are separate. The
+historical actual-ARM artifact's independent schema check validated all 166.
+The earlier count is retained above as dated history, not current evidence.
+
+Fresh final-head ARM64 execution and exact-head CI remain mandatory. Cross-
+compiled ARM instruction verification and historical replay do not clear them.
+No tag, published asset, release pin, historical outcome or consumer activation
+is qualified by these local results.

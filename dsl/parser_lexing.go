@@ -211,6 +211,14 @@ func splitInlineBody(body string, starts []string, section string) []string {
 		for _, start := range starts {
 			startLower := strings.ToLower(start)
 			if strings.HasPrefix(lower[i:], startLower) && isBoundary(body, i+len(start)) {
+				// "entry" belongs to this complete opt-in setup phrase; a later
+				// independent entry directive must still begin its own clause.
+				if section == "setup" && startLower == "entry" {
+					before, after := strings.Fields(lower[:i]), strings.Fields(lower[i:])
+					if len(before) >= 2 && before[len(before)-2] == "retest" && before[len(before)-1] == "on" && len(after) >= 2 && after[1] == "timeframe" {
+						continue
+					}
+				}
 				if section == "filters" && startLower == "source" && !strings.HasPrefix(strings.ToLower(strings.TrimSpace(body[i+len(start):])), "timeframe") {
 					continue
 				}

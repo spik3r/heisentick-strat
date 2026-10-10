@@ -50,6 +50,7 @@ how price must return to the zone before entry.
 | `zone break X ATR` | Invalidate a demand zone when price closes below it by `X` ATR, or a supply zone when price closes above it by `X` ATR. | `0.05` | `supplyDemand.invalidationAtr` |
 | `broken zones can flip` / `zone flip` | Permit one broken demand zone to become supply, or one broken supply zone to become demand. | off (`0`) | `supplyDemand.flipBrokenZones` |
 | `wait N candles after zone` | Minimum delay after zone creation before retests can enter. | `1` | `supplyDemand.minWaitCandles` |
+| `retest on entry timeframe` | With `source timeframe 4h` and `entryTf 15m`, `30m` or `1h`: make, flip and expire zones on completed source candles, but judge the touch, rejection and entry on the entry candles. See "Retest on the entry timeframe". Rejected unless that route is declared. | off (`0`) | `supplyDemand.retestOnEntryTimeframe` |
 | `overlapping zones off` / `overlap zones off` | Skip a newly detected unused zone when it overlaps an existing unused zone of the same type. The current parser also treats `skip` and `reject` as enabling the skip. | allow overlaps (`0`) | `supplyDemand.skipOverlappingZones` |
 
 ## Defaults and interactions
@@ -68,6 +69,51 @@ trigger settings; otherwise `useTrigger` is off for this family even though the
 compiled `triggerCandles` list remains the core default. Shared `day type`,
 `movement below`, sessions, side filters, stops, targets, partials, max hold,
 cooldown, and fixed-risk directives feed the setup params.
+
+## Retest on the entry timeframe
+
+Without this phrase, `source timeframe 4h` with `entryTf 15m` runs the whole
+setup, including the retest, on the 4h series, and the finished signal is
+dispatched on the first 15m decision close after the 4h close. With
+`retest on entry timeframe` the family is split:
+
+- Source candles (completed 4h candles only) detect zones, flip a zone once
+  when a source close breaks it (`zone flip`, `zone break`), expire zones by
+  `retest within N candles` counted in source candles, and supply the ATR used
+  for the touch tolerance, stop padding and stop-size limits.
+- Entry candles judge each decision close. The source index used for a chart
+  bar is the latest source candle whose close is at or before that chart bar's
+  close; a chart bar with no such candle, or one separated from it by a missing
+  interval, is skipped. A zone is tradable once `wait N candles after zone`
+  further source candles have closed after the one that made (or flipped) it;
+  `wait 0` allows the first entry close after the zone candle closes. The
+  entire entry candle must begin at or after that formation or flip close,
+  because its earlier high/low cannot count as a retest of a zone that did
+  not yet exist. Entry open equal to the source close is allowed; this does
+  not require waiting for a further source candle. Positive waits keep their
+  decision-close interpretation: once the Nth further source candle closes,
+  that decision may use the entry candle ending at the same close, including
+  its earlier touch of the already-existing zone. The whole-entry-candle
+  guard applies to formation or flip, not to wait maturity.
+- Touch, `retest first touch only`, `retest must reject zone`, `reaction
+  within`, CHOCH, `retest max`, trigger candles, stop, target and management
+  are the ones above, applied to entry candles. Touch counting and reaction
+  windows count entry candles. Day type, movement, sessions, cooldown
+  (`wait N candles after trade`, in entry candles) and the higher-timeframe
+  gate are read at the entry candle; `higher timeframe` direction is projected
+  from the source series' completed candles.
+- Entry is at the entry candle's close, one position at a time, newest zone
+  first, exactly as in the single-series family.
+
+Admitted routes: source `4h` with entry `15m`, `30m` or `1h`. `entryTf` must
+have a market slice. Any other route with the phrase is a parse error, and
+`entryTf 1h` without the phrase stays an error. The final setup family must
+remain supply demand, including after any later type declaration. Direct
+engine requests and fixtures also reject an active mode with the wrong family,
+source/entry pair, or actual chart timeframe; force-route does not bypass this
+contract. Native and JSON-decoded flags use the same boolean/numeric semantics;
+malformed present flag values are errors rather than fallback execution. Shared
+grid contexts and variants remain unsupported for this source-entry mode.
 
 ## Example
 

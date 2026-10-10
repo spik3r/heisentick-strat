@@ -235,6 +235,12 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if cfg == nil {
 		return nil, errors.New("engine config is required")
 	}
+	if err := validateSupplyDemandEntryRetest(cfg, s.fixture.Timeframe); err != nil {
+		return nil, err
+	}
+	if enabled, _ := supplyDemandEntryRetestEnabled(cfg); enabled {
+		return nil, errors.New("retest on entry timeframe is not supported by shared grid variants; use PrepareRun/report")
+	}
 	setupType := setupTypeFromAny(cfg["setupType"])
 	if !implementedFamily(setupType) {
 		return nil, fmt.Errorf("setup family %q is not implemented", setupType)
@@ -355,7 +361,7 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 
 func sourceEntryRequest(request RunRequest) bool {
 	entry := stringValue(request.Config, "entryTf", "current")
-	return request.Timeframe == entry && supportedSourceEntryRoute(request.Symbol, sourceTimeframeFromConfig(request.Config), entry)
+	return request.Timeframe == entry && sourceEntryRouteAllowed(request.Config, request.Symbol, sourceTimeframeFromConfig(request.Config), entry)
 }
 
 func validateRunRequest(request RunRequest) error {
@@ -382,6 +388,9 @@ func validateRunRequest(request RunRequest) error {
 	}
 	if request.Config == nil {
 		return errors.New("engine config is required")
+	}
+	if err := validateSupplyDemandEntryRetest(request.Config, request.Timeframe); err != nil {
+		return err
 	}
 	if request.Series.Len() == 0 {
 		return errors.New("market series is empty")

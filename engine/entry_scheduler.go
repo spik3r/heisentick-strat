@@ -1,6 +1,12 @@
 package engine
 
-import "github.com/spik3r/heisentick-strat/marketdata"
+import (
+	"fmt"
+	"math"
+
+	"github.com/spik3r/heisentick-strat/dsl"
+	"github.com/spik3r/heisentick-strat/marketdata"
+)
 
 type sourceEntryRoute struct {
 	source string
@@ -21,6 +27,58 @@ func supportedSourceEntryRoute(symbol, source, entry string) bool {
 		}
 	}
 	return false
+}
+
+// supplyDemandEntryRetestEnabled agrees with parameter boolean decoding while
+// refusing malformed present values instead of silently choosing legacy execution.
+func supplyDemandEntryRetestEnabled(cfg dsl.Config) (bool, error) {
+	sd := mapValue(cfg, "supplyDemand")
+	value, present := sd["retestOnEntryTimeframe"]
+	if !present {
+		return false, nil
+	}
+	switch v := value.(type) {
+	case bool, int, int64:
+		return boolFromAny(value, false), nil
+	case float64:
+		if !math.IsNaN(v) && !math.IsInf(v, 0) {
+			return v != 0, nil
+		}
+	}
+	return false, fmt.Errorf("supplyDemand.retestOnEntryTimeframe must be a boolean or finite number")
+}
+
+func validateSupplyDemandEntryRetest(cfg dsl.Config, timeframe string) error {
+	enabled, err := supplyDemandEntryRetestEnabled(cfg)
+	if err != nil {
+		return err
+	}
+	if !enabled {
+		return nil
+	}
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilySupplyDemand) {
+		return fmt.Errorf("retest on entry timeframe requires supply demand")
+	}
+	entry := stringValue(cfg, "entryTf", "current")
+	if sourceTimeframeFromConfig(cfg) != "4h" || (entry != "15m" && entry != "30m" && entry != "1h") {
+		return fmt.Errorf("retest on entry timeframe requires source timeframe 4h and entryTf 15m, 30m or 1h")
+	}
+	if timeframe != entry {
+		return fmt.Errorf("retest on entry timeframe requires execution at declared entryTf %s, got %s", entry, timeframe)
+	}
+	return nil
+}
+
+// sourceEntryRouteAllowed preserves legacy routes when the mode is disabled.
+func sourceEntryRouteAllowed(cfg dsl.Config, symbol, source, entry string) bool {
+	enabled, err := supplyDemandEntryRetestEnabled(cfg)
+	if err != nil {
+		return false
+	}
+	if enabled {
+		return setupTypeFromAny(cfg["setupType"]) == string(dsl.FamilySupplyDemand) && source == "4h" && (entry == "15m" || entry == "30m" || entry == "1h")
+	}
+	return supportedSourceEntryRoute(symbol, source, entry)
 }
 
 // ScheduledEntry is a causal source setup decision assigned to one actual

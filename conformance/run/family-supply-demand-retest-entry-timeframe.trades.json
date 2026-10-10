@@ -1,0 +1,56 @@
+{
+  "case": "family-supply-demand-retest-entry-timeframe",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "conformanceSupplyDemandRetestEntry",
+  "symbol": "XAUUSD",
+  "timeframe": "1h",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 101,
+      "entryIndex": 157,
+      "entryT": 565200000,
+      "exit": 104.18,
+      "exitIndex": 158,
+      "exitT": 568800000,
+      "initialSl": 99.41,
+      "initialTp": 104.18,
+      "meta": {
+        "baseBodyHigh": 100,
+        "baseBodyLow": 100,
+        "baseEnd": 30,
+        "baseStart": 30,
+        "baseWickHigh": 100.2,
+        "baseWickLow": 99.8,
+        "chochLevel": null,
+        "flipped": false,
+        "gradeRequired": 0,
+        "gradeScore": 0,
+        "originalZoneType": "demand",
+        "pattern": "RBR",
+        "setup": "supplyDemand",
+        "side": "long",
+        "zoneCreatedAt": 34,
+        "zoneHigh": 100.2,
+        "zoneLow": 99.8,
+        "zoneType": "demand"
+      },
+      "pnl": 400,
+      "points": 3.18000000000001,
+      "reason": "tp",
+      "side": "long",
+      "size": 125.786163522012,
+      "sl": 99.41,
+      "tag": "DSL-SD:demand",
+      "tp": 104.18
+    }
+  ]
+}
