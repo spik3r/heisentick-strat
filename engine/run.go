@@ -229,6 +229,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if !implementedFamily(setupType) {
 		return nil, fmt.Errorf("setup family %q is not implemented", setupType)
 	}
+	if err := validateLegacySetup9Execution(cfg, s.fixture.Costs); err != nil {
+		return nil, err
+	}
 	if err := validateRMVConfig(cfg); err != nil {
 		return nil, err
 	}
@@ -373,6 +376,9 @@ func validateRunRequest(request RunRequest) error {
 	setupType := setupTypeFromAny(request.Config["setupType"])
 	if !implementedFamily(setupType) {
 		return fmt.Errorf("setup family %q is not implemented", setupType)
+	}
+	if err := validateLegacySetup9Execution(request.Config, request.Costs); err != nil {
+		return err
 	}
 	if err := validateRMVConfig(request.Config); err != nil {
 		return err
@@ -568,6 +574,14 @@ func (r *PreparedRun) Run(costs Costs) RunResult {
 // RunChecked executes this prepared strategy and rejects non-finite derived
 // output before applying the existing JSON serialization.
 func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
+	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
+		if !r.params.LegacySetup9.Enabled {
+			return RunResult{}, errors.New("legacy setup 9 requires a known sequential profile")
+		}
+		if err := legacySetup9FillError(r.params.LegacySetup9.Profile.ID, costs); err != nil {
+			return RunResult{}, err
+		}
+	}
 	trades := r.runRaw(costs)
 	return checkedResultEnvelope(r.fixture, trades)
 }

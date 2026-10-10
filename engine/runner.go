@@ -86,6 +86,9 @@ func RunFixtureCase(fixture RunFixture, source string) (RunResult, error) {
 	if setupType := setupTypeFromAny(parsed.Config["setupType"]); !implementedFamily(setupType) {
 		return RunResult{}, fmt.Errorf("%s: setup family %q is not implemented", fixture.Case, setupType)
 	}
+	if err := validateLegacySetup9Execution(parsed.Config, fixture.Costs); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateRMVConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
@@ -208,6 +211,7 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyKeltnerExpansion),
 		string(dsl.FamilyNamedLevelSweep),
 		string(dsl.FamilyNamedLevelFlag),
+		string(dsl.FamilyLegacySetup9),
 		string(dsl.FamilyClockRangeBreakout):
 		return true
 	default:
@@ -346,6 +350,7 @@ func contextOptions(fixture RunFixture, cfg dsl.Config) contextcols.Options {
 		},
 		Seasonality: seasonalitySpecsFromConfig(cfg["seasonalityFilters"]),
 	}
+	options.Seasonality = append(options.Seasonality, legacySetup9SeasonalitySpecs(cfg)...)
 	if cfg["relativeMeasuredVolatility"] != nil {
 		rmv := mapValue(cfg, "relativeMeasuredVolatility")
 		options.RMVATRPeriod = intValue(rmv, "atrPeriod", 14)

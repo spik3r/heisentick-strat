@@ -149,6 +149,7 @@ type broker struct {
 	dualBestClose          float64
 	dualExitPending        bool
 	sma                    smaGoldenCrossState
+	legacy9                legacySetup9State
 	execution              ExecutionBounds
 	windowed               bool
 	clock                  clockRangeState
@@ -236,6 +237,7 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.dualHasPositionEntry = false
 	b.dualExitPending = false
 	b.sma = smaGoldenCrossState{}
+	b.legacy9 = legacySetup9State{}
 	b.windowed = false
 	b.execution = ExecutionBounds{}
 	b.clock.reset()
