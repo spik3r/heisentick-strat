@@ -1,6 +1,7 @@
 package dsl
 
 import (
+	"fmt"
 	"math"
 	"strings"
 )
@@ -59,6 +60,12 @@ func (p *parser) parseLegacySetup9(line logicalLine, tokens []string) {
 
 func (p *parser) validateLegacySetup9() {
 	if p.config["setupType"] != string(FamilyLegacySetup9) {
+		// A later `type:` can replace the family after a profile was accepted.
+		// The leftover profile must not survive as a successful compile of
+		// another family.
+		if p.legacySetup9Audit.profileLines > 0 {
+			p.errorAt(nil, nil, "sequential profile requires the final setup type to be `legacy setup 9`; found "+fmt.Sprint(p.config["setupType"])+".", "")
+		}
 		return
 	}
 	audit := p.legacySetup9Audit

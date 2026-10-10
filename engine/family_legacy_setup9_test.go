@@ -580,3 +580,36 @@ func TestLegacySetup9CheckpointSupportDoesNotWidenOtherFamilies(t *testing.T) {
 		t.Error("legacy setup 9 accepted source-series replay")
 	}
 }
+
+// A config that carries a legacy profile under another family must fail, not
+// run that family and report no trades.
+func TestLegacySetup9ProfileUnderAnotherFamilyIsRefused(t *testing.T) {
+	rows := traceBars(ramp(60, 100, 1))
+	for _, profile := range dsl.LegacySetup9Profiles {
+		cfg := legacySetup9Config(t, profile, "1h")
+		cfg["setupType"] = string(dsl.FamilyOpeningRangeBreakout)
+		request := legacySetup9Request(t, profile, "1h", oracleSeries(rows), Costs{})
+		request.Config = cfg
+		if result, err := Run(request); err == nil || !strings.Contains(err.Error(), "legacy setup 9 profile") {
+			t.Errorf("%s: Run = %+v, %v; want an error naming the profile", profile, result, err)
+		}
+		if _, err := RunPrefix(request); err == nil {
+			t.Errorf("%s: RunPrefix accepted a profile under another family", profile)
+		}
+		if _, err := PrepareSharedRunContext(request); err == nil {
+			t.Errorf("%s: shared context accepted a profile under another family", profile)
+		}
+	}
+}
+
+// The source that used to compile as another family with a leftover profile is
+// now a parse error, so a fixture run fails before any engine work.
+func TestLegacySetup9FixtureWithSwitchedFamilyFailsInsteadOfZeroTrades(t *testing.T) {
+	source := "dsl v7\nstrategy \"s\" { description \"s\" }\nmarket conditions { slices(XAUUSD 1h) }\nsetup {\n type: legacy setup 9\n sequential profile seq.legacy.setup9.v1\n type: opening range breakout\n}\n"
+	fixture := RunFixture{Case: "switched", Symbol: "XAUUSD", Timeframe: "1h", RangeMethod: "zone", Costs: Costs{FillOn: "close"}}
+	fixture.Bars = marketdataBars(traceBars(ramp(60, 100, 1)))
+	result, err := RunFixtureCase(fixture, source)
+	if err == nil || !strings.Contains(err.Error(), "final setup type") {
+		t.Fatalf("result %+v err %v; want a parse error, not a zero-trade success", result, err)
+	}
+}

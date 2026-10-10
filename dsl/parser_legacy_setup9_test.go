@@ -126,3 +126,48 @@ func TestLegacySetup9ManifestBindings(t *testing.T) {
 		t.Fatal("handler bindings missing")
 	}
 }
+
+// A later `type:` must not replace the family while keeping the profile: that
+// used to compile as the other family with no error.
+func TestLegacySetup9RejectsSwitchingFamilyAfterProfile(t *testing.T) {
+	for _, profile := range LegacySetup9Profiles {
+		for _, other := range []string{"opening range breakout", "sma golden cross", "failed breakout", "named level flag"} {
+			forms := map[string]string{
+				"multiline":         "dsl v7\nsetup {\n type: legacy setup 9\n sequential profile " + profile + "\n type: " + other + "\n}\n",
+				"compact":           "dsl v7\nsetup { type: legacy setup 9 sequential profile " + profile + " type: " + other + " }\n",
+				"switch then back":  "dsl v7\nsetup {\n type: legacy setup 9\n sequential profile " + profile + "\n type: " + other + "\n type: legacy setup 9\n}\n",
+				"other type first":  "dsl v7\nsetup {\n type: " + other + "\n type: legacy setup 9\n sequential profile " + profile + "\n type: " + other + "\n}\n",
+				"profile after":     "dsl v7\nsetup {\n type: " + other + "\n sequential profile " + profile + "\n}\n",
+				"compact wrong way": "dsl v7\nsetup { type: " + other + " sequential profile " + profile + " }\n",
+			}
+			for name, source := range forms {
+				result := parseLegacy(t, source)
+				if len(result.Errors) == 0 {
+					t.Errorf("%s / %s / %s: parsed without error as %v", profile, other, name, result.Config["setupType"])
+				}
+			}
+		}
+	}
+}
+
+func TestLegacySetup9CompactFormParses(t *testing.T) {
+	for _, profile := range LegacySetup9Profiles {
+		result := parseLegacy(t, "dsl v7\nstrategy \"c\" { description \"c\" }\nmarket conditions { slices(XAUUSD 1h) }\nsetup { type: legacy setup 9 sequential profile "+profile+" }\n")
+		if len(result.Errors) != 0 || result.Config["setupType"] != string(FamilyLegacySetup9) {
+			t.Fatalf("%s: errors %v family %v", profile, result.Errors, result.Config["setupType"])
+		}
+		if result.Config["legacySetup9"].(map[string]any)["profile"] != profile {
+			t.Fatalf("%s: cfg %v", profile, result.Config["legacySetup9"])
+		}
+	}
+}
+
+func TestLegacySetup9RepeatingTypeKeepsOrRejectsProfile(t *testing.T) {
+	// Repeating the same type after the profile resets the family defaults and
+	// drops the profile; the result must be the missing-profile error, never a
+	// quiet success.
+	result := parseLegacy(t, "dsl v7\nsetup {\n type: legacy setup 9\n sequential profile seq.legacy.setup9.v1\n type: legacy setup 9\n}\n")
+	if len(result.Errors) == 0 {
+		t.Fatal("repeated type after the profile compiled without a profile")
+	}
+}

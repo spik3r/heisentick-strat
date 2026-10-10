@@ -118,6 +118,11 @@ func legacySetup9ParamsFromConfig(cfg dsl.Config) legacySetup9Params {
 // rules (fill-based stop and target), so it is not approximated here.
 func validateLegacySetup9Execution(cfg dsl.Config, costs Costs) error {
 	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyLegacySetup9) {
+		// A legacy profile carried by another family would run that family and
+		// look like a legacy run that found nothing. Refuse it.
+		if profile, _ := mapValue(cfg, "legacySetup9")["profile"].(string); profile != "" {
+			return fmt.Errorf("config carries legacy setup 9 profile %q but setup family %q", profile, setupTypeFromAny(cfg["setupType"]))
+		}
 		return nil
 	}
 	id, _ := mapValue(cfg, "legacySetup9")["profile"].(string)
