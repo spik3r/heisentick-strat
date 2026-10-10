@@ -217,6 +217,14 @@
       "since": 7
     },
     {
+      "id": "legacySetup9",
+      "canonicalSpelling": "legacy setup 9",
+      "canonicalExample": "type: legacy setup 9\n  sequential profile seq.legacy.setup9.v1",
+      "classification": "go-only",
+      "reason": "Native Go legacy Setup-9 controls only (HT-227); selected by an explicit sequential profile; no browser adoption.",
+      "since": 7
+    },
+    {
       "id": "namedLevelFlag",
       "canonicalSpelling": "named level flag",
       "canonicalExample": "type: named level flag",
@@ -290,6 +298,24 @@
     }
   ],
   "aliases": [
+    {
+      "id": "alias.go-inline-setup-type.legacy-setup-9",
+      "source": "go-inline-setup-type",
+      "spelling": "legacy setup 9",
+      "familyId": "legacySetup9",
+      "classification": "go-only",
+      "reason": "Native Go legacy Setup-9 controls only (HT-227); selected by an explicit sequential profile; no browser adoption.",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.legacy-setup-9",
+      "source": "go-canonical-setup-type",
+      "spelling": "legacy setup 9",
+      "familyId": "legacySetup9",
+      "classification": "go-only",
+      "reason": "Native Go legacy Setup-9 controls only (HT-227); selected by an explicit sequential profile; no browser adoption.",
+      "since": 7
+    },
     {
       "id": "alias.js-setup-type.named-level-flag",
       "source": "js-setup-type",
@@ -2307,6 +2333,13 @@
       "spelling": "breakout",
       "classification": "shared",
       "since": 6
+    },
+    {
+      "id": "directive.sequential",
+      "spelling": "sequential",
+      "classification": "go-only",
+      "reason": "Native Go legacy Setup-9 controls only (HT-227); selected by an explicit sequential profile; no browser adoption.",
+      "since": 7
     },
     {
       "id": "directive.signal",

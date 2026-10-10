@@ -66,6 +66,7 @@ type parser struct {
 	entryTfLine         *logicalLine
 	dualEMAAudit        dualEMAParseAudit
 	smaGoldenCrossAudit smaGoldenCrossParseAudit
+	legacySetup9Audit   legacySetup9ParseAudit
 	rmvFields           map[string]bool
 	clockRange          clockRangeParse
 }
@@ -138,6 +139,7 @@ func (p *parser) parse() {
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+	p.validateLegacySetup9()
 	p.validateRMVSourceTimeframe()
 	p.validateTimedReturn()
 	p.validateClockRangeBreakout()
@@ -155,6 +157,7 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	head := strings.ToLower(tokens[0])
 	p.recordDualEMAAuthored(line, tokens, head)
 	p.recordSMAGoldenCrossAuthored(line, head)
+	p.recordLegacySetup9Authored(line, head, tokens)
 	if head != "dsl" {
 		p.reportMalformedNumbers(line, tokens)
 		p.reportDeprecatedSpellings(line, tokens)
@@ -392,6 +395,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		} else if p.config["setupType"] != string(FamilySMAGoldenCross) {
 			p.unknownDirective(line, tokens[0])
 		}
+	case "sequential":
+		p.parseLegacySetup9(line, tokens)
 	case "swing":
 		p.parseSwing(tokens)
 	case "pullback":

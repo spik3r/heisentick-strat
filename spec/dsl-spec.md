@@ -490,6 +490,7 @@ are errors. The `type` value itself is written in trading language
 | `intra hour run exhaustion` | intraHourRunExhaustion |
 | `named level sweep` | namedLevelSweep |
 | `named level flag` | namedLevelFlag |
+| `legacy setup 9` | legacySetup9 |
 | `clock range breakout` | clockRangeBreakout |
 
 Per-family phrase sets live in one standalone file per family under
