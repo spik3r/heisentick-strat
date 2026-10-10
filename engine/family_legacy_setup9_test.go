@@ -248,7 +248,8 @@ func TestLegacySetup9ProfileDefaultsFollowJavaScriptOperators(t *testing.T) {
 	if undefined.SetupCount != 9 || undefined.StopBufferATR != 0.5 || undefined.SeasonalityEdge != 10 || undefined.MinSamples != 10 || !math.IsNaN(undefined.RMultiple) {
 		t.Errorf("undefined parameters = %+v", undefined)
 	}
-	if !math.IsNaN(*func() *float64 { v := math.NaN(); return &v }()) || legacyOr(func() *float64 { v := math.NaN(); return &v }(), 7) != 7 {
+	nan := math.NaN()
+	if legacyOr(&nan, 7) != 7 {
 		t.Error("NaN is falsy for ||")
 	}
 	// The shipped profiles.
@@ -289,6 +290,17 @@ func TestLegacySetup9RefusesOtherFills(t *testing.T) {
 	if _, err := prepared.RunChecked(Costs{FillOn: "close"}); err != nil {
 		t.Errorf("RunChecked close: %v", err)
 	}
+	for _, fillOn := range []string{"open", "nextOpen"} {
+		func() {
+			defer func() {
+				if recover() == nil {
+					t.Errorf("PreparedRun.Run accepted fillOn %q", fillOn)
+				}
+			}()
+			prepared.Run(Costs{FillOn: fillOn})
+		}()
+	}
+	prepared.Run(Costs{FillOn: "close"})
 }
 
 func TestLegacySetup9FixtureRunnerRefusesOtherFills(t *testing.T) {

@@ -102,7 +102,7 @@ function boundary({ side, up, down, doji, extraOldBullish = 0, oldStart = 1 }) {
 }
 
 const cases = [];
-const add = (name, bars, note, tf = '1h') => cases.push({ name, note, bars, tf });
+const add = (name, bars, note, tf = '1h', riskUsd = 200) => cases.push({ name, note, bars, tf, riskUsd });
 
 add('trace-a-rise-14', traceBars(Array.from({ length: 14 }, (_, i) => 100 + i)), 'contract 8.1 A');
 {
@@ -144,13 +144,15 @@ for (const [name, side, up, down, doji] of edgeDefs) {
 // bars would give a long if kept; the recent 4 up / 6 down must not.
 add('seas-window-fresh-bullish', boundary({ side: 'long', up: 4, down: 6, doji: 0, extraOldBullish: 8, oldStart: 40 }), 'the same 8 bullish bars inside the window: long fires');
 add('seas-window-stale-bullish', boundary({ side: 'long', up: 4, down: 6, doji: 0, extraOldBullish: 8 }), 'stale bullish history outside 90 days');
+add('walk-1h-risk-150', walk({ seed: 5, n: 700, step: HOUR, skipWeekend: false, mom: 0.6, sigma: 1.1, hourDrift: hourDriftA }), 'non-default riskUsd 150 changes sizing only', '1h', 150);
 
 function sha(path) { return createHash('sha256').update(readFileSync(join(pinned, path))).digest('hex'); }
 
 const costVariants = [{ slippage: 0, feePerUnit: 0 }, { slippage: 0.07, feePerUnit: 0.02 }];
 
-function runOne(profileId, bars, costs) {
-  const strategy = PROFILES[profileId];
+function runOne(profileId, bars, costs, riskUsd) {
+  const base = PROFILES[profileId];
+  const strategy = { ...base, params: { ...base.params, riskUsd } };
   const seasonalCtx = profileId === 'seq.legacy.setup9_perf_seasonal.v1';
   const ctxOpts = { ...(strategy.contextOptions ?? {}), contextRequirements: strategy.contextRequirements };
   const ctx = buildContext(bars, ctxOpts);
@@ -186,10 +188,10 @@ const out = {
     'engine/dsl/predicates.js', 'engine/dsl/strategy.js', 'engine/context/seasonality.js', 'engine/broker.js', 'engine/engine.js',
   ].map((p) => [p, sha(p)])),
   cases: cases.map((c) => ({
-    name: c.name, note: c.note, timeframe: c.tf,
+    name: c.name, note: c.note, timeframe: c.tf, riskUsd: c.riskUsd,
     bars: c.bars.map((b) => [b.t, b.o, b.h, b.l, b.c, b.v]),
     stored: [...computeTDSetup(c.bars)],
-    runs: Object.keys(PROFILES).flatMap((p) => costVariants.map((costs) => runOne(p, c.bars, costs))),
+    runs: Object.keys(PROFILES).flatMap((p) => costVariants.map((costs) => runOne(p, c.bars, costs, c.riskUsd))),
   })),
 };
 process.stdout.write(`${JSON.stringify(out)}\n`);

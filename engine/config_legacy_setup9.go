@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"errors"
 	"fmt"
 	"math"
 
@@ -31,12 +32,10 @@ type legacySetup9Profile struct {
 	LongTag, ShortTag string
 }
 
-// Context requested by dslTDSeasonalReversal: ATR length 14 (the context
-// default) and one intraday filter over 90 days with a classification
+// Context requested by dslTDSeasonalReversal: one intraday filter over 90 days with a classification
 // threshold of 5 samples. The threshold only labels the context row; the
 // strategy gate uses MinSamples.
 const (
-	legacySetup9ATRLen            = 14
 	legacySetup9SeasonLookbackDay = 90
 	legacySetup9SeasonCtxMinSamp  = 5
 	legacySetup9SeasonKey         = "90d"
@@ -126,6 +125,13 @@ func validateLegacySetup9Execution(cfg dsl.Config, costs Costs) error {
 		return fmt.Errorf("legacy setup 9 requires a known sequential profile, got %q", id)
 	}
 	return legacySetup9FillError(id, costs)
+}
+
+func (r *PreparedRun) legacySetup9CostsError(costs Costs) error {
+	if !r.params.LegacySetup9.Enabled {
+		return errors.New("legacy setup 9 requires a known sequential profile")
+	}
+	return legacySetup9FillError(r.params.LegacySetup9.Profile.ID, costs)
 }
 
 func legacySetup9FillError(profileID string, costs Costs) error {

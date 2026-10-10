@@ -151,8 +151,8 @@ func (b *broker) onLegacySetup9Bar(i int) {
 	entry := b.series.C[i]
 	sign := float64(s)
 	// Same operation order as the archived strategy: low - atr*buffer, and
-	// entry + side*|entry - sl|*R. The float64 conversions forbid fused
-	// multiply-add, which arm64 would otherwise use and JavaScript never does.
+	// entry + side*|entry - sl|*R. The float64 conversions stop the compiler
+	// from fusing the multiply and add, which JavaScript never does.
 	var sl float64
 	tag := profile.LongTag
 	if s == sideLong {

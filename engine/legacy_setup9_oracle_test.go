@@ -8,6 +8,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 
 	"github.com/spik3r/heisentick-strat/dsl"
@@ -29,6 +30,7 @@ type oracleCase struct {
 	Name      string      `json:"name"`
 	Note      string      `json:"note"`
 	Timeframe string      `json:"timeframe"`
+	RiskUSD   float64     `json:"riskUsd"`
 	Bars      [][]float64 `json:"bars"`
 	Stored    []int       `json:"stored"`
 	Runs      []oracleRun `json:"runs"`
@@ -123,7 +125,22 @@ func legacySetup9Request(t *testing.T, profile, timeframe string, series marketd
 	}
 }
 
-func sameFloat(a, b float64) bool { return math.Float64bits(a) == math.Float64bits(b) }
+// sameFloat is exact equality, treating -0 and 0 as equal (JSON drops the sign).
+// setOracleRisk applies a case's riskUsd the way `riskUsd N` compiles it.
+func setOracleRisk(request RunRequest, c oracleCase) {
+	if c.RiskUSD != 0 {
+		request.Config["riskUsd"] = c.RiskUSD
+	}
+}
+
+func sameFloat(a, b float64) bool {
+	if a == 0 && b == 0 {
+		return true
+	}
+	return math.Float64bits(a) == math.Float64bits(b)
+}
+
+func ulp(x float64) float64 { return math.Abs(math.Nextafter(math.Abs(x), math.Inf(1)) - math.Abs(x)) }
 
 func jsReason(reason string) string {
 	if reason == "eod" {
@@ -168,6 +185,7 @@ func TestLegacySetup9MatchesPinnedJavaScript(t *testing.T) {
 			name := fmt.Sprintf("%s/%s/slip%v", c.Name, run.Profile, run.Costs.Slippage)
 			costs := Costs{Slippage: run.Costs.Slippage, FeePerUnit: run.Costs.FeePerUnit}
 			request := legacySetup9Request(t, run.Profile, c.Timeframe, series, costs)
+			setOracleRisk(request, c)
 			// Run applies the conformance serializer's 15-digit rounding; the
 			// exact comparison uses the broker's own trades.
 			if _, err := Run(request); err != nil {
@@ -197,15 +215,20 @@ func TestLegacySetup9MatchesPinnedJavaScript(t *testing.T) {
 					}
 				}
 				// Documented difference D1: the shared broker computes
-				// points*size - fee*size, which arm64 fuses into one rounding. The
-				// unfused value must equal JavaScript exactly; the engine value may
-				// differ from it by at most 2 ulp (and equals it on amd64).
+				// points*size - fee*size, which arm64 fuses. The unfused value
+				// must equal JavaScript exactly. The engine value is exact off
+				// arm64; on arm64 it may differ only by the rounding of the three
+				// terms (points*size, fee*size and the result).
 				unfused := float64(want.Points*want.Size) - float64(run.Costs.FeePerUnit*want.Size)
 				if !sameFloat(unfused, want.PnL) {
 					t.Fatalf("%s: trade %d JS pnl %v is not the unfused formula %v", name, k, want.PnL, unfused)
 				}
-				if gap := math.Abs(got.PnL - want.PnL); gap > 2*math.Abs(math.Nextafter(want.PnL, math.Inf(1))-want.PnL) {
-					t.Fatalf("%s: trade %d pnl = %v, JS %v", name, k, got.PnL, want.PnL)
+				if runtime.GOARCH != "arm64" {
+					if !sameFloat(got.PnL, want.PnL) {
+						t.Fatalf("%s: trade %d pnl = %v, JS %v", name, k, got.PnL, want.PnL)
+					}
+				} else if gap, bound := math.Abs(got.PnL-want.PnL), ulp(want.Points*want.Size)+ulp(run.Costs.FeePerUnit*want.Size)+ulp(want.PnL); gap > bound {
+					t.Fatalf("%s: trade %d pnl = %v, JS %v, gap %g > bound %g", name, k, got.PnL, want.PnL, gap, bound)
 				}
 				if got.Side != want.Side || got.EntryIndex != want.EntryIndex || got.ExitIndex != want.ExitIndex ||
 					got.Reason != jsReason(want.Reason) || got.Tag != want.Tag {
@@ -257,6 +280,7 @@ func TestLegacySetup9SeasonalContextMatchesOracleAtSignals(t *testing.T) {
 				continue
 			}
 			request := legacySetup9Request(t, run.Profile, c.Timeframe, series, Costs{})
+			setOracleRisk(request, c)
 			prepared, err := PrepareRun(request)
 			if err != nil {
 				t.Fatal(err)

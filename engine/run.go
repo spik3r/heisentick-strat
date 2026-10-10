@@ -566,7 +566,16 @@ func (r *PreparedRun) runRaw(costs Costs) []Trade {
 
 // Run executes this prepared strategy with the supplied costs and preserves
 // the legacy JSON-safe serialization behavior for derived non-finite values.
+//
+// Run has no error result. For the legacy Setup-9 family, which supports only
+// costs.fillOn=close, it panics on any other fill like the other prepared-run
+// programming errors; use RunChecked to receive the error.
 func (r *PreparedRun) Run(costs Costs) RunResult {
+	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
+		if err := r.legacySetup9CostsError(costs); err != nil {
+			panic(err)
+		}
+	}
 	trades := r.runRaw(costs)
 	return resultEnvelope(r.fixture, trades)
 }
@@ -575,10 +584,7 @@ func (r *PreparedRun) Run(costs Costs) RunResult {
 // output before applying the existing JSON serialization.
 func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
 	if r.params.SetupType == string(dsl.FamilyLegacySetup9) {
-		if !r.params.LegacySetup9.Enabled {
-			return RunResult{}, errors.New("legacy setup 9 requires a known sequential profile")
-		}
-		if err := legacySetup9FillError(r.params.LegacySetup9.Profile.ID, costs); err != nil {
+		if err := r.legacySetup9CostsError(costs); err != nil {
 			return RunResult{}, err
 		}
 	}

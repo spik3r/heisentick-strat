@@ -89,3 +89,16 @@ The family runs through `Run`, prepared runs and `RunPrefix`. The counter is a
 function of the closes up to each bar, so prefixes, batches and resumed
 checkpoints agree. `RunPrefixResumable` accepts the family. Source-entry (C5)
 routes are not supported.
+
+## Known platform difference (D1)
+
+The shared broker computes a closed trade's P&L as
+`points*size - feePerUnit*size` in `closePosition` (`engine/broker.go`). On
+arm64 the Go compiler fuses that into one fused multiply-add, so `pnl` can
+differ in the last bits from the same expression on amd64 and from the archived
+JavaScript, which never fuses. The effect needs a non-zero `feePerUnit`, applies
+to every family that uses the broker, and does not affect amd64, CI or the WASM
+builds. This family's own stop and target arithmetic is protected from fusion.
+The oracle test compares P&L exactly off arm64 and within the rounding of its
+three terms on arm64. Fixing the broker is a separate task: it would change
+arm64 output for every family.
