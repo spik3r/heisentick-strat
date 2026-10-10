@@ -328,6 +328,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 			FlipBrokenZones:         boolValue(supplyDemand, "flipBrokenZones", false),
 			MinWaitCandles:          intValue(supplyDemand, "minWaitCandles", 1),
 			SkipOverlappingZones:    boolValue(supplyDemand, "skipOverlappingZones", false),
+			RetestOnEntryTimeframe:  boolValue(supplyDemand, "retestOnEntryTimeframe", false),
 			UseTrigger:              triggerExplicit && !containsString(triggerCandles, "any"),
 		},
 		DoubleTopBottom: doubleTopBottomParams{

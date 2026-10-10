@@ -45,8 +45,8 @@ func (p *parser) parseEntryTimeframe(line logicalLine, tokens []string) {
 		value = strings.ToLower(tokens[1])
 	}
 	p.config["entryTf"], p.entryTfLine = value, &line
-	if value != "current" && value != "1m" && value != "5m" && value != "15m" && value != "30m" {
-		message := "entryTf " + value + " is unsupported; only entryTf current and source-entry pairs 4h -> 15m (legacy), 4h -> 30m, 1h -> 5m, and 15m -> 1m are implemented."
+	if value != "current" && value != "1m" && value != "5m" && value != "15m" && value != "30m" && value != "1h" {
+		message := "entryTf " + value + " is unsupported; only entryTf current and source-entry pairs 4h -> 15m (legacy), 4h -> 30m, 1h -> 5m, and 15m -> 1m are implemented (plus 4h -> 1h with supply demand retest on entry timeframe)."
 		if p.dslVersion >= 7 {
 			p.err(line, message, "")
 		} else {
@@ -57,11 +57,30 @@ func (p *parser) parseEntryTimeframe(line logicalLine, tokens []string) {
 
 func (p *parser) validateEntryTimeframe() {
 	entryTf, _ := p.config["entryTf"].(string)
+	source, _ := p.config["sourceTimeframe"].(string)
+	sd, _ := p.config["supplyDemand"].(map[string]any)
+	if retest, _ := sd["retestOnEntryTimeframe"].(int); retest != 0 {
+		if p.config["setupType"] != string(FamilySupplyDemand) {
+			p.errorAt(nil, nil, "retest on entry timeframe requires supply demand.", "")
+			return
+		}
+		if source != "4h" || (entryTf != "15m" && entryTf != "30m" && entryTf != "1h") {
+			message := "retest on entry timeframe requires source timeframe 4h and entryTf 15m, 30m or 1h."
+			if p.entryTfLine != nil {
+				p.err(*p.entryTfLine, message, "")
+			} else {
+				p.errorAt(nil, nil, message, "")
+			}
+			return
+		}
+	}
 	if entryTf == "current" {
 		return
 	}
-	source, _ := p.config["sourceTimeframe"].(string)
 	expected := map[string]string{"15m": "4h", "30m": "4h", "5m": "1h", "1m": "15m"}[entryTf]
+	if retest, _ := sd["retestOnEntryTimeframe"].(int); retest != 0 && entryTf == "1h" {
+		expected = "4h"
+	}
 	message := "entryTf " + entryTf + " is supported only with source timeframe " + expected + "."
 	if expected == "" || source != expected {
 		if p.entryTfLine != nil {

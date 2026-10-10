@@ -312,7 +312,10 @@ Structure filters:
   execution pair presently admitted is `XAUUSD`, `source timeframe 4h`, and
   `entryTf 15m`; its source setup becomes eligible on the first actual 15m
   decision close strictly after the completed 4h close. All other non-current
-  `entryTf` values are rejected.
+  `entryTf` values are rejected, except that a `supply demand` setup declaring
+  `retest on entry timeframe` admits `source timeframe 4h` with `entryTf 15m`,
+  `30m` or `1h` and judges the retest on the entry candles (see the family
+  specification).
 - `side long only` | `side short only` | `side both` (`direction …` same).
 - `approach at least N candles` / `approach distance at least X ATR` —
   sustained approach toward the level before a signal (defaults: 3
