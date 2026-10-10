@@ -116,8 +116,10 @@ Three levels, checked separately:
    `oracle/gen.mjs` from heisentick commit
    `48a1761867342494c69c77e7ecce325e10d5d935`). The engine test compares the
    broker's raw trades.
-2. Tolerance-based numerical matching. Only trade `pnl` with a non-zero
-   `feePerUnit` is compared with a tolerance, and only on arm64 (D1 below).
+2. Tolerance-based numerical matching. Trade `pnl` is the only value compared
+   with a tolerance, and only on arm64 (D1 below): the tolerance branch runs
+   for every arm64 run. With a zero `feePerUnit` the bound is zero in effect and
+   the comparison is exact; the difference can only appear with a non-zero fee.
    Off arm64 it is compared exactly.
 3. Serialized matching. The conformance bridge and WASM output round numbers
    to 15 significant digits. A comparison of serialized values proves parity of
@@ -141,3 +143,11 @@ sizes of the three terms (`points*size`, `feePerUnit*size`, and the result). Tha
 bound comes from the operands; it is not a fixed number of result ulps. Off
 arm64 the comparison is exact. This note makes no claim about which platforms
 CI uses or about cross-architecture equality of other outputs.
+
+## Parser note: repeated `type:`
+
+Elsewhere in the parser a later `type:` line with a phrase that names no family
+is ignored and the earlier family stays. That is repo-wide behaviour that
+predates this family and is out of scope here. For this family a later `type:`
+that names another family after `sequential profile` is an error, and the
+compact one-line form is split at `sequential` like the other directive words.

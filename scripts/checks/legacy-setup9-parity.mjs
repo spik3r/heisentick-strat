@@ -87,22 +87,27 @@ try {
   const base = fixtureFor(rise, { slippage: 0, feePerUnit: 0 });
   const raw = 'seq.legacy.setup9.v1';
   const rejections = {
-    nextOpenFill: [fixtureFor(rise, { slippage: 0, feePerUnit: 0, fillOn: 'nextOpen' }), sourceFor(raw, '1h', 200)],
-    openFill: [fixtureFor(rise, { slippage: 0, feePerUnit: 0, fillOn: 'open' }), sourceFor(raw, '1h', 200)],
-    switchedMultiline: [base, `dsl v7\nmarket conditions { slices(XAUUSD 1h) }\nsetup {\n type: legacy setup 9\n sequential profile ${raw}\n type: opening range breakout\n}\n`],
-    switchedCompact: [base, `dsl v7\nmarket conditions { slices(XAUUSD 1h) }\nsetup { type: legacy setup 9 sequential profile ${raw} type: opening range breakout }\n`],
-    missingProfile: [base, 'dsl v7\nmarket conditions { slices(XAUUSD 1h) }\nsetup {\n type: legacy setup 9\n}\n'],
-    unknownProfile: [base, sourceFor('seq.legacy.setup9.v2_i8fix', '1h', 200)],
-    unsupportedSide: [base, sourceFor(raw, '1h', 200, ' side long only\n')],
+    nextOpenFill: ['fillOn', fixtureFor(rise, { slippage: 0, feePerUnit: 0, fillOn: 'nextOpen' }), sourceFor(raw, '1h', 200)],
+    openFill: ['fillOn', fixtureFor(rise, { slippage: 0, feePerUnit: 0, fillOn: 'open' }), sourceFor(raw, '1h', 200)],
+    switchedMultiline: ['final setup type', base, `dsl v7\nmarket conditions { slices(XAUUSD 1h) }\nsetup {\n type: legacy setup 9\n sequential profile ${raw}\n type: opening range breakout\n}\n`],
+    switchedCompact: ['final setup type', base, `dsl v7\nmarket conditions { slices(XAUUSD 1h) }\nsetup { type: legacy setup 9 sequential profile ${raw} type: opening range breakout }\n`],
+    missingProfile: ['requires `sequential profile', base, 'dsl v7\nmarket conditions { slices(XAUUSD 1h) }\nsetup {\n type: legacy setup 9\n}\n'],
+    unknownProfile: ['unknown sequential profile', base, sourceFor('seq.legacy.setup9.v2_i8fix', '1h', 200)],
+    unsupportedSide: ['does not support authored directive', base, sourceFor(raw, '1h', 200, ' side long only\n')],
   };
-  for (const [label, [fixture, source]] of Object.entries(rejections)) {
+  for (const [label, [expected, fixture, source]] of Object.entries(rejections)) {
     const wasm = JSON.parse(globalThis.engineRunFixture(JSON.stringify(fixture), source));
-    assert.ok(typeof wasm.error === 'string' && wasm.error.length > 0 && !('trades' in wasm), `${label}: WASM did not fail: ${JSON.stringify(wasm).slice(0, 200)}`);
-    assert.throws(() => execFileSync(resolve(nativeEngine), (() => {
-      writeFileSync(join(scratch, 'fixture.json'), JSON.stringify(fixture));
-      writeFileSync(join(scratch, 'source.strat'), source);
-      return [join(scratch, 'fixture.json'), join(scratch, 'source.strat')];
-    })(), { stdio: 'pipe' }), `${label}: native did not fail`);
+    assert.ok(typeof wasm.error === 'string' && !('trades' in wasm), `${label}: WASM did not fail: ${JSON.stringify(wasm).slice(0, 200)}`);
+    assert.ok(wasm.error.includes(expected), `${label}: WASM error ${JSON.stringify(wasm.error)} lacks ${JSON.stringify(expected)}`);
+    writeFileSync(join(scratch, 'fixture.json'), JSON.stringify(fixture));
+    writeFileSync(join(scratch, 'source.strat'), source);
+    let nativeError = '';
+    try {
+      execFileSync(resolve(nativeEngine), [join(scratch, 'fixture.json'), join(scratch, 'source.strat')], { stdio: 'pipe' });
+    } catch (error) {
+      nativeError = String(error.stderr ?? '');
+    }
+    assert.ok(nativeError.includes(expected), `${label}: native did not fail with ${JSON.stringify(expected)}: ${nativeError.slice(0, 200)}`);
   }
 
   // Parse diagnostics: native and WASM envelopes are identical and equal the committed goldens.

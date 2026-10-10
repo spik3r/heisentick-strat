@@ -12,7 +12,10 @@ version and is named here.
   strategies faithfully, including the stored Int8 count wrap. Entries fill at
   the signal-bar close only; other fills are refused. Resumable prefix
   checkpoints now accept this family. Add parse and run conformance cases; no
-  existing golden changes.
+  existing golden changes. A `type:` that switches to another family after
+  `sequential profile` is a parse error, and the engine refuses a config that
+  carries a legacy profile under another family. In setup bodies written on one
+  line, `sequential` now starts a new directive.
 
 ## [0.29.0] — 2026-10-08
 

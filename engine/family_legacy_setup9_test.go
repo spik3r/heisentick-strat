@@ -602,6 +602,31 @@ func TestLegacySetup9ProfileUnderAnotherFamilyIsRefused(t *testing.T) {
 	}
 }
 
+func TestLegacySetup9ProfileIsRefusedByPrepareVariantOnAnotherFamily(t *testing.T) {
+	request := openingRangeCheckpointRequest(t, 36, "close")
+	shared, err := PrepareSharedRunContext(request)
+	if err != nil {
+		t.Fatal(err)
+	}
+	clean := map[string]any{}
+	for key, value := range request.Config {
+		clean[key] = value
+	}
+	if _, err := shared.PrepareVariant(clean); err != nil {
+		t.Fatalf("control variant: %v", err)
+	}
+	for _, profile := range dsl.LegacySetup9Profiles {
+		carrying := map[string]any{}
+		for key, value := range request.Config {
+			carrying[key] = value
+		}
+		carrying["legacySetup9"] = map[string]any{"profile": profile}
+		if _, err := shared.PrepareVariant(carrying); err == nil || !strings.Contains(err.Error(), "legacy setup 9 profile") {
+			t.Errorf("%s: PrepareVariant = %v, want an error naming the profile", profile, err)
+		}
+	}
+}
+
 // The source that used to compile as another family with a leftover profile is
 // now a parse error, so a fixture run fails before any engine work.
 func TestLegacySetup9FixtureWithSwitchedFamilyFailsInsteadOfZeroTrades(t *testing.T) {
