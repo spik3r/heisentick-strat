@@ -1,0 +1,815 @@
+{
+ "schema": "seq-core-fixtures.v2",
+ "freeze_id": "seq-core-freeze.v1",
+ "event_schema": "seq-core-events.v1",
+ "checkpoint_schema": "seq-core-checkpoint.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "family": "init_diagnostics",
+ "description": "One-time initialisation diagnostics.",
+ "cases": [
+  {
+   "id": "init_diagnostics.once.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "0": {
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "9": {
+      "buy": {
+       "setup_run": 5
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ]
+    },
+    "init_diagnostics": {
+     "count": 2,
+     "bar_index": 0,
+     "phase": "P0",
+     "types": [
+      "diagnostic",
+      "diagnostic"
+     ],
+     "reasons": [
+      "tdst_cancel_unsupported",
+      "unsupported_public_formula"
+     ],
+     "checkpoint_flag": "init_diagnostics_emitted"
+    }
+   },
+   "derivation": "Default profile: P0 of the FIRST bar emits two `diagnostic` events, tdst_cancel_unsupported then unsupported_public_formula (event_seq 1 and 2), exactly once. No other events. A restart from a checkpoint after any bar k>=0 has init_diagnostics_emitted true and resumes without repeating them, with event_seq continuing from 2."
+  },
+  {
+   "id": "init_diagnostics.once.sell",
+   "side": "sell",
+   "mirror_of": "init_diagnostics.once.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "0": {
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "9": {
+      "sell": {
+       "setup_run": 5
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ]
+    },
+    "init_diagnostics": {
+     "count": 2,
+     "bar_index": 0,
+     "phase": "P0",
+     "types": [
+      "diagnostic",
+      "diagnostic"
+     ],
+     "reasons": [
+      "tdst_cancel_unsupported",
+      "unsupported_public_formula"
+     ],
+     "checkpoint_flag": "init_diagnostics_emitted"
+    }
+   },
+   "derivation": "Default profile: P0 of the FIRST bar emits two `diagnostic` events, tdst_cancel_unsupported then unsupported_public_formula (event_seq 1 and 2), exactly once. No other events. A restart from a checkpoint after any bar k>=0 has init_diagnostics_emitted true and resumes without repeating them, with event_seq continuing from 2."
+  },
+  {
+   "id": "init_diagnostics.restart_with_events.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 90,
+       "setup_range_high": 100,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 15,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 3
+      },
+      "bar_open_ms": 1700004300000,
+      "decision_ms": 1700004600000
+     }
+    ],
+    "snapshots": {
+     "13": {
+      "buy": {
+       "setup_run": 9,
+       "countdown": {
+        "state": "active",
+        "count": 1
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      6,
+      7,
+      8
+     ]
+    }
+   },
+   "derivation": "Diagnostics at the head (seq 1,2), then Setup 9 events with seq continuing 3.. . A restart after bar 5 (before any Setup event) continues at event_seq 3 for the first Setup event at 13 and emits no diagnostics."
+  },
+  {
+   "id": "init_diagnostics.restart_with_events.sell",
+   "side": "sell",
+   "mirror_of": "init_diagnostics.restart_with_events.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 100,
+       "setup_range_high": 110,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 15,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 3
+      },
+      "bar_open_ms": 1700004300000,
+      "decision_ms": 1700004600000
+     }
+    ],
+    "snapshots": {
+     "13": {
+      "sell": {
+       "setup_run": 9,
+       "countdown": {
+        "state": "active",
+        "count": 1
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      6,
+      7,
+      8
+     ]
+    }
+   },
+   "derivation": "Diagnostics at the head (seq 1,2), then Setup 9 events with seq continuing 3.. . A restart after bar 5 (before any Setup event) continues at event_seq 3 for the first Setup event at 13 and emits no diagnostics."
+  }
+ ]
+}

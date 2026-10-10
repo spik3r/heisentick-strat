@@ -1,0 +1,866 @@
+{
+ "schema": "seq-core-fixtures.v2",
+ "freeze_id": "seq-core-freeze.v1",
+ "event_schema": "seq-core-events.v1",
+ "checkpoint_schema": "seq-core-checkpoint.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "family": "event_order",
+ "description": "Cross-side, cross-phase order on one bar (freeze 2). Same-bar buy/sell P2 and P3 events cannot both occur (an opposite Setup cancels every unfinished Countdown), so those side orders are unobservable; see README.",
+ "cases": [
+  {
+   "id": "event_order.cross_side_all_phases.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 88,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 93,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 87,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 88,
+       "setup_range_high": 100,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "delayed_perfection",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700006700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000,
+      "optional_detail": {
+       "setup_range_low": 87,
+       "setup_range_high": 103,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 9,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700006700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 10,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700006700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 11,
+      "bar_index": 23,
+      "phase": "P2",
+      "type": "countdown_cancel",
+      "side": "buy",
+      "reason": "opposite_setup_complete",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 2,
+       "bar5_index": null,
+       "bar8_index": null,
+       "bar13_index": null
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 12,
+      "bar_index": 23,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700006700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 13,
+      "bar_index": 24,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700006700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700007000000,
+      "decision_ms": 1700007300000
+     }
+    ],
+    "snapshots": {
+     "22": {
+      "buy": {
+       "last_completed_setup": {
+        "perfected": false
+       },
+       "countdown": {
+        "state": "active",
+        "count": 2
+       }
+      },
+      "sell": {
+       "setup_run": 8
+      }
+     },
+     "23": {
+      "buy": {
+       "setup_run": 0,
+       "last_completed_setup": {
+        "perfected": true
+       },
+       "countdown": {
+        "state": "idle",
+        "count": 0,
+        "setup_episode_id": null,
+        "bar5_index": null,
+        "bar8_index": null,
+        "bar13_index": null
+       }
+      },
+      "sell": {
+       "setup_run": 9,
+       "last_completed_setup": {
+        "perfected": true,
+        "completion_bar_index": 23
+       },
+       "countdown": {
+        "state": "active",
+        "count": 1,
+        "setup_episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700006700000",
+        "bar5_index": null,
+        "bar8_index": null,
+        "bar13_index": null
+       }
+      }
+     },
+     "24": {
+      "buy": {
+       "setup_run": 0
+      },
+      "sell": {
+       "setup_run": 10,
+       "countdown": {
+        "state": "active",
+        "count": 2
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      5,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      12,
+      13
+     ]
+    }
+   },
+   "derivation": "Buy Setup 9 at 13 imperfect (T=88), Countdown counts 1,2. Sell run 1..9 at 15..23 (closes 94..102); bar 23 has a long lower wick (l23=87<88). Bar 23 carries all four phases and both sides: P1 buy delayed_perfection (episode 13), then P1 sell setup_complete, perfection (max(h22,h23)=103>max(h20,h21)=101), countdown_start; P2 buy countdown_cancel (episode 13, count 2, null refs); P3 sell count 1 (102>=h21=101). 24: sell count 2 (103>=h22=103, equality; c24=103 continues the sell run)."
+  },
+  {
+   "id": "event_order.cross_side_all_phases.sell",
+   "side": "sell",
+   "mirror_of": "event_order.cross_side_all_phases.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 112,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 107,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 113,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 100,
+       "setup_range_high": 112,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700006700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000,
+      "optional_detail": {
+       "setup_range_low": 97,
+       "setup_range_high": 113,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700006700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 9,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700006700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 10,
+      "bar_index": 23,
+      "phase": "P1",
+      "type": "delayed_perfection",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 11,
+      "bar_index": 23,
+      "phase": "P2",
+      "type": "countdown_cancel",
+      "side": "sell",
+      "reason": "opposite_setup_complete",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 2,
+       "bar5_index": null,
+       "bar8_index": null,
+       "bar13_index": null
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 12,
+      "bar_index": 23,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700006700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 13,
+      "bar_index": 24,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700006700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700007000000,
+      "decision_ms": 1700007300000
+     }
+    ],
+    "snapshots": {
+     "22": {
+      "sell": {
+       "last_completed_setup": {
+        "perfected": false
+       },
+       "countdown": {
+        "state": "active",
+        "count": 2
+       }
+      },
+      "buy": {
+       "setup_run": 8
+      }
+     },
+     "23": {
+      "sell": {
+       "setup_run": 0,
+       "last_completed_setup": {
+        "perfected": true
+       },
+       "countdown": {
+        "state": "idle",
+        "count": 0,
+        "setup_episode_id": null,
+        "bar5_index": null,
+        "bar8_index": null,
+        "bar13_index": null
+       }
+      },
+      "buy": {
+       "setup_run": 9,
+       "last_completed_setup": {
+        "perfected": true,
+        "completion_bar_index": 23
+       },
+       "countdown": {
+        "state": "active",
+        "count": 1,
+        "setup_episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700006700000",
+        "bar5_index": null,
+        "bar8_index": null,
+        "bar13_index": null
+       }
+      }
+     },
+     "24": {
+      "sell": {
+       "setup_run": 0
+      },
+      "buy": {
+       "setup_run": 10,
+       "countdown": {
+        "state": "active",
+        "count": 2
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      5,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      12,
+      13
+     ]
+    }
+   },
+   "derivation": "Buy Setup 9 at 13 imperfect (T=88), Countdown counts 1,2. Sell run 1..9 at 15..23 (closes 94..102); bar 23 has a long lower wick (l23=87<88). Bar 23 carries all four phases and both sides: P1 buy delayed_perfection (episode 13), then P1 sell setup_complete, perfection (max(h22,h23)=103>max(h20,h21)=101), countdown_start; P2 buy countdown_cancel (episode 13, count 2, null refs); P3 sell count 1 (102>=h21=101). 24: sell count 2 (103>=h22=103, equality; c24=103 continues the sell run)."
+  }
+ ]
+}

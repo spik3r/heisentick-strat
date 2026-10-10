@@ -1,0 +1,2041 @@
+{
+ "schema": "seq-core-fixtures.v2",
+ "freeze_id": "seq-core-freeze.v1",
+ "event_schema": "seq-core-events.v1",
+ "checkpoint_schema": "seq-core-checkpoint.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "family": "inclusive_equality",
+ "description": "Comparison and qualifier are inclusive.",
+ "cases": [
+  {
+   "id": "inclusive_equality.countdown_comparison.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 98,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 98,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 98,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 98,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 99,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 97,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 96,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 95,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 94,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 93,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 92,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 91,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 90,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 89,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 88,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 87,
+     "c": 89
+    },
+    {
+     "o": 89,
+     "h": 89,
+     "l": 86,
+     "c": 88
+    },
+    {
+     "o": 88,
+     "h": 88,
+     "l": 85,
+     "c": 87
+    },
+    {
+     "o": 87,
+     "h": 87,
+     "l": 84,
+     "c": 86
+    },
+    {
+     "o": 86,
+     "h": 86,
+     "l": 83,
+     "c": 85
+    },
+    {
+     "o": 85,
+     "h": 85,
+     "l": 82,
+     "c": 84
+    },
+    {
+     "o": 84,
+     "h": 84,
+     "l": 81,
+     "c": 83
+    },
+    {
+     "o": 83,
+     "h": 83,
+     "l": 80,
+     "c": 82
+    },
+    {
+     "o": 82,
+     "h": 82,
+     "l": 79,
+     "c": 81
+    },
+    {
+     "o": 81,
+     "h": 81,
+     "l": 78,
+     "c": 80
+    },
+    {
+     "o": 80,
+     "h": 80,
+     "l": 77,
+     "c": 79
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 89,
+       "setup_range_high": 100,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 15,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 3
+      },
+      "bar_open_ms": 1700004300000,
+      "decision_ms": 1700004600000
+     },
+     {
+      "event_seq": 9,
+      "bar_index": 16,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 4
+      },
+      "bar_open_ms": 1700004600000,
+      "decision_ms": 1700004900000
+     },
+     {
+      "event_seq": 10,
+      "bar_index": 17,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 5
+      },
+      "bar_open_ms": 1700004900000,
+      "decision_ms": 1700005200000
+     },
+     {
+      "event_seq": 11,
+      "bar_index": 18,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 6
+      },
+      "bar_open_ms": 1700005200000,
+      "decision_ms": 1700005500000
+     },
+     {
+      "event_seq": 12,
+      "bar_index": 19,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 7
+      },
+      "bar_open_ms": 1700005500000,
+      "decision_ms": 1700005800000
+     },
+     {
+      "event_seq": 13,
+      "bar_index": 20,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 8
+      },
+      "bar_open_ms": 1700005800000,
+      "decision_ms": 1700006100000
+     },
+     {
+      "event_seq": 14,
+      "bar_index": 21,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 9
+      },
+      "bar_open_ms": 1700006100000,
+      "decision_ms": 1700006400000
+     },
+     {
+      "event_seq": 15,
+      "bar_index": 22,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 10
+      },
+      "bar_open_ms": 1700006400000,
+      "decision_ms": 1700006700000
+     },
+     {
+      "event_seq": 16,
+      "bar_index": 23,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 11
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 17,
+      "bar_index": 24,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 12
+      },
+      "bar_open_ms": 1700007000000,
+      "decision_ms": 1700007300000
+     },
+     {
+      "event_seq": 18,
+      "bar_index": 25,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700007300000,
+      "decision_ms": 1700007600000
+     },
+     {
+      "event_seq": 19,
+      "bar_index": 25,
+      "phase": "P3",
+      "type": "countdown_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700007300000,
+      "decision_ms": 1700007600000
+     }
+    ],
+    "snapshots": {
+     "13": {
+      "buy": {
+       "setup_run": 9,
+       "countdown": {
+        "state": "active",
+        "count": 1
+       }
+      }
+     },
+     "24": {
+      "buy": {
+       "countdown": {
+        "state": "active",
+        "count": 12
+       }
+      }
+     },
+     "25": {
+      "buy": {
+       "setup_run": 21,
+       "countdown": {
+        "state": "completed",
+        "count": 13
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19
+     ]
+    }
+   },
+   "derivation": "Every low is close-2, so every count has c[t]==l[t-2]; inclusive -> counts 1..13 at 13..25 and complete at 25 (l25=77<=X=c20=84). Setup 9 at 13 perfect (T=91, l13=89)."
+  },
+  {
+   "id": "inclusive_equality.countdown_comparison.sell",
+   "side": "sell",
+   "mirror_of": "inclusive_equality.countdown_comparison.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 102,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 103,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 104,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 105,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 106,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 107,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 108,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 109,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 110,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 111,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 112,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 113,
+     "l": 110,
+     "c": 111
+    },
+    {
+     "o": 111,
+     "h": 114,
+     "l": 111,
+     "c": 112
+    },
+    {
+     "o": 112,
+     "h": 115,
+     "l": 112,
+     "c": 113
+    },
+    {
+     "o": 113,
+     "h": 116,
+     "l": 113,
+     "c": 114
+    },
+    {
+     "o": 114,
+     "h": 117,
+     "l": 114,
+     "c": 115
+    },
+    {
+     "o": 115,
+     "h": 118,
+     "l": 115,
+     "c": 116
+    },
+    {
+     "o": 116,
+     "h": 119,
+     "l": 116,
+     "c": 117
+    },
+    {
+     "o": 117,
+     "h": 120,
+     "l": 117,
+     "c": 118
+    },
+    {
+     "o": 118,
+     "h": 121,
+     "l": 118,
+     "c": 119
+    },
+    {
+     "o": 119,
+     "h": 122,
+     "l": 119,
+     "c": 120
+    },
+    {
+     "o": 120,
+     "h": 123,
+     "l": 120,
+     "c": 121
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 100,
+       "setup_range_high": 111,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 15,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 3
+      },
+      "bar_open_ms": 1700004300000,
+      "decision_ms": 1700004600000
+     },
+     {
+      "event_seq": 9,
+      "bar_index": 16,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 4
+      },
+      "bar_open_ms": 1700004600000,
+      "decision_ms": 1700004900000
+     },
+     {
+      "event_seq": 10,
+      "bar_index": 17,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 5
+      },
+      "bar_open_ms": 1700004900000,
+      "decision_ms": 1700005200000
+     },
+     {
+      "event_seq": 11,
+      "bar_index": 18,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 6
+      },
+      "bar_open_ms": 1700005200000,
+      "decision_ms": 1700005500000
+     },
+     {
+      "event_seq": 12,
+      "bar_index": 19,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 7
+      },
+      "bar_open_ms": 1700005500000,
+      "decision_ms": 1700005800000
+     },
+     {
+      "event_seq": 13,
+      "bar_index": 20,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 8
+      },
+      "bar_open_ms": 1700005800000,
+      "decision_ms": 1700006100000
+     },
+     {
+      "event_seq": 14,
+      "bar_index": 21,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 9
+      },
+      "bar_open_ms": 1700006100000,
+      "decision_ms": 1700006400000
+     },
+     {
+      "event_seq": 15,
+      "bar_index": 22,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 10
+      },
+      "bar_open_ms": 1700006400000,
+      "decision_ms": 1700006700000
+     },
+     {
+      "event_seq": 16,
+      "bar_index": 23,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 11
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 17,
+      "bar_index": 24,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 12
+      },
+      "bar_open_ms": 1700007000000,
+      "decision_ms": 1700007300000
+     },
+     {
+      "event_seq": 18,
+      "bar_index": 25,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700007300000,
+      "decision_ms": 1700007600000
+     },
+     {
+      "event_seq": 19,
+      "bar_index": 25,
+      "phase": "P3",
+      "type": "countdown_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700007300000,
+      "decision_ms": 1700007600000
+     }
+    ],
+    "snapshots": {
+     "13": {
+      "sell": {
+       "setup_run": 9,
+       "countdown": {
+        "state": "active",
+        "count": 1
+       }
+      }
+     },
+     "24": {
+      "sell": {
+       "countdown": {
+        "state": "active",
+        "count": 12
+       }
+      }
+     },
+     "25": {
+      "sell": {
+       "setup_run": 21,
+       "countdown": {
+        "state": "completed",
+        "count": 13
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      19
+     ]
+    }
+   },
+   "derivation": "Every low is close-2, so every count has c[t]==l[t-2]; inclusive -> counts 1..13 at 13..25 and complete at 25 (l25=77<=X=c20=84). Setup 9 at 13 perfect (T=91, l13=89)."
+  },
+  {
+   "id": "inclusive_equality.terminal_qualifier.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 94,
+     "l": 92,
+     "c": 93
+    },
+    {
+     "o": 93,
+     "h": 93,
+     "l": 91,
+     "c": 92
+    },
+    {
+     "o": 92,
+     "h": 92,
+     "l": 90,
+     "c": 91
+    },
+    {
+     "o": 91,
+     "h": 91,
+     "l": 89,
+     "c": 90
+    },
+    {
+     "o": 90,
+     "h": 90,
+     "l": 88,
+     "c": 89
+    },
+    {
+     "o": 89,
+     "h": 89,
+     "l": 87,
+     "c": 88
+    },
+    {
+     "o": 88,
+     "h": 88,
+     "l": 86,
+     "c": 87
+    },
+    {
+     "o": 87,
+     "h": 87,
+     "l": 85,
+     "c": 86
+    },
+    {
+     "o": 86,
+     "h": 86,
+     "l": 84,
+     "c": 85
+    },
+    {
+     "o": 85,
+     "h": 85,
+     "l": 83,
+     "c": 84
+    },
+    {
+     "o": 99,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    },
+    {
+     "o": 95,
+     "h": 95,
+     "l": 93,
+     "c": 94
+    },
+    {
+     "o": 94,
+     "h": 97,
+     "l": 80,
+     "c": 96
+    },
+    {
+     "o": 87,
+     "h": 87,
+     "l": 84,
+     "c": 86
+    },
+    {
+     "o": 81,
+     "h": 81,
+     "l": 79,
+     "c": 80
+    },
+    {
+     "o": 80,
+     "h": 80,
+     "l": 78,
+     "c": 79
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 90,
+       "setup_range_high": 100,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 15,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 3
+      },
+      "bar_open_ms": 1700004300000,
+      "decision_ms": 1700004600000
+     },
+     {
+      "event_seq": 9,
+      "bar_index": 16,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 4
+      },
+      "bar_open_ms": 1700004600000,
+      "decision_ms": 1700004900000
+     },
+     {
+      "event_seq": 10,
+      "bar_index": 17,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 5
+      },
+      "bar_open_ms": 1700004900000,
+      "decision_ms": 1700005200000
+     },
+     {
+      "event_seq": 11,
+      "bar_index": 18,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 6
+      },
+      "bar_open_ms": 1700005200000,
+      "decision_ms": 1700005500000
+     },
+     {
+      "event_seq": 12,
+      "bar_index": 19,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 7
+      },
+      "bar_open_ms": 1700005500000,
+      "decision_ms": 1700005800000
+     },
+     {
+      "event_seq": 13,
+      "bar_index": 20,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 8
+      },
+      "bar_open_ms": 1700005800000,
+      "decision_ms": 1700006100000
+     },
+     {
+      "event_seq": 14,
+      "bar_index": 23,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 9
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 15,
+      "bar_index": 24,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 10
+      },
+      "bar_open_ms": 1700007000000,
+      "decision_ms": 1700007300000
+     },
+     {
+      "event_seq": 16,
+      "bar_index": 25,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 11
+      },
+      "bar_open_ms": 1700007300000,
+      "decision_ms": 1700007600000
+     },
+     {
+      "event_seq": 17,
+      "bar_index": 26,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 12
+      },
+      "bar_open_ms": 1700007600000,
+      "decision_ms": 1700007900000
+     },
+     {
+      "event_seq": 18,
+      "bar_index": 27,
+      "phase": "P3",
+      "type": "countdown_defer",
+      "side": "buy",
+      "reason": "deferral_13_vs_8",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 12
+      },
+      "bar_open_ms": 1700007900000,
+      "decision_ms": 1700008200000
+     },
+     {
+      "event_seq": 19,
+      "bar_index": 29,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700008500000,
+      "decision_ms": 1700008800000
+     },
+     {
+      "event_seq": 20,
+      "bar_index": 29,
+      "phase": "P3",
+      "type": "countdown_complete",
+      "side": "buy",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:buy:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700008500000,
+      "decision_ms": 1700008800000
+     }
+    ],
+    "snapshots": {
+     "27": {
+      "buy": {
+       "countdown": {
+        "state": "deferred",
+        "count": 12
+       }
+      }
+     },
+     "28": {
+      "buy": {
+       "countdown": {
+        "state": "deferred",
+        "count": 12
+       }
+      }
+     },
+     "29": {
+      "buy": {
+       "countdown": {
+        "state": "completed",
+        "count": 13
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      13,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      18,
+      20,
+      20,
+      20
+     ]
+    }
+   },
+   "derivation": "As strict through the deferral at 27 (X=84). 29: close 86, wick 2 -> l29=84 EQUALS X: passes the inclusive qualifier -> count 13 + complete. 28 fails the comparison (96>94): nothing; 30 equality-passes but completed."
+  },
+  {
+   "id": "inclusive_equality.terminal_qualifier.sell",
+   "side": "sell",
+   "mirror_of": "inclusive_equality.terminal_qualifier.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 108,
+     "l": 106,
+     "c": 107
+    },
+    {
+     "o": 107,
+     "h": 109,
+     "l": 107,
+     "c": 108
+    },
+    {
+     "o": 108,
+     "h": 110,
+     "l": 108,
+     "c": 109
+    },
+    {
+     "o": 109,
+     "h": 111,
+     "l": 109,
+     "c": 110
+    },
+    {
+     "o": 110,
+     "h": 112,
+     "l": 110,
+     "c": 111
+    },
+    {
+     "o": 111,
+     "h": 113,
+     "l": 111,
+     "c": 112
+    },
+    {
+     "o": 112,
+     "h": 114,
+     "l": 112,
+     "c": 113
+    },
+    {
+     "o": 113,
+     "h": 115,
+     "l": 113,
+     "c": 114
+    },
+    {
+     "o": 114,
+     "h": 116,
+     "l": 114,
+     "c": 115
+    },
+    {
+     "o": 115,
+     "h": 117,
+     "l": 115,
+     "c": 116
+    },
+    {
+     "o": 101,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    },
+    {
+     "o": 105,
+     "h": 107,
+     "l": 105,
+     "c": 106
+    },
+    {
+     "o": 106,
+     "h": 120,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 113,
+     "h": 116,
+     "l": 113,
+     "c": 114
+    },
+    {
+     "o": 119,
+     "h": 121,
+     "l": 119,
+     "c": 120
+    },
+    {
+     "o": 120,
+     "h": 122,
+     "l": 120,
+     "c": 121
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 3,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "setup_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000,
+      "optional_detail": {
+       "setup_range_low": 100,
+       "setup_range_high": 110,
+       "range_provenance": "ordinary_range.v0_unreviewed",
+       "binding": false
+      }
+     },
+     {
+      "event_seq": 4,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "perfection",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 5,
+      "bar_index": 13,
+      "phase": "P1",
+      "type": "countdown_start",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 6,
+      "bar_index": 13,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 1
+      },
+      "bar_open_ms": 1700003700000,
+      "decision_ms": 1700004000000
+     },
+     {
+      "event_seq": 7,
+      "bar_index": 14,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 2
+      },
+      "bar_open_ms": 1700004000000,
+      "decision_ms": 1700004300000
+     },
+     {
+      "event_seq": 8,
+      "bar_index": 15,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 3
+      },
+      "bar_open_ms": 1700004300000,
+      "decision_ms": 1700004600000
+     },
+     {
+      "event_seq": 9,
+      "bar_index": 16,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 4
+      },
+      "bar_open_ms": 1700004600000,
+      "decision_ms": 1700004900000
+     },
+     {
+      "event_seq": 10,
+      "bar_index": 17,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 5
+      },
+      "bar_open_ms": 1700004900000,
+      "decision_ms": 1700005200000
+     },
+     {
+      "event_seq": 11,
+      "bar_index": 18,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 6
+      },
+      "bar_open_ms": 1700005200000,
+      "decision_ms": 1700005500000
+     },
+     {
+      "event_seq": 12,
+      "bar_index": 19,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 7
+      },
+      "bar_open_ms": 1700005500000,
+      "decision_ms": 1700005800000
+     },
+     {
+      "event_seq": 13,
+      "bar_index": 20,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 8
+      },
+      "bar_open_ms": 1700005800000,
+      "decision_ms": 1700006100000
+     },
+     {
+      "event_seq": 14,
+      "bar_index": 23,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 9
+      },
+      "bar_open_ms": 1700006700000,
+      "decision_ms": 1700007000000
+     },
+     {
+      "event_seq": 15,
+      "bar_index": 24,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 10
+      },
+      "bar_open_ms": 1700007000000,
+      "decision_ms": 1700007300000
+     },
+     {
+      "event_seq": 16,
+      "bar_index": 25,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 11
+      },
+      "bar_open_ms": 1700007300000,
+      "decision_ms": 1700007600000
+     },
+     {
+      "event_seq": 17,
+      "bar_index": 26,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 12
+      },
+      "bar_open_ms": 1700007600000,
+      "decision_ms": 1700007900000
+     },
+     {
+      "event_seq": 18,
+      "bar_index": 27,
+      "phase": "P3",
+      "type": "countdown_defer",
+      "side": "sell",
+      "reason": "deferral_13_vs_8",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 12
+      },
+      "bar_open_ms": 1700007900000,
+      "decision_ms": 1700008200000
+     },
+     {
+      "event_seq": 19,
+      "bar_index": 29,
+      "phase": "P3",
+      "type": "countdown_count",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700008500000,
+      "decision_ms": 1700008800000
+     },
+     {
+      "event_seq": 20,
+      "bar_index": 29,
+      "phase": "P3",
+      "type": "countdown_complete",
+      "side": "sell",
+      "episode_id": "seq.full.public_approx.v1:SYN:5m:sell:1700003700000",
+      "detail": {
+       "count": 13
+      },
+      "bar_open_ms": 1700008500000,
+      "decision_ms": 1700008800000
+     }
+    ],
+    "snapshots": {
+     "27": {
+      "sell": {
+       "countdown": {
+        "state": "deferred",
+        "count": 12
+       }
+      }
+     },
+     "28": {
+      "sell": {
+       "countdown": {
+        "state": "deferred",
+        "count": 12
+       }
+      }
+     },
+     "29": {
+      "sell": {
+       "countdown": {
+        "state": "completed",
+        "count": 13
+       }
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      13,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      18,
+      20,
+      20,
+      20
+     ]
+    }
+   },
+   "derivation": "As strict through the deferral at 27 (X=84). 29: close 86, wick 2 -> l29=84 EQUALS X: passes the inclusive qualifier -> count 13 + complete. 28 fails the comparison (96>94): nothing; 30 equality-passes but completed."
+  }
+ ]
+}
