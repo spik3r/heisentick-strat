@@ -6,6 +6,19 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the distinct `sequential full` DSL family for the versioned synthetic
+  `seq.full.public_approx.v1` E1/E2 policies. Bind explicit symbol, timeframe,
+  risk and exposure inputs; reuse the accepted core and existing broker for
+  next-open execution, fixed signal ATR14, structural stops, 2R targets and
+  natural time exits. Preserve legacy Setup-9 and existing regression goldens.
+  Ordinary native/fixture and existing WASM bridge routes return a typed
+  opportunity audit. Missing intervals/calendar declarations, incomplete
+  terminal exposure, P1, source/HTF projection and shared/prefix/checkpoint
+  execution are explicitly refused. Add two parse and four invented producer
+  run regressions plus native/Node-WASM tests; the independent HT249 acceptance
+  corpus, browser/consumer qualification and historical approval remain gates.
+  This unreleased semantic addition requires a minor version at release.
+
 - Add the `legacy setup 9` family (go-only) with the frozen profiles
   `seq.legacy.setup9.v1` and `seq.legacy.setup9_perf_seasonal.v1`, selected by
   a required `sequential profile <id>` line. They port two archived

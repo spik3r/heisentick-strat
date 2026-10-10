@@ -6,6 +6,10 @@
   "additionalProperties": false,
   "required": ["severity", "message", "line", "col"],
   "properties": {
+    "code": {
+      "type": "string",
+      "minLength": 1
+    },
     "severity": {
       "type": "string",
       "enum": ["error", "warning"]

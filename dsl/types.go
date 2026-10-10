@@ -43,6 +43,7 @@ const (
 	FamilyNamedLevelSweep         FamilyID = "namedLevelSweep"
 	FamilyNamedLevelFlag          FamilyID = "namedLevelFlag"
 	FamilyLegacySetup9            FamilyID = "legacySetup9"
+	FamilySequentialFull          FamilyID = "sequentialFull"
 	FamilyClockRangeBreakout      FamilyID = "clockRangeBreakout"
 )
 
@@ -75,6 +76,7 @@ func (result ParseResult) MarshalJSON() ([]byte, error) {
 // Diagnostic is the structured diagnostic shape described by strat/docs/dsl-spec.md.
 type Diagnostic struct {
 	Severity   DiagnosticSeverity `json:"severity"`
+	Code       string             `json:"code,omitempty"`
 	Message    string             `json:"message"`
 	Line       *int               `json:"line"`
 	Column     *int               `json:"col"`

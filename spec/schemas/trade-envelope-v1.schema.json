@@ -19,6 +19,7 @@
   "properties": {
     "schema": { "const": "dsl-conformance-trades-v1" },
     "timedReturn": { "$ref": "timed-return-audit-v1.schema.json" },
+    "sequentialFull": { "$ref": "sequential-full-execution-v1.schema.json" },
     "case": { "type": "string", "minLength": 1 },
     "strategyId": { "type": "string", "minLength": 1 },
     "symbol": { "type": "string", "minLength": 1 },

@@ -176,6 +176,9 @@ func (b *broker) openPositionSnapshot() []OpenPositionSnapshot {
 }
 
 func prefixUnsupportedPath(prepared *PreparedRun) string {
+	if prepared.sequentialFull != nil {
+		return "sequentialFull execution prefix/checkpoint"
+	}
 	if prepared.c5 {
 		return "source-entry C5"
 	}

@@ -19,12 +19,12 @@ func main() {
 		}
 		source, err := sourcetext.FromJS(args[1])
 		if err != nil {
-			out, _ := json.Marshal(map[string]string{"error": err.Error()})
+			out, _ := json.Marshal(bridgeErrorEnvelope(err))
 			return string(out)
 		}
 		out, err := runFixture(args[0].String(), source)
 		if err != nil {
-			out, _ = json.Marshal(map[string]string{"error": err.Error()})
+			out, _ = json.Marshal(bridgeErrorEnvelope(err))
 		}
 		return string(out)
 	}))
@@ -34,12 +34,12 @@ func main() {
 		}
 		source, err := sourcetext.FromJS(args[1])
 		if err != nil {
-			out, _ := json.Marshal(map[string]string{"error": err.Error()})
+			out, _ := json.Marshal(bridgeErrorEnvelope(err))
 			return string(out)
 		}
 		out, err := runClockRangeFixture(args[0].String(), source)
 		if err != nil {
-			out, _ = json.Marshal(map[string]string{"error": err.Error()})
+			out, _ = json.Marshal(bridgeErrorEnvelope(err))
 		}
 		return string(out)
 	}))
@@ -59,14 +59,14 @@ func main() {
 		}
 		source, err := sourcetext.FromJS(args[1])
 		if err != nil {
-			return columnError(err.Error())
+			return columnFailure(err)
 		}
 		copyStart := js.Global().Get("performance").Call("now").Float()
 		var columns [6]wasmColumn
 		for i := range columns {
 			column, err := copyFloat64Column(args[i+2])
 			if err != nil {
-				return columnError(err.Error())
+				return columnFailure(err)
 			}
 			columns[i] = column
 		}
@@ -74,7 +74,7 @@ func main() {
 		values := [6][]float64{columns[0].values, columns[1].values, columns[2].values, columns[3].values, columns[4].values, columns[5].values}
 		result, err := runColumns(args[0].String(), source, values)
 		if err != nil {
-			return columnError(err.Error())
+			return columnFailure(err)
 		}
 		outputStart := js.Global().Get("performance").Call("now").Float()
 		trades := float64Array(result.Values)

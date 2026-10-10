@@ -124,6 +124,13 @@ jobs:
         timeout-minutes: 3
         run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" ./engine/seqcore
 
+      # Synthetic E1/E2 execution and strict existing-bridge admission only.
+      # No historical, browser, consumer or release qualification is implied.
+      - name: Synthetic Sequential E1/E2 under Node-hosted Go WASM
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards)' ./dsl ./engine ./cmd/enginewasm
+
       - name: Run portable arithmetic kernels under Go WASM
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 3

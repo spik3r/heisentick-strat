@@ -1,0 +1,31 @@
+{
+ "convention_id": "seq-exec-e1e2.v1",
+ "schema": "seq-exec-fixtures.v1",
+ "corpus_sha256": "3885ca9b7a42a53ae4f0f5276f11f3486c8ff65837d94c809c4dd95b97d3a3c0",
+ "hash_rule": "sha256 of the lines \"<sha256>  <path>\\n\" for cases/*.json (sorted), README.md, DERIVATIONS.md",
+ "files": {
+  "cases/atr.json": "1f7ada5debb76d032f9970996990967c47a1eda2bc8b312f1a2c1d7a14e5e3d4",
+  "cases/e1.json": "1296e585d9988acb0d7250dae3996670ad49dc4d7909beb72252c771fa73518a",
+  "cases/e2.json": "5f24edeb008e084bf4366099418e3d0d2accca6d37c01bbef5ce0fd8556baca6",
+  "cases/provisional.json": "65ef13e4d412970034427c5c7fd24f7e501db91bf8abcb3c72ba21eb8a6f097b",
+  "cases/refusals.json": "74104998d7dfbf072f1cb4fb8fd6b829ae073fe828d8769106da1801f7094b9b",
+  "README.md": "294a99dd271f8df53b1972ab423d00c83f83ebc4b8ad2ea1620f4ffb9b63fe4c",
+  "DERIVATIONS.md": "60ede30f36d7619fa261916ee9527ff2ce4435b0e91489a83208a5f3340c458e"
+ },
+ "cases": 66,
+ "binding": 62,
+ "provisional": 4,
+ "authority": {
+  "backlog_main": "0306afaeaff015e934c8beff487f91a311dfae64",
+  "pr464_head": "12c7d8087142dc2ea2af9e8ce510d4e3a60f1958",
+  "strat_pr109": "2ea7f63c686489dcbba09ec482a119dd2af17d9b",
+  "strat_pr110": "c7e90c7b9293f4dfd2bb9f7bbcf95dc9b5ddefbe",
+  "strat_pr111": "ade7be648afd00073a4714b2941ddf5641524761",
+  "reused_core_fixtures_blobs": {
+   "terminal_13_deferral.json": "5211cf66c8adf0c9ee9f5aec7527ddaa02f1a4a5",
+   "countdown_overlap.json": "50bf7fbb52287de96b559d549be9e7ac90462858",
+   "terminal_13_setup_22_collision.json": "190d039a5f592d6c8d38dafd022e91696168e9f9"
+  }
+ },
+ "revision": "v1.1: single adverse slippage on every fill (Astra review of 2b106e1)"
+}

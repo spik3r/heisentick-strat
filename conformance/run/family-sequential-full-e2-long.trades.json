@@ -1,0 +1,74 @@
+{
+  "case": "family-sequential-full-e2-long",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "open",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "sequentialFull": {
+    "opportunities": [
+      {
+        "capBinds": false,
+        "decisionIndex": 25,
+        "decisionMs": 7800000,
+        "decisionOpenMs": 7500000,
+        "episodeId": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000",
+        "fill": 100,
+        "fillIndex": 26,
+        "id": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000:cd13",
+        "nextOpenIndex": 26,
+        "riskDistance": 22.200000000000003,
+        "setupFirstIndex": 5,
+        "setupIndex": 13,
+        "side": "long",
+        "signalAtr": 2,
+        "size": 4.504504504504504,
+        "status": "filled",
+        "stop": 77.8,
+        "target": 144.4,
+        "trigger": "cd13"
+      }
+    ],
+    "policy": "E2",
+    "profile": "seq.full.public_approx.v1",
+    "schema": "sequential-full-execution.v1",
+    "symbol": "SYNTH",
+    "timeframe": "5m"
+  },
+  "strategyId": "family-sequential-full-e2-long",
+  "symbol": "SYNTH",
+  "timeframe": "5m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 100,
+      "entryIndex": 26,
+      "entryT": 7800000,
+      "exit": 100,
+      "exitIndex": 38,
+      "exitT": 11400000,
+      "initialSl": 77.8,
+      "initialTp": 144.4,
+      "meta": {
+        "episodeId": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000",
+        "opportunityId": "seq.full.public_approx.v1:SYNTH:5m:buy:3900000:cd13",
+        "policy": "E2",
+        "profile": "seq.full.public_approx.v1",
+        "signalAtr": 2,
+        "signalIndex": 25
+      },
+      "pnl": 0,
+      "points": 0,
+      "reason": "time",
+      "side": "long",
+      "size": 4.5045045045045,
+      "sl": 77.8,
+      "tag": "SEQUENTIAL-E2",
+      "tp": 144.4
+    }
+  ]
+}

@@ -103,7 +103,7 @@ var parserDirectiveHandlerBindings = map[string]string{
 	"directive.breakout":       "parser.apply:parseBreakout",
 	"directive.confirm":        "parser.apply:parseConfirm",
 	"directive.new":            "parser.apply:parseNewYorkHour",
-	"directive.sequential":     "parser.apply:parseLegacySetup9",
+	"directive.sequential":     "parser.apply:parseLegacySetup9+sequentialFullSourceParser.directive",
 	"directive.sweep":          "parser.apply:parseFairValueGapSweep",
 	"directive.weekend":        "parser.apply:parseWeekendExtremeFade",
 	"directive.run":            "parser.apply:parseIntraHourRunExhaustionRun",
@@ -146,4 +146,5 @@ var parserFamilyHandlerBindings = map[string]string{
 	"keltnerExpansion":        "parser.parseSetupType",
 	"namedLevelSweep":         "parser.parseSetupType",
 	"legacySetup9":            "parser.parseSetupType",
+	"sequentialFull":          "parseSequentialFullSource",
 }
