@@ -1,0 +1,184 @@
+{
+  "corpus": "seq-core-fixtures.v2",
+  "fixture_cases": 143,
+  "fixture_files": 24,
+  "source_repository": "spik3r/heisentick-backlog",
+  "source_commit": "ab98cedc96c8415175b9658c4ea6491bfb5d6918",
+  "source_pull_request": "https://github.com/spik3r/heisentick-backlog/pull/457",
+  "fixture_author": "Claude (source corpus unchanged)",
+  "accepted_freeze_commit": "bf7a88c8d79919190254ca6fa04a865fbe914657",
+  "path_claim_commit": "ba4a7343c2167fc5ceea50d23c53382a8e3f1f34",
+  "implementation_start_commit": "56fc09b1aaed9efa24167bdbfd952d6a90bfc22b",
+  "producer_base_commit": "4e8e2c86f2acf3bb6d7c799a809395d0a1a35d60",
+  "semantics": "Owner-accepted custom synthetic research convention, not proprietary DeMARK equivalence. Optional fixture TDST detail is not binding and is omitted from runtime output. No historical outcomes.",
+  "files": [
+    {
+      "file": "bar_order_error.json",
+      "source_path": "plans/sequential-full-fixtures/bar_order_error.json",
+      "git_blob_sha1": "1dd57eaaf38c690a47d19d484a33140f71d38861",
+      "sha256": "97fb0cc4359c3707cb62096453fb936890cdb3e24694dd7f611899ef0e79341e",
+      "bytes": 22606
+    },
+    {
+      "file": "checkpoint_identity.json",
+      "source_path": "plans/sequential-full-fixtures/checkpoint_identity.json",
+      "git_blob_sha1": "00ab7a69d5e14c4baebd766a228206470e8529fa",
+      "sha256": "ac4e4a84871136e86a4720e7ac5517fccca80eb06d072d58e259389cb4e8b327",
+      "bytes": 75387
+    },
+    {
+      "file": "config_unsupported.json",
+      "source_path": "plans/sequential-full-fixtures/config_unsupported.json",
+      "git_blob_sha1": "313f1e845b60f54d920f23645bce40e90df88498",
+      "sha256": "cb669752c1a1f93c15e87da11c26d9bcbc8e3dc3d2d0c060f55d1f1693e79dfe",
+      "bytes": 44814
+    },
+    {
+      "file": "countdown_nonconsecutive.json",
+      "source_path": "plans/sequential-full-fixtures/countdown_nonconsecutive.json",
+      "git_blob_sha1": "76308c25bb2858b2cf4f10097fde7caff8275420",
+      "sha256": "597f00d7667dba285e1f4920aa8af62583c617df73b1b41845553fcddcf3e087",
+      "bytes": 13917
+    },
+    {
+      "file": "countdown_overlap.json",
+      "source_path": "plans/sequential-full-fixtures/countdown_overlap.json",
+      "git_blob_sha1": "50bf7fbb52287de96b559d549be9e7ac90462858",
+      "sha256": "f54d13860a4d7a15f632e8cd90de83a004aef3b8a54133c937b7c25f31f5a782",
+      "bytes": 97168
+    },
+    {
+      "file": "countdown_start_on_setup9.json",
+      "source_path": "plans/sequential-full-fixtures/countdown_start_on_setup9.json",
+      "git_blob_sha1": "2e14dd797671deb73c5d3eb5ba47db065a51e145",
+      "sha256": "0f29a2d1f9a27c861e0a98b40c9762a38e486d41390f938630c218f8b647a21a",
+      "bytes": 18802
+    },
+    {
+      "file": "data_gap_reset.json",
+      "source_path": "plans/sequential-full-fixtures/data_gap_reset.json",
+      "git_blob_sha1": "ea6498e9d1204e22e3394c344eb271aeb3037b7f",
+      "sha256": "277ff04d2c8909f363590722116a5853315744866239e2514b42e7254f1edc08",
+      "bytes": 73184
+    },
+    {
+      "file": "delayed_perfection.json",
+      "source_path": "plans/sequential-full-fixtures/delayed_perfection.json",
+      "git_blob_sha1": "c523da9041021eba93ded6d0b60fb367a9f9ce9d",
+      "sha256": "4528e77c2ee7d11aab314d9b37dc214ebc234a08667cc5d52eadfb3072dafc32",
+      "bytes": 53526
+    },
+    {
+      "file": "eight_vs_five_off.json",
+      "source_path": "plans/sequential-full-fixtures/eight_vs_five_off.json",
+      "git_blob_sha1": "0848b129a72788600ddc58cb44ceba7ede146c31",
+      "sha256": "406f85563fd43537f43902be50fbfdbf9ba9c9a20b3dc387ba27dcfd4e5059c2",
+      "bytes": 19676
+    },
+    {
+      "file": "equality_and_failed_flip.json",
+      "source_path": "plans/sequential-full-fixtures/equality_and_failed_flip.json",
+      "git_blob_sha1": "31a7e50f84003708c8ced53e328c6f0a00938ce8",
+      "sha256": "0aed398c01e009436acc4da4664ec281b381c2c0f7c4352eca44ee9289e52a6c",
+      "bytes": 7984
+    },
+    {
+      "file": "event_order.json",
+      "source_path": "plans/sequential-full-fixtures/event_order.json",
+      "git_blob_sha1": "956af9736f97fe6432fac57cea298b10adb2d684",
+      "sha256": "84dde7b5c9b1a1679e1564401cdc172a727a1c34bc5afbf72f851bab5d595eea",
+      "bytes": 17750
+    },
+    {
+      "file": "inclusive_equality.json",
+      "source_path": "plans/sequential-full-fixtures/inclusive_equality.json",
+      "git_blob_sha1": "a26360899ed97362ca7f1507e424704075151b97",
+      "sha256": "96626baeed271fec2a6974799151354279707b029cf2ca01d2d8ff928d8ea9c0",
+      "bytes": 39866
+    },
+    {
+      "file": "independent_streams.json",
+      "source_path": "plans/sequential-full-fixtures/independent_streams.json",
+      "git_blob_sha1": "2a7555669ed5813720b43222db10ad0b11b46df5",
+      "sha256": "a4f2d2def41b41647d013a3423f08292bc39bdf52164618a1fd101e28e68d6a3",
+      "bytes": 28090
+    },
+    {
+      "file": "init_diagnostics.json",
+      "source_path": "plans/sequential-full-fixtures/init_diagnostics.json",
+      "git_blob_sha1": "1c21dfb9be4672a615aeeea77f2c73b292fc5129",
+      "sha256": "88521122645e264465487987252f3147fc45e99383f233ba34257dd52ce18a46",
+      "bytes": 15527
+    },
+    {
+      "file": "opposite_setup_cancels_before_count.json",
+      "source_path": "plans/sequential-full-fixtures/opposite_setup_cancels_before_count.json",
+      "git_blob_sha1": "23552a199fa21c47f037a57a4f3aca19c9367620",
+      "sha256": "5ec46c566425dd47d45bae7af013cbee5d713a64bd53035c4a0c2c28a806d4e7",
+      "bytes": 63763
+    },
+    {
+      "file": "perfection_threshold.json",
+      "source_path": "plans/sequential-full-fixtures/perfection_threshold.json",
+      "git_blob_sha1": "7ac616b97b67519970405a15cff7995fff251914",
+      "sha256": "79c7e77ee322f1f6233318b4c7d7e14cfa296dd559d72c5ab8e9f2c9581a0480",
+      "bytes": 33294
+    },
+    {
+      "file": "same_side_setup_replaces_pending.json",
+      "source_path": "plans/sequential-full-fixtures/same_side_setup_replaces_pending.json",
+      "git_blob_sha1": "80194e0b5e9911bbce2a4f3b87cecf255023d965",
+      "sha256": "f90a57abbfa3a772b6b030a1c15d8ccd3fb62603ac1e487bfd709c54b493f666",
+      "bytes": 19932
+    },
+    {
+      "file": "second_imperfect_setup.json",
+      "source_path": "plans/sequential-full-fixtures/second_imperfect_setup.json",
+      "git_blob_sha1": "ef4c4bb974aec0f2088d39a42da46519ccbc6379",
+      "sha256": "240e53996b7916b0e0cbed76a7974630deb1cfd5c3dfcd1dde1dd7903f0fc5e2",
+      "bytes": 20523
+    },
+    {
+      "file": "setup_22_recycle.json",
+      "source_path": "plans/sequential-full-fixtures/setup_22_recycle.json",
+      "git_blob_sha1": "3b91dfd49f0242151a80a86a1471ff7398d5dfba",
+      "sha256": "07c626b6ef5a16e9d51a051c51e1cd8e802b51e490d2532c2ee8bbbe96de9d77",
+      "bytes": 68347
+    },
+    {
+      "file": "tdst_unsupported.json",
+      "source_path": "plans/sequential-full-fixtures/tdst_unsupported.json",
+      "git_blob_sha1": "3907d3003b976fa96f5c2f898fa40cbddba5683d",
+      "sha256": "ce286478245f26e190bcc1f6410fbc47786a9f9e95f14fcd066acec041cc9a9a",
+      "bytes": 21996
+    },
+    {
+      "file": "terminal_13_deferral.json",
+      "source_path": "plans/sequential-full-fixtures/terminal_13_deferral.json",
+      "git_blob_sha1": "5211cf66c8adf0c9ee9f5aec7527ddaa02f1a4a5",
+      "sha256": "c1c6fbc3e12de5c5210bd42c4de55db01b562bf100ff857f2458e94b2efbfec7",
+      "bytes": 41625
+    },
+    {
+      "file": "terminal_13_setup_22_collision.json",
+      "source_path": "plans/sequential-full-fixtures/terminal_13_setup_22_collision.json",
+      "git_blob_sha1": "190d039a5f592d6c8d38dafd022e91696168e9f9",
+      "sha256": "831f52c4533c416c56a2febb4b63dbfc63aba3c4233b2dfb987c7912c9e2f50c",
+      "bytes": 21685
+    },
+    {
+      "file": "warmup.json",
+      "source_path": "plans/sequential-full-fixtures/warmup.json",
+      "git_blob_sha1": "cdfc5a56085bec0d6f28e1e2313210fa90589e7b",
+      "sha256": "dd96c9d50224475cf8006378d906e5c352f9aa40ad5b86ec6c1753618b076d69",
+      "bytes": 12586
+    },
+    {
+      "file": "window_policy.json",
+      "source_path": "plans/sequential-full-fixtures/window_policy.json",
+      "git_blob_sha1": "42d5e7b8e22fd32b3615731f9fa63bb3ca8b1a7d",
+      "sha256": "d807a9561b72b47a153bf4b8f6e927851b428442a73bc6aedb0924dea2f4db5a",
+      "bytes": 88454
+    }
+  ]
+}

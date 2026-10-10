@@ -1,0 +1,695 @@
+{
+ "schema": "seq-core-fixtures.v2",
+ "freeze_id": "seq-core-freeze.v1",
+ "event_schema": "seq-core-events.v1",
+ "checkpoint_schema": "seq-core-checkpoint.v1",
+ "profile_id": "seq.full.public_approx.v1",
+ "family": "warmup",
+ "description": "Warm-up: no Setup state before index 4.",
+ "cases": [
+  {
+   "id": "warmup.w1.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    },
+    {
+     "o": 97,
+     "h": 97,
+     "l": 95,
+     "c": 96
+    },
+    {
+     "o": 96,
+     "h": 96,
+     "l": 94,
+     "c": 95
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "0": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "1": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "2": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "3": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "4": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "5": {
+      "buy": {
+       "setup_run": 1,
+       "setup_active": true
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "6": {
+      "buy": {
+       "setup_run": 2,
+       "setup_active": true
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "7": {
+      "buy": {
+       "setup_run": 3,
+       "setup_active": true
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "8": {
+      "buy": {
+       "setup_run": 4,
+       "setup_active": true
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     },
+     "9": {
+      "buy": {
+       "setup_run": 5,
+       "setup_active": true
+      },
+      "sell": {
+       "setup_run": 0
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ]
+    }
+   },
+   "derivation": "No Setup state before index 4. Index 4: c4=101>c0=100 is a sell comparison with no prior comparison, so the flip gate fails: sell run 0 (F3). Index 5: 99<c1=100, prior comparison opposite -> buy run 1; 6..9 -> 2..5. No Setup 9. v1 emits no setup_start/setup_break and no warm-up event: the stream is the two init diagnostics only; the snapshot carries setup_run."
+  },
+  {
+   "id": "warmup.w1.sell",
+   "side": "sell",
+   "mirror_of": "warmup.w1.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    },
+    {
+     "o": 103,
+     "h": 105,
+     "l": 103,
+     "c": 104
+    },
+    {
+     "o": 104,
+     "h": 106,
+     "l": 104,
+     "c": 105
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "0": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "1": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "2": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "3": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "4": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "5": {
+      "sell": {
+       "setup_run": 1,
+       "setup_active": true
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "6": {
+      "sell": {
+       "setup_run": 2,
+       "setup_active": true
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "7": {
+      "sell": {
+       "setup_run": 3,
+       "setup_active": true
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "8": {
+      "sell": {
+       "setup_run": 4,
+       "setup_active": true
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     },
+     "9": {
+      "sell": {
+       "setup_run": 5,
+       "setup_active": true
+      },
+      "buy": {
+       "setup_run": 0
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ]
+    }
+   },
+   "derivation": "No Setup state before index 4. Index 4: c4=101>c0=100 is a sell comparison with no prior comparison, so the flip gate fails: sell run 0 (F3). Index 5: 99<c1=100, prior comparison opposite -> buy run 1; 6..9 -> 2..5. No Setup 9. v1 emits no setup_start/setup_break and no warm-up event: the stream is the two init diagnostics only; the snapshot carries setup_run."
+  },
+  {
+   "id": "warmup.w2_four_bars.buy",
+   "side": "buy",
+   "mirror_of": null,
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1"
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 100,
+     "l": 98,
+     "c": 99
+    },
+    {
+     "o": 99,
+     "h": 99,
+     "l": 97,
+     "c": 98
+    },
+    {
+     "o": 98,
+     "h": 98,
+     "l": 96,
+     "c": 97
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "0": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "1": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "2": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "3": {
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2
+     ]
+    }
+   },
+   "derivation": "Only indices 0-3: no comparison possible, runs 0, diagnostics only."
+  },
+  {
+   "id": "warmup.w2_four_bars.sell",
+   "side": "sell",
+   "mirror_of": "warmup.w2_four_bars.buy",
+   "status": "ready",
+   "blocked_on": [],
+   "series": {
+    "symbol": "SYN",
+    "timeframe": "5m",
+    "timeframe_ms": 300000,
+    "start_open_ms": 1699999800000,
+    "gap_policy": "synthetic_unexpected_gap.v1",
+    "mirror_K": 200
+   },
+   "bars": [
+    {
+     "o": 100,
+     "h": 101,
+     "l": 99,
+     "c": 100
+    },
+    {
+     "o": 100,
+     "h": 102,
+     "l": 100,
+     "c": 101
+    },
+    {
+     "o": 101,
+     "h": 103,
+     "l": 101,
+     "c": 102
+    },
+    {
+     "o": 102,
+     "h": 104,
+     "l": 102,
+     "c": 103
+    }
+   ],
+   "expected": {
+    "never_emitted": [
+     "setup_start",
+     "setup_break"
+    ],
+    "events": [
+     {
+      "event_seq": 1,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "tdst_cancel_unsupported",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     },
+     {
+      "event_seq": 2,
+      "bar_index": 0,
+      "phase": "P0",
+      "type": "diagnostic",
+      "side": "both",
+      "reason": "unsupported_public_formula",
+      "bar_open_ms": 1699999800000,
+      "decision_ms": 1700000100000
+     }
+    ],
+    "snapshots": {
+     "0": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "1": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "2": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     },
+     "3": {
+      "sell": {
+       "setup_run": 0,
+       "setup_active": false
+      },
+      "buy": {
+       "setup_run": 0,
+       "setup_active": false
+      }
+     }
+    },
+    "restart": {
+     "boundaries": "every_bar",
+     "events_identical_incl_event_seq": true,
+     "init_diagnostics_not_repeated": true,
+     "last_event_seq_after_bar": [
+      2,
+      2,
+      2,
+      2
+     ]
+    }
+   },
+   "derivation": "Only indices 0-3: no comparison possible, runs 0, diagnostics only."
+  }
+ ]
+}
