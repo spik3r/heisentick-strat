@@ -1,11 +1,11 @@
-# Native sampled bid/ask paper contract v1
+# Sampled bid/ask paper contract v1
 
-This is an independently reviewable native-only execution model. The CLI is
+This is an independently reviewed Go execution model. The native CLI is
 `heisentick paper-bidask --request-file=<regular file>`. It reads one bounded JSON
 request and returns one complete candidate success or safe refusal envelope.
 It has no network, feed, broker-order, authentication, account-balance lookup,
 consumer activation or release authority. Existing paper-prefix, old sessions,
-conformance and public WASM APIs are unchanged.
+conformance and existing public WASM APIs are unchanged.
 
 The file command's qualified native hosts are Linux AMD64 and ARM64. Its secure
 native IO implementation is excluded from Go's js/wasm command-package build.
@@ -25,6 +25,51 @@ stdout documents; the consumer must check the envelope, not just process exit.
 Filesystem paths, source text, raw account identities and provider bodies never
 appear in refusals. Subprocess/output/commit failure never advances a consumer
 cursor. There is no fallback financial computation.
+
+## Public WASM transport
+
+`engineRunPaperBidAsk(requestJSON)` exposes the same Go model from
+`enginewasm.wasm`. It requires exactly one primitive JavaScript string and
+returns one complete JSON string. The bridge calls the unchanged Go
+`DecodePaperBidAskRequest`, `RunPaperBidAsk` and `EncodePaperBidAskResult` APIs;
+it does not parse DSL, compute financial values, apply effects, repair input,
+choose defaults, reorder records or introduce execution policy.
+
+Success is exactly the Go encoder's document on that target. Refusal has exactly
+`schema`, `status: refused` and a fixed `PAPER_BIDASK_*` code, matching the native
+command rather than the older paper-prefix transport's different error shape.
+Wrong arity or nonprimitive arguments produce `PAPER_BIDASK_ARGUMENTS`; invalid
+Unicode, malformed JSON and oversized input produce `PAPER_BIDASK_INPUT`.
+Known typed producer refusals retain their codes; unexpected errors or panics
+produce `PAPER_BIDASK_INTERNAL`, without exception/source/path disclosure.
+An ordinary refusal is a successful transport invocation, not financial success.
+
+Original UTF-16 is checked before conversion can replace an unpaired surrogate.
+The original code-unit count and actual UTF-8 bytes are bounded; exact 16 MiB
+input is allowed, with larger input refused. The Go decoder owns strict JSON
+shape, duplicate keys, escaped Unicode, depth and all model limits. A production
+JavaScript wrapper must pass raw JSON through without parsing and reserializing
+it, and must not convert decimal or nanosecond strings to numbers. All native
+input/output, source, record, bar, event, quote, tier and receipt limits below
+remain unchanged. Finite producer limits are not browser performance promises.
+Existing consumer worker limits (2 MiB input, 8 MiB result, 15 seconds and
+10000 bars) remain separate and are not expanded by this export.
+
+Producer platform identity is truthful: native and js/wasm have different
+GOOS/GOARCH, which propagate into binding and causal IDs and replay receipts.
+Receipts are verified on their originating target; moving a receipt between
+targets is not supported. Same-target repeated prefixes emit zero new effects.
+The public transport does not authenticate declared artifact/provenance facts,
+resolve episode races, apply a durable transaction, or provide session isolation,
+fencing, Stop/restart, consumer activation or release approval.
+
+The actual public-export qualification compares complete native/WASM financial,
+clock, episode and protection payloads exactly, independently checks enumerated
+target-bound IDs and validates target-local receipt/replay behavior. Same-target
+Go tests compare the full unmodified bridge document with the public library API.
+Transport tests reject malformed/oversized inputs and require later successful
+calls and all prior exports to remain usable. Test-side JSON/hash handling is
+not a second financial or DSL engine.
 
 ## Supported source and authority
 

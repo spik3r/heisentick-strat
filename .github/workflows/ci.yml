@@ -107,6 +107,13 @@ jobs:
         timeout-minutes: 15
         run: node scripts/checks/paper-prefix-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
 
+      - name: Sampled bid/ask actual native and public WASM export parity
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 20
+        run: |
+          GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" ./cmd/enginewasm -run '^TestPaperBidAskBridge'
+          node scripts/checks/paper-bidask-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
       - name: Down-shock source native report and WASM parity
         if: steps.mod.outputs.present == 'true'
         run: |

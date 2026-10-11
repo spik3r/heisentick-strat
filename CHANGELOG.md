@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the transport-only `engineRunPaperBidAsk` public Go WASM export over the
+  unchanged sampled bid/ask API. Preserve exact producer documents, fixed native
+  refusal envelopes, strict original UTF-16/JSON validation and all native
+  limits. Actual public-export parity and target-local checkpoint proofs leave
+  existing exports unchanged; consumer limits, adoption and activation remain
+  separate. See [the transport contract](spec/forward-paper-bidask.md#public-wasm-transport).
+
 - Add the bounded native sampled bid/ask ORB paper contract and strict local-only
   `paper-bidask` command, separately versioned from paper-prefix. It models
   original committed entry quotes, sampled straddling exposure, then exclusive
