@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add read-only Go Sequential source inspection through the native library/CLI
+  and engine WASM. Preserve the parser result, bind source and Go config bytes,
+  and distinguish generic execution from fixture-only accounting and unsupported
+  market/endpoint/prefix capabilities. No execution or accounting support is
+  broadened; release assets and consumer integration remain separate gates.
+
 - Refuse malformed reserved `range reversion` selectors before legacy parsing
   can silently execute a different family. Preserve canonical R11 grammar,
   fixed-rule source hashes and quoted metadata/list values. Add invented

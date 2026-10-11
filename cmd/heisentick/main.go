@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "inspect-sequential-source":
+		return runSequentialInspection(args[1:], out)
 	case "range-reversion-report":
 		return runRangeReversionReport(args[1:], out)
 	case "adaptive-flag-runtime-report":
@@ -54,6 +56,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick inspect-sequential-source --dsl-file=<path>
+
+inspect-sequential-source returns read-only Go parser/config/capability facts. It does not execute a strategy or establish market-data, accounting, consumer, endpoint or Forward readiness. Other families remain outside this narrow inspector's capability scope.
+
   heisentick range-reversion-report --dsl-file=<path> --entry-bars-file=<six-column BTB1 path> --source-bars-file=<six-column BTB1 path> [--daily-bars-file=<UTC-midnight daily BTB1 path>] --trade-from=<UTC RFC3339> --trade-to=<UTC RFC3339> --slippage-per-fill=<price> --commission-per-unit-side=<cash> --units=<fixed quantity>
 
 range-reversion-report runs only the dedicated M30/H1 to H4 model. A configured daily-chop gate requires a separate UTC-midnight daily series; the flag is rejected when that gate is absent. It requires fixed units and explicit slippage and per-unit commission inputs; point value, account sizing and browser/generic execution are not inferred.
