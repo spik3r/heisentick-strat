@@ -322,6 +322,11 @@ func preparePaperPrefix(r PaperPrefixRequest) (*PreparedRun, PaperBinding, error
 	if family == string(dsl.FamilyLegacySetup9) && c.FillOn != "close" {
 		return nil, binding, paperError("FILL_UNSUPPORTED")
 	}
+	if family == string(dsl.FamilyOpeningRangeBreakout) {
+		if _, err := validatePaperORB(r.Source, parsed.Config, r.Route); err != nil {
+			return nil, binding, err
+		}
+	}
 	if family == string(dsl.FamilyVWAPExtensionFade) {
 		if err := validatePaperVWAP(r.Source, parsed.Config, r.Route, r.Units, c); err != nil {
 			return nil, binding, err

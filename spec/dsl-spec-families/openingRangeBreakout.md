@@ -1,6 +1,6 @@
 # Setup family: `opening range breakout` (openingRangeBreakout)
 
-Status: specified (2026-07-03)
+Status: specified (2026-07-03); ordinary parser/runtime limitations clarified (2026-10-11)
 
 Part of `strat/docs/dsl-spec.md` §9; authoring rules and the claim tracker live in
 `plans/COMPLETED.md` (spec-families closeout).
@@ -27,10 +27,10 @@ beyond the high or low.
 | `opening range first <N> candles [in (<sessions>)]` | Build the opening range from the first `N` closed candles of the current allowed window. Numeric `bars` unit aliases are deprecated but accepted. If `in (...)` is present, those sessions also replace the shared enabled session set. | `4` candles; type defaults sessions to London+NY only when sessions are still unset by the author | `openingRangeBreakout.firstCandles`, `openingRangeBreakout.firstMinutes = 0`, `openingRangeBreakout.openingSessions`, `sessions` |
 | `opening range first <N> minutes [in (<sessions>)]` | Build the opening range from closed bars whose minutes-from-window-start are less than `N`; the setup waits until the current bar is at or after that minute mark. If `in (...)` is present, those sessions also replace the shared enabled session set. | Off; candle count mode is used | `openingRangeBreakout.firstMinutes`, `openingRangeBreakout.firstCandles = 0`, `openingRangeBreakout.openingSessions`, `sessions` |
 | `opening range every <N> hours UTC` | Use fixed, contiguous UTC slots of integer `N` hours (1–24) instead of named local trade windows. The first 15 minutes of each slot form the range, one causal breakout may enter, and an open position exits when the next slot begins. Slots are epoch-aligned and remain contiguous even when `N` does not divide 24. | Off | `openingRangeBreakout.utcSlotMinutes` |
-| `break ... [by <N> ATR]` | Set the breakout buffer beyond the frozen range edge. The parser accepts any phrase headed by `break`; `by` or `buffer` supplies the number. | `0` | `openingRangeBreakout.breakBufferAtr` |
+| `break beyond [range] edge [by/buffer <N> ATR]` | Set the breakout buffer beyond the frozen range edge. The ordinary parser requires `beyond`; bare `break buffer` is ignored and paper admission refuses it. | `0` | `openingRangeBreakout.breakBufferAtr` |
 | `hold <N> candles` | Require the last `N` closes to hold beyond the relevant range edge after range formation. | `1` | `openingRangeBreakout.holdCandles` |
-| `retest within <N> candles [tolerance <X> ATR]` | Require a retest of the broken edge before entry. Long retests need a low at/through the high edge plus a close back above it; shorts mirror that at the low edge. `by <X> ATR` is also accepted for tolerance. | Retest off; `6` candles and `0.2 ATR` tolerance when enabled | `openingRangeBreakout.requireRetest = 1`, `openingRangeBreakout.retestCandles`, `openingRangeBreakout.retestToleranceAtr` |
-| `retest off` / `retest none` | Disable the retest requirement. | Off | `openingRangeBreakout.requireRetest = 0`, `openingRangeBreakout.retestCandles`, `openingRangeBreakout.retestToleranceAtr` |
+| `retest within <N> candles [tolerance <X> ATR]` | Intended retest language; **not wired by the ordinary ORB parser**. Runtime parameters exist, but this authored clause is currently ignored and paper admission refuses it. A separate parser-and-causal-execution follow-up is required. | Retest off; `6` candles and `0.2 ATR` tolerance when enabled | `openingRangeBreakout.requireRetest = 1`, `openingRangeBreakout.retestCandles`, `openingRangeBreakout.retestToleranceAtr` |
+| `retest off` / `retest none` | Intended off form; likewise not wired by the ordinary ORB parser and refused by paper admission. | Off | `openingRangeBreakout.requireRetest = 0`, `openingRangeBreakout.retestCandles`, `openingRangeBreakout.retestToleranceAtr` |
 | `stop <N> pips` | Use a fixed absolute stop distance converted with the route instrument's reviewed pip size. When the order opens, the engine anchors this distance to the actual fill. Supported by this family for operational canaries. | Family stop | `stop.type = pips`, `stop.pips` |
 | `target <N> pips` | Use a fixed absolute target distance converted with the route instrument's reviewed pip size. When the order opens, the engine anchors this distance to the actual fill. Supported by this family for operational canaries. | Family target | `target.pips` |
 
@@ -52,12 +52,13 @@ session-selection behavior.
 ## Defaults and interactions
 
 Selecting `type: opening range breakout` enables London+NY sessions only when
-the author has not already set sessions, and explicit `sessions(...)`,
-`windows(...)`, or `opening range ... in (...)` values win regardless of
+the author has not already set sessions, and explicit `sessions(...)`
+or `opening range ... in (...)` values win regardless of
 directive order. The type also sets a structure stop beyond the opposite range
 edge with `0.25 ATR` padding, `0.4 ATR` minimum stop and `3 ATR` maximum stop,
 breakeven after `0.5R` plus `0.05 ATR`, a 12-candle cooldown, and a `1R`
-family target fallback.
+family target fallback. `windows(...)` is not an implemented ordinary alias
+(v7 rejects it; v6 may ignore it).
 
 The runtime freezes each session/day range causally from prior bars only. It
 enters at the signal close, marks each session/day as seen after the first
@@ -67,8 +68,14 @@ range-multiple target (`target.orbRange`) that overrides the R target when
 positive. `stop <N> ATR` switches to a fixed ATR stop; otherwise the stop is
 the opposite opening-range edge plus shared stop padding. In UTC-slot mode,
 the engine observes a slot change on the next closed bar and closes the open
-trade at that bar's close. For XAUUSD, the reviewed pip size is `0.1`, so 10
+trade at that bar's open, before stop/target bracket processing. For XAUUSD, the reviewed pip size is `0.1`, so 10
 pips is 1.0 price point and 20 pips is 2.0 price points.
+
+The Go paper option matrix and explicit refusals are documented in
+[`forward-paper-prefix.md`](../forward-paper-prefix.md). Ordinary ORB does not
+consume New York hour filters; paper admission refuses them rather than silently
+claiming that gate. This does not affect working local-hour or UTC trade-window
+filters.
 
 ## Example
 

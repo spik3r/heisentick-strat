@@ -314,6 +314,46 @@ try {
   }
   resumeSplits++;
 
+  // Shared invented ORB cases exercise the Go-owned option class, including
+  // hand expectations for management and paired causal gates. JS only compares
+  // authoritative outputs; it never implements admission or financial formulas.
+  const orbCorpus = JSON.parse(readFileSync(join(root, 'engine/testdata/paper_orb/cases.json'), 'utf8'));
+  for (const c of orbCorpus) {
+    const request = c.request;
+    if (c.error) {
+      const raw = JSON.stringify(request); refuse([raw], c.error, raw);
+      continue;
+    }
+    const full = compare(request, `orb-class-${c.name}-full`);
+    for (const result of full) {
+      const entry = result.events.find((e) => e.kind === 'entry');
+      const exit = result.events.findLast((e) => e.kind === 'exit');
+      const observed = {
+        realizedNet: result.account.realizedNet, equity: result.account.equity,
+        fees: result.account.fees, completedTrades: result.completedTrades.count,
+        netPnl: result.completedTrades.netPnl, openCount: result.openPositions.length,
+        partialEvents: result.events.filter((e) => e.kind === 'partial').length,
+        entryIndex: entry?.index, entrySide: entry?.effect.side, entrySize: entry?.effect.size,
+        exitIndex: exit?.index, exitReason: exit?.effect.reason, stop: result.openPositions[0]?.sl,
+      };
+      for (const [key, expected] of Object.entries(c.expected)) assert.equal(observed[key], expected, `${c.name}: ${key}`);
+    }
+    for (let split = 1; split <= request.bars.length; split++) {
+      const first = compare(prefix(request, split), `orb-class-${c.name}-prefix-${split}`);
+      const resumed = compare(request, `orb-class-${c.name}-resume-${split}`, first.map((r) => r.checkpoint), first.map((r) => r.events));
+      for (let i = 0; i < 2; i++) {
+        assert.deepEqual([...first[i].events, ...resumed[i].events], full[i].events);
+        assert.deepEqual({ ...resumed[i], events: full[i].events, eventRange: full[i].eventRange }, full[i]);
+      }
+      resumeSplits++;
+    }
+    const retry = compare(request, `orb-class-${c.name}-committed-retry`, full.map((r) => r.checkpoint), full.map((r) => r.events));
+    for (let i = 0; i < 2; i++) {
+      assert.equal(retry[i].events.length, 0);
+      assert.deepEqual(retry[i].checkpoint, full[i].checkpoint);
+    }
+  }
+
   // VEF expectations are independently specified rational fixtures checked by
   // Go tests. This transport compares every financial field exactly, rather
   // than introducing another JS financial implementation or a tolerance.
