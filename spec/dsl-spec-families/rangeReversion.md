@@ -4,7 +4,10 @@
 sweep of either a prior chart-timeframe channel or completed source-timeframe
 extremes. The Go runner is invoked explicitly with
 `heisentick range-reversion-report`. Ordinary reports, grids, generic engine
-execution, browser runtime and UI routes reject the family.
+execution and generic browser routes reject the family. The separate
+[fixed-rule R11 fixture/WASM bridge](../../docs/r11-wasm-fixture-v1.md) admits
+only its two hash-pinned research sources and explicit two-stream input contract;
+it does not make arbitrary range-reversion sources executable in generic routes.
 
 The source is strict and complete. A canonical strategy has `strategy`,
 `market` and `setup` blocks. It specifies the chart and source timeframe,
@@ -13,6 +16,13 @@ gate's enable flag and parameters, ATR stop and target, cooldown, breakeven
 trigger and offset in ticks, and the assumed tick size. Unknown directives,
 duplicate directives, missing fields, invalid numbers and duplicate blocks
 are errors. All effective fields appear in the config emitted by the parser.
+
+Reserved family intent selects strict parsing before legacy defaults or later
+`type:` declarations can replace it. Quoted, punctuation-separated or Unicode-
+spaced spellings of the complete family name are refused, not accepted aliases.
+Quoted metadata and named-list data remain opaque, and ordinary legacy uses of
+`range` retain their existing meaning. Canonical grammar and fixed-rule source
+hashes are unchanged.
 
 ```strat
 dsl v7
@@ -108,5 +118,6 @@ entry cancellation count, and censored/pending state. It does not infer point
 value, account equity sizing, financing or broker fills.
 
 The family is dedicated-runner only. Its parser warning is not a qualification
-claim, and no standard chart, generic report, grid, WASM or browser execution
-is supported by this contract.
+claim. Standard generic reports, grids and browser execution remain unsupported;
+the separately versioned, source-pinned R11 fixture/WASM bridge above is the
+bounded research exception.

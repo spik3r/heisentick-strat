@@ -1,0 +1,20 @@
+{
+  "case": "diagnostic-range-reversion-reserved-selector",
+  "category": "diagnostic",
+  "cfg": {},
+  "description": "Quoted reserved intent cannot be erased by a later legacy family selector.",
+  "diagnostics": [
+    {
+      "col": null,
+      "line": null,
+      "message": "range reversion: expected \"range\" at token 11",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "range reversion: expected \"range\" at token 11"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "Invented HT-190 parser admission fixture; no market data.",
+  "warnings": []
+}

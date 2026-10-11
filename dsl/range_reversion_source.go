@@ -254,6 +254,9 @@ func parseRangeReversionSource(source string) ParseResult {
 		result.Config, err = p.parse()
 	}
 	if err != nil {
+		// A refusal has no runnable config, but the public parse-result contract
+		// still requires an object rather than null, including parser-stage errors.
+		result.Config = Config{}
 		message := "range reversion: " + err.Error()
 		result.Errors = append(result.Errors, message)
 		result.Diagnostics = append(result.Diagnostics, Diagnostic{Severity: DiagnosticError, Message: message})

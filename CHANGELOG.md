@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+- Refuse malformed reserved `range reversion` selectors before legacy parsing
+  can silently execute a different family. Preserve canonical R11 grammar,
+  fixed-rule source hashes and quoted metadata/list values. Add invented
+  parser/native/WASM admission regressions and one diagnostic parse fixture;
+  every existing golden is unchanged. Clarify the existing dedicated fixed-rule
+  WASM bridge exception. This parser correction requires a minor release.
+
 - Add a source-frozen Sequential companion backtest export with one-pass raw
   broker accounting, all-fee trade net, headline statistics and explicitly
   versioned close-bar MTM equity/drawdown. Keep existing run/trade envelopes,
