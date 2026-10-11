@@ -93,6 +93,15 @@ jobs:
         if: steps.mod.outputs.present == 'true'
         run: node --test scripts/checks/release-packaging.test.mjs
 
+      - name: Sequential source inspection actual native and WASM parity
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 3
+        run: |
+          native_dsl="$(mktemp "$RUNNER_TEMP/sequential-inspection-dsl.XXXXXX")"
+          trap 'rm -f "$native_dsl"' EXIT
+          go build -trimpath -o "$native_dsl" ./cmd/dslwasm
+          node scripts/checks/sequential-source-inspection.mjs cmd/heisentick/heisentick "$native_dsl" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
       - name: Down-shock source native report and WASM parity
         if: steps.mod.outputs.present == 'true'
         run: |

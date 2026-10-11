@@ -1,0 +1,575 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sequential-source-capability-v1.schema.json",
+  "title": "Read-only Go Sequential source capability inspection v1",
+  "description": "Producer facts only. No data, costs, consumer readiness or execution admission is inferred. Returned cfg is unchanged Go ParseResult. External artifact identities must be independently verified.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-source-capability-v1"
+        },
+        "contractVersion": {
+          "const": 1
+        },
+        "apiVersion": {
+          "const": 1
+        },
+        "grammarHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "ok": {
+          "const": false
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "SEQUENTIAL_INSPECTION_ARGUMENTS",
+                "SEQUENTIAL_INSPECTION_SOURCE",
+                "SEQUENTIAL_INSPECTION_PARSE",
+                "SEQUENTIAL_INSPECTION_SERIALIZATION",
+                "SEQUENTIAL_INSPECTION_INPUT",
+                "SEQUENTIAL_INSPECTION_INTERNAL"
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "apiVersion",
+        "grammarHash",
+        "producer",
+        "ok",
+        "error"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-source-capability-v1"
+        },
+        "contractVersion": {
+          "const": 1
+        },
+        "apiVersion": {
+          "const": 1
+        },
+        "grammarHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "ok": {
+          "const": true
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "utf8Bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8388608
+            }
+          },
+          "required": [
+            "sha256",
+            "utf8Bytes"
+          ]
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceParsed": {
+              "$ref": "#/$defs/fact"
+            },
+            "engineSupported": {
+              "$ref": "#/$defs/fact"
+            },
+            "genericSourceExecution": {
+              "$ref": "#/$defs/fact"
+            },
+            "sourceAccounting": {
+              "$ref": "#/$defs/fact"
+            },
+            "fixtureAccounting": {
+              "$ref": "#/$defs/fact"
+            },
+            "calendarExecution": {
+              "$ref": "#/$defs/fact"
+            },
+            "preserveOpenEndpoint": {
+              "$ref": "#/$defs/fact"
+            },
+            "preservedPrefix": {
+              "$ref": "#/$defs/fact"
+            },
+            "checkpointResume": {
+              "$ref": "#/$defs/fact"
+            },
+            "recovery": {
+              "$ref": "#/$defs/fact"
+            },
+            "marketDataReadiness": {
+              "$ref": "#/$defs/fact"
+            },
+            "consumerIntegration": {
+              "$ref": "#/$defs/fact"
+            }
+          },
+          "required": [
+            "sourceParsed",
+            "engineSupported",
+            "genericSourceExecution",
+            "sourceAccounting",
+            "fixtureAccounting",
+            "calendarExecution",
+            "preserveOpenEndpoint",
+            "preservedPrefix",
+            "checkpointResume",
+            "recovery",
+            "marketDataReadiness",
+            "consumerIntegration"
+          ]
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cfg": {
+              "type": "object"
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            },
+            "warnings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "$ref": "diagnostic-v1.schema.json"
+              }
+            }
+          },
+          "required": [
+            "cfg",
+            "errors",
+            "warnings",
+            "diagnostics"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "apiVersion",
+        "grammarHash",
+        "producer",
+        "ok",
+        "source",
+        "capabilities",
+        "result"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-source-capability-v1"
+        },
+        "contractVersion": {
+          "const": 1
+        },
+        "apiVersion": {
+          "const": 1
+        },
+        "grammarHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "ok": {
+          "const": true
+        },
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "utf8Bytes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 8388608
+            }
+          },
+          "required": [
+            "sha256",
+            "utf8Bytes"
+          ]
+        },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceParsed": {
+              "$ref": "#/$defs/fact"
+            },
+            "engineSupported": {
+              "$ref": "#/$defs/fact"
+            },
+            "genericSourceExecution": {
+              "$ref": "#/$defs/fact"
+            },
+            "sourceAccounting": {
+              "$ref": "#/$defs/fact"
+            },
+            "fixtureAccounting": {
+              "$ref": "#/$defs/fact"
+            },
+            "calendarExecution": {
+              "$ref": "#/$defs/fact"
+            },
+            "preserveOpenEndpoint": {
+              "$ref": "#/$defs/fact"
+            },
+            "preservedPrefix": {
+              "$ref": "#/$defs/fact"
+            },
+            "checkpointResume": {
+              "$ref": "#/$defs/fact"
+            },
+            "recovery": {
+              "$ref": "#/$defs/fact"
+            },
+            "marketDataReadiness": {
+              "$ref": "#/$defs/fact"
+            },
+            "consumerIntegration": {
+              "$ref": "#/$defs/fact"
+            }
+          },
+          "required": [
+            "sourceParsed",
+            "engineSupported",
+            "genericSourceExecution",
+            "sourceAccounting",
+            "fixtureAccounting",
+            "calendarExecution",
+            "preserveOpenEndpoint",
+            "preservedPrefix",
+            "checkpointResume",
+            "recovery",
+            "marketDataReadiness",
+            "consumerIntegration"
+          ]
+        },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cfg": {
+              "type": "object"
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 0
+            },
+            "warnings": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "$ref": "diagnostic-v1.schema.json"
+              }
+            }
+          },
+          "required": [
+            "cfg",
+            "errors",
+            "warnings",
+            "diagnostics"
+          ]
+        },
+        "configIdentity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "encoding": {
+              "const": "go-encoding-json-config-v1"
+            }
+          },
+          "required": [
+            "sha256",
+            "encoding"
+          ]
+        },
+        "classification": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "family": {
+              "type": "string",
+              "minLength": 1
+            },
+            "profile": {
+              "type": "string",
+              "minLength": 1
+            },
+            "policy": {
+              "type": "string",
+              "enum": [
+                "E1",
+                "E2"
+              ]
+            },
+            "symbol": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_.-]{0,31}$"
+            },
+            "timeframe": {
+              "type": "string",
+              "enum": [
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "1h",
+                "4h",
+                "1d"
+              ]
+            }
+          },
+          "required": [
+            "family"
+          ]
+        },
+        "genericExecutionContract": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "contract": {
+              "const": "sequential-full-execution.v1"
+            },
+            "surfaces": {
+              "const": [
+                "engine.Run",
+                "engine.PrepareRun",
+                "engine.RunFixtureCase",
+                "engineRunFixture"
+              ]
+            },
+            "costs": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "fillOn": {
+                  "const": [
+                    "open",
+                    "nextOpen"
+                  ]
+                },
+                "numericDomain": {
+                  "const": "finite-nonnegative"
+                },
+                "zeroStartEquityDefault": {
+                  "const": 10000
+                },
+                "feeBasis": {
+                  "const": "per-unit-per-side"
+                },
+                "slippageBasis": {
+                  "const": "absolute-plus-abs-reference-price-bps"
+                },
+                "tradePnl": {
+                  "const": "exit-credit-excludes-entry-fee"
+                },
+                "unitModel": {
+                  "const": "abstract-linear-units"
+                }
+              },
+              "required": [
+                "fillOn",
+                "numericDomain",
+                "zeroStartEquityDefault",
+                "feeBasis",
+                "slippageBasis",
+                "tradePnl",
+                "unitModel"
+              ]
+            }
+          },
+          "required": [
+            "contract",
+            "surfaces",
+            "costs"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "apiVersion",
+        "grammarHash",
+        "producer",
+        "ok",
+        "source",
+        "capabilities",
+        "result",
+        "configIdentity"
+      ]
+    }
+  ],
+  "$defs": {
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "goVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goos": {
+          "type": "string",
+          "minLength": 1
+        },
+        "goarch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "moduleVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vcsRevision": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+            }
+          ]
+        },
+        "vcsModified": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "required": [
+        "goVersion",
+        "goos",
+        "goarch",
+        "moduleVersion",
+        "vcsRevision",
+        "vcsModified"
+      ]
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "supported",
+            "unsupported",
+            "unknown"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "enum": [
+            "SOURCE_PARSED",
+            "SOURCE_PARSE_FAILED",
+            "OUTSIDE_INSPECTOR_SCOPE",
+            "SEQUENTIAL_CONFIG_REJECTED",
+            "INPUTS_NOT_INSPECTED",
+            "CONSUMER_NOT_INSPECTED",
+            "SEQUENTIAL_FULL_CONFIG_SUPPORTED",
+            "GENERIC_SYNTHETIC_EXECUTION_ONLY",
+            "SOURCE_ACCOUNTING_EXPORT_UNAVAILABLE",
+            "EXACT_FROZEN_FIXTURE_REQUIRED",
+            "SEQUENTIAL_CALENDAR_UNSUPPORTED",
+            "SEQUENTIAL_OPEN_ENDPOINT_UNSUPPORTED",
+            "SEQUENTIAL_PREFIX_UNSUPPORTED",
+            "SEQUENTIAL_CHECKPOINT_UNSUPPORTED",
+            "SEQUENTIAL_RECOVERY_UNQUALIFIED"
+          ]
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "status",
+        "code",
+        "constraints"
+      ]
+    }
+  }
+}
