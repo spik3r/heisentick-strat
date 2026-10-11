@@ -1,0 +1,344 @@
+{
+  "schema": "ht245.compare.v2",
+  "observation": "15-significant-digit serialized public trade output",
+  "reference": "linux-amd64v1-go1.22.12",
+  "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "manifestSha256": "db2af108dd47ddd908b147e4b2488c662fa2022937435dd1eeed8cf6cb643097",
+  "comparatorSha256": "2e45ce0b955bbfaa71f97fb88f4f556222a9fcf350579ae97aded6c84cfb2f77",
+  "evidence": [
+    {
+      "runSha256": "c7e283cc57836e77ca74b815a7dac4fce34a2d2fb2ac8e216aabbc04e346ff60",
+      "identitySha256": "5dad74b7f6eb42ef1f5bc41b60da421ee2c5b5e225b834239516a270b590d923",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "ab8d6e49db0b1163b0e9e957166670492a2c908e87fb30d4a6922faedd91d0da",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "5b82ba71d6c17f3adbe53b93f66d02d2dddfd7c144a49835cf5b849be9f5e15d",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v3",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "9e201bf7915962359b1a5a0f19ad7c0c13b100e3686713b70a249be8bb941496",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "js",
+            "GOARCH": "wasm",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "node-go-js-wasm",
+            "version": "v24.19.0",
+            "glueSha256": "f8b767afd9cb2a4a0d0dedc9cacd8069481b00dac3adf8b8da39b1350d7014b2",
+            "implementationSha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+          }
+        }
+      ]
+    }
+  ],
+  "targets": {
+    "linux-amd64v3-go1.22.12": {
+      "attemptedCases": 654,
+      "successfulPairs": 630,
+      "matchingRefusals": 24,
+      "counts": {
+        "identical": 630,
+        "matching-refusal": 24
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 6174,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "js-wasmjs-go1.22.12": {
+      "attemptedCases": 654,
+      "successfulPairs": 630,
+      "matchingRefusals": 24,
+      "counts": {
+        "identical": 630,
+        "matching-refusal": 24
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 6174,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    }
+  }
+}

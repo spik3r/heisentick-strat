@@ -1,0 +1,131 @@
+{
+  "schema": "ht245-executable-independent-review-v1",
+  "verdict": "GO for executable freeze only",
+  "expectedPublicationTree": "fe01c041646444889e4bfbee4f26a2457d4ab752",
+  "tools": {
+    "ablate-arch-constants.sh": "266d38535d8446ad48075cdba68f0f6c60e58fa1ec544d56bb26da5a8a1b340f",
+    "asm-evidence.sh": "b0db95873dbfe44e0d095f1d2be6adc52be403a2464151d3717c4815bb107ad2",
+    "compare.mjs": "2e45ce0b955bbfaa71f97fb88f4f556222a9fcf350579ae97aded6c84cfb2f77",
+    "evidence.mjs": "03babf69bf0d35ccb1fb87eaaa9925b6d8f62dd078cc5a1640d57677eea111b6",
+    "evidence.test.mjs": "1ae9d011cbe546830be9ca7be5b61d8540e7366c1b3c0bac334245f577fe72ee",
+    "gen-boundary-manifest.mjs": "2f3fca2fa1a3f57ef2742918ade63cb9d63ac8df92dc0fe79b7a4f1e411dfbd6",
+    "gen-cancellation-manifest.mjs": "1d61f1a4a50217a6ce581778650c5ccce7125bea039ab69a93274a49f1685068",
+    "identity.sh": "83ec44c6fc27ea048ff59bbf65d411ae734fd7589ffd70cc2a9e4afaff3f38fb",
+    "run-all.sh": "6f6a40db2d055ea359ec538547edcb95ae02cd3a6e5028456b7de736ee0fea5f",
+    "run-matrix.mjs": "15e57bcb88611dce59042895daad44db5332ef032e3493b2daed2237401f01b1",
+    "run-matrix.sh": "e1e1ecead2f922cf54dd2cf8ca39b0539492120f9d4ff6ab532984fcae52a07d"
+  },
+  "toolsSha256": "42010b71adfeb966b0eeccde946fc19a04fb7a46559e2bba8650fc8e05d32e36",
+  "executables": {
+    "harness/main.go": "e0c67b84c918b6333a63f87a8179801e614ca09b6bf1fb6b03298433d43fa9ee",
+    "micro/main.go": "62ded5d589839ad24c120bfbb8a2af2dca04976a045d1002d84f95916d1e979f",
+    "probe/main.go": "bc264aa03fdfcababca4cdb513308853a3aff61191e718e5bd7c79a568c895ca"
+  },
+  "manifests": {
+    "boundary-patches.json": "223aa939515f40a83b12a787c8cf6a5e8669fdb496f08a28bdf0ea33a88b625b",
+    "boundary-search.json": "f73c938d3e6dd18ef1278888249495641a9c5c725c96f5db0a7a7c9292aaac53",
+    "cancellation-variants.json": "62f0d3cde17bba7a4bcfc5d63db27f52abb9750b7c491cbf5a436849000dd41b",
+    "frozen-run-corpus.json": "9f4b8fe45e144dafae3900c9b9fbdfc39bf8e8f7545ea4e493b9d1dbc0dbed54",
+    "scaled-prices.json": "db2af108dd47ddd908b147e4b2488c662fa2022937435dd1eeed8cf6cb643097",
+    "scaled-search.json": "14b576be36f5be50ea10b91d9383dec0925866c51d582fa7329a4c75b9da660f"
+  },
+  "scheduleManifestSha256": "3fdb0517fceb5c840eb5893a302a6c8172ccfc5712bdf47ab3a9c80d44791f8d",
+  "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "checks": {
+    "nodeRegressions": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "compilerFixturesEnabled": true
+    },
+    "sequentialProofRegressions": {
+      "passed": 19,
+      "failed": 0
+    },
+    "independentOriginalProofNegatives": {
+      "passed": 18
+    },
+    "boundaryGeneratorMismatchedSources": "refused",
+    "concurrentOutputOwnership": "one winner; second runner refused EEXIST",
+    "original261ActualSourceHashes": "unchanged",
+    "exactSourceMapAdditions": [
+      "harness/main.go",
+      "micro/main.go",
+      "probe/main.go"
+    ],
+    "productionClosuresAnd21InstructionPins": "unchanged",
+    "numericInputPreservation": "all old fields unchanged; only 24/120 expectedError annotations added",
+    "runtimeProbe": {
+      "go": "go1.22.12",
+      "node": "v24.19.0",
+      "environment": "minimal inherited PATH/HOME/TMPDIR; expanded worker environment exceeded Go1.22 WASM environment budget and correctly failed",
+      "runSha256": "231cda236e54f828c47643e93318ad40b2bffce9b6971201fe7c14e2dc08a0c0",
+      "identitySha256": "c3497e775442983029bb0ef9cc5c95eb76d9f7c00faee45f5b08b1b4a8c47257",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "attempts": 25,
+          "successful": 1,
+          "refusals": 24,
+          "receiptSha256": "25a70ab3cf833d070d17be88709ba7b95851640b81e5395e5e10e13f6d52bad3",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "attempts": 25,
+          "successful": 1,
+          "refusals": 24,
+          "receiptSha256": "890265ca598867a67bdeae60fed11fb7bcfe2c7d221e7945a553e90e6862c57c",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "attemptHistory": [
+        {
+          "attempt": 1,
+          "environment": "ordinary inherited worker environment",
+          "status": "failed",
+          "runFile": "refusal-probe-run/run.json",
+          "runSha256": "5188b2b030e4902f13e8b1802a162f8eabfd7dffe6a9bec414632ae976cbe5c9",
+          "identitySha256": "c3497e775442983029bb0ef9cc5c95eb76d9f7c00faee45f5b08b1b4a8c47257",
+          "reason": "one or more required targets failed",
+          "targets": [
+            {
+              "label": "linux-amd64v1-go1.22.12",
+              "status": "ran",
+              "attempts": 25,
+              "successful": 1,
+              "refusals": 24,
+              "reason": null,
+              "receiptSha256": "25a70ab3cf833d070d17be88709ba7b95851640b81e5395e5e10e13f6d52bad3"
+            },
+            {
+              "label": "js-wasmjs-go1.22.12",
+              "status": "not-run",
+              "attempts": null,
+              "successful": null,
+              "refusals": null,
+              "reason": "/workspace/shared/ht245-independent-review-20261011/toolchain/go/misc/wasm/go_js_wasm_exec /workspace/shared/ht245-independent-review-20261011/correction-semantic-review/work/build-dER4F2/js-wasmjs-go1.22.12.wasm -root /workspace/shared/ht245-correction-20261011 -manifest /workspace/shared/ht245-independent-review-20261011/correction-semantic-review/refusal-probe-manifest.json -label js-wasmjs-go1.22.12 failed: Error: total length of command line and environment variables exceeds limit\n    at globalThis.Go.run (/workspace/shared/ht245-independent-review-20261011/toolchain/go/misc/wasm/wasm_exec.js:531:11)\n    at /workspace/shared/ht245-independent-review-20261011/toolchain/go/misc/wasm/wasm_exec_node.js:35:12\n\n\n1 !== 0\n",
+              "receiptSha256": null
+            }
+          ]
+        },
+        {
+          "attempt": 2,
+          "environment": "only PATH/HOME/TMPDIR inherited; explicit task compiler and scratch work location",
+          "status": "complete",
+          "runFile": "refusal-probe-minimal/run.json",
+          "runSha256": "231cda236e54f828c47643e93318ad40b2bffce9b6971201fe7c14e2dc08a0c0",
+          "identitySha256": "c3497e775442983029bb0ef9cc5c95eb76d9f7c00faee45f5b08b1b4a8c47257",
+          "reason": "same frozen tools retried in a fresh directory after the Go 1.22 WASM argv/environment limit; no source edits"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "No ARM64 runtime execution in this review.",
+    "ARM64 instruction evidence is compilation-only.",
+    "Final report and real ARM run remain separate pending evidence."
+  ]
+}

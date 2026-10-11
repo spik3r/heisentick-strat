@@ -1,0 +1,72 @@
+{
+  "schema": "ht245.run.v2",
+  "status": "complete",
+  "startedAt": "2026-10-11T08:20:53.478Z",
+  "host": {
+    "os": "linux",
+    "arch": "arm64",
+    "release": "6.17.0-1011-oracle"
+  },
+  "targets": [
+    {
+      "label": "linux-arm64nofma-go1.22.12",
+      "alias": "arm64nofma",
+      "status": "ran",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "goVersionM": "/home/ubuntu/ht245-qualification-20261011T0816Z/work/build-i9ggK3/linux-arm64nofma-go1.22.12.bin: go1.22.12\n\tpath\tgithub.com/spik3r/heisentick-strat/investigations/ht245-broker-arithmetic/harness\n\tmod\tgithub.com/spik3r/heisentick-strat\t(devel)\t\n\tbuild\t-buildmode=exe\n\tbuild\t-compiler=gc\n\tbuild\t-gcflags=all=-d=fmahash=n\n\tbuild\t-trimpath=true\n\tbuild\tCGO_ENABLED=0\n\tbuild\tGOARCH=arm64\n\tbuild\tGOOS=linux\n",
+      "runner": {
+        "kind": "native",
+        "host": {
+          "os": "linux",
+          "arch": "arm64",
+          "release": "6.17.0-1011-oracle"
+        }
+      },
+      "runtime": {
+        "settings": {
+          "-buildmode": "exe",
+          "-compiler": "gc",
+          "-gcflags": "all=-d=fmahash=n",
+          "-trimpath": "true",
+          "CGO_ENABLED": "0",
+          "GOARCH": "arm64",
+          "GOOS": "linux"
+        },
+        "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+        "go": "go1.22.12",
+        "goos": "linux",
+        "goarch": "arm64",
+        "module": "github.com/spik3r/heisentick-strat"
+      },
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "receiptSha256": "1772bcd35ac005d5278e07af168f6018bf34b9f27ccf75952867f3a0892e1717",
+      "attempts": 6,
+      "successful": 6,
+      "refusals": 0
+    }
+  ],
+  "identitySha256": "cee062035f20f2b8730772fa69651135dacd3eeea6e88440624b4550e6a2c30b",
+  "manifestSha256": "223aa939515f40a83b12a787c8cf6a5e8669fdb496f08a28bdf0ea33a88b625b",
+  "finishedAt": "2026-10-11T08:20:54.337Z"
+}

@@ -1,0 +1,198 @@
+{
+  "kind": "qualification-summary",
+  "schema": "sequential-backtest-parity-receipt-v1",
+  "go": "go version go1.22.12 linux/amd64",
+  "node": "v24.19.0",
+  "nativeArch": "amd64",
+  "runtime": "native-and-actual-node-go-wasm",
+  "comparison": "exact same-target and upstream; exact pinned-target downstream replay; no numeric tolerance",
+  "prechangeNative": true,
+  "prechangeWasm": true,
+  "browser": "unrun",
+  "release": "unpublished-local-qualification",
+  "status": "passed",
+  "qualificationPass": true,
+  "rawCrossTargetExact": true,
+  "complete": true,
+  "unexplainedMismatchComparisons": 0,
+  "explainedMismatchComparisons": 0,
+  "missingEvidence": [],
+  "baselineSource": {
+    "commit": "f8aba9ef13e22ace21ce31f2ed06cd86ad53464d",
+    "tree": "8e4ef994a636f2125bab2bb909c28fca5db2351d",
+    "verifiedFiles": 1467,
+    "comparison": "complete Git blob identities; no extra files"
+  },
+  "exactArithmetic": {
+    "codegen": {
+      "schema": "sequential-codegen-verification-v1",
+      "goVersion": "go1.22.12",
+      "nativeTarget": "linux-amd64",
+      "python": "3.12.14",
+      "manifestSha256": "3fdb0517fceb5c840eb5893a302a6c8172ccfc5712bdf47ab3a9c80d44791f8d",
+      "sourceParents": [
+        "668c1b24cf9b30ff65aed9722e8ba068bbc18951",
+        "2196722113496a5ccd88850cbb441c02f120a66f",
+        "45c6ebf917a1e313fe0bdf56dfbe405504a008bd"
+      ],
+      "sourceCount": 264,
+      "targets": {
+        "linux-amd64": {
+          "instructions": {
+            "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
+              "sha256": "90d1ce1102961e09e77000f91ba84cf108c497302f7018363a277e9fe3540e5c",
+              "instructionCount": 196
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
+              "sha256": "ff89f25281656573b929fb85fed518ba20b182c9476fe4672ebd154afaeb4961",
+              "instructionCount": 281
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
+              "sha256": "a7a1cdfa37834f5ea5d4338c40d3216d0da9e09d19ec4e66ca645a3ed632aff3",
+              "instructionCount": 225
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
+              "sha256": "93b4dfb38a9f4f334f4fb119eea9920845f8660ffc1eb510e3fbbb3a0f1b3a70",
+              "instructionCount": 305
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
+              "sha256": "6878db2da63103e016f7258a4b0f851d3573bac9965a099a1a39f68395de99e3",
+              "instructionCount": 314
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
+              "sha256": "54173fa7cb56b619faf3c764c7fa2e699d7d74446afefeacb1ff485e0c9ff699",
+              "instructionCount": 161
+            },
+            "github.com/spik3r/heisentick-strat/report.ProjectSequentialMetrics": {
+              "sha256": "32e7b2df2a5818b65578e10f15500d27806e52994060ae20e74f15a4d0f8b83e",
+              "instructionCount": 485
+            }
+          },
+          "buildInputCount": 215,
+          "buildInputsSha256": "cb95fca65238c5dd9bdff7acd5c4e2c0947084c1c0d71396f1cc9599bdb60c56"
+        },
+        "js-wasm": {
+          "instructions": {
+            "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
+              "sha256": "59eb8087d14a89d316e6ff63c07bf8ff112062d549ca312a302320964978033b",
+              "instructionCount": 810
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
+              "sha256": "3534ff92dd250ccd1592eca20b9f2713f8501ac1f766f070f6fae08264f88428",
+              "instructionCount": 1220
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
+              "sha256": "96becad4f609c50302eb8c32408f314911466d198a374d414e261c79f9c2e043",
+              "instructionCount": 1015
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
+              "sha256": "db87082aa7692ce4b9531133255ce56567a78bec29effe929196dc2fe0675674",
+              "instructionCount": 1457
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
+              "sha256": "44dde235b7ed8084bcc516f1dbe2cf52854b29cf39a9ca7c2f12552730a65c0a",
+              "instructionCount": 1453
+            },
+            "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
+              "sha256": "7c58063e946a8f421a6fb2430af7f363ef8e09a4408756a26a1a4337dd9614d8",
+              "instructionCount": 714
+            },
+            "github.com/spik3r/heisentick-strat/report.ProjectSequentialMetrics": {
+              "sha256": "f547a853cc1870489e65957ae195792e5fe3b1a5e5a577ba4fc847bc1550227e",
+              "instructionCount": 2176
+            }
+          },
+          "buildInputCount": 220,
+          "buildInputsSha256": "4c0784bd99ed2f35ec6196aaad39122c5d71bffd8d2f00dfe9012e093f23c5d2"
+        }
+      }
+    },
+    "selfTests": {
+      "schema": "sequential-proof-tests-v1",
+      "passed": true,
+      "tests": 19,
+      "failures": 0,
+      "errors": 0
+    },
+    "pairs": 64,
+    "exactArithmeticChecks": 47740,
+    "completeFloatBitChecks": 92156,
+    "explainedRawNumericLeaves": 0,
+    "verifierSha256": "3637cb29d408aa3dbc2e9c1bec73e42d45b52c5b59a4791135dfefeffa1476d4",
+    "testSha256": "e3e1a5686c6844623b885f35613f237e14c943d37d7313aa7b045d7b9e7a98a3",
+    "scheduleSha256": "3fdb0517fceb5c840eb5893a302a6c8172ccfc5712bdf47ab3a9c80d44791f8d"
+  },
+  "expectedCaseCount": 88,
+  "attemptedCaseCount": 88,
+  "failure": null,
+  "caseCount": 88,
+  "mismatchComparisons": 0,
+  "rawEvidenceGuardChecks": {
+    "native": 19,
+    "wasm": 19
+  },
+  "mismatchCases": 0,
+  "categoricalMismatchCases": 0,
+  "observedCategoricalMismatchCases": 0,
+  "sameArchitectureChecks": {
+    "nativePrechangeToCurrent": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "nativeCaptureOffToOn": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "wasmPrechangeToCurrent": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "wasmCaptureOffToOn": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "wasmRepeat": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "wasmColumnsToCompanion": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "wasmPrechangeColumns": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "nativeRawToCompanion": {
+      "status": "passed",
+      "passedCases": 64
+    },
+    "wasmRawToCompanion": {
+      "status": "passed",
+      "passedCases": 64
+    }
+  },
+  "compiler": {
+    "GOAMD64": "v1",
+    "GOARCH": "amd64",
+    "GOEXPERIMENT": "",
+    "GOFLAGS": "",
+    "GOHOSTARCH": "amd64",
+    "GOHOSTOS": "linux",
+    "GOOS": "linux"
+  },
+  "scriptSha256": "16144e04619c1251ca227330678d612e42d3b30c28a632c26ac0d2b066d415e8",
+  "artifacts": {
+    "engineNative": "b8e80a413b9c6e9d530de6ddcbf18f0999efc1afa859f70711ddde8c13ee56af",
+    "engineWasm": "faf58b09b2f102f2059da5ccbd7265ec5e5f57043d24403188180f87c18bbc81",
+    "parserNative": "127d76a7ddb21c42070aac83fd07df45e5e13f5e3bb08fd2e69da3dac0bdc50f",
+    "parserWasm": "31afbedd862f2f3ae87dde361572af92a2cf86e51ca9bd1096ef6087a6b90659",
+    "wasmExec": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229",
+    "rawHelperSource": "5212f3ca5e097917881c8edc505c5b5f6c9182a809a2c00b9ad2e67d0e31516f",
+    "rawHelperNative": "24a87968ab1242ca4199a310717e51fb872fc97cc45abc8f84f53b1ed46b1d27",
+    "rawHelperWasm": "2d933a0f8fc49bc9dbd90c758241a5483384907449be0d7a8a32a410df1de044",
+    "wasmExecNode": "c91e20cf70dc4ab76b633f392676e9f1b22d849ba5fca4f80422391705a26638",
+    "baselineEngineNative": "9894c168a18205f63507d6b93465a5db7164ebd8fbd0daa98086a3bfe90f6a4d",
+    "baselineEngineWasm": "aad2c7eeb2e1797a84e836b83a6948a485547f386c4c24f586184c247b6059b8"
+  }
+}

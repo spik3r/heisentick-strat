@@ -1,263 +1,333 @@
-# HT-245 investigation: broker arithmetic across paths and strategies
+# HT-245: broker arithmetic investigation and evidence correction
 
-Status: investigation only. No engine, golden, fingerprint, release or pin file is
-changed. Task: [HT-245](https://github.com/spik3r/heisentick-backlog/blob/main/tasks/HT-245-broker-arm64-fused-arithmetic.md).
-Claim: backlog PR 482. Written 2026-10-11.
+Investigation only. Producer engine/context source, frozen goldens, runtime
+fingerprints, releases and consumer pins are unchanged. The only qualification
+manifest amendment admits the three investigation Go executables to the exact
+source inventory; production dependency closures and instruction pins are unchanged.
 
-## Answer
+Task: [HT-245](https://github.com/spik3r/heisentick-backlog/blob/main/tasks/HT-245-broker-arm64-fused-arithmetic.md).
+Original investigation: Claude, Strat PR118 at `6dfa80eb6e36100a4fcc7fa951a293d05c400c32`.
+Evidence correction: Astra, following the [independent review](https://github.com/spik3r/heisentick-strat/pull/118#issuecomment-6106782457)
+and the [additive takeover claim](https://github.com/spik3r/heisentick-backlog/blob/b0ca3b5d7828e3c67cea5ad85cf58d80fc68b3f4/tasks/HT-245-broker-arm64-fused-arithmetic.md)
+in [backlog PR482](https://github.com/spik3r/heisentick-backlog/pull/482). Original author text and receipts are
+retained in [the historical report](results/author-report-6dfa80e.md) and the
+existing `results/` files. Those historical outputs are not current v2 run evidence.
 
-1. **Fusion changes more than reported P&L.** On ARM64 it also changes trade
-   **size**, **stop/target levels** and **exit prices** by a few ulps. Across the
-   scaled sets, 20 distinct frozen cases (spanning dual EMA, flag, supply/demand,
-   double top/bottom, Elder, fib, Keltner, price momentum, SMA cross, trend
-   pullback and others) showed such differences (the union of the two scaled sets
-   is 21 cases once channel break hold is added). In the 4,234 ARM64-vs-amd64 runs
-   without bar edits (109 frozen, 231 with an injected fee, 654 + 3,240 scaled)
-   no run differed in trade count, side, entry bar, exit bar or exit reason.
-2. **A decision (exit bar) did change, and fusion alone causes it.** In
-   `channel break hold`, a one-bar edit moves the exit from bar 962 (amd64, both
-   WASM) to bar 963 (ARM64) in 3 of 6 constructed cases. This flip appears with
-   FMA on and the ARM64 constants removed (scratch copy), and disappears when FMA
-   is also off. It also appears with the constants kept and FMA off. Production
-   ARM64 hides most of this because two hard-coded ARM64-only constants
-   (`engine/family_channel_break_hold.go:147-158`: rail `+9.4e-12`, width
-   `-1.565e-12`) cancel the fusion error at the frozen price scale only. Neither
-   the constants nor this behaviour is described in the spec, task or docs.
-3. **Sizing can flip by expression, not yet by engine run.** `engine/master` and
-   `engine/regime` default (non-portable) paths feed fused equity into
-   `floor(.../0.1)*0.1` sizing. On invented inputs the next quantity is 0.4 on
-   ARM64 and 0.5 elsewhere (`results/micro`). I did not build an engine-level
-   Master run that hits the boundary.
-4. **Frozen results are blind to this.** All 109 frozen run fixtures (1,035
-   trades) are bit-identical on native ARM64 (Go 1.27.0 and 1.23.8), amd64
-   (Rosetta) and both WASM targets. Only 1 of 109 has a non-zero `feePerUnit`.
-5. **Recommendation: a correction is justified, but as three separate pieces,
-   and none should start before the owner decides which arithmetic is canonical.**
-   See [Recommendation](#recommendation).
+## Findings and observation boundary
 
-## Facts, assumptions, opinions
+The harness reads `RunFixtureCase(...).Trades`. The engine serializes its numeric
+trade fields to **15 significant decimal digits** before returning them. Our bit
+patterns and ULP distances describe those serialized public values, not raw broker
+intermediates. Exact equality here does not prove identical internal arithmetic,
+unchanged level history or equality of unrecorded outputs.
 
-Facts are measured here (receipts, assembly, hashes). Assumptions are marked
-*Assumption*. Opinions are in Recommendation only.
+The original ARM64 investigation reports changes in serialized P&L, sizes,
+stop/target levels and exit prices. It also reports an exit-index change from 962
+to 963 in three of six constructed channel-break-hold boundary cases. Its frozen
+corpus, fee variants and boundary summaries remain useful historical observations,
+but their original source/runtime/receipt binding was incomplete. Those historical
+files alone do not establish independently reproduced
+ARM64 Go1.22.12 runtime evidence; the fresh actual execution below does.
 
-## Already proven, not repeated
+Independent actual Go1.22.12 execution at the original PR head established:
 
-From HT-228/HT-229 (strat PRs 112-116, `docs/sequential-release-qualification.md`,
-`docs/sequential-metrics-contract.md`, `engine/legacy_setup9_oracle_test.go`): ARM64
-fuses the entry debit and exit credit in `broker.go`; Legacy Setup-9 P&L stays within
-an operand-ULP bound; an exact per-target replay explains every differing leaf of
-the Sequential accounting corpus. This report adds what that work did not cover:
-other broker paths, other families, indicator/context code, and decision impact.
+- Real Linux AMD64v1, real AMD64v3 and Node24.19.0 Go WASM each attempted 1,000
+  cases: 109 frozen, 231 fee variants, 654 scaled and six boundary edits. Each
+  produced 976 successful cases and 24 matching strict-input refusals. Every
+  successful serialized trade output agreed across these three targets.
+- The six boundary exit indices were `[963,963,962,962,962,963]`. The three cases
+  reported to flip on ARM64 are scales 2, 3 and 4, which exited at 962 here.
+- The separate 3,240-case search on actual AMD64v1 produced 3,120 successes and
+  120 strict-input refusals. That earlier larger search was not cross-target proof.
+- The actual expression micro on AMD64v1/v3 and WASM returned quantity 0.5. An
+  explicit mathematical FMA model returned fused equity bits `40c298d49616b203`
+  and quantity 0.4, versus separately rounded `40c298d49616b204` and quantity 0.5.
+  This is an expression witness on invented inputs, not an engine sizing run.
+- ARM64 Go1.22.12 cross-compilation confirmed fused instructions at the cited
+  broker/channel sites. Compilation does not establish ARM64 runtime execution.
 
-## Identities
+Fresh execution with the corrected tools is recorded in the
+[native matrix summary](results/correction/native-summary.json): **4,240 attempts,
+4,096 successful cases and 144 expected refusals per target** on actual Linux
+AMD64v1, Linux AMD64v3 and Node24.19.0 Go WASM, all using Go1.22.12. Across the three
+targets that is 12,720 attempts. All successful serialized trade values and
+recorded decisions agree, including the full 3,240-case search (3,120 successes,
+120 refusals and 30,848 trades per target). Empty boundary-search adds no cases.
+The complete [six-case boundary rows](results/correction/native-boundary-rows.json)
+retain the observed exit indices on every target.
 
-`results/identity.json` records: strat base `4ab0fde8dfcfd3f2b33e4ea0af6186474c2b6ffa`
-(= origin/main when run; tree of `engine` `a55b0162…`, `conformance/run` `7003c33d…`,
-`broker.go` blob `9869eddc…`), host `Darwin arm64`, SHA-256 of every manifest and
-harness binary. Compilers: Go 1.27.0 (host) and Go 1.23.8 (module cache, offline).
-CI for strat uses `1.22.x`; **Go 1.22 was not available offline and is not-run.**
+These local runs used a worktree at original HEAD `6dfa80e` with the recorded
+correction changes. Their exact compiler-source and executable-tool digests match
+published frozen executable commit
+[`4a9448bacd6362a1070c238beaadbe878a4689f8`](https://github.com/spik3r/heisentick-strat/commit/4a9448bacd6362a1070c238beaadbe878a4689f8),
+tree `fe01c041646444889e4bfbee4f26a2457d4ab752`; we do not claim that later commit
+was checked out for these earlier local executions. The source digest is
+`0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04` and the
+executable-tools digest is
+`42010b71adfeb966b0eeccde946fc19a04fb7a46559e2bba8650fc8e05d32e36`.
 
-## Platform matrix
+Actual native Linux ARM64 production and diagnostic runs are now complete as
+separate evidence sets. They were executed at that exact published commit, with
+a clean source checkout verified before and after, and the installed Go and
+compiler bytes checked against the official Go1.22.12 Linux ARM64 distribution.
+Node22.23.2 orchestrated these native runs; this does not claim an additional
+Node22 WASM execution. [ARM summary](results/correction/arm-summary.json).
 
-| Target | Result | Notes |
-|---|---|---|
-| darwin/arm64, Go 1.27.0 | ran | native |
-| darwin/arm64, Go 1.23.8 | ran | identical to 1.27.0 on every case |
-| darwin/amd64 GOAMD64=v1, Go 1.27.0 | ran | under Rosetta 2 (translation, not a native Intel CPU) |
-| darwin/amd64 GOAMD64=v3 | **not-run** | Rosetta refuses v3 binaries. Cross-compiled assembly only |
-| js/wasm (Node 26 `go_js_wasm_exec`), Go 1.27.0 | ran | the shipped WASM target |
-| wasip1/wasm (wasmtime 48), Go 1.27.0 | ran | agrees with js/wasm on every case |
-| js/wasm, Go 1.23.8 | **not-run** | toolchain in the module cache has no `misc/wasm` glue |
-| linux/arm64 and linux/amd64 | **not-run** | Docker daemon was not running; assembly cross-compiled only (`linux/arm64`, Go 1.27.0) |
-| ARM64, FMA contraction off (`-gcflags=all=-d=fmahash=n`) | ran, **diagnostic only** | compiler debug flag; objdump confirms no FMA in repo code. Never a build setting |
+### Fresh actual ARM64 findings
 
-Compilation is not runtime equivalence: assembly files record what was generated;
-only receipts record what executed.
+Both production ARM64 and the diagnostic ARM64 build attempted 4,240 cases,
+producing 4,096 successes and 144 expected refusals each. Together with local
+AMD64v1/v3 and NodeWASM, the five configurations executed **21,200 attempts:
+20,480 successful cases and 720 refusals**. All exact source, tools, numeric
+input, compiler/build and receipt bindings validate before comparison.
 
-## Instruction evidence (compilation)
+The following counts compare successful serialized cases against AMD64v1;
+refusals remain outside every identical/differing count.
 
-`results/asm/*.txt`, from `go build -gcflags=-S ./engine`. On ARM64 (Go 1.27.0, 1.23.8,
-linux/arm64 identical):
+| Set | Successful cases | Production ARM64 | Diagnostic ARM64 with no-FMA flag |
+|---|---:|---|---|
+| Frozen corpus | 109 | 109 identical | 108 identical, 1 path |
+| Fee variants | 231 | 32 identical, 199 P&L-only | 231 identical |
+| Six scaled prices | 630 | 605 identical, 25 path | 624 identical, 6 path |
+| Thirty-scale search | 3,120 | 3,033 identical, 83 path, 4 P&L-only | 3,120 identical |
+| Boundary patches | 6 | 3 path, 3 decision | 3 path, 3 decision |
 
-| Source line | Emitted |
-|---|---|
-| `broker.go:536` `px += sign*slippageAt` | FMADDD |
-| `broker.go:539` `SL = px - sign*StopDistance` | FMSUBD |
-| `broker.go:542` `TP = px + sign*TargetDistance` | FMADDD |
-| `broker.go:577` `realized -= fee*size` | FMSUBD |
-| `broker.go:589` `px := exitPrice - sign*slippageAt` | FMSUBD |
-| `broker.go:591` `pnl := points*size - fee*size` | FMULD + FMSUBD (one product rounded, one fused) |
-| `flag.go:323`, `flag.go:345`, `family_trend_pullback.go:131,160`, `family_channel_break_hold.go:143`, `contextcols/channels.go:351-363` | FMSUBD/FMADDD |
+The 24 and 120 scaled refusals match on every configuration. The original frozen
+1,035 trades agree on production ARM64 as well as all three local targets.
+In the fee variants, **269 of 3,051 reported P&Ls differ**, including nine
+zero/residual sign changes and exactly **three changes to `pnl > 0`**; the largest
+absolute serialized P&L gap is approximately `1.0e-11` currency. No recorded trade
+count, side, entry/exit index, reason, rule, tag or partial flag differs across
+the 4,090 successful cases without constructed boundary patches.
 
-amd64 v1 and WASM emit separate multiply and add/sub (MULSD+SUBSD, F64Mul+F64Sub)
-for all of these lines. **amd64 v3 is not fully unfused**: it emits `VFMADD231SD` at
-`broker.go:536` and `:542`, `contextcols/channels.go:351`, `:363` (9 of 15 sites)
-and `family_channel_break_hold.go:143`; it keeps `broker.go:577` and `:591`
-separate. Nothing in the repo sets `GOAMD64`, so v1 is what was run; v3 cannot run
-under Rosetta, so a v3 build's channel rails are untested (*assumption*: they could
-diverge from v1 with no constant to compensate). Lines 536/539/542/589 multiply by
-`sign = ±1`, so fusion cannot change their result; the non-exact fused products are
-577, 591 and the family and context-column lines.
+All six production ARM64 boundary cases exit at bar 963. AMD64v1/v3 and WASM exit
+at `[963,963,962,962,962,963]`, so **scales 2, 3 and 4 change their exit decision**.
+The diagnostic no-FMA build also exits all six at 963. Both the original channel
+architecture constants remain present in that diagnostic. Therefore these fresh
+runs prove an architecture-dependent decision in the constructed examples, but
+do not isolate the constants from fusion or establish that fusion alone causes it.
+The recorded [ARM boundary rows](results/correction/arm-boundary-rows.json) and
+[complete cross-target comparisons](results/correction/cross-target/) contain both
+old/new exit indices and all serialized differences, including decision-case P&L
+changes that the historical comparator returned before recording.
 
-A static inventory by a Haiku subagent (spot-checked by me against the arm64
-listing) found 210 repo source lines with fused instructions on ARM64, in the
-broker, `flag.go`, ~25 family files, `contextcols`, `master`, `regime`,
-`range_reversion_reference.go`, `gold_flag_reference.go`. It found **no** kill switch,
-loss streak, daily-loss limit, drawdown stop or P&L-based risk scaling anywhere.
-Realized P&L is accumulated and read only for accounting checks and reports.
-Sizing is `RiskUSD / |entry - SL|` (constant risk) except `master` and `regime`,
-which size from running equity. The inventory table is in the PR description, not
-checked in, because I did not verify every row.
+The diagnostic eliminates the observed fee and search differences; its remaining
+one frozen and six scaled path differences all belong to channel break hold.
+That is useful diagnostic evidence, not a proposed production compiler setting.
+No scratch-copy constant ablation or dedicated Master engine sizing run was added.
 
-## Measurements
+## Correct refusal and equality denominators
 
-All counts compare each target with amd64 v1 (reference) bit for bit; "path" means
-an entry, exit, stop, target, size or points bit differs while count, side, bars
-and reasons are identical; "decision" means trade count, side, index or reason
-differs. `results/summaries/*.compare.txt`.
+The four full-Sequential fixtures bind their admitted bars to their strict
+input. Scaling the bars without changing that binding correctly refuses the
+input. **No engine admission rule is changed.** The six-factor manifest has
+24 refusals out of 654 attempts, and the thirty-factor manifest has 120 out of
+3,240. The manifests now declare those exact expected errors without changing
+any fixture source, decimal scale, costs or bar-patch value.
 
-| Set | Cases | ARM64 vs amd64 | WASM (js, wasip1) vs amd64 | ARM64 no-FMA vs amd64 |
-|---|---|---|---|---|
-| Frozen run corpus, unchanged | 109 (1,035 trades) | 109 identical | 109 identical | 108 identical, 1 path (channel break hold) |
-| Fee injected (cancellation): fee = best trade's `points`, ±1 ulp | 231 (3,051 trades) | 199 pnl-only, 32 identical | 231 identical | 231 identical |
-| Frozen bars × 6 seeded factors | 654 (6,174 trades) | 629 identical, 25 path | 654 identical | 648 identical, 6 path (all channel break hold) |
-| Frozen bars × 30 seeded factors (search; **channel break hold excluded**, so 108 base cases) | 3,240 (30,848 trades) | 3,153 identical, 83 path, 4 pnl-only | not run | 3,240 identical |
-| One-bar boundary edits (channel break hold) | 6 | 3 path, **3 decision** | 6 identical | 3 path, **3 decision** (constants still present) |
+| Manifest | Attempts per target | Successful cases | Expected strict refusals |
+|---|---:|---:|---:|
+| Frozen run corpus | 109 | 109 | 0 |
+| Fee-injected cancellation variants | 231 | 231 | 0 |
+| Six scaled prices | 654 | 630 | 24 |
+| Thirty-scale search | 3,240 | 3,120 | 120 |
+| Boundary patches | 6 | 6 | 0 |
+| Boundary search | 0 | 0 | 0 |
 
-Reading the table:
+Thus the four sets without constructed boundary patches comprise **4,234 attempts, 4,090 successful cases and
+144 refusals**, not 4,234 successful arithmetic runs. Matching refusals are
+reported separately and never contribute to identical-success or trade counts.
+For successful cases, `decision` means a changed trade count, side, entry/exit
+index, reason, rule, tag or partial flag; `path` means a changed serialized price,
+level, size or points value; `pnl-only` means only reported P&L differs. These
+classes do not describe unobserved raw intermediate paths.
+An unexpected error, including equal file-read failures on two targets, fails
+the run. A declared refusal becoming successful also fails until its expectation
+is reviewed.
 
-- **Fusion-only differences are real but small and did not move a decision in
-  unedited runs.** Outside channel break hold, the no-FMA ARM64 build equals
-  amd64 on all 3,240 + 654 scaled cases, so FMA contraction explains them; amd64
-  equals both WASM runtimes everywhere.
-- **Fee injection** (the cancellation case). 269 of 3,051 trades differ; largest
-  gap `1.0e-11` currency. In 9 trades one target reports exactly `0` and the other a
-  non-zero residual; **in 3 trades the win/loss sign (`pnl > 0`) differs**. Example
-  from `micro`: `points=1.1, size=3.3, fee=1.1` gives `0` unfused and `-2.04e-16`
-  fused. This affects win rate and profit-factor style metrics, not trading.
-  `maxUlps=4.4e18` in the summaries is the distance between a zero and a non-zero,
-  not a ulp count.
-- **Sizing and levels.** Of the 87 differing cases in the 3,240-case search set,
-  `size` differs in 43, `points` in 58, `pnl` in 73, a final stop in 5 and a
-  final target in 2 (counts are cases with at least one such trade). In the
-  654-case set, `size` differs in 17 of 25 (e.g. flag continuation 27.002894123384
-  vs 27.0028941233857). Channel break hold accounts for all 6 exit and most
-  stop differences in that set and has its own cause (next section).
-- **Boundary flips outside channel break hold: none constructed.** The search set
-  excludes channel break hold and gave no case where the exit-deciding stop or
-  target differed and never moved after entry (the generator's condition), so
-  no one-bar edit could be built there. Two earlier attempts on trailing
-  dual-EMA stops did not flip: the edited bar's close also moves the trail
-  (no artifact kept). This is a limit of the search, not evidence none exists.
+For interpreting the old summaries, subtracting the independently identified
+refusals changes the historical scaled ARM64 totals to 605 identical successes
+plus 25 serialized-path differences out of 630 successes. The search totals
+become 3,033 identical, 83 path and four P&L-only out of 3,120 successes. These are
+corrections to historical summary arithmetic, not newly bound ARM runtime results.
+The historical search log does not record the no-FMA target that appears in its
+comparison JSON; its claimed 3,240 identical no-FMA comparisons are **withdrawn
+as established evidence**. The fresh bound diagnostic above now independently
+records 3,120 successful identical comparisons and 120 separate refusals; it does
+not repair the provenance of the historical file or turn its 3,240 attempts into
+3,240 successes.
 
-### Channel break hold constants (finding)
+The historical cancellation summary, now reproduced by the fresh production
+ARM64 run above, reconciles 269 differing reported P&Ls out
+of 3,051 trades, nine zero/residual sign changes, and exactly three changes to
+`pnl > 0`. These are distinct counts. Serialized zero-to-residual bit distances
+are not a useful measure of small relative error near zero. Only one of the
+109 frozen fixtures has a nonzero fee; the frozen corpus is not fee-free.
+
+## Channel constants and causal limits
 
 `normalizedChannelRail` adds `9.4e-12` and `normalizedChannelWidthATR` subtracts
-`1.565e-12` when `runtime.GOARCH == "arm64"`, present since the extraction commit
-`eea01f8`. Evidence (`ablate-arch-constants.sh`, `results/ablate-arch-constants.txt`,
-scratch copy; repo tree untouched):
+`1.565e-12` on ARM64. Both architecture branches remain unchanged. The original
+scratch-copy ablation reports a boundary flip with FMA on and constants removed,
+and equality with both FMA and constants removed. Its archived procedure and
+output remain historical author evidence, with incomplete provenance. No refreshed
+constant-ablation proof is claimed by this correction. The old destructive,
+unbound entrypoint now stops with an explanation; its original text is retained
+under `results/historical-tools/` for audit. The new production and diagnostic
+ARM64 runs keep those constants intact; their persisting boundary flips are
+reported above without attributing them to a single mechanism.
 
-| Variant (boundary-patches.json) | vs amd64 |
-|---|---|
-| ARM64, FMA on, constants on (production) | 3 path, 3 decision |
-| ARM64, FMA on, constants removed | 3 path, 3 decision |
-| ARM64, FMA off, constants removed | 6 identical |
-| ARM64, FMA off, constants on | 3 path, 3 decision |
+The boundary generator compares serialized initial and final SL/TP as a
+**heuristic** for choosing candidates. Equality of those endpoints cannot prove
+that the raw level never moved, or that the edited bar cannot affect a trail.
+Every generated candidate requires a fresh execution. The patch replaces the
+whole exit bar, including open and close; it is not solely a low/high edit.
 
-With FMA on and the constants removed, `TestRunConformance` **fails** on
-`family-channel-break-hold` (`initialSl` `…318` vs golden `…319`). So the golden
-encodes unfused (amd64/WASM) arithmetic, and the constants force fused ARM64 to
-match it. The frozen-corpus ARM64 stop is about 44 ulps from amd64 without them,
-close to `9.4e-12` at ~2033. The compensation holds only at the frozen price
-scale: on scaled data ARM64 channel `sl`/`exit` differ from amd64 by up to 154
-ulps and `size` by up to 156,598 ulps (`maxUlps` 75,084 in the boundary table is
-P&L ulps on the edited set). Debug-build evidence (not checked in): no-FMA ARM64
-and amd64 agreed on all 5,050 `fitLine` calls, and `rail` differed only through the
-constant. Opinion: this is the largest numerical risk found, because it is
-deliberate, undocumented and branches on architecture.
+## Reproduction and binding
 
-### Expression-level sizing flip (Master)
-
-`results/micro/darwin-arm64.txt` line 1: `equity += qty*(gross - fee)` yields
-`…b203` fused and `…b204` separately rounded; the next
-`floor((equity*.1/entry + 1e-12)/.1)*.1` is 0.4 versus 0.5 (25% size). amd64 and
-WASM both give 0.5. If the quantity fell below one step, `master/run.go:117-118`
-returns `QuantityBelowStepError`, so a fused equity could turn an entry into a run
-error. The inputs were found by search and are invented; the engine
-path is `engine/master/execute.go:48` and `run.go:107-112`. The repo already
-provides `RunPortableV1` for Master (`docs/master-structural-portable-arithmetic.md`);
-the legacy default is what fuses. The legacy path is live: `report/masterstructural/report.go:82` calls
-`master.Run` when not bounded, and `cmd/heisentick/regime_report.go:80` calls
-`regime.Run`, which has no portable variant.
-
-## Do differences affect thresholds and decisions?
-
-| Quantity | Affected by fusion? | Evidence |
-|---|---|---|
-| Reported P&L, win/loss label | yes (ulps; zero vs residual) | cancellation set, micro |
-| Position size (generic broker) | yes, via fused stop level (ulps) | scaled sets |
-| Stop/target level | yes (ulps) | scaled sets: final stop in 5 search cases, final target in 2 |
-| Trade count, side, entry/exit bar, reason | yes in `channel break hold` after a one-bar edit; not seen in unedited runs | 0 of 4,234 runs without bar edits; 3 of 6 edited channel cases |
-| Subsequent decisions via realized P&L | no path found | no engine code branches on realized/equity except `master`/`regime` entry guards and sizing |
-| Master equity-sized quantity | yes in principle | micro; engine-level not built |
-
-## Reproduce
+Use a new output directory for every invocation and an explicit compiler. The
+independent successful Go1.22 WASM retry used a minimal inherited environment;
+an earlier oversized environment failed the loader before case execution. That
+failed attempt and its successful retry are both retained in the independent
+review receipt. An arbitrary inherited environment is not qualified by these runs.
 
 ```sh
-HT245_WORK=/tmp/ht245 investigations/ht245-broker-arithmetic/run-all.sh
+env -i PATH="$PATH" HOME="$HOME" TMPDIR="${TMPDIR:-/tmp}" \
+  HT245_GO=/absolute/path/to/go1.22.12/bin/go \
+  HT245_WORK=/task-local/path/cache \
+  bash investigations/ht245-broker-arithmetic/run-all.sh \
+  /task-local/path/new-results amd64v1 amd64v3 wasmjs
 ```
 
-Requires Go (host 1.27), optional Go 1.23.8 in the module cache, Node ≥ 22,
-wasmtime, Rosetta. Caches are under `$HT245_WORK`; nothing global is cleared. The
-two scale manifests were generated once with Python `random.Random(245)` and
-`random.Random(2451)`; the checked-in JSON is authoritative. Raw receipts (tens
-of MB) are not checked in; the review reproduced the headline counts independently; `results/identity.json` pins inputs and binaries, and a
-rerun reproduced the same counts.
+On actual ARM64, use `arm64`; `arm64nofma` is a separately labelled diagnostic
+with `-gcflags=all=-d=fmahash=n`. The latter is an undocumented compiler debug
+setting, not a production build recommendation. `wasip1` requires wasmtime.
+Only requested targets run; an unavailable or failed requested target makes the
+run fail. The default is actual native plus Node-hosted Go WASM. Rosetta execution
+on Darwin ARM64 is labelled as translation, not native AMD64.
 
-Files: `harness/` (public-API runner, bit-exact receipts), `compare.mjs`,
-`gen-cancellation-manifest.mjs`, `gen-boundary-manifest.mjs`, `run-matrix.sh`,
-`asm-evidence.sh`, `identity.sh`, `micro/` (expression reproducer, not the engine),
-`probe/` (context-column hash dump), `manifests/`, `results/`.
+`run-all.sh` executes all six committed manifests and never regenerates or
+redirects output into tracked inputs. Generators are explicit separate commands
+and accept only receipts belonging to a complete validated current run. Empty
+boundary-search manifests are recorded as zero cases, not successful tests of
+unconstructed boundaries.
 
-## Limits
+Each run contains its exact `manifest.json`, `identity.json`, `run.json`, runtime
+identity JSON and JSONL receipts. The runner records actual compiler and compiler
+binary digests, flags, runner/version, built binary digest and runtime settings.
+It embeds the exact source-file digest in the executed harness binary. Git HEAD
+and working changes are recorded separately; an uncommitted harness is never
+claimed to be identified by HEAD alone. VCS stamping is disabled explicitly for
+portable worktree builds; the content digest is the executed-source binding.
 
-- Rosetta is a translator, not Intel hardware; WASM ran under Node/V8 and wasmtime.
-- Go 1.22 (CI) and Linux targets were not run. The 109-case corpus uses invented
-  data; scaled variants are invented too.
-- `-d=fmahash=n` is an undocumented compiler debug flag; I verified its effect only
-  by disassembly and by equal results, not by its documentation.
-- Dedicated routes (`master`, `regime`, gold flag, adaptive flag, range reversion)
-  were not executed at engine level here; they are inventory-only.
-- Fusion-only decision flips outside channel break hold may exist at inputs this search did not reach.
-- `run-all.sh` regenerates `manifests/cancellation-variants.json`, `boundary-patches.json` and `boundary-search.json` from receipts; the scale-manifest generators (Python) are not checked in.
-- The boundary edit replaces the whole exit bar (open, high, low, close), not only one extreme; levels are filtered to ones that never move after entry, and every target receives the same edited input.
+The run validates every expected unique case ID, normalized input digest,
+expected refusal, row shape, runtime identity and source digest. It rechecks
+source, tools, manifest and fixture bytes after execution. A fresh directory and
+atomic per-target publication prevent stale or partial receipts entering a
+comparison. The comparator uses the run envelope instead of scanning arbitrary
+JSONL files, checks all bound digests, records both sides of decision differences,
+and binds its summary to the exact input run and receipt hashes.
 
-## Recommendation
+Cross-machine comparisons accept multiple complete run directories:
 
-Opinion. Leave `broker.go` unchanged for now and open three separate items:
+```sh
+node investigations/ht245-broker-arithmetic/compare.mjs \
+  /amd64-results/boundary-patches /arm64-results/boundary-patches \
+  --ref linux-amd64v1-go1.22.12 --json /output/boundary.compare.json
+```
 
-1. **Channel break hold (highest priority).** Replace the GOARCH branches with
-   explicit `float64()` splits in `fitLine`, `linePrice` and `engineLinePrice`
-   so every target produces the unfused bits without a constant. The golden
-   already encodes unfused arithmetic, so this should keep it; that is an
-   inference from the global no-FMA run, not a test of local splits. Also check
-   a GOAMD64=v3 build, which fuses these sites too. Needs a conformance impact
-   statement and independent review.
-2. **Documentation (no code).** State in `legacySetup9.md`/specs that fusion also
-   changes sizes and stop levels, not only P&L, and that the Master/Regime legacy
-   paths fuse equity. Fix the comment noted in the task's addendum.
-3. **Broker `float64()` splits** at `broker.go:577, 591` and `flag.go:323` only if the
-   owner wants cross-target bit equality. Evidence for doing it: 269/3,051 trades
-   differ with a fee; 3 flip win/loss. Evidence against: the frozen corpus has no
-   fee, nothing in the engine reads P&L for a decision, the difference is ≤1e-11
-   currency, and the change needs an adaptive-flag fingerprint renewal with
-   independent review and may alter ARM64 output for every family.
+The complete raw local bundle is durably retained as
+`ht245-native-v3-evidence.zip` (12,291,712 bytes), SHA-256
+`a68e9bf9840c62bce25879189f0b41dc213163d961114e944039372d528c1e9a`.
+The [archive receipt](results/correction/native-archive.json) records Library item
+`libfile_2d4f1dc7bf9c819197bd281e751f0246`, version 0, and its backing file identity.
+This is an owner-access-only Library artifact, not a public or collaborator-access
+link. Repository readers can reproduce from the committed inputs and commands;
+raw receipt access requires the owner to provide the archive. The compact summary
+retains SHA-256 values for all 72 raw evidence files, while per-run build/source/
+runtime identities and complete representative boundary rows are kept in Git.
 
-I recommend (1) and (2) now and deferring (3) until a product need for bit-equal
-P&L across targets exists. Any correction needs its own reviewed PR; goldens are
-not regenerated by this investigation.
+The separate native ARM archive is `ht245-arm64-qualification-evidence.zip`
+(9,502,875 bytes), SHA-256
+`9d444d355cad23292a72ce78339bf864877ea0508f58ca837938bcb1a6c4d29f`.
+Its [archive receipt](results/correction/arm-archive.json) records owner-only
+Library item `libfile_36fd4acce9988191ae2e5db17e879a74`, version 0. The ARM summary
+inventories all 85 transferred files (84 evidence entries plus their inventory); build caches/binaries and unrelated
+host logs are excluded. The source/build/runtime identities and full boundary rows
+are separately reviewable in Git. Neither Library artifact is a public link.
 
-## Validation record
+The numeric inputs, compiler-input content, harness and executable tools must
+match across bundles. Native runtime OS/architecture, actual compiler and runner
+remain distinct identities. Reports, result archives and later evidence-only
+commits are not executable inputs; their final commit can differ from the
+executed tool commit without claiming that later report text was executed.
 
-See the PR description for pass/fail/skip/not-run of `gofmt -l .`, `go vet ./...`,
-`go test ./... -count=1`, `go run ./cmd/conformance check`, `git diff --check`.
+## Exact-source admission
+
+[Source-admission proof](results/correction/source-admission.json) records the
+three actual Go1.22.12 production dependency closures and all 21 unchanged
+instruction hashes/counts before admission. All 261 previously admitted source
+hashes match. Only these three entries were added to the top-level `sources` map:
+
+- `investigations/ht245-broker-arithmetic/harness/main.go`
+- `investigations/ht245-broker-arithmetic/micro/main.go`
+- `investigations/ht245-broker-arithmetic/probe/main.go`
+
+The manifest schema, compiler/build configuration, source parents, three runtime
+build-input closures, accounting schedules and all instruction pins are unchanged.
+None of the investigation executables enters a production runtime closure. The
+exact-source validator and scanner are unmodified; unknown or altered inputs
+continue to fail qualification.
+
+## Decision and remaining production work
+
+The confirmed decision flips are confined to the three constructed
+`channelBreakHold` cases (the fixture uses the channel 0.5 ATR / 1R policy);
+serialized numeric path differences also occur in other families. Full Sequential
+[dispatches to its own scheduler](../../engine/runner.go#L50), without those
+channel helpers, while sharing broker fill, cost and exit accounting. That
+accounting has a separate [exact pinned per-target contract](../../docs/sequential-metrics-contract.md#L159)
+and 88-case native/WASM qualification. The relevant production source matches
+`v0.30.0`. These findings do not establish a new Sequential decision defect or
+clear broader release or consumer gates; they are not an all-strategy portability
+claim.
+
+Leave production arithmetic unchanged in this investigation. The current evidence
+justifies a separate reviewed decision about the channel architecture constants,
+followed by a narrowly scoped correction and conformance-impact assessment if the
+owner selects one. It does not authorize broad broker splits, golden regeneration,
+runtime fingerprint renewal, releases or consumer pin changes.
+
+Dedicated Master, Regime, gold-flag, adaptive-flag and range-reversion engine routes
+were not newly exercised by this harness. The Master quantity witness establishes
+possibility at the expression level only. No historical-market or economic
+performance conclusion is drawn from these invented cases. The pinned JS reference
+work in HT-228/HT-229 remains separate; this cross-target harness does not claim a
+new broad JavaScript oracle qualification.
+
+## Validation
+
+[Independent executable review](results/correction/independent-executable-review.json)
+approved the frozen tools after reproducing the stale-output and cross-source
+generator protections, concurrent exclusive-output ownership, and an actual
+25-case native/WASM probe (one success and 24 declared refusals on each target).
+Its initially oversized inherited environment correctly failed the Go1.22 WASM
+loader; a recorded minimal-environment retry passed. No failed attempt was relabelled.
+
+[Independent ARM review](results/correction/independent-arm-review.json) validated
+all 12 returned production/diagnostic envelopes, all 84 archived evidence entries
+and strict comparisons against each of the three local references.
+
+Correction checks: twelve investigation Node regressions, 19 unchanged exact-source
+proof regressions, Go1.22.12 formatting, vet, full tests and conformance
+(135 parse goldens and 109 run goldens) passed locally. All three production
+closures and all 21 instruction hashes match. The unchanged full Sequential
+qualification now passes all 88 cases with 64
+raw arithmetic pairs, 47,740 exact arithmetic checks, 92,156 float-bit checks and
+zero unexplained mismatches. Its codegen gate admits exactly 264 source inputs.
+The full fresh AMD64v1/v3 and NodeWASM matrix passed with the bound counts above.
+Actual native ARM64 production and diagnostic execution also passed their
+complete expected case sets, with the measured differences above and no unexpected
+errors. These are investigation results, not a production arithmetic correction.
+Exact-head normal PR CI and independent review remain integration gates; local tests are
+not a substitute for them.

@@ -1,0 +1,660 @@
+{
+  "schema": "ht245.independent-arm-review.v1",
+  "status": "passed",
+  "expected": {
+    "head": "4a9448bacd6362a1070c238beaadbe878a4689f8",
+    "tree": "fe01c041646444889e4bfbee4f26a2457d4ab752",
+    "source": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+    "tools": "42010b71adfeb966b0eeccde946fc19a04fb7a46559e2bba8650fc8e05d32e36"
+  },
+  "archive": {
+    "bytes": 9502875,
+    "sha256": "9d444d355cad23292a72ce78339bf864877ea0508f58ca837938bcb1a6c4d29f"
+  },
+  "inventoryFilesVerified": 84,
+  "totals": {
+    "production-arm64": {
+      "attempts": 4240,
+      "successful": 4096,
+      "refusals": 144
+    },
+    "diagnostic-arm64-nofma": {
+      "attempts": 4240,
+      "successful": 4096,
+      "refusals": 144
+    }
+  },
+  "bundles": [
+    {
+      "kind": "production-arm64",
+      "name": "frozen-run-corpus",
+      "runSha256": "aa9d4c0e02b7e5a9f1c00ae96832581f5dd1a17923f6114ac9353761a7ab0eb7",
+      "identitySha256": "0931f812bd33adde3b4b3f2c16f1cee7c7064739f721ee070023edadf2d42576",
+      "receiptSha256": "93d32838a3ec74e7445ddc38e7453708be79b1e14a4b8d517a2a686129f06aaf",
+      "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+      "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+        ]
+      },
+      "attempts": 109,
+      "successful": 109,
+      "refusals": 0
+    },
+    {
+      "kind": "production-arm64",
+      "name": "cancellation-variants",
+      "runSha256": "780177775508778002d0fe77b9d60aa26107376c5964c0b5599c6a279eb8ab74",
+      "identitySha256": "d4bea2fcc9105a4e27a30675a1cfb8a0eb23cb5f33829ef80d5ed7cb894ee676",
+      "receiptSha256": "491d9121c7c90f3c48b8c3506e681082bca1cc7f2e330465150544aad8049e8a",
+      "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+      "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+        ]
+      },
+      "attempts": 231,
+      "successful": 231,
+      "refusals": 0
+    },
+    {
+      "kind": "production-arm64",
+      "name": "scaled-prices",
+      "runSha256": "9a1a236d2b12d94a082f172398be336dca82f81617cbf264e285d62fd135db33",
+      "identitySha256": "95458af47f9976a40cf44659b6311c5adf06884899cb241e9c3ffa2819fe74eb",
+      "receiptSha256": "3c01acad51a133a9eb81d74412545005e0c6f186d52e0f0494a6766fa6802a31",
+      "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+      "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+        ]
+      },
+      "attempts": 654,
+      "successful": 630,
+      "refusals": 24
+    },
+    {
+      "kind": "production-arm64",
+      "name": "boundary-patches",
+      "runSha256": "ee501b27c36b8e12f2f13864fa25b48e6a210130090685e773427a14c32926cb",
+      "identitySha256": "cee062035f20f2b8730772fa69651135dacd3eeea6e88440624b4550e6a2c30b",
+      "receiptSha256": "ee5174cdc0cdd4cb4caf8b59edc44c0060750f4fb269cabc0b9e67dcb472ebc5",
+      "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+      "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+        ]
+      },
+      "attempts": 6,
+      "successful": 6,
+      "refusals": 0
+    },
+    {
+      "kind": "production-arm64",
+      "name": "scaled-search",
+      "runSha256": "f48b49b6714c501fef801afc7fc5465693ab7aeb079b00d3f6a2b4c17e31fb8c",
+      "identitySha256": "915e1e4a90efe0d738e8063271a63016f655e92be3ea952335495fc4343238c4",
+      "receiptSha256": "c9246b63ccc3f53b75f6bb255e7b25fe48d83f6e586fab4d71ebe9c5e08549d5",
+      "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+      "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+        ]
+      },
+      "attempts": 3240,
+      "successful": 3120,
+      "refusals": 120
+    },
+    {
+      "kind": "production-arm64",
+      "name": "boundary-search",
+      "runSha256": "4b28ac17275512d8a0233f1e34f475d1c028e8c212f7aea8f9b623afc9abaa1b",
+      "identitySha256": "bbf57075af5b6853b3648f93fda762a9765865d7630ba0b4fca155da3980caba",
+      "receiptSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+      "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+        ]
+      },
+      "attempts": 0,
+      "successful": 0,
+      "refusals": 0
+    },
+    {
+      "kind": "diagnostic-arm64-nofma",
+      "name": "frozen-run-corpus",
+      "runSha256": "3d14ea844f08de004760d9c67b358bb0edd4756b1e5f70a1591781d9f3024fdf",
+      "identitySha256": "0931f812bd33adde3b4b3f2c16f1cee7c7064739f721ee070023edadf2d42576",
+      "receiptSha256": "114b556496d4679f0bb791aceadbea85ea855abab98e0071061c4c17828607ba",
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "attempts": 109,
+      "successful": 109,
+      "refusals": 0
+    },
+    {
+      "kind": "diagnostic-arm64-nofma",
+      "name": "cancellation-variants",
+      "runSha256": "c521952e1ba1d2f988e5e3ffac5db3b79644225bd0a7c8c4bb202c7f2ed3b12e",
+      "identitySha256": "d4bea2fcc9105a4e27a30675a1cfb8a0eb23cb5f33829ef80d5ed7cb894ee676",
+      "receiptSha256": "882f704f1a2bffe74310237cb300724a0eeebcd244ad15bca714057c1652ffab",
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "attempts": 231,
+      "successful": 231,
+      "refusals": 0
+    },
+    {
+      "kind": "diagnostic-arm64-nofma",
+      "name": "scaled-prices",
+      "runSha256": "0a3947415c0eeec1d623d496f3c4ecc65da8d5c00d87238a0f99776815c4799b",
+      "identitySha256": "95458af47f9976a40cf44659b6311c5adf06884899cb241e9c3ffa2819fe74eb",
+      "receiptSha256": "2d24ba459fa3b7be6b1cd73339272628ecc95db1e23bf4a0bb2c77f3f4cd7f7a",
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "attempts": 654,
+      "successful": 630,
+      "refusals": 24
+    },
+    {
+      "kind": "diagnostic-arm64-nofma",
+      "name": "boundary-patches",
+      "runSha256": "52d31271010563eb7854279f9cc3c980597be10ed83aaac915787255f9e595c7",
+      "identitySha256": "cee062035f20f2b8730772fa69651135dacd3eeea6e88440624b4550e6a2c30b",
+      "receiptSha256": "1772bcd35ac005d5278e07af168f6018bf34b9f27ccf75952867f3a0892e1717",
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "attempts": 6,
+      "successful": 6,
+      "refusals": 0
+    },
+    {
+      "kind": "diagnostic-arm64-nofma",
+      "name": "scaled-search",
+      "runSha256": "b302f7b6c17d86d98503ec7e7636ff67b3bed996a71a42a06a36ca1cd38395f3",
+      "identitySha256": "915e1e4a90efe0d738e8063271a63016f655e92be3ea952335495fc4343238c4",
+      "receiptSha256": "499048e4a37c7be4419568537fb1d904873c74d524a267e41cf64dbc8e61efd7",
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "attempts": 3240,
+      "successful": 3120,
+      "refusals": 120
+    },
+    {
+      "kind": "diagnostic-arm64-nofma",
+      "name": "boundary-search",
+      "runSha256": "b8f356c92d535beaab86570e7b8f6072a00185700cfa51530f20286d7ff9a46f",
+      "identitySha256": "bbf57075af5b6853b3648f93fda762a9765865d7630ba0b4fca155da3980caba",
+      "receiptSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+      "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+      "compiler": {
+        "version": "go1.22.12",
+        "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+        "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+        "hostOS": "linux",
+        "hostArch": "arm64"
+      },
+      "build": {
+        "GOOS": "linux",
+        "GOARCH": "arm64",
+        "GOAMD64": "v1",
+        "CGO_ENABLED": "0",
+        "GOEXPERIMENT": "",
+        "GOFLAGS": "",
+        "flags": [
+          "-buildvcs=false",
+          "-trimpath",
+          "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+          "-gcflags=all=-d=fmahash=n"
+        ]
+      },
+      "attempts": 0,
+      "successful": 0,
+      "refusals": 0
+    }
+  ],
+  "archiveFilesVerified": 85,
+  "separateTargetComparisons": {
+    "frozen-run-corpus": {
+      "linux-arm64-go1.22.12": {
+        "attemptedCases": 109,
+        "successfulPairs": 109,
+        "matchingRefusals": 0,
+        "counts": {
+          "identical": 109
+        },
+        "pnlTradesCompared": 1035,
+        "pnlTradesDiffering": 0,
+        "maxUlps": "0",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      },
+      "linux-arm64nofma-go1.22.12": {
+        "attemptedCases": 109,
+        "successfulPairs": 109,
+        "matchingRefusals": 0,
+        "counts": {
+          "identical": 108,
+          "path": 1
+        },
+        "pnlTradesCompared": 1035,
+        "pnlTradesDiffering": 1,
+        "maxUlps": "2111",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      }
+    },
+    "cancellation-variants": {
+      "linux-arm64-go1.22.12": {
+        "attemptedCases": 231,
+        "successfulPairs": 231,
+        "matchingRefusals": 0,
+        "counts": {
+          "pnl-only": 199,
+          "identical": 32
+        },
+        "pnlTradesCompared": 3051,
+        "pnlTradesDiffering": 269,
+        "maxUlps": "4409024035195715582",
+        "signChanges": 9,
+        "positiveLabelChanges": 3
+      },
+      "linux-arm64nofma-go1.22.12": {
+        "attemptedCases": 231,
+        "successfulPairs": 231,
+        "matchingRefusals": 0,
+        "counts": {
+          "identical": 231
+        },
+        "pnlTradesCompared": 3051,
+        "pnlTradesDiffering": 0,
+        "maxUlps": "0",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      }
+    },
+    "scaled-prices": {
+      "linux-arm64-go1.22.12": {
+        "attemptedCases": 654,
+        "successfulPairs": 630,
+        "matchingRefusals": 24,
+        "counts": {
+          "identical": 605,
+          "path": 25,
+          "matching-refusal": 24
+        },
+        "pnlTradesCompared": 6174,
+        "pnlTradesDiffering": 23,
+        "maxUlps": "4714",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      },
+      "linux-arm64nofma-go1.22.12": {
+        "attemptedCases": 654,
+        "successfulPairs": 630,
+        "matchingRefusals": 24,
+        "counts": {
+          "identical": 624,
+          "path": 6,
+          "matching-refusal": 24
+        },
+        "pnlTradesCompared": 6174,
+        "pnlTradesDiffering": 6,
+        "maxUlps": "915",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      }
+    },
+    "boundary-patches": {
+      "linux-arm64-go1.22.12": {
+        "attemptedCases": 6,
+        "successfulPairs": 6,
+        "matchingRefusals": 0,
+        "counts": {
+          "path": 3,
+          "decision": 3
+        },
+        "pnlTradesCompared": 6,
+        "pnlTradesDiffering": 6,
+        "maxUlps": "2117423547078641",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      },
+      "linux-arm64nofma-go1.22.12": {
+        "attemptedCases": 6,
+        "successfulPairs": 6,
+        "matchingRefusals": 0,
+        "counts": {
+          "path": 3,
+          "decision": 3
+        },
+        "pnlTradesCompared": 6,
+        "pnlTradesDiffering": 6,
+        "maxUlps": "2117423547195770",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      }
+    },
+    "scaled-search": {
+      "linux-arm64-go1.22.12": {
+        "attemptedCases": 3240,
+        "successfulPairs": 3120,
+        "matchingRefusals": 120,
+        "counts": {
+          "identical": 3033,
+          "path": 83,
+          "pnl-only": 4,
+          "matching-refusal": 120
+        },
+        "pnlTradesCompared": 30848,
+        "pnlTradesDiffering": 86,
+        "maxUlps": "53300",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      },
+      "linux-arm64nofma-go1.22.12": {
+        "attemptedCases": 3240,
+        "successfulPairs": 3120,
+        "matchingRefusals": 120,
+        "counts": {
+          "identical": 3120,
+          "matching-refusal": 120
+        },
+        "pnlTradesCompared": 30848,
+        "pnlTradesDiffering": 0,
+        "maxUlps": "0",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      }
+    },
+    "boundary-search": {
+      "linux-arm64-go1.22.12": {
+        "attemptedCases": 0,
+        "successfulPairs": 0,
+        "matchingRefusals": 0,
+        "counts": {},
+        "pnlTradesCompared": 0,
+        "pnlTradesDiffering": 0,
+        "maxUlps": "0",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      },
+      "linux-arm64nofma-go1.22.12": {
+        "attemptedCases": 0,
+        "successfulPairs": 0,
+        "matchingRefusals": 0,
+        "counts": {},
+        "pnlTradesCompared": 0,
+        "pnlTradesDiffering": 0,
+        "maxUlps": "0",
+        "signChanges": 0,
+        "positiveLabelChanges": 0
+      }
+    }
+  },
+  "referencesIndependentlyChecked": [
+    "linux-amd64v1-go1.22.12",
+    "linux-amd64v3-go1.22.12",
+    "js-wasmjs-go1.22.12",
+    "linux-arm64-go1.22.12"
+  ],
+  "authorComparisonsExactMatch": 6,
+  "sourceRoute": {
+    "tag": "v0.30.0",
+    "tagCommit": "e2d52e8a5abade8114ccb0bedcce01585db71913",
+    "sourceUnchanged": true,
+    "case": "family-channel-break-hold#scale[2,3,4]#boundary-sl-trade0",
+    "fixture": "conformance/run/family-channel-break-hold.strat:14",
+    "handler": "engine/broker_dispatch.go:32",
+    "geometry": "engine/family_channel_break_hold.go:111",
+    "armConstants": "engine/family_channel_break_hold.go:146",
+    "sequentialSeparateDispatch": "engine/runner.go:50",
+    "sequentialScheduler": "engine/sequential_execution.go:25",
+    "sharedBracketComparison": "engine/broker_deferred_exits.go:50"
+  },
+  "conclusions": [
+    "All 12 actual ARM run envelopes, hashes, source/tool/input objects, case coverage and runtime settings validate against reviewed v3.",
+    "Production ARM has exactly three recorded exitIndex changes versus each local reference, all constructed channelBreakHold scale2/3/4 trade0: 962 to963.",
+    "Diagnostic fmahash=n removes observed fee cancellation and scaled-search differences but does not remove the three channel boundary decisions; its frozen channel case also differs numerically from production and local references.",
+    "Production fee cases have 269 of3051 differing PnL values, nine sign changes and three pnl>0 label changes; those are zero-to-positive tiny residuals, not entry/exit decision changes.",
+    "Numeric path changes occur across additional families; only observed categorical decision flips are channel-only in this evidence.",
+    "Full Sequential E1/E2 scheduling is a separate route that reuses broker fill/cost/bracket operations; its four unscaled fixture cases pass identically, scaled variants are declared refusals."
+  ],
+  "limits": [
+    "Returned ARM native execution receipts were independently reconciled locally; this reviewer did not execute ARM or access the host.",
+    "Archive records compiler and binary hashes and runtime identities; executable binary/compiler bytes are not included. Official ARM distribution matching is a returned executor preflight assertion, not a second download by this reviewer.",
+    "No fresh constants-removed runtime exists; no-FMA success is neither a general fix nor isolated proof that constants alone cause all differences.",
+    "Observation is exact 15-significant-digit serialized public trade output, not raw broker intermediate arithmetic.",
+    "The separate 88-case Sequential native/WASM receipt and accepted exact per-target accounting relation are not a new ARM Sequential accounting execution in this matrix.",
+    "No release, consumer pin, deployment, broad all-strategy parity or universal arithmetic equivalence follows. Final report freeze and exact-head CI remain separate."
+  ],
+  "comparisonArtifacts": {
+    "scaled-prices.linux-amd64v1-go1.22.12.compare.json": "997e97fcb67d130dc994b22058e1128c93943eb2970b099269d74a40387fddd5",
+    "boundary-search.linux-amd64v3-go1.22.12.compare.json": "8922a2e401f03479a3dd7f8e8a448cbacd4aeac1041952ff1b41fa127582cf8b",
+    "scaled-search.linux-amd64v1-go1.22.12.compare.json": "131f7e0b6a331342cc5a7297ac9abc0afebf8809e3643b81defd22bfa2234c4d",
+    "frozen-run-corpus.linux-amd64v3-go1.22.12.compare.json": "b2f9ad483bcc76a654f61bbfd8fcaf0b8cccfcc97f5231a7e88092e2e64300a6",
+    "boundary-search.linux-amd64v1-go1.22.12.compare.json": "7e8ad6a8c543ee9837b37168d72cbdaeb502c9d8f2d2b5842cf6cdc4a3493914",
+    "frozen-run-corpus.linux-arm64-go1.22.12.compare.json": "55eb1947d245e1186c654f79fc36221a8565ed95b7bbbf7e9e4b1c54bfd109ff",
+    "scaled-prices.js-wasmjs-go1.22.12.compare.json": "2d97a87193e8f072dbf4c3e17fbf527d676e7383a8313aefb811ddd9ebeeda93",
+    "boundary-patches.linux-amd64v1-go1.22.12.compare.json": "f41a4639c2494f83627fa6afd697b0e7d01669ef620b907fe9bcba9a19a18751",
+    "boundary-patches.linux-arm64-go1.22.12.compare.json": "087408bd162e96195a53793899e7f80f901e90d83408935b0e7f4de79cfe8037",
+    "scaled-search.linux-amd64v3-go1.22.12.compare.json": "7f67fcf453f9505b8bf0c0d1b86e79691ee7049f16a08ab34ce5b3988ae798b5",
+    "frozen-run-corpus.js-wasmjs-go1.22.12.compare.json": "a7838a85e852601632448fe754e0200979024349219122f0446003f6d367dc85",
+    "scaled-search.linux-arm64-go1.22.12.compare.json": "1c9927e413f1bfa840aeb2960e9abcd40f450170bd237d7a6799a8acda6e117b",
+    "boundary-search.js-wasmjs-go1.22.12.compare.json": "f1a83c655bdbd2d6eef009916c28b0332278e7e212606d180d63553199a37caf",
+    "cancellation-variants.js-wasmjs-go1.22.12.compare.json": "76a30c816ef15512e93eafad8ac47e881800b4917d59b1a87287a202ed83b5d6",
+    "scaled-prices.linux-amd64v3-go1.22.12.compare.json": "5157e1359fb21d3ab84e29b7b1ec123d7daacd149bfd1a2a677d6ab0be093b7e",
+    "cancellation-variants.linux-arm64-go1.22.12.compare.json": "d6e04dc684c65274dc4843fa7a9bcd75c04daedb3ffddcc5cd66c89e0e1b097f",
+    "boundary-patches.linux-amd64v3-go1.22.12.compare.json": "e0a59586fe44da6adf71f3cdb7d875666cb814558b379c357656e0f8e3ca55e7",
+    "cancellation-variants.linux-amd64v3-go1.22.12.compare.json": "d3a887504cd5580080b35a359461012cca6cdaf3454ebd31d5c914cd363e58e4",
+    "scaled-prices.linux-arm64-go1.22.12.compare.json": "a7ece47188af5fc87c91f6464212b5c8b1961a37f9fbcfdf9fb17e0c17c47322",
+    "cancellation-variants.linux-amd64v1-go1.22.12.compare.json": "663390b874864c8a849c225e2d5beae78453c5f8210cecd10566f83f4f52e981",
+    "frozen-run-corpus.linux-amd64v1-go1.22.12.compare.json": "d930ea6c8877001641538194f03d208b2ef054649785b5c24f335c13794614ed",
+    "boundary-patches.js-wasmjs-go1.22.12.compare.json": "dbd31601554d2b771f6cc2409ffe3cf57f319a8be3a518009714e6da5c0fdb74",
+    "boundary-search.linux-arm64-go1.22.12.compare.json": "ba32899bf750016130d7f659c727d59f3ef90d0ecc364d01af03a21d63faca11",
+    "scaled-search.js-wasmjs-go1.22.12.compare.json": "16a265a808aab44b0eb7ea42b32f30e3f99fa62692b8f67ffb8e174d2785296a"
+  }
+}
