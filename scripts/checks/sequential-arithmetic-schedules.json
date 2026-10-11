@@ -6,7 +6,8 @@
     "668c1b24cf9b30ff65aed9722e8ba068bbc18951",
     "2196722113496a5ccd88850cbb441c02f120a66f",
     "45c6ebf917a1e313fe0bdf56dfbe405504a008bd",
-    "5b320fe5abe9039970d79bd0bf4bfe7c9abc3462"
+    "5b320fe5abe9039970d79bd0bf4bfe7c9abc3462",
+    "ae7632c9651f2797a1e0de32b5da699da3612dd4"
   ],
   "build": {
     "CGO_ENABLED": "0",
@@ -46,9 +47,10 @@
     "cmd/heisentick/forward_prefix.go": "0c9e7a76b6e03e584988fec8cb7dbcccae3bd4529d3f503ab18335ccca3a785a",
     "cmd/heisentick/gold_flag_report.go": "b80a70afd9bd56af714aff5da11133cf154ccad809b5b66b9f76b4f592778d99",
     "cmd/heisentick/grid.go": "cf6e3301fcbb6de1baeb6357b7b84e17f07adcaf286e6f745374dae1fa9cad4e",
-    "cmd/heisentick/main.go": "3a4b76a4f2898d8e35a01393fc41e42b8489607537d9b93670488f283197794c",
+    "cmd/heisentick/main.go": "a632d0aceb01053779f4a1b083aa5ceb9dec0d69e56a5be21e1d352143a0c66e",
     "cmd/heisentick/master_portable_report.go": "9385eab25fb95b87ff78865524a8956821317ecd104449d885be6c805b6bf666",
     "cmd/heisentick/master_report.go": "efc9f7369a3d48c3e3a44bd25a8299e2a056c2db027a8a7805b2e9be52d9edde",
+    "cmd/heisentick/paper_prefix.go": "a854392524e423a72574b331dbcffde843b67aa711dcfbfd46537f350dc83e8f",
     "cmd/heisentick/range_reversion_report.go": "42476a754960b37afb5639c8ad359a9a9a810482ead5a215f37eefa26dfba5eb",
     "cmd/heisentick/regime_report.go": "96c4e0531867ac5605c9b05cf8e9da7b482fe0513310f31ee3804f0b112c1724",
     "cmd/heisentick/report.go": "4901553fcd8c3f0c6a7bba9aa5dec904cceeff514f54240092c1e7fcfbcac818",
@@ -136,7 +138,7 @@
     "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
     "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
     "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-    "engine/broker.go": "6e13cacd789c1a993bcda089430a0ac73a778a6399177599376cc73260d5957a",
+    "engine/broker.go": "db9d8f0ec54dcaba6d29d79a24b4404e8bf0f066956ed3bcbde2985be44d6a15",
     "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
     "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
     "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -186,7 +188,7 @@
     "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
     "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
     "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-    "engine/flag.go": "8fef4bc5e49a2571057dab1f1d6f32f9de17fa9ebc2be6f1832a004846c15846",
+    "engine/flag.go": "4d3f9af6faeb440027fb5e2dea643ffa6aef53746f29a19b21e2f3fbbacb2b4b",
     "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
     "engine/frozencontrol/context.go": "22b64bea2c7de1feccc12919ae56dbf1854e37ff8e6a0b227315a501ebf28d29",
     "engine/frozencontrol/fills.go": "420296bf34a1f319d63a51383a9fef43d5d5ff96b28ca20963891c0bd136e693",
@@ -214,6 +216,9 @@
     "engine/master/run.go": "f4add9f006f68e76074c442ebd00891c978b5eeb32745e2335a8bcca2656366c",
     "engine/master/types.go": "5f945abc3906bf046bd35683fb5ffcef466f232d40c9dfd92f17f7f3d796738d",
     "engine/master_admission.go": "be52a792017cc5a176962098171f4d95b347965bd4e6a12097d47d0ed40e3d20",
+    "engine/paper_prefix.go": "dd9851718a6aa35c1f2cf6034cf6a3bf9a282825caa8fb64c8ab3daf17952ffc",
+    "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+    "engine/paper_prefix_checkpoint.go": "c9acca746f795b0249dbba12fb3f94e93cd4a3baf0a2f8e8e801190db7d2711e",
     "engine/prefix.go": "0bd3063d35e81dc9536f346e7c08e0b1813e4c36de617300924f5cdbd74f3989",
     "engine/prefix_checkpoint.go": "6df1dd1c28cafce038a118d011a9a61945af4b35566c037284cc4dcc824fa26b",
     "engine/range_reversion_admission.go": "95138c0044a829f0662fab5f1bc116bf437cfcbfaeb52ad6e8c589b630b24c85",
@@ -294,12 +299,12 @@
       "accountingSchedule": "separate",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "sha256": "90d1ce1102961e09e77000f91ba84cf108c497302f7018363a277e9fe3540e5c",
-          "instructionCount": 196
+          "sha256": "d920b1f7a329f9ede2db2c330c663718431a66d53797c9c4e0cdf3a53ea08787",
+          "instructionCount": 209
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "sha256": "ff89f25281656573b929fb85fed518ba20b182c9476fe4672ebd154afaeb4961",
-          "instructionCount": 281
+          "sha256": "cb4ddd5596ff479c4dfd4143fedf63c2532d2175293b405f6ed37e8b5e1d773f",
+          "instructionCount": 297
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
           "sha256": "a7a1cdfa37834f5ea5d4338c40d3216d0da9e09d19ec4e66ca645a3ed632aff3",
@@ -429,7 +434,7 @@
           "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
           "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
           "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-          "engine/broker.go": "6e13cacd789c1a993bcda089430a0ac73a778a6399177599376cc73260d5957a",
+          "engine/broker.go": "db9d8f0ec54dcaba6d29d79a24b4404e8bf0f066956ed3bcbde2985be44d6a15",
           "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
           "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -479,7 +484,7 @@
           "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
           "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
           "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-          "engine/flag.go": "8fef4bc5e49a2571057dab1f1d6f32f9de17fa9ebc2be6f1832a004846c15846",
+          "engine/flag.go": "4d3f9af6faeb440027fb5e2dea643ffa6aef53746f29a19b21e2f3fbbacb2b4b",
           "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
           "engine/gold_flag_admission.go": "e1f2e41e2b8a86d3e336c408c37682de1797a31add9926ee3108567f4a5d4140",
           "engine/gold_flag_reference.go": "e9aff912089edc43ddabd460d358cf82c6bc5661f4811fa6c26573d01097e324",
@@ -492,6 +497,9 @@
           "engine/master/run.go": "f4add9f006f68e76074c442ebd00891c978b5eeb32745e2335a8bcca2656366c",
           "engine/master/types.go": "5f945abc3906bf046bd35683fb5ffcef466f232d40c9dfd92f17f7f3d796738d",
           "engine/master_admission.go": "be52a792017cc5a176962098171f4d95b347965bd4e6a12097d47d0ed40e3d20",
+          "engine/paper_prefix.go": "dd9851718a6aa35c1f2cf6034cf6a3bf9a282825caa8fb64c8ab3daf17952ffc",
+          "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+          "engine/paper_prefix_checkpoint.go": "c9acca746f795b0249dbba12fb3f94e93cd4a3baf0a2f8e8e801190db7d2711e",
           "engine/prefix.go": "0bd3063d35e81dc9536f346e7c08e0b1813e4c36de617300924f5cdbd74f3989",
           "engine/prefix_checkpoint.go": "6df1dd1c28cafce038a118d011a9a61945af4b35566c037284cc4dcc824fa26b",
           "engine/range_reversion_admission.go": "95138c0044a829f0662fab5f1bc116bf437cfcbfaeb52ad6e8c589b630b24c85",
@@ -564,12 +572,12 @@
       "accountingSchedule": "fused",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "sha256": "8239307470f8df0fd0fb276dc1c8261b9ba2be020fb9931a19b05b0a41b88c7b",
-          "instructionCount": 169
+          "sha256": "69c009399a78b86693db5d2f1321b4c6b310b4d1e0322be2a78884d744b4dcf0",
+          "instructionCount": 180
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "sha256": "ada181a2308a2e6757757b773d3660e2cc29d75516af75b994ff309328f339f8",
-          "instructionCount": 275
+          "sha256": "0ee9d1a61399b27b705d2db38c64fbf8b389d95fec32fce1e1b763eb198ec5be",
+          "instructionCount": 289
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
           "sha256": "5c742c154f433125d506107191ce54d21b0737b5e3e829142074f42e7fa1524a",
@@ -699,7 +707,7 @@
           "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
           "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
           "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-          "engine/broker.go": "6e13cacd789c1a993bcda089430a0ac73a778a6399177599376cc73260d5957a",
+          "engine/broker.go": "db9d8f0ec54dcaba6d29d79a24b4404e8bf0f066956ed3bcbde2985be44d6a15",
           "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
           "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -749,7 +757,7 @@
           "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
           "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
           "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-          "engine/flag.go": "8fef4bc5e49a2571057dab1f1d6f32f9de17fa9ebc2be6f1832a004846c15846",
+          "engine/flag.go": "4d3f9af6faeb440027fb5e2dea643ffa6aef53746f29a19b21e2f3fbbacb2b4b",
           "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
           "engine/gold_flag_admission.go": "e1f2e41e2b8a86d3e336c408c37682de1797a31add9926ee3108567f4a5d4140",
           "engine/gold_flag_reference.go": "e9aff912089edc43ddabd460d358cf82c6bc5661f4811fa6c26573d01097e324",
@@ -762,6 +770,9 @@
           "engine/master/run.go": "f4add9f006f68e76074c442ebd00891c978b5eeb32745e2335a8bcca2656366c",
           "engine/master/types.go": "5f945abc3906bf046bd35683fb5ffcef466f232d40c9dfd92f17f7f3d796738d",
           "engine/master_admission.go": "be52a792017cc5a176962098171f4d95b347965bd4e6a12097d47d0ed40e3d20",
+          "engine/paper_prefix.go": "dd9851718a6aa35c1f2cf6034cf6a3bf9a282825caa8fb64c8ab3daf17952ffc",
+          "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+          "engine/paper_prefix_checkpoint.go": "c9acca746f795b0249dbba12fb3f94e93cd4a3baf0a2f8e8e801190db7d2711e",
           "engine/prefix.go": "0bd3063d35e81dc9536f346e7c08e0b1813e4c36de617300924f5cdbd74f3989",
           "engine/prefix_checkpoint.go": "6df1dd1c28cafce038a118d011a9a61945af4b35566c037284cc4dcc824fa26b",
           "engine/range_reversion_admission.go": "95138c0044a829f0662fab5f1bc116bf437cfcbfaeb52ad6e8c589b630b24c85",
@@ -834,12 +845,12 @@
       "accountingSchedule": "separate",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "sha256": "59eb8087d14a89d316e6ff63c07bf8ff112062d549ca312a302320964978033b",
-          "instructionCount": 810
+          "sha256": "38b8b68bfda4dfa308a77f61f08e11c98b844198e4240329d3886aa6595f6984",
+          "instructionCount": 881
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "sha256": "3534ff92dd250ccd1592eca20b9f2713f8501ac1f766f070f6fae08264f88428",
-          "instructionCount": 1220
+          "sha256": "154558e5dbce3bcecdf7f61600c69b1e1e6e42d3546f178b19abbe4a95006533",
+          "instructionCount": 1316
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
           "sha256": "96becad4f609c50302eb8c32408f314911466d198a374d414e261c79f9c2e043",
@@ -974,7 +985,7 @@
           "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
           "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
           "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-          "engine/broker.go": "6e13cacd789c1a993bcda089430a0ac73a778a6399177599376cc73260d5957a",
+          "engine/broker.go": "db9d8f0ec54dcaba6d29d79a24b4404e8bf0f066956ed3bcbde2985be44d6a15",
           "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
           "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -1024,7 +1035,7 @@
           "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
           "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
           "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-          "engine/flag.go": "8fef4bc5e49a2571057dab1f1d6f32f9de17fa9ebc2be6f1832a004846c15846",
+          "engine/flag.go": "4d3f9af6faeb440027fb5e2dea643ffa6aef53746f29a19b21e2f3fbbacb2b4b",
           "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
           "engine/gold_flag_admission.go": "e1f2e41e2b8a86d3e336c408c37682de1797a31add9926ee3108567f4a5d4140",
           "engine/gold_flag_reference.go": "e9aff912089edc43ddabd460d358cf82c6bc5661f4811fa6c26573d01097e324",
@@ -1037,6 +1048,9 @@
           "engine/master/run.go": "f4add9f006f68e76074c442ebd00891c978b5eeb32745e2335a8bcca2656366c",
           "engine/master/types.go": "5f945abc3906bf046bd35683fb5ffcef466f232d40c9dfd92f17f7f3d796738d",
           "engine/master_admission.go": "be52a792017cc5a176962098171f4d95b347965bd4e6a12097d47d0ed40e3d20",
+          "engine/paper_prefix.go": "dd9851718a6aa35c1f2cf6034cf6a3bf9a282825caa8fb64c8ab3daf17952ffc",
+          "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+          "engine/paper_prefix_checkpoint.go": "c9acca746f795b0249dbba12fb3f94e93cd4a3baf0a2f8e8e801190db7d2711e",
           "engine/prefix.go": "0bd3063d35e81dc9536f346e7c08e0b1813e4c36de617300924f5cdbd74f3989",
           "engine/prefix_checkpoint.go": "6df1dd1c28cafce038a118d011a9a61945af4b35566c037284cc4dcc824fa26b",
           "engine/range_reversion_admission.go": "95138c0044a829f0662fab5f1bc116bf437cfcbfaeb52ad6e8c589b630b24c85",
