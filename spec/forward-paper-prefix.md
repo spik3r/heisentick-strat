@@ -162,11 +162,70 @@ Existing VEF does not execute partials or generic trailing; their broker observe
 hooks do not supply those absent family semantics. Quote-side/bid-ask execution,
 venue costs, rollover and live broker stop updates are separate contracts.
 
-Current ORB qualification remains specific-fixture evidence. Ordinary parsing
-can accept authored ignored ORB clauses (for example, a default-equivalent
-take-profit range clause) without changing execution. This VEF-only guard does
-not harden or expand ORB admission. Consumers must not infer universal authored
-ORB-option support from the existing producer acceptance or release fixtures.
+### Opening-range-breakout paper option class
+
+ORB admission checks source coverage with Go `AuditOrdinarySource`, every authored
+logical directive, and every effective config leaf before `PrepareRun`. Any
+coverage issue, ignored/unsupported clause, unknown nested field, missing required
+field, invalid value or unsupported family switch refuses with
+`PAPER_PREFIX_ADMISSION`. The sole config authority remains ordinary Go Parse;
+this family-local guard does not introduce another parser or change its results.
+Source and config are both necessary: a later off, reset or equivalent value
+cannot erase an unsupported occurrence. No source hash, strategy identity,
+research approval or profitability test grants capability.
+
+The supported matrix follows the actual ordinary ORB and shared broker consumers:
+
+| Authored options | Admitted config leaves / execution |
+| --- | --- |
+| DSL v6/v7, quoted strategy/name/description, symbols/timeframes/slices | Metadata and declared routes; seven fixed timeframes above; the request must satisfy the compiled route |
+| `type: opening range breakout`; first N candles/bars/minutes, every N hours UTC, `break beyond [range] edge [by/buffer N ATR]`, hold N candles/bars | `openingRangeBreakout.firstCandles/firstMinutes/utcSlotMinutes/openingSessions/breakBufferAtr/holdCandles`; closed-prefix range formation, existing buffer and held-close test |
+| Sessions, trade window unrestricted/in segments/minutes/UTC hours, side/direction | Shared session flags, exact window mode/segments/bounds, `allowLong/allowShort`; named windows use the existing fixed UTC+10 clock, UTC slots use the existing epoch-aligned clock |
+| Session phase, day type with strict/ER escape, movement/trendiness, local weekday/hour allow/block | `sessionPhases`, `dayTypes/dayTypeErEscape/maxMovementEr`, local/blocked weekdays/hours; supplied same-timeframe causal context |
+| Open location, prior-day type allow/block and range minimum, day theme | `openLocations`, prior/blocked prior types, `priorDay.minRangeAtr`, `dayThemes`; existing completed-day/current-prefix gates |
+| Tail rejection, close location, RMV ATR period/lookback/comparison | `tailRejectionMin`, `closeLocationMin`, exact `relativeMeasuredVolatility` fields; unavailable context blocks the entry |
+| Ordinary seasonality intraday/day-of-week/week-of-year/monthly, all or finite-day lookback, classifications/supports-entry, min samples | Exact `seasonalityFilters` row shapes; existing strictly prior-bar classification, including unavailable/min-sample behavior. This is distinct from the unchanged archived legacy seasonal profile |
+| Opposite-range-edge stop with padding/min/max, stop size bounds, fixed ATR/pips | Exact `stop.type/atr/pips/paddingAtr/minAtr/maxAtr`; fixed pips require the existing reviewed instrument pip mapping |
+| Target N R, N range, N pips, positive USD risk | `target.orbR/orbRange/pips`, `riskUsd`; ordinary pip then positive-range then R target precedence |
+| Move stop to breakeven / off / existing v6 ATR spelling, partial half/quarter/fraction/percent at R with optional breakeven, trail ATR after R / off | Exact `breakeven`, `partial`, and `trail` leaves; the working ordinary close-triggered management remains admitted, including partial fees and current open protection |
+| Wait N candles/bars after trade, maxHoldCandles (v6 maxHoldBars alias) | `cooldownCandles`, `maxHoldCandles`; existing rounded cooldown and fractional observed-bar hold semantics are preserved |
+| Explicit higher-timeframe off / entryTf current | Neutral context only; enabled authored HTF/source-entry intent refuses even if later disabled |
+
+Complete forms and aliases, including inline/comment/order cases, are exercised
+in `paper_prefix_orb_test.go`; invented public execution fixtures live in
+`engine/testdata/paper_orb/cases.json`. Quoted metadata is bounded to its complete
+value, so trailing unconsumed text cannot hide behind a name. Family-dependent
+setup, stop, target and management forms require an earlier ORB selector;
+repeated ORB selection retains the ordinary reset behavior. Generic market
+clauses may precede the selector. Known valid overrides retain ordinary precedence.
+
+All numeric occurrences must be finite before later overrides. Range and hold
+counts are positive integral values below 2^31; UTC slot hours remain 1–24.
+Cooldown stays nonnegative and below 2^31−1. Risk, fixed stops and R/pip targets
+are positive, quality fractions are within [0,1], stop bounds are coherent,
+partial fractions/triggers are positive, and RMV/seasonality retain their exact
+parser domains and field shapes. Fractional max-hold thresholds remain valid.
+No arbitrary maximum equal to a selected research fixture is imposed.
+
+Refused authored options include target opposite-range-edge/minimum/fallback,
+retest (including off), New York hour filters, source `range method`, bare
+`break buffer`, source/HTF dependencies, alternate family selectors, limit/entry
+mode or distance, recent-extreme stop lookback, trigger/candle/grade/size-tier,
+levels and any other unconsumed context or unknown directive. Some ordinary
+parser forms map to defaults or are ignored: successful parsing is not evidence
+that ORB executes them. Retest runtime parameters exist but the ordinary ORB
+retest parser is not wired; implementing the documented retest language and its
+causal initial-breakout/retest behavior is a separately owned follow-up, not a
+removal of working support in this guard.
+
+ORB range slots close a carried position at the next observed slot bar's OPEN,
+before bracket processing. Partials, breakeven and generic trailing retain their
+existing ordering and arithmetic. Every invented positive corpus case compares
+complete native/public-WASM output and all prefix splits; paired gate cases,
+hand management expectations and public refusal recovery prevent admission
+checks from substituting for execution evidence. The internal occurrence receipt
+retains partial/trailing and typed context categories for narrower future models;
+it grants no new public execution contract and changes no checkpoint shape.
 
 ## Activation and endpoint
 
@@ -327,3 +386,7 @@ The VEF admission/receipt addition itself changes no broker expression, observer
 call or arithmetic instruction pin. Its four source/helper inventory changes
 and target dependency closures require review against the frozen parent; all 21
 previously qualified instruction maps must remain byte-identical.
+
+The ORB source-admission addition changes no broker expression or arithmetic
+instruction pin. Only source/build inventories are extended; all 21 qualified
+instruction maps and existing conformance goldens remain unchanged.
