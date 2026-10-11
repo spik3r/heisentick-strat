@@ -6,6 +6,26 @@ version and is named here.
 
 ## [Unreleased]
 
+### 0.32.0 candidate
+
+This is an undated candidate, not a published release. See the current
+[release checklist](docs/paper-prefix-release-checklist.md#current-v0320-release-gates).
+
+- Add bounded VWAP-extension-fade execution to the native/public-WASM
+  paper-prefix API: close fills, 15-minute zone context, USD and abstract linear
+  multiplier-one accounting. Go-owned authored-source coverage and complete
+  option checks refuse unsupported or overwritten intent. Quote-side execution,
+  first-observed-quote fills, enabled partial/trailing management and historical
+  profitability are not qualified by this addition. See [the option class](spec/forward-paper-prefix.md#vwap-extension-fade-paper-option-class).
+
+- Harden ordinary ORB paper admission using Go-owned authored coverage and
+  effective-config checks. Previously ignored directives, including an
+  opposite-range-edge target, now refuse rather than silently execute different
+  intent. Preserve the ordinary parser, family/broker arithmetic and admitted
+  close/next-open management semantics. This does not implement the unwired
+  retest language or qualify the archived seasonal legacy paper profile. See
+  [the ORB option class](spec/forward-paper-prefix.md#opening-range-breakout-paper-option-class).
+
 - Add the transport-only `engineRunPaperBidAsk` public Go WASM export over the
   unchanged sampled bid/ask API. Preserve exact producer documents, fixed native
   refusal envelopes, strict original UTF-16/JSON validation and all native
@@ -21,6 +41,14 @@ version and is named here.
   have their own qualification. Partial/generic-trailing management is the next
   separate tranche; no consumer activation, broker orders or historical outcome
   claim. See [the contract](spec/forward-paper-bidask.md).
+
+The sampled bid/ask contract is ORB-only; its partial-exit and generic-trailing
+management remain unsupported even though admitted ORB paper-prefix options
+retain those existing semantics. Full-prefix replay integrity does not provide
+authenticated feed/provenance, durable exactly-once effects, fencing or session
+isolation. Consumer pins, qualification and default-off activation gates remain
+separate. The existing 135 parse and 109 run goldens and all 21 approved
+instruction pins are unchanged.
 
 ## [0.31.0] - 2026-10-11
 
