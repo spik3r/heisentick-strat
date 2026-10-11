@@ -6,12 +6,25 @@ version and is named here.
 
 ## [Unreleased]
 
-### 0.31.0 candidate
+- Add the bounded native sampled bid/ask ORB paper contract and strict local-only
+  `paper-bidask` command, separately versioned from paper-prefix. It models
+  original committed entry quotes, sampled straddling exposure, then exclusive
+  completed-side-bar protection; preserves UTC-slot opening priority and ordinary
+  Go breakeven. Exact quantity/cost accounting, causal replay and source admission
+  have their own qualification. Partial/generic-trailing management is the next
+  separate tranche; no consumer activation, broker orders or historical outcome
+  claim. See [the contract](spec/forward-paper-bidask.md).
 
-This is an undated candidate, not a published release. It adds the Go paper
-execution/accounting surface below; consumer pins, browser capacity, operational
-admission and activation remain separate. See the
-[release checklist](docs/paper-prefix-release-checklist.md).
+## [0.31.0] - 2026-10-11
+
+Published from `e59dff4fe170a250111fb965fe775af919b3bd26` at 12:53:23 UTC.
+[Release and verified assets](https://github.com/spik3r/heisentick-strat/releases/tag/v0.31.0)
+and [verification receipt](https://github.com/spik3r/heisentick-backlog/blob/7dec2bd365c0014bf017222dc4d1270e40943321/tasks/HT-243-forward-go-producer-parity-gaps.md#published-v0310-producer-package-verified--2026-10-11t1259z).
+This dates the prior candidate notes after publication; the frozen v0.31.0 tag and
+assets are unchanged. Qualified evidence covers the named ordinary ORB/raw legacy
+fixtures/options only. Seasonal-specific paper qualification and the known
+ignored-ORB-authored-directive admission gap remain separate gates; consumers
+stay default-off. See the [release checklist](docs/paper-prefix-release-checklist.md).
 
 - Add the transport-only `engineRunPaperPrefix` public Go WASM export over the
   same Go paper execution/accounting API. Require one valid UTF-16 request JSON
