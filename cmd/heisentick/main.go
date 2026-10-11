@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "paper-prefix":
+		return runPaperPrefix(args[1:], out)
 	case "inspect-sequential-source":
 		return runSequentialInspection(args[1:], out)
 	case "range-reversion-report":
@@ -56,6 +58,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick paper-prefix --request-file=<path>
+
+paper-prefix returns authoritative Go paper effects, account MTM and a replay-verified checkpoint in one candidate envelope. Only qualified ORB/legacySetup9 routes are supported; it never places external orders or liquidates the endpoint.
+
   heisentick inspect-sequential-source --dsl-file=<path>
 
 inspect-sequential-source returns read-only Go parser/config/capability facts. It does not execute a strategy or establish market-data, accounting, consumer, endpoint or Forward readiness. Other families remain outside this narrow inspector's capability scope.

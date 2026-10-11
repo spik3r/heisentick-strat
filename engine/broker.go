@@ -153,6 +153,7 @@ type broker struct {
 	execution              ExecutionBounds
 	windowed               bool
 	clock                  clockRangeState
+	paperAccounting        *paperCollector
 }
 
 func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTrend []int8, ema []float64, emaSlope []float64, params flagParams, fixture RunFixture, trades []Trade) {
@@ -171,6 +172,7 @@ func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTr
 	b.trades = trades[:0]
 	b.realized = 0
 	b.sequentialAccounting = nil
+	b.paperAccounting = nil
 	b.flagLastEntry = 0
 	b.hasFlagEntry = false
 	b.rbfLastEntry = 0
@@ -307,6 +309,9 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 		b.onBar(i)
 		if b.sequentialAccounting != nil {
 			b.sequentialAccounting.mark(b, i, false)
+		}
+		if b.paperAccounting != nil {
+			b.paperAccounting.mark(b, i)
 		}
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
@@ -571,12 +576,15 @@ func (b *broker) openPosition(s side, fillPrice float64, ord order, index int) {
 	}
 	b.hasPosition = true
 	var realizedBefore float64
-	if b.sequentialAccounting != nil {
+	if b.sequentialAccounting != nil || b.paperAccounting != nil {
 		realizedBefore = b.realized
 	}
 	b.realized -= b.costs.FeePerUnit * size
 	if b.sequentialAccounting != nil {
 		b.sequentialAccounting.entry(b, realizedBefore)
+	}
+	if b.paperAccounting != nil {
+		b.paperAccounting.entry(b, realizedBefore)
 	}
 }
 
@@ -590,7 +598,7 @@ func (b *broker) closePosition(exitPrice float64, index int, reason, rule string
 	points := (px - pos.Entry) * sign
 	pnl := points*pos.Size - b.costs.FeePerUnit*pos.Size
 	var realizedBefore float64
-	if b.sequentialAccounting != nil {
+	if b.sequentialAccounting != nil || b.paperAccounting != nil {
 		realizedBefore = b.realized
 	}
 	b.realized += pnl
@@ -625,6 +633,9 @@ func (b *broker) closePosition(exitPrice float64, index int, reason, rule string
 	b.hasPosition = false
 	if b.sequentialAccounting != nil {
 		b.sequentialAccounting.exit(b, realizedBefore, pnl, index)
+	}
+	if b.paperAccounting != nil {
+		b.paperAccounting.exit(b, realizedBefore, pnl, index, false)
 	}
 }
 
