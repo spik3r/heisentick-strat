@@ -18,6 +18,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "paper-bidask":
+		return runPaperBidAsk(args[1:], out)
 	case "paper-prefix":
 		return runPaperPrefix(args[1:], out)
 	case "inspect-sequential-source":
@@ -58,6 +60,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick paper-bidask --request-file=<path>
+
+paper-bidask is the bounded native sampled-quote/closed-side-bar ORB paper model. It uses only supplied journal facts, preserves open exposure, and never places orders. Consumer authentication and durable arbitration remain separate requirements.
+
   heisentick paper-prefix --request-file=<path>
 
 paper-prefix returns authoritative Go paper effects, account MTM and a replay-verified checkpoint in one candidate envelope. Only qualified ORB/legacySetup9 routes are supported; it never places external orders or liquidates the endpoint.
