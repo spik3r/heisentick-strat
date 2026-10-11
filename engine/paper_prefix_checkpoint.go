@@ -25,7 +25,8 @@ func newPaperCheckpoint(r PaperPrefixResult, b *broker, c *paperCollector) (pape
 		Statistics         PaperTradeStatistics
 		Open               *paperOpenAccount
 		LastIndex, Ordinal int
-	}{checkpointStateFromBroker(b), c.account, c.statistics, c.open, c.lastIndex, c.ordinal})
+		VWAP               *paperVWAPState `json:",omitempty"`
+	}{checkpointStateFromBroker(b), c.account, c.statistics, c.open, c.lastIndex, c.ordinal, paperVWAPStateFromBroker(b)})
 	if err != nil {
 		return paperCheckpoint{}, err
 	}

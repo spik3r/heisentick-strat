@@ -311,7 +311,7 @@ func preparePaperPrefix(r PaperPrefixRequest) (*PreparedRun, PaperBinding, error
 		return nil, binding, paperError("SOURCE")
 	}
 	family := setupTypeFromAny(parsed.Config["setupType"])
-	if family != string(dsl.FamilyOpeningRangeBreakout) && family != string(dsl.FamilyLegacySetup9) {
+	if family != string(dsl.FamilyOpeningRangeBreakout) && family != string(dsl.FamilyLegacySetup9) && family != string(dsl.FamilyVWAPExtensionFade) {
 		return nil, binding, paperError("FAMILY_UNSUPPORTED")
 	}
 	htf := mapValue(parsed.Config, "htf")
@@ -321,6 +321,11 @@ func preparePaperPrefix(r PaperPrefixRequest) (*PreparedRun, PaperBinding, error
 	}
 	if family == string(dsl.FamilyLegacySetup9) && c.FillOn != "close" {
 		return nil, binding, paperError("FILL_UNSUPPORTED")
+	}
+	if family == string(dsl.FamilyVWAPExtensionFade) {
+		if err := validatePaperVWAP(r.Source, parsed.Config, r.Route, r.Units, c); err != nil {
+			return nil, binding, err
+		}
 	}
 	request := RunRequest{Config: parsed.Config, Series: series, StrategyID: r.Route.StrategyID, Symbol: r.Route.Symbol, Timeframe: r.Route.Timeframe, RangeMethod: r.Route.RangeMethod, Costs: Costs{StartEquity: c.StartEquity, FeePerUnit: c.FeePerUnit, FillOn: c.FillOn, Slippage: c.Slippage, SlippageBps: c.SlippageBps}}
 	prepared, err := PrepareRun(request)

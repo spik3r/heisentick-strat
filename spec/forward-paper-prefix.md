@@ -55,8 +55,8 @@ public parity check compares all financial/event/account/pending fields exactly,
 independently validates target-bound identities, and checks opaque checkpoint
 replay/tamper refusal without pretending those receipts are portable.
 
-This export does not widen the qualified ORB/legacySetup9 family or fill-mode
-boundary, or admit HTF/source-entry. Endpoint is still open. The public-export
+The export uses the same producer family/option admission as the native command;
+transport does not independently widen it or admit HTF/source-entry. Endpoint is still open. The public-export
 proof is actual native CLI versus instantiated Go WASM under Node, including
 nonzero fees, partial/open/pending states, activation and recovery. This is
 separate from Go tests merely compiled to WASM, browser qualification, tagged
@@ -98,8 +98,9 @@ arbitrary caller config/capability flags are not accepted.
 
 ## Capability boundary
 
-This version admits ordinary openingRangeBreakout and faithful legacySetup9,
-without source-entry or HTF requirements. Other families and required HTF/source
+This version admits ordinary openingRangeBreakout, faithful legacySetup9 and the
+bounded VWAP-extension-fade class below, without source-entry or HTF requirements.
+Other families and required HTF/source
 context are explicit refusals. HTF duration inference and gap projection need a
 separate causal prefix-join qualification. They are never silently omitted.
 
@@ -108,6 +109,64 @@ profile intentionally opens at the signal close; requesting nextOpen refuses.
 Changing that would be a new strategy semantic profile, not an option fix.
 Full Sequential E1/E2 is outside this API, as are special/dedicated families.
 No successful parse, source inspection or caller flag widens this boundary.
+
+### VWAP-extension-fade paper option class
+
+VEF requires close fill, 15m, zone range context, USD quote currency and the same
+abstract linear multiplier-one accounting. Symbol/timeframe must satisfy the
+authored Go route. Symbol, unit labels and caller watermarks are assertions, not
+verified instrument/provider facts. There is no strategy-ID or approved-source
+hash whitelist. Renamed/independently authored sources in the qualified class are
+admitted with their own exact identities; no research result is required.
+
+The class includes both sides, named sessions/phases, current-day regime and
+movement-ER gates, distance from current close-volume VWAP, range-day requirement,
+tail/close quality, recent-extreme ATR-buffered stops with min/max bounds, VWAP
+target and existing fixed-R fallback/minimum, fixed positive USD risk, optional
+close-triggered breakeven and observed-bar cooldown/max-hold. Zero lookback keeps
+the ordinary current-bar-extreme behavior. Bar counts must be integral,
+nonnegative and no greater than the prefix bar limit. Other thresholds must be
+finite and within their stated domains; quality fractions are in [0,1], risk,
+VWAP distance and target R values positive, and stop min/max coherent. Selected research fixture
+thresholds are unchanged, including risk50, 3ATR, 0.25R breakeven, 24-bar hold and
+12-bar cooldown. These are fixture inputs, not admission requirements.
+
+Admission checks the complete parsed config, authored logical directives and
+source-coverage issues from the exact ordinary parser lexical pipeline. The
+additive Go `AuditOrdinarySource` view exposes dropped inline-leading text,
+trailing text after accepted inline closing braces, and residual structural
+braces that normalization would erase. Any coverage issue refuses. The ordinary
+nil-audit parser uses the same implementations and retains its existing results;
+this paper-only refusal policy does not repair or change source-language parsing. This matters because a final
+config can erase ignored or overwritten source clauses. Unsupported clauses
+refuse with `PAPER_PREFIX_ADMISSION`, even if their final config equals
+a default. Go Parse remains the sole config authority and its result is unchanged.
+This paper guard accepts a bounded set of complete authored forms, including the
+unchanged fixture and its listed aliases: quoted metadata, `symbols`/`timeframes`
+or `slices`, named `sessions`, `session phase in`, `day type in` with optional
+`strictly`, `movement below`/`trendiness below`, `type: vwap extension fade`,
+`distance from vwap at least N ATR`, `require range day`, `target vwap`,
+`side both/long/short` with optional `only`, `tail rejection at least N`,
+`close location at least N`, recent-extreme stop with `by N ATR`, stop-size
+`<= N ATR` or `between N and N ATR`, `target N R`, `minimum reward N R`,
+`move stop to breakeven after N R plus N ATR`, `breakeven off`,
+`trail off`, `maxHoldCandles`, `wait N candles after trade`, and
+`risk N USD`. Case/spacing follows the existing parser. Unsupported authored
+forms are explicit refusals; a later directive cannot erase their admission
+failure. A single family type must precede setup/risk/target/management clauses.
+
+NextOpen, source/HTF dependencies, enabled partial/trailing management, limit
+entry, alternate stop/target implementations, grading/size tiers and unqualified
+prior-day/seasonality/session-bias/RMV/level/context filters remain refused.
+Existing VEF does not execute partials or generic trailing; their broker observer
+hooks do not supply those absent family semantics. Quote-side/bid-ask execution,
+venue costs, rollover and live broker stop updates are separate contracts.
+
+Current ORB qualification remains specific-fixture evidence. Ordinary parsing
+can accept authored ignored ORB clauses (for example, a default-equivalent
+take-profit range clause) without changing execution. This VEF-only guard does
+not harden or expand ORB admission. Consumers must not infer universal authored
+ORB-option support from the existing producer acceptance or release fixtures.
 
 ## Activation and endpoint
 
@@ -120,8 +179,29 @@ missing boundaries refuse rather than round over a gap.
 bars. The unchanged broker execution loop starts at the activation index. ORB
 ranges and legacy counters do not need historical broker mutation; a historical
 ORB breakout therefore cannot consume the later live daily/slot opportunity.
-No historical order, pending entry, position or fee crosses activation. This
-qualification is specific to these families, not a generic warm-up assumption.
+No historical order, pending entry, position or fee crosses activation. VEF
+indicators are also computed from context bars, while historical broker seen and
+cooldown mutation is suppressed. A fresh active setup can reuse a key that would
+have been consumed by a preactivation trade. This qualification is specific to
+these families, not a generic warm-up assumption.
+
+VEF preserves ordinary source behavior: cooldown is from the last qualifying
+setup attempt, including an attempt rejected by shared entry gates, not its exit.
+Its seen key is side, phase and rounded VWAP tenth. Seen keys reset lazily on the
+next qualifying attempt in a new fixed UTC+10 day; VWAP resets at UTC midnight.
+ATR uses a 14-observed-bar simple mean with partial seeding, not a mandatory
+14-bar warm-up. The existing ordinary source projection has unavailable context
+for a one-row prefix because duration cannot yet be inferred. Once another row
+exists, the first row's VWAP equals its close, so the strictly positive admitted
+distance prevents a retroactive first-row entry. The selected close phase intersects trade windows at UTC08–09
+and UTC11–14; these names are not a DST-adjusted venue close.
+
+Intrabar exits precede management. Breakeven uses completed close and CURRENT SL
+distance and applies its tightened stop to subsequent bars. Wick-only progress
+does not qualify; repeated current-SL/ATR updates may tighten again. Carried stop
+gaps fill at open, unordered stop/target bars select stop first, and close entries
+are not retrospectively tested against their own signal-bar extremes. Time exit
+uses observed bar-index difference, so gaps can extend elapsed holding time.
 
 The final supplied bar is marked after execution. There is no synthetic
 end-of-test liquidation. Actual pending entries/exits and open positions remain.
@@ -208,6 +288,16 @@ events from the acknowledged total through the new total. `eventRange.from` is
 the previous total, `to` the new total, and events.length equals to minus from.
 Account/open/pending/statistics are cumulative current snapshots.
 
+`openPositions` is the authoritative end-of-prefix protection snapshot, including
+current SL/TP and immutable initial protection. Consumers atomically replace it
+with account/checkpoint/cursor, even when the delta contains only a mark. Entry
+and exit effects carry protection at execution time; marks do not constitute
+protection-change events. No complete historical stop-change event stream or
+broker protection update is claimed. VEF replay receipts additionally bind
+last-attempt index/presence and the seen local day/ordered keys. These are
+read-only projections into the replay digest; no caller state is restored. The
+optional VEF projection is absent for ORB/legacy, preserving their receipt bytes.
+
 Exact input plus its returned checkpoint gives zero events and the identical
 checkpoint. Reusing an older checkpoint with the same extended input reproduces
 the exact prior delta, allowing crash retry. Changed historical rows, immutable
@@ -232,3 +322,8 @@ full-function/financial-subsequence review and actual ARM64, AMD64 and WASM proo
 all other fifteen pins remain exact. Source implementation alone is not release
 or arithmetic qualification. Release/checksums, consumer pin, authenticated
 admission and durable lifecycle E2E remain required before user availability.
+
+The VEF admission/receipt addition itself changes no broker expression, observer
+call or arithmetic instruction pin. Its four source/helper inventory changes
+and target dependency closures require review against the frozen parent; all 21
+previously qualified instruction maps must remain byte-identical.

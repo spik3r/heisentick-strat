@@ -76,7 +76,9 @@ const orb = {
 function prefix(request, count) {
   const next = clone(request);
   next.bars = next.bars.slice(0, count);
-  next.closedThroughT = next.bars.at(-1)[0] + (next.route.timeframe === '1h' ? 3600000 : 300000);
+  const duration = { '1m': 60000, '5m': 300000, '15m': 900000, '30m': 1800000, '1h': 3600000, '4h': 14400000, '1d': 86400000 }[next.route.timeframe];
+  assert(duration, 'fixture timeframe has no declared duration');
+  next.closedThroughT = next.bars.at(-1)[0] + duration;
   delete next.checkpoint;
   return next;
 }
@@ -311,6 +313,116 @@ try {
     assert.equal(legacyFull[i].completedTrades.profitFactor, 0); assert.equal(legacyFull[i].account.equity, 4775);
   }
   resumeSplits++;
+
+  // VEF expectations are independently specified rational fixtures checked by
+  // Go tests. This transport compares every financial field exactly, rather
+  // than introducing another JS financial implementation or a tolerance.
+  const vwapSource = readFileSync(join(root, 'engine/testdata/paper_vwap/defensive-risk50.strat'), 'utf8');
+  assert.equal(digest(vwapSource), '98abb9dc45ae9b4c4cf379ebd9981f3cd9d3bd276fac4ad6186c3c8cddc1efb4');
+  const vwapCorpus = JSON.parse(readFileSync(join(root, 'engine/testdata/paper_vwap/cases.json'), 'utf8'));
+  assert.equal(vwapCorpus.schema, 'paper-vwap-invented-cases-v1');
+  let vwapRequest;
+  for (const c of vwapCorpus.cases) {
+    const request = {
+      schema: orb.schema, source: vwapSource,
+      route: { strategyId: 'authored-vwap', symbol: 'XAUUSD', timeframe: '15m', rangeMethod: 'zone' },
+      units: { quoteCurrency: 'USD', priceUnit: 'USD-per-unit', quantityUnit: 'abstract-unit', multiplier: 1 },
+      costs: c.costs, activationFromT: c.bars[32][0], closedThroughT: c.bars.at(-1)[0] + 900000, bars: c.bars,
+    };
+    vwapRequest ??= request;
+    const full = compare(request, `vwap-${c.name}-full`);
+    for (const result of full) {
+      assert.equal(result.events.find((e) => e.kind === 'entry').effect.side, c.side);
+      assert.equal(result.events.filter((e) => e.kind === 'partial').length, 0);
+      assert.equal(result.completedTrades.count, c.expected.state === 'closed' ? 1 : 0);
+      if (c.expected.state === 'closed') assert.equal(result.events.find((e) => e.kind === 'exit').effect.reason, c.expected.reason);
+      else assert.equal(result.openPositions.length, 1);
+    }
+    const splits = [...new Set([1, 32, 33, request.bars.length - 1, request.bars.length])].filter((n) => n > 0 && n <= request.bars.length);
+    for (const split of splits) {
+      const first = compare(prefix(request, split), `vwap-${c.name}-prefix-${split}`);
+      const resumed = compare(request, `vwap-${c.name}-resume-${split}`, first.map((r) => r.checkpoint), first.map((r) => r.events));
+      for (let i = 0; i < 2; i++) {
+        assert.deepEqual([...first[i].events, ...resumed[i].events], full[i].events);
+        assert.deepEqual({ ...resumed[i], events: full[i].events, eventRange: full[i].eventRange }, full[i]);
+      }
+      resumeSplits++;
+    }
+  }
+  const vwapOpen = compare(vwapRequest, 'vwap-receipt-open');
+  const stateCase = vwapCorpus.stateCase;
+  const stateRequest = { ...clone(vwapRequest), bars: stateCase.bars, costs: stateCase.costs,
+    closedThroughT: stateCase.bars.at(-1)[0] + 900000 };
+  const stateFull = compare(stateRequest, 'vwap-seen-reset-full');
+  for (const result of stateFull) assert.deepEqual(result.events.filter((e) => e.kind === 'entry').map((e) => e.index), stateCase.entryIndexes);
+  for (const split of stateCase.splits) {
+    const first = compare(prefix(stateRequest, split), `vwap-seen-reset-prefix-${split}`);
+    const resumed = compare(stateRequest, `vwap-seen-reset-resume-${split}`, first.map((r) => r.checkpoint), first.map((r) => r.events));
+    for (let i = 0; i < 2; i++) assert.deepEqual({ ...resumed[i], events: [...first[i].events, ...resumed[i].events], eventRange: stateFull[i].eventRange }, stateFull[i]);
+    resumeSplits++;
+  }
+  for (const [mutate, code] of [
+    [(r) => { r.costs.fillOn = 'nextOpen'; }, 'PAPER_PREFIX_FILL_UNSUPPORTED'],
+    [(r) => { r.route.rangeMethod = 'pivot'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.units.quoteCurrency = 'EUR'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nmanagement { partial 0 at 1R }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\ntarget { take profit at opposite range edge }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nmanagement { trail 1 ATR trail off }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nfilters { approach 0 ATR side both }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nmanagement { breakeven after 1R trail off }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nmanagement { breakeven off } partial 0.5 at 1R'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nmarket conditions { weekday monday sessions london }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\n{}'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nmanagement { trail off } }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nfilters { ?! side both }'; }, 'PAPER_PREFIX_ADMISSION'],
+    [(r) => { r.source += '\nfilters { side both } ()'; }, 'PAPER_PREFIX_ADMISSION'],
+  ]) {
+    const bad = clone(vwapRequest); mutate(bad); const raw = JSON.stringify(bad); refuse([raw], code, raw);
+  }
+  // Independent review's generalized dropped-source matrix. Parse semantics
+  // stay unchanged; admission must now refuse every negative source on both targets.
+  for (const extra of [
+    "filters { approach 0 ATR side both }",
+    "management { breakeven after 1R trail off }",
+    "market conditions { weekday monday sessions london }",
+    "market conditions { hour 12 sessions london }",
+    "market conditions { local weekday in (monday) sessions london }",
+    "market conditions { seasonality off sessions london }",
+    "filters { unrecognized 1 side both }",
+    "management { trail off } partial 0.5 at 1R",
+    "management { breakeven off } partial 0.5 at 1R",
+    "filters { side both } higher timeframe must agree",
+    "risk { stop size <= 2 ATR } stop 1 ATR",
+    "market conditions { symbols(XAUUSD) } source timeframe 15m",
+    "strategy \"innocent\" {} take profit at opposite range edge",
+    "management { trail { off } }",
+    "management {\n{ trail off\n}",
+    "management {\ntrail off }\n}",
+    "management { trail off }}",
+    "management {{ trail off }",
+    "filters { } approach 0 ATR",
+    "market conditions {} weekday monday",
+    "management { partial 0 at 1R trail off }",
+    "management { trail 1 ATR trail off }",
+    "target { take profit at opposite range edge target 1R }"
+]) {
+    const bad = clone(vwapRequest); bad.source += '\n' + extra;
+    const raw = JSON.stringify(bad); refuse([raw], 'PAPER_PREFIX_ADMISSION', raw);
+  }
+  for (const key of ['schema', 'bindingDigest', 'inputDigest', 'stateDigest', 'processedBars', 'lastBarT', 'closedThroughT', 'eventCount']) {
+    const bad = clone(vwapRequest); bad.checkpoint = clone(vwapOpen[1].checkpoint);
+    bad.checkpoint[key] = typeof bad.checkpoint[key] === 'string' ? 'f'.repeat(64) : bad.checkpoint[key] + 1;
+    refuse([JSON.stringify(bad)], 'PAPER_PREFIX_CHECKPOINT');
+  }
+  for (const mutate of [
+    (r) => { r.source += '\n# changed'; }, (r) => { r.costs.feePerUnit += 0.25; },
+    (r) => { r.activationFromT -= 900000; }, (r) => { r.units.quantityUnit = 'other'; },
+    (r) => { r.route.strategyId = 'other'; }, (r) => { r.bars[0][5]++; },
+  ]) {
+    const bad = clone(vwapRequest); bad.checkpoint = clone(vwapOpen[1].checkpoint); mutate(bad);
+    refuse([JSON.stringify(bad)], 'PAPER_PREFIX_CHECKPOINT');
+  }
+  refuse([JSON.stringify({ ...vwapRequest, checkpoint: vwapOpen[0].checkpoint })], 'PAPER_PREFIX_CHECKPOINT');
 
   const unicode = clone(orb); unicode.source += '\r\n# exact Ω 🌱 � source bytes\r\n';
   compare(unicode, 'valid-unicode-crlf');
