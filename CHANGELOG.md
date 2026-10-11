@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+### 0.31.0 candidate
+
+This is an undated candidate, not a published release. It adds the Go paper
+execution/accounting surface below; consumer pins, browser capacity, operational
+admission and activation remain separate. See the
+[release checklist](docs/paper-prefix-release-checklist.md).
+
 - Add the transport-only `engineRunPaperPrefix` public Go WASM export over the
   same Go paper execution/accounting API. Require one valid UTF-16 request JSON
   string within an explicit 16 MiB UTF-8 input budget, return unchanged producer
@@ -13,9 +20,11 @@ version and is named here.
   same-target recovery. No new family, endpoint liquidation or portable
   checkpoint support; tagged release and browser adoption remain separate.
 
-- Add a Go-owned paper-prefix API/native command for qualified ordinary ORB and
-  faithful legacySetup9 routes: explicit costs/equity, causal activation, open
-  account MTM, partial/final trade accounting and replay-verified recovery.
+- Add a Go-owned paper-prefix API/native command with explicit costs/equity,
+  causal activation, open account MTM, partial/final trade accounting and
+  replay-verified recovery. Paper qualification covers ordinary ORB and raw
+  `seq.legacy.setup9.v1`; the producer also admits the seasonal legacy profile,
+  but seasonal-specific paper qualification and consumer admission remain gated.
   Existing prefix/Sequential contracts remain unchanged. HTF/source-entry,
   full E1/E2, release adoption and operational activation remain separate gates.
 
@@ -25,12 +34,28 @@ version and is named here.
   market/endpoint/prefix capabilities. No execution or accounting support is
   broadened; release assets and consumer integration remain separate gates.
 
+- Include the corrected HT-245 broker arithmetic investigation and actual
+  target qualification ([PR #118](https://github.com/spik3r/heisentick-strat/pull/118)).
+  This is diagnostic evidence, not a production arithmetic correction or a
+  claim of universal cross-target equality.
+
+The existing 135 parse and 109 run goldens are unchanged from v0.30.0.
+Documentation preparation preserves all 21 instruction pins approved with the
+Go paper producer; those pins are not all identical to the pre-paper release.
+
+## [0.30.0] — 2026-10-11
+
+Published from `4ab0fde8dfcfd3f2b33e4ea0af6186474c2b6ffa`. These five
+entries describe the shipped source changes; post-tag inspection and paper
+execution additions are listed separately above. Consumer qualification and
+activation remain separate from producer publication.
+
 - Refuse malformed reserved `range reversion` selectors before legacy parsing
   can silently execute a different family. Preserve canonical R11 grammar,
   fixed-rule source hashes and quoted metadata/list values. Add invented
   parser/native/WASM admission regressions and one diagnostic parse fixture;
   every existing golden is unchanged. Clarify the existing dedicated fixed-rule
-  WASM bridge exception. This parser correction requires a minor release.
+  WASM bridge exception.
 
 - Add a source-frozen Sequential companion backtest export with one-pass raw
   broker accounting, all-fee trade net, headline statistics and explicitly
@@ -38,8 +63,7 @@ version and is named here.
   execution policies and generic callers unchanged. Typed refusals exclude
   incomplete Full terminal runs and invalid/unrepresentable metrics. Initial
   capabilities cover headline/trades/equity only; grouped/monthly/portfolio
-  projections, published assets and consumer activation remain separate gates.
-  This semantic addition requires a minor version when qualified for release.
+  projections and consumer activation remain separate gates.
 
 - Add the distinct `sequential full` DSL family for the versioned synthetic
   `seq.full.public_approx.v1` E1/E2 policies. Bind explicit symbol, timeframe,
@@ -52,7 +76,6 @@ version and is named here.
   execution are explicitly refused. Add two parse and four invented producer
   run regressions plus native/Node-WASM tests; the independent HT249 acceptance
   corpus, browser/consumer qualification and historical approval remain gates.
-  This unreleased semantic addition requires a minor version at release.
 
 - Add the `legacy setup 9` family (go-only) with the frozen profiles
   `seq.legacy.setup9.v1` and `seq.legacy.setup9_perf_seasonal.v1`, selected by
