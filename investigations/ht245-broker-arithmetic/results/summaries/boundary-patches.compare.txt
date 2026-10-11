@@ -1,0 +1,23 @@
+arm64-go1.23.8       vs amd64v1-go1.27.0: cases=6 {"path":3,"decision":3} pnlTrades=3/6 maxUlps=75084 signChanges=0
+    path family-channel-break-hold#scale0#boundary-sl-trade0
+    path family-channel-break-hold#scale1#boundary-sl-trade0
+    decision family-channel-break-hold#scale2#boundary-sl-trade0 trade 0 exitIndex
+    decision family-channel-break-hold#scale3#boundary-sl-trade0 trade 0 exitIndex
+    decision family-channel-break-hold#scale4#boundary-sl-trade0 trade 0 exitIndex
+    path family-channel-break-hold#scale5#boundary-sl-trade0
+arm64-go1.27.0       vs amd64v1-go1.27.0: cases=6 {"path":3,"decision":3} pnlTrades=3/6 maxUlps=75084 signChanges=0
+    path family-channel-break-hold#scale0#boundary-sl-trade0
+    path family-channel-break-hold#scale1#boundary-sl-trade0
+    decision family-channel-break-hold#scale2#boundary-sl-trade0 trade 0 exitIndex
+    decision family-channel-break-hold#scale3#boundary-sl-trade0 trade 0 exitIndex
+    decision family-channel-break-hold#scale4#boundary-sl-trade0 trade 0 exitIndex
+    path family-channel-break-hold#scale5#boundary-sl-trade0
+arm64nofma-diag-go1.27.0 vs amd64v1-go1.27.0: cases=6 {"path":3,"decision":3} pnlTrades=3/6 maxUlps=19950 signChanges=0
+    path family-channel-break-hold#scale0#boundary-sl-trade0
+    path family-channel-break-hold#scale1#boundary-sl-trade0
+    decision family-channel-break-hold#scale2#boundary-sl-trade0 trade 0 exitIndex
+    decision family-channel-break-hold#scale3#boundary-sl-trade0 trade 0 exitIndex
+    decision family-channel-break-hold#scale4#boundary-sl-trade0 trade 0 exitIndex
+    path family-channel-break-hold#scale5#boundary-sl-trade0
+wasip1-go1.27.0      vs amd64v1-go1.27.0: cases=6 {"identical":6} pnlTrades=0/6 maxUlps=0 signChanges=0
+wasmjs-go1.27.0      vs amd64v1-go1.27.0: cases=6 {"identical":6} pnlTrades=0/6 maxUlps=0 signChanges=0

@@ -1,0 +1,274 @@
+{
+  "schema": "ht245-native-matrix-summary-v2",
+  "compiler": "go1.22.12",
+  "node": "v24.19.0",
+  "executedSourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "executedToolsSha256": "42010b71adfeb966b0eeccde946fc19a04fb7a46559e2bba8650fc8e05d32e36",
+  "matchingFrozenCommit": "4a9448bacd6362a1070c238beaadbe878a4689f8",
+  "matchingFrozenTree": "fe01c041646444889e4bfbee4f26a2457d4ab752",
+  "executionGitContext": "Actual local worktree HEAD6dfa80eb with recorded working changes; content digests match subsequently published frozen executable commit. No claim that the published commit itself was checked out for these local runs.",
+  "observation": "15-significant-digit serialized public trade output",
+  "sets": {
+    "frozen-run-corpus": {
+      "attempts": 109,
+      "successes": 109,
+      "refusals": 0,
+      "runSha256": "b92a14aa7a4cd9bbaa0b7f66fb13f2b6969fc2794f2badda133ce8dd14cbd8e5",
+      "identitySha256": "f04e428a3461eaa83a733903e5020219ebe6ecdee700e1eec8c14e33769d71df",
+      "manifestSha256": "9f4b8fe45e144dafae3900c9b9fbdfc39bf8e8f7545ea4e493b9d1dbc0dbed54",
+      "comparisonSha256": "11847f4177caeb01399b5a3c378cce32978be0a9b109d235f3b43dbad55c9298",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "2ca8ae4fbae155c9f8bf1a97a647d4639737ba0acfbf711f4823097d676e3091",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "edadc1fb45bb3e3383c1b10cd3c2a7449acb7fdd5a93d37b1b0b376d40710940",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "11c530aa45eef326a7a90e955d1cb4a94a201f4dde01efd9dd728c0c5e7f927f",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "allSuccessfulSerializedTradesEqual": true
+    },
+    "cancellation-variants": {
+      "attempts": 231,
+      "successes": 231,
+      "refusals": 0,
+      "runSha256": "796d400ff59760310e5aeb849ad985f3fcd556c67b2283ddf91a49ef5e0e4645",
+      "identitySha256": "762727954948b4eb13cc8d1f592293bd77bbe0c3a2fb77563706e85f7a199d53",
+      "manifestSha256": "62f0d3cde17bba7a4bcfc5d63db27f52abb9750b7c491cbf5a436849000dd41b",
+      "comparisonSha256": "fea1537f38e41a816a349cfdf38b1a7d74e381ff88bad8fb464edbed043bfd2c",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "1ee034a0b9d52e0cf85612556e80164bc73f91e5c7342f7d9f1954a0856b3b4d",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "65c63573612b03e63d1926bed4735c2bc04173d2a2a3127fa3681cb4074b3dc2",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "2e5714ac5c04b45b752afdce2bccea2622a97fdfe7c0ceaedfd34b8e174462e3",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "allSuccessfulSerializedTradesEqual": true
+    },
+    "scaled-prices": {
+      "attempts": 654,
+      "successes": 630,
+      "refusals": 24,
+      "runSha256": "c7e283cc57836e77ca74b815a7dac4fce34a2d2fb2ac8e216aabbc04e346ff60",
+      "identitySha256": "5dad74b7f6eb42ef1f5bc41b60da421ee2c5b5e225b834239516a270b590d923",
+      "manifestSha256": "db2af108dd47ddd908b147e4b2488c662fa2022937435dd1eeed8cf6cb643097",
+      "comparisonSha256": "d4fb16eb07640183afa8c39b541807c83202a5e2382a59dadc2fa474167145af",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "ab8d6e49db0b1163b0e9e957166670492a2c908e87fb30d4a6922faedd91d0da",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "5b82ba71d6c17f3adbe53b93f66d02d2dddfd7c144a49835cf5b849be9f5e15d",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "9e201bf7915962359b1a5a0f19ad7c0c13b100e3686713b70a249be8bb941496",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "allSuccessfulSerializedTradesEqual": true
+    },
+    "boundary-patches": {
+      "attempts": 6,
+      "successes": 6,
+      "refusals": 0,
+      "runSha256": "a034b9ecda3e9e45e3080a3d83bb798e5b18f891886840e69e604970697d165e",
+      "identitySha256": "abf3db0844691527afd72d4e48f62eedca4c2a3eb89ab5e0588adcd6f6f0e4a5",
+      "manifestSha256": "223aa939515f40a83b12a787c8cf6a5e8669fdb496f08a28bdf0ea33a88b625b",
+      "comparisonSha256": "78cf90454f512927a1162f6ead1402ded41f450ce3d7ecd66e287f2c119219bf",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "57ca7f0535113be6565417acf736f7f48bb871152bb095bc63537f81c56f7e35",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "ffced63734c0e9b4ea851d64452b213f2f68bd2385c27f55eaa6949f6d812e57",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "70970f51b0473e347a50cd060672801687af0bdb18d8b31b2627fea654b9f813",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "allSuccessfulSerializedTradesEqual": true
+    },
+    "scaled-search": {
+      "attempts": 3240,
+      "successes": 3120,
+      "refusals": 120,
+      "runSha256": "aadce7976cc454a0991d7942caddcb10a54b5c31a128720f51acbd08173e7ac1",
+      "identitySha256": "93305d2970694bce8c4af19182de60a924ba5a08f97095ab73e1b66da6a10e6c",
+      "manifestSha256": "14b576be36f5be50ea10b91d9383dec0925866c51d582fa7329a4c75b9da660f",
+      "comparisonSha256": "6cd6de25e06ed39bfc058df72a984fce1d62908cc1a1c853030f7a8a1c2f2e65",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "012d54f565aa0209df00e2b83f01710208676f4997641f2f1421009b7b81d89d",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "f761a76f81f0bf1bf7626bc47567a4fc5c64292dfd61175d18235e0969e19976",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "617302a1e8c63ec9653b3b67470a4b2ab575689af9481fa13770b0439c804c57",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "allSuccessfulSerializedTradesEqual": true
+    },
+    "boundary-search": {
+      "attempts": 0,
+      "successes": 0,
+      "refusals": 0,
+      "runSha256": "d35cbd86849795bc925ec466158f8472a839520dcbdba3d8eb43fa6edb989351",
+      "identitySha256": "df0e580befa54fd82bfe94a578ac5cef113a2f2e934c954b47ba2827e035955b",
+      "manifestSha256": "f73c938d3e6dd18ef1278888249495641a9c5c725c96f5db0a7a7c9292aaac53",
+      "comparisonSha256": "63fc17d6aaf1015fc4789ca62c86c5e70c81c42849a351098a752a94e1f8956c",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db"
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a"
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9"
+        }
+      ],
+      "allSuccessfulSerializedTradesEqual": true
+    }
+  },
+  "perTarget": {
+    "attempts": 4240,
+    "successes": 4096,
+    "refusals": 144
+  },
+  "fileSha256": {
+    "boundary-patches/identity.json": "abf3db0844691527afd72d4e48f62eedca4c2a3eb89ab5e0588adcd6f6f0e4a5",
+    "boundary-patches/js-wasmjs-go1.22.12.jsonl": "70970f51b0473e347a50cd060672801687af0bdb18d8b31b2627fea654b9f813",
+    "boundary-patches/js-wasmjs-go1.22.12.runtime.json": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+    "boundary-patches/linux-amd64v1-go1.22.12.jsonl": "57ca7f0535113be6565417acf736f7f48bb871152bb095bc63537f81c56f7e35",
+    "boundary-patches/linux-amd64v1-go1.22.12.runtime.json": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+    "boundary-patches/linux-amd64v3-go1.22.12.jsonl": "ffced63734c0e9b4ea851d64452b213f2f68bd2385c27f55eaa6949f6d812e57",
+    "boundary-patches/linux-amd64v3-go1.22.12.runtime.json": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+    "boundary-patches/manifest.json": "223aa939515f40a83b12a787c8cf6a5e8669fdb496f08a28bdf0ea33a88b625b",
+    "boundary-patches/run.json": "a034b9ecda3e9e45e3080a3d83bb798e5b18f891886840e69e604970697d165e",
+    "boundary-patches.compare.json": "78cf90454f512927a1162f6ead1402ded41f450ce3d7ecd66e287f2c119219bf",
+    "boundary-patches.compare.txt": "a882fc2cfd342bd6c6c690ed969a0d744c1c26521ae5406f3ebb9a0cd36331f5",
+    "boundary-patches.run.txt": "4b3ae57274862fa6113ceed5eb853f3da8bde15a2d585877220660dc91ee3225",
+    "boundary-search/identity.json": "df0e580befa54fd82bfe94a578ac5cef113a2f2e934c954b47ba2827e035955b",
+    "boundary-search/js-wasmjs-go1.22.12.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "boundary-search/js-wasmjs-go1.22.12.runtime.json": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+    "boundary-search/linux-amd64v1-go1.22.12.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "boundary-search/linux-amd64v1-go1.22.12.runtime.json": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+    "boundary-search/linux-amd64v3-go1.22.12.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "boundary-search/linux-amd64v3-go1.22.12.runtime.json": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+    "boundary-search/manifest.json": "f73c938d3e6dd18ef1278888249495641a9c5c725c96f5db0a7a7c9292aaac53",
+    "boundary-search/run.json": "d35cbd86849795bc925ec466158f8472a839520dcbdba3d8eb43fa6edb989351",
+    "boundary-search.compare.json": "63fc17d6aaf1015fc4789ca62c86c5e70c81c42849a351098a752a94e1f8956c",
+    "boundary-search.compare.txt": "9e3d9eecd3b5c62dfa3d07e16ccc24a94a0f78b3674f0c02f4d58bd247e2a0c9",
+    "boundary-search.run.txt": "2434a1a9b25542aa849e75928358a94199437fb905b7125721f787bafede4428",
+    "cancellation-variants/identity.json": "762727954948b4eb13cc8d1f592293bd77bbe0c3a2fb77563706e85f7a199d53",
+    "cancellation-variants/js-wasmjs-go1.22.12.jsonl": "2e5714ac5c04b45b752afdce2bccea2622a97fdfe7c0ceaedfd34b8e174462e3",
+    "cancellation-variants/js-wasmjs-go1.22.12.runtime.json": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+    "cancellation-variants/linux-amd64v1-go1.22.12.jsonl": "1ee034a0b9d52e0cf85612556e80164bc73f91e5c7342f7d9f1954a0856b3b4d",
+    "cancellation-variants/linux-amd64v1-go1.22.12.runtime.json": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+    "cancellation-variants/linux-amd64v3-go1.22.12.jsonl": "65c63573612b03e63d1926bed4735c2bc04173d2a2a3127fa3681cb4074b3dc2",
+    "cancellation-variants/linux-amd64v3-go1.22.12.runtime.json": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+    "cancellation-variants/manifest.json": "62f0d3cde17bba7a4bcfc5d63db27f52abb9750b7c491cbf5a436849000dd41b",
+    "cancellation-variants/run.json": "796d400ff59760310e5aeb849ad985f3fcd556c67b2283ddf91a49ef5e0e4645",
+    "cancellation-variants.compare.json": "fea1537f38e41a816a349cfdf38b1a7d74e381ff88bad8fb464edbed043bfd2c",
+    "cancellation-variants.compare.txt": "8caded5d3ebfb089c92646de52cd67b4cbdff2c9db19263d87f940a455eea89a",
+    "cancellation-variants.run.txt": "370ad5fcdd4fc5e3de9a017a593309dac04759c20b1cec6aa2555721af907afa",
+    "frozen-run-corpus/identity.json": "f04e428a3461eaa83a733903e5020219ebe6ecdee700e1eec8c14e33769d71df",
+    "frozen-run-corpus/js-wasmjs-go1.22.12.jsonl": "11c530aa45eef326a7a90e955d1cb4a94a201f4dde01efd9dd728c0c5e7f927f",
+    "frozen-run-corpus/js-wasmjs-go1.22.12.runtime.json": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+    "frozen-run-corpus/linux-amd64v1-go1.22.12.jsonl": "2ca8ae4fbae155c9f8bf1a97a647d4639737ba0acfbf711f4823097d676e3091",
+    "frozen-run-corpus/linux-amd64v1-go1.22.12.runtime.json": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+    "frozen-run-corpus/linux-amd64v3-go1.22.12.jsonl": "edadc1fb45bb3e3383c1b10cd3c2a7449acb7fdd5a93d37b1b0b376d40710940",
+    "frozen-run-corpus/linux-amd64v3-go1.22.12.runtime.json": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+    "frozen-run-corpus/manifest.json": "9f4b8fe45e144dafae3900c9b9fbdfc39bf8e8f7545ea4e493b9d1dbc0dbed54",
+    "frozen-run-corpus/run.json": "b92a14aa7a4cd9bbaa0b7f66fb13f2b6969fc2794f2badda133ce8dd14cbd8e5",
+    "frozen-run-corpus.compare.json": "11847f4177caeb01399b5a3c378cce32978be0a9b109d235f3b43dbad55c9298",
+    "frozen-run-corpus.compare.txt": "8b169ba13667efcfb310b6a2e2930123054f4fa3949b8b6ad25f5cdc6feebba2",
+    "frozen-run-corpus.run.txt": "739ad13390a15b0dbb932ae64033d8bad825083c2609d8de77371cb2057884a7",
+    "scaled-prices/identity.json": "5dad74b7f6eb42ef1f5bc41b60da421ee2c5b5e225b834239516a270b590d923",
+    "scaled-prices/js-wasmjs-go1.22.12.jsonl": "9e201bf7915962359b1a5a0f19ad7c0c13b100e3686713b70a249be8bb941496",
+    "scaled-prices/js-wasmjs-go1.22.12.runtime.json": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+    "scaled-prices/linux-amd64v1-go1.22.12.jsonl": "ab8d6e49db0b1163b0e9e957166670492a2c908e87fb30d4a6922faedd91d0da",
+    "scaled-prices/linux-amd64v1-go1.22.12.runtime.json": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+    "scaled-prices/linux-amd64v3-go1.22.12.jsonl": "5b82ba71d6c17f3adbe53b93f66d02d2dddfd7c144a49835cf5b849be9f5e15d",
+    "scaled-prices/linux-amd64v3-go1.22.12.runtime.json": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+    "scaled-prices/manifest.json": "db2af108dd47ddd908b147e4b2488c662fa2022937435dd1eeed8cf6cb643097",
+    "scaled-prices/run.json": "c7e283cc57836e77ca74b815a7dac4fce34a2d2fb2ac8e216aabbc04e346ff60",
+    "scaled-prices.compare.json": "d4fb16eb07640183afa8c39b541807c83202a5e2382a59dadc2fa474167145af",
+    "scaled-prices.compare.txt": "4fe4f0dcf8951b463e484a86948487be89a4c9bece72255f6fe88ac37983ecb1",
+    "scaled-prices.run.txt": "f77087ec661b0e928086b5a52a39bd8ce7ac50476b2e2757a30cc893fc0d84a8",
+    "scaled-search/identity.json": "93305d2970694bce8c4af19182de60a924ba5a08f97095ab73e1b66da6a10e6c",
+    "scaled-search/js-wasmjs-go1.22.12.jsonl": "617302a1e8c63ec9653b3b67470a4b2ab575689af9481fa13770b0439c804c57",
+    "scaled-search/js-wasmjs-go1.22.12.runtime.json": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+    "scaled-search/linux-amd64v1-go1.22.12.jsonl": "012d54f565aa0209df00e2b83f01710208676f4997641f2f1421009b7b81d89d",
+    "scaled-search/linux-amd64v1-go1.22.12.runtime.json": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+    "scaled-search/linux-amd64v3-go1.22.12.jsonl": "f761a76f81f0bf1bf7626bc47567a4fc5c64292dfd61175d18235e0969e19976",
+    "scaled-search/linux-amd64v3-go1.22.12.runtime.json": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+    "scaled-search/manifest.json": "14b576be36f5be50ea10b91d9383dec0925866c51d582fa7329a4c75b9da660f",
+    "scaled-search/run.json": "aadce7976cc454a0991d7942caddcb10a54b5c31a128720f51acbd08173e7ac1",
+    "scaled-search.compare.json": "6cd6de25e06ed39bfc058df72a984fce1d62908cc1a1c853030f7a8a1c2f2e65",
+    "scaled-search.compare.txt": "eca51926e597afef2df8d7972e0a334273fea1a64d8cd569ee3271d82f698fec",
+    "scaled-search.run.txt": "629dfc8184e9a1aa9466668faf71bdf05a2c8094c0b2e64dc02f0d7c5c07d2ba"
+  },
+  "archiveReceipt": "native-archive.json",
+  "archivedSummarySha256": "2b2a51c218485e87870432c8b27d84e74798cbbbb8494083f92db8f408d0a4e4"
+}

@@ -1,0 +1,14 @@
+arm64-go1.27.0       vs amd64v1-go1.27.0: cases=3240 {"identical":3153,"path":83,"pnl-only":4} pnlTrades=86/30848 maxUlps=53300 signChanges=0
+    path deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#s10
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s0
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s2
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s3
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s4
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s5
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s6
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s7
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s9
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#s10
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s13
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#s14
+arm64nofma-diag-go1.27.0 vs amd64v1-go1.27.0: cases=3240 {"identical":3240} pnlTrades=0/30848 maxUlps=0 signChanges=0

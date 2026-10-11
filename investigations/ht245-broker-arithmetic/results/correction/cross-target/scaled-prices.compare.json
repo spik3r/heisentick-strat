@@ -1,0 +1,1826 @@
+{
+  "schema": "ht245.compare.v2",
+  "observation": "15-significant-digit serialized public trade output",
+  "reference": "linux-amd64v1-go1.22.12",
+  "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "manifestSha256": "db2af108dd47ddd908b147e4b2488c662fa2022937435dd1eeed8cf6cb643097",
+  "comparatorSha256": "2e45ce0b955bbfaa71f97fb88f4f556222a9fcf350579ae97aded6c84cfb2f77",
+  "evidence": [
+    {
+      "runSha256": "c7e283cc57836e77ca74b815a7dac4fce34a2d2fb2ac8e216aabbc04e346ff60",
+      "identitySha256": "5dad74b7f6eb42ef1f5bc41b60da421ee2c5b5e225b834239516a270b590d923",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "ab8d6e49db0b1163b0e9e957166670492a2c908e87fb30d4a6922faedd91d0da",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "5b82ba71d6c17f3adbe53b93f66d02d2dddfd7c144a49835cf5b849be9f5e15d",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v3",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "9e201bf7915962359b1a5a0f19ad7c0c13b100e3686713b70a249be8bb941496",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "js",
+            "GOARCH": "wasm",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "node-go-js-wasm",
+            "version": "v24.19.0",
+            "glueSha256": "f8b767afd9cb2a4a0d0dedc9cacd8069481b00dac3adf8b8da39b1350d7014b2",
+            "implementationSha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+          }
+        }
+      ]
+    },
+    {
+      "runSha256": "9a1a236d2b12d94a082f172398be336dca82f81617cbf264e285d62fd135db33",
+      "identitySha256": "95458af47f9976a40cf44659b6311c5adf06884899cb241e9c3ffa2819fe74eb",
+      "targets": [
+        {
+          "label": "linux-arm64-go1.22.12",
+          "receiptSha256": "3c01acad51a133a9eb81d74412545005e0c6f186d52e0f0494a6766fa6802a31",
+          "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+          "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+            "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+            "hostOS": "linux",
+            "hostArch": "arm64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "arm64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "arm64",
+              "release": "6.17.0-1011-oracle"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "runSha256": "0a3947415c0eeec1d623d496f3c4ecc65da8d5c00d87238a0f99776815c4799b",
+      "identitySha256": "95458af47f9976a40cf44659b6311c5adf06884899cb241e9c3ffa2819fe74eb",
+      "targets": [
+        {
+          "label": "linux-arm64nofma-go1.22.12",
+          "receiptSha256": "2d24ba459fa3b7be6b1cd73339272628ecc95db1e23bf4a0bb2c77f3f4cd7f7a",
+          "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+          "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+            "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+            "hostOS": "linux",
+            "hostArch": "arm64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "arm64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+              "-gcflags=all=-d=fmahash=n"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "arm64",
+              "release": "6.17.0-1011-oracle"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "targets": {
+    "linux-amd64v3-go1.22.12": {
+      "attemptedCases": 654,
+      "successfulPairs": 630,
+      "matchingRefusals": 24,
+      "counts": {
+        "identical": 630,
+        "matching-refusal": 24
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 6174,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "js-wasmjs-go1.22.12": {
+      "attemptedCases": 654,
+      "successfulPairs": 630,
+      "matchingRefusals": 24,
+      "counts": {
+        "identical": 630,
+        "matching-refusal": 24
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 6174,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "linux-arm64-go1.22.12": {
+      "attemptedCases": 654,
+      "successfulPairs": 630,
+      "matchingRefusals": 24,
+      "counts": {
+        "identical": 605,
+        "path": 25,
+        "matching-refusal": 24
+      },
+      "differingCases": [
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 54,
+              "field": "points",
+              "a": "402c0575d321c6d3",
+              "b": "402c0575d321c69a"
+            },
+            {
+              "trade": 54,
+              "field": "pnl",
+              "a": "406069036a77ffa1",
+              "b": "406069036a77ff7e",
+              "aText": "131.28166697919099",
+              "bText": "131.28166697918999",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 12,
+              "field": "points",
+              "a": "40244726c97477ed",
+              "b": "40244726c9747825"
+            },
+            {
+              "trade": 12,
+              "field": "pnl",
+              "a": "406253865c1aac2a",
+              "b": "406253865c1aac71",
+              "aText": "146.61015134057499",
+              "bText": "146.610151340577",
+              "ulps": "71",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 54,
+              "field": "points",
+              "a": "402e82e09384b2f9",
+              "b": "402e82e09384b369"
+            },
+            {
+              "trade": 54,
+              "field": "pnl",
+              "a": "40606bed3df4b7d1",
+              "b": "40606bed3df4b817",
+              "aText": "131.37271020695201",
+              "bText": "131.372710206954",
+              "ulps": "70",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 33,
+              "field": "points",
+              "a": "4020ef82bc93b1c3",
+              "b": "4020ef82bc93b17f"
+            },
+            {
+              "trade": 33,
+              "field": "pnl",
+              "a": "40645fffff3a4d34",
+              "b": "40645fffff3a4ccb",
+              "aText": "162.99999963175799",
+              "bText": "162.999999631755",
+              "ulps": "105",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 38,
+              "field": "sl",
+              "a": "4086465d621cecde",
+              "b": "4086465d621cece7"
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 12,
+              "field": "size",
+              "a": "403b00bdab554acc",
+              "b": "403b00bdab5548ed"
+            },
+            {
+              "trade": 12,
+              "field": "points",
+              "a": "c01dddcfed87ee04",
+              "b": "c01dddcfed87efff"
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 1,
+              "field": "points",
+              "a": "3f60c52cf5ad4ff5",
+              "b": "3f60c52cf5ad5207"
+            },
+            {
+              "trade": 1,
+              "field": "pnl",
+              "a": "40703fffffffff0a",
+              "b": "40704000000000f6",
+              "aText": "259.99999999998602",
+              "bText": "260.00000000001398",
+              "ulps": "492",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "3f52ec722b0df00c",
+              "b": "3f52ec722b0df7f9"
+            },
+            {
+              "trade": 9,
+              "field": "pnl",
+              "a": "40703ffffffffc90",
+              "b": "4070400000000370",
+              "aText": "259.99999999994998",
+              "bText": "260.00000000005002",
+              "ulps": "1760",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 1,
+              "field": "points",
+              "a": "3f623f6ae92df800",
+              "b": "3f623f6ae92df9fb"
+            },
+            {
+              "trade": 1,
+              "field": "pnl",
+              "a": "40703fffffffff1b",
+              "b": "40704000000000e5",
+              "aText": "259.99999999998698",
+              "bText": "260.00000000001302",
+              "ulps": "458",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "3f5b1e97520b6410",
+              "b": "3f5b1e97520b6807"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "40703ffffffffed5",
+              "b": "407040000000012b",
+              "aText": "259.999999999983",
+              "bText": "260.000000000017",
+              "ulps": "598",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 6,
+              "field": "points",
+              "a": "3f59acf4fa9237ff",
+              "b": "3f59acf4fa923fed"
+            },
+            {
+              "trade": 6,
+              "field": "pnl",
+              "a": "40703ffffffffd75",
+              "b": "407040000000028b",
+              "aText": "259.99999999996299",
+              "bText": "260.00000000003701",
+              "ulps": "1302",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "3f531451d6284fe9",
+              "b": "3f531451d6285805"
+            },
+            {
+              "trade": 9,
+              "field": "pnl",
+              "a": "40703ffffffffc90",
+              "b": "4070400000000370",
+              "aText": "259.99999999994998",
+              "bText": "260.00000000005002",
+              "ulps": "1760",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 16,
+              "field": "size",
+              "a": "3fc66a0ff350d890",
+              "b": "3fc66a0ff350d824"
+            },
+            {
+              "trade": 16,
+              "field": "pnl",
+              "a": "4080aaaaaaaaaad4",
+              "b": "4080aaaaaaaaaa96",
+              "aText": "533.33333333333803",
+              "bText": "533.33333333333098",
+              "ulps": "62",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ab755d4ddddada",
+              "b": "40ab755d4ddddb32"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958befad"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a33779"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958befad"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a33779"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4055abe599bca9d2",
+              "b": "4055abe599bb36d1"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c002effc60cb4001",
+              "b": "c002effc60cc7bf6"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069a66fd91793cb",
+              "b": "c069a66fd91788a9",
+              "aText": "-205.201153322267",
+              "bText": "-205.201153322186",
+              "ulps": "2850",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ade0a99d7f6cde",
+              "b": "40ade0a99d7f6d36"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d81b0"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db29"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d81b0"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db29"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053f57217cf1c5f",
+              "b": "4053f57217cde9a2"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0048574c4a80808",
+              "b": "c0048574c4a93bfc"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c06999488af44a75",
+              "b": "c06999488af44140",
+              "aText": "-204.79010532105499",
+              "bText": "-204.790105320988",
+              "ulps": "2357",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40a8f8301e046735",
+              "b": "40a8f8301e046777"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bf2"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e52"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bf2"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e52"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4057c52657bc398d",
+              "b": "4057c52657bacfec"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0014ecf63f66006",
+              "b": "c0014ecf63f75ffd"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069b68df345a4dd",
+              "b": "c069b68df3459a02",
+              "aText": "-205.704827915214",
+              "bText": "-205.70482791513501",
+              "ulps": "2779",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ae1ebc5c4a169a",
+              "b": "40ae1ebc5c4a1734"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ae1e9da3f82b15",
+              "b": "40ae1e9da3f82baf"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b0ec"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ae1e9da3f82b15",
+              "b": "40ae1e9da3f82baf"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b0ec"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053cd4a4b9a2545",
+              "b": "4053cd4a4b97c18f"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c004ae18d84f23fc",
+              "b": "c004ae18d85193fb"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0699814261ba98a",
+              "b": "c0699814261b9720",
+              "aText": "-204.75245957758699",
+              "bText": "-204.75245957745301",
+              "ulps": "4714",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40aa4b8db0e81c61",
+              "b": "40aa4b8db0e81ccf"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef896314a"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03bc5"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef896314a"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03bc5"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40569ab02dc3c252",
+              "b": "40569ab02dc1719a"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0022d005b456ffd",
+              "b": "c0022d005b473ffb"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069ad99c3eed47f",
+              "b": "c069ad99c3eec2c4",
+              "aText": "-205.42502018591401",
+              "bText": "-205.425020185785",
+              "ulps": "4539",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40abaf388860039d",
+              "b": "40abaf38886003df"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e185a"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804fd5"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e185a"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804fd5"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40557fc641c207f0",
+              "b": "40557fc641c0f29d"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c00315ddaaec5407",
+              "b": "c00315ddaaed43fc"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069a51cfcda4c59",
+              "b": "c069a51cfcda441a",
+              "aText": "-205.15978853832601",
+              "bText": "-205.15978853826601",
+              "ulps": "2111",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-double-top-bottom#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "size",
+              "a": "40243e5a21fa0a60",
+              "b": "40243e5a21fa0ad1"
+            },
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "c033d1c213db2a04",
+              "b": "c033d1c213db2977"
+            }
+          ]
+        },
+        {
+          "id": "family-double-top-bottom#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 1,
+              "field": "size",
+              "a": "40331e50e75dd1af",
+              "b": "40331e50e75dd0ce"
+            },
+            {
+              "trade": 1,
+              "field": "pnl",
+              "a": "400ad242b0582a81",
+              "b": "400ad242b058292f",
+              "aText": "3.3526662613779199",
+              "bText": "3.3526662613777698",
+              "ulps": "338",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-elder-triple-screen-trail-override#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 9,
+              "field": "size",
+              "a": "403014d88da69e00",
+              "b": "403014d88da69e8d"
+            },
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "c028fe502d61af0e",
+              "b": "c028fe502d61adf5"
+            }
+          ]
+        },
+        {
+          "id": "family-elder-triple-screen#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 9,
+              "field": "size",
+              "a": "403014d88da69e00",
+              "b": "403014d88da69e8d"
+            },
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "c028fe502d61af0e",
+              "b": "c028fe502d61adf5"
+            }
+          ]
+        },
+        {
+          "id": "family-fib-continuation#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 8,
+              "field": "size",
+              "a": "402afc4b39ce79a9",
+              "b": "402afc4b39ce7a8a"
+            },
+            {
+              "trade": 8,
+              "field": "points",
+              "a": "403d67d08139eb0d",
+              "b": "403d67d08139e9f3"
+            }
+          ]
+        },
+        {
+          "id": "money-partial-exit#scale2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 18,
+              "field": "size",
+              "a": "403b00bdab554acc",
+              "b": "403b00bdab5548ed"
+            },
+            {
+              "trade": 18,
+              "field": "points",
+              "a": "c01dddcfed87ee04",
+              "b": "c01dddcfed87efff"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40034c9ca33141da",
+              "b": "40034c9ca33141f0"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0502be8c73e510d",
+              "b": "c0502be8c73e5122",
+              "aText": "-64.686082659584102",
+              "bText": "-64.6860826595844",
+              "ulps": "21",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 24,
+              "field": "points",
+              "a": "4006c759e0588405",
+              "b": "4006c759e05887fa"
+            },
+            {
+              "trade": 24,
+              "field": "pnl",
+              "a": "4011ba05df6b3073",
+              "b": "4011ba05df6b3392",
+              "aText": "4.4316630276845101",
+              "bText": "4.4316630276852198",
+              "ulps": "799",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 25,
+              "field": "points",
+              "a": "c02122bef59d8fff",
+              "b": "c02122bef59d9102"
+            },
+            {
+              "trade": 25,
+              "field": "pnl",
+              "a": "c02ac2af236f4fee",
+              "b": "c02ac2af236f5178",
+              "aText": "-13.380242450082701",
+              "bText": "-13.380242450083401",
+              "ulps": "394",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "size",
+              "a": "40093d44a518bdce",
+              "b": "40093d44a518bdfb"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "403605dc1aa3c7c5",
+              "b": "403605dc1aa3c7e2",
+              "aText": "22.022889771447598",
+              "bText": "22.022889771447701",
+              "ulps": "29",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 42,
+              "field": "size",
+              "a": "3fe6e23df7671f90",
+              "b": "3fe6e23df7671f7e"
+            },
+            {
+              "trade": 42,
+              "field": "pnl",
+              "a": "c05411aafcce283f",
+              "b": "c05411aafcce2831",
+              "aText": "-80.276061250043298",
+              "bText": "-80.276061250043099",
+              "ulps": "14",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        }
+      ],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 6174,
+      "pnlTradesDiffering": 23,
+      "maxUlps": "4714",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "linux-arm64nofma-go1.22.12": {
+      "attemptedCases": 654,
+      "successfulPairs": 630,
+      "matchingRefusals": 24,
+      "counts": {
+        "identical": 624,
+        "path": 6,
+        "matching-refusal": 24
+      },
+      "differingCases": [
+        {
+          "id": "family-channel-break-hold#scale0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ab755d4ddddada",
+              "b": "40ab755d4ddddaf0"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958bef6b"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a337bb"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958bef6b"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a337bb"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4055abe599bca9d2",
+              "b": "4055abe599bc4732"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c002effc60cb4001",
+              "b": "c002effc60cb9402"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069a66fd91793cb",
+              "b": "c069a66fd91790e8",
+              "aText": "-205.201153322267",
+              "bText": "-205.201153322246",
+              "ulps": "739",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ade0a99d7f6cde",
+              "b": "40ade0a99d7f6cf4"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d816f"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db55"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d816f"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db55"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053f57217cf1c5f",
+              "b": "4053f57217cec8b9"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0048574c4a80808",
+              "b": "c0048574c4a85c09"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c06999488af44a75",
+              "b": "c06999488af447fc",
+              "aText": "-204.79010532105499",
+              "bText": "-204.790105321037",
+              "ulps": "633",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40a8f8301e046735",
+              "b": "40a8f8301e04674b"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bc6"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e7e"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bc6"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e7e"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4057c52657bc398d",
+              "b": "4057c52657bbc2e3"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0014ecf63f66006",
+              "b": "c0014ecf63f6b406"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069b68df345a4dd",
+              "b": "c069b68df345a14a",
+              "aText": "-205.704827915214",
+              "bText": "-205.70482791518799",
+              "ulps": "915",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b170"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b170"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053cd4a4b9a2545",
+              "b": "4053cd4a4b99d2eb"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c004ae18d84f23fc",
+              "b": "c004ae18d84f77fd"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0699814261ba98a",
+              "b": "c0699814261ba711",
+              "aText": "-204.75245957758699",
+              "bText": "-204.752459577569",
+              "ulps": "633",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40aa4b8db0e81c61",
+              "b": "40aa4b8db0e81c77"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef89630f2"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03c1d"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef89630f2"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03c1d"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40569ab02dc3c252",
+              "b": "40569ab02dc35702"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0022d005b456ffd",
+              "b": "c0022d005b45c3fd"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069ad99c3eed47f",
+              "b": "c069ad99c3eed155",
+              "aText": "-205.42502018591401",
+              "bText": "-205.42502018589099",
+              "ulps": "810",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40abaf388860039d",
+              "b": "40abaf38886003b3"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e182e"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804feb"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e182e"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804feb"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40557fc641c207f0",
+              "b": "40557fc641c1a6e1"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c00315ddaaec5407",
+              "b": "c00315ddaaeca808"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069a51cfcda4c59",
+              "b": "c069a51cfcda4976",
+              "aText": "-205.15978853832601",
+              "bText": "-205.15978853830501",
+              "ulps": "739",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        }
+      ],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#scale5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 6174,
+      "pnlTradesDiffering": 6,
+      "maxUlps": "915",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    }
+  }
+}

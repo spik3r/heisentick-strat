@@ -1,0 +1,3300 @@
+{
+ "schema": "ht245.manifest.v1",
+ "note": "frozen bars multiplied by seeded invented factors (random.Random(245), see gen script)",
+ "cases": [
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#scale0",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#scale1",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#scale2",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#scale3",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#scale4",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#scale5",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#scale0",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#scale1",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#scale2",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#scale3",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#scale4",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#scale5",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#scale0",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#scale1",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#scale2",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#scale3",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#scale4",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#scale5",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale0",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale1",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale2",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale3",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale4",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale5",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale0",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale1",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale2",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale3",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale4",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale5",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#scale0",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#scale1",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#scale2",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#scale3",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#scale4",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#scale5",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#scale0",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#scale1",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#scale2",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#scale3",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#scale4",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#scale5",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale0",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale1",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale2",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale3",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale4",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale5",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#scale0",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#scale1",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#scale2",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#scale3",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#scale4",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#scale5",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale0",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale1",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale2",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale3",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale4",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale5",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-break-retest#scale0",
+   "source": "conformance/run/family-break-retest",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-break-retest#scale1",
+   "source": "conformance/run/family-break-retest",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-break-retest#scale2",
+   "source": "conformance/run/family-break-retest",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-break-retest#scale3",
+   "source": "conformance/run/family-break-retest",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-break-retest#scale4",
+   "source": "conformance/run/family-break-retest",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-break-retest#scale5",
+   "source": "conformance/run/family-break-retest",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-channel-break-hold#scale0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-channel-break-hold#scale1",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-channel-break-hold#scale2",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-channel-break-hold#scale3",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-channel-break-hold#scale4",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-channel-break-hold#scale5",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#scale0",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#scale1",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#scale2",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#scale3",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#scale4",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#scale5",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected#scale0",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected#scale1",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected#scale2",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected#scale3",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected#scale4",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected#scale5",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#scale0",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#scale1",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#scale2",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#scale3",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#scale4",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#scale5",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot#scale0",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot#scale1",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot#scale2",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot#scale3",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot#scale4",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot#scale5",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected#scale0",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected#scale1",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected#scale2",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected#scale3",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected#scale4",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected#scale5",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded#scale0",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded#scale1",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded#scale2",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded#scale3",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded#scale4",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded#scale5",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#scale0",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#scale1",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#scale2",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#scale3",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#scale4",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#scale5",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#scale0",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#scale1",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#scale2",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#scale3",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#scale4",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#scale5",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#scale0",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#scale1",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#scale2",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#scale3",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#scale4",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#scale5",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#scale0",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#scale1",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#scale2",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#scale3",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#scale4",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#scale5",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected#scale0",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected#scale1",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected#scale2",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected#scale3",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected#scale4",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected#scale5",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#scale0",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#scale1",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#scale2",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#scale3",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#scale4",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#scale5",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#scale0",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#scale1",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#scale2",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#scale3",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#scale4",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#scale5",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#scale0",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#scale1",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#scale2",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#scale3",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#scale4",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#scale5",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#scale0",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#scale1",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#scale2",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#scale3",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#scale4",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#scale5",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop#scale0",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop#scale1",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop#scale2",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop#scale3",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop#scale4",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop#scale5",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop#scale0",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop#scale1",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop#scale2",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop#scale3",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop#scale4",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop#scale5",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#scale0",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#scale1",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#scale2",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#scale3",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#scale4",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#scale5",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch#scale0",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch#scale1",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch#scale2",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch#scale3",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch#scale4",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch#scale5",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#scale0",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#scale1",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#scale2",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#scale3",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#scale4",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#scale5",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote#scale0",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote#scale1",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote#scale2",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote#scale3",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote#scale4",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote#scale5",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#scale0",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#scale1",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#scale2",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#scale3",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#scale4",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#scale5",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#scale0",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#scale1",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#scale2",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#scale3",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#scale4",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#scale5",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short#scale0",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short#scale1",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short#scale2",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short#scale3",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short#scale4",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short#scale5",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#scale0",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#scale1",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#scale2",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#scale3",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#scale4",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#scale5",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie#scale0",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie#scale1",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie#scale2",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie#scale3",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie#scale4",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie#scale5",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#scale0",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#scale1",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#scale2",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#scale3",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#scale4",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#scale5",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#scale0",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#scale1",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#scale2",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#scale3",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#scale4",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#scale5",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#scale0",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#scale1",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#scale2",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#scale3",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#scale4",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#scale5",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#scale0",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#scale1",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#scale2",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#scale3",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#scale4",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#scale5",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#scale0",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#scale1",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#scale2",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#scale3",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#scale4",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#scale5",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#scale0",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#scale1",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#scale2",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#scale3",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#scale4",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#scale5",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry#scale0",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry#scale1",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry#scale2",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry#scale3",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry#scale4",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry#scale5",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#scale0",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#scale1",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#scale2",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#scale3",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#scale4",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#scale5",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#scale0",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#scale1",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#scale2",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#scale3",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#scale4",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#scale5",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close#scale0",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close#scale1",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close#scale2",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close#scale3",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close#scale4",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close#scale5",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#scale0",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#scale1",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#scale2",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#scale3",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#scale4",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#scale5",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#scale0",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#scale1",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#scale2",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#scale3",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#scale4",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#scale5",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-daily-flush-failure#scale0",
+   "source": "conformance/run/family-daily-flush-failure",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-daily-flush-failure#scale1",
+   "source": "conformance/run/family-daily-flush-failure",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-daily-flush-failure#scale2",
+   "source": "conformance/run/family-daily-flush-failure",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-daily-flush-failure#scale3",
+   "source": "conformance/run/family-daily-flush-failure",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-daily-flush-failure#scale4",
+   "source": "conformance/run/family-daily-flush-failure",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-daily-flush-failure#scale5",
+   "source": "conformance/run/family-daily-flush-failure",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-day-open-reclaim#scale0",
+   "source": "conformance/run/family-day-open-reclaim",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-day-open-reclaim#scale1",
+   "source": "conformance/run/family-day-open-reclaim",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-day-open-reclaim#scale2",
+   "source": "conformance/run/family-day-open-reclaim",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-day-open-reclaim#scale3",
+   "source": "conformance/run/family-day-open-reclaim",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-day-open-reclaim#scale4",
+   "source": "conformance/run/family-day-open-reclaim",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-day-open-reclaim#scale5",
+   "source": "conformance/run/family-day-open-reclaim",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-double-top-bottom#scale0",
+   "source": "conformance/run/family-double-top-bottom",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-double-top-bottom#scale1",
+   "source": "conformance/run/family-double-top-bottom",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-double-top-bottom#scale2",
+   "source": "conformance/run/family-double-top-bottom",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-double-top-bottom#scale3",
+   "source": "conformance/run/family-double-top-bottom",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-double-top-bottom#scale4",
+   "source": "conformance/run/family-double-top-bottom",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-double-top-bottom#scale5",
+   "source": "conformance/run/family-double-top-bottom",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#scale0",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#scale1",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#scale2",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#scale3",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#scale4",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#scale5",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#scale0",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#scale1",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#scale2",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#scale3",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#scale4",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#scale5",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-immediate-time#scale0",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-immediate-time#scale1",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-immediate-time#scale2",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-immediate-time#scale3",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-immediate-time#scale4",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-immediate-time#scale5",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-rebound#scale0",
+   "source": "conformance/run/family-down-shock-rebound",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-rebound#scale1",
+   "source": "conformance/run/family-down-shock-rebound",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-rebound#scale2",
+   "source": "conformance/run/family-down-shock-rebound",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-rebound#scale3",
+   "source": "conformance/run/family-down-shock-rebound",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-rebound#scale4",
+   "source": "conformance/run/family-down-shock-rebound",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-rebound#scale5",
+   "source": "conformance/run/family-down-shock-rebound",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#scale0",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#scale1",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#scale2",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#scale3",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#scale4",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#scale5",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#scale0",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#scale1",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#scale2",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#scale3",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#scale4",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#scale5",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-down-shock-reversal-time#scale0",
+   "source": "conformance/run/family-down-shock-reversal-time",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-down-shock-reversal-time#scale1",
+   "source": "conformance/run/family-down-shock-reversal-time",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-down-shock-reversal-time#scale2",
+   "source": "conformance/run/family-down-shock-reversal-time",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-down-shock-reversal-time#scale3",
+   "source": "conformance/run/family-down-shock-reversal-time",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-down-shock-reversal-time#scale4",
+   "source": "conformance/run/family-down-shock-reversal-time",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-down-shock-reversal-time#scale5",
+   "source": "conformance/run/family-down-shock-reversal-time",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#scale0",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#scale1",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#scale2",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#scale3",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#scale4",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#scale5",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-elder-triple-screen#scale0",
+   "source": "conformance/run/family-elder-triple-screen",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-elder-triple-screen#scale1",
+   "source": "conformance/run/family-elder-triple-screen",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-elder-triple-screen#scale2",
+   "source": "conformance/run/family-elder-triple-screen",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-elder-triple-screen#scale3",
+   "source": "conformance/run/family-elder-triple-screen",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-elder-triple-screen#scale4",
+   "source": "conformance/run/family-elder-triple-screen",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-elder-triple-screen#scale5",
+   "source": "conformance/run/family-elder-triple-screen",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-fair-value-gap#scale0",
+   "source": "conformance/run/family-fair-value-gap",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-fair-value-gap#scale1",
+   "source": "conformance/run/family-fair-value-gap",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-fair-value-gap#scale2",
+   "source": "conformance/run/family-fair-value-gap",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-fair-value-gap#scale3",
+   "source": "conformance/run/family-fair-value-gap",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-fair-value-gap#scale4",
+   "source": "conformance/run/family-fair-value-gap",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-fair-value-gap#scale5",
+   "source": "conformance/run/family-fair-value-gap",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-fib-continuation#scale0",
+   "source": "conformance/run/family-fib-continuation",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-fib-continuation#scale1",
+   "source": "conformance/run/family-fib-continuation",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-fib-continuation#scale2",
+   "source": "conformance/run/family-fib-continuation",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-fib-continuation#scale3",
+   "source": "conformance/run/family-fib-continuation",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-fib-continuation#scale4",
+   "source": "conformance/run/family-fib-continuation",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-fib-continuation#scale5",
+   "source": "conformance/run/family-fib-continuation",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-inside-day-expansion#scale0",
+   "source": "conformance/run/family-inside-day-expansion",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-inside-day-expansion#scale1",
+   "source": "conformance/run/family-inside-day-expansion",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-inside-day-expansion#scale2",
+   "source": "conformance/run/family-inside-day-expansion",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-inside-day-expansion#scale3",
+   "source": "conformance/run/family-inside-day-expansion",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-inside-day-expansion#scale4",
+   "source": "conformance/run/family-inside-day-expansion",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-inside-day-expansion#scale5",
+   "source": "conformance/run/family-inside-day-expansion",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#scale0",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#scale1",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#scale2",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#scale3",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#scale4",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#scale5",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-keltner-expansion#scale0",
+   "source": "conformance/run/family-keltner-expansion",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-keltner-expansion#scale1",
+   "source": "conformance/run/family-keltner-expansion",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-keltner-expansion#scale2",
+   "source": "conformance/run/family-keltner-expansion",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-keltner-expansion#scale3",
+   "source": "conformance/run/family-keltner-expansion",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-keltner-expansion#scale4",
+   "source": "conformance/run/family-keltner-expansion",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-keltner-expansion#scale5",
+   "source": "conformance/run/family-keltner-expansion",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-keltner-reversion#scale0",
+   "source": "conformance/run/family-keltner-reversion",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-keltner-reversion#scale1",
+   "source": "conformance/run/family-keltner-reversion",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-keltner-reversion#scale2",
+   "source": "conformance/run/family-keltner-reversion",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-keltner-reversion#scale3",
+   "source": "conformance/run/family-keltner-reversion",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-keltner-reversion#scale4",
+   "source": "conformance/run/family-keltner-reversion",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-keltner-reversion#scale5",
+   "source": "conformance/run/family-keltner-reversion",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-legacy-setup9-fall#scale0",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-legacy-setup9-fall#scale1",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-legacy-setup9-fall#scale2",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-legacy-setup9-fall#scale3",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-legacy-setup9-fall#scale4",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-legacy-setup9-fall#scale5",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#scale0",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#scale1",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#scale2",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#scale3",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#scale4",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#scale5",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#scale0",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#scale1",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#scale2",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#scale3",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#scale4",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#scale5",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-legacy-setup9#scale0",
+   "source": "conformance/run/family-legacy-setup9",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-legacy-setup9#scale1",
+   "source": "conformance/run/family-legacy-setup9",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-legacy-setup9#scale2",
+   "source": "conformance/run/family-legacy-setup9",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-legacy-setup9#scale3",
+   "source": "conformance/run/family-legacy-setup9",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-legacy-setup9#scale4",
+   "source": "conformance/run/family-legacy-setup9",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-legacy-setup9#scale5",
+   "source": "conformance/run/family-legacy-setup9",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-level-sweep#scale0",
+   "source": "conformance/run/family-level-sweep",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-level-sweep#scale1",
+   "source": "conformance/run/family-level-sweep",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-level-sweep#scale2",
+   "source": "conformance/run/family-level-sweep",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-level-sweep#scale3",
+   "source": "conformance/run/family-level-sweep",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-level-sweep#scale4",
+   "source": "conformance/run/family-level-sweep",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-level-sweep#scale5",
+   "source": "conformance/run/family-level-sweep",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-named-level-flag-short-only#scale0",
+   "source": "conformance/run/family-named-level-flag-short-only",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-named-level-flag-short-only#scale1",
+   "source": "conformance/run/family-named-level-flag-short-only",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-named-level-flag-short-only#scale2",
+   "source": "conformance/run/family-named-level-flag-short-only",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-named-level-flag-short-only#scale3",
+   "source": "conformance/run/family-named-level-flag-short-only",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-named-level-flag-short-only#scale4",
+   "source": "conformance/run/family-named-level-flag-short-only",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-named-level-flag-short-only#scale5",
+   "source": "conformance/run/family-named-level-flag-short-only",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-named-level-flag#scale0",
+   "source": "conformance/run/family-named-level-flag",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-named-level-flag#scale1",
+   "source": "conformance/run/family-named-level-flag",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-named-level-flag#scale2",
+   "source": "conformance/run/family-named-level-flag",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-named-level-flag#scale3",
+   "source": "conformance/run/family-named-level-flag",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-named-level-flag#scale4",
+   "source": "conformance/run/family-named-level-flag",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-named-level-flag#scale5",
+   "source": "conformance/run/family-named-level-flag",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-named-level-sweep#scale0",
+   "source": "conformance/run/family-named-level-sweep",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-named-level-sweep#scale1",
+   "source": "conformance/run/family-named-level-sweep",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-named-level-sweep#scale2",
+   "source": "conformance/run/family-named-level-sweep",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-named-level-sweep#scale3",
+   "source": "conformance/run/family-named-level-sweep",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-named-level-sweep#scale4",
+   "source": "conformance/run/family-named-level-sweep",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-named-level-sweep#scale5",
+   "source": "conformance/run/family-named-level-sweep",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-opening-range-breakout#scale0",
+   "source": "conformance/run/family-opening-range-breakout",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-opening-range-breakout#scale1",
+   "source": "conformance/run/family-opening-range-breakout",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-opening-range-breakout#scale2",
+   "source": "conformance/run/family-opening-range-breakout",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-opening-range-breakout#scale3",
+   "source": "conformance/run/family-opening-range-breakout",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-opening-range-breakout#scale4",
+   "source": "conformance/run/family-opening-range-breakout",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-opening-range-breakout#scale5",
+   "source": "conformance/run/family-opening-range-breakout",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-price-momentum-guarded#scale0",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-price-momentum-guarded#scale1",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-price-momentum-guarded#scale2",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-price-momentum-guarded#scale3",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-price-momentum-guarded#scale4",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-price-momentum-guarded#scale5",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-price-momentum#scale0",
+   "source": "conformance/run/family-price-momentum",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-price-momentum#scale1",
+   "source": "conformance/run/family-price-momentum",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-price-momentum#scale2",
+   "source": "conformance/run/family-price-momentum",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-price-momentum#scale3",
+   "source": "conformance/run/family-price-momentum",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-price-momentum#scale4",
+   "source": "conformance/run/family-price-momentum",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-price-momentum#scale5",
+   "source": "conformance/run/family-price-momentum",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-range-break-fake#scale0",
+   "source": "conformance/run/family-range-break-fake",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-range-break-fake#scale1",
+   "source": "conformance/run/family-range-break-fake",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-range-break-fake#scale2",
+   "source": "conformance/run/family-range-break-fake",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-range-break-fake#scale3",
+   "source": "conformance/run/family-range-break-fake",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-range-break-fake#scale4",
+   "source": "conformance/run/family-range-break-fake",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-range-break-fake#scale5",
+   "source": "conformance/run/family-range-break-fake",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-sequential-full-e1-long#scale0",
+   "source": "conformance/run/family-sequential-full-e1-long",
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-long#scale1",
+   "source": "conformance/run/family-sequential-full-e1-long",
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-long#scale2",
+   "source": "conformance/run/family-sequential-full-e1-long",
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-long#scale3",
+   "source": "conformance/run/family-sequential-full-e1-long",
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-long#scale4",
+   "source": "conformance/run/family-sequential-full-e1-long",
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-long#scale5",
+   "source": "conformance/run/family-sequential-full-e1-long",
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-short#scale0",
+   "source": "conformance/run/family-sequential-full-e1-short",
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-short#scale1",
+   "source": "conformance/run/family-sequential-full-e1-short",
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-short#scale2",
+   "source": "conformance/run/family-sequential-full-e1-short",
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-short#scale3",
+   "source": "conformance/run/family-sequential-full-e1-short",
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-short#scale4",
+   "source": "conformance/run/family-sequential-full-e1-short",
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e1-short#scale5",
+   "source": "conformance/run/family-sequential-full-e1-short",
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-long#scale0",
+   "source": "conformance/run/family-sequential-full-e2-long",
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-long#scale1",
+   "source": "conformance/run/family-sequential-full-e2-long",
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-long#scale2",
+   "source": "conformance/run/family-sequential-full-e2-long",
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-long#scale3",
+   "source": "conformance/run/family-sequential-full-e2-long",
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-long#scale4",
+   "source": "conformance/run/family-sequential-full-e2-long",
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-long#scale5",
+   "source": "conformance/run/family-sequential-full-e2-long",
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-short#scale0",
+   "source": "conformance/run/family-sequential-full-e2-short",
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-short#scale1",
+   "source": "conformance/run/family-sequential-full-e2-short",
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-short#scale2",
+   "source": "conformance/run/family-sequential-full-e2-short",
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-short#scale3",
+   "source": "conformance/run/family-sequential-full-e2-short",
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-short#scale4",
+   "source": "conformance/run/family-sequential-full-e2-short",
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sequential-full-e2-short#scale5",
+   "source": "conformance/run/family-sequential-full-e2-short",
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#scale0",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#scale1",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#scale2",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#scale3",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#scale4",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#scale5",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-sma-golden-cross#scale0",
+   "source": "conformance/run/family-sma-golden-cross",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-sma-golden-cross#scale1",
+   "source": "conformance/run/family-sma-golden-cross",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-sma-golden-cross#scale2",
+   "source": "conformance/run/family-sma-golden-cross",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-sma-golden-cross#scale3",
+   "source": "conformance/run/family-sma-golden-cross",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-sma-golden-cross#scale4",
+   "source": "conformance/run/family-sma-golden-cross",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-sma-golden-cross#scale5",
+   "source": "conformance/run/family-sma-golden-cross",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#scale0",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#scale1",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#scale2",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#scale3",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#scale4",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#scale5",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-supply-demand#scale0",
+   "source": "conformance/run/family-supply-demand",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-supply-demand#scale1",
+   "source": "conformance/run/family-supply-demand",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-supply-demand#scale2",
+   "source": "conformance/run/family-supply-demand",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-supply-demand#scale3",
+   "source": "conformance/run/family-supply-demand",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-supply-demand#scale4",
+   "source": "conformance/run/family-supply-demand",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-supply-demand#scale5",
+   "source": "conformance/run/family-supply-demand",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-timed-return-predecessor#scale0",
+   "source": "conformance/run/family-timed-return-predecessor",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-timed-return-predecessor#scale1",
+   "source": "conformance/run/family-timed-return-predecessor",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-timed-return-predecessor#scale2",
+   "source": "conformance/run/family-timed-return-predecessor",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-timed-return-predecessor#scale3",
+   "source": "conformance/run/family-timed-return-predecessor",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-timed-return-predecessor#scale4",
+   "source": "conformance/run/family-timed-return-predecessor",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-timed-return-predecessor#scale5",
+   "source": "conformance/run/family-timed-return-predecessor",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-timed-return#scale0",
+   "source": "conformance/run/family-timed-return",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-timed-return#scale1",
+   "source": "conformance/run/family-timed-return",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-timed-return#scale2",
+   "source": "conformance/run/family-timed-return",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-timed-return#scale3",
+   "source": "conformance/run/family-timed-return",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-timed-return#scale4",
+   "source": "conformance/run/family-timed-return",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-timed-return#scale5",
+   "source": "conformance/run/family-timed-return",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-triple-push-exhaustion#scale0",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-triple-push-exhaustion#scale1",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-triple-push-exhaustion#scale2",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-triple-push-exhaustion#scale3",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-triple-push-exhaustion#scale4",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-triple-push-exhaustion#scale5",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#scale0",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#scale1",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#scale2",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#scale3",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#scale4",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#scale5",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-vwap-extension-fade#scale0",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-vwap-extension-fade#scale1",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-vwap-extension-fade#scale2",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-vwap-extension-fade#scale3",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-vwap-extension-fade#scale4",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-vwap-extension-fade#scale5",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "family-weekend-extreme-fade#scale0",
+   "source": "conformance/run/family-weekend-extreme-fade",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "family-weekend-extreme-fade#scale1",
+   "source": "conformance/run/family-weekend-extreme-fade",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "family-weekend-extreme-fade#scale2",
+   "source": "conformance/run/family-weekend-extreme-fade",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "family-weekend-extreme-fade#scale3",
+   "source": "conformance/run/family-weekend-extreme-fade",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "family-weekend-extreme-fade#scale4",
+   "source": "conformance/run/family-weekend-extreme-fade",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "family-weekend-extreme-fade#scale5",
+   "source": "conformance/run/family-weekend-extreme-fade",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "money-partial-exit#scale0",
+   "source": "conformance/run/money-partial-exit",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "money-partial-exit#scale1",
+   "source": "conformance/run/money-partial-exit",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "money-partial-exit#scale2",
+   "source": "conformance/run/money-partial-exit",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "money-partial-exit#scale3",
+   "source": "conformance/run/money-partial-exit",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "money-partial-exit#scale4",
+   "source": "conformance/run/money-partial-exit",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "money-partial-exit#scale5",
+   "source": "conformance/run/money-partial-exit",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "money-risk-sizing#scale0",
+   "source": "conformance/run/money-risk-sizing",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "money-risk-sizing#scale1",
+   "source": "conformance/run/money-risk-sizing",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "money-risk-sizing#scale2",
+   "source": "conformance/run/money-risk-sizing",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "money-risk-sizing#scale3",
+   "source": "conformance/run/money-risk-sizing",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "money-risk-sizing#scale4",
+   "source": "conformance/run/money-risk-sizing",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "money-risk-sizing#scale5",
+   "source": "conformance/run/money-risk-sizing",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "money-stop-distance-gate#scale0",
+   "source": "conformance/run/money-stop-distance-gate",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "money-stop-distance-gate#scale1",
+   "source": "conformance/run/money-stop-distance-gate",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "money-stop-distance-gate#scale2",
+   "source": "conformance/run/money-stop-distance-gate",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "money-stop-distance-gate#scale3",
+   "source": "conformance/run/money-stop-distance-gate",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "money-stop-distance-gate#scale4",
+   "source": "conformance/run/money-stop-distance-gate",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "money-stop-distance-gate#scale5",
+   "source": "conformance/run/money-stop-distance-gate",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#scale0",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#scale1",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#scale2",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#scale3",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#scale4",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#scale5",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale0",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale1",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale2",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale3",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale4",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale5",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#scale0",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#scale1",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#scale2",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#scale3",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#scale4",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#scale5",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#scale0",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#scale1",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#scale2",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#scale3",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#scale4",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#scale5",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#scale0",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#scale1",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#scale2",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#scale3",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#scale4",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#scale5",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#scale0",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#scale1",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#scale2",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#scale3",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#scale4",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#scale5",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#scale0",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#scale1",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#scale2",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#scale3",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#scale4",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#scale5",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#scale0",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#scale1",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#scale2",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#scale3",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#scale4",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#scale5",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "rmv-named-level-allow#scale0",
+   "source": "conformance/run/rmv-named-level-allow",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "rmv-named-level-allow#scale1",
+   "source": "conformance/run/rmv-named-level-allow",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "rmv-named-level-allow#scale2",
+   "source": "conformance/run/rmv-named-level-allow",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "rmv-named-level-allow#scale3",
+   "source": "conformance/run/rmv-named-level-allow",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "rmv-named-level-allow#scale4",
+   "source": "conformance/run/rmv-named-level-allow",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "rmv-named-level-allow#scale5",
+   "source": "conformance/run/rmv-named-level-allow",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "rmv-named-level-block#scale0",
+   "source": "conformance/run/rmv-named-level-block",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "rmv-named-level-block#scale1",
+   "source": "conformance/run/rmv-named-level-block",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "rmv-named-level-block#scale2",
+   "source": "conformance/run/rmv-named-level-block",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "rmv-named-level-block#scale3",
+   "source": "conformance/run/rmv-named-level-block",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "rmv-named-level-block#scale4",
+   "source": "conformance/run/rmv-named-level-block",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "rmv-named-level-block#scale5",
+   "source": "conformance/run/rmv-named-level-block",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "rmv-named-level-warmup#scale0",
+   "source": "conformance/run/rmv-named-level-warmup",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "rmv-named-level-warmup#scale1",
+   "source": "conformance/run/rmv-named-level-warmup",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "rmv-named-level-warmup#scale2",
+   "source": "conformance/run/rmv-named-level-warmup",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "rmv-named-level-warmup#scale3",
+   "source": "conformance/run/rmv-named-level-warmup",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "rmv-named-level-warmup#scale4",
+   "source": "conformance/run/rmv-named-level-warmup",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "rmv-named-level-warmup#scale5",
+   "source": "conformance/run/rmv-named-level-warmup",
+   "scale": "1.743002703999"
+  },
+  {
+   "id": "seasonality-filter-min-samples#scale0",
+   "source": "conformance/run/seasonality-filter-min-samples",
+   "scale": "1.728773501258"
+  },
+  {
+   "id": "seasonality-filter-min-samples#scale1",
+   "source": "conformance/run/seasonality-filter-min-samples",
+   "scale": "1.881083771894"
+  },
+  {
+   "id": "seasonality-filter-min-samples#scale2",
+   "source": "conformance/run/seasonality-filter-min-samples",
+   "scale": "1.572066208848"
+  },
+  {
+   "id": "seasonality-filter-min-samples#scale3",
+   "source": "conformance/run/seasonality-filter-min-samples",
+   "scale": "1.896350070402"
+  },
+  {
+   "id": "seasonality-filter-min-samples#scale4",
+   "source": "conformance/run/seasonality-filter-min-samples",
+   "scale": "1.655529819379"
+  },
+  {
+   "id": "seasonality-filter-min-samples#scale5",
+   "source": "conformance/run/seasonality-filter-min-samples",
+   "scale": "1.743002703999"
+  }
+ ]
+}

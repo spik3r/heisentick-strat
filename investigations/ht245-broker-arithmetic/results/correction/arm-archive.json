@@ -1,0 +1,12 @@
+{
+  "schema": "ht245-evidence-archive-v1",
+  "archive": "ht245-arm64-qualification-evidence.zip",
+  "bytes": 9502875,
+  "sha256": "9d444d355cad23292a72ce78339bf864877ea0508f58ca837938bcb1a6c4d29f",
+  "library": {
+    "library_file_id": "libfile_36fd4acce9988191ae2e5db17e879a74",
+    "version": 0,
+    "file_id": "file_00000000b2c881f7afd09e8a6a51ccac",
+    "access": "Owner-access-only ChatGPT Library item; not a public or repository-collaborator download link."
+  }
+}

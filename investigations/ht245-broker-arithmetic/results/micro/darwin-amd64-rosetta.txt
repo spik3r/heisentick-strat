@@ -1,0 +1,16 @@
+master-equity  equity written=40c298d49616b204 split=40c298d49616b204  nextQty written=0.5 split=0.5
+breakeven      closePnl written=0000000000000000 split=0000000000000000 fmaA=3cad70a3d70a3d70 fmaB=bcad70a3d70a3d70
+breakeven      entryDebit written=40c3862f5c28f5c3 split=40c3862f5c28f5c3 fma=40c3862f5c28f5c3
+breakeven      target written=40913e851eb851ec split=40913e851eb851ec
+near           closePnl written=bfb948b0fd000000 split=bfb948b0fd000000 fmaA=bfb948b0fcfc8571 fmaB=bfb948b0fcc07d90
+near           entryDebit written=c13273ee522d3eec split=c13273ee522d3eec fma=c13273ee522d3eec
+near           target written=4142b8c30f7d05dc split=4142b8c30f7d05dc
+large          closePnl written=3ff3c0ca40000000 split=3ff3c0ca40000000 fmaA=3ff3c0ca4d13cd01 fmaB=3ff3c0ca452db248
+large          entryDebit written=c1d2278bc9791301 split=c1d2278bc9791301 fma=c1d2278bc9791301
+large          target written=41d3a41ef77f7967 split=41d3a41ef77f7967
+small          closePnl written=bf72b5c7a2966d80 split=bf72b5c7a2966d80 fmaA=bf72b5c7a2966d95 fmaB=bf72b5c7a2966d63
+small          entryDebit written=40c387b77f9a69f9 split=40c387b77f9a69f9 fma=40c387b77f9a69f9
+small          target written=3ffcbe212da224ae split=3ffcbe212da224ae
+exact-products closePnl written=4010000000000000 split=4010000000000000 fmaA=4010000000000000 fmaB=4010000000000000
+exact-products entryDebit written=40c3860000000000 split=40c3860000000000 fma=40c3860000000000
+exact-products target written=409f500000000000 split=409f500000000000

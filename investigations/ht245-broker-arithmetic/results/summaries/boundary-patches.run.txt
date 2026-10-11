@@ -1,0 +1,7 @@
+ran arm64-go1.27.0        6 receipts
+ran arm64-go1.23.8        6 receipts
+ran amd64v1-go1.27.0        6 receipts
+not-run amd64v3-go1.27.0 run-failed: This program can only be run on AMD64 processors with v3 microarchitecture support.
+ran arm64nofma-diag-go1.27.0        6 receipts
+ran wasmjs-go1.27.0        6 receipts
+ran wasip1-go1.27.0        6 receipts

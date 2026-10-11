@@ -1,0 +1,438 @@
+{
+  "schema": "ht245-boundary-observations-v1",
+  "observation": "15-significant-digit serialized public trade output",
+  "rows": [
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+      "target": "linux-arm64-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "c292a644d9428af0cec39843e47edc89a73a0b7b8ee50faa8ee041701c2a4cc2",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "5003d08746b06a9419c24cc08cf23b7ce9818b15282df0f144658f240ddcfcb4",
+      "pnlHash": "18f870a90b1dfc87210d31857b9a6587665dbef85cc408fa8b42be7476faf4ce",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40ab70a14ec5a819",
+          "exit": "40ab76f494802f6f",
+          "sl": "40ab753e958befad",
+          "initialSl": "40ab753e958befad",
+          "initialTp": "40ab6c4178a33779",
+          "tp": "40ab6c4178a33779",
+          "size": "4055abe599bb36d1",
+          "points": "c0094d16ea1d7c00",
+          "pnl": "c0712280854efdbb",
+          "pnlText": "-274.15637713294899"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+      "target": "linux-arm64-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "438b0fa6a915892156ea72afe40d6e4213b0b1ac2705941c0af9c88ec105bd0c",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "d85369a31cbe6a9c135d70ef261108ec2b09b11ee2f77a01accac9d36326603f",
+      "pnlHash": "509c4c2428e1fd24ee3a86de012d6c1c6ecd24091c63aeba4c64baeb1144008c",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40addb88404e42e8",
+          "exit": "40ade264c5fdb82b",
+          "sl": "40ade08ae52d81b0",
+          "initialSl": "40ade08ae52d81b0",
+          "initialTp": "40add6c30c12db29",
+          "tp": "40add6c30c12db29",
+          "size": "4053f57217cde9a2",
+          "points": "c00b7216bdd52804",
+          "pnl": "c0711e40d9af97a2",
+          "pnlText": "-273.89083260145901"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+      "target": "linux-arm64-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "9eda2f268874db67dcf638e040c83dc61c3e9b3cb08263abd61058c41e2d46cb",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "b68084e994cbecf58f74997b86c683d491a1243fe92b7b5f2540f3e96711d66a",
+      "pnlHash": "2865d465193fc54bce5f559c8c6d0566f94add7ac0e1cc07a98048c652cfcd48",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40a8f3dc6a2b6992",
+          "exit": "40a8f9a2799b5f47",
+          "sl": "40a8f81165b27bf2",
+          "initialSl": "40a8f81165b27bf2",
+          "initialTp": "40a8efe4df482e52",
+          "tp": "40a8efe4df482e52",
+          "size": "4057c52657bacfec",
+          "points": "c007183dbfd69009",
+          "pnl": "c07127b54a21470e",
+          "pnlText": "-274.48176014899298"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+      "target": "linux-arm64-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "1d0ea6ee612c32ca0e58582b550268a8139df3eff53c8799fa10d99daa49d78f",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "a74b55830b24fb0e04d648911e587f726445ac41d8b035e8da5fac246eb6775c",
+      "pnlHash": "93f64dc22f8f993a0f7e6f500ffa683e1cb80ab118a0ba98a3a832c13d7d05d6",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40ae1990d61402c8",
+          "exit": "40ae207b1d7ef208",
+          "sl": "40ae1e9da3f82baf",
+          "initialSl": "40ae1e9da3f82baf",
+          "initialTp": "40ae14c178d3b0ec",
+          "tp": "40ae14c178d3b0ec",
+          "size": "4053cd4a4b97c18f",
+          "points": "c00ba91dabbce3f6",
+          "pnl": "c0711ddd3c78817b",
+          "pnlText": "-273.86651274750301"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+      "target": "linux-arm64-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "db9b0d2846a90b3894950d4f3ad9392d5777792633aaf40b2f5486526e43c1cc",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "e4e6f3c7d335a88d8fdae6201b9254ff5572c4ed6a36f9669b79077ac5e9131e",
+      "pnlHash": "7041e5329019c4dad525a4b28fddae79d32be15d8c2547986cf1a59ddb92c1ea",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40aa470270d14af7",
+          "exit": "40aa4d13b63391eb",
+          "sl": "40aa4b6ef896314a",
+          "initialSl": "40aa4b6ef896314a",
+          "initialTp": "40aa42d359b03bc5",
+          "tp": "40aa42d359b03bc5",
+          "size": "40569ab02dc1719a",
+          "points": "c0084515891bb405",
+          "pnl": "c07124d0e491304b",
+          "pnlText": "-274.30099922861399"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+      "target": "linux-arm64-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "14960a352dedbe5e66f74e76a5fd891c85712daa950819fc0e03390ee8eed747",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "067f6835881169655adb66351eb4fa811264c0dfc8d019113075457463e8933c",
+      "pnlHash": "5ae11aa53cbd437175a9dfc0a1e7e4070ae6746ad3dec731631834713fa141e7",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40abaa7310f54892",
+          "exit": "40abb0d3292cc4a4",
+          "sl": "40abaf19d00e185a",
+          "initialSl": "40abaf19d00e185a",
+          "initialTp": "40aba609c2804fd5",
+          "tp": "40aba609c2804fd5",
+          "size": "40557fc641c0f29d",
+          "points": "c0098060ddf03805",
+          "pnl": "c071221310d45bc5",
+          "pnlText": "-274.12965472176103"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+      "target": "linux-arm64nofma-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-gcflags\":\"all=-d=fmahash=n\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "c292a644d9428af0cec39843e47edc89a73a0b7b8ee50faa8ee041701c2a4cc2",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "38efd1683ddf8fe406277f0a5e1ede84b73a940b839c61a56a9fe8fd67726f33",
+      "pnlHash": "5ac87e21065f9a49a4c86ccdd9a8f0e9fc6349153f4fc4f94eaa7f9f478f316e",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40ab70a14ec5a819",
+          "exit": "40ab76f494802f6f",
+          "sl": "40ab753e958bef6b",
+          "initialSl": "40ab753e958bef6b",
+          "initialTp": "40ab6c4178a337bb",
+          "tp": "40ab6c4178a337bb",
+          "size": "4055abe599bc4732",
+          "points": "c0094d16ea1d7c00",
+          "pnl": "c0712280854fd519",
+          "pnlText": "-274.15637713608299"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+      "target": "linux-arm64nofma-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-gcflags\":\"all=-d=fmahash=n\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "438b0fa6a915892156ea72afe40d6e4213b0b1ac2705941c0af9c88ec105bd0c",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "34ba10a3561e267ebb8dce81fb7609ba05fefa4223a125d89bd85e44e94fd425",
+      "pnlHash": "e2eafc8d6d208c613baf2b99d83686dbd9869727e1f31d2e36151e1afd8d6b38",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40addb88404e42e8",
+          "exit": "40ade264c5fdb82b",
+          "sl": "40ade08ae52d816f",
+          "initialSl": "40ade08ae52d816f",
+          "initialTp": "40add6c30c12db55",
+          "tp": "40add6c30c12db55",
+          "size": "4053f57217cec8b9",
+          "points": "c00b7216bdd52804",
+          "pnl": "c0711e40d9b056f2",
+          "pnlText": "-273.89083260424297"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+      "target": "linux-arm64nofma-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-gcflags\":\"all=-d=fmahash=n\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "9eda2f268874db67dcf638e040c83dc61c3e9b3cb08263abd61058c41e2d46cb",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "ae891ffb374c36f38f9198a97110bdc2ab9a1c90add496b90b691e1476258652",
+      "pnlHash": "43a7f58456a31e3a359037c768b7a49f945ff00f0c9bfd1423f6e23c92129a43",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40a8f3dc6a2b6992",
+          "exit": "40a8f9a2799b5f47",
+          "sl": "40a8f81165b27bc6",
+          "initialSl": "40a8f81165b27bc6",
+          "initialTp": "40a8efe4df482e7e",
+          "tp": "40a8efe4df482e7e",
+          "size": "4057c52657bbc2e3",
+          "points": "c007183dbfd69009",
+          "pnl": "c07127b54a21f66e",
+          "pnlText": "-274.48176015154502"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+      "target": "linux-arm64nofma-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-gcflags\":\"all=-d=fmahash=n\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "1d0ea6ee612c32ca0e58582b550268a8139df3eff53c8799fa10d99daa49d78f",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "9e6969832f7df3cc6af7ed1612698af8a735f84371cd2b47917aad736983b12e",
+      "pnlHash": "3cb8422fb94b6aed393c2c563b19e1e3d33468d798c0c6910583e5794e58f767",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40ae1990d61402c8",
+          "exit": "40ae207b1d7ef208",
+          "sl": "40ae1e9da3f82b15",
+          "initialSl": "40ae1e9da3f82b15",
+          "initialTp": "40ae14c178d3b170",
+          "tp": "40ae14c178d3b170",
+          "size": "4053cd4a4b99d2eb",
+          "points": "c00ba91dabbce3f6",
+          "pnl": "c0711ddd3c7a4b04",
+          "pnlText": "-273.86651275416102"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+      "target": "linux-arm64nofma-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-gcflags\":\"all=-d=fmahash=n\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "db9b0d2846a90b3894950d4f3ad9392d5777792633aaf40b2f5486526e43c1cc",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "a870799ef15e04997f014ace8e6cca8f954500940d4dde4f4d11414b96af2efd",
+      "pnlHash": "daa36d4414de30b05ee4956f7b0056691deccf127ccc1728f53da0fcfebdfcf2",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40aa470270d14af7",
+          "exit": "40aa4d13b63391eb",
+          "sl": "40aa4b6ef89630f2",
+          "initialSl": "40aa4b6ef89630f2",
+          "initialTp": "40aa42d359b03c1d",
+          "tp": "40aa42d359b03c1d",
+          "size": "40569ab02dc35702",
+          "points": "c0084515891bb405",
+          "pnl": "c07124d0e492a06d",
+          "pnlText": "-274.30099923397103"
+        }
+      ]
+    },
+    {
+      "schema": "ht245.receipt.v1",
+      "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+      "target": "linux-arm64nofma-go1.22.12 {\"settings\":{\"-buildmode\":\"exe\",\"-compiler\":\"gc\",\"-gcflags\":\"all=-d=fmahash=n\",\"-trimpath\":\"true\",\"CGO_ENABLED\":\"0\",\"GOARCH\":\"arm64\",\"GOOS\":\"linux\"},\"sourceSha256\":\"0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04\",\"go\":\"go1.22.12\",\"goos\":\"linux\",\"goarch\":\"arm64\",\"module\":\"github.com/spik3r/heisentick-strat\"}",
+      "inputSha256": "14960a352dedbe5e66f74e76a5fd891c85712daa950819fc0e03390ee8eed747",
+      "costBits": {
+        "feePerUnit": "0000000000000000",
+        "slippage": "3faeb851eb851eb8",
+        "slippageBps": "0000000000000000",
+        "startEquity": "40c3880000000000",
+        "fillOn": "close"
+      },
+      "tradeCount": 1,
+      "decisionHash": "3bd7979ad3c5d618a0401a369a2a771f1c1b1d01a7b5ab04c610dab7c19b4946",
+      "pathHash": "c1bbd72efb62cb95985cda4a2da9e6a64e113ddd98bef063254fa77fd29dd3f2",
+      "pnlHash": "886aca8a6924dd85b8c79bd3f55b14e7828fa6ec7f322b3be735a286a6b5dea7",
+      "trades": [
+        {
+          "side": "short",
+          "entryIndex": 961,
+          "exitIndex": 963,
+          "reason": "sl",
+          "tag": "DSL-CBH:channel.low",
+          "entry": "40abaa7310f54892",
+          "exit": "40abb0d3292cc4a4",
+          "sl": "40abaf19d00e182e",
+          "initialSl": "40abaf19d00e182e",
+          "initialTp": "40aba609c2804feb",
+          "tp": "40aba609c2804feb",
+          "size": "40557fc641c1a6e1",
+          "points": "c0098060ddf03805",
+          "pnl": "c071221310d4eb64",
+          "pnlText": "-274.12965472385099"
+        }
+      ]
+    }
+  ]
+}

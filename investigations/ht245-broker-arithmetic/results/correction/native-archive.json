@@ -1,0 +1,21 @@
+{
+  "archive": "ht245-native-v3-evidence.zip",
+  "bytes": 12291712,
+  "sha256": "a68e9bf9840c62bce25879189f0b41dc213163d961114e944039372d528c1e9a",
+  "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "toolsSha256": "42010b71adfeb966b0eeccde946fc19a04fb7a46559e2bba8650fc8e05d32e36",
+  "perTarget": {
+    "attempts": 4240,
+    "successes": 4096,
+    "refusals": 144
+  },
+  "runtimeTargets": 3,
+  "totalAttempts": 12720,
+  "schema": "ht245-evidence-archive-v1",
+  "library": {
+    "library_file_id": "libfile_2d4f1dc7bf9c819197bd281e751f0246",
+    "version": 0,
+    "file_id": "file_00000000c7e081f790ad25684c2ac585",
+    "access": "Owner-access-only ChatGPT Library item; not a public or repository-collaborator download link."
+  }
+}

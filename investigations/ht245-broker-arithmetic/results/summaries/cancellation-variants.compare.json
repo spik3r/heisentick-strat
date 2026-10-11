@@ -1,0 +1,7557 @@
+{
+ "reference": "amd64v1-go1.27.0",
+ "targets": {
+  "arm64-go1.23.8": {
+   "cases": 231,
+   "missing": 0,
+   "counts": {
+    "pnl-only": 199,
+    "identical": 32
+   },
+   "differingCases": [
+    {
+     "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0808f9691467d31",
+       "b": "c0808f9691467d3a",
+       "aText": "-529.94851927823595",
+       "bText": "-529.94851927823697",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd72398039196d54",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-1.0359492977377699e-12",
+       "ulps": "63222876564841",
+       "signChange": false
+      },
+      {
+       "trade": 12,
+       "field": "pnl",
+       "a": "c0460ba34f6e6d76",
+       "b": "c0460ba34f6e6d68",
+       "aText": "-44.090921334190099",
+       "bText": "-44.09092133419",
+       "ulps": "14",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c094a2d671b5ecb8",
+       "b": "c094a2d671b5ece4",
+       "aText": "-1320.70941814668",
+       "bText": "-1320.70941814669",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "bd73ffffffffffff",
+       "b": "bd73bbf39b655db5",
+       "aText": "-1.1368683772161601e-12",
+       "bText": "-1.12175859488066e-12",
+       "ulps": "74820018152010",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "bd70ffffffffffff",
+       "b": "bd70b70cd6cd7cb9",
+       "aText": "-9.6633812063373605e-13",
+       "bText": "-9.501400005948681e-13",
+       "ulps": "80209205429062",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "bcfffffffffffffe",
+       "b": "bcfd9212b91ae520",
+       "aText": "-7.1054273576010003e-15",
+       "bText": "-6.5659917927894702e-15",
+       "ulps": "683815817517790",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "bcfffffffffffffe",
+       "b": "bd01d4d165401cab",
+       "aText": "-7.1054273576010003e-15",
+       "bText": "-7.9186968635227203e-15",
+       "ulps": "515470788664493",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "bcf7fffffffffffe",
+       "b": "bcf77a82a7b590dd",
+       "aText": "-5.3290705182007498e-15",
+       "bText": "-5.2132867220562099e-15",
+       "ulps": "146773398679329",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3ce3fffffffffff8",
+       "b": "3ce539e9a3dd7b11",
+       "aText": "2.2204460492503099e-15",
+       "bText": "2.3565839629675801e-15",
+       "ulps": "345150616075033",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3cdffffffffffffe",
+       "b": "3cdc8ec51f314ec7",
+       "aText": "1.7763568394002501e-15",
+       "bText": "1.5852705448720999e-15",
+       "ulps": "968922623815991",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3cec000000000004",
+       "b": "3cec2c70b8224ed7",
+       "aText": "3.1086244689504399e-15",
+       "bText": "3.12789738106307e-15",
+       "ulps": "48862637215443",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 58,
+       "field": "pnl",
+       "a": "bd6ffffffffffffe",
+       "b": "bd71954b4cae0e74",
+       "aText": "-9.0949470177292804e-13",
+       "bText": "-9.9948807869954905e-13",
+       "ulps": "445625618271862",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "c0a02d7984e50436",
+       "b": "c0a02d7984e50420",
+       "aText": "-2070.7373420303002",
+       "bText": "-2070.7373420302902",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 33,
+       "field": "pnl",
+       "a": "c09dbf48c2553a9d",
+       "b": "c09dbf48c2553a71",
+       "aText": "-1903.82105382128",
+       "bText": "-1903.82105382127",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 58,
+       "field": "pnl",
+       "a": "bd77fffffffffff4",
+       "b": "bd76dcdbea9676ac",
+       "aText": "-1.3642420526593899e-12",
+       "bText": "-1.29959577505611e-12",
+       "ulps": "320112861743432",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 58,
+       "field": "pnl",
+       "a": "bd67fffffffffffe",
+       "b": "bd689b755d8b4c9e",
+       "aText": "-6.8212102632969598e-13",
+       "bText": "-6.9938038234299196e-13",
+       "ulps": "170928382889120",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c080610af2023254",
+       "b": "c080610af202324b",
+       "aText": "-524.13034440723504",
+       "bText": "-524.13034440723402",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 14,
+       "field": "pnl",
+       "a": "bd65fffffffffffe",
+       "b": "bd666e05887bbdd2",
+       "aText": "-6.2527760746888796e-13",
+       "bText": "-6.3749246035592397e-13",
+       "ulps": "120970043702740",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 14,
+       "field": "pnl",
+       "a": "bd66fffffffffffe",
+       "b": "bd67523843335910",
+       "aText": "-6.5369931689929197e-13",
+       "bText": "-6.6282754567208896e-13",
+       "ulps": "90401599084818",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 14,
+       "field": "pnl",
+       "a": "bd65fffffffffffe",
+       "b": "bd6589d2cdc42294",
+       "aText": "-6.2527760746888796e-13",
+       "bText": "-6.1215737503975898e-13",
+       "ulps": "129936488389994",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-session-expansion-ny#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d37fffffffffffe",
+       "b": "3d3b0ae20c904b04",
+       "aText": "8.5265128291211997e-14",
+       "bText": "9.6074301350695994e-14",
+       "ulps": "856390919801606",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-session-expansion-ny#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d3178629f899957",
+       "aText": "5.6843418860808002e-14",
+       "bText": "6.2066813450570295e-14",
+       "ulps": "413839955433817",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-session-expansion-ny#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d424eb0bccb7e65",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.3008178925082201e-13",
+       "ulps": "476428964757914",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d47fffffffffffe",
+       "b": "3d47ea4fefb4e8e1",
+       "aText": "1.7053025658242399e-13",
+       "bText": "1.6992830063577001e-13",
+       "ulps": "23845931783965",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d423319ff1e3aa8",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.2931604534535699e-13",
+       "ulps": "619136700791466",
+       "signChange": false
+      },
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "c07156641dc51486",
+       "b": "c07156641dc51497",
+       "aText": "-277.39944245323602",
+       "bText": "-277.39944245323699",
+       "ulps": "17",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0243c7c87eba83b",
+       "b": "c0243c7c87eba803",
+       "aText": "-10.1181375956695",
+       "bText": "-10.118137595669401",
+       "ulps": "56",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d4ffffffffffffe",
+       "b": "3d4da185e04b9719",
+       "aText": "2.2737367544323201e-13",
+       "bText": "2.10540555926183e-13",
+       "ulps": "666828564359397",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0243c7c87eba7ca",
+       "b": "c0243c7c87eba803",
+       "aText": "-10.1181375956693",
+       "bText": "-10.118137595669401",
+       "ulps": "57",
+       "signChange": false
+      },
+      {
+       "trade": 15,
+       "field": "pnl",
+       "a": "c0516bea496438c1",
+       "b": "c0516bea496438c8",
+       "aText": "-69.686174724457501",
+       "bText": "-69.686174724457601",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd598f8b671e5ed5",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.6323969067139598e-13",
+       "ulps": "439303869980375",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "bd5ffffffffffffe",
+       "b": "bd5e4be210714737",
+       "aText": "-4.5474735088646402e-13",
+       "bText": "-4.3053799766393402e-13",
+       "ulps": "479515642869959",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "c04a4cdabd80663e",
+       "b": "c04a4cdabd806630",
+       "aText": "-52.600425422377597",
+       "bText": "-52.600425422377498",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd54d334bdcb7674",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.9594138367885798e-13",
+       "ulps": "232223475988085",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "c08198f6ff3ad632",
+       "b": "c08198f6ff3ad63b",
+       "aText": "-563.12060399976895",
+       "bText": "-563.12060399976997",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "4056762b1af5ba8d",
+       "b": "4056762b1af5ba94",
+       "aText": "89.846380939454505",
+       "bText": "89.846380939454605",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 15,
+       "field": "pnl",
+       "a": "403a8c32a126da25",
+       "b": "403a8c32a126da41",
+       "aText": "26.5476475448469",
+       "bText": "26.547647544846999",
+       "ulps": "28",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 29,
+       "field": "pnl",
+       "a": "bd73ffffffffffff",
+       "b": "bd74f64392840f17",
+       "aText": "-1.1368683772161601e-12",
+       "bText": "-1.19154995967919e-12",
+       "ulps": "270770081369880",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "4056762b1af5ba9b",
+       "b": "4056762b1af5ba94",
+       "aText": "89.846380939454704",
+       "bText": "89.846380939454605",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 15,
+       "field": "pnl",
+       "a": "403a8c32a126da5d",
+       "b": "403a8c32a126da41",
+       "aText": "26.547647544847099",
+       "bText": "26.547647544846999",
+       "ulps": "28",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "405656268539f1eb",
+       "b": "405656268539f1e4",
+       "aText": "89.346101099574",
+       "bText": "89.3461010995739",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-break-retest#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d57fffffffffffe",
+       "b": "3d5809ac695526a0",
+       "aText": "3.4106051316484799e-13",
+       "bText": "3.41597499300863e-13",
+       "ulps": "10636106213026",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-break-retest#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d55fffffffffffe",
+       "b": "3d564b4043583914",
+       "aText": "3.1263880373444398e-13",
+       "bText": "3.1681607490770899e-13",
+       "ulps": "82739379845398",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-break-retest#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d59fffffffffffe",
+       "b": "3d59c8188f52142c",
+       "aText": "3.69482222595252e-13",
+       "bText": "3.66378923694017e-13",
+       "ulps": "61467167419346",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-clock-close-before-extremes#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd18c0a237c32b17",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-clock-close-before-extremes#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d08c0a237c32b17",
+       "aText": "1.4210854715202001e-14",
+       "bText": "1.0992307174506501e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-coverage-33-accepted#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-coverage-33-accepted#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-expiry-last-bar-fills#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-expiry-last-bar-fills#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-bar-shape#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-bar-shape#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-on-open#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-on-open#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-minus-3-30#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-minus-3-30#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-plus-5-30#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-plus-5-30#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-long#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "3d2ffffffffffffe",
+       "aText": "0",
+       "bText": "5.6843418860808002e-14",
+       "ulps": "4409024035195715582",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-long#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bd21050505050504",
+       "aText": "0",
+       "bText": "-3.0232896796067001e-14",
+       "ulps": "4404807429662246148",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-long#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d44414141414140",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.4391973451768301e-13",
+       "ulps": "1197648430317890",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd29829cbc14e5e9",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.5315225494904401e-14",
+       "ulps": "1826715154979349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d19829cbc14e5e9",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.2657612747452201e-14",
+       "ulps": "1826715154979349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-leap-day#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-leap-day#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-midnight-range#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-midnight-range#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-month-end#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-month-end#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-multiple-days#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd2940a57eb5029b",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.4857495944450801e-14",
+       "ulps": "1899245297401187",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-multiple-days#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d1940a57eb5029b",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.24287479722254e-14",
+       "ulps": "1899245297401187",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-no-inherited-management#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd23ffffffffffff",
+       "b": "bd24322fa6c7bb13",
+       "aText": "-3.5527136788005003e-14",
+       "bText": "-3.5875373079293402e-14",
+       "ulps": "55180242959124",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-no-inherited-management#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd27fffffffffffe",
+       "b": "bd274a43edc0206e",
+       "aText": "-4.2632564145605999e-14",
+       "bText": "-4.1371526666546603e-14",
+       "ulps": "199819364654992",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-no-inherited-management#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd211a1b5fcf55a8",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-3.0379219492040101e-14",
+       "ulps": "310179850573226",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-one-minute#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-one-minute#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long-utc2#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long-utc2#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd3940a57eb50293",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-8.9714991888901501e-14",
+       "ulps": "1899245297401195",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d2940a57eb5029b",
+       "aText": "5.6843418860808002e-14",
+       "bText": "4.4857495944450801e-14",
+       "ulps": "1899245297401187",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-eurusd-short#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d38fffffffffffe",
+       "b": "3d38d99f32bbc5d8",
+       "aText": "8.8817841970012498e-14",
+       "bText": "8.8285238396012902e-14",
+       "ulps": "42197202516518",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-eurusd-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d37fffffffffffe",
+       "b": "3d37bce2427a75f3",
+       "aText": "8.5265128291211997e-14",
+       "bText": "8.4333704282170504e-14",
+       "ulps": "73795012758027",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-eurusd-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d39fffffffffffe",
+       "b": "3d39f65c22fd15bd",
+       "aText": "9.2370555648812999e-14",
+       "bText": "9.22367725098553e-14",
+       "ulps": "10599392275009",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-xauusd#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28828282828281",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3538157828437502e-14",
+       "ulps": "2108302766734717",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-xauusd#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18828282828291",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1769078914218801e-14",
+       "ulps": "2108302766734701",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-range-end-bar-excluded#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bd1ffffffffffffe",
+       "aText": "0",
+       "bText": "-2.8421709430404001e-14",
+       "ulps": "4404520435568345086",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-range-end-bar-excluded#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd4060511be1958b",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.16360166826456e-13",
+       "ulps": "105901476386189",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-range-end-bar-excluded#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d30c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "5.9516747965647998e-14",
+       "ulps": "4291796674598119",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-slippage-fee-sizing#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd18fffffffffff6",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-2.2204460492503099e-14",
+       "ulps": "1970324836974600",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-slippage-fee-sizing#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d09000000000016",
+       "aText": "1.4210854715202001e-14",
+       "bText": "1.11022302462516e-14",
+       "ulps": "1970324836974568",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-boundary-negative-offset#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-boundary-negative-offset#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-end#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-end#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-daily-flush-failure#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 51,
+       "field": "pnl",
+       "a": "bd85fffffffffff9",
+       "b": "bd86083c8dcd8496",
+       "aText": "-2.5011104298755498e-12",
+       "bText": "-2.5047681878560901e-12",
+       "ulps": "9056170116253",
+       "signChange": false
+      },
+      {
+       "trade": 60,
+       "field": "pnl",
+       "a": "403f0ab70b2b6b0a",
+       "b": "403f0ab70b2b6aee",
+       "aText": "31.041855524158599",
+       "bText": "31.0418555241585",
+       "ulps": "28",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-daily-flush-failure#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 16,
+       "field": "pnl",
+       "a": "c0a1fa92c37eec83",
+       "b": "c0a1fa92c37eec99",
+       "aText": "-2301.2866477645598",
+       "bText": "-2301.2866477645698",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 51,
+       "field": "pnl",
+       "a": "bd87fffffffffff4",
+       "b": "bd88771f78914e19",
+       "aText": "-2.7284841053187799e-12",
+       "bText": "-2.78138531471652e-12",
+       "ulps": "130977050480165",
+       "signChange": false
+      },
+      {
+       "trade": 60,
+       "field": "pnl",
+       "a": "403f0ab70b2b6ad2",
+       "b": "403f0ab70b2b6aee",
+       "aText": "31.0418555241584",
+       "bText": "31.0418555241585",
+       "ulps": "28",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-daily-flush-failure#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 51,
+       "field": "pnl",
+       "a": "bd83ffffffffffff",
+       "b": "bd839959a309bb2b",
+       "aText": "-2.2737367544323202e-12",
+       "bText": "-2.22815106099567e-12",
+       "ulps": "112864710247636",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-day-open-reclaim#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd47fffffffffffe",
+       "b": "bd46c8255262f3ae",
+       "aText": "-1.7053025658242399e-13",
+       "bText": "-1.61874563430439e-13",
+       "ulps": "342887331859536",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-day-open-reclaim#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd4bfffffffffffe",
+       "b": "bd4b68170199693d",
+       "aText": "-1.98951966012828e-13",
+       "bText": "-1.94735612861563e-13",
+       "ulps": "167026956342977",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-day-open-reclaim#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd43ffffffffffff",
+       "b": "bd422833a32c7e1f",
+       "aText": "-1.4210854715202001e-13",
+       "bText": "-1.29013513999315e-13",
+       "ulps": "518747707376096",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "bd62ffffffffffff",
+       "b": "bd63189e95f877e1",
+       "aText": "-5.4001247917767604e-13",
+       "bText": "-5.4274579007412102e-13",
+       "ulps": "27069399988194",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c07d529e02e5154c",
+       "b": "c07d529e02e5155d",
+       "aText": "-469.16357697950002",
+       "bText": "-469.16357697950099",
+       "ulps": "17",
+       "signChange": false
+      },
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "c07e9d462498bede",
+       "b": "c07e9d462498bef0",
+       "aText": "-489.829624745047",
+       "bText": "-489.82962474504802",
+       "ulps": "18",
+       "signChange": false
+      },
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "bd63ffffffffffff",
+       "b": "bd63f87ad6fd13d6",
+       "aText": "-5.6843418860808005e-13",
+       "bText": "-5.6759928345922505e-13",
+       "ulps": "8268500102185",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "bd61ffffffffffff",
+       "b": "bd6238c254f3dbe2",
+       "aText": "-5.1159076974727203e-13",
+       "bText": "-5.1789229668901597e-13",
+       "ulps": "62407300078563",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-13bp#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd23ffffffffffff",
+       "b": "bd221e2893e4b648",
+       "aText": "-3.5527136788005003e-14",
+       "bText": "-3.2183689787317698e-14",
+       "ulps": "529790324656567",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-13bp#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd27fffffffffffe",
+       "b": "bd26acd33e8f6113",
+       "aText": "-4.2632564145605999e-14",
+       "bText": "-4.0279066008543001e-14",
+       "ulps": "372926665760491",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-13bp#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd17fffffffffffe",
+       "b": "bd1b1efbd27416dc",
+       "aText": "-2.1316282072802999e-14",
+       "bText": "-2.4088313566092299e-14",
+       "ulps": "878491846579934",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-atr#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41815f15f174b6",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.24383043547573e-13",
+       "ulps": "139229586688841",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-atr#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d3e741381383ed1",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.08192291105123e-13",
+       "ulps": "435322832273709",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-atr#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d43c8b46b46ca2b",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.40573795990024e-13",
+       "ulps": "60797757240788",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-time#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d441b999999a5eb",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.42874601039091e-13",
+       "ulps": "30346520929772",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-time#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41d44444445076",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.2668384859664e-13",
+       "ulps": "48085308518281",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-time#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d45fffffffffffe",
+       "b": "3d4662eeeeeefb60",
+       "aText": "1.5631940186722199e-13",
+       "bText": "1.59065353481542e-13",
+       "ulps": "108778350377826",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-rebound#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d441b999999a5eb",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.42874601039091e-13",
+       "ulps": "30346520929772",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-rebound#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41d44444445076",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.2668384859664e-13",
+       "ulps": "48085308518281",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-rebound#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d45fffffffffffe",
+       "b": "3d4662eeeeeefb60",
+       "aText": "1.5631940186722199e-13",
+       "bText": "1.59065353481542e-13",
+       "ulps": "108778350377826",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-13bp#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd3f234299d8acda",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.10623457061498e-13",
+       "ulps": "242706020782884",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-13bp#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd40ffffffffffff",
+       "b": "bd40b54bf7970114",
+       "aText": "-1.2079226507921701e-13",
+       "bText": "-1.18718833282723e-13",
+       "ulps": "82137095667435",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-13bp#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3bfffffffffffe",
+       "b": "bd3cdbed4483573e",
+       "aText": "-9.9475983006414001e-14",
+       "bText": "-1.02528080840272e-13",
+       "ulps": "241812103190336",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-atr#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41815f15f174b6",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.24383043547573e-13",
+       "ulps": "139229586688841",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-atr#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d3e741381383ed1",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.08192291105123e-13",
+       "ulps": "435322832273709",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-atr#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d43c8b46b46ca2b",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.40573795990024e-13",
+       "ulps": "60797757240788",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6ffffffffffffe",
+       "b": "bd706bdb8c37925c",
+       "aText": "-9.0949470177292804e-13",
+       "bText": "-9.3344390179446205e-13",
+       "ulps": "118590694462046",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc925",
+       "b": "c0583719ae3fc92c",
+       "aText": "-96.860942423144095",
+       "bText": "-96.860942423144195",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd71ed98e8471814",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-1.0190953179726399e-12",
+       "ulps": "20233988925399",
+       "signChange": false
+      },
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "c06cef7ea41dce7b",
+       "b": "c06cef7ea41dce9e",
+       "aText": "-231.484209116188",
+       "bText": "-231.48420911618899",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6dfffffffffffe",
+       "b": "bd6dd43c60501946",
+       "aText": "-8.5265128291212002e-13",
+       "bText": "-8.4779248561628395e-13",
+       "ulps": "48119197722296",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc91e",
+       "b": "c0583719ae3fc925",
+       "aText": "-96.860942423143996",
+       "bText": "-96.860942423144095",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6ffffffffffffe",
+       "b": "bd706bdb8c37925c",
+       "aText": "-9.0949470177292804e-13",
+       "bText": "-9.3344390179446205e-13",
+       "ulps": "118590694462046",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc925",
+       "b": "c0583719ae3fc92c",
+       "aText": "-96.860942423144095",
+       "bText": "-96.860942423144195",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd71ed98e8471814",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-1.0190953179726399e-12",
+       "ulps": "20233988925399",
+       "signChange": false
+      },
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c0842aef3ac5cf53",
+       "b": "c0842aef3ac5cf5c",
+       "aText": "-645.36681131876901",
+       "bText": "-645.36681131877003",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "c06cef7ea41dce7b",
+       "b": "c06cef7ea41dce9e",
+       "aText": "-231.484209116188",
+       "bText": "-231.48420911618899",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6dfffffffffffe",
+       "b": "bd6dd43c60501946",
+       "aText": "-8.5265128291212002e-13",
+       "bText": "-8.4779248561628395e-13",
+       "ulps": "48119197722296",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc91e",
+       "b": "c0583719ae3fc925",
+       "aText": "-96.860942423143996",
+       "bText": "-96.860942423144095",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fair-value-gap#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d4ffffffffffffe",
+       "b": "3d5025bf8b9d70c2",
+       "aText": "2.2737367544323201e-13",
+       "bText": "2.29469122820284e-13",
+       "ulps": "41504611332292",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fair-value-gap#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d47fffffffffffe",
+       "b": "3d4b3ad3306c2781",
+       "aText": "1.7053025658242399e-13",
+       "bText": "1.9347925921449001e-13",
+       "ulps": "909103655036803",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fair-value-gap#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d53ffffffffffff",
+       "b": "3d52ae157f04cdc4",
+       "aText": "2.8421709430404002e-13",
+       "bText": "2.6545898642607802e-13",
+       "ulps": "371542604853819",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d70ffffffffffff",
+       "b": "3d70fd51d47df929",
+       "aText": "9.6633812063373605e-13",
+       "bText": "9.6574296307091999e-13",
+       "ulps": "2947077506774",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d6ffffffffffffe",
+       "b": "3d6f67c98e7fd94f",
+       "aText": "9.0949470177292804e-13",
+       "bText": "8.92595700754221e-13",
+       "ulps": "167359599879855",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d71ffffffffffeb",
+       "b": "3d7246bee1bc05af",
+       "aText": "1.02318153949454e-12",
+       "bText": "1.0388902253876199e-12",
+       "ulps": "77785644926404",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-intra-hour-run-exhaustion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd52bb75a30b15ae",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.6620147858776399e-13",
+       "ulps": "356836032440913",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-intra-hour-run-exhaustion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "c0009742b1e03901",
+       "b": "c0009742b1e038be",
+       "aText": "-2.0738576790382699",
+       "bText": "-2.0738576790382401",
+       "ulps": "67",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd553ee942eff6e3",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-3.0192022091496801e-13",
+       "ulps": "350646548035300",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-intra-hour-run-exhaustion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "c0009742b1e0380a",
+       "b": "c0009742b1e03820",
+       "aText": "-2.0738576790381602",
+       "bText": "-2.07385767903817",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd50380203263479",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.3048273626055998e-13",
+       "ulps": "61581293925499",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-expansion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "3d0ec6c9d2506014",
+       "aText": "0",
+       "bText": "1.3667519139688799e-14",
+       "ulps": "4399672456106762260",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-expansion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd1233a9571e5dff",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-1.6166448338262699e-14",
+       "ulps": "3883847269851647",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-expansion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d287d3994b75efa",
+       "aText": "5.6843418860808002e-14",
+       "bText": "4.35014866176402e-14",
+       "ulps": "2114113552032004",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-reversion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "c0583d463dcd9111",
+       "b": "c0583d463dcd910a",
+       "aText": "-96.957412195919702",
+       "bText": "-96.957412195919602",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 30,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bd1e4e726d0e3ffb",
+       "aText": "0",
+       "bText": "-2.6917520214710699e-14",
+       "ulps": "4404043738977812475",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-reversion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "404d38f6342c0411",
+       "b": "404d38f6342c041f",
+       "aText": "58.4450135435983",
+       "bText": "58.4450135435984",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "405259fae09bc201",
+       "b": "405259fae09bc1fa",
+       "aText": "73.405937339885",
+       "bText": "73.4059373398849",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 30,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd37c4b080bc4349",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-8.4442029262642705e-14",
+       "ulps": "2186587190084427",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-reversion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 30,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d213aee946a4696",
+       "aText": "5.6843418860808002e-14",
+       "bText": "3.06069888332213e-14",
+       "ulps": "4157328284039528",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-fall#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d353ab153aad8fa",
+       "aText": "5.6843418860808002e-14",
+       "bText": "7.5421511854145703e-14",
+       "ulps": "1471908170881276",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-fall#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c0824aed44aed4b8",
+       "b": "c0824aed44aed4c1",
+       "aText": "-585.36585365854899",
+       "bText": "-585.36585365855001",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d22117ba1174104",
+       "aText": "5.6843418860808002e-14",
+       "bText": "3.2095735283407003e-14",
+       "ulps": "3921426992643834",
+       "signChange": false
+      },
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "c0824aed44aed4b8",
+       "b": "c0824aed44aed4c1",
+       "aText": "-585.36585365854899",
+       "bText": "-585.36585365855001",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-fall#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d40b6526b6508d1",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.1874728842488501e-13",
+       "ulps": "200465105357011",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-long#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d61385d5ad7a1cc",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.8942679546844897e-13",
+       "ulps": "219501369515571",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-long#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5f19c47b0f0501",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.4196687991195302e-13",
+       "ulps": "253143307844349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-long#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d62e3d87827c10e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "5.3688671102494397e-13",
+       "ulps": "250518868312335",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-short#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d61385d5ad7a1cc",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.8942679546844897e-13",
+       "ulps": "219501369515571",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5f19c47b0f0501",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.4196687991195302e-13",
+       "ulps": "253143307844349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d62e3d87827c10e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "5.3688671102494397e-13",
+       "ulps": "250518868312335",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd519859e9859f71",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.5004172174505302e-13",
+       "ulps": "448986914070387",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd54a4d6ca4d6d6d",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.9336749831579001e-13",
+       "ulps": "181242424028526",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd4d17ba117ba2c1",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.06715945174315e-13",
+       "ulps": "818337005460797",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-named-level-sweep#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bcf7fffffffffffe",
+       "aText": "0",
+       "bText": "-5.3290705182007498e-15",
+       "ulps": "4393261436499918846",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-named-level-sweep#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd0ffffffffffffe",
+       "b": "bd1449249249249c",
+       "aText": "-1.4210854715202001e-14",
+       "bText": "-1.8017333656774e-14",
+       "ulps": "1206321328759966",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-named-level-sweep#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d00924924924927",
+       "aText": "1.4210854715202001e-14",
+       "bText": "7.35919262037247e-15",
+       "ulps": "4342756783535831",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-opening-range-breakout#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bcf43e98d872bfff",
+       "aText": "0",
+       "bText": "-4.4951863869564699e-15",
+       "ulps": "4392204362780426239",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-opening-range-breakout#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd26cd105c674566",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-4.05027671815663e-14",
+       "ulps": "1914320013706600",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-opening-range-breakout#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "400c62f984b51c37",
+       "b": "400c62f984b51c4d",
+       "aText": "3.5483274810572101",
+       "bText": "3.5483274810572198",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d21bd6a264a955d",
+       "aText": "2.8421709430404001e-14",
+       "bText": "3.1512394407653302e-14",
+       "ulps": "489738583315807",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum-guarded#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0472939746de96e",
+       "b": "c0472939746de960",
+       "aText": "-46.322065881412399",
+       "bText": "-46.3220658814123",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 20,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d6153256512a83e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.9240012883752802e-13",
+       "ulps": "190054902093761",
+       "signChange": false
+      },
+      {
+       "trade": 59,
+       "field": "pnl",
+       "a": "c08ae11076393a02",
+       "b": "c08ae110763939f9",
+       "aText": "-860.13303799351002",
+       "bText": "-860.13303799350899",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum-guarded#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "c08d4acfd127c791",
+       "b": "c08d4acfd127c799",
+       "aText": "-937.35147315099505",
+       "bText": "-937.35147315099596",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 20,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5e533d4e2a6e40",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.3094636048372001e-13",
+       "ulps": "471427183907262",
+       "signChange": false
+      },
+      {
+       "trade": 31,
+       "field": "pnl",
+       "a": "c06bd9f44e3c9bb6",
+       "b": "c06bd9f44e3c9bd9",
+       "aText": "-222.81107246243999",
+       "bText": "-222.81107246244099",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum-guarded#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 20,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d637cac23101966",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.5385389719133705e-13",
+       "ulps": "144396212233881",
+       "signChange": false
+      },
+      {
+       "trade": 65,
+       "field": "pnl",
+       "a": "c09016bf13483776",
+       "b": "c09016bf134837a2",
+       "aText": "-1029.6865969928599",
+       "bText": "-1029.6865969928699",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 66,
+       "field": "pnl",
+       "a": "c08986c15c7bce58",
+       "b": "c08986c15c7bce61",
+       "aText": "-816.84441467975103",
+       "bText": "-816.84441467975205",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d6153256512a83e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.9240012883752802e-13",
+       "ulps": "190054902093761",
+       "signChange": false
+      },
+      {
+       "trade": 88,
+       "field": "pnl",
+       "a": "c08ae11076393a02",
+       "b": "c08ae110763939f9",
+       "aText": "-860.13303799351002",
+       "bText": "-860.13303799350899",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "c02fde62e686c636",
+       "b": "c02fde62e686c5fd",
+       "aText": "-15.934348300888001",
+       "bText": "-15.934348300887899",
+       "ulps": "57",
+       "signChange": false
+      },
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "c08d4acfd127c791",
+       "b": "c08d4acfd127c799",
+       "aText": "-937.35147315099505",
+       "bText": "-937.35147315099596",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5e533d4e2a6e40",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.3094636048372001e-13",
+       "ulps": "471427183907262",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d637cac23101966",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.5385389719133705e-13",
+       "ulps": "144396212233881",
+       "signChange": false
+      },
+      {
+       "trade": 97,
+       "field": "pnl",
+       "a": "c09016bf13483776",
+       "b": "c09016bf134837a2",
+       "aText": "-1029.6865969928599",
+       "bText": "-1029.6865969928699",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 105,
+       "field": "pnl",
+       "a": "c09f7e08f2ee5866",
+       "b": "c09f7e08f2ee583a",
+       "aText": "-2015.5087392083601",
+       "bText": "-2015.5087392083501",
+       "ulps": "44",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-range-break-fake#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd372d74b54a4cff",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-8.2343241826064604e-14",
+       "ulps": "2020304117976321",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-range-break-fake#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd41c094e67cf045",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.26137479405053e-13",
+       "ulps": "493220731351111",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-range-break-fake#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd25b37f3b357306",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-3.8549004247076398e-14",
+       "ulps": "2898865708240120",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-supply-demand-retest-entry-timeframe#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd59fe3a9b35c67e",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.6938390850602498e-13",
+       "ulps": "561002642261632",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-supply-demand-retest-entry-timeframe#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd5bfffffffffffe",
+       "b": "bd5dec84ab4f8949",
+       "aText": "-3.97903932025656e-13",
+       "bText": "-4.25244186474586e-13",
+       "ulps": "541529530665291",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-supply-demand-retest-entry-timeframe#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd560ff08b1c03a0",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.13523630537463e-13",
+       "ulps": "545424152984670",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-triple-push-exhaustion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d33400f6dc63855",
+       "aText": "5.6843418860808002e-14",
+       "bText": "6.83905747141506e-14",
+       "ulps": "914859940526167",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-triple-push-exhaustion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "3d17f502f41aaca2",
+       "aText": "0",
+       "bText": "2.1278158184154399e-14",
+       "ulps": "4402256553812077730",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-triple-push-exhaustion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d40416f0f42e2c9",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.1550299124414701e-13",
+       "ulps": "71945253216971",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-volume-anomaly-exhaustion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd43ffffffffffff",
+       "b": "bd4574297418cf3b",
+       "aText": "-1.4210854715202001e-13",
+       "bText": "-1.5243811567889599e-13",
+       "ulps": "409196366974780",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-volume-anomaly-exhaustion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd47fffffffffffe",
+       "b": "bd49d34193c1f7b5",
+       "aText": "-1.7053025658242399e-13",
+       "bText": "-1.8349922028685801e-13",
+       "ulps": "513753582008247",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-volume-anomaly-exhaustion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd411511546fa6c2",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.2137701107093399e-13",
+       "ulps": "304639151941316",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-vwap-extension-fade#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 13,
+       "field": "pnl",
+       "a": "bd5ffffffffffffe",
+       "b": "bd5dfddd5773db37",
+       "aText": "-4.5474735088646402e-13",
+       "bText": "-4.2620710381359298e-13",
+       "ulps": "565297833321671",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-vwap-extension-fade#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 13,
+       "field": "pnl",
+       "a": "bd63ffffffffffff",
+       "b": "bd62b39a3bd660c5",
+       "aText": "-5.6843418860808005e-13",
+       "bText": "-5.3153065011040996e-13",
+       "ulps": "365474943180602",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-vwap-extension-fade#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 13,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd569486373af4e4",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.2088355751677599e-13",
+       "ulps": "399645780282138",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 11,
+       "field": "pnl",
+       "a": "c04faba3e0f7777a",
+       "b": "c04faba3e0f7776c",
+       "aText": "-63.340938683350899",
+       "bText": "-63.340938683350799",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0337b13a6805c18",
+       "b": "c0337b13a6805c34",
+       "aText": "-19.480768591249301",
+       "bText": "-19.480768591249401",
+       "ulps": "28",
+       "signChange": false
+      },
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd3e248b12b433b7",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.07088549890903e-13",
+       "ulps": "522770220567623",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c03feef41d0e322a",
+       "b": "c03feef41d0e320d",
+       "aText": "-31.933412376371201",
+       "bText": "-31.933412376371098",
+       "ulps": "29",
+       "signChange": false
+      },
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "bd43ffffffffffff",
+       "b": "bd42d0bcdc765292",
+       "aText": "-1.4210854715202001e-13",
+       "bText": "-1.33691328535084e-13",
+       "ulps": "333440382250349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "bd37fffffffffffe",
+       "b": "bd36a79c6c7bc25a",
+       "aText": "-8.5265128291211997e-14",
+       "bText": "-8.0485771246722197e-14",
+       "ulps": "378659676634532",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-daily-snd-retest-xauusd-4h#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "bd6bfffffffffffe",
+       "b": "bd6dee098d3b271a",
+       "aText": "-7.9580786405131201e-13",
+       "bText": "-8.5065702385034702e-13",
+       "ulps": "543199768291100",
+       "signChange": false
+      },
+      {
+       "trade": 33,
+       "field": "pnl",
+       "a": "c070350ba3cc3f3c",
+       "b": "c070350ba3cc3f4e",
+       "aText": "-259.31534175666798",
+       "bText": "-259.315341756669",
+       "ulps": "18",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-daily-snd-retest-xauusd-4h#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd717f52ebb3505f",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-9.9460970770590106e-13",
+       "ulps": "141480858267532",
+       "signChange": false
+      },
+      {
+       "trade": 19,
+       "field": "pnl",
+       "a": "c082487ed4fcff96",
+       "b": "c082487ed4fcff8d",
+       "aText": "-585.061929680395",
+       "bText": "-585.06192968039397",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-daily-snd-retest-xauusd-4h#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "c083f431f0b24223",
+       "b": "c083f431f0b2422b",
+       "aText": "-638.52438487305005",
+       "bText": "-638.52438487305096",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 8,
+       "field": "pnl",
+       "a": "c080131c600cba09",
+       "b": "c080131c600cba11",
+       "aText": "-514.38885507529005",
+       "bText": "-514.38885507529096",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "bd67fffffffffffe",
+       "b": "bd68dd6d430fad76",
+       "aText": "-6.8212102632969598e-13",
+       "bText": "-7.0670433999479297e-13",
+       "ulps": "243461346274680",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 48,
+       "field": "pnl",
+       "a": "bd5ffffffffffffe",
+       "b": "bd5d5cecc9f9f868",
+       "aText": "-4.5474735088646402e-13",
+       "bText": "-4.1727315807738001e-13",
+       "ulps": "742252859492246",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 48,
+       "field": "pnl",
+       "a": "bd63ffffffffffff",
+       "b": "bd634c600caf5ccb",
+       "aText": "-5.6843418860808005e-13",
+       "bText": "-5.4849182901749301e-13",
+       "ulps": "197499563320116",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c0b197db930f9e17",
+       "b": "c0b197db930f9e22",
+       "aText": "-4503.85771272287",
+       "bText": "-4503.85771272288",
+       "ulps": "11",
+       "signChange": false
+      },
+      {
+       "trade": 48,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd5421197a95374e",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-2.8605448713726802e-13",
+       "ulps": "1089506592344240",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-failed-breakout-five-minute-early-breakeven#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d67fffffffffffe",
+       "b": "3d664b1ca4ae81a5",
+       "aText": "6.8212102632969598e-13",
+       "bText": "6.3361670219950202e-13",
+       "ulps": "480363559353945",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-failed-breakout-five-minute-early-breakeven#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d634a9a0242f99e",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.4829492024506301e-13",
+       "ulps": "199449653347937",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-failed-breakout-five-minute-early-breakeven#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d67fffffffffffe",
+       "b": "3d694b9f471a09ac",
+       "aText": "6.8212102632969598e-13",
+       "bText": "7.1893848415394103e-13",
+       "ulps": "364622441482670",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "3d62ffffffffffff",
+       "b": "3d62f7f366079822",
+       "aText": "5.4001247917767604e-13",
+       "bText": "5.3911883575165499e-13",
+       "ulps": "8850215823325",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d61f5e772e34465",
+       "aText": "5.1159076974727203e-13",
+       "bText": "5.1046989932836205e-13",
+       "ulps": "11100562963354",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d63f9ff592bebea",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.6776777217494904e-13",
+       "ulps": "6599868683285",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-directional-target-fifteen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d55fffffffffffe",
+       "b": "3d550f6fcbdd6837",
+       "aText": "3.1263880373444398e-13",
+       "bText": "2.9928485825620302e-13",
+       "ulps": "264502140639175",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-directional-target-fifteen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d51ffffffffffff",
+       "b": "3d522557902d6335",
+       "aText": "2.5579538487363602e-13",
+       "bText": "2.5786828470991299e-13",
+       "ulps": "41058011276086",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-directional-target-fifteen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d57fffffffffffe",
+       "b": "3d57f988078d6d24",
+       "aText": "3.4106051316484799e-13",
+       "bText": "3.40701431802492e-13",
+       "ulps": "7112339133146",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-fifteen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "3d60ffffffffffff",
+       "b": "3d6114f58be4c236",
+       "aText": "4.8316906031686803e-13",
+       "bText": "4.8549599516797903e-13",
+       "ulps": "23044846567991",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-fifteen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5f3fd2dc197f7e",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.4407942162169e-13",
+       "ulps": "211300108370048",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-fifteen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "3d62ffffffffffff",
+       "b": "3d628a01a9bcc4b6",
+       "aText": "5.4001247917767604e-13",
+       "bText": "5.2691256871426896e-13",
+       "ulps": "129735229389641",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d57fffffffffffe",
+       "b": "3d580e1f5d79b048",
+       "aText": "3.4106051316484799e-13",
+       "bText": "3.41844470512253e-13",
+       "ulps": "15527875031114",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d53ffffffffffff",
+       "b": "3d54a38850e19980",
+       "aText": "2.8421709430404002e-13",
+       "bText": "2.9329497076290898e-13",
+       "ulps": "179805867841921",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d5bfffffffffffe",
+       "b": "3d5b78b66a11c710",
+       "aText": "3.97903932025656e-13",
+       "bText": "3.9039397026159703e-13",
+       "ulps": "148750117779694",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd5027c1d474d90d",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.2958064050271099e-13",
+       "ulps": "43713446598927",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd54e2c3abaefd79",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.9680504378865902e-13",
+       "ulps": "249330026872186",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd47fffffffffffe",
+       "b": "bd46d97ffa75696b",
+       "aText": "-1.7053025658242399e-13",
+       "bText": "-1.62356237216764e-13",
+       "ulps": "323806267348627",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "rmv-named-level-allow#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bcf7fffffffffffe",
+       "aText": "0",
+       "bText": "-5.3290705182007498e-15",
+       "ulps": "4393261436499918846",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "rmv-named-level-allow#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd0ffffffffffffe",
+       "b": "bd1449249249249c",
+       "aText": "-1.4210854715202001e-14",
+       "bText": "-1.8017333656774e-14",
+       "ulps": "1206321328759966",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "rmv-named-level-allow#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d00924924924927",
+       "aText": "1.4210854715202001e-14",
+       "bText": "7.35919262037247e-15",
+       "ulps": "4342756783535831",
+       "signChange": false
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 269,
+   "pnlTradesCompared": 3051,
+   "maxUlps": "4409024035195715582",
+   "signChanges": 9
+  },
+  "arm64-go1.27.0": {
+   "cases": 231,
+   "missing": 0,
+   "counts": {
+    "pnl-only": 199,
+    "identical": 32
+   },
+   "differingCases": [
+    {
+     "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0808f9691467d31",
+       "b": "c0808f9691467d3a",
+       "aText": "-529.94851927823595",
+       "bText": "-529.94851927823697",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd72398039196d54",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-1.0359492977377699e-12",
+       "ulps": "63222876564841",
+       "signChange": false
+      },
+      {
+       "trade": 12,
+       "field": "pnl",
+       "a": "c0460ba34f6e6d76",
+       "b": "c0460ba34f6e6d68",
+       "aText": "-44.090921334190099",
+       "bText": "-44.09092133419",
+       "ulps": "14",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c094a2d671b5ecb8",
+       "b": "c094a2d671b5ece4",
+       "aText": "-1320.70941814668",
+       "bText": "-1320.70941814669",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "bd73ffffffffffff",
+       "b": "bd73bbf39b655db5",
+       "aText": "-1.1368683772161601e-12",
+       "bText": "-1.12175859488066e-12",
+       "ulps": "74820018152010",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "bd70ffffffffffff",
+       "b": "bd70b70cd6cd7cb9",
+       "aText": "-9.6633812063373605e-13",
+       "bText": "-9.501400005948681e-13",
+       "ulps": "80209205429062",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "bcfffffffffffffe",
+       "b": "bcfd9212b91ae520",
+       "aText": "-7.1054273576010003e-15",
+       "bText": "-6.5659917927894702e-15",
+       "ulps": "683815817517790",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "bcfffffffffffffe",
+       "b": "bd01d4d165401cab",
+       "aText": "-7.1054273576010003e-15",
+       "bText": "-7.9186968635227203e-15",
+       "ulps": "515470788664493",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "bcf7fffffffffffe",
+       "b": "bcf77a82a7b590dd",
+       "aText": "-5.3290705182007498e-15",
+       "bText": "-5.2132867220562099e-15",
+       "ulps": "146773398679329",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3ce3fffffffffff8",
+       "b": "3ce539e9a3dd7b11",
+       "aText": "2.2204460492503099e-15",
+       "bText": "2.3565839629675801e-15",
+       "ulps": "345150616075033",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3cdffffffffffffe",
+       "b": "3cdc8ec51f314ec7",
+       "aText": "1.7763568394002501e-15",
+       "bText": "1.5852705448720999e-15",
+       "ulps": "968922623815991",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3cec000000000004",
+       "b": "3cec2c70b8224ed7",
+       "aText": "3.1086244689504399e-15",
+       "bText": "3.12789738106307e-15",
+       "ulps": "48862637215443",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 58,
+       "field": "pnl",
+       "a": "bd6ffffffffffffe",
+       "b": "bd71954b4cae0e74",
+       "aText": "-9.0949470177292804e-13",
+       "bText": "-9.9948807869954905e-13",
+       "ulps": "445625618271862",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "c0a02d7984e50436",
+       "b": "c0a02d7984e50420",
+       "aText": "-2070.7373420303002",
+       "bText": "-2070.7373420302902",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 33,
+       "field": "pnl",
+       "a": "c09dbf48c2553a9d",
+       "b": "c09dbf48c2553a71",
+       "aText": "-1903.82105382128",
+       "bText": "-1903.82105382127",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 58,
+       "field": "pnl",
+       "a": "bd77fffffffffff4",
+       "b": "bd76dcdbea9676ac",
+       "aText": "-1.3642420526593899e-12",
+       "bText": "-1.29959577505611e-12",
+       "ulps": "320112861743432",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 58,
+       "field": "pnl",
+       "a": "bd67fffffffffffe",
+       "b": "bd689b755d8b4c9e",
+       "aText": "-6.8212102632969598e-13",
+       "bText": "-6.9938038234299196e-13",
+       "ulps": "170928382889120",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c080610af2023254",
+       "b": "c080610af202324b",
+       "aText": "-524.13034440723504",
+       "bText": "-524.13034440723402",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 14,
+       "field": "pnl",
+       "a": "bd65fffffffffffe",
+       "b": "bd666e05887bbdd2",
+       "aText": "-6.2527760746888796e-13",
+       "bText": "-6.3749246035592397e-13",
+       "ulps": "120970043702740",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 14,
+       "field": "pnl",
+       "a": "bd66fffffffffffe",
+       "b": "bd67523843335910",
+       "aText": "-6.5369931689929197e-13",
+       "bText": "-6.6282754567208896e-13",
+       "ulps": "90401599084818",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 14,
+       "field": "pnl",
+       "a": "bd65fffffffffffe",
+       "b": "bd6589d2cdc42294",
+       "aText": "-6.2527760746888796e-13",
+       "bText": "-6.1215737503975898e-13",
+       "ulps": "129936488389994",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-session-expansion-ny#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d37fffffffffffe",
+       "b": "3d3b0ae20c904b04",
+       "aText": "8.5265128291211997e-14",
+       "bText": "9.6074301350695994e-14",
+       "ulps": "856390919801606",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-session-expansion-ny#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d3178629f899957",
+       "aText": "5.6843418860808002e-14",
+       "bText": "6.2066813450570295e-14",
+       "ulps": "413839955433817",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-session-expansion-ny#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d424eb0bccb7e65",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.3008178925082201e-13",
+       "ulps": "476428964757914",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d47fffffffffffe",
+       "b": "3d47ea4fefb4e8e1",
+       "aText": "1.7053025658242399e-13",
+       "bText": "1.6992830063577001e-13",
+       "ulps": "23845931783965",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d423319ff1e3aa8",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.2931604534535699e-13",
+       "ulps": "619136700791466",
+       "signChange": false
+      },
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "c07156641dc51486",
+       "b": "c07156641dc51497",
+       "aText": "-277.39944245323602",
+       "bText": "-277.39944245323699",
+       "ulps": "17",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0243c7c87eba83b",
+       "b": "c0243c7c87eba803",
+       "aText": "-10.1181375956695",
+       "bText": "-10.118137595669401",
+       "ulps": "56",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d4ffffffffffffe",
+       "b": "3d4da185e04b9719",
+       "aText": "2.2737367544323201e-13",
+       "bText": "2.10540555926183e-13",
+       "ulps": "666828564359397",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0243c7c87eba7ca",
+       "b": "c0243c7c87eba803",
+       "aText": "-10.1181375956693",
+       "bText": "-10.118137595669401",
+       "ulps": "57",
+       "signChange": false
+      },
+      {
+       "trade": 15,
+       "field": "pnl",
+       "a": "c0516bea496438c1",
+       "b": "c0516bea496438c8",
+       "aText": "-69.686174724457501",
+       "bText": "-69.686174724457601",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd598f8b671e5ed5",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.6323969067139598e-13",
+       "ulps": "439303869980375",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "bd5ffffffffffffe",
+       "b": "bd5e4be210714737",
+       "aText": "-4.5474735088646402e-13",
+       "bText": "-4.3053799766393402e-13",
+       "ulps": "479515642869959",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "c04a4cdabd80663e",
+       "b": "c04a4cdabd806630",
+       "aText": "-52.600425422377597",
+       "bText": "-52.600425422377498",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd54d334bdcb7674",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.9594138367885798e-13",
+       "ulps": "232223475988085",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "c08198f6ff3ad632",
+       "b": "c08198f6ff3ad63b",
+       "aText": "-563.12060399976895",
+       "bText": "-563.12060399976997",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "4056762b1af5ba8d",
+       "b": "4056762b1af5ba94",
+       "aText": "89.846380939454505",
+       "bText": "89.846380939454605",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 15,
+       "field": "pnl",
+       "a": "403a8c32a126da25",
+       "b": "403a8c32a126da41",
+       "aText": "26.5476475448469",
+       "bText": "26.547647544846999",
+       "ulps": "28",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 29,
+       "field": "pnl",
+       "a": "bd73ffffffffffff",
+       "b": "bd74f64392840f17",
+       "aText": "-1.1368683772161601e-12",
+       "bText": "-1.19154995967919e-12",
+       "ulps": "270770081369880",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "4056762b1af5ba9b",
+       "b": "4056762b1af5ba94",
+       "aText": "89.846380939454704",
+       "bText": "89.846380939454605",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 15,
+       "field": "pnl",
+       "a": "403a8c32a126da5d",
+       "b": "403a8c32a126da41",
+       "aText": "26.547647544847099",
+       "bText": "26.547647544846999",
+       "ulps": "28",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "405656268539f1eb",
+       "b": "405656268539f1e4",
+       "aText": "89.346101099574",
+       "bText": "89.3461010995739",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-break-retest#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d57fffffffffffe",
+       "b": "3d5809ac695526a0",
+       "aText": "3.4106051316484799e-13",
+       "bText": "3.41597499300863e-13",
+       "ulps": "10636106213026",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-break-retest#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d55fffffffffffe",
+       "b": "3d564b4043583914",
+       "aText": "3.1263880373444398e-13",
+       "bText": "3.1681607490770899e-13",
+       "ulps": "82739379845398",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-break-retest#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d59fffffffffffe",
+       "b": "3d59c8188f52142c",
+       "aText": "3.69482222595252e-13",
+       "bText": "3.66378923694017e-13",
+       "ulps": "61467167419346",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-clock-close-before-extremes#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd18c0a237c32b17",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-clock-close-before-extremes#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d08c0a237c32b17",
+       "aText": "1.4210854715202001e-14",
+       "bText": "1.0992307174506501e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-coverage-33-accepted#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-coverage-33-accepted#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-expiry-last-bar-fills#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-expiry-last-bar-fills#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-bar-shape#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-bar-shape#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-on-open#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fill-on-open#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-minus-3-30#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-minus-3-30#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-plus-5-30#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-fractional-offset-plus-5-30#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-long#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "3d2ffffffffffffe",
+       "aText": "0",
+       "bText": "5.6843418860808002e-14",
+       "ulps": "4409024035195715582",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-long#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bd21050505050504",
+       "aText": "0",
+       "bText": "-3.0232896796067001e-14",
+       "ulps": "4404807429662246148",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-long#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d44414141414140",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.4391973451768301e-13",
+       "ulps": "1197648430317890",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd29829cbc14e5e9",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.5315225494904401e-14",
+       "ulps": "1826715154979349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-gap-through-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d19829cbc14e5e9",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.2657612747452201e-14",
+       "ulps": "1826715154979349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-leap-day#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-leap-day#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-midnight-range#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-midnight-range#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-month-end#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-month-end#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-multiple-days#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd2940a57eb5029b",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.4857495944450801e-14",
+       "ulps": "1899245297401187",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-multiple-days#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d1940a57eb5029b",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.24287479722254e-14",
+       "ulps": "1899245297401187",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-no-inherited-management#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd23ffffffffffff",
+       "b": "bd24322fa6c7bb13",
+       "aText": "-3.5527136788005003e-14",
+       "bText": "-3.5875373079293402e-14",
+       "ulps": "55180242959124",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-no-inherited-management#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd27fffffffffffe",
+       "b": "bd274a43edc0206e",
+       "aText": "-4.2632564145605999e-14",
+       "bText": "-4.1371526666546603e-14",
+       "ulps": "199819364654992",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-no-inherited-management#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd211a1b5fcf55a8",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-3.0379219492040101e-14",
+       "ulps": "310179850573226",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-one-minute#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-one-minute#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long-utc2#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long-utc2#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd48c0a237c32b17",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-1.7587691479210401e-13",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-long#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d38c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "8.7938457396052006e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd3940a57eb50293",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-8.9714991888901501e-14",
+       "ulps": "1899245297401195",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-ordinary-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d2940a57eb5029b",
+       "aText": "5.6843418860808002e-14",
+       "bText": "4.4857495944450801e-14",
+       "ulps": "1899245297401187",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-eurusd-short#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d38fffffffffffe",
+       "b": "3d38d99f32bbc5d8",
+       "aText": "8.8817841970012498e-14",
+       "bText": "8.8285238396012902e-14",
+       "ulps": "42197202516518",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-eurusd-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d37fffffffffffe",
+       "b": "3d37bce2427a75f3",
+       "aText": "8.5265128291211997e-14",
+       "bText": "8.4333704282170504e-14",
+       "ulps": "73795012758027",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-eurusd-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d39fffffffffffe",
+       "b": "3d39f65c22fd15bd",
+       "aText": "9.2370555648812999e-14",
+       "bText": "9.22367725098553e-14",
+       "ulps": "10599392275009",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-xauusd#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28828282828281",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3538157828437502e-14",
+       "ulps": "2108302766734717",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-pip-buffer-xauusd#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18828282828291",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1769078914218801e-14",
+       "ulps": "2108302766734701",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-range-end-bar-excluded#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bd1ffffffffffffe",
+       "aText": "0",
+       "bText": "-2.8421709430404001e-14",
+       "ulps": "4404520435568345086",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-range-end-bar-excluded#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd4060511be1958b",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.16360166826456e-13",
+       "ulps": "105901476386189",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-range-end-bar-excluded#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d30c0a237c32b17",
+       "aText": "1.13686837721616e-13",
+       "bText": "5.9516747965647998e-14",
+       "ulps": "4291796674598119",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-slippage-fee-sizing#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd18fffffffffff6",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-2.2204460492503099e-14",
+       "ulps": "1970324836974600",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-slippage-fee-sizing#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d09000000000016",
+       "aText": "1.4210854715202001e-14",
+       "bText": "1.11022302462516e-14",
+       "ulps": "1970324836974568",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-boundary-negative-offset#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-boundary-negative-offset#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-end#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd28c0a237c32b17",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-4.3969228698026003e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-clock-range-breakout-year-end#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d18c0a237c32b17",
+       "aText": "2.8421709430404001e-14",
+       "bText": "2.1984614349013001e-14",
+       "ulps": "2039996860912871",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-daily-flush-failure#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 51,
+       "field": "pnl",
+       "a": "bd85fffffffffff9",
+       "b": "bd86083c8dcd8496",
+       "aText": "-2.5011104298755498e-12",
+       "bText": "-2.5047681878560901e-12",
+       "ulps": "9056170116253",
+       "signChange": false
+      },
+      {
+       "trade": 60,
+       "field": "pnl",
+       "a": "403f0ab70b2b6b0a",
+       "b": "403f0ab70b2b6aee",
+       "aText": "31.041855524158599",
+       "bText": "31.0418555241585",
+       "ulps": "28",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-daily-flush-failure#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 16,
+       "field": "pnl",
+       "a": "c0a1fa92c37eec83",
+       "b": "c0a1fa92c37eec99",
+       "aText": "-2301.2866477645598",
+       "bText": "-2301.2866477645698",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 51,
+       "field": "pnl",
+       "a": "bd87fffffffffff4",
+       "b": "bd88771f78914e19",
+       "aText": "-2.7284841053187799e-12",
+       "bText": "-2.78138531471652e-12",
+       "ulps": "130977050480165",
+       "signChange": false
+      },
+      {
+       "trade": 60,
+       "field": "pnl",
+       "a": "403f0ab70b2b6ad2",
+       "b": "403f0ab70b2b6aee",
+       "aText": "31.0418555241584",
+       "bText": "31.0418555241585",
+       "ulps": "28",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-daily-flush-failure#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 51,
+       "field": "pnl",
+       "a": "bd83ffffffffffff",
+       "b": "bd839959a309bb2b",
+       "aText": "-2.2737367544323202e-12",
+       "bText": "-2.22815106099567e-12",
+       "ulps": "112864710247636",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-day-open-reclaim#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd47fffffffffffe",
+       "b": "bd46c8255262f3ae",
+       "aText": "-1.7053025658242399e-13",
+       "bText": "-1.61874563430439e-13",
+       "ulps": "342887331859536",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-day-open-reclaim#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd4bfffffffffffe",
+       "b": "bd4b68170199693d",
+       "aText": "-1.98951966012828e-13",
+       "bText": "-1.94735612861563e-13",
+       "ulps": "167026956342977",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-day-open-reclaim#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd43ffffffffffff",
+       "b": "bd422833a32c7e1f",
+       "aText": "-1.4210854715202001e-13",
+       "bText": "-1.29013513999315e-13",
+       "ulps": "518747707376096",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "bd62ffffffffffff",
+       "b": "bd63189e95f877e1",
+       "aText": "-5.4001247917767604e-13",
+       "bText": "-5.4274579007412102e-13",
+       "ulps": "27069399988194",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c07d529e02e5154c",
+       "b": "c07d529e02e5155d",
+       "aText": "-469.16357697950002",
+       "bText": "-469.16357697950099",
+       "ulps": "17",
+       "signChange": false
+      },
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "c07e9d462498bede",
+       "b": "c07e9d462498bef0",
+       "aText": "-489.829624745047",
+       "bText": "-489.82962474504802",
+       "ulps": "18",
+       "signChange": false
+      },
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "bd63ffffffffffff",
+       "b": "bd63f87ad6fd13d6",
+       "aText": "-5.6843418860808005e-13",
+       "bText": "-5.6759928345922505e-13",
+       "ulps": "8268500102185",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "bd61ffffffffffff",
+       "b": "bd6238c254f3dbe2",
+       "aText": "-5.1159076974727203e-13",
+       "bText": "-5.1789229668901597e-13",
+       "ulps": "62407300078563",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-13bp#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd23ffffffffffff",
+       "b": "bd221e2893e4b648",
+       "aText": "-3.5527136788005003e-14",
+       "bText": "-3.2183689787317698e-14",
+       "ulps": "529790324656567",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-13bp#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd27fffffffffffe",
+       "b": "bd26acd33e8f6113",
+       "aText": "-4.2632564145605999e-14",
+       "bText": "-4.0279066008543001e-14",
+       "ulps": "372926665760491",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-13bp#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd17fffffffffffe",
+       "b": "bd1b1efbd27416dc",
+       "aText": "-2.1316282072802999e-14",
+       "bText": "-2.4088313566092299e-14",
+       "ulps": "878491846579934",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-atr#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41815f15f174b6",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.24383043547573e-13",
+       "ulps": "139229586688841",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-atr#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d3e741381383ed1",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.08192291105123e-13",
+       "ulps": "435322832273709",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-atr#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d43c8b46b46ca2b",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.40573795990024e-13",
+       "ulps": "60797757240788",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-time#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d441b999999a5eb",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.42874601039091e-13",
+       "ulps": "30346520929772",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-time#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41d44444445076",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.2668384859664e-13",
+       "ulps": "48085308518281",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-immediate-time#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d45fffffffffffe",
+       "b": "3d4662eeeeeefb60",
+       "aText": "1.5631940186722199e-13",
+       "bText": "1.59065353481542e-13",
+       "ulps": "108778350377826",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-rebound#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d441b999999a5eb",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.42874601039091e-13",
+       "ulps": "30346520929772",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-rebound#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41d44444445076",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.2668384859664e-13",
+       "ulps": "48085308518281",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-rebound#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d45fffffffffffe",
+       "b": "3d4662eeeeeefb60",
+       "aText": "1.5631940186722199e-13",
+       "bText": "1.59065353481542e-13",
+       "ulps": "108778350377826",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-13bp#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd3f234299d8acda",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.10623457061498e-13",
+       "ulps": "242706020782884",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-13bp#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd40ffffffffffff",
+       "b": "bd40b54bf7970114",
+       "aText": "-1.2079226507921701e-13",
+       "bText": "-1.18718833282723e-13",
+       "ulps": "82137095667435",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-13bp#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3bfffffffffffe",
+       "b": "bd3cdbed4483573e",
+       "aText": "-9.9475983006414001e-14",
+       "bText": "-1.02528080840272e-13",
+       "ulps": "241812103190336",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-atr#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d41ffffffffffff",
+       "b": "3d41815f15f174b6",
+       "aText": "1.2789769243681801e-13",
+       "bText": "1.24383043547573e-13",
+       "ulps": "139229586688841",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-atr#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d3e741381383ed1",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.08192291105123e-13",
+       "ulps": "435322832273709",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-down-shock-reversal-atr#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d43ffffffffffff",
+       "b": "3d43c8b46b46ca2b",
+       "aText": "1.4210854715202001e-13",
+       "bText": "1.40573795990024e-13",
+       "ulps": "60797757240788",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6ffffffffffffe",
+       "b": "bd706bdb8c37925c",
+       "aText": "-9.0949470177292804e-13",
+       "bText": "-9.3344390179446205e-13",
+       "ulps": "118590694462046",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc925",
+       "b": "c0583719ae3fc92c",
+       "aText": "-96.860942423144095",
+       "bText": "-96.860942423144195",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd71ed98e8471814",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-1.0190953179726399e-12",
+       "ulps": "20233988925399",
+       "signChange": false
+      },
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "c06cef7ea41dce7b",
+       "b": "c06cef7ea41dce9e",
+       "aText": "-231.484209116188",
+       "bText": "-231.48420911618899",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6dfffffffffffe",
+       "b": "bd6dd43c60501946",
+       "aText": "-8.5265128291212002e-13",
+       "bText": "-8.4779248561628395e-13",
+       "ulps": "48119197722296",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc91e",
+       "b": "c0583719ae3fc925",
+       "aText": "-96.860942423143996",
+       "bText": "-96.860942423144095",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6ffffffffffffe",
+       "b": "bd706bdb8c37925c",
+       "aText": "-9.0949470177292804e-13",
+       "bText": "-9.3344390179446205e-13",
+       "ulps": "118590694462046",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc925",
+       "b": "c0583719ae3fc92c",
+       "aText": "-96.860942423144095",
+       "bText": "-96.860942423144195",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd71ed98e8471814",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-1.0190953179726399e-12",
+       "ulps": "20233988925399",
+       "signChange": false
+      },
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c0842aef3ac5cf53",
+       "b": "c0842aef3ac5cf5c",
+       "aText": "-645.36681131876901",
+       "bText": "-645.36681131877003",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "c06cef7ea41dce7b",
+       "b": "c06cef7ea41dce9e",
+       "aText": "-231.484209116188",
+       "bText": "-231.48420911618899",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd6dfffffffffffe",
+       "b": "bd6dd43c60501946",
+       "aText": "-8.5265128291212002e-13",
+       "bText": "-8.4779248561628395e-13",
+       "ulps": "48119197722296",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0583719ae3fc91e",
+       "b": "c0583719ae3fc925",
+       "aText": "-96.860942423143996",
+       "bText": "-96.860942423144095",
+       "ulps": "7",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fair-value-gap#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d4ffffffffffffe",
+       "b": "3d5025bf8b9d70c2",
+       "aText": "2.2737367544323201e-13",
+       "bText": "2.29469122820284e-13",
+       "ulps": "41504611332292",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fair-value-gap#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d47fffffffffffe",
+       "b": "3d4b3ad3306c2781",
+       "aText": "1.7053025658242399e-13",
+       "bText": "1.9347925921449001e-13",
+       "ulps": "909103655036803",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fair-value-gap#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d53ffffffffffff",
+       "b": "3d52ae157f04cdc4",
+       "aText": "2.8421709430404002e-13",
+       "bText": "2.6545898642607802e-13",
+       "ulps": "371542604853819",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d70ffffffffffff",
+       "b": "3d70fd51d47df929",
+       "aText": "9.6633812063373605e-13",
+       "bText": "9.6574296307091999e-13",
+       "ulps": "2947077506774",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d6ffffffffffffe",
+       "b": "3d6f67c98e7fd94f",
+       "aText": "9.0949470177292804e-13",
+       "bText": "8.92595700754221e-13",
+       "ulps": "167359599879855",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d71ffffffffffeb",
+       "b": "3d7246bee1bc05af",
+       "aText": "1.02318153949454e-12",
+       "bText": "1.0388902253876199e-12",
+       "ulps": "77785644926404",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-intra-hour-run-exhaustion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd52bb75a30b15ae",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.6620147858776399e-13",
+       "ulps": "356836032440913",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-intra-hour-run-exhaustion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "c0009742b1e03901",
+       "b": "c0009742b1e038be",
+       "aText": "-2.0738576790382699",
+       "bText": "-2.0738576790382401",
+       "ulps": "67",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd553ee942eff6e3",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-3.0192022091496801e-13",
+       "ulps": "350646548035300",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-intra-hour-run-exhaustion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "c0009742b1e0380a",
+       "b": "c0009742b1e03820",
+       "aText": "-2.0738576790381602",
+       "bText": "-2.07385767903817",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd50380203263479",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.3048273626055998e-13",
+       "ulps": "61581293925499",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-expansion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "3d0ec6c9d2506014",
+       "aText": "0",
+       "bText": "1.3667519139688799e-14",
+       "ulps": "4399672456106762260",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-expansion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd1233a9571e5dff",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-1.6166448338262699e-14",
+       "ulps": "3883847269851647",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-expansion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d287d3994b75efa",
+       "aText": "5.6843418860808002e-14",
+       "bText": "4.35014866176402e-14",
+       "ulps": "2114113552032004",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-reversion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 10,
+       "field": "pnl",
+       "a": "c0583d463dcd9111",
+       "b": "c0583d463dcd910a",
+       "aText": "-96.957412195919702",
+       "bText": "-96.957412195919602",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 30,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bd1e4e726d0e3ffb",
+       "aText": "0",
+       "bText": "-2.6917520214710699e-14",
+       "ulps": "4404043738977812475",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-reversion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "404d38f6342c0411",
+       "b": "404d38f6342c041f",
+       "aText": "58.4450135435983",
+       "bText": "58.4450135435984",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "405259fae09bc201",
+       "b": "405259fae09bc1fa",
+       "aText": "73.405937339885",
+       "bText": "73.4059373398849",
+       "ulps": "7",
+       "signChange": false
+      },
+      {
+       "trade": 30,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd37c4b080bc4349",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-8.4442029262642705e-14",
+       "ulps": "2186587190084427",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-keltner-reversion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 30,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d213aee946a4696",
+       "aText": "5.6843418860808002e-14",
+       "bText": "3.06069888332213e-14",
+       "ulps": "4157328284039528",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-fall#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d353ab153aad8fa",
+       "aText": "5.6843418860808002e-14",
+       "bText": "7.5421511854145703e-14",
+       "ulps": "1471908170881276",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-fall#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c0824aed44aed4b8",
+       "b": "c0824aed44aed4c1",
+       "aText": "-585.36585365854899",
+       "bText": "-585.36585365855001",
+       "ulps": "9",
+       "signChange": false
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d22117ba1174104",
+       "aText": "5.6843418860808002e-14",
+       "bText": "3.2095735283407003e-14",
+       "ulps": "3921426992643834",
+       "signChange": false
+      },
+      {
+       "trade": 2,
+       "field": "pnl",
+       "a": "c0824aed44aed4b8",
+       "b": "c0824aed44aed4c1",
+       "aText": "-585.36585365854899",
+       "bText": "-585.36585365855001",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-fall#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d40b6526b6508d1",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.1874728842488501e-13",
+       "ulps": "200465105357011",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-long#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d61385d5ad7a1cc",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.8942679546844897e-13",
+       "ulps": "219501369515571",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-long#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5f19c47b0f0501",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.4196687991195302e-13",
+       "ulps": "253143307844349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-long#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d62e3d87827c10e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "5.3688671102494397e-13",
+       "ulps": "250518868312335",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-short#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d61385d5ad7a1cc",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.8942679546844897e-13",
+       "ulps": "219501369515571",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-short#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5f19c47b0f0501",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.4196687991195302e-13",
+       "ulps": "253143307844349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9-perf-seasonal-short#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d62e3d87827c10e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "5.3688671102494397e-13",
+       "ulps": "250518868312335",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd519859e9859f71",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.5004172174505302e-13",
+       "ulps": "448986914070387",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd54a4d6ca4d6d6d",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.9336749831579001e-13",
+       "ulps": "181242424028526",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-legacy-setup9#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd4d17ba117ba2c1",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.06715945174315e-13",
+       "ulps": "818337005460797",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-named-level-sweep#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bcf7fffffffffffe",
+       "aText": "0",
+       "bText": "-5.3290705182007498e-15",
+       "ulps": "4393261436499918846",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-named-level-sweep#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd0ffffffffffffe",
+       "b": "bd1449249249249c",
+       "aText": "-1.4210854715202001e-14",
+       "bText": "-1.8017333656774e-14",
+       "ulps": "1206321328759966",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-named-level-sweep#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d00924924924927",
+       "aText": "1.4210854715202001e-14",
+       "bText": "7.35919262037247e-15",
+       "ulps": "4342756783535831",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-opening-range-breakout#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bcf43e98d872bfff",
+       "aText": "0",
+       "bText": "-4.4951863869564699e-15",
+       "ulps": "4392204362780426239",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-opening-range-breakout#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "bd1ffffffffffffe",
+       "b": "bd26cd105c674566",
+       "aText": "-2.8421709430404001e-14",
+       "bText": "-4.05027671815663e-14",
+       "ulps": "1914320013706600",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-opening-range-breakout#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "400c62f984b51c37",
+       "b": "400c62f984b51c4d",
+       "aText": "3.5483274810572101",
+       "bText": "3.5483274810572198",
+       "ulps": "22",
+       "signChange": false
+      },
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "3d1ffffffffffffe",
+       "b": "3d21bd6a264a955d",
+       "aText": "2.8421709430404001e-14",
+       "bText": "3.1512394407653302e-14",
+       "ulps": "489738583315807",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum-guarded#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c0472939746de96e",
+       "b": "c0472939746de960",
+       "aText": "-46.322065881412399",
+       "bText": "-46.3220658814123",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 20,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d6153256512a83e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.9240012883752802e-13",
+       "ulps": "190054902093761",
+       "signChange": false
+      },
+      {
+       "trade": 59,
+       "field": "pnl",
+       "a": "c08ae11076393a02",
+       "b": "c08ae110763939f9",
+       "aText": "-860.13303799351002",
+       "bText": "-860.13303799350899",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum-guarded#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "pnl",
+       "a": "c08d4acfd127c791",
+       "b": "c08d4acfd127c799",
+       "aText": "-937.35147315099505",
+       "bText": "-937.35147315099596",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 20,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5e533d4e2a6e40",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.3094636048372001e-13",
+       "ulps": "471427183907262",
+       "signChange": false
+      },
+      {
+       "trade": 31,
+       "field": "pnl",
+       "a": "c06bd9f44e3c9bb6",
+       "b": "c06bd9f44e3c9bd9",
+       "aText": "-222.81107246243999",
+       "bText": "-222.81107246244099",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum-guarded#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 20,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d637cac23101966",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.5385389719133705e-13",
+       "ulps": "144396212233881",
+       "signChange": false
+      },
+      {
+       "trade": 65,
+       "field": "pnl",
+       "a": "c09016bf13483776",
+       "b": "c09016bf134837a2",
+       "aText": "-1029.6865969928599",
+       "bText": "-1029.6865969928699",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 66,
+       "field": "pnl",
+       "a": "c08986c15c7bce58",
+       "b": "c08986c15c7bce61",
+       "aText": "-816.84441467975103",
+       "bText": "-816.84441467975205",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d6153256512a83e",
+       "aText": "5.1159076974727203e-13",
+       "bText": "4.9240012883752802e-13",
+       "ulps": "190054902093761",
+       "signChange": false
+      },
+      {
+       "trade": 88,
+       "field": "pnl",
+       "a": "c08ae11076393a02",
+       "b": "c08ae110763939f9",
+       "aText": "-860.13303799351002",
+       "bText": "-860.13303799350899",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 7,
+       "field": "pnl",
+       "a": "c02fde62e686c636",
+       "b": "c02fde62e686c5fd",
+       "aText": "-15.934348300888001",
+       "bText": "-15.934348300887899",
+       "ulps": "57",
+       "signChange": false
+      },
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "c08d4acfd127c791",
+       "b": "c08d4acfd127c799",
+       "aText": "-937.35147315099505",
+       "bText": "-937.35147315099596",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5e533d4e2a6e40",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.3094636048372001e-13",
+       "ulps": "471427183907262",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-price-momentum#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 25,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d637cac23101966",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.5385389719133705e-13",
+       "ulps": "144396212233881",
+       "signChange": false
+      },
+      {
+       "trade": 97,
+       "field": "pnl",
+       "a": "c09016bf13483776",
+       "b": "c09016bf134837a2",
+       "aText": "-1029.6865969928599",
+       "bText": "-1029.6865969928699",
+       "ulps": "44",
+       "signChange": false
+      },
+      {
+       "trade": 105,
+       "field": "pnl",
+       "a": "c09f7e08f2ee5866",
+       "b": "c09f7e08f2ee583a",
+       "aText": "-2015.5087392083601",
+       "bText": "-2015.5087392083501",
+       "ulps": "44",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-range-break-fake#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd372d74b54a4cff",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-8.2343241826064604e-14",
+       "ulps": "2020304117976321",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-range-break-fake#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd41c094e67cf045",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.26137479405053e-13",
+       "ulps": "493220731351111",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-range-break-fake#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "bd2ffffffffffffe",
+       "b": "bd25b37f3b357306",
+       "aText": "-5.6843418860808002e-14",
+       "bText": "-3.8549004247076398e-14",
+       "ulps": "2898865708240120",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-supply-demand-retest-entry-timeframe#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd59fe3a9b35c67e",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.6938390850602498e-13",
+       "ulps": "561002642261632",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-supply-demand-retest-entry-timeframe#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd5bfffffffffffe",
+       "b": "bd5dec84ab4f8949",
+       "aText": "-3.97903932025656e-13",
+       "bText": "-4.25244186474586e-13",
+       "ulps": "541529530665291",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-supply-demand-retest-entry-timeframe#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd560ff08b1c03a0",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.13523630537463e-13",
+       "ulps": "545424152984670",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-triple-push-exhaustion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d2ffffffffffffe",
+       "b": "3d33400f6dc63855",
+       "aText": "5.6843418860808002e-14",
+       "bText": "6.83905747141506e-14",
+       "ulps": "914859940526167",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-triple-push-exhaustion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "3d17f502f41aaca2",
+       "aText": "0",
+       "bText": "2.1278158184154399e-14",
+       "ulps": "4402256553812077730",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "family-triple-push-exhaustion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d3ffffffffffffe",
+       "b": "3d40416f0f42e2c9",
+       "aText": "1.13686837721616e-13",
+       "bText": "1.1550299124414701e-13",
+       "ulps": "71945253216971",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-volume-anomaly-exhaustion#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd43ffffffffffff",
+       "b": "bd4574297418cf3b",
+       "aText": "-1.4210854715202001e-13",
+       "bText": "-1.5243811567889599e-13",
+       "ulps": "409196366974780",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-volume-anomaly-exhaustion#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd47fffffffffffe",
+       "b": "bd49d34193c1f7b5",
+       "aText": "-1.7053025658242399e-13",
+       "bText": "-1.8349922028685801e-13",
+       "ulps": "513753582008247",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-volume-anomaly-exhaustion#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd411511546fa6c2",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.2137701107093399e-13",
+       "ulps": "304639151941316",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-vwap-extension-fade#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 13,
+       "field": "pnl",
+       "a": "bd5ffffffffffffe",
+       "b": "bd5dfddd5773db37",
+       "aText": "-4.5474735088646402e-13",
+       "bText": "-4.2620710381359298e-13",
+       "ulps": "565297833321671",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-vwap-extension-fade#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 13,
+       "field": "pnl",
+       "a": "bd63ffffffffffff",
+       "b": "bd62b39a3bd660c5",
+       "aText": "-5.6843418860808005e-13",
+       "bText": "-5.3153065011040996e-13",
+       "ulps": "365474943180602",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-vwap-extension-fade#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 13,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd569486373af4e4",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-3.2088355751677599e-13",
+       "ulps": "399645780282138",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 11,
+       "field": "pnl",
+       "a": "c04faba3e0f7777a",
+       "b": "c04faba3e0f7776c",
+       "aText": "-63.340938683350899",
+       "bText": "-63.340938683350799",
+       "ulps": "14",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "c0337b13a6805c18",
+       "b": "c0337b13a6805c34",
+       "aText": "-19.480768591249301",
+       "bText": "-19.480768591249401",
+       "ulps": "28",
+       "signChange": false
+      },
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "bd3ffffffffffffe",
+       "b": "bd3e248b12b433b7",
+       "aText": "-1.13686837721616e-13",
+       "bText": "-1.07088549890903e-13",
+       "ulps": "522770220567623",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "pnl",
+       "a": "c03feef41d0e322a",
+       "b": "c03feef41d0e320d",
+       "aText": "-31.933412376371201",
+       "bText": "-31.933412376371098",
+       "ulps": "29",
+       "signChange": false
+      },
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "bd43ffffffffffff",
+       "b": "bd42d0bcdc765292",
+       "aText": "-1.4210854715202001e-13",
+       "bText": "-1.33691328535084e-13",
+       "ulps": "333440382250349",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 23,
+       "field": "pnl",
+       "a": "bd37fffffffffffe",
+       "b": "bd36a79c6c7bc25a",
+       "aText": "-8.5265128291211997e-14",
+       "bText": "-8.0485771246722197e-14",
+       "ulps": "378659676634532",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-daily-snd-retest-xauusd-4h#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "bd6bfffffffffffe",
+       "b": "bd6dee098d3b271a",
+       "aText": "-7.9580786405131201e-13",
+       "bText": "-8.5065702385034702e-13",
+       "ulps": "543199768291100",
+       "signChange": false
+      },
+      {
+       "trade": 33,
+       "field": "pnl",
+       "a": "c070350ba3cc3f3c",
+       "b": "c070350ba3cc3f4e",
+       "aText": "-259.31534175666798",
+       "bText": "-259.315341756669",
+       "ulps": "18",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-daily-snd-retest-xauusd-4h#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "bd71ffffffffffeb",
+       "b": "bd717f52ebb3505f",
+       "aText": "-1.02318153949454e-12",
+       "bText": "-9.9460970770590106e-13",
+       "ulps": "141480858267532",
+       "signChange": false
+      },
+      {
+       "trade": 19,
+       "field": "pnl",
+       "a": "c082487ed4fcff96",
+       "b": "c082487ed4fcff8d",
+       "aText": "-585.061929680395",
+       "bText": "-585.06192968039397",
+       "ulps": "9",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-daily-snd-retest-xauusd-4h#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "c083f431f0b24223",
+       "b": "c083f431f0b2422b",
+       "aText": "-638.52438487305005",
+       "bText": "-638.52438487305096",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 8,
+       "field": "pnl",
+       "a": "c080131c600cba09",
+       "b": "c080131c600cba11",
+       "aText": "-514.38885507529005",
+       "bText": "-514.38885507529096",
+       "ulps": "8",
+       "signChange": false
+      },
+      {
+       "trade": 17,
+       "field": "pnl",
+       "a": "bd67fffffffffffe",
+       "b": "bd68dd6d430fad76",
+       "aText": "-6.8212102632969598e-13",
+       "bText": "-7.0670433999479297e-13",
+       "ulps": "243461346274680",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 48,
+       "field": "pnl",
+       "a": "bd5ffffffffffffe",
+       "b": "bd5d5cecc9f9f868",
+       "aText": "-4.5474735088646402e-13",
+       "bText": "-4.1727315807738001e-13",
+       "ulps": "742252859492246",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 48,
+       "field": "pnl",
+       "a": "bd63ffffffffffff",
+       "b": "bd634c600caf5ccb",
+       "aText": "-5.6843418860808005e-13",
+       "bText": "-5.4849182901749301e-13",
+       "ulps": "197499563320116",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "c0b197db930f9e17",
+       "b": "c0b197db930f9e22",
+       "aText": "-4503.85771272287",
+       "bText": "-4503.85771272288",
+       "ulps": "11",
+       "signChange": false
+      },
+      {
+       "trade": 48,
+       "field": "pnl",
+       "a": "bd57fffffffffffe",
+       "b": "bd5421197a95374e",
+       "aText": "-3.4106051316484799e-13",
+       "bText": "-2.8605448713726802e-13",
+       "ulps": "1089506592344240",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-failed-breakout-five-minute-early-breakeven#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d67fffffffffffe",
+       "b": "3d664b1ca4ae81a5",
+       "aText": "6.8212102632969598e-13",
+       "bText": "6.3361670219950202e-13",
+       "ulps": "480363559353945",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-failed-breakout-five-minute-early-breakeven#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d634a9a0242f99e",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.4829492024506301e-13",
+       "ulps": "199449653347937",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-failed-breakout-five-minute-early-breakeven#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d67fffffffffffe",
+       "b": "3d694b9f471a09ac",
+       "aText": "6.8212102632969598e-13",
+       "bText": "7.1893848415394103e-13",
+       "ulps": "364622441482670",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "3d62ffffffffffff",
+       "b": "3d62f7f366079822",
+       "aText": "5.4001247917767604e-13",
+       "bText": "5.3911883575165499e-13",
+       "ulps": "8850215823325",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "3d61ffffffffffff",
+       "b": "3d61f5e772e34465",
+       "aText": "5.1159076974727203e-13",
+       "bText": "5.1046989932836205e-13",
+       "ulps": "11100562963354",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 3,
+       "field": "pnl",
+       "a": "3d63ffffffffffff",
+       "b": "3d63f9ff592bebea",
+       "aText": "5.6843418860808005e-13",
+       "bText": "5.6776777217494904e-13",
+       "ulps": "6599868683285",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-directional-target-fifteen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d55fffffffffffe",
+       "b": "3d550f6fcbdd6837",
+       "aText": "3.1263880373444398e-13",
+       "bText": "2.9928485825620302e-13",
+       "ulps": "264502140639175",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-directional-target-fifteen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d51ffffffffffff",
+       "b": "3d522557902d6335",
+       "aText": "2.5579538487363602e-13",
+       "bText": "2.5786828470991299e-13",
+       "ulps": "41058011276086",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-directional-target-fifteen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "3d57fffffffffffe",
+       "b": "3d57f988078d6d24",
+       "aText": "3.4106051316484799e-13",
+       "bText": "3.40701431802492e-13",
+       "ulps": "7112339133146",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-fifteen#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "3d60ffffffffffff",
+       "b": "3d6114f58be4c236",
+       "aText": "4.8316906031686803e-13",
+       "bText": "4.8549599516797903e-13",
+       "ulps": "23044846567991",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-fifteen#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "3d5ffffffffffffe",
+       "b": "3d5f3fd2dc197f7e",
+       "aText": "4.5474735088646402e-13",
+       "bText": "4.4407942162169e-13",
+       "ulps": "211300108370048",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-session-break-hold-fifteen#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 5,
+       "field": "pnl",
+       "a": "3d62ffffffffffff",
+       "b": "3d628a01a9bcc4b6",
+       "aText": "5.4001247917767604e-13",
+       "bText": "5.2691256871426896e-13",
+       "ulps": "129735229389641",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d57fffffffffffe",
+       "b": "3d580e1f5d79b048",
+       "aText": "3.4106051316484799e-13",
+       "bText": "3.41844470512253e-13",
+       "ulps": "15527875031114",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d53ffffffffffff",
+       "b": "3d54a38850e19980",
+       "aText": "2.8421709430404002e-13",
+       "bText": "2.9329497076290898e-13",
+       "ulps": "179805867841921",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "3d5bfffffffffffe",
+       "b": "3d5b78b66a11c710",
+       "aText": "3.97903932025656e-13",
+       "bText": "3.9039397026159703e-13",
+       "ulps": "148750117779694",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd4ffffffffffffe",
+       "b": "bd5027c1d474d90d",
+       "aText": "-2.2737367544323201e-13",
+       "bText": "-2.2958064050271099e-13",
+       "ulps": "43713446598927",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd53ffffffffffff",
+       "b": "bd54e2c3abaefd79",
+       "aText": "-2.8421709430404002e-13",
+       "bText": "-2.9680504378865902e-13",
+       "ulps": "249330026872186",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd47fffffffffffe",
+       "b": "bd46d97ffa75696b",
+       "aText": "-1.7053025658242399e-13",
+       "bText": "-1.62356237216764e-13",
+       "ulps": "323806267348627",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "rmv-named-level-allow#A-exact",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "0000000000000000",
+       "b": "bcf7fffffffffffe",
+       "aText": "0",
+       "bText": "-5.3290705182007498e-15",
+       "ulps": "4393261436499918846",
+       "signChange": true
+      }
+     ]
+    },
+    {
+     "id": "rmv-named-level-allow#B-up1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "bd0ffffffffffffe",
+       "b": "bd1449249249249c",
+       "aText": "-1.4210854715202001e-14",
+       "bText": "-1.8017333656774e-14",
+       "ulps": "1206321328759966",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "rmv-named-level-allow#C-down1ulp",
+     "class": "pnl-only",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "3d0ffffffffffffe",
+       "b": "3d00924924924927",
+       "aText": "1.4210854715202001e-14",
+       "bText": "7.35919262037247e-15",
+       "ulps": "4342756783535831",
+       "signChange": false
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 269,
+   "pnlTradesCompared": 3051,
+   "maxUlps": "4409024035195715582",
+   "signChanges": 9
+  },
+  "arm64nofma-diag-go1.27.0": {
+   "cases": 231,
+   "missing": 0,
+   "counts": {
+    "identical": 231
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 3051,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasip1-go1.27.0": {
+   "cases": 231,
+   "missing": 0,
+   "counts": {
+    "identical": 231
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 3051,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasmjs-go1.27.0": {
+   "cases": 231,
+   "missing": 0,
+   "counts": {
+    "identical": 231
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 3051,
+   "maxUlps": "0",
+   "signChanges": 0
+  }
+ }
+}

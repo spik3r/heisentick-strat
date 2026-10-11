@@ -1,0 +1,95 @@
+{
+ "schema": "ht245.manifest.v1",
+ "cases": [
+  {
+   "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.728773501258",
+   "patches": [
+    {
+     "index": 962,
+     "o": "3514.618720077935",
+     "l": "3514.618720077935",
+     "c": "3514.618720077935",
+     "h": "3514.62223470017"
+    }
+   ],
+   "note": "exit bar 962 replaced: one extreme set between the two targets' sl levels"
+  },
+  {
+   "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.881083771894",
+   "patches": [
+    {
+     "index": 962,
+     "o": "3824.2674554662303",
+     "l": "3824.2674554662303",
+     "c": "3824.2674554662303",
+     "h": "3824.27127973751"
+    }
+   ],
+   "note": "exit bar 962 replaced: one extreme set between the two targets' sl levels"
+  },
+  {
+   "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.572066208848",
+   "patches": [
+    {
+     "index": 962,
+     "o": "3196.030782979081",
+     "l": "3196.030782979081",
+     "c": "3196.030782979081",
+     "h": "3196.03397901306"
+    }
+   ],
+   "note": "exit bar 962 replaced: one extreme set between the two targets' sl levels"
+  },
+  {
+   "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.896350070402",
+   "patches": [
+    {
+     "index": 962,
+     "o": "3855.3040363044083",
+     "l": "3855.3040363044083",
+     "c": "3855.3040363044083",
+     "h": "3855.3078916123"
+    }
+   ],
+   "note": "exit bar 962 replaced: one extreme set between the two targets' sl levels"
+  },
+  {
+   "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.655529819379",
+   "patches": [
+    {
+     "index": 962,
+     "o": "3365.7133745991396",
+     "l": "3365.7133745991396",
+     "c": "3365.7133745991396",
+     "h": "3365.71674031588"
+    }
+   ],
+   "note": "exit bar 962 replaced: one extreme set between the two targets' sl levels"
+  },
+  {
+   "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+   "source": "conformance/run/family-channel-break-hold",
+   "scale": "1.743002703999",
+   "patches": [
+    {
+     "index": 962,
+     "o": "3543.5468719086844",
+     "l": "3543.5468719086844",
+     "c": "3543.5468719086844",
+     "h": "3543.5504154591"
+    }
+   ],
+   "note": "exit bar 962 replaced: one extreme set between the two targets' sl levels"
+  }
+ ]
+}

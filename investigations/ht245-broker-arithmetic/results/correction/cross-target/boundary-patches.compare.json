@@ -1,0 +1,923 @@
+{
+  "schema": "ht245.compare.v2",
+  "observation": "15-significant-digit serialized public trade output",
+  "reference": "linux-amd64v1-go1.22.12",
+  "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "manifestSha256": "223aa939515f40a83b12a787c8cf6a5e8669fdb496f08a28bdf0ea33a88b625b",
+  "comparatorSha256": "2e45ce0b955bbfaa71f97fb88f4f556222a9fcf350579ae97aded6c84cfb2f77",
+  "evidence": [
+    {
+      "runSha256": "a034b9ecda3e9e45e3080a3d83bb798e5b18f891886840e69e604970697d165e",
+      "identitySha256": "abf3db0844691527afd72d4e48f62eedca4c2a3eb89ab5e0588adcd6f6f0e4a5",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "57ca7f0535113be6565417acf736f7f48bb871152bb095bc63537f81c56f7e35",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "ffced63734c0e9b4ea851d64452b213f2f68bd2385c27f55eaa6949f6d812e57",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v3",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "70970f51b0473e347a50cd060672801687af0bdb18d8b31b2627fea654b9f813",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "js",
+            "GOARCH": "wasm",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "node-go-js-wasm",
+            "version": "v24.19.0",
+            "glueSha256": "f8b767afd9cb2a4a0d0dedc9cacd8069481b00dac3adf8b8da39b1350d7014b2",
+            "implementationSha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+          }
+        }
+      ]
+    },
+    {
+      "runSha256": "ee501b27c36b8e12f2f13864fa25b48e6a210130090685e773427a14c32926cb",
+      "identitySha256": "cee062035f20f2b8730772fa69651135dacd3eeea6e88440624b4550e6a2c30b",
+      "targets": [
+        {
+          "label": "linux-arm64-go1.22.12",
+          "receiptSha256": "ee5174cdc0cdd4cb4caf8b59edc44c0060750f4fb269cabc0b9e67dcb472ebc5",
+          "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+          "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+            "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+            "hostOS": "linux",
+            "hostArch": "arm64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "arm64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "arm64",
+              "release": "6.17.0-1011-oracle"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "runSha256": "52d31271010563eb7854279f9cc3c980597be10ed83aaac915787255f9e595c7",
+      "identitySha256": "cee062035f20f2b8730772fa69651135dacd3eeea6e88440624b4550e6a2c30b",
+      "targets": [
+        {
+          "label": "linux-arm64nofma-go1.22.12",
+          "receiptSha256": "1772bcd35ac005d5278e07af168f6018bf34b9f27ccf75952867f3a0892e1717",
+          "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+          "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+            "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+            "hostOS": "linux",
+            "hostArch": "arm64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "arm64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+              "-gcflags=all=-d=fmahash=n"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "arm64",
+              "release": "6.17.0-1011-oracle"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "targets": {
+    "linux-amd64v3-go1.22.12": {
+      "attemptedCases": 6,
+      "successfulPairs": 6,
+      "matchingRefusals": 0,
+      "counts": {
+        "identical": 6
+      },
+      "differingCases": [],
+      "refusals": [],
+      "pnlTradesCompared": 6,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "js-wasmjs-go1.22.12": {
+      "attemptedCases": 6,
+      "successfulPairs": 6,
+      "matchingRefusals": 0,
+      "counts": {
+        "identical": 6
+      },
+      "differingCases": [],
+      "refusals": [],
+      "pnlTradesCompared": 6,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "linux-arm64-go1.22.12": {
+      "attemptedCases": 6,
+      "successfulPairs": 6,
+      "matchingRefusals": 0,
+      "counts": {
+        "path": 3,
+        "decision": 3
+      },
+      "differingCases": [
+        {
+          "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958befad"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a33779"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958befad"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a33779"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4055abe599bca9d2",
+              "b": "4055abe599bb36d1"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c071228085502307",
+              "b": "c0712280854efdbb",
+              "aText": "-274.15637713721702",
+              "bText": "-274.15637713294899",
+              "ulps": "75084",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d81b0"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db29"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d81b0"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db29"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053f57217cf1c5f",
+              "b": "4053f57217cde9a2"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0711e40d9b09eb1",
+              "b": "c0711e40d9af97a2",
+              "aText": "-273.89083260528702",
+              "bText": "-273.89083260145901",
+              "ulps": "67343",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+          "class": "decision",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exitIndex",
+              "a": 962,
+              "b": 963
+            },
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40a8f8301e046735",
+              "b": "40a8f9a2799b5f47"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bf2"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e52"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bf2"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e52"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4057c52657bc398d",
+              "b": "4057c52657bacfec"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0014ecf63f66006",
+              "b": "c007183dbfd69009"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069b68df345a4dd",
+              "b": "c07127b54a21470e",
+              "aText": "-205.704827915214",
+              "bText": "-274.48176014899298",
+              "ulps": "2094738611872305",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+          "class": "decision",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exitIndex",
+              "a": 962,
+              "b": 963
+            },
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ae1ebc5c4a169a",
+              "b": "40ae207b1d7ef208"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ae1e9da3f82b15",
+              "b": "40ae1e9da3f82baf"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b0ec"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ae1e9da3f82b15",
+              "b": "40ae1e9da3f82baf"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b0ec"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053cd4a4b9a2545",
+              "b": "4053cd4a4b97c18f"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c004ae18d84f23fc",
+              "b": "c00ba91dabbce3f6"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0699814261ba98a",
+              "b": "c0711ddd3c78817b",
+              "aText": "-204.75245957758699",
+              "bText": "-273.86651274750301",
+              "ulps": "2117423547078641",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+          "class": "decision",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exitIndex",
+              "a": 962,
+              "b": 963
+            },
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40aa4b8db0e81c61",
+              "b": "40aa4d13b63391eb"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef896314a"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03bc5"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef896314a"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03bc5"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40569ab02dc3c252",
+              "b": "40569ab02dc1719a"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0022d005b456ffd",
+              "b": "c0084515891bb405"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069ad99c3eed47f",
+              "b": "c07124d0e491304b",
+              "aText": "-205.42502018591401",
+              "bText": "-274.30099922861399",
+              "ulps": "2101403491392460",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e185a"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804fd5"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e185a"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804fd5"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40557fc641c207f0",
+              "b": "40557fc641c0f29d"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c071221310d538c5",
+              "b": "c071221310d45bc5",
+              "aText": "-274.129654724977",
+              "bText": "-274.12965472176103",
+              "ulps": "56576",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        }
+      ],
+      "refusals": [],
+      "pnlTradesCompared": 6,
+      "pnlTradesDiffering": 6,
+      "maxUlps": "2117423547078641",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "linux-arm64nofma-go1.22.12": {
+      "attemptedCases": 6,
+      "successfulPairs": 6,
+      "matchingRefusals": 0,
+      "counts": {
+        "path": 3,
+        "decision": 3
+      },
+      "differingCases": [
+        {
+          "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958bef6b"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a337bb"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ab753e958bef55",
+              "b": "40ab753e958bef6b"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ab6c4178a337d1",
+              "b": "40ab6c4178a337bb"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4055abe599bca9d2",
+              "b": "4055abe599bc4732"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c071228085502307",
+              "b": "c0712280854fd519",
+              "aText": "-274.15637713721702",
+              "bText": "-274.15637713608299",
+              "ulps": "19950",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d816f"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db55"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40ade08ae52d8159",
+              "b": "40ade08ae52d816f"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40add6c30c12db6b",
+              "b": "40add6c30c12db55"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053f57217cf1c5f",
+              "b": "4053f57217cec8b9"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0711e40d9b09eb1",
+              "b": "c0711e40d9b056f2",
+              "aText": "-273.89083260528702",
+              "bText": "-273.89083260424297",
+              "ulps": "18367",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+          "class": "decision",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exitIndex",
+              "a": 962,
+              "b": 963
+            },
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40a8f8301e046735",
+              "b": "40a8f9a2799b5f47"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bc6"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e7e"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40a8f81165b27bb0",
+              "b": "40a8f81165b27bc6"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40a8efe4df482e94",
+              "b": "40a8efe4df482e7e"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4057c52657bc398d",
+              "b": "4057c52657bbc2e3"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0014ecf63f66006",
+              "b": "c007183dbfd69009"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069b68df345a4dd",
+              "b": "c07127b54a21f66e",
+              "aText": "-205.704827915214",
+              "bText": "-274.48176015154502",
+              "ulps": "2094738611917201",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+          "class": "decision",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exitIndex",
+              "a": 962,
+              "b": 963
+            },
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40ae1ebc5c4a169a",
+              "b": "40ae207b1d7ef208"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b170"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40ae14c178d3b186",
+              "b": "40ae14c178d3b170"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4053cd4a4b9a2545",
+              "b": "4053cd4a4b99d2eb"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c004ae18d84f23fc",
+              "b": "c00ba91dabbce3f6"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c0699814261ba98a",
+              "b": "c0711ddd3c7a4b04",
+              "aText": "-204.75245957758699",
+              "bText": "-273.86651275416102",
+              "ulps": "2117423547195770",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+          "class": "decision",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "exitIndex",
+              "a": 962,
+              "b": 963
+            },
+            {
+              "trade": 0,
+              "field": "exit",
+              "a": "40aa4b8db0e81c61",
+              "b": "40aa4d13b63391eb"
+            },
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef89630f2"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03c1d"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40aa4b6ef89630dc",
+              "b": "40aa4b6ef89630f2"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aa42d359b03c33",
+              "b": "40aa42d359b03c1d"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40569ab02dc3c252",
+              "b": "40569ab02dc35702"
+            },
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "c0022d005b456ffd",
+              "b": "c0084515891bb405"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c069ad99c3eed47f",
+              "b": "c07124d0e492a06d",
+              "aText": "-205.42502018591401",
+              "bText": "-274.30099923397103",
+              "ulps": "2101403491486702",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "sl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e182e"
+            },
+            {
+              "trade": 0,
+              "field": "tp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804feb"
+            },
+            {
+              "trade": 0,
+              "field": "initialSl",
+              "a": "40abaf19d00e1818",
+              "b": "40abaf19d00e182e"
+            },
+            {
+              "trade": 0,
+              "field": "initialTp",
+              "a": "40aba609c2805001",
+              "b": "40aba609c2804feb"
+            },
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "40557fc641c207f0",
+              "b": "40557fc641c1a6e1"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "c071221310d538c5",
+              "b": "c071221310d4eb64",
+              "aText": "-274.129654724977",
+              "bText": "-274.12965472385099",
+              "ulps": "19809",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        }
+      ],
+      "refusals": [],
+      "pnlTradesCompared": 6,
+      "pnlTradesDiffering": 6,
+      "maxUlps": "2117423547195770",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    }
+  }
+}

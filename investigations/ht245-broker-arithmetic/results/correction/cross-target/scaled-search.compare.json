@@ -1,0 +1,4402 @@
+{
+  "schema": "ht245.compare.v2",
+  "observation": "15-significant-digit serialized public trade output",
+  "reference": "linux-amd64v1-go1.22.12",
+  "sourceSha256": "0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+  "manifestSha256": "14b576be36f5be50ea10b91d9383dec0925866c51d582fa7329a4c75b9da660f",
+  "comparatorSha256": "2e45ce0b955bbfaa71f97fb88f4f556222a9fcf350579ae97aded6c84cfb2f77",
+  "evidence": [
+    {
+      "runSha256": "aadce7976cc454a0991d7942caddcb10a54b5c31a128720f51acbd08173e7ac1",
+      "identitySha256": "93305d2970694bce8c4af19182de60a924ba5a08f97095ab73e1b66da6a10e6c",
+      "targets": [
+        {
+          "label": "linux-amd64v1-go1.22.12",
+          "receiptSha256": "012d54f565aa0209df00e2b83f01710208676f4997641f2f1421009b7b81d89d",
+          "runtimeSha256": "bfa5bcb84c914cdc1d9cbcfefd0695761872b1ca4828d286cae8eed1ff77cb73",
+          "binarySha256": "55f4018617181e427137552611c056ca1711db12d1e2fbe15eb65b880518d5db",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "linux-amd64v3-go1.22.12",
+          "receiptSha256": "f761a76f81f0bf1bf7626bc47567a4fc5c64292dfd61175d18235e0969e19976",
+          "runtimeSha256": "6883d569311a693fa2a0295f801c4c8c00b3785705986a6e65436b64db1a2e07",
+          "binarySha256": "52e18cb29b02ea6ca13db78d39b063aa733d82d34686e9537d6293350c0a2c7a",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "amd64",
+            "GOAMD64": "v3",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "x64",
+              "release": "6.18.44"
+            }
+          }
+        },
+        {
+          "label": "js-wasmjs-go1.22.12",
+          "receiptSha256": "617302a1e8c63ec9653b3b67470a4b2ab575689af9481fa13770b0439c804c57",
+          "runtimeSha256": "673d3866c9ddf40cc3a092f27146c2f665386abfeb81171540507db1be35fd65",
+          "binarySha256": "bd08aad0559889be0ee85d7cd3572c94c25cc55cdb8f331dbd97aa1e322446a9",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "929407e69c08952cd944a7457ae4eb289078a35473dd5dad2179369db7c5a6ec",
+            "compilerSha256": "f9cf7c5bd6e45b6c2f209ad60594aa12c7bc3c7b13f8e3bf5d4d5d1b208354af",
+            "hostOS": "linux",
+            "hostArch": "amd64"
+          },
+          "build": {
+            "GOOS": "js",
+            "GOARCH": "wasm",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "node-go-js-wasm",
+            "version": "v24.19.0",
+            "glueSha256": "f8b767afd9cb2a4a0d0dedc9cacd8069481b00dac3adf8b8da39b1350d7014b2",
+            "implementationSha256": "45ce9dfe7211247544ab6f4268eb8cb5b6f3d5ae602dc3b51447b7eada99c229"
+          }
+        }
+      ]
+    },
+    {
+      "runSha256": "f48b49b6714c501fef801afc7fc5465693ab7aeb079b00d3f6a2b4c17e31fb8c",
+      "identitySha256": "915e1e4a90efe0d738e8063271a63016f655e92be3ea952335495fc4343238c4",
+      "targets": [
+        {
+          "label": "linux-arm64-go1.22.12",
+          "receiptSha256": "c9246b63ccc3f53b75f6bb255e7b25fe48d83f6e586fab4d71ebe9c5e08549d5",
+          "runtimeSha256": "be6006e686ee10a000a0a8aace3dde7642dffc32e665a82aed4dae46f3196347",
+          "binarySha256": "6c91d4f482fa5168963f0d8b1152f525f14e754a46528a1f203ee2886806cdc7",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+            "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+            "hostOS": "linux",
+            "hostArch": "arm64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "arm64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "arm64",
+              "release": "6.17.0-1011-oracle"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "runSha256": "b302f7b6c17d86d98503ec7e7636ff67b3bed996a71a42a06a36ca1cd38395f3",
+      "identitySha256": "915e1e4a90efe0d738e8063271a63016f655e92be3ea952335495fc4343238c4",
+      "targets": [
+        {
+          "label": "linux-arm64nofma-go1.22.12",
+          "receiptSha256": "499048e4a37c7be4419568537fb1d904873c74d524a267e41cf64dbc8e61efd7",
+          "runtimeSha256": "68a8da6d317376009fbec5eb41f1578500652ef7935b78259cba34605742954f",
+          "binarySha256": "dbc75d6a037a220fc074beba42de8f519044e304b75852bea16141c0c3901920",
+          "compiler": {
+            "version": "go1.22.12",
+            "goSha256": "76d128db547ee33fed179fcbd3b01e541f7e89745645bdce974c8a98b84cd2d2",
+            "compilerSha256": "f75a9ae84004710f3dbc533ace5f6a8d3ea761f597e17dd66a02d5de15ba36ba",
+            "hostOS": "linux",
+            "hostArch": "arm64"
+          },
+          "build": {
+            "GOOS": "linux",
+            "GOARCH": "arm64",
+            "GOAMD64": "v1",
+            "CGO_ENABLED": "0",
+            "GOEXPERIMENT": "",
+            "GOFLAGS": "",
+            "flags": [
+              "-buildvcs=false",
+              "-trimpath",
+              "-ldflags=-X main.buildSourceSHA=0f4269f437219c6036dc9175f3d4b303e6e052e6fe0347079de2dae7d3e38b04",
+              "-gcflags=all=-d=fmahash=n"
+            ]
+          },
+          "runner": {
+            "kind": "native",
+            "host": {
+              "os": "linux",
+              "arch": "arm64",
+              "release": "6.17.0-1011-oracle"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "targets": {
+    "linux-amd64v3-go1.22.12": {
+      "attemptedCases": 3240,
+      "successfulPairs": 3120,
+      "matchingRefusals": 120,
+      "counts": {
+        "identical": 3120,
+        "matching-refusal": 120
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 30848,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "js-wasmjs-go1.22.12": {
+      "attemptedCases": 3240,
+      "successfulPairs": 3120,
+      "matchingRefusals": 120,
+      "counts": {
+        "identical": 3120,
+        "matching-refusal": 120
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 30848,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "linux-arm64-go1.22.12": {
+      "attemptedCases": 3240,
+      "successfulPairs": 3120,
+      "matchingRefusals": 120,
+      "counts": {
+        "identical": 3033,
+        "path": 83,
+        "pnl-only": 4,
+        "matching-refusal": 120
+      },
+      "differingCases": [
+        {
+          "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#s10",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "3ff6f42319864011",
+              "b": "3ff6f42319866015"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "4012ff7fbd2d2b42",
+              "b": "4012ff7fbd2d45bb",
+              "aText": "4.7495107230013804",
+              "bText": "4.7495107230073996",
+              "ulps": "6777",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 59,
+              "field": "points",
+              "a": "40537bad9b4007ee",
+              "b": "40537bad9b4007f5"
+            },
+            {
+              "trade": 59,
+              "field": "pnl",
+              "a": "408a886acae4f70a",
+              "b": "408a886acae4f713",
+              "aText": "849.05214480284599",
+              "bText": "849.05214480284701",
+              "ulps": "9",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 63,
+              "field": "size",
+              "a": "401aca0472cfbb62",
+              "b": "401aca0472cfbb9a"
+            },
+            {
+              "trade": 63,
+              "field": "points",
+              "a": "400c00856cd07805",
+              "b": "400c00856cd07a0b"
+            },
+            {
+              "trade": 63,
+              "field": "pnl",
+              "a": "40377133973095bb",
+              "b": "403771339730979a",
+              "aText": "23.442193459855599",
+              "bText": "23.4421934598573",
+              "ulps": "479",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 53,
+              "field": "points",
+              "a": "404626274ae0b37b",
+              "b": "404626274ae0b397"
+            },
+            {
+              "trade": 53,
+              "field": "pnl",
+              "a": "4080a7ff902944ff",
+              "b": "4080a7ff90294508",
+              "aText": "532.99978668443498",
+              "bText": "532.999786684436",
+              "ulps": "9",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 56,
+              "field": "points",
+              "a": "4022d91cfdbd32be",
+              "b": "4022d91cfdbd3242"
+            },
+            {
+              "trade": 56,
+              "field": "pnl",
+              "a": "405a0b6c0e9c2890",
+              "b": "405a0b6c0e9c27bd",
+              "aText": "104.17847028016899",
+              "bText": "104.178470280166",
+              "ulps": "211",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 40,
+              "field": "points",
+              "a": "c00214d8df734077",
+              "b": "c00214d8df7340fe"
+            },
+            {
+              "trade": 40,
+              "field": "pnl",
+              "a": "c05d6b3c9a00e64c",
+              "b": "c05d6b3c9a00e71f",
+              "aText": "-117.675573826674",
+              "bText": "-117.675573826677",
+              "ulps": "211",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 60,
+              "field": "pnl",
+              "a": "c0633b7f0857845e",
+              "b": "c0633b7f08578481",
+              "aText": "-153.85925690739799",
+              "bText": "-153.85925690739899",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 8,
+              "field": "size",
+              "a": "4027090ec85591c2",
+              "b": "4027090ec85591fa"
+            },
+            {
+              "trade": 8,
+              "field": "pnl",
+              "a": "c0583b423aee1962",
+              "b": "c0583b423aee198c",
+              "aText": "-96.925917370337203",
+              "bText": "-96.9259173703378",
+              "ulps": "42",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 31,
+              "field": "size",
+              "a": "4027b0599088089a",
+              "b": "4027b05990880829"
+            },
+            {
+              "trade": 31,
+              "field": "pnl",
+              "a": "c05694a79d356f56",
+              "b": "c05694a79d356f01",
+              "aText": "-90.322730352575803",
+              "bText": "-90.322730352574595",
+              "ulps": "85",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 64,
+              "field": "points",
+              "a": "c03980233f1cdb48",
+              "b": "c03980233f1cdaf3"
+            },
+            {
+              "trade": 64,
+              "field": "pnl",
+              "a": "c0611fff5762c5fb",
+              "b": "c0611fff5762c5d8",
+              "aText": "-136.99991959849999",
+              "bText": "-136.99991959849899",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s6",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 23,
+              "field": "initialSl",
+              "a": "407ebb75b23aacd2",
+              "b": "407ebb75b23aacc0"
+            },
+            {
+              "trade": 23,
+              "field": "size",
+              "a": "4037a2418a9921f1",
+              "b": "4037a2418a9921b9"
+            },
+            {
+              "trade": 23,
+              "field": "pnl",
+              "a": "c05cce7ea4e5b0a7",
+              "b": "c05cce7ea4e5b061",
+              "aText": "-115.22647974425",
+              "bText": "-115.226479744249",
+              "ulps": "70",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 26,
+              "field": "size",
+              "a": "40379a10fb194dbb",
+              "b": "40379a10fb194d83"
+            },
+            {
+              "trade": 26,
+              "field": "pnl",
+              "a": "404a4d2fb63930e4",
+              "b": "404a4d2fb63930ba",
+              "aText": "52.603018548894198",
+              "bText": "52.6030185488939",
+              "ulps": "42",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 39,
+              "field": "points",
+              "a": "401d7328fba12e7f",
+              "b": "401d7328fba12e03"
+            },
+            {
+              "trade": 39,
+              "field": "pnl",
+              "a": "406d25443663ac27",
+              "b": "406d25443663abbe",
+              "aText": "233.16457671611099",
+              "bText": "233.164576716108",
+              "ulps": "105",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s7",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 60,
+              "field": "size",
+              "a": "403260e42e06f87f",
+              "b": "403260e42e06f89b"
+            },
+            {
+              "trade": 60,
+              "field": "pnl",
+              "a": "c0634bfa32cd0999",
+              "b": "c0634bfa32cd09bc",
+              "aText": "-154.374291801895",
+              "bText": "-154.37429180189599",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s9",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "points",
+              "a": "bff357a3b51c5875",
+              "b": "bff357a3b51c58fc"
+            },
+            {
+              "trade": 3,
+              "field": "pnl",
+              "a": "c05901eab14952dd",
+              "b": "c05901eab1495369",
+              "aText": "-100.029949494939",
+              "bText": "-100.02994949494099",
+              "ulps": "140",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s10",
+          "class": "pnl-only",
+          "firstDiffs": [
+            {
+              "trade": 59,
+              "field": "pnl",
+              "a": "408a8f50ae701fb6",
+              "b": "408a8f50ae701fc7",
+              "aText": "849.91439521405005",
+              "bText": "849.91439521405198",
+              "ulps": "17",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s13",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 7,
+              "field": "sl",
+              "a": "408953cfd05ebf72",
+              "b": "408953cfd05ebf7b"
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s14",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 13,
+              "field": "sl",
+              "a": "4089d582058e01aa",
+              "b": "4089d582058e01a1"
+            },
+            {
+              "trade": 13,
+              "field": "points",
+              "a": "4039fef834ff4046",
+              "b": "4039fef834ff402a"
+            },
+            {
+              "trade": 13,
+              "field": "pnl",
+              "a": "4075b99ab57a30ad",
+              "b": "4075b99ab57a309b",
+              "aText": "347.60027072649501",
+              "bText": "347.60027072649399",
+              "ulps": "18",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s15",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 47,
+              "field": "points",
+              "a": "bfb4e593a0133ffd",
+              "b": "bfb4e593a01337ff"
+            },
+            {
+              "trade": 47,
+              "field": "pnl",
+              "a": "c01016a1478a6027",
+              "b": "c01016a1478a59ff",
+              "aText": "-4.0220996072967301",
+              "bText": "-4.0220996072953303",
+              "ulps": "1576",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s17",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 60,
+              "field": "size",
+              "a": "4007dfae182a4a8d",
+              "b": "4007dfae182a4a76"
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s20",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "points",
+              "a": "c01fe9de0da10300",
+              "b": "c01fe9de0da10284"
+            },
+            {
+              "trade": 3,
+              "field": "pnl",
+              "a": "c056de7dd87dcee2",
+              "b": "c056de7dd87dce87",
+              "aText": "-91.476431010112293",
+              "bText": "-91.476431010111",
+              "ulps": "91",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s21",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 11,
+              "field": "size",
+              "a": "403497b26f44d99e",
+              "b": "403497b26f44d9d6"
+            },
+            {
+              "trade": 11,
+              "field": "pnl",
+              "a": "c0540e9c6ba58a92",
+              "b": "c0540e9c6ba58ab5",
+              "aText": "-80.228297149335305",
+              "bText": "-80.228297149335802",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 43,
+              "field": "size",
+              "a": "403a3e03f9ae365a",
+              "b": "403a3e03f9ae36ae"
+            },
+            {
+              "trade": 43,
+              "field": "pnl",
+              "a": "c03889866b0402c3",
+              "b": "c03889866b040317",
+              "aText": "-24.5372073063652",
+              "bText": "-24.537207306365499",
+              "ulps": "84",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s23",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 5,
+              "field": "points",
+              "a": "3fbbf1b26bb99fe7",
+              "b": "3fbbf1b26bb98019"
+            },
+            {
+              "trade": 5,
+              "field": "pnl",
+              "a": "3ff8088f8454e8fc",
+              "b": "3ff8088f8454cd5d",
+              "aText": "1.50208999340117",
+              "bText": "1.5020899933995999",
+              "ulps": "7071",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s26",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 6,
+              "field": "points",
+              "a": "4033ccf4626ea4b2",
+              "b": "4033ccf4626ea47a"
+            },
+            {
+              "trade": 6,
+              "field": "pnl",
+              "a": "406bb9f20e855f61",
+              "b": "406bb9f20e855ef8",
+              "aText": "221.81079793977099",
+              "bText": "221.81079793976801",
+              "ulps": "105",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s27",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 63,
+              "field": "size",
+              "a": "401fd02249eebea6",
+              "b": "401fd02249eebe79"
+            },
+            {
+              "trade": 63,
+              "field": "pnl",
+              "a": "40374a9e3722db98",
+              "b": "40374a9e3722db7c",
+              "aText": "23.291476675043299",
+              "bText": "23.291476675043199",
+              "ulps": "28",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#s28",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 8,
+              "field": "size",
+              "a": "404882233b6aac19",
+              "b": "404882233b6aac43"
+            },
+            {
+              "trade": 52,
+              "field": "pnl",
+              "a": "4084af0b3c826d51",
+              "b": "4084af0b3c826d63",
+              "aText": "661.88048650642497",
+              "bText": "661.88048650642702",
+              "ulps": "18",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 60,
+              "field": "points",
+              "a": "c026fb9429dea49c",
+              "b": "c026fb9429dea4d4"
+            },
+            {
+              "trade": 60,
+              "field": "pnl",
+              "a": "c06338ca389818c0",
+              "b": "c06338ca389818e3",
+              "aText": "-153.774685189308",
+              "bText": "-153.774685189309",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-flag-continuation-one-four-hour-review#s4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 7,
+              "field": "size",
+              "a": "4051449cd9c76167",
+              "b": "4051449cd9c760a9"
+            },
+            {
+              "trade": 7,
+              "field": "points",
+              "a": "40012ff756c723fe",
+              "b": "40012ff756c724f5"
+            },
+            {
+              "trade": 7,
+              "field": "pnl",
+              "a": "40628cab2500aa60",
+              "b": "40628cab2500aaa7",
+              "aText": "148.39589166765199",
+              "bText": "148.39589166765401",
+              "ulps": "71",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#s9",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "400c254d7756ee7d",
+              "b": "400c254d7756ee39"
+            },
+            {
+              "trade": 9,
+              "field": "pnl",
+              "a": "400c254d7756ee7d",
+              "b": "400c254d7756ee39",
+              "aText": "3.51821416124386",
+              "bText": "3.5182141612438298",
+              "ulps": "68",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#s23",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "points",
+              "a": "c022ae6bc1a58cc1",
+              "b": "c022ae6bc1a58c7d"
+            },
+            {
+              "trade": 3,
+              "field": "pnl",
+              "a": "c022ae6bc1a58cc1",
+              "b": "c022ae6bc1a58c7d",
+              "aText": "-9.3406658663356001",
+              "bText": "-9.3406658663354794",
+              "ulps": "68",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 6,
+              "field": "points",
+              "a": "3f41af722ba5e800",
+              "b": "3f41af722ba5ec00"
+            },
+            {
+              "trade": 6,
+              "field": "pnl",
+              "a": "40703ffffffffe25",
+              "b": "40704000000001db",
+              "aText": "259.999999999973",
+              "bText": "260.000000000027",
+              "ulps": "950",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 14,
+              "field": "points",
+              "a": "3f65a9e3089d6802",
+              "b": "3f65a9e3089d6bf8"
+            },
+            {
+              "trade": 14,
+              "field": "pnl",
+              "a": "40703ffffffffe7d",
+              "b": "4070400000000183",
+              "aText": "259.999999999978",
+              "bText": "260.000000000022",
+              "ulps": "774",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s6",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "3f4bff08b6294000",
+              "b": "3f4bff08b6294800"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "40703ffffffffdaa",
+              "b": "4070400000000256",
+              "aText": "259.99999999996601",
+              "bText": "260.00000000003399",
+              "ulps": "1196",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s8",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "3f4cc0746e6e17fe",
+              "b": "3f4cc0746e6e1ffd"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "40703ffffffffdbb",
+              "b": "4070400000000245",
+              "aText": "259.99999999996697",
+              "bText": "260.00000000003303",
+              "ulps": "1162",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s13",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "3f5860e31594a817",
+              "b": "3f5860e31594b004"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "40703ffffffffd52",
+              "b": "40704000000002ae",
+              "aText": "259.99999999996101",
+              "bText": "260.00000000003899",
+              "ulps": "1372",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s15",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "3f3b031061d3b3fb",
+              "b": "3f3b031061d3b804"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "40703ffffffffec3",
+              "b": "407040000000013d",
+              "aText": "259.99999999998198",
+              "bText": "260.00000000001802",
+              "ulps": "634",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 14,
+              "field": "points",
+              "a": "3f3e6e7b4e9ebff8",
+              "b": "3f3e6e7b4e9ec7f8"
+            },
+            {
+              "trade": 14,
+              "field": "pnl",
+              "a": "40703ffffffffddf",
+              "b": "4070400000000221",
+              "aText": "259.99999999996902",
+              "bText": "260.00000000003098",
+              "ulps": "1090",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s20",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 14,
+              "field": "points",
+              "a": "3f656ec9c27f640a",
+              "b": "3f656ec9c27f6801"
+            },
+            {
+              "trade": 14,
+              "field": "pnl",
+              "a": "40703ffffffffe7d",
+              "b": "4070400000000183",
+              "aText": "259.999999999978",
+              "bText": "260.000000000022",
+              "ulps": "774",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s21",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "3f4ac04a1cb94804",
+              "b": "3f4ac04a1cb95004"
+            },
+            {
+              "trade": 9,
+              "field": "pnl",
+              "a": "40703ffffffffd98",
+              "b": "4070400000000268",
+              "aText": "259.99999999996498",
+              "bText": "260.00000000003502",
+              "ulps": "1232",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s24",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "3f4572ebd0493802",
+              "b": "3f4572ebd0494001"
+            },
+            {
+              "trade": 9,
+              "field": "pnl",
+              "a": "40703ffffffffcfa",
+              "b": "4070400000000306",
+              "aText": "259.999999999956",
+              "bText": "260.000000000044",
+              "ulps": "1548",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#s26",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "3f60777981daf3f9",
+              "b": "3f60777981daf806"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "40703ffffffffe02",
+              "b": "40704000000001fe",
+              "aText": "259.99999999997101",
+              "bText": "260.00000000002899",
+              "ulps": "1020",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#s2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "3fd9e3c24d3b0005",
+              "b": "3fd9e3c24d3b1ff8"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "402ba86148c89ec1",
+              "b": "402ba86148c8c10f",
+              "aText": "13.828867220392",
+              "bText": "13.8288672204076",
+              "ulps": "8782",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#s19",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 13,
+              "field": "size",
+              "a": "3fc0a88beb16fe32",
+              "b": "3fc0a88beb16fdea"
+            },
+            {
+              "trade": 13,
+              "field": "pnl",
+              "a": "4080aaaaaaaaaac2",
+              "b": "4080aaaaaaaaaa96",
+              "aText": "533.33333333333599",
+              "bText": "533.33333333333098",
+              "ulps": "44",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-daily-flush-failure#s3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 15,
+              "field": "size",
+              "a": "3fe8daae27657805",
+              "b": "3fe8daae276577d8"
+            },
+            {
+              "trade": 15,
+              "field": "points",
+              "a": "c07018fc15d7487f",
+              "b": "c07018fc15d748a2"
+            }
+          ]
+        },
+        {
+          "id": "family-daily-flush-failure#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 7,
+              "field": "size",
+              "a": "3febbbf1f2eeb7b3",
+              "b": "3febbbf1f2eeb7e9"
+            },
+            {
+              "trade": 7,
+              "field": "points",
+              "a": "c06cda50ab48d309",
+              "b": "c06cda50ab48d2c3"
+            }
+          ]
+        },
+        {
+          "id": "family-double-top-bottom#s6",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 1,
+              "field": "size",
+              "a": "4039a9bad9bd7976",
+              "b": "4039a9bad9bd7b1c"
+            },
+            {
+              "trade": 1,
+              "field": "pnl",
+              "a": "40079bdd2a565c65",
+              "b": "40079bdd2a565de4",
+              "aText": "2.9511054332356701",
+              "bText": "2.9511054332358402",
+              "ulps": "383",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 5,
+              "field": "size",
+              "a": "4030a16f9f9559ce",
+              "b": "4030a16f9f955a93"
+            },
+            {
+              "trade": 5,
+              "field": "points",
+              "a": "c0282c0a7ae083ff",
+              "b": "c0282c0a7ae082e5"
+            }
+          ]
+        },
+        {
+          "id": "family-double-top-bottom#s17",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 2,
+              "field": "tp",
+              "a": "40b437e5992abf29",
+              "b": "40b437e5992abf34"
+            },
+            {
+              "trade": 2,
+              "field": "initialTp",
+              "a": "40b437e5992abf29",
+              "b": "40b437e5992abf34"
+            },
+            {
+              "trade": 2,
+              "field": "size",
+              "a": "401884d5f21f7173",
+              "b": "401884d5f21f7233"
+            },
+            {
+              "trade": 2,
+              "field": "points",
+              "a": "c040580d45b4d906",
+              "b": "c040580d45b4d879"
+            }
+          ]
+        },
+        {
+          "id": "family-double-top-bottom#s19",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "size",
+              "a": "4036fb96bc6e6023",
+              "b": "4036fb96bc6e60cc"
+            },
+            {
+              "trade": 3,
+              "field": "points",
+              "a": "c021863b5e226b02",
+              "b": "c021863b5e226a80"
+            }
+          ]
+        },
+        {
+          "id": "family-double-top-bottom#s21",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 1,
+              "field": "size",
+              "a": "4039d9974c1ca8ff",
+              "b": "4039d9974c1caaa5"
+            },
+            {
+              "trade": 1,
+              "field": "pnl",
+              "a": "4007845ee86d96ac",
+              "b": "4007845ee86d982b",
+              "aText": "2.9396341474956298",
+              "bText": "2.9396341474957999",
+              "ulps": "383",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-elder-triple-screen-trail-override#s6",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 28,
+              "field": "size",
+              "a": "403173450433e4c0",
+              "b": "403173450433e514"
+            },
+            {
+              "trade": 28,
+              "field": "pnl",
+              "a": "4055dd30342951af",
+              "b": "4055dd3034295226",
+              "aText": "87.456067123747502",
+              "bText": "87.456067123749193",
+              "ulps": "119",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-elder-triple-screen-trail-override#s28",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 23,
+              "field": "size",
+              "a": "403b7e2e4ff786b6",
+              "b": "403b7e2e4ff787b3"
+            },
+            {
+              "trade": 23,
+              "field": "pnl",
+              "a": "c04c675f3d8bbb1b",
+              "b": "c04c675f3d8bbc18",
+              "aText": "-56.807594006755799",
+              "bText": "-56.807594006757597",
+              "ulps": "253",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-elder-triple-screen#s6",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 28,
+              "field": "size",
+              "a": "403173450433e4c0",
+              "b": "403173450433e514"
+            },
+            {
+              "trade": 28,
+              "field": "pnl",
+              "a": "40197568a8e02182",
+              "b": "40197568a8e02214",
+              "aText": "6.3646570574568404",
+              "bText": "6.3646570574569701",
+              "ulps": "146",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-elder-triple-screen#s28",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 23,
+              "field": "size",
+              "a": "403b7e2e4ff786b6",
+              "b": "403b7e2e4ff787b3"
+            },
+            {
+              "trade": 23,
+              "field": "pnl",
+              "a": "c04c675f3d8bbb1b",
+              "b": "c04c675f3d8bbc18",
+              "aText": "-56.807594006755799",
+              "bText": "-56.807594006757597",
+              "ulps": "253",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-fib-continuation#s27",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "size",
+              "a": "4025db421be6cba6",
+              "b": "4025db421be6cafd"
+            },
+            {
+              "trade": 3,
+              "field": "pnl",
+              "a": "400b054ae1a59af3",
+              "b": "400b054ae1a59a28",
+              "aText": "3.3775842312492101",
+              "bText": "3.37758423124912",
+              "ulps": "203",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-keltner-reversion#s10",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 23,
+              "field": "points",
+              "a": "3fc1aba0d42a7ffd",
+              "b": "3fc1aba0d42b000f"
+            },
+            {
+              "trade": 23,
+              "field": "pnl",
+              "a": "40118984bebc0596",
+              "b": "40118984bebc84a6",
+              "aText": "4.3842954447039997",
+              "bText": "4.3842954447328903",
+              "ulps": "32528",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-keltner-reversion#s16",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 1,
+              "field": "exit",
+              "a": "40b0900dacf74f00",
+              "b": "40b0900dacf74ef5"
+            },
+            {
+              "trade": 1,
+              "field": "points",
+              "a": "3fb41a618f7d0000",
+              "b": "3fb41a618f7e0001"
+            },
+            {
+              "trade": 1,
+              "field": "pnl",
+              "a": "401059e90410d9d8",
+              "b": "401059e90411aa0c",
+              "aText": "4.0878029475483899",
+              "bText": "4.0878029475957298",
+              "ulps": "53300",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum-guarded#s0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 118,
+              "field": "points",
+              "a": "3fd033227e2feff8",
+              "b": "3fd033227e300003"
+            },
+            {
+              "trade": 118,
+              "field": "pnl",
+              "a": "40321b33ad4b5e15",
+              "b": "40321b33ad4b7001",
+              "aText": "18.106257277393599",
+              "bText": "18.106257277409899",
+              "ulps": "4588",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum-guarded#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 12,
+              "field": "exit",
+              "a": "40b3aee6838d909a",
+              "b": "40b3aee6838d908f"
+            },
+            {
+              "trade": 12,
+              "field": "points",
+              "a": "3fec6aef9a363ffe",
+              "b": "3fec6aef9a366002"
+            },
+            {
+              "trade": 12,
+              "field": "pnl",
+              "a": "40232bff45e8d896",
+              "b": "40232bff45e8ee2e",
+              "aText": "9.58593195407256",
+              "bText": "9.5859319540823797",
+              "ulps": "5528",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum-guarded#s20",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 69,
+              "field": "points",
+              "a": "3fdfeac2cff64001",
+              "b": "3fdfeac2cff67ff8"
+            },
+            {
+              "trade": 69,
+              "field": "pnl",
+              "a": "402269ecfdd87157",
+              "b": "402269ecfdd89649",
+              "aText": "9.2068862272941896",
+              "bText": "9.2068862273109904",
+              "ulps": "9458",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum-guarded#s27",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 88,
+              "field": "sl",
+              "a": "40a697c29c704e74",
+              "b": "40a697c29c704e8a"
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum#s0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 183,
+              "field": "points",
+              "a": "3fd033227e2feff8",
+              "b": "3fd033227e300003"
+            },
+            {
+              "trade": 183,
+              "field": "pnl",
+              "a": "40321b33ad4b5e15",
+              "b": "40321b33ad4b7001",
+              "aText": "18.106257277393599",
+              "bText": "18.106257277409899",
+              "ulps": "4588",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 14,
+              "field": "exit",
+              "a": "40b3aee6838d909a",
+              "b": "40b3aee6838d908f"
+            },
+            {
+              "trade": 14,
+              "field": "points",
+              "a": "3fec6aef9a363ffe",
+              "b": "3fec6aef9a366002"
+            },
+            {
+              "trade": 14,
+              "field": "pnl",
+              "a": "40232bff45e8d896",
+              "b": "40232bff45e8ee2e",
+              "aText": "9.58593195407256",
+              "bText": "9.5859319540823797",
+              "ulps": "5528",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum#s16",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 76,
+              "field": "points",
+              "a": "3fd96ce300c1bff8",
+              "b": "3fd96ce300c1dffc"
+            },
+            {
+              "trade": 76,
+              "field": "pnl",
+              "a": "4027c77db424446b",
+              "b": "4027c77db4246253",
+              "aText": "11.889630917956501",
+              "bText": "11.8896309179701",
+              "ulps": "7656",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-price-momentum#s27",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 138,
+              "field": "sl",
+              "a": "40a697c29c704e74",
+              "b": "40a697c29c704e8a"
+            }
+          ]
+        },
+        {
+          "id": "family-sma-golden-cross-protected#s9",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 9,
+              "field": "points",
+              "a": "400c254d7756ee7d",
+              "b": "400c254d7756ee39"
+            },
+            {
+              "trade": 9,
+              "field": "pnl",
+              "a": "400c254d7756ee7d",
+              "b": "400c254d7756ee39",
+              "aText": "3.51821416124386",
+              "bText": "3.5182141612438298",
+              "ulps": "68",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "family-sma-golden-cross-protected#s23",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "points",
+              "a": "c022ae6bc1a58cc1",
+              "b": "c022ae6bc1a58c7d"
+            },
+            {
+              "trade": 3,
+              "field": "pnl",
+              "a": "c022ae6bc1a58cc1",
+              "b": "c022ae6bc1a58c7d",
+              "aText": "-9.3406658663356001",
+              "bText": "-9.3406658663354794",
+              "ulps": "68",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "money-partial-exit#s4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 11,
+              "field": "size",
+              "a": "4051449cd9c76167",
+              "b": "4051449cd9c760a9"
+            },
+            {
+              "trade": 11,
+              "field": "points",
+              "a": "40012ff756c723fe",
+              "b": "40012ff756c724f5"
+            },
+            {
+              "trade": 11,
+              "field": "pnl",
+              "a": "40628cab2500aa60",
+              "b": "40628cab2500aaa7",
+              "aText": "148.39589166765199",
+              "bText": "148.39589166765401",
+              "ulps": "71",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-daily-snd-retest-xauusd-4h#s2",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "points",
+              "a": "3fe9cdd80dc4b002",
+              "b": "3fe9cdd80dc4bffc"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "4011e91f0d4222ad",
+              "b": "4011e91f0d422dc2",
+              "aText": "4.4776575156799199",
+              "bText": "4.4776575156824396",
+              "ulps": "2837",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-daily-snd-retest-xauusd-4h#s3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 19,
+              "field": "size",
+              "a": "40151be86c4cae2e",
+              "b": "40151be86c4caec0"
+            },
+            {
+              "trade": 19,
+              "field": "points",
+              "a": "c042f30206a1c385",
+              "b": "c042f30206a1c306"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-daily-snd-retest-xauusd-4h#s8",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 16,
+              "field": "tp",
+              "a": "40a59ac7d099b217",
+              "b": "40a59ac7d099b201"
+            },
+            {
+              "trade": 16,
+              "field": "initialTp",
+              "a": "40a59ac7d099b217",
+              "b": "40a59ac7d099b201"
+            },
+            {
+              "trade": 16,
+              "field": "size",
+              "a": "4036ffc291c60aaf",
+              "b": "4036ffc291c60c00"
+            },
+            {
+              "trade": 16,
+              "field": "points",
+              "a": "c021645af9561c01",
+              "b": "c021645af9561afe"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-daily-snd-retest-xauusd-4h#s11",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 32,
+              "field": "size",
+              "a": "4013f693e9093555",
+              "b": "4013f693e90935d1"
+            },
+            {
+              "trade": 32,
+              "field": "points",
+              "a": "c0440970896bf7fb",
+              "b": "c0440970896bf77c"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-daily-snd-retest-xauusd-4h#s27",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 18,
+              "field": "size",
+              "a": "40210b0a5fe11c49",
+              "b": "40210b0a5fe11ca3"
+            },
+            {
+              "trade": 18,
+              "field": "points",
+              "a": "c03778497dca848c",
+              "b": "c03778497dca83ff"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s0",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 6,
+              "field": "points",
+              "a": "3fff48b81681c011",
+              "b": "3fff48b81681bc05"
+            },
+            {
+              "trade": 6,
+              "field": "pnl",
+              "a": "40191596f174f37a",
+              "b": "40191596f174f044",
+              "aText": "6.2710836150771403",
+              "bText": "6.2710836150764102",
+              "ulps": "822",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 29,
+              "field": "size",
+              "a": "4006db86bde071d7",
+              "b": "4006db86bde071ee"
+            },
+            {
+              "trade": 29,
+              "field": "pnl",
+              "a": "401b2b64efe82d7f",
+              "b": "401b2b64efe82da1",
+              "aText": "6.7923772321186098",
+              "bText": "6.79237723211864",
+              "ulps": "34",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s1",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 11,
+              "field": "size",
+              "a": "3fe988d833466de6",
+              "b": "3fe988d833466dcb"
+            },
+            {
+              "trade": 11,
+              "field": "pnl",
+              "a": "c04ad802c0a2a00d",
+              "b": "c04ad802c0a29ff0",
+              "aText": "-53.687583999068103",
+              "bText": "-53.687583999067897",
+              "ulps": "29",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 14,
+              "field": "points",
+              "a": "4069cbde8752144e",
+              "b": "4069cbde87521471"
+            },
+            {
+              "trade": 14,
+              "field": "pnl",
+              "a": "407429b9db858599",
+              "b": "407429b9db8585ab",
+              "aText": "322.607875367708",
+              "bText": "322.60787536770903",
+              "ulps": "18",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 5,
+              "field": "size",
+              "a": "40066fc27e1845fe",
+              "b": "40066fc27e18462b"
+            },
+            {
+              "trade": 5,
+              "field": "pnl",
+              "a": "407444d2a3e4bd8b",
+              "b": "407444d2a3e4bdaf",
+              "aText": "324.30142583228798",
+              "bText": "324.30142583229002",
+              "ulps": "36",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s4",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 31,
+              "field": "size",
+              "a": "401a4d31e4a7dc66",
+              "b": "401a4d31e4a7dc9e"
+            },
+            {
+              "trade": 31,
+              "field": "pnl",
+              "a": "c0475de91f4bc0cd",
+              "b": "c0475de91f4bc105",
+              "aText": "-46.7336768264664",
+              "bText": "-46.733676826466798",
+              "ulps": "56",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 17,
+              "field": "size",
+              "a": "3ff9b209fbcf836e",
+              "b": "3ff9b209fbcf8341"
+            },
+            {
+              "trade": 17,
+              "field": "pnl",
+              "a": "c0502399ed2c3adb",
+              "b": "c0502399ed2c3ab7",
+              "aText": "-64.556269925301805",
+              "bText": "-64.556269925301294",
+              "ulps": "36",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s6",
+          "class": "pnl-only",
+          "firstDiffs": [
+            {
+              "trade": 7,
+              "field": "pnl",
+              "a": "40673ec4d3c96ec5",
+              "b": "40673ec4d3c96ee8",
+              "aText": "185.96152676908801",
+              "bText": "185.96152676908901",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s7",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 10,
+              "field": "size",
+              "a": "4012af2b539c48a1",
+              "b": "4012af2b539c48ac"
+            },
+            {
+              "trade": 10,
+              "field": "points",
+              "a": "c0389d130af3727b",
+              "b": "c0389d130af3725f"
+            },
+            {
+              "trade": 11,
+              "field": "size",
+              "a": "40124e06ebe83c1d",
+              "b": "40124e06ebe83c28"
+            },
+            {
+              "trade": 11,
+              "field": "pnl",
+              "a": "c04b120b69329cc4",
+              "b": "c04b120b69329ce1",
+              "aText": "-54.140973233902997",
+              "bText": "-54.140973233903203",
+              "ulps": "29",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 24,
+              "field": "points",
+              "a": "3fe332ce53746c01",
+              "b": "3fe332ce53747004"
+            },
+            {
+              "trade": 24,
+              "field": "pnl",
+              "a": "400eca05857cf215",
+              "b": "400eca05857cf881",
+              "aText": "3.84864334380678",
+              "bText": "3.8486433438075101",
+              "ulps": "1644",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s9",
+          "class": "pnl-only",
+          "firstDiffs": [
+            {
+              "trade": 48,
+              "field": "pnl",
+              "a": "408f3ed66cb05333",
+              "b": "408f3ed66cb0532b",
+              "aText": "999.85469949487594",
+              "bText": "999.85469949487504",
+              "ulps": "8",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s10",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 43,
+              "field": "size",
+              "a": "3fd7af828d0270a6",
+              "b": "3fd7af828d027082"
+            },
+            {
+              "trade": 43,
+              "field": "pnl",
+              "a": "404a7d42f832249a",
+              "b": "404a7d42f832247e",
+              "aText": "52.978606247409701",
+              "bText": "52.978606247409502",
+              "ulps": "28",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s11",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 19,
+              "field": "size",
+              "a": "4008d3ac886daa02",
+              "b": "4008d3ac886da9d5"
+            },
+            {
+              "trade": 19,
+              "field": "pnl",
+              "a": "c02c30c4858159c4",
+              "b": "c02c30c48581598c",
+              "aText": "-14.0952493400954",
+              "bText": "-14.0952493400953",
+              "ulps": "56",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s12",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 42,
+              "field": "points",
+              "a": "c069c883b2cab9af",
+              "b": "c069c883b2cab98c"
+            },
+            {
+              "trade": 42,
+              "field": "pnl",
+              "a": "c0540f29cf1dc67f",
+              "b": "c0540f29cf1dc64e",
+              "aText": "-80.236926821782603",
+              "bText": "-80.236926821781907",
+              "ulps": "49",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s14",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 5,
+              "field": "exit",
+              "a": "40a911e39e8e1859",
+              "b": "40a911e39e8e1843"
+            },
+            {
+              "trade": 5,
+              "field": "sl",
+              "a": "40a9120256e003de",
+              "b": "40a9120256e003c8"
+            },
+            {
+              "trade": 5,
+              "field": "points",
+              "a": "405eba5e85aec1e3",
+              "b": "405eba5e85aec19c"
+            },
+            {
+              "trade": 5,
+              "field": "pnl",
+              "a": "4074452431f53a3b",
+              "b": "4074452431f53a2a",
+              "aText": "324.32133670608499",
+              "bText": "324.32133670608403",
+              "ulps": "17",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s15",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 21,
+              "field": "size",
+              "a": "4015d7da9d8bbf25",
+              "b": "4015d7da9d8bbf31"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s19",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 4,
+              "field": "points",
+              "a": "400bb1ee0d590806",
+              "b": "400bb1ee0d5909f5"
+            },
+            {
+              "trade": 4,
+              "field": "pnl",
+              "a": "4035a6a707f5abca",
+              "b": "4035a6a707f5ad54",
+              "aText": "21.6509861922057",
+              "bText": "21.6509861922071",
+              "ulps": "394",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 34,
+              "field": "size",
+              "a": "4008e59ca0611ac7",
+              "b": "4008e59ca0611ab0"
+            },
+            {
+              "trade": 34,
+              "field": "pnl",
+              "a": "c04c8685be6199b8",
+              "b": "c04c8685be61999c",
+              "aText": "-57.050956533104397",
+              "bText": "-57.050956533104198",
+              "ulps": "28",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s24",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 29,
+              "field": "size",
+              "a": "400800d1997893c9",
+              "b": "400800d1997893b2"
+            },
+            {
+              "trade": 29,
+              "field": "pnl",
+              "a": "401b19cbf736177c",
+              "b": "401b19cbf7361765",
+              "aText": "6.7751921297802902",
+              "bText": "6.7751921297802697",
+              "ulps": "23",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s25",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 42,
+              "field": "exit",
+              "a": "40b38539c713bba4",
+              "b": "40b38539c713bb99"
+            },
+            {
+              "trade": 42,
+              "field": "points",
+              "a": "c0589d506ac28e82",
+              "b": "c0589d506ac28ec1"
+            },
+            {
+              "trade": 42,
+              "field": "pnl",
+              "a": "c05412704262b014",
+              "b": "c05412704262b04c",
+              "aText": "-80.288101765036402",
+              "bText": "-80.288101765037197",
+              "ulps": "56",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s26",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 27,
+              "field": "size",
+              "a": "3ff991671b6467ce",
+              "b": "3ff991671b6467fb"
+            },
+            {
+              "trade": 27,
+              "field": "pnl",
+              "a": "c0601b650ba03b73",
+              "b": "c0601b650ba03b96",
+              "aText": "-128.85608464522701",
+              "bText": "-128.85608464522801",
+              "ulps": "35",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s27",
+          "class": "pnl-only",
+          "firstDiffs": [
+            {
+              "trade": 34,
+              "field": "pnl",
+              "a": "c04c6f32ac92c847",
+              "b": "c04c6f32ac92c81c",
+              "aText": "-56.868733951254903",
+              "bText": "-56.868733951254598",
+              "ulps": "43",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s28",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 3,
+              "field": "points",
+              "a": "c02b8881b8a7efe5",
+              "b": "c02b8881b8a7f055"
+            },
+            {
+              "trade": 3,
+              "field": "pnl",
+              "a": "c0552f8a1bfb0636",
+              "b": "c0552f8a1bfb0667",
+              "aText": "-84.742804522648697",
+              "bText": "-84.742804522649394",
+              "ulps": "49",
+              "signChange": false,
+              "positiveLabelChange": false
+            },
+            {
+              "trade": 7,
+              "field": "size",
+              "a": "40085fb7729f7228",
+              "b": "40085fb7729f7212"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-dual-ema-resumption-xauusd-daily#s29",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 48,
+              "field": "size",
+              "a": "3fe592cfb08d041b",
+              "b": "3fe592cfb08d042d"
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-failed-breakout-five-minute-early-breakeven#s3",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "4036c3e7ba84c6c8",
+              "b": "4036c3e7ba84c819"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "406634a2b856c2ab",
+              "b": "406634a2b856c3e8",
+              "aText": "177.64486329026599",
+              "bText": "177.644863290275",
+              "ulps": "317",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-failed-breakout-five-minute-early-breakeven#s5",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 0,
+              "field": "size",
+              "a": "402f5a162bd2ea7d",
+              "b": "402f5a162bd2ed20"
+            },
+            {
+              "trade": 0,
+              "field": "pnl",
+              "a": "40665c380b6a7748",
+              "b": "40665c380b6a7911",
+              "aText": "178.88184138101701",
+              "bText": "178.88184138103",
+              "ulps": "457",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        },
+        {
+          "id": "research-dsl-failed-breakout-five-minute-early-breakeven#s7",
+          "class": "path",
+          "firstDiffs": [
+            {
+              "trade": 2,
+              "field": "size",
+              "a": "40712112903f93d3",
+              "b": "40712112903f96b6"
+            },
+            {
+              "trade": 2,
+              "field": "points",
+              "a": "bfe9459e9a87a404",
+              "b": "bfe9459e9a87a002"
+            },
+            {
+              "trade": 2,
+              "field": "pnl",
+              "a": "c06b0e356d7842e9",
+              "b": "c06b0e356d78432f",
+              "aText": "-216.444021925817",
+              "bText": "-216.44402192581899",
+              "ulps": "70",
+              "signChange": false,
+              "positiveLabelChange": false
+            }
+          ]
+        }
+      ],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 30848,
+      "pnlTradesDiffering": 86,
+      "maxUlps": "53300",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    },
+    "linux-arm64nofma-go1.22.12": {
+      "attemptedCases": 3240,
+      "successfulPairs": 3120,
+      "matchingRefusals": 120,
+      "counts": {
+        "identical": 3120,
+        "matching-refusal": 120
+      },
+      "differingCases": [],
+      "refusals": [
+        {
+          "id": "family-sequential-full-e1-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e1-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-long#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s0",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s1",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s2",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s3",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s4",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s5",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s6",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s7",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s8",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s9",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s10",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s11",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s12",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s13",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s14",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s15",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s16",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s17",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s18",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s19",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s20",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s21",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s22",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s23",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s24",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s25",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s26",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s27",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s28",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        },
+        {
+          "id": "family-sequential-full-e2-short#s29",
+          "error": "invalid-sequential-input: bars.binding at bar 0"
+        }
+      ],
+      "pnlTradesCompared": 30848,
+      "pnlTradesDiffering": 0,
+      "maxUlps": "0",
+      "signChanges": 0,
+      "positiveLabelChanges": 0
+    }
+  }
+}
