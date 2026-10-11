@@ -7,7 +7,14 @@ import (
 	"unicode"
 )
 
+// A nil sink preserves the ordinary parser's historical lexical behavior.
+type sourceCoverageSink func(kind, text string, line, column int)
+
 func expandPhysicalLines(source string) []logicalLine {
+	return expandPhysicalLinesWithCoverage(source, nil)
+}
+
+func expandPhysicalLinesWithCoverage(source string, audit sourceCoverageSink) []logicalLine {
 	rawLines := strings.Split(source, "\n")
 	lines := []logicalLine{}
 	section := ""
@@ -21,7 +28,7 @@ func expandPhysicalLines(source string) []logicalLine {
 			section = ""
 			continue
 		}
-		if expanded, ok := expandInlineLine(raw, stripped, lineNo, section); ok {
+		if expanded, ok := expandInlineLineWithCoverage(raw, stripped, lineNo, section, audit); ok {
 			for _, line := range expanded {
 				if line.section != "" {
 					section = line.section
@@ -57,10 +64,28 @@ func expandPhysicalLines(source string) []logicalLine {
 			section: section,
 		})
 	}
+	if audit != nil {
+		// Braces consumed by section expansion are structural. Any brace left
+		// in a logical statement would otherwise disappear in normalizeLine.
+		for _, line := range lines {
+			var quote byte
+			for offset := 0; offset < len(line.text); offset++ {
+				ch := line.text[offset]
+				if (ch == '{' || ch == '}') && quote == 0 {
+					audit("residual-brace", string(ch), line.line, line.headCol+offset)
+				}
+				quote = advanceQuotedText(quote, ch)
+			}
+		}
+	}
 	return lines
 }
 
 func expandInlineLine(raw string, stripped string, lineNo int, currentSection string) ([]logicalLine, bool) {
+	return expandInlineLineWithCoverage(raw, stripped, lineNo, currentSection, nil)
+}
+
+func expandInlineLineWithCoverage(raw string, stripped string, lineNo int, currentSection string, audit sourceCoverageSink) ([]logicalLine, bool) {
 	open := strings.Index(stripped, "{")
 	close := strings.LastIndex(stripped, "}")
 	if open < 0 || close < open {
@@ -80,7 +105,14 @@ func expandInlineLine(raw string, stripped string, lineNo int, currentSection st
 		lines = append(lines, logicalLine{text: prefix, line: lineNo, headCol: columnOf(raw, "strategy"), section: section})
 	}
 	starts := directiveStartsForSection(section)
-	for _, part := range splitInlineBody(body, starts, section) {
+	var leading func(string)
+	if audit != nil {
+		leading = func(text string) {
+			bodyColumn := firstNonSpaceCol(raw) + open + 1 + strings.Index(stripped[open+1:close], body)
+			audit("inline-leading-content", text, lineNo, bodyColumn)
+		}
+	}
+	for _, part := range splitInlineBodyWithCoverage(body, starts, section, leading) {
 		part = strings.TrimSpace(part)
 		if part == "" {
 			continue
@@ -94,6 +126,12 @@ func expandInlineLine(raw string, stripped string, lineNo int, currentSection st
 	}
 	if len(lines) == 0 && currentSection != "" {
 		return nil, false
+	}
+	if audit != nil {
+		suffix := stripped[close+1:]
+		if text := strings.TrimSpace(suffix); text != "" {
+			audit("inline-trailing-content", text, lineNo, firstNonSpaceCol(raw)+close+firstNonSpaceCol(suffix))
+		}
 	}
 	return lines, true
 }
@@ -193,6 +231,10 @@ type inlineHit struct {
 }
 
 func splitInlineBody(body string, starts []string, section string) []string {
+	return splitInlineBodyWithCoverage(body, starts, section, nil)
+}
+
+func splitInlineBodyWithCoverage(body string, starts []string, section string, leading func(string)) []string {
 	hits := []inlineHit{}
 	depth := 0
 	lower := strings.ToLower(body)
@@ -241,6 +283,11 @@ func splitInlineBody(body string, starts []string, section string) []string {
 		return []string{body}
 	}
 	sort.Slice(hits, func(i, j int) bool { return hits[i].index < hits[j].index })
+	if leading != nil {
+		if text := strings.TrimSpace(body[:hits[0].index]); text != "" {
+			leading(text)
+		}
+	}
 	parts := []string{}
 	for i, hit := range hits {
 		end := len(body)
@@ -257,14 +304,21 @@ func splitInlineBody(body string, starts []string, section string) []string {
 func inQuotedText(body string, index int) bool {
 	var open byte
 	for i := 0; i < index && i < len(body); i++ {
-		switch {
-		case open == 0 && (body[i] == '"' || body[i] == '\''):
-			open = body[i]
-		case open != 0 && body[i] == open:
-			open = 0
-		}
+		open = advanceQuotedText(open, body[i])
 	}
 	return open != 0
+}
+
+// Shared quote transition keeps the coverage walk linear with the exact same
+// quote semantics as the existing inline lexer (including its escape behavior).
+func advanceQuotedText(open, ch byte) byte {
+	if open == 0 && (ch == '"' || ch == '\'') {
+		return ch
+	}
+	if open != 0 && ch == open {
+		return 0
+	}
+	return open
 }
 
 func filterInlineSetupTypeHits(body string, hits []inlineHit) []inlineHit {
