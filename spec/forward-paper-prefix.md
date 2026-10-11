@@ -15,6 +15,53 @@ The CLI opens and bounds the bytes; the consumer owns descriptor/inode and
 executable authentication, timeout/cancellation and atomic durable publication.
 A complete stdout write is still only a candidate until the consumer commits it.
 
+## Public WASM transport
+
+The engine WASM artifact exposes `engineRunPaperPrefix(requestJSONString)`.
+It accepts exactly one primitive JavaScript string, containing the request JSON
+described below. Success returns the exact producer-encoded result JSON string,
+with no financial projection, endpoint liquidation, or added success envelope.
+The bridge delegates unchanged to `DecodePaperPrefixRequest`, `RunPaperPrefix`
+and `EncodePaperPrefixResult`.
+
+The interactive WASM request has a smaller explicit **16 MiB UTF-8 byte limit**.
+The native producer retains its 128 MiB input limit; producer output remains
+bounded at 128 MiB. An early original UTF-16 code-unit length check bounds the
+conversion work, then original UTF-16 validity is checked before Go string
+conversion, followed by the actual UTF-8 byte check. Unpaired JavaScript
+surrogates and unpaired JSON surrogate escapes both refuse, rather than being
+silently repaired. No object coercion or implicit `JSON.stringify` is performed.
+
+Failures return a JSON string of the exact form
+`{"ok":false,"error":{"code":"PAPER_PREFIX_INPUT"}}`. Wrong arity/type,
+including BigInt, returns `PAPER_PREFIX_ARGUMENTS`. A transport size overflow
+returns `PAPER_PREFIX_INPUT_LIMIT`; invalid Unicode/JSON returns
+`PAPER_PREFIX_INPUT`. Known typed producer error codes are preserved; unexpected
+errors or adapter panics return `PAPER_PREFIX_INTERNAL`. No source, OS path,
+exception text or stack is returned. A rejected call leaves the instance usable
+for later calls and existing exports. Consumers own worker cancellation,
+runtime capacity limits, artifact verification and durable publication.
+Consumers must reject `ok:false`, require the complete successful schema and
+binding/account/event/checkpoint document, and never convert a missing success
+field to a zero/empty execution result. A failure has no success schema, account,
+events or checkpoint and cannot be published as an accepted candidate.
+
+The WASM result retains its actual `js/wasm` producer stamp. Binding, causal
+position/event IDs, and open-position private checkpoint state digests are
+therefore target-bound. Checkpoints are valid only for their unchanged producer
+binding; native/WASM checkpoint migration is explicitly refused. Each target's
+same-target replay/resume must reproduce its full exact public result. The
+public parity check compares all financial/event/account/pending fields exactly,
+independently validates target-bound identities, and checks opaque checkpoint
+replay/tamper refusal without pretending those receipts are portable.
+
+This export does not widen the qualified ORB/legacySetup9 family or fill-mode
+boundary, or admit HTF/source-entry. Endpoint is still open. The public-export
+proof is actual native CLI versus instantiated Go WASM under Node, including
+nonzero fees, partial/open/pending states, activation and recovery. This is
+separate from Go tests merely compiled to WASM, browser qualification, tagged
+assets, consumer pin/adoption, and operational availability.
+
 ## Request
 
 The schema is `heisentick-paper-prefix-request-v1`. Required exact keys:
