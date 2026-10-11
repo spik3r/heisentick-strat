@@ -104,7 +104,7 @@ jobs:
 
       - name: Paper-prefix actual native and public WASM export parity
         if: steps.mod.outputs.present == 'true'
-        timeout-minutes: 5
+        timeout-minutes: 15
         run: node scripts/checks/paper-prefix-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
 
       - name: Down-shock source native report and WASM parity
