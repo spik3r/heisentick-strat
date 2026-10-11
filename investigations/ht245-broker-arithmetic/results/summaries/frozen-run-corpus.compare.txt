@@ -1,0 +1,6 @@
+arm64-go1.23.8       vs amd64v1-go1.27.0: cases=109 {"identical":109} pnlTrades=0/1035 maxUlps=0 signChanges=0
+arm64-go1.27.0       vs amd64v1-go1.27.0: cases=109 {"identical":109} pnlTrades=0/1035 maxUlps=0 signChanges=0
+arm64nofma-diag-go1.27.0 vs amd64v1-go1.27.0: cases=109 {"identical":108,"path":1} pnlTrades=1/1035 maxUlps=2111 signChanges=0
+    path family-channel-break-hold
+wasip1-go1.27.0      vs amd64v1-go1.27.0: cases=109 {"identical":109} pnlTrades=0/1035 maxUlps=0 signChanges=0
+wasmjs-go1.27.0      vs amd64v1-go1.27.0: cases=109 {"identical":109} pnlTrades=0/1035 maxUlps=0 signChanges=0

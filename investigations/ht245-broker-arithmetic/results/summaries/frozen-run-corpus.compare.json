@@ -1,0 +1,95 @@
+{
+ "reference": "amd64v1-go1.27.0",
+ "targets": {
+  "arm64-go1.23.8": {
+   "cases": 109,
+   "missing": 0,
+   "counts": {
+    "identical": 109
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 1035,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "arm64-go1.27.0": {
+   "cases": 109,
+   "missing": 0,
+   "counts": {
+    "identical": 109
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 1035,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "arm64nofma-diag-go1.27.0": {
+   "cases": 109,
+   "missing": 0,
+   "counts": {
+    "identical": 108,
+    "path": 1
+   },
+   "differingCases": [
+    {
+     "id": "family-channel-break-hold",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "size",
+       "a": "4062625529533bda",
+       "b": "406262552952b12d"
+      },
+      {
+       "trade": 0,
+       "field": "points",
+       "a": "bff6b7c978de83f7",
+       "b": "bff6b7c978df27ed"
+      },
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c06a1a61450a1c0e",
+       "b": "c06a1a61450a13cf",
+       "aText": "-208.82437374090699",
+       "bText": "-208.82437374084699",
+       "ulps": "2111",
+       "signChange": false
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 1,
+   "pnlTradesCompared": 1035,
+   "maxUlps": "2111",
+   "signChanges": 0
+  },
+  "wasip1-go1.27.0": {
+   "cases": 109,
+   "missing": 0,
+   "counts": {
+    "identical": 109
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 1035,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasmjs-go1.27.0": {
+   "cases": 109,
+   "missing": 0,
+   "counts": {
+    "identical": 109
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 1035,
+   "maxUlps": "0",
+   "signChanges": 0
+  }
+ }
+}

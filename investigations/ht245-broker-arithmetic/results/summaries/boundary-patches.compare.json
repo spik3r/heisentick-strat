@@ -1,0 +1,341 @@
+{
+ "reference": "amd64v1-go1.27.0",
+ "targets": {
+  "arm64-go1.23.8": {
+   "cases": 6,
+   "missing": 0,
+   "counts": {
+    "path": 3,
+    "decision": 3
+   },
+   "differingCases": [
+    {
+     "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958befad"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ab6c4178a337d1",
+       "b": "40ab6c4178a33779"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958befad"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d81b0"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40add6c30c12db6b",
+       "b": "40add6c30c12db29"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d81b0"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e185a"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aba609c2805001",
+       "b": "40aba609c2804fd5"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e185a"
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 3,
+   "pnlTradesCompared": 6,
+   "maxUlps": "75084",
+   "signChanges": 0
+  },
+  "arm64-go1.27.0": {
+   "cases": 6,
+   "missing": 0,
+   "counts": {
+    "path": 3,
+    "decision": 3
+   },
+   "differingCases": [
+    {
+     "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958befad"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ab6c4178a337d1",
+       "b": "40ab6c4178a33779"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958befad"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d81b0"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40add6c30c12db6b",
+       "b": "40add6c30c12db29"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d81b0"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e185a"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aba609c2805001",
+       "b": "40aba609c2804fd5"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e185a"
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 3,
+   "pnlTradesCompared": 6,
+   "maxUlps": "75084",
+   "signChanges": 0
+  },
+  "arm64nofma-diag-go1.27.0": {
+   "cases": 6,
+   "missing": 0,
+   "counts": {
+    "path": 3,
+    "decision": 3
+   },
+   "differingCases": [
+    {
+     "id": "family-channel-break-hold#scale0#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958bef6b"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ab6c4178a337d1",
+       "b": "40ab6c4178a337bb"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958bef6b"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale1#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d816f"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40add6c30c12db6b",
+       "b": "40add6c30c12db55"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d816f"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale2#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale3#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale4#boundary-sl-trade0",
+     "class": "decision",
+     "note": "trade 0 exitIndex",
+     "firstDiffs": []
+    },
+    {
+     "id": "family-channel-break-hold#scale5#boundary-sl-trade0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e182e"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aba609c2805001",
+       "b": "40aba609c2804feb"
+      },
+      {
+       "trade": 0,
+       "field": "initialSl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e182e"
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 3,
+   "pnlTradesCompared": 6,
+   "maxUlps": "19950",
+   "signChanges": 0
+  },
+  "wasip1-go1.27.0": {
+   "cases": 6,
+   "missing": 0,
+   "counts": {
+    "identical": 6
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 6,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasmjs-go1.27.0": {
+   "cases": 6,
+   "missing": 0,
+   "counts": {
+    "identical": 6
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 6,
+   "maxUlps": "0",
+   "signChanges": 0
+  }
+ }
+}

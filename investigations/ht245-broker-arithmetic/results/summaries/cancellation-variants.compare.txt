@@ -1,0 +1,29 @@
+arm64-go1.23.8       vs amd64v1-go1.27.0: cases=231 {"pnl-only":199,"identical":32} pnlTrades=269/3051 maxUlps=4409024035195715582 signChanges=9
+    pnl-only deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#A-exact
+    pnl-only deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#B-up1ulp
+    pnl-only deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#C-down1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-defensive#A-exact
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-defensive#B-up1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-defensive#C-down1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-no-ny-close#A-exact
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-no-ny-close#B-up1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-no-ny-close#C-down1ulp
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#A-exact
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#B-up1ulp
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#C-down1ulp
+arm64-go1.27.0       vs amd64v1-go1.27.0: cases=231 {"pnl-only":199,"identical":32} pnlTrades=269/3051 maxUlps=4409024035195715582 signChanges=9
+    pnl-only deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#A-exact
+    pnl-only deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#B-up1ulp
+    pnl-only deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#C-down1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-defensive#A-exact
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-defensive#B-up1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-defensive#C-down1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-no-ny-close#A-exact
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-no-ny-close#B-up1ulp
+    pnl-only deployed-dsl-close-vwap-extreme-magnet-no-ny-close#C-down1ulp
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#A-exact
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#B-up1ulp
+    pnl-only deployed-dsl-dual-ema-resumption-xauusd-four-hour#C-down1ulp
+arm64nofma-diag-go1.27.0 vs amd64v1-go1.27.0: cases=231 {"identical":231} pnlTrades=0/3051 maxUlps=0 signChanges=0
+wasip1-go1.27.0      vs amd64v1-go1.27.0: cases=231 {"identical":231} pnlTrades=0/3051 maxUlps=0 signChanges=0
+wasmjs-go1.27.0      vs amd64v1-go1.27.0: cases=231 {"identical":231} pnlTrades=0/3051 maxUlps=0 signChanges=0

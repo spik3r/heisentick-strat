@@ -1,0 +1,441 @@
+{
+ "schema": "ht245.manifest.v1",
+ "cases": [
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour"
+  },
+  {
+   "id": "family-break-retest",
+   "source": "conformance/run/family-break-retest"
+  },
+  {
+   "id": "family-channel-break-hold",
+   "source": "conformance/run/family-channel-break-hold"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-32-rejected",
+   "source": "conformance/run/family-clock-range-breakout-coverage-32-rejected"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-35-missing-final-slot",
+   "source": "conformance/run/family-clock-range-breakout-coverage-35-missing-final-slot"
+  },
+  {
+   "id": "family-clock-range-breakout-empty-range-rejected",
+   "source": "conformance/run/family-clock-range-breakout-empty-range-rejected"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-bar-excluded",
+   "source": "conformance/run/family-clock-range-breakout-expiry-bar-excluded"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open"
+  },
+  {
+   "id": "family-clock-range-breakout-flat-range-rejected",
+   "source": "conformance/run/family-clock-range-breakout-flat-range-rejected"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short"
+  },
+  {
+   "id": "family-clock-range-breakout-later-gap-stop",
+   "source": "conformance/run/family-clock-range-breakout-later-gap-stop"
+  },
+  {
+   "id": "family-clock-range-breakout-later-touch-stop",
+   "source": "conformance/run/family-clock-range-breakout-later-touch-stop"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day",
+   "source": "conformance/run/family-clock-range-breakout-leap-day"
+  },
+  {
+   "id": "family-clock-range-breakout-long-only-sell-touch",
+   "source": "conformance/run/family-clock-range-breakout-long-only-sell-touch"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range"
+  },
+  {
+   "id": "family-clock-range-breakout-missing-close-quote",
+   "source": "conformance/run/family-clock-range-breakout-missing-close-quote"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end",
+   "source": "conformance/run/family-clock-range-breakout-month-end"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days"
+  },
+  {
+   "id": "family-clock-range-breakout-nearer-trigger-short",
+   "source": "conformance/run/family-clock-range-breakout-nearer-trigger-short"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management"
+  },
+  {
+   "id": "family-clock-range-breakout-numeric-tie",
+   "source": "conformance/run/family-clock-range-breakout-numeric-tie"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute",
+   "source": "conformance/run/family-clock-range-breakout-one-minute"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd"
+  },
+  {
+   "id": "family-clock-range-breakout-post-range-quote-after-expiry",
+   "source": "conformance/run/family-clock-range-breakout-post-range-quote-after-expiry"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing"
+  },
+  {
+   "id": "family-clock-range-breakout-terminal-last-close",
+   "source": "conformance/run/family-clock-range-breakout-terminal-last-close"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end",
+   "source": "conformance/run/family-clock-range-breakout-year-end"
+  },
+  {
+   "id": "family-daily-flush-failure",
+   "source": "conformance/run/family-daily-flush-failure"
+  },
+  {
+   "id": "family-day-open-reclaim",
+   "source": "conformance/run/family-day-open-reclaim"
+  },
+  {
+   "id": "family-double-top-bottom",
+   "source": "conformance/run/family-double-top-bottom"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp",
+   "source": "conformance/run/family-down-shock-immediate-13bp"
+  },
+  {
+   "id": "family-down-shock-immediate-atr",
+   "source": "conformance/run/family-down-shock-immediate-atr"
+  },
+  {
+   "id": "family-down-shock-immediate-time",
+   "source": "conformance/run/family-down-shock-immediate-time"
+  },
+  {
+   "id": "family-down-shock-rebound",
+   "source": "conformance/run/family-down-shock-rebound"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp",
+   "source": "conformance/run/family-down-shock-reversal-13bp"
+  },
+  {
+   "id": "family-down-shock-reversal-atr",
+   "source": "conformance/run/family-down-shock-reversal-atr"
+  },
+  {
+   "id": "family-down-shock-reversal-time",
+   "source": "conformance/run/family-down-shock-reversal-time"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override",
+   "source": "conformance/run/family-elder-triple-screen-trail-override"
+  },
+  {
+   "id": "family-elder-triple-screen",
+   "source": "conformance/run/family-elder-triple-screen"
+  },
+  {
+   "id": "family-fair-value-gap",
+   "source": "conformance/run/family-fair-value-gap"
+  },
+  {
+   "id": "family-fib-continuation",
+   "source": "conformance/run/family-fib-continuation"
+  },
+  {
+   "id": "family-inside-day-expansion",
+   "source": "conformance/run/family-inside-day-expansion"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion",
+   "source": "conformance/run/family-intra-hour-run-exhaustion"
+  },
+  {
+   "id": "family-keltner-expansion",
+   "source": "conformance/run/family-keltner-expansion"
+  },
+  {
+   "id": "family-keltner-reversion",
+   "source": "conformance/run/family-keltner-reversion"
+  },
+  {
+   "id": "family-legacy-setup9-fall",
+   "source": "conformance/run/family-legacy-setup9-fall"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short"
+  },
+  {
+   "id": "family-legacy-setup9",
+   "source": "conformance/run/family-legacy-setup9"
+  },
+  {
+   "id": "family-level-sweep",
+   "source": "conformance/run/family-level-sweep"
+  },
+  {
+   "id": "family-named-level-flag-short-only",
+   "source": "conformance/run/family-named-level-flag-short-only"
+  },
+  {
+   "id": "family-named-level-flag",
+   "source": "conformance/run/family-named-level-flag"
+  },
+  {
+   "id": "family-named-level-sweep",
+   "source": "conformance/run/family-named-level-sweep"
+  },
+  {
+   "id": "family-opening-range-breakout",
+   "source": "conformance/run/family-opening-range-breakout"
+  },
+  {
+   "id": "family-price-momentum-guarded",
+   "source": "conformance/run/family-price-momentum-guarded"
+  },
+  {
+   "id": "family-price-momentum",
+   "source": "conformance/run/family-price-momentum"
+  },
+  {
+   "id": "family-range-break-fake",
+   "source": "conformance/run/family-range-break-fake"
+  },
+  {
+   "id": "family-sequential-full-e1-long",
+   "source": "conformance/run/family-sequential-full-e1-long"
+  },
+  {
+   "id": "family-sequential-full-e1-short",
+   "source": "conformance/run/family-sequential-full-e1-short"
+  },
+  {
+   "id": "family-sequential-full-e2-long",
+   "source": "conformance/run/family-sequential-full-e2-long"
+  },
+  {
+   "id": "family-sequential-full-e2-short",
+   "source": "conformance/run/family-sequential-full-e2-short"
+  },
+  {
+   "id": "family-sma-golden-cross-protected",
+   "source": "conformance/run/family-sma-golden-cross-protected"
+  },
+  {
+   "id": "family-sma-golden-cross",
+   "source": "conformance/run/family-sma-golden-cross"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe"
+  },
+  {
+   "id": "family-supply-demand",
+   "source": "conformance/run/family-supply-demand"
+  },
+  {
+   "id": "family-timed-return-predecessor",
+   "source": "conformance/run/family-timed-return-predecessor"
+  },
+  {
+   "id": "family-timed-return",
+   "source": "conformance/run/family-timed-return"
+  },
+  {
+   "id": "family-triple-push-exhaustion",
+   "source": "conformance/run/family-triple-push-exhaustion"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion",
+   "source": "conformance/run/family-volume-anomaly-exhaustion"
+  },
+  {
+   "id": "family-vwap-extension-fade",
+   "source": "conformance/run/family-vwap-extension-fade"
+  },
+  {
+   "id": "family-weekend-extreme-fade",
+   "source": "conformance/run/family-weekend-extreme-fade"
+  },
+  {
+   "id": "money-partial-exit",
+   "source": "conformance/run/money-partial-exit"
+  },
+  {
+   "id": "money-risk-sizing",
+   "source": "conformance/run/money-risk-sizing"
+  },
+  {
+   "id": "money-stop-distance-gate",
+   "source": "conformance/run/money-stop-distance-gate"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h"
+  },
+  {
+   "id": "rmv-named-level-allow",
+   "source": "conformance/run/rmv-named-level-allow"
+  },
+  {
+   "id": "rmv-named-level-block",
+   "source": "conformance/run/rmv-named-level-block"
+  },
+  {
+   "id": "rmv-named-level-warmup",
+   "source": "conformance/run/rmv-named-level-warmup"
+  },
+  {
+   "id": "seasonality-filter-min-samples",
+   "source": "conformance/run/seasonality-filter-min-samples"
+  }
+ ]
+}

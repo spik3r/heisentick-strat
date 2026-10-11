@@ -1,0 +1,2 @@
+ran arm64-go1.27.0     3240 receipts
+ran amd64v1-go1.27.0     3240 receipts

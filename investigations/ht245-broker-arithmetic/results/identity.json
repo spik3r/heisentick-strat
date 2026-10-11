@@ -1,0 +1,30 @@
+{
+ "strat_base_commit": "4ab0fde8dfcfd3f2b33e4ea0af6186474c2b6ffa",
+ "strat_head": "4ab0fde8dfcfd3f2b33e4ea0af6186474c2b6ffa",
+ "conformance_run_tree": "7003c33d228b25ae927b9c18820014f49ac15037",
+ "engine_tree": "a55b0162504157e3b8c581ffe4f7b33929589479",
+ "contextcols_tree": "b963a7a3ad0374807d5cd9a9549c80796f6a9e45",
+ "broker_go_blob": "9869eddce768e696c2dbed5553b55c3e1e991669",
+ "host": "Darwin arm64",
+ "go_host": "go version go1.27.0 darwin/arm64",
+ "toolchains": {
+  "go1.23.8": "go version go1.23.8 darwin/arm64"
+ },
+ "manifests": {
+  "boundary-patches.json": "223aa939515f40a83b12a787c8cf6a5e8669fdb496f08a28bdf0ea33a88b625b",
+  "boundary-search.json": "f73c938d3e6dd18ef1278888249495641a9c5c725c96f5db0a7a7c9292aaac53",
+  "cancellation-variants.json": "62f0d3cde17bba7a4bcfc5d63db27f52abb9750b7c491cbf5a436849000dd41b",
+  "frozen-run-corpus.json": "9f4b8fe45e144dafae3900c9b9fbdfc39bf8e8f7545ea4e493b9d1dbc0dbed54",
+  "scaled-prices.json": "f48bcbf01fe88da3a4324f687b3901ce7a3dafad29277c66369340431a80ef3d",
+  "scaled-search.json": "efd5e8147d6df8003af13ee9ed1d3b733745f0a07b77018fefe15c6f6e5cbac5"
+ },
+ "binaries": {
+  "harness-amd64v1-go1.27.0": "714cf185c4dcf095c8e027d6ea3a4f3ec6e117c9adbda9b46863b70444600c9a",
+  "harness-amd64v3-go1.27.0": "31779279472189cd011dc02801505a5644856821817fb25aba7f80770d4851b2",
+  "harness-arm64-go1.23.8": "fdfa7877e290c2f391a7c245ea1a670137de38890f7fd70232b7b4b3ecf985df",
+  "harness-arm64-go1.27.0": "c3d8122f4cab3148035449a619d46e712b6a5958fe617df492101fa9fa98222a",
+  "harness-arm64nofma-diag-go1.27.0": "c6a59cc1bf106854154e7ae985e06ed90f7f8ff717926a6871b29d9900c5a39f",
+  "harness-wasip1-go1.27.0.wasm": "794c2d2bcc53dff27a975f965f89fcce9b309862ac14cc85bbadcf466fdd1ef1",
+  "harness-wasmjs-go1.27.0.wasm": "0b3b511061e9ffc754635cc4b07b6dde2146caea858430976b7cad4d8a6c9201"
+ }
+}

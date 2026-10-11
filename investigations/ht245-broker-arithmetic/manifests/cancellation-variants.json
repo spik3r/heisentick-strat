@@ -1,0 +1,1853 @@
+{
+ "schema": "ht245.manifest.v1",
+ "cases": [
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#A-exact",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "costs": {
+    "feePerUnit": "132.487785714285"
+   },
+   "note": "fee = points of trade 10"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "costs": {
+    "feePerUnit": "132.48778571428502"
+   },
+   "note": "fee = points of trade 10 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-break-retest-asia-london-one-four-hour-review-xauusd-one-hour",
+   "costs": {
+    "feePerUnit": "132.48778571428497"
+   },
+   "note": "fee = points of trade 10 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#A-exact",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "costs": {
+    "feePerUnit": "0.168039285714258"
+   },
+   "note": "fee = points of trade 2"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "costs": {
+    "feePerUnit": "0.16803928571425802"
+   },
+   "note": "fee = points of trade 2 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-defensive#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-defensive",
+   "costs": {
+    "feePerUnit": "0.16803928571425797"
+   },
+   "note": "fee = points of trade 2 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#A-exact",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "costs": {
+    "feePerUnit": "0.0709107142856737"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "costs": {
+    "feePerUnit": "0.07091071428567372"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-close-vwap-extreme-magnet-no-ny-close#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-close-vwap-extreme-magnet-no-ny-close",
+   "costs": {
+    "feePerUnit": "0.07091071428567369"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#A-exact",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "costs": {
+    "feePerUnit": "64.8082463224835"
+   },
+   "note": "fee = points of trade 58"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "costs": {
+    "feePerUnit": "64.80824632248351"
+   },
+   "note": "fee = points of trade 58 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-dual-ema-resumption-xauusd-four-hour",
+   "costs": {
+    "feePerUnit": "64.80824632248348"
+   },
+   "note": "fee = points of trade 58 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#A-exact",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "costs": {
+    "feePerUnit": "11.0503200000001"
+   },
+   "note": "fee = points of trade 14"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "costs": {
+    "feePerUnit": "11.050320000000102"
+   },
+   "note": "fee = points of trade 14 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-flag-continuation-one-four-hour-review#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-flag-continuation-one-four-hour-review",
+   "costs": {
+    "feePerUnit": "11.050320000000099"
+   },
+   "note": "fee = points of trade 14 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#A-exact",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "costs": {
+    "feePerUnit": "5.81794285714295"
+   },
+   "note": "fee = points of trade 4"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "costs": {
+    "feePerUnit": "5.817942857142951"
+   },
+   "note": "fee = points of trade 4 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-session-expansion-ny#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-session-expansion-ny",
+   "costs": {
+    "feePerUnit": "5.817942857142949"
+   },
+   "note": "fee = points of trade 4 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#A-exact",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "costs": {
+    "feePerUnit": "16.3266760866597"
+   },
+   "note": "fee = points of trade 12"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "costs": {
+    "feePerUnit": "16.326676086659702"
+   },
+   "note": "fee = points of trade 12 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-sma-golden-cross-xauusd-one-minute-canary#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
+   "costs": {
+    "feePerUnit": "16.326676086659695"
+   },
+   "note": "fee = points of trade 12 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#A-exact",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "costs": {
+    "feePerUnit": "0.000694107142857447"
+   },
+   "note": "fee = points of trade 4"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "costs": {
+    "feePerUnit": "0.0006941071428574471"
+   },
+   "note": "fee = points of trade 4 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m",
+   "costs": {
+    "feePerUnit": "0.0006941071428574469"
+   },
+   "note": "fee = points of trade 4 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#A-exact",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "costs": {
+    "feePerUnit": "41.9924285714283"
+   },
+   "note": "fee = points of trade 18"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "costs": {
+    "feePerUnit": "41.992428571428306"
+   },
+   "note": "fee = points of trade 18 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-trend-pullback-xauusd-four-hour-close-resume#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-trend-pullback-xauusd-four-hour-close-resume",
+   "costs": {
+    "feePerUnit": "41.99242857142829"
+   },
+   "note": "fee = points of trade 18 - 1ulp"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#A-exact",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "costs": {
+    "feePerUnit": "1476.681"
+   },
+   "note": "fee = points of trade 29"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#B-up1ulp",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "costs": {
+    "feePerUnit": "1476.6810000000003"
+   },
+   "note": "fee = points of trade 29 + 1ulp"
+  },
+  {
+   "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#C-down1ulp",
+   "source": "conformance/run/deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
+   "costs": {
+    "feePerUnit": "1476.6809999999998"
+   },
+   "note": "fee = points of trade 29 - 1ulp"
+  },
+  {
+   "id": "family-break-retest#A-exact",
+   "source": "conformance/run/family-break-retest",
+   "costs": {
+    "feePerUnit": "22.7699142857145"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-break-retest#B-up1ulp",
+   "source": "conformance/run/family-break-retest",
+   "costs": {
+    "feePerUnit": "22.769914285714503"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-break-retest#C-down1ulp",
+   "source": "conformance/run/family-break-retest",
+   "costs": {
+    "feePerUnit": "22.769914285714496"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "costs": {
+    "feePerUnit": "0.5"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "costs": {
+    "feePerUnit": "0.5000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-clock-close-before-extremes#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-clock-close-before-extremes",
+   "costs": {
+    "feePerUnit": "0.49999999999999994"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-coverage-33-accepted#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-coverage-33-accepted",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-expiry-last-bar-fills#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-expiry-last-bar-fills",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-explicit-zero-risk#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-explicit-zero-risk",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-bar-shape#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fill-bar-shape",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fill-on-open#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fill-on-open",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-minus-3-30#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-minus-3-30",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-fractional-offset-plus-5-30#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-fractional-offset-plus-5-30",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "costs": {
+    "feePerUnit": "3"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "costs": {
+    "feePerUnit": "3.0000000000000004"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-long#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-long",
+   "costs": {
+    "feePerUnit": "2.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-gap-through-short#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-gap-through-short",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-leap-day#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-leap-day",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-midnight-range#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-midnight-range",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-month-end#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-month-end",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-multiple-days#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-multiple-days",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "costs": {
+    "feePerUnit": "0.200000000000003"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "costs": {
+    "feePerUnit": "0.20000000000000304"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-no-inherited-management#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-no-inherited-management",
+   "costs": {
+    "feePerUnit": "0.20000000000000298"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-one-minute#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-one-minute",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long-utc2#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long-utc2",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "costs": {
+    "feePerUnit": "4"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "costs": {
+    "feePerUnit": "4.000000000000001"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-long#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-long",
+   "costs": {
+    "feePerUnit": "3.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "costs": {
+    "feePerUnit": "2"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "costs": {
+    "feePerUnit": "2.0000000000000004"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-ordinary-short#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-ordinary-short",
+   "costs": {
+    "feePerUnit": "1.9999999999999998"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "costs": {
+    "feePerUnit": "0.00149999999999983"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "costs": {
+    "feePerUnit": "0.0014999999999998302"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-eurusd-short#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-eurusd-short",
+   "costs": {
+    "feePerUnit": "0.0014999999999998298"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-pip-buffer-xauusd#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-pip-buffer-xauusd",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "costs": {
+    "feePerUnit": "3"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "costs": {
+    "feePerUnit": "3.0000000000000004"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-range-end-bar-excluded#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-range-end-bar-excluded",
+   "costs": {
+    "feePerUnit": "2.9999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-slippage-fee-sizing#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-slippage-fee-sizing",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-year-boundary-negative-offset#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-year-boundary-negative-offset",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#A-exact",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "costs": {
+    "feePerUnit": "1"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#B-up1ulp",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "costs": {
+    "feePerUnit": "1.0000000000000002"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-clock-range-breakout-year-end#C-down1ulp",
+   "source": "conformance/run/family-clock-range-breakout-year-end",
+   "costs": {
+    "feePerUnit": "0.9999999999999999"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-daily-flush-failure#A-exact",
+   "source": "conformance/run/family-daily-flush-failure",
+   "costs": {
+    "feePerUnit": "1210.579"
+   },
+   "note": "fee = points of trade 51"
+  },
+  {
+   "id": "family-daily-flush-failure#B-up1ulp",
+   "source": "conformance/run/family-daily-flush-failure",
+   "costs": {
+    "feePerUnit": "1210.5790000000002"
+   },
+   "note": "fee = points of trade 51 + 1ulp"
+  },
+  {
+   "id": "family-daily-flush-failure#C-down1ulp",
+   "source": "conformance/run/family-daily-flush-failure",
+   "costs": {
+    "feePerUnit": "1210.5789999999997"
+   },
+   "note": "fee = points of trade 51 - 1ulp"
+  },
+  {
+   "id": "family-day-open-reclaim#A-exact",
+   "source": "conformance/run/family-day-open-reclaim",
+   "costs": {
+    "feePerUnit": "6.29479285714297"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-day-open-reclaim#B-up1ulp",
+   "source": "conformance/run/family-day-open-reclaim",
+   "costs": {
+    "feePerUnit": "6.294792857142971"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-day-open-reclaim#C-down1ulp",
+   "source": "conformance/run/family-day-open-reclaim",
+   "costs": {
+    "feePerUnit": "6.294792857142969"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-double-top-bottom#A-exact",
+   "source": "conformance/run/family-double-top-bottom",
+   "costs": {
+    "feePerUnit": "14.1146250000002"
+   },
+   "note": "fee = points of trade 6"
+  },
+  {
+   "id": "family-double-top-bottom#B-up1ulp",
+   "source": "conformance/run/family-double-top-bottom",
+   "costs": {
+    "feePerUnit": "14.114625000000201"
+   },
+   "note": "fee = points of trade 6 + 1ulp"
+  },
+  {
+   "id": "family-double-top-bottom#C-down1ulp",
+   "source": "conformance/run/family-double-top-bottom",
+   "costs": {
+    "feePerUnit": "14.114625000000197"
+   },
+   "note": "fee = points of trade 6 - 1ulp"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#A-exact",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "costs": {
+    "feePerUnit": "0.127660000000006"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#B-up1ulp",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "costs": {
+    "feePerUnit": "0.12766000000000602"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-down-shock-immediate-13bp#C-down1ulp",
+   "source": "conformance/run/family-down-shock-immediate-13bp",
+   "costs": {
+    "feePerUnit": "0.12766000000000596"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#A-exact",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "costs": {
+    "feePerUnit": "0.342857142857127"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#B-up1ulp",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "costs": {
+    "feePerUnit": "0.34285714285712704"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-down-shock-immediate-atr#C-down1ulp",
+   "source": "conformance/run/family-down-shock-immediate-atr",
+   "costs": {
+    "feePerUnit": "0.34285714285712693"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-down-shock-immediate-time#A-exact",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "costs": {
+    "feePerUnit": "0.399999999999991"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-down-shock-immediate-time#B-up1ulp",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "costs": {
+    "feePerUnit": "0.39999999999999103"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-down-shock-immediate-time#C-down1ulp",
+   "source": "conformance/run/family-down-shock-immediate-time",
+   "costs": {
+    "feePerUnit": "0.3999999999999909"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-down-shock-rebound#A-exact",
+   "source": "conformance/run/family-down-shock-rebound",
+   "costs": {
+    "feePerUnit": "0.399999999999991"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-down-shock-rebound#B-up1ulp",
+   "source": "conformance/run/family-down-shock-rebound",
+   "costs": {
+    "feePerUnit": "0.39999999999999103"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-down-shock-rebound#C-down1ulp",
+   "source": "conformance/run/family-down-shock-rebound",
+   "costs": {
+    "feePerUnit": "0.3999999999999909"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#A-exact",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "costs": {
+    "feePerUnit": "0.128180000000015"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#B-up1ulp",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "costs": {
+    "feePerUnit": "0.12818000000001503"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-down-shock-reversal-13bp#C-down1ulp",
+   "source": "conformance/run/family-down-shock-reversal-13bp",
+   "costs": {
+    "feePerUnit": "0.12818000000001498"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#A-exact",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "costs": {
+    "feePerUnit": "0.342857142857127"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#B-up1ulp",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "costs": {
+    "feePerUnit": "0.34285714285712704"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-down-shock-reversal-atr#C-down1ulp",
+   "source": "conformance/run/family-down-shock-reversal-atr",
+   "costs": {
+    "feePerUnit": "0.34285714285712693"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#A-exact",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "costs": {
+    "feePerUnit": "16.3514999999998"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#B-up1ulp",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "costs": {
+    "feePerUnit": "16.351499999999803"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-elder-triple-screen-trail-override#C-down1ulp",
+   "source": "conformance/run/family-elder-triple-screen-trail-override",
+   "costs": {
+    "feePerUnit": "16.351499999999795"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-elder-triple-screen#A-exact",
+   "source": "conformance/run/family-elder-triple-screen",
+   "costs": {
+    "feePerUnit": "16.3514999999998"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-elder-triple-screen#B-up1ulp",
+   "source": "conformance/run/family-elder-triple-screen",
+   "costs": {
+    "feePerUnit": "16.351499999999803"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-elder-triple-screen#C-down1ulp",
+   "source": "conformance/run/family-elder-triple-screen",
+   "costs": {
+    "feePerUnit": "16.351499999999795"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-fair-value-gap#A-exact",
+   "source": "conformance/run/family-fair-value-gap",
+   "costs": {
+    "feePerUnit": "3.6417857142857"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-fair-value-gap#B-up1ulp",
+   "source": "conformance/run/family-fair-value-gap",
+   "costs": {
+    "feePerUnit": "3.6417857142857004"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-fair-value-gap#C-down1ulp",
+   "source": "conformance/run/family-fair-value-gap",
+   "costs": {
+    "feePerUnit": "3.6417857142856995"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-fib-continuation#A-exact",
+   "source": "conformance/run/family-fib-continuation",
+   "costs": {
+    "feePerUnit": "19.1877328571431"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-fib-continuation#B-up1ulp",
+   "source": "conformance/run/family-fib-continuation",
+   "costs": {
+    "feePerUnit": "19.187732857143104"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-fib-continuation#C-down1ulp",
+   "source": "conformance/run/family-fib-continuation",
+   "costs": {
+    "feePerUnit": "19.187732857143097"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#A-exact",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "costs": {
+    "feePerUnit": "3.51988392857152"
+   },
+   "note": "fee = points of trade 9"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#B-up1ulp",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "costs": {
+    "feePerUnit": "3.5198839285715207"
+   },
+   "note": "fee = points of trade 9 + 1ulp"
+  },
+  {
+   "id": "family-intra-hour-run-exhaustion#C-down1ulp",
+   "source": "conformance/run/family-intra-hour-run-exhaustion",
+   "costs": {
+    "feePerUnit": "3.5198839285715198"
+   },
+   "note": "fee = points of trade 9 - 1ulp"
+  },
+  {
+   "id": "family-keltner-expansion#A-exact",
+   "source": "conformance/run/family-keltner-expansion",
+   "costs": {
+    "feePerUnit": "2.79707108636012"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-keltner-expansion#B-up1ulp",
+   "source": "conformance/run/family-keltner-expansion",
+   "costs": {
+    "feePerUnit": "2.7970710863601203"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-keltner-expansion#C-down1ulp",
+   "source": "conformance/run/family-keltner-expansion",
+   "costs": {
+    "feePerUnit": "2.7970710863601194"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-keltner-reversion#A-exact",
+   "source": "conformance/run/family-keltner-reversion",
+   "costs": {
+    "feePerUnit": "2.58006866400342"
+   },
+   "note": "fee = points of trade 30"
+  },
+  {
+   "id": "family-keltner-reversion#B-up1ulp",
+   "source": "conformance/run/family-keltner-reversion",
+   "costs": {
+    "feePerUnit": "2.5800686640034205"
+   },
+   "note": "fee = points of trade 30 + 1ulp"
+  },
+  {
+   "id": "family-keltner-reversion#C-down1ulp",
+   "source": "conformance/run/family-keltner-reversion",
+   "costs": {
+    "feePerUnit": "2.5800686640034196"
+   },
+   "note": "fee = points of trade 30 - 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9-fall#A-exact",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "costs": {
+    "feePerUnit": "3.90000000000009"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-legacy-setup9-fall#B-up1ulp",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "costs": {
+    "feePerUnit": "3.9000000000000905"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9-fall#C-down1ulp",
+   "source": "conformance/run/family-legacy-setup9-fall",
+   "costs": {
+    "feePerUnit": "3.9000000000000896"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#A-exact",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "costs": {
+    "feePerUnit": "3.54285714285714"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#B-up1ulp",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "costs": {
+    "feePerUnit": "3.5428571428571405"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-long#C-down1ulp",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-long",
+   "costs": {
+    "feePerUnit": "3.5428571428571396"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#A-exact",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "costs": {
+    "feePerUnit": "3.54285714285714"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#B-up1ulp",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "costs": {
+    "feePerUnit": "3.5428571428571405"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9-perf-seasonal-short#C-down1ulp",
+   "source": "conformance/run/family-legacy-setup9-perf-seasonal-short",
+   "costs": {
+    "feePerUnit": "3.5428571428571396"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9#A-exact",
+   "source": "conformance/run/family-legacy-setup9",
+   "costs": {
+    "feePerUnit": "3.89999999999998"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "family-legacy-setup9#B-up1ulp",
+   "source": "conformance/run/family-legacy-setup9",
+   "costs": {
+    "feePerUnit": "3.8999999999999804"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "family-legacy-setup9#C-down1ulp",
+   "source": "conformance/run/family-legacy-setup9",
+   "costs": {
+    "feePerUnit": "3.8999999999999795"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "family-named-level-sweep#A-exact",
+   "source": "conformance/run/family-named-level-sweep",
+   "costs": {
+    "feePerUnit": "3.5"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-named-level-sweep#B-up1ulp",
+   "source": "conformance/run/family-named-level-sweep",
+   "costs": {
+    "feePerUnit": "3.5000000000000004"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-named-level-sweep#C-down1ulp",
+   "source": "conformance/run/family-named-level-sweep",
+   "costs": {
+    "feePerUnit": "3.4999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-opening-range-breakout#A-exact",
+   "source": "conformance/run/family-opening-range-breakout",
+   "costs": {
+    "feePerUnit": "4.0300000000002"
+   },
+   "note": "fee = points of trade 7"
+  },
+  {
+   "id": "family-opening-range-breakout#B-up1ulp",
+   "source": "conformance/run/family-opening-range-breakout",
+   "costs": {
+    "feePerUnit": "4.030000000000201"
+   },
+   "note": "fee = points of trade 7 + 1ulp"
+  },
+  {
+   "id": "family-opening-range-breakout#C-down1ulp",
+   "source": "conformance/run/family-opening-range-breakout",
+   "costs": {
+    "feePerUnit": "4.030000000000199"
+   },
+   "note": "fee = points of trade 7 - 1ulp"
+  },
+  {
+   "id": "family-price-momentum-guarded#A-exact",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "costs": {
+    "feePerUnit": "22.8844642857143"
+   },
+   "note": "fee = points of trade 20"
+  },
+  {
+   "id": "family-price-momentum-guarded#B-up1ulp",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "costs": {
+    "feePerUnit": "22.884464285714305"
+   },
+   "note": "fee = points of trade 20 + 1ulp"
+  },
+  {
+   "id": "family-price-momentum-guarded#C-down1ulp",
+   "source": "conformance/run/family-price-momentum-guarded",
+   "costs": {
+    "feePerUnit": "22.884464285714298"
+   },
+   "note": "fee = points of trade 20 - 1ulp"
+  },
+  {
+   "id": "family-price-momentum#A-exact",
+   "source": "conformance/run/family-price-momentum",
+   "costs": {
+    "feePerUnit": "22.8844642857143"
+   },
+   "note": "fee = points of trade 25"
+  },
+  {
+   "id": "family-price-momentum#B-up1ulp",
+   "source": "conformance/run/family-price-momentum",
+   "costs": {
+    "feePerUnit": "22.884464285714305"
+   },
+   "note": "fee = points of trade 25 + 1ulp"
+  },
+  {
+   "id": "family-price-momentum#C-down1ulp",
+   "source": "conformance/run/family-price-momentum",
+   "costs": {
+    "feePerUnit": "22.884464285714298"
+   },
+   "note": "fee = points of trade 25 - 1ulp"
+  },
+  {
+   "id": "family-range-break-fake#A-exact",
+   "source": "conformance/run/family-range-break-fake",
+   "costs": {
+    "feePerUnit": "3.03300000000013"
+   },
+   "note": "fee = points of trade 4"
+  },
+  {
+   "id": "family-range-break-fake#B-up1ulp",
+   "source": "conformance/run/family-range-break-fake",
+   "costs": {
+    "feePerUnit": "3.0330000000001305"
+   },
+   "note": "fee = points of trade 4 + 1ulp"
+  },
+  {
+   "id": "family-range-break-fake#C-down1ulp",
+   "source": "conformance/run/family-range-break-fake",
+   "costs": {
+    "feePerUnit": "3.0330000000001296"
+   },
+   "note": "fee = points of trade 4 - 1ulp"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#A-exact",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "costs": {
+    "feePerUnit": "16.3266760866597"
+   },
+   "note": "fee = points of trade 12"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#B-up1ulp",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "costs": {
+    "feePerUnit": "16.326676086659702"
+   },
+   "note": "fee = points of trade 12 + 1ulp"
+  },
+  {
+   "id": "family-sma-golden-cross-protected#C-down1ulp",
+   "source": "conformance/run/family-sma-golden-cross-protected",
+   "costs": {
+    "feePerUnit": "16.326676086659695"
+   },
+   "note": "fee = points of trade 12 - 1ulp"
+  },
+  {
+   "id": "family-sma-golden-cross#A-exact",
+   "source": "conformance/run/family-sma-golden-cross",
+   "costs": {
+    "feePerUnit": "90.3270000000001"
+   },
+   "note": "fee = points of trade 11"
+  },
+  {
+   "id": "family-sma-golden-cross#B-up1ulp",
+   "source": "conformance/run/family-sma-golden-cross",
+   "costs": {
+    "feePerUnit": "90.32700000000011"
+   },
+   "note": "fee = points of trade 11 + 1ulp"
+  },
+  {
+   "id": "family-sma-golden-cross#C-down1ulp",
+   "source": "conformance/run/family-sma-golden-cross",
+   "costs": {
+    "feePerUnit": "90.32700000000008"
+   },
+   "note": "fee = points of trade 11 - 1ulp"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#A-exact",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "costs": {
+    "feePerUnit": "3.18000000000001"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#B-up1ulp",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "costs": {
+    "feePerUnit": "3.1800000000000104"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-supply-demand-retest-entry-timeframe#C-down1ulp",
+   "source": "conformance/run/family-supply-demand-retest-entry-timeframe",
+   "costs": {
+    "feePerUnit": "3.1800000000000095"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-triple-push-exhaustion#A-exact",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "costs": {
+    "feePerUnit": "3.53046428571406"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-triple-push-exhaustion#B-up1ulp",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "costs": {
+    "feePerUnit": "3.5304642857140602"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-triple-push-exhaustion#C-down1ulp",
+   "source": "conformance/run/family-triple-push-exhaustion",
+   "costs": {
+    "feePerUnit": "3.5304642857140593"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#A-exact",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "costs": {
+    "feePerUnit": "5.53891071428598"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#B-up1ulp",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "costs": {
+    "feePerUnit": "5.538910714285981"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "family-volume-anomaly-exhaustion#C-down1ulp",
+   "source": "conformance/run/family-volume-anomaly-exhaustion",
+   "costs": {
+    "feePerUnit": "5.538910714285979"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "family-vwap-extension-fade#A-exact",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "costs": {
+    "feePerUnit": "5.929001234304"
+   },
+   "note": "fee = points of trade 13"
+  },
+  {
+   "id": "family-vwap-extension-fade#B-up1ulp",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "costs": {
+    "feePerUnit": "5.929001234304001"
+   },
+   "note": "fee = points of trade 13 + 1ulp"
+  },
+  {
+   "id": "family-vwap-extension-fade#C-down1ulp",
+   "source": "conformance/run/family-vwap-extension-fade",
+   "costs": {
+    "feePerUnit": "5.929001234303999"
+   },
+   "note": "fee = points of trade 13 - 1ulp"
+  },
+  {
+   "id": "money-partial-exit#A-exact",
+   "source": "conformance/run/money-partial-exit",
+   "costs": {
+    "feePerUnit": "5.17386857142856"
+   },
+   "note": "fee = points of trade 23"
+  },
+  {
+   "id": "money-partial-exit#B-up1ulp",
+   "source": "conformance/run/money-partial-exit",
+   "costs": {
+    "feePerUnit": "5.173868571428561"
+   },
+   "note": "fee = points of trade 23 + 1ulp"
+  },
+  {
+   "id": "money-partial-exit#C-down1ulp",
+   "source": "conformance/run/money-partial-exit",
+   "costs": {
+    "feePerUnit": "5.173868571428559"
+   },
+   "note": "fee = points of trade 23 - 1ulp"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#A-exact",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "costs": {
+    "feePerUnit": "39.4875714285718"
+   },
+   "note": "fee = points of trade 17"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#B-up1ulp",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "costs": {
+    "feePerUnit": "39.487571428571805"
+   },
+   "note": "fee = points of trade 17 + 1ulp"
+  },
+  {
+   "id": "research-dsl-daily-snd-retest-xauusd-4h#C-down1ulp",
+   "source": "conformance/run/research-dsl-daily-snd-retest-xauusd-4h",
+   "costs": {
+    "feePerUnit": "39.48757142857179"
+   },
+   "note": "fee = points of trade 17 - 1ulp"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#A-exact",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "costs": {
+    "feePerUnit": "866.471848828069"
+   },
+   "note": "fee = points of trade 48"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#B-up1ulp",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "costs": {
+    "feePerUnit": "866.4718488280691"
+   },
+   "note": "fee = points of trade 48 + 1ulp"
+  },
+  {
+   "id": "research-dsl-dual-ema-resumption-xauusd-daily#C-down1ulp",
+   "source": "conformance/run/research-dsl-dual-ema-resumption-xauusd-daily",
+   "costs": {
+    "feePerUnit": "866.4718488280689"
+   },
+   "note": "fee = points of trade 48 - 1ulp"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#A-exact",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "costs": {
+    "feePerUnit": "3.63094642857163"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#B-up1ulp",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "costs": {
+    "feePerUnit": "3.6309464285716304"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "research-dsl-failed-breakout-five-minute-early-breakeven#C-down1ulp",
+   "source": "conformance/run/research-dsl-failed-breakout-five-minute-early-breakeven",
+   "costs": {
+    "feePerUnit": "3.6309464285716295"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#A-exact",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "costs": {
+    "feePerUnit": "1.66812857142872"
+   },
+   "note": "fee = points of trade 3"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#B-up1ulp",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "costs": {
+    "feePerUnit": "1.6681285714287202"
+   },
+   "note": "fee = points of trade 3 + 1ulp"
+  },
+  {
+   "id": "research-dsl-session-bias-seasonal-convergence-quality-fifteen#C-down1ulp",
+   "source": "conformance/run/research-dsl-session-bias-seasonal-convergence-quality-fifteen",
+   "costs": {
+    "feePerUnit": "1.6681285714287197"
+   },
+   "note": "fee = points of trade 3 - 1ulp"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#A-exact",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "costs": {
+    "feePerUnit": "1.2971500000001"
+   },
+   "note": "fee = points of trade 4"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#B-up1ulp",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "costs": {
+    "feePerUnit": "1.2971500000001002"
+   },
+   "note": "fee = points of trade 4 + 1ulp"
+  },
+  {
+   "id": "research-dsl-session-break-hold-directional-target-fifteen#C-down1ulp",
+   "source": "conformance/run/research-dsl-session-break-hold-directional-target-fifteen",
+   "costs": {
+    "feePerUnit": "1.2971500000000997"
+   },
+   "note": "fee = points of trade 4 - 1ulp"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#A-exact",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "costs": {
+    "feePerUnit": "1.0947000000001"
+   },
+   "note": "fee = points of trade 5"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#B-up1ulp",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "costs": {
+    "feePerUnit": "1.0947000000001001"
+   },
+   "note": "fee = points of trade 5 + 1ulp"
+  },
+  {
+   "id": "research-dsl-session-break-hold-fifteen#C-down1ulp",
+   "source": "conformance/run/research-dsl-session-break-hold-fifteen",
+   "costs": {
+    "feePerUnit": "1.0947000000000997"
+   },
+   "note": "fee = points of trade 5 - 1ulp"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#A-exact",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "costs": {
+    "feePerUnit": "3.20149999999995"
+   },
+   "note": "fee = points of trade 1"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#B-up1ulp",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "costs": {
+    "feePerUnit": "3.2014999999999505"
+   },
+   "note": "fee = points of trade 1 + 1ulp"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h#C-down1ulp",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-1h",
+   "costs": {
+    "feePerUnit": "3.2014999999999496"
+   },
+   "note": "fee = points of trade 1 - 1ulp"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#A-exact",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "costs": {
+    "feePerUnit": "4.62425000000002"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#B-up1ulp",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "costs": {
+    "feePerUnit": "4.624250000000021"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h#C-down1ulp",
+   "source": "conformance/run/research-dsl-vsa-weekly-extreme-wide-payout-xauusd-4h",
+   "costs": {
+    "feePerUnit": "4.6242500000000195"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  },
+  {
+   "id": "rmv-named-level-allow#A-exact",
+   "source": "conformance/run/rmv-named-level-allow",
+   "costs": {
+    "feePerUnit": "3.5"
+   },
+   "note": "fee = points of trade 0"
+  },
+  {
+   "id": "rmv-named-level-allow#B-up1ulp",
+   "source": "conformance/run/rmv-named-level-allow",
+   "costs": {
+    "feePerUnit": "3.5000000000000004"
+   },
+   "note": "fee = points of trade 0 + 1ulp"
+  },
+  {
+   "id": "rmv-named-level-allow#C-down1ulp",
+   "source": "conformance/run/rmv-named-level-allow",
+   "costs": {
+    "feePerUnit": "3.4999999999999996"
+   },
+   "note": "fee = points of trade 0 - 1ulp"
+  }
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "reference": "amd64v1-go1.27.0",
+ "targets": {
+  "arm64-go1.23.8": {
+   "cases": 0,
+   "missing": 0,
+   "counts": {},
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 0,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "arm64-go1.27.0": {
+   "cases": 0,
+   "missing": 0,
+   "counts": {},
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 0,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "arm64nofma-diag-go1.27.0": {
+   "cases": 0,
+   "missing": 0,
+   "counts": {},
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 0,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasip1-go1.27.0": {
+   "cases": 0,
+   "missing": 0,
+   "counts": {},
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 0,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasmjs-go1.27.0": {
+   "cases": 0,
+   "missing": 0,
+   "counts": {},
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 0,
+   "maxUlps": "0",
+   "signChanges": 0
+  }
+ }
+}

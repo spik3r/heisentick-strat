@@ -1,0 +1,1351 @@
+{
+ "reference": "amd64v1-go1.27.0",
+ "targets": {
+  "arm64-go1.23.8": {
+   "cases": 654,
+   "missing": 0,
+   "counts": {
+    "identical": 629,
+    "path": 25
+   },
+   "differingCases": [
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 54,
+       "field": "points",
+       "a": "402c0575d321c6d3",
+       "b": "402c0575d321c69a"
+      },
+      {
+       "trade": 54,
+       "field": "pnl",
+       "a": "406069036a77ffa1",
+       "b": "406069036a77ff7e",
+       "aText": "131.28166697919099",
+       "bText": "131.28166697918999",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 12,
+       "field": "points",
+       "a": "40244726c97477ed",
+       "b": "40244726c9747825"
+      },
+      {
+       "trade": 12,
+       "field": "pnl",
+       "a": "406253865c1aac2a",
+       "b": "406253865c1aac71",
+       "aText": "146.61015134057499",
+       "bText": "146.610151340577",
+       "ulps": "71",
+       "signChange": false
+      },
+      {
+       "trade": 54,
+       "field": "points",
+       "a": "402e82e09384b2f9",
+       "b": "402e82e09384b369"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 33,
+       "field": "points",
+       "a": "4020ef82bc93b1c3",
+       "b": "4020ef82bc93b17f"
+      },
+      {
+       "trade": 33,
+       "field": "pnl",
+       "a": "40645fffff3a4d34",
+       "b": "40645fffff3a4ccb",
+       "aText": "162.99999963175799",
+       "bText": "162.999999631755",
+       "ulps": "105",
+       "signChange": false
+      },
+      {
+       "trade": 38,
+       "field": "sl",
+       "a": "4086465d621cecde",
+       "b": "4086465d621cece7"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 12,
+       "field": "size",
+       "a": "403b00bdab554acc",
+       "b": "403b00bdab5548ed"
+      },
+      {
+       "trade": 12,
+       "field": "points",
+       "a": "c01dddcfed87ee04",
+       "b": "c01dddcfed87efff"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "points",
+       "a": "3f60c52cf5ad4ff5",
+       "b": "3f60c52cf5ad5207"
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "40703fffffffff0a",
+       "b": "40704000000000f6",
+       "aText": "259.99999999998602",
+       "bText": "260.00000000001398",
+       "ulps": "492",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "3f52ec722b0df00c",
+       "b": "3f52ec722b0df7f9"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "points",
+       "a": "3f623f6ae92df800",
+       "b": "3f623f6ae92df9fb"
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "40703fffffffff1b",
+       "b": "40704000000000e5",
+       "aText": "259.99999999998698",
+       "bText": "260.00000000001302",
+       "ulps": "458",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "points",
+       "a": "3f5b1e97520b6410",
+       "b": "3f5b1e97520b6807"
+      },
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "40703ffffffffed5",
+       "b": "407040000000012b",
+       "aText": "259.999999999983",
+       "bText": "260.000000000017",
+       "ulps": "598",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "points",
+       "a": "3f59acf4fa9237ff",
+       "b": "3f59acf4fa923fed"
+      },
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "40703ffffffffd75",
+       "b": "407040000000028b",
+       "aText": "259.99999999996299",
+       "bText": "260.00000000003701",
+       "ulps": "1302",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "3f531451d6284fe9",
+       "b": "3f531451d6285805"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 16,
+       "field": "size",
+       "a": "3fc66a0ff350d890",
+       "b": "3fc66a0ff350d824"
+      },
+      {
+       "trade": 16,
+       "field": "pnl",
+       "a": "4080aaaaaaaaaad4",
+       "b": "4080aaaaaaaaaa96",
+       "aText": "533.33333333333803",
+       "bText": "533.33333333333098",
+       "ulps": "62",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ab755d4ddddada",
+       "b": "40ab755d4ddddb32"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958befad"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ab6c4178a337d1",
+       "b": "40ab6c4178a33779"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ade0a99d7f6cde",
+       "b": "40ade0a99d7f6d36"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d81b0"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40add6c30c12db6b",
+       "b": "40add6c30c12db29"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40a8f8301e046735",
+       "b": "40a8f8301e046777"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40a8f81165b27bb0",
+       "b": "40a8f81165b27bf2"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40a8efe4df482e94",
+       "b": "40a8efe4df482e52"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ae1ebc5c4a169a",
+       "b": "40ae1ebc5c4a1734"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ae1e9da3f82b15",
+       "b": "40ae1e9da3f82baf"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ae14c178d3b186",
+       "b": "40ae14c178d3b0ec"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40aa4b8db0e81c61",
+       "b": "40aa4b8db0e81ccf"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40aa4b6ef89630dc",
+       "b": "40aa4b6ef896314a"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aa42d359b03c33",
+       "b": "40aa42d359b03bc5"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40abaf388860039d",
+       "b": "40abaf38886003df"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e185a"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aba609c2805001",
+       "b": "40aba609c2804fd5"
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "size",
+       "a": "40243e5a21fa0a60",
+       "b": "40243e5a21fa0ad1"
+      },
+      {
+       "trade": 4,
+       "field": "points",
+       "a": "c033d1c213db2a04",
+       "b": "c033d1c213db2977"
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "size",
+       "a": "40331e50e75dd1af",
+       "b": "40331e50e75dd0ce"
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "400ad242b0582a81",
+       "b": "400ad242b058292f",
+       "aText": "3.3526662613779199",
+       "bText": "3.3526662613777698",
+       "ulps": "338",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "size",
+       "a": "403014d88da69e00",
+       "b": "403014d88da69e8d"
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "c028fe502d61af0e",
+       "b": "c028fe502d61adf5"
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "size",
+       "a": "403014d88da69e00",
+       "b": "403014d88da69e8d"
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "c028fe502d61af0e",
+       "b": "c028fe502d61adf5"
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 8,
+       "field": "size",
+       "a": "402afc4b39ce79a9",
+       "b": "402afc4b39ce7a8a"
+      },
+      {
+       "trade": 8,
+       "field": "points",
+       "a": "403d67d08139eb0d",
+       "b": "403d67d08139e9f3"
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "size",
+       "a": "403b00bdab554acc",
+       "b": "403b00bdab5548ed"
+      },
+      {
+       "trade": 18,
+       "field": "points",
+       "a": "c01dddcfed87ee04",
+       "b": "c01dddcfed87efff"
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "size",
+       "a": "40034c9ca33141da",
+       "b": "40034c9ca33141f0"
+      },
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c0502be8c73e510d",
+       "b": "c0502be8c73e5122",
+       "aText": "-64.686082659584102",
+       "bText": "-64.6860826595844",
+       "ulps": "21",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 24,
+       "field": "points",
+       "a": "4006c759e0588405",
+       "b": "4006c759e05887fa"
+      },
+      {
+       "trade": 24,
+       "field": "pnl",
+       "a": "4011ba05df6b3073",
+       "b": "4011ba05df6b3392",
+       "aText": "4.4316630276845101",
+       "bText": "4.4316630276852198",
+       "ulps": "799",
+       "signChange": false
+      },
+      {
+       "trade": 25,
+       "field": "points",
+       "a": "c02122bef59d8fff",
+       "b": "c02122bef59d9102"
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "size",
+       "a": "40093d44a518bdce",
+       "b": "40093d44a518bdfb"
+      },
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "403605dc1aa3c7c5",
+       "b": "403605dc1aa3c7e2",
+       "aText": "22.022889771447598",
+       "bText": "22.022889771447701",
+       "ulps": "29",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 42,
+       "field": "size",
+       "a": "3fe6e23df7671f90",
+       "b": "3fe6e23df7671f7e"
+      },
+      {
+       "trade": 42,
+       "field": "pnl",
+       "a": "c05411aafcce283f",
+       "b": "c05411aafcce2831",
+       "aText": "-80.276061250043298",
+       "bText": "-80.276061250043099",
+       "ulps": "14",
+       "signChange": false
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 23,
+   "pnlTradesCompared": 6174,
+   "maxUlps": "4714",
+   "signChanges": 0
+  },
+  "arm64-go1.27.0": {
+   "cases": 654,
+   "missing": 0,
+   "counts": {
+    "identical": 629,
+    "path": 25
+   },
+   "differingCases": [
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 54,
+       "field": "points",
+       "a": "402c0575d321c6d3",
+       "b": "402c0575d321c69a"
+      },
+      {
+       "trade": 54,
+       "field": "pnl",
+       "a": "406069036a77ffa1",
+       "b": "406069036a77ff7e",
+       "aText": "131.28166697919099",
+       "bText": "131.28166697918999",
+       "ulps": "35",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 12,
+       "field": "points",
+       "a": "40244726c97477ed",
+       "b": "40244726c9747825"
+      },
+      {
+       "trade": 12,
+       "field": "pnl",
+       "a": "406253865c1aac2a",
+       "b": "406253865c1aac71",
+       "aText": "146.61015134057499",
+       "bText": "146.610151340577",
+       "ulps": "71",
+       "signChange": false
+      },
+      {
+       "trade": 54,
+       "field": "points",
+       "a": "402e82e09384b2f9",
+       "b": "402e82e09384b369"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 33,
+       "field": "points",
+       "a": "4020ef82bc93b1c3",
+       "b": "4020ef82bc93b17f"
+      },
+      {
+       "trade": 33,
+       "field": "pnl",
+       "a": "40645fffff3a4d34",
+       "b": "40645fffff3a4ccb",
+       "aText": "162.99999963175799",
+       "bText": "162.999999631755",
+       "ulps": "105",
+       "signChange": false
+      },
+      {
+       "trade": 38,
+       "field": "sl",
+       "a": "4086465d621cecde",
+       "b": "4086465d621cece7"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-flag-continuation-one-four-hour-review#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 12,
+       "field": "size",
+       "a": "403b00bdab554acc",
+       "b": "403b00bdab5548ed"
+      },
+      {
+       "trade": 12,
+       "field": "points",
+       "a": "c01dddcfed87ee04",
+       "b": "c01dddcfed87efff"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "points",
+       "a": "3f60c52cf5ad4ff5",
+       "b": "3f60c52cf5ad5207"
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "40703fffffffff0a",
+       "b": "40704000000000f6",
+       "aText": "259.99999999998602",
+       "bText": "260.00000000001398",
+       "ulps": "492",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "3f52ec722b0df00c",
+       "b": "3f52ec722b0df7f9"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "points",
+       "a": "3f623f6ae92df800",
+       "b": "3f623f6ae92df9fb"
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "40703fffffffff1b",
+       "b": "40704000000000e5",
+       "aText": "259.99999999998698",
+       "bText": "260.00000000001302",
+       "ulps": "458",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "points",
+       "a": "3f5b1e97520b6410",
+       "b": "3f5b1e97520b6807"
+      },
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "40703ffffffffed5",
+       "b": "407040000000012b",
+       "aText": "259.999999999983",
+       "bText": "260.000000000017",
+       "ulps": "598",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 6,
+       "field": "points",
+       "a": "3f59acf4fa9237ff",
+       "b": "3f59acf4fa923fed"
+      },
+      {
+       "trade": 6,
+       "field": "pnl",
+       "a": "40703ffffffffd75",
+       "b": "407040000000028b",
+       "aText": "259.99999999996299",
+       "bText": "260.00000000003701",
+       "ulps": "1302",
+       "signChange": false
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "3f531451d6284fe9",
+       "b": "3f531451d6285805"
+      }
+     ]
+    },
+    {
+     "id": "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 16,
+       "field": "size",
+       "a": "3fc66a0ff350d890",
+       "b": "3fc66a0ff350d824"
+      },
+      {
+       "trade": 16,
+       "field": "pnl",
+       "a": "4080aaaaaaaaaad4",
+       "b": "4080aaaaaaaaaa96",
+       "aText": "533.33333333333803",
+       "bText": "533.33333333333098",
+       "ulps": "62",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ab755d4ddddada",
+       "b": "40ab755d4ddddb32"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958befad"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ab6c4178a337d1",
+       "b": "40ab6c4178a33779"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ade0a99d7f6cde",
+       "b": "40ade0a99d7f6d36"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d81b0"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40add6c30c12db6b",
+       "b": "40add6c30c12db29"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40a8f8301e046735",
+       "b": "40a8f8301e046777"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40a8f81165b27bb0",
+       "b": "40a8f81165b27bf2"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40a8efe4df482e94",
+       "b": "40a8efe4df482e52"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ae1ebc5c4a169a",
+       "b": "40ae1ebc5c4a1734"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ae1e9da3f82b15",
+       "b": "40ae1e9da3f82baf"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ae14c178d3b186",
+       "b": "40ae14c178d3b0ec"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40aa4b8db0e81c61",
+       "b": "40aa4b8db0e81ccf"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40aa4b6ef89630dc",
+       "b": "40aa4b6ef896314a"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aa42d359b03c33",
+       "b": "40aa42d359b03bc5"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40abaf388860039d",
+       "b": "40abaf38886003df"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e185a"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aba609c2805001",
+       "b": "40aba609c2804fd5"
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "size",
+       "a": "40243e5a21fa0a60",
+       "b": "40243e5a21fa0ad1"
+      },
+      {
+       "trade": 4,
+       "field": "points",
+       "a": "c033d1c213db2a04",
+       "b": "c033d1c213db2977"
+      }
+     ]
+    },
+    {
+     "id": "family-double-top-bottom#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 1,
+       "field": "size",
+       "a": "40331e50e75dd1af",
+       "b": "40331e50e75dd0ce"
+      },
+      {
+       "trade": 1,
+       "field": "pnl",
+       "a": "400ad242b0582a81",
+       "b": "400ad242b058292f",
+       "aText": "3.3526662613779199",
+       "bText": "3.3526662613777698",
+       "ulps": "338",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen-trail-override#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "size",
+       "a": "403014d88da69e00",
+       "b": "403014d88da69e8d"
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "c028fe502d61af0e",
+       "b": "c028fe502d61adf5"
+      }
+     ]
+    },
+    {
+     "id": "family-elder-triple-screen#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 9,
+       "field": "size",
+       "a": "403014d88da69e00",
+       "b": "403014d88da69e8d"
+      },
+      {
+       "trade": 9,
+       "field": "points",
+       "a": "c028fe502d61af0e",
+       "b": "c028fe502d61adf5"
+      }
+     ]
+    },
+    {
+     "id": "family-fib-continuation#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 8,
+       "field": "size",
+       "a": "402afc4b39ce79a9",
+       "b": "402afc4b39ce7a8a"
+      },
+      {
+       "trade": 8,
+       "field": "points",
+       "a": "403d67d08139eb0d",
+       "b": "403d67d08139e9f3"
+      }
+     ]
+    },
+    {
+     "id": "money-partial-exit#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 18,
+       "field": "size",
+       "a": "403b00bdab554acc",
+       "b": "403b00bdab5548ed"
+      },
+      {
+       "trade": 18,
+       "field": "points",
+       "a": "c01dddcfed87ee04",
+       "b": "c01dddcfed87efff"
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "size",
+       "a": "40034c9ca33141da",
+       "b": "40034c9ca33141f0"
+      },
+      {
+       "trade": 0,
+       "field": "pnl",
+       "a": "c0502be8c73e510d",
+       "b": "c0502be8c73e5122",
+       "aText": "-64.686082659584102",
+       "bText": "-64.6860826595844",
+       "ulps": "21",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 24,
+       "field": "points",
+       "a": "4006c759e0588405",
+       "b": "4006c759e05887fa"
+      },
+      {
+       "trade": 24,
+       "field": "pnl",
+       "a": "4011ba05df6b3073",
+       "b": "4011ba05df6b3392",
+       "aText": "4.4316630276845101",
+       "bText": "4.4316630276852198",
+       "ulps": "799",
+       "signChange": false
+      },
+      {
+       "trade": 25,
+       "field": "points",
+       "a": "c02122bef59d8fff",
+       "b": "c02122bef59d9102"
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 4,
+       "field": "size",
+       "a": "40093d44a518bdce",
+       "b": "40093d44a518bdfb"
+      },
+      {
+       "trade": 4,
+       "field": "pnl",
+       "a": "403605dc1aa3c7c5",
+       "b": "403605dc1aa3c7e2",
+       "aText": "22.022889771447598",
+       "bText": "22.022889771447701",
+       "ulps": "29",
+       "signChange": false
+      }
+     ]
+    },
+    {
+     "id": "research-dsl-dual-ema-resumption-xauusd-daily#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 42,
+       "field": "size",
+       "a": "3fe6e23df7671f90",
+       "b": "3fe6e23df7671f7e"
+      },
+      {
+       "trade": 42,
+       "field": "pnl",
+       "a": "c05411aafcce283f",
+       "b": "c05411aafcce2831",
+       "aText": "-80.276061250043298",
+       "bText": "-80.276061250043099",
+       "ulps": "14",
+       "signChange": false
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 23,
+   "pnlTradesCompared": 6174,
+   "maxUlps": "4714",
+   "signChanges": 0
+  },
+  "arm64nofma-diag-go1.27.0": {
+   "cases": 654,
+   "missing": 0,
+   "counts": {
+    "identical": 648,
+    "path": 6
+   },
+   "differingCases": [
+    {
+     "id": "family-channel-break-hold#scale0",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ab755d4ddddada",
+       "b": "40ab755d4ddddaf0"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ab753e958bef55",
+       "b": "40ab753e958bef6b"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ab6c4178a337d1",
+       "b": "40ab6c4178a337bb"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale1",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40ade0a99d7f6cde",
+       "b": "40ade0a99d7f6cf4"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40ade08ae52d8159",
+       "b": "40ade08ae52d816f"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40add6c30c12db6b",
+       "b": "40add6c30c12db55"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale2",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40a8f8301e046735",
+       "b": "40a8f8301e04674b"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40a8f81165b27bb0",
+       "b": "40a8f81165b27bc6"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40a8efe4df482e94",
+       "b": "40a8efe4df482e7e"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale3",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40ae14c178d3b186",
+       "b": "40ae14c178d3b170"
+      },
+      {
+       "trade": 0,
+       "field": "initialTp",
+       "a": "40ae14c178d3b186",
+       "b": "40ae14c178d3b170"
+      },
+      {
+       "trade": 0,
+       "field": "size",
+       "a": "4053cd4a4b9a2545",
+       "b": "4053cd4a4b99d2eb"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale4",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40aa4b8db0e81c61",
+       "b": "40aa4b8db0e81c77"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40aa4b6ef89630dc",
+       "b": "40aa4b6ef89630f2"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aa42d359b03c33",
+       "b": "40aa42d359b03c1d"
+      }
+     ]
+    },
+    {
+     "id": "family-channel-break-hold#scale5",
+     "class": "path",
+     "firstDiffs": [
+      {
+       "trade": 0,
+       "field": "exit",
+       "a": "40abaf388860039d",
+       "b": "40abaf38886003b3"
+      },
+      {
+       "trade": 0,
+       "field": "sl",
+       "a": "40abaf19d00e1818",
+       "b": "40abaf19d00e182e"
+      },
+      {
+       "trade": 0,
+       "field": "tp",
+       "a": "40aba609c2805001",
+       "b": "40aba609c2804feb"
+      }
+     ]
+    }
+   ],
+   "pnlTradesDiffering": 6,
+   "pnlTradesCompared": 6174,
+   "maxUlps": "915",
+   "signChanges": 0
+  },
+  "wasip1-go1.27.0": {
+   "cases": 654,
+   "missing": 0,
+   "counts": {
+    "identical": 654
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 6174,
+   "maxUlps": "0",
+   "signChanges": 0
+  },
+  "wasmjs-go1.27.0": {
+   "cases": 654,
+   "missing": 0,
+   "counts": {
+    "identical": 654
+   },
+   "differingCases": [],
+   "pnlTradesDiffering": 0,
+   "pnlTradesCompared": 6174,
+   "maxUlps": "0",
+   "signChanges": 0
+  }
+ }
+}

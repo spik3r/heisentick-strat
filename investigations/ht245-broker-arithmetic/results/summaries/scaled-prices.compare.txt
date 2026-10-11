@@ -1,0 +1,35 @@
+arm64-go1.23.8       vs amd64v1-go1.27.0: cases=654 {"identical":629,"path":25} pnlTrades=23/6174 maxUlps=4714 signChanges=0
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale0
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale1
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale4
+    path deployed-dsl-flag-continuation-one-four-hour-review#scale2
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale0
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale1
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale3
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale5
+    path deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale2
+    path family-channel-break-hold#scale0
+    path family-channel-break-hold#scale1
+    path family-channel-break-hold#scale2
+arm64-go1.27.0       vs amd64v1-go1.27.0: cases=654 {"identical":629,"path":25} pnlTrades=23/6174 maxUlps=4714 signChanges=0
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale0
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale1
+    path deployed-dsl-dual-ema-resumption-xauusd-four-hour#scale4
+    path deployed-dsl-flag-continuation-one-four-hour-review#scale2
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale0
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale1
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale3
+    path deployed-dsl-supply-demand-fx-rejection-one-point-three-eurusd-15m#scale5
+    path deployed-dsl-weekend-extreme-fade-btcusdt-four-hour#scale2
+    path family-channel-break-hold#scale0
+    path family-channel-break-hold#scale1
+    path family-channel-break-hold#scale2
+arm64nofma-diag-go1.27.0 vs amd64v1-go1.27.0: cases=654 {"identical":648,"path":6} pnlTrades=6/6174 maxUlps=915 signChanges=0
+    path family-channel-break-hold#scale0
+    path family-channel-break-hold#scale1
+    path family-channel-break-hold#scale2
+    path family-channel-break-hold#scale3
+    path family-channel-break-hold#scale4
+    path family-channel-break-hold#scale5
+wasip1-go1.27.0      vs amd64v1-go1.27.0: cases=654 {"identical":654} pnlTrades=0/6174 maxUlps=0 signChanges=0
+wasmjs-go1.27.0      vs amd64v1-go1.27.0: cases=654 {"identical":654} pnlTrades=0/6174 maxUlps=0 signChanges=0
