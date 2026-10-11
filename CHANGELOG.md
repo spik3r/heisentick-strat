@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add the transport-only `engineRunPaperPrefix` public Go WASM export over the
+  same Go paper execution/accounting API. Require one valid UTF-16 request JSON
+  string within an explicit 16 MiB UTF-8 input budget, return unchanged producer
+  results or fixed safe errors, and prove actual native/public-WASM parity and
+  same-target recovery. No new family, endpoint liquidation or portable
+  checkpoint support; tagged release and browser adoption remain separate.
+
 - Add a Go-owned paper-prefix API/native command for qualified ordinary ORB and
   faithful legacySetup9 routes: explicit costs/equity, causal activation, open
   account MTM, partial/final trade accounting and replay-verified recovery.
