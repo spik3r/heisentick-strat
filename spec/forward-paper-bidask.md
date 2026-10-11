@@ -7,6 +7,16 @@ It has no network, feed, broker-order, authentication, account-balance lookup,
 consumer activation or release authority. Existing paper-prefix, old sessions,
 conformance and public WASM APIs are unchanged.
 
+The file command's qualified native hosts are Linux AMD64 and ARM64. Its secure
+native IO implementation is excluded from Go's js/wasm command-package build.
+On js/wasm, invoking that command always returns the fixed refusal
+`PAPER_BIDASK_NATIVE_COMMAND_UNAVAILABLE`, without interpreting arguments,
+opening files or executing the model. There is no filesystem fallback or empty
+success. Writer errors and short writes remain `PAPER_BIDASK_OUTPUT` failures.
+This compatibility stub keeps existing command-package WASM tests available;
+it does not expose a public bid/ask WASM model API. Other host qualification and
+the separately owned public Go/WASM bridge require their own evidence.
+
 The model is `sampled-straddle-full-bar-stop-first-v1`, request schema
 `heisentick-paper-bidask-request-v1`, result schema `heisentick-paper-bidask-v1`.
 A success has `mode: replay-verified-candidate`. A refusal has exactly `schema`,

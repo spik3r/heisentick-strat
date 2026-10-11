@@ -14,7 +14,8 @@
     "7fb641188ad615bb3271a50dcb2c31c43d9d8fba",
     "6bf1e52294f489b2bb4f6607e1d393ba2efcb092",
     "c28445d9a5e6a25663de456819effc74d81ac71d",
-    "0da3c649e794eb88770318cee795284e141834fd"
+    "0da3c649e794eb88770318cee795284e141834fd",
+    "e76a084aec1e93d2e6c29680aaf35e417128ccdf"
   ],
   "build": {
     "CGO_ENABLED": "0",
@@ -59,7 +60,8 @@
     "cmd/heisentick/main.go": "16720d36b3f87083f5a37f6fdbeceebb7dc6745f01bab215f2b0ae366e452931",
     "cmd/heisentick/master_portable_report.go": "9385eab25fb95b87ff78865524a8956821317ecd104449d885be6c805b6bf666",
     "cmd/heisentick/master_report.go": "efc9f7369a3d48c3e3a44bd25a8299e2a056c2db027a8a7805b2e9be52d9edde",
-    "cmd/heisentick/paper_bidask.go": "0eb3939d9ed615f7e782de8f1338f1c1cd1cbeedc08519fe9173232ec6229173",
+    "cmd/heisentick/paper_bidask.go": "4bdc7756c83d1fe92fa35964c2655db8266d3c1a4bb828f71781f03b9d694663",
+    "cmd/heisentick/paper_bidask_wasm.go": "1b44cae3b18f6b4b7fe1622528228eef887f968adf99b389243c2ace02610e86",
     "cmd/heisentick/paper_prefix.go": "a854392524e423a72574b331dbcffde843b67aa711dcfbfd46537f350dc83e8f",
     "cmd/heisentick/range_reversion_report.go": "42476a754960b37afb5639c8ad359a9a9a810482ead5a215f37eefa26dfba5eb",
     "cmd/heisentick/regime_report.go": "96c4e0531867ac5605c9b05cf8e9da7b482fe0513310f31ee3804f0b112c1724",
