@@ -4,25 +4,41 @@
 // For each case where the first trade that exits on a stop or target whose
 // level differs between the two targets in its bits, move the exit bar's extreme to the larger stop (long: low,
 // short: high; opposite for the smaller) so that exactly one target's stop is
-// touched on that bar. Only the exit bar's low/high changes. This is an
+// touched on that bar. The entire exit bar is replaced (including open/close). This is an
 // invented one-bar edit; it does not claim the original data hit the boundary.
 import { readFileSync } from 'node:fs';
+import { basename, dirname } from 'node:path';
+import assert from 'node:assert/strict';
+import { loadRun, fileSha } from './evidence.mjs';
+let referenceBundle;
+function validatedRows(path, manifestPath) {
+  const bundle = loadRun(dirname(path));
+  if (referenceBundle) {
+    assert.equal(bundle.identity.sourceSha256, referenceBundle.identity.sourceSha256, 'cross-run source differs');
+    assert.equal(bundle.identity.toolsSha256, referenceBundle.identity.toolsSha256, 'cross-run harness/comparator differs');
+    assert.equal(bundle.identity.inputFilesSha256, referenceBundle.identity.inputFilesSha256, 'cross-run fixture/source inputs differ');
+  } else referenceBundle = bundle;
+  assert.equal(bundle.run.manifestSha256, fileSha(manifestPath), 'generator manifest differs from executed manifest');
+  const set = bundle.sets.get(basename(path, '.jsonl'));
+  assert.ok(set, 'generator target absent from current run');
+  return new Map(set.rows.map(r => [r.id, r]));
+}
 const [refPath, otherPath, manifestPath] = process.argv.slice(2);
 const buf = new DataView(new ArrayBuffer(8));
 const f64 = (hex) => { buf.setBigUint64(0, BigInt('0x' + hex)); return buf.getFloat64(0); };
-const rows = (p) => new Map(readFileSync(p, 'utf8').trim().split('\n').map((l) => JSON.parse(l)).map((r) => [r.id, r]));
-const ref = rows(refPath), other = rows(otherPath);
+const ref = validatedRows(refPath, manifestPath), other = validatedRows(otherPath, manifestPath);
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const out = [];
 for (const c of manifest.cases) {
   const a = ref.get(c.id), b = other.get(c.id);
-  if (!a?.trades || !b?.trades || a.tradeCount !== b.tradeCount) continue;
+  if (a.error || b.error || !a.trades || !b.trades || a.tradeCount !== b.tradeCount) continue;
   for (let i = 0; i < a.trades.length; i++) {
     const x = a.trades[i], y = b.trades[i];
     if (x.reason !== y.reason || (x.reason !== 'sl' && x.reason !== 'tp')) continue;
     const field = x.reason;
     if (x[field] === y[field] || x.exitIndex !== y.exitIndex) continue;
-    // Only levels never moved after entry, so the patched bar cannot feed a trail.
+    // Heuristic only: serialized initial/final equality does not prove raw
+    // equality or that an intervening level never moved. Rerun every candidate.
     const initial = field === 'sl' ? 'initialSl' : 'initialTp';
     if (x[initial] !== x[field] || y[initial] !== y[field]) continue;
     const sa = f64(x[field]), sb = f64(y[field]);

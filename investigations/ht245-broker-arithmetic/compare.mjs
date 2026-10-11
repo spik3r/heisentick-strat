@@ -1,71 +1,59 @@
 #!/usr/bin/env node
-// Compare harness receipts across targets bit for bit.
-//   node compare.mjs <receipt-dir> [--ref <label>] [--json out.json]
-// Classes per case and target pair: identical, pnl-only (only the reported pnl
-// bits differ; decisions, prices and sizes identical), path (an entry, exit,
-// stop, target, size or points bit differs), decision (trade count, side,
-// index or reason differs), error (error text differs).
-import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-
-const args = process.argv.slice(2);
-const dir = args[0];
-const refIdx = args.indexOf('--ref');
-const jsonIdx = args.indexOf('--json');
-const refLabel = refIdx >= 0 ? args[refIdx + 1] : 'arm64-go1.27.0';
-const load = (f) => readFileSync(join(dir, f), 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l));
-const sets = Object.fromEntries(readdirSync(dir).filter((f) => f.endsWith('.jsonl')).sort().map((f) => [f.slice(0, -6), load(f)]));
-if (!sets[refLabel]) { console.error(`reference ${refLabel} missing`); process.exit(2); }
-
-const buf = new DataView(new ArrayBuffer(8));
-const f64 = (hex) => { buf.setBigUint64(0, BigInt('0x' + hex)); return buf.getFloat64(0); };
-const ordered = (hex) => { const b = BigInt('0x' + hex); return b >> 63n ? -(b & 0x7fffffffffffffffn) : b; };
-const ulpDist = (a, b) => { const d = ordered(a) - ordered(b); return d < 0n ? -d : d; };
-const tradeFields = ['entry', 'exit', 'sl', 'tp', 'initialSl', 'initialTp', 'size', 'points'];
-const decisionFields = ['side', 'entryIndex', 'exitIndex', 'reason', 'rule', 'tag', 'partial'];
-
-function classify(a, b) {
-  if ((a.error || '') !== (b.error || '')) return { cls: 'error' };
-  if (a.inputSha256 !== b.inputSha256) return { cls: 'input-mismatch' };
-  if (a.tradeCount !== b.tradeCount) return { cls: 'decision', note: 'trade count' };
-  const diffs = [];
-  let cls = 'identical';
-  for (let i = 0; i < (a.trades || []).length; i++) {
-    const x = a.trades[i], y = b.trades[i];
-    for (const k of decisionFields) if (x[k] !== y[k]) return { cls: 'decision', note: `trade ${i} ${k}` };
-    for (const k of tradeFields) if (x[k] !== y[k]) { cls = 'path'; diffs.push({ trade: i, field: k, a: x[k], b: y[k] }); }
-    if (x.pnl !== y.pnl) {
-      if (cls === 'identical') cls = 'pnl-only';
-      diffs.push({ trade: i, field: 'pnl', a: x.pnl, b: y.pnl, aText: x.pnlText, bText: y.pnlText,
-        ulps: String(ulpDist(x.pnl, y.pnl)), signChange: Math.sign(f64(x.pnl)) !== Math.sign(f64(y.pnl)) });
-    }
+// Exact comparison of 15-significant-digit serialized public output, not raw arithmetic.
+import assert from 'node:assert/strict';
+import { writeFileSync, renameSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
+import { loadRun, fileSha, tradeFields, decisionFields } from './evidence.mjs';
+const view=new DataView(new ArrayBuffer(8));
+const f64=h=>{view.setBigUint64(0,BigInt('0x'+h));return view.getFloat64(0);};
+const ordered=h=>{const n=BigInt('0x'+h);return n>>63n?-(n&0x7fffffffffffffffn):n;};
+export function classify(a,b) {
+  assert.equal(a.inputSha256,b.inputSha256,'input identity differs');
+  assert.deepEqual(a.costBits,b.costBits,'normalized costs differ');
+  if (a.error || b.error) { assert.ok(a.error && a.error===b.error,'refusal differs'); return {class:'matching-refusal',error:a.error}; }
+  if(a.tradeCount!==b.tradeCount)return {class:'decision',firstDiffs:[{field:'tradeCount',a:a.tradeCount,b:b.tradeCount}]};
+  let cls='identical'; const diffs=[];
+  for(let i=0;i<a.tradeCount;i++) {
+    const x=a.trades[i],y=b.trades[i];
+    for(const k of decisionFields)if(x[k]!==y[k]){cls='decision';diffs.push({trade:i,field:k,a:x[k]??null,b:y[k]??null});}
+    for(const k of tradeFields)if(x[k]!==y[k]){if(cls!=='decision')cls='path';diffs.push({trade:i,field:k,a:x[k],b:y[k]});}
+    if(x.pnl!==y.pnl){if(cls==='identical')cls='pnl-only';const d=ordered(x.pnl)-ordered(y.pnl);diffs.push({trade:i,field:'pnl',a:x.pnl,b:y.pnl,aText:x.pnlText,bText:y.pnlText,ulps:String(d<0n?-d:d),signChange:Math.sign(f64(x.pnl))!==Math.sign(f64(y.pnl)),positiveLabelChange:(f64(x.pnl)>0)!==(f64(y.pnl)>0)});}
   }
-  return { cls, diffs };
+  return {class:cls,firstDiffs:diffs};
 }
-
-const summary = { reference: refLabel, targets: {} };
-for (const [label, rows] of Object.entries(sets)) {
-  if (label === refLabel) continue;
-  const byId = new Map(rows.map((r) => [r.id, r]));
-  const t = { cases: 0, missing: 0, counts: {}, differingCases: [], pnlTradesDiffering: 0, pnlTradesCompared: 0, maxUlps: '0', signChanges: 0 };
-  for (const a of sets[refLabel]) {
-    const b = byId.get(a.id);
-    if (!b) { t.missing++; continue; }
-    t.cases++;
-    t.pnlTradesCompared += a.tradeCount;
-    const r = classify(a, b);
-    t.counts[r.cls] = (t.counts[r.cls] || 0) + 1;
-    if (r.cls !== 'identical') {
-      const pn = (r.diffs || []).filter((d) => d.field === 'pnl');
-      t.pnlTradesDiffering += pn.length;
-      for (const d of pn) { if (BigInt(d.ulps) > BigInt(t.maxUlps)) t.maxUlps = d.ulps; if (d.signChange) t.signChanges++; }
-      t.differingCases.push({ id: a.id, class: r.cls, note: r.note, firstDiffs: (r.diffs || []).slice(0, 3) });
-    }
+export function compare(dirs,refLabel) {
+  const bundles=dirs.map(loadRun),first=bundles[0],sets=new Map();
+  for(const b of bundles){
+    assert.equal(b.run.manifestSha256,first.run.manifestSha256,'cross-run manifests differ');
+    assert.equal(b.identity.sourceSha256,first.identity.sourceSha256,'cross-run source differs');
+    assert.equal(b.identity.toolsSha256,first.identity.toolsSha256,'cross-run harness/comparator differs');
+    assert.equal(b.identity.inputFilesSha256,first.identity.inputFilesSha256,'cross-run fixture/source inputs differ');
+    for(const [label,set]of b.sets){assert.ok(!sets.has(label),`duplicate cross-run target ${label}`);sets.set(label,set);}
   }
-  summary.targets[label] = t;
+  refLabel ||= sets.keys().next().value; assert.ok(sets.has(refLabel),'reference missing');
+  const ref=sets.get(refLabel).rows;
+  const summary={schema:'ht245.compare.v2',observation:'15-significant-digit serialized public trade output',reference:refLabel,sourceSha256:first.identity.sourceSha256,manifestSha256:first.run.manifestSha256,comparatorSha256:fileSha(fileURLToPath(import.meta.url)),evidence:bundles.map(b=>({runSha256:b.runSha256,identitySha256:b.run.identitySha256,targets:b.run.targets.map(t=>({label:t.label,receiptSha256:t.receiptSha256,runtimeSha256:t.runtimeSha256,binarySha256:t.binarySha256,compiler:t.compiler,build:t.build,runner:t.runner}))})),targets:{}};
+  for(const[label,set]of sets){if(label===refLabel)continue;
+    const byId=new Map(set.rows.map(r=>[r.id,r]));
+    const t={attemptedCases:ref.length,successfulPairs:0,matchingRefusals:0,counts:{},differingCases:[],refusals:[],pnlTradesCompared:0,pnlTradesDiffering:0,maxUlps:'0',signChanges:0,positiveLabelChanges:0};
+    for(const a of ref){const b=byId.get(a.id),r=classify(a,b);t.counts[r.class]=(t.counts[r.class]||0)+1;
+      if(r.class==='matching-refusal'){t.matchingRefusals++;t.refusals.push({id:a.id,error:r.error});continue;}
+      t.successfulPairs++;t.pnlTradesCompared+=Math.min(a.tradeCount,b.tradeCount);
+      for(const d of r.firstDiffs||[])if(d.field==='pnl'){t.pnlTradesDiffering++;if(BigInt(d.ulps)>BigInt(t.maxUlps))t.maxUlps=d.ulps;if(d.signChange)t.signChanges++;if(d.positiveLabelChange)t.positiveLabelChanges++;}
+      if(r.class!=='identical')t.differingCases.push({id:a.id,...r});
+    }
+    summary.targets[label]=t;
+  }
+  assert.ok(Object.keys(summary.targets).length,'comparison needs at least two executed targets');
+  return summary;
 }
-for (const [label, t] of Object.entries(summary.targets)) {
-  console.log(`${label.padEnd(20)} vs ${refLabel}: cases=${t.cases} ${JSON.stringify(t.counts)} pnlTrades=${t.pnlTradesDiffering}/${t.pnlTradesCompared} maxUlps=${t.maxUlps} signChanges=${t.signChanges}`);
-  for (const c of t.differingCases.slice(0, 12)) console.log(`    ${c.class} ${c.id} ${c.note || ''}`.trimEnd());
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)) {
+  try { const args=process.argv.slice(2),dirs=[];let ref,json;
+    for(let i=0;i<args.length;i++) {if(args[i]==='--ref')ref=args[++i];else if(args[i]==='--json')json=args[++i];else{assert.ok(!args[i].startsWith('--'),'unknown argument');dirs.push(args[i]);}}
+    assert.ok(dirs.length,'usage: compare.mjs run-dir [run-dir...] [--ref target] [--json file]');
+    const summary=compare(dirs,ref);
+    for(const[label,t]of Object.entries(summary.targets))console.log(`${label} vs ${summary.reference}: attempts=${t.attemptedCases} successful=${t.successfulPairs} refusals=${t.matchingRefusals} ${JSON.stringify(t.counts)}`);
+    if(json){writeFileSync(json+'.tmp',JSON.stringify(summary,null,2)+'\n');renameSync(json+'.tmp',json);}
+  }catch(error){console.error(error.message);process.exitCode=1;}
 }
-if (jsonIdx >= 0) writeFileSync(args[jsonIdx + 1], JSON.stringify(summary, null, 1) + '\n');

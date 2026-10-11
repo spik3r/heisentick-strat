@@ -1,6 +1,7 @@
 // Command harness runs the engine's public API over a case manifest and writes
 // one JSON receipt line per case. Every float is recorded as its IEEE-754 bit
-// pattern so a comparison across targets is exact. It reads engine source only
+// pattern after the public API rounds numbers to 15 significant decimal digits.
+// This does not expose raw broker intermediates or level history. It reads engine source only
 // through the exported API and changes nothing in the engine.
 //
 //	harness -root <strat checkout> -manifest <file> [-case <id>] > receipts.jsonl
@@ -98,23 +99,28 @@ type costBits struct {
 	FillOn      string `json:"fillOn"`
 }
 
+var buildSourceSHA string // injected by the evidence runner into this binary
+
 type targetInfo struct {
-	Go      string `json:"go"`
-	GOOS    string `json:"goos"`
-	GOARCH  string `json:"goarch"`
-	GOAMD64 string `json:"goamd64,omitempty"`
-	Module  string `json:"module"`
-	VCS     string `json:"vcsRevision,omitempty"`
-	Dirty   string `json:"vcsModified,omitempty"`
+	Settings     map[string]string `json:"settings"`
+	SourceSHA256 string            `json:"sourceSha256"`
+	Go           string            `json:"go"`
+	GOOS         string            `json:"goos"`
+	GOARCH       string            `json:"goarch"`
+	GOAMD64      string            `json:"goamd64,omitempty"`
+	Module       string            `json:"module"`
+	VCS          string            `json:"vcsRevision,omitempty"`
+	Dirty        string            `json:"vcsModified,omitempty"`
 }
 
 func bits(v float64) string { return fmt.Sprintf("%016x", math.Float64bits(v)) }
 
 func target() targetInfo {
-	info := targetInfo{Go: runtime.Version(), GOOS: runtime.GOOS, GOARCH: runtime.GOARCH}
+	info := targetInfo{Settings: map[string]string{}, SourceSHA256: buildSourceSHA, Go: runtime.Version(), GOOS: runtime.GOOS, GOARCH: runtime.GOARCH}
 	if bi, ok := debug.ReadBuildInfo(); ok {
 		info.Module = bi.Main.Path
 		for _, s := range bi.Settings {
+			info.Settings[s.Key] = s.Value
 			switch s.Key {
 			case "GOAMD64":
 				info.GOAMD64 = s.Value
@@ -154,7 +160,15 @@ func main() {
 	manifestPath := flag.String("manifest", "", "case manifest JSON")
 	only := flag.String("case", "", "run one case id")
 	label := flag.String("label", "", "free-form target label recorded on every receipt")
+	identity := flag.Bool("identity", false, "print executed binary runtime identity and exit")
 	flag.Parse()
+	if *identity {
+		if err := json.NewEncoder(os.Stdout).Encode(target()); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		return
+	}
 	raw, err := os.ReadFile(*manifestPath)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

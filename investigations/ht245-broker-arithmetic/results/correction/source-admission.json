@@ -1,0 +1,115 @@
+{
+  "schema": "ht245-source-inventory-admission-proof-v1",
+  "baseHead": "6dfa80eb6e36100a4fcc7fa951a293d05c400c32",
+  "existingSourcesUnchanged": 261,
+  "addedSources": {
+    "investigations/ht245-broker-arithmetic/harness/main.go": "e0c67b84c918b6333a63f87a8179801e614ca09b6bf1fb6b03298433d43fa9ee",
+    "investigations/ht245-broker-arithmetic/micro/main.go": "62ded5d589839ad24c120bfbb8a2af2dca04976a045d1002d84f95916d1e979f",
+    "investigations/ht245-broker-arithmetic/probe/main.go": "bc264aa03fdfcababca4cdb513308853a3aff61191e718e5bd7c79a568c895ca"
+  },
+  "targets": {
+    "linux-amd64": {
+      "buildInputsSha256": "cb95fca65238c5dd9bdff7acd5c4e2c0947084c1c0d71396f1cc9599bdb60c56",
+      "buildInputCount": 215,
+      "instructions": {
+        "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
+          "sha256": "90d1ce1102961e09e77000f91ba84cf108c497302f7018363a277e9fe3540e5c",
+          "instructionCount": 196
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
+          "sha256": "ff89f25281656573b929fb85fed518ba20b182c9476fe4672ebd154afaeb4961",
+          "instructionCount": 281
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
+          "sha256": "a7a1cdfa37834f5ea5d4338c40d3216d0da9e09d19ec4e66ca645a3ed632aff3",
+          "instructionCount": 225
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
+          "sha256": "93b4dfb38a9f4f334f4fb119eea9920845f8660ffc1eb510e3fbbb3a0f1b3a70",
+          "instructionCount": 305
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
+          "sha256": "6878db2da63103e016f7258a4b0f851d3573bac9965a099a1a39f68395de99e3",
+          "instructionCount": 314
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
+          "sha256": "54173fa7cb56b619faf3c764c7fa2e699d7d74446afefeacb1ff485e0c9ff699",
+          "instructionCount": 161
+        },
+        "github.com/spik3r/heisentick-strat/report.ProjectSequentialMetrics": {
+          "sha256": "32e7b2df2a5818b65578e10f15500d27806e52994060ae20e74f15a4d0f8b83e",
+          "instructionCount": 485
+        }
+      }
+    },
+    "linux-arm64": {
+      "buildInputsSha256": "cb95fca65238c5dd9bdff7acd5c4e2c0947084c1c0d71396f1cc9599bdb60c56",
+      "buildInputCount": 215,
+      "instructions": {
+        "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
+          "sha256": "8239307470f8df0fd0fb276dc1c8261b9ba2be020fb9931a19b05b0a41b88c7b",
+          "instructionCount": 169
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
+          "sha256": "ada181a2308a2e6757757b773d3660e2cc29d75516af75b994ff309328f339f8",
+          "instructionCount": 275
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
+          "sha256": "5c742c154f433125d506107191ce54d21b0737b5e3e829142074f42e7fa1524a",
+          "instructionCount": 237
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
+          "sha256": "e5b47cf8e6e0c5bab40813e7021cdf8ea799a174bde4402dcc3ad3e803befca6",
+          "instructionCount": 317
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
+          "sha256": "30b5cc18903b033fb059ff5b888ce73735f936ee2d5125727dfea9a7b43c8ec4",
+          "instructionCount": 316
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
+          "sha256": "dd6e6a28662277a93d8287f1cac6975cd89d3ea0c0b5ee541985044db8e07a7b",
+          "instructionCount": 266
+        },
+        "github.com/spik3r/heisentick-strat/report.ProjectSequentialMetrics": {
+          "sha256": "9e2ac5952c7855b6632258ae0de2a631ffabf512aa1964bc15ee5aa17a482c05",
+          "instructionCount": 569
+        }
+      }
+    },
+    "js-wasm": {
+      "buildInputsSha256": "4c0784bd99ed2f35ec6196aaad39122c5d71bffd8d2f00dfe9012e093f23c5d2",
+      "buildInputCount": 220,
+      "instructions": {
+        "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
+          "sha256": "59eb8087d14a89d316e6ff63c07bf8ff112062d549ca312a302320964978033b",
+          "instructionCount": 810
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
+          "sha256": "3534ff92dd250ccd1592eca20b9f2713f8501ac1f766f070f6fae08264f88428",
+          "instructionCount": 1220
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
+          "sha256": "96becad4f609c50302eb8c32408f314911466d198a374d414e261c79f9c2e043",
+          "instructionCount": 1015
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
+          "sha256": "db87082aa7692ce4b9531133255ce56567a78bec29effe929196dc2fe0675674",
+          "instructionCount": 1457
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
+          "sha256": "44dde235b7ed8084bcc516f1dbe2cf52854b29cf39a9ca7c2f12552730a65c0a",
+          "instructionCount": 1453
+        },
+        "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
+          "sha256": "7c58063e946a8f421a6fb2430af7f363ef8e09a4408756a26a1a4337dd9614d8",
+          "instructionCount": 714
+        },
+        "github.com/spik3r/heisentick-strat/report.ProjectSequentialMetrics": {
+          "sha256": "f547a853cc1870489e65957ae195792e5fe3b1a5e5a577ba4fc847bc1550227e",
+          "instructionCount": 2176
+        }
+      }
+    }
+  },
+  "admittedManifestSha256": "3fdb0517fceb5c840eb5893a302a6c8172ccfc5712bdf47ab3a9c80d44791f8d"
+}

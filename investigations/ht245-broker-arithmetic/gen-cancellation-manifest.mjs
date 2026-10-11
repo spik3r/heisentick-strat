@@ -8,6 +8,16 @@
 // the case where fused and separately rounded products differ most visibly.
 // Bars, strategy source and every other cost stay the frozen bytes.
 import { readFileSync } from 'node:fs';
+import { basename, dirname } from 'node:path';
+import assert from 'node:assert/strict';
+import { loadRun, fileSha } from './evidence.mjs';
+function validatedRows(path, manifestPath) {
+  const bundle = loadRun(dirname(path));
+  assert.equal(bundle.run.manifestSha256, fileSha(manifestPath), 'generator manifest differs from executed manifest');
+  const set = bundle.sets.get(basename(path, '.jsonl'));
+  assert.ok(set, 'generator target absent from current run');
+  return new Map(set.rows.map(r => [r.id, r]));
+}
 
 const [baselinePath, manifestPath] = process.argv.slice(2);
 const buf = new DataView(new ArrayBuffer(8));
@@ -18,7 +28,7 @@ const up = (x) => fromBits(toBits(x) + 1n);
 const down = (x) => fromBits(toBits(x) - 1n);
 
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
-const base = new Map(readFileSync(baselinePath, 'utf8').trim().split('\n').map((l) => JSON.parse(l)).map((r) => [r.id, r]));
+const base = validatedRows(baselinePath, manifestPath);
 const cases = [];
 for (const c of manifest.cases) {
   const r = base.get(c.id);

@@ -2405,122 +2405,146 @@
   {
    "id": "family-sequential-full-e1-long#scale0",
    "source": "conformance/run/family-sequential-full-e1-long",
-   "scale": "1.728773501258"
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-long#scale1",
    "source": "conformance/run/family-sequential-full-e1-long",
-   "scale": "1.881083771894"
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-long#scale2",
    "source": "conformance/run/family-sequential-full-e1-long",
-   "scale": "1.572066208848"
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-long#scale3",
    "source": "conformance/run/family-sequential-full-e1-long",
-   "scale": "1.896350070402"
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-long#scale4",
    "source": "conformance/run/family-sequential-full-e1-long",
-   "scale": "1.655529819379"
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-long#scale5",
    "source": "conformance/run/family-sequential-full-e1-long",
-   "scale": "1.743002703999"
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-short#scale0",
    "source": "conformance/run/family-sequential-full-e1-short",
-   "scale": "1.728773501258"
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-short#scale1",
    "source": "conformance/run/family-sequential-full-e1-short",
-   "scale": "1.881083771894"
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-short#scale2",
    "source": "conformance/run/family-sequential-full-e1-short",
-   "scale": "1.572066208848"
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-short#scale3",
    "source": "conformance/run/family-sequential-full-e1-short",
-   "scale": "1.896350070402"
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-short#scale4",
    "source": "conformance/run/family-sequential-full-e1-short",
-   "scale": "1.655529819379"
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e1-short#scale5",
    "source": "conformance/run/family-sequential-full-e1-short",
-   "scale": "1.743002703999"
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-long#scale0",
    "source": "conformance/run/family-sequential-full-e2-long",
-   "scale": "1.728773501258"
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-long#scale1",
    "source": "conformance/run/family-sequential-full-e2-long",
-   "scale": "1.881083771894"
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-long#scale2",
    "source": "conformance/run/family-sequential-full-e2-long",
-   "scale": "1.572066208848"
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-long#scale3",
    "source": "conformance/run/family-sequential-full-e2-long",
-   "scale": "1.896350070402"
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-long#scale4",
    "source": "conformance/run/family-sequential-full-e2-long",
-   "scale": "1.655529819379"
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-long#scale5",
    "source": "conformance/run/family-sequential-full-e2-long",
-   "scale": "1.743002703999"
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-short#scale0",
    "source": "conformance/run/family-sequential-full-e2-short",
-   "scale": "1.728773501258"
+   "scale": "1.728773501258",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-short#scale1",
    "source": "conformance/run/family-sequential-full-e2-short",
-   "scale": "1.881083771894"
+   "scale": "1.881083771894",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-short#scale2",
    "source": "conformance/run/family-sequential-full-e2-short",
-   "scale": "1.572066208848"
+   "scale": "1.572066208848",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-short#scale3",
    "source": "conformance/run/family-sequential-full-e2-short",
-   "scale": "1.896350070402"
+   "scale": "1.896350070402",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-short#scale4",
    "source": "conformance/run/family-sequential-full-e2-short",
-   "scale": "1.655529819379"
+   "scale": "1.655529819379",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sequential-full-e2-short#scale5",
    "source": "conformance/run/family-sequential-full-e2-short",
-   "scale": "1.743002703999"
+   "scale": "1.743002703999",
+   "expectedError": "invalid-sequential-input: bars.binding at bar 0"
   },
   {
    "id": "family-sma-golden-cross-protected#scale0",
