@@ -6,6 +6,12 @@ version and is named here.
 
 ## [Unreleased]
 
+- Add a Go-owned paper-prefix API/native command for qualified ordinary ORB and
+  faithful legacySetup9 routes: explicit costs/equity, causal activation, open
+  account MTM, partial/final trade accounting and replay-verified recovery.
+  Existing prefix/Sequential contracts remain unchanged. HTF/source-entry,
+  full E1/E2, release adoption and operational activation remain separate gates.
+
 - Add read-only Go Sequential source inspection through the native library/CLI
   and engine WASM. Preserve the parser result, bind source and Go config bytes,
   and distinguish generic execution from fixture-only accounting and unsupported

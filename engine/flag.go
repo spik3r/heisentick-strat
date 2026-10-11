@@ -321,6 +321,10 @@ func (b *broker) applyPartialManagement(i int) {
 	px := b.series.C[i] - sign*b.slippageAt(b.series.C[i])
 	points := (px - pos.Entry) * sign
 	pnl := points*closedSize - b.costs.FeePerUnit*closedSize
+	var paperBefore float64
+	if b.paperAccounting != nil {
+		paperBefore = b.realized
+	}
 	b.realized += pnl
 	b.trades = append(b.trades, Trade{
 		Side:       pos.Side.String(),
@@ -346,6 +350,9 @@ func (b *broker) applyPartialManagement(i int) {
 	pos.PartialTaken = true
 	if p.MoveBreakeven {
 		b.tightenStop(pos.Entry)
+	}
+	if b.paperAccounting != nil {
+		b.paperAccounting.exit(b, paperBefore, pnl, i, true)
 	}
 }
 
