@@ -20,9 +20,11 @@ admission and activation remain separate. See the
   same-target recovery. No new family, endpoint liquidation or portable
   checkpoint support; tagged release and browser adoption remain separate.
 
-- Add a Go-owned paper-prefix API/native command for qualified ordinary ORB and
-  faithful legacySetup9 routes: explicit costs/equity, causal activation, open
-  account MTM, partial/final trade accounting and replay-verified recovery.
+- Add a Go-owned paper-prefix API/native command with explicit costs/equity,
+  causal activation, open account MTM, partial/final trade accounting and
+  replay-verified recovery. Paper qualification covers ordinary ORB and raw
+  `seq.legacy.setup9.v1`; the producer also admits the seasonal legacy profile,
+  but seasonal-specific paper qualification and consumer admission remain gated.
   Existing prefix/Sequential contracts remain unchanged. HTF/source-entry,
   full E1/E2, release adoption and operational activation remain separate gates.
 

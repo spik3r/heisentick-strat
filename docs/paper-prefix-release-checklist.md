@@ -47,9 +47,15 @@ It is additive to existing prefix, Sequential and generic run contracts:
 
 - Native `heisentick paper-prefix --request-file=...` and public
   `engineRunPaperPrefix` invoke the same Go execution/accounting producer.
-  Ordinary ORB admits close and next-open fills; faithful legacySetup9 admits
-  close fills only. Source-entry, HTF, Full Sequential E1/E2 and special or
-  dedicated families are outside this paper API.
+  Ordinary ORB admits close and next-open fills; legacySetup9 admits close fills
+  only. Paper proof covers ORB and raw `seq.legacy.setup9.v1`. The producer also
+  admits `seq.legacy.setup9_perf_seasonal.v1`, but the paper tests contain **zero
+  seasonal-specific paper cases**. Separate generic legacy oracle coverage
+  (52 raw / 52 seasonal runs through `engineRunFixture`) does not qualify seasonal
+  paper accounting or checkpoint recovery. Consumers must exclude seasonal paper
+  admission until that separate qualification passes; no producer refusal is
+  claimed. Source-entry, HTF, Full Sequential E1/E2 and special or dedicated
+  families are outside this paper API.
 - Explicit positive starting equity, nonnegative fees/slippage, multiplier one,
   source/config/route identity, closed-bar watermark and immutable activation
   boundary are required. Caller labels and close watermarks do not authenticate
