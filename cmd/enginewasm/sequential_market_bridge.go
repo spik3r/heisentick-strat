@@ -170,7 +170,11 @@ func admitSequentialMarket(raw, source string) ([]byte, bool) {
 			out.Timeline = &timeline
 		}
 		if err == nil {
-			_, err = native.RunSequentialMarketFixture(fixture, source)
+			var executed native.SequentialMarketRun
+			if executed, err = native.RunSequentialMarketFixture(fixture, source); err == nil {
+				// run refuses here too (for example an unrepresentable return).
+				_, err = report.ProjectSequentialMetrics(executed.Run, executed.Accounting)
+			}
 		}
 	}
 	if err == nil {

@@ -154,7 +154,10 @@ func ValidateSequentialMarketFixture(fixture RunFixture, source string) (Sequent
 		if !isFinite(bar.O) || !isFinite(bar.H) || !isFinite(bar.L) || !isFinite(bar.C) || !isFinite(bar.V) || bar.V < 0 || bar.H < bar.L || bar.H < bar.O || bar.H < bar.C || bar.L > bar.O || bar.L > bar.C {
 			return route, sequentialAccountingError("bars", i)
 		}
-		if i > 0 && bar.T <= fixture.Bars[i-1].T {
+		// Spacing below one step is a mislabelled timeframe or a bad timestamp,
+		// not a hole. Spacing above one step is left to the shared scheduler
+		// admission, which refuses it as a typed time gap.
+		if i > 0 && bar.T < fixture.Bars[i-1].T+float64(step) {
 			return route, sequentialAccountingError("bars.timestamp", i)
 		}
 		if fixture.RawBars != nil {

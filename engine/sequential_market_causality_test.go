@@ -47,6 +47,7 @@ func causalityRun(t *testing.T, policy, timeframe string, step int64, bars []mar
 	return trades, audit, capture.data.Marks
 }
 
+// Exercises the shared scheduler directly, not the v2 entry point.
 func TestSequentialMarketPrefixCausality(t *testing.T) {
 	for _, policy := range []string{"E1", "E2"} {
 		for seed := int64(1); seed <= 4; seed++ {

@@ -269,6 +269,7 @@ func TestSequentialMarketRefusalTable(t *testing.T) {
 		{"fractional timestamp", strings.Replace(good, "[1709510400000,", "[1709510400000.5,", 1), source, "invalid-sequential-input", "bars.timestamp", "invalid", ""},
 		{"high below low", strings.Replace(good, ",100,105,95,100,1]", ",100,94,95,100,1]", 1), source, "invalid-sequential-accounting", "bars", "invalid", ""},
 		{"null price cell", strings.Replace(good, ",100,105,95,100,1]", ",null,105,95,100,1]", 1), source, "invalid-sequential-input", "$.bars", "invalid", ""},
+		{"bars closer than one step", marketFixture("XAUUSD", "1h", 1_800_000, marketEntryAndTarget, marketCosts, nil), source, "invalid-sequential-accounting", "bars.timestamp", "invalid", ""},
 		{"empty bars", strings.Replace(good, good[strings.Index(good, `"bars":`):], `"bars":[]}`, 1), source, "SEQUENTIAL_FIXTURE_INVALID", "bars", "invalid", ""},
 		{"empty source", good, "", "SEQUENTIAL_DSL_INVALID", "source", "invalid", ""},
 		{"not JSON", "{", source, "invalid-sequential-input", "$", "invalid", ""},
@@ -297,12 +298,14 @@ func TestSequentialMarketRefusalTable(t *testing.T) {
 func TestSequentialMarketAdmissionNeverDisagreesWithRun(t *testing.T) {
 	source := marketSource("XAUUSD", "1h", "E1")
 	for name, fixture := range map[string]string{
-		"target":    marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndTarget, marketCosts, nil),
-		"stop":      marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndStop, marketCosts, nil),
-		"no order":  marketFixture("XAUUSD", "1h", 3_600_000, marketSetupBars, marketCosts, nil),
-		"open end":  marketFixture("XAUUSD", "1h", 3_600_000, marketEntryOnly, marketCosts, nil),
-		"hole":      marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndTarget, marketCosts, map[int]int64{3: 2}),
-		"bad route": marketFixture("EURUSD", "1h", 3_600_000, marketEntryAndTarget, marketCosts, nil),
+		"target":      marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndTarget, marketCosts, nil),
+		"stop":        marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndStop, marketCosts, nil),
+		"no order":    marketFixture("XAUUSD", "1h", 3_600_000, marketSetupBars, marketCosts, nil),
+		"open end":    marketFixture("XAUUSD", "1h", 3_600_000, marketEntryOnly, marketCosts, nil),
+		"hole":        marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndTarget, marketCosts, map[int]int64{3: 2}),
+		"tiny equity": marketFixture("XAUUSD", "1h", 3_600_000, marketEntryAndTarget, `{"feePerUnit":0.01,"fillOn":"open","slippage":0.5,"startEquity":5e-324}`, nil),
+		"half step":   marketFixture("XAUUSD", "1h", 1_800_000, marketEntryAndTarget, marketCosts, nil),
+		"bad route":   marketFixture("EURUSD", "1h", 3_600_000, marketEntryAndTarget, marketCosts, nil),
 	} {
 		t.Run(name, func(t *testing.T) {
 			run, runOK := runSequentialMarket(fixture, source)

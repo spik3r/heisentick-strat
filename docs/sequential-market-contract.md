@@ -17,13 +17,16 @@ study, a consumer activation or an owner-approved real-market calendar. Claim:
 | Four exact source SHA-256 values | Fixture pin | Any authored Full E1/E2 source. The source's own route and policy are used. |
 | Full E1/E2 only on `SYNTH` / `5m` (`validateSequentialAccountingFixture`) | Fixture pin | `symbol` and `timeframe` come from the source. The fixture must match. Seven timeframes below. |
 | Start equity omitted or 0 becomes 10000 | Generic normalization | Not applied. `costs.startEquity` must be given and positive. |
-| Timestamp step other than one timeframe is refused (`unsupported-sequential-time-gap`) | Accepted contract refusal | Unchanged. See the decision sheet. |
-| A held position on the last bar refuses the whole run (`unsupported-incomplete-terminal-run`) | Accepted contract refusal | Unchanged. See the decision sheet. |
+| Timestamp step other than one timeframe is refused (`unsupported-sequential-time-gap`) | Fail-closed refusal bound by the corpus | Unchanged. See the decision sheet. |
+| A held position on the last bar refuses the whole run (`unsupported-incomplete-terminal-run`) | Fail-closed refusal bound by the corpus | Unchanged. See the decision sheet. |
 | Core resets on `data_gap` | Engine capability | Unreachable through admitted input, because admission refuses first. Unchanged. |
 
-"Accepted contract refusal" means the written contract and the independent
-execution corpus (`engine/testdata/sequential_execution_e1_e2_v1`, convention 8
-and the `refusals` cases) require the refusal. The corpus even binds
+"Fail-closed refusal bound by the corpus" means the implementation coordinator
+recorded the restriction in the contract (section 7, "D4 E1/E2 synthetic
+execution acceptance", which says such restrictions "defer undefined inputs;
+they do not settle new trading policies") and the independent execution corpus
+(`engine/testdata/sequential_execution_e1_e2_v1`, convention 8 and the
+`refusals` cases) binds the refusal. It is not an owner-approved semantic. The corpus even binds
 `e1.refuse_missing_interval_after_exit`: a hole after the trade has closed is
 still refused. These two refusals are not removed here.
 
@@ -129,6 +132,8 @@ close-bar mark basis `sequential-broker-close-mtm-v1`, defined in the v1 contrac
 - `limits`: `contiguousBarsOnly: true`, `closureCalendar: false`,
   `terminalOpenPosition: false`, `maxBars: 500000`.
 
+A short window is not flagged. A series shorter than the ATR14 and Setup warm-up (a decision is possible only from the 14th bar for E1 and the 26th for E2) succeeds with zero trades and a `no-trades` reason; the app should show the bar count beside it.
+
 A zero-trade success is a real result: statistics are null with `no-trades`,
 equity is constant. It is never used to mean "unsupported".
 
@@ -144,7 +149,7 @@ identity, run, metrics, terminal, capabilities or limits. `admit` classifies:
 
 | `error.code` | `field` | disposition | Meaning |
 | --- | --- | --- | --- |
-| `unsupported-sequential-time-gap` | `series.timestamp` | unsupported | A bar opens more than one step after the previous bar. Closure, holiday, outage and missing data are not told apart. `barIndex` is the first bar after the hole. |
+| `unsupported-sequential-time-gap` | `series.timestamp` | unsupported | A bar opens more than one step after the previous bar (spacing below one step is `invalid`, field `bars.timestamp`). Closure, holiday, outage and missing data are not told apart. `barIndex` is the first bar after the hole. |
 | `unsupported-incomplete-terminal-run` | `held position` | unsupported | The last bar ends with an open position. Nothing is closed or marked on the app's behalf. |
 | `unsupported_config` | `source`, `costs.*`, or a top-level key | unsupported | Unsupported policy, symbol form, timeframe, fill mode, negative cost, or unknown field. |
 | `unsupported-sequential-route` | `timedCalendar`, ... | unsupported | A calendar, source series or route override was supplied. |
@@ -260,7 +265,7 @@ equity 10,000) only so the corpus arithmetic stays checkable.
 
 ## Consumer handoff
 
-Supported source identifiers: none are pinned. A source is supported if it is a
+Supported source identifiers: none are pinned. `strategyId` is a free label and does not select behavior, so a v2 run may echo any string; do not read meaning into it. A source is supported if it is a
 Full E1 or E2 source as described under Request. The v1 strategy ids
 (`dslSequentialFullE1`, `dslSequentialFullE2`) and their four pinned hashes still
 work only on the v1 export. Identify a v2 run by `identity.dslSha256`,
@@ -313,7 +318,7 @@ Tests the consumer should run when adopting:
 - `cmd/enginewasm/sequential_market_bridge_test.go`: hand-derived numbers
   (fees, equity points, drawdown), refusals, admission/run agreement, v1 unchanged.
 - `scripts/checks/sequential-market-parity.mjs`: native CLI against Node-hosted
-  WASM exports, schema validation, relative tolerance 1e-12 on money leaves only.
+  WASM exports, schema validation, relative tolerance 1e-12 on every non-index number (prices, quantities, money); indices, timestamps, counts and strings exact.
 
 Remaining limits: no closure calendar, no gap handling, no terminal-open
 reporting, no E1/E2 prefix or checkpoint API, no P1, no Legacy route, no
