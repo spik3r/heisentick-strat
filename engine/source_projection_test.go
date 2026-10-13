@@ -155,7 +155,7 @@ func TestCanonicalC5FixtureRunsParsedDSLOnSourceBarsButKeepsChartRoute(t *testin
 	}
 	source := `dsl v7
 strategy "C5 parsed route" { description "source setup uses chart route" }
-market conditions { slices(XAUUSD 15m) day type in (trending) or movement below 1 }
+market conditions { slices(XAUUSD 15m) day type in (trending) or movement below 1 movement below 1 }
 setup {
   type: flag continuation
   source timeframe 4h
@@ -164,6 +164,12 @@ setup {
   movement between 0 and 1
 }
 entryTf 15m`
+	// The route fixture sets both independent ER thresholds explicitly. The
+	// day-type escape must not accidentally provide the global movement cap.
+	parsed, parseErr := dsl.Parse(source)
+	if parseErr != nil || len(parsed.Errors) != 0 || parsed.Config["dayTypeErEscape"] != float64(1) || parsed.Config["maxMovementEr"] != float64(1) {
+		t.Fatalf("route fixture escape/cap drift: error=%v diagnostics=%v config=%v", parseErr, parsed.Errors, parsed.Config)
+	}
 	result, err := RunFixtureCase(fixture, source)
 	if err != nil {
 		t.Fatalf("RunFixtureCase: %v", err)

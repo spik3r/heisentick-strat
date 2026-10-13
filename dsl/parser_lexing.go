@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 // A nil sink preserves the ordinary parser's historical lexical behavior.
@@ -237,8 +238,12 @@ func splitInlineBody(body string, starts []string, section string) []string {
 func splitInlineBodyWithCoverage(body string, starts []string, section string, leading func(string)) []string {
 	hits := []inlineHit{}
 	depth := 0
+	var quote byte
 	lower := strings.ToLower(body)
 	for i, r := range body {
+		quoted := quote != 0
+		quote = advanceQuotedText(quote, body[i])
+		marketWhitespace := section == "market" && !quoted
 		switch r {
 		case '(':
 			depth++
@@ -247,12 +252,24 @@ func splitInlineBodyWithCoverage(body string, starts []string, section string, l
 				depth--
 			}
 		}
-		if depth != 0 || (i > 0 && !unicode.IsSpace(rune(body[i-1]))) {
+		previousBoundary := i == 0 || unicode.IsSpace(rune(body[i-1]))
+		if marketWhitespace && i > 0 {
+			previous, _ := utf8.DecodeLastRuneInString(body[:i])
+			previousBoundary = unicode.IsSpace(previous)
+		}
+		if depth != 0 || !previousBoundary {
 			continue
 		}
 		for _, start := range starts {
 			startLower := strings.ToLower(start)
-			if strings.HasPrefix(lower[i:], startLower) && isBoundary(body, i+len(start)) {
+			if strings.HasPrefix(lower[i:], startLower) && inlineMarketBoundary(body, i+len(start), marketWhitespace) {
+				// The escape is part of its owning day-type directive. A later
+				// standalone movement directive still starts a separate clause.
+				// Keep even a malformed escape together so the day parser can
+				// diagnose it instead of silently replacing it with defaults.
+				if startLower == "movement" && inlineDayTypeEscape(body, i, hits) {
+					continue
+				}
 				// "entry" belongs to this complete opt-in setup phrase; a later
 				// independent entry directive must still begin its own clause.
 				if section == "setup" && startLower == "entry" {
@@ -269,10 +286,10 @@ func splitInlineBodyWithCoverage(body string, starts []string, section string, l
 			}
 		}
 		for _, extra := range clockRangeInlineStarts {
-			if inQuotedText(body, i) {
+			if quoted {
 				break
 			}
-			if strings.HasPrefix(lower[i:], extra.head) && isBoundary(body, i+len(extra.head)) && extra.next.MatchString(body[i+len(extra.head):]) {
+			if strings.HasPrefix(lower[i:], extra.head) && inlineMarketBoundary(body, i+len(extra.head), marketWhitespace) && extra.next.MatchString(body[i+len(extra.head):]) {
 				hits = append(hits, inlineHit{index: i, word: extra.head})
 				break
 			}
@@ -297,6 +314,19 @@ func splitInlineBodyWithCoverage(body string, starts []string, section string, l
 		parts = append(parts, body[hit.index:end])
 	}
 	return parts
+}
+
+func inlineDayTypeEscape(body string, index int, hits []inlineHit) bool {
+	if len(hits) == 0 {
+		return false
+	}
+	owner := hits[len(hits)-1]
+	if !strings.EqualFold(owner.word, "day") {
+		return false
+	}
+	before := tokenize(normalizeLine(body[owner.index:index]))
+	return len(before) >= 3 && strings.EqualFold(before[0], "day") &&
+		strings.EqualFold(before[1], "type") && strings.EqualFold(before[len(before)-1], "or")
 }
 
 // inQuotedText reports whether index falls inside a quoted string of body, so
@@ -384,6 +414,19 @@ func setupTypeValueEnd(body string, pos int) int {
 		}
 	}
 	return pos
+}
+
+// Unicode whitespace is expanded only in unquoted market clauses. Retain the
+// existing byte boundaries for quoted metadata and unrelated inline sections.
+func inlineMarketBoundary(text string, index int, marketWhitespace bool) bool {
+	if !marketWhitespace {
+		return isBoundary(text, index)
+	}
+	if index >= len(text) {
+		return true
+	}
+	r, _ := utf8.DecodeRuneInString(text[index:])
+	return unicode.IsSpace(r) || r == '(' || r == ':'
 }
 
 func isBoundary(text string, index int) bool {

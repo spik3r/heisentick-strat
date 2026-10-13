@@ -5,6 +5,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 type microFeatureDefinition struct {
@@ -450,16 +451,55 @@ func (p *parser) parseSession(tokens []string) {
 	}
 }
 
-func (p *parser) parseDay(tokens []string) {
+func (p *parser) parseDay(line logicalLine, tokens []string) {
 	if len(tokens) >= 2 && strings.EqualFold(tokens[0], "type") {
 		values := valuesAfterIn(tokens[1:])
 		if len(values) > 0 {
 			p.config["dayTypes"] = lowerListUntil(values, "or", "strictly")
 		}
-		if idx := indexOfLower(tokens, "movement"); idx >= 0 {
-			p.config["dayTypeErEscape"] = firstNumber(tokens[idx:], 0, 0.55)
-		} else if containsLower(tokens, "strictly") {
+		or := indexOfLower(tokens, "or")
+		strict := indexOfLower(tokens, "strictly")
+		if or >= 0 {
+			suffix := tokens[or:]
+			if strict >= 0 || len(suffix) < 4 || !strings.EqualFold(suffix[1], "movement") || !strings.EqualFold(suffix[2], "below") {
+				p.err(line, "day type escape must use exactly one 'or movement below X' or 'strictly' suffix", "")
+				return
+			}
+			// Normalization splits '+', including a numeric exponent's sign.
+			// Recover one intact source atom only when it accounts for the
+			// entire normalized numeric suffix. Never join separated atoms.
+			raw := strings.FieldsFunc(line.text, func(r rune) bool {
+				return unicode.IsSpace(r) || strings.ContainsRune("(),{}", r)
+			})
+			number := raw[len(raw)-1]
+			normalizedSuffix := strings.Join(suffix[3:], " ")
+			if normalizeLine(number) != normalizedSuffix && strings.HasPrefix(number, ":") {
+				number = number[1:]
+			}
+			if normalizeLine(number) != normalizedSuffix {
+				if cue := strings.Index(strings.ToLower(number), "below:"); cue >= 0 {
+					number = number[cue+len("below:"):]
+				}
+			}
+			if normalizeLine(number) != normalizedSuffix {
+				p.err(line, "day type escape must use exactly one 'or movement below X' or 'strictly' suffix", "")
+				return
+			}
+			value := parseNumber(number, math.NaN())
+			if !isNumberToken(number) || math.IsNaN(value) || math.IsInf(value, 0) {
+				p.malformedNumber(line, number)
+				p.config["dayTypeErEscape"] = 0.55
+				return
+			}
+			p.config["dayTypeErEscape"] = value
+		} else if strict >= 0 {
+			if strict != len(tokens)-1 || containsLower(tokens[:strict], "movement") {
+				p.err(line, "day type escape must use exactly one 'or movement below X' or 'strictly' suffix", "")
+				return
+			}
 			p.config["dayTypeErEscape"] = -1
+		} else if containsLower(tokens, "movement") {
+			p.err(line, "day type escape must use exactly one 'or movement below X' or 'strictly' suffix", "")
 		}
 		return
 	}

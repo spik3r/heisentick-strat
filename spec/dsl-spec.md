@@ -34,6 +34,10 @@ Processing pipeline (normative order):
    `setup { type: channel break hold hold 2 candles }` expands to the `type`
    directive followed by the `hold` directive. Diagnostics for synthetic lines
    report the original physical line.
+   A day-type escape remains a complete directive: `market { day type in
+   (trending) or movement below 0.23 movement below 0.91 }` sets the day-type
+   escape to 0.23 and the independent movement cap to 0.91, identically to
+   placing those two directives on separate lines.
 3. **`when`-clause joining** — a line starting `when ` that has unbalanced
    parentheses or no `then` yet is joined with following lines until its
    parentheses balance and a `then` appears. Diagnostics report the first
@@ -203,6 +207,18 @@ Day-shape gates:
 - `day type in (trending, ranging, …)` — allowed day types; optional escape
   `… or movement below X` (a non-matching day still trades when movement
   efficiency ≤ X; default escape 0.55) or `… strictly` (no escape).
+  The optional suffix must be complete and appear at most once on that
+  directive; a truncated, duplicated, or conflicting escape/strict suffix is
+  an error in both versions. A present malformed or nonfinite escape number
+  is an error in v7; v6 emits a compatibility warning and uses the historical
+  0.55 fallback. A missing number is a structural error in both versions.
+  The number must be one intact source atom, including any leading or exponent
+  sign: `+2e+0` is valid; `2e + 0` and `+ 2` are structural errors. The day-type
+  suffix preserves this atom before parsing despite ordinary `+` normalization.
+  Repeated valid day-type directives retain source-order assignment: an
+  explicit later escape/strict suffix replaces the earlier value, while an
+  omitted suffix leaves it unchanged. Separate movement caps also retain
+  source-order assignment and never change the day-type escape.
   `regime …` is the *deprecated* head for the same gate.
 - `prior day type in (…)` / `not in (…)` — allow/block by the prior day's
   type.

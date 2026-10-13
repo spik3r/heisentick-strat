@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+### Compact market day-type escape correction (HT283)
+
+- Preserve the authored `day type in (...) or movement below X` escape when
+  parsing a compact market block, independently of a following standalone
+  movement cap. Compact and multiline forms now retain the same full config.
+- Diagnose truncated, duplicate and conflicting day-type escape suffixes.
+  Present malformed/nonfinite escape numbers error in v7; v6 warns and keeps
+  the historical 0.55 fallback. Valid repeated directives retain source order.
+  Existing conformance goldens and runtime arithmetic are unchanged; the
+  frozen HT281 research strategy remains multiline and byte-preserved.
 
 ### Supply-demand retest native reporting companion v1 (additive, not released)
 

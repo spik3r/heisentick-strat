@@ -1,0 +1,67 @@
+dsl v7
+# New research identity: dslSupplyDemandEntryRetestResearchV1.
+# Translates prototype defaults; this is not an exact JS or historical port.
+# Requires the separately released native supply-demand retest report companion.
+# Completed daily bias uses completed-daily-direction-decision-time-weekend-v1.
+# Do not compact the market block: exact parsed escape threshold must remain 2.
+strategy "Supply Demand Entry Retest Research V1" {
+  description "Research-only 15m retests of completed 4h zones with completed daily direction. Prototype defaults with native causal admission and accounting; no historical validation or live approval."
+}
+
+market conditions {
+  slices(XAUUSD 15m, EURUSD 15m, GBPUSD 15m, AUDUSD 15m, USDJPY 15m, EURGBP 15m)
+  sessions(london, ny)
+  day type in (trending, ranging, choppy) or movement below 2.0
+  movement below 2.0
+}
+
+setup {
+  type: supply demand
+  source timeframe 4h
+  retest on entry timeframe
+  patterns(DBR, RBR, RBD, DBD)
+  base 1 to 4 candles
+  base body max 0.6 ATR
+  source leg at least 1 ATR within 4 candles
+  impulse at least 2.5 ATR within 4 candles
+  zone width max 1 ATR
+  zone bounds wick
+  retest within 96 candles
+  retest tolerance 0.2 ATR
+  retest first touch only
+  retest must reject zone
+  # No reaction directive: assert native delayed-reaction default is zero.
+  zone break 0.05 ATR
+  zone flip
+  wait 1 candle after zone
+}
+
+filters {
+  higher timeframe must agree
+  side both
+}
+
+triggers {
+  candle in (any)
+}
+
+risk {
+  stop: beyond zone + 0.3 ATR min 0.4 ATR max 3 ATR
+}
+
+target {
+  target 2.5R
+}
+
+management {
+  move stop to breakeven after 0R plus 0.02 ATR
+  trail off
+  maxHoldCandles 0
+  wait 6 candles after trade
+}
+
+execution {
+  risk 100 USD
+}
+
+entryTf 15m
