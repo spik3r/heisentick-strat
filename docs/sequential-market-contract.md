@@ -37,7 +37,9 @@ still refused. These two refusals are not removed here.
 | WASM | `engineRunSequentialMarket(fixtureJSON, source)` and `engineAdmitSequentialMarket(fixtureJSON, source)`, two strings in, one JSON string out |
 | Native | `enginewasm --sequential-market run fixture.json source.strat` and `... admit ...` |
 
-Both return exactly one envelope and never throw. Native exits 0 for a success
+Both return exactly one envelope and never throw. Every failure, including argument,
+size and file-read errors, uses the envelope of the operation that was selected, so an
+`admit` reply always fits the admission schema. Native exits 0 for a success
 envelope (`run`) or a runnable admission (`admit`), 1 for a refusal, 2 for bad
 arguments. Wrong argument types in WASM, including a BigInt, return a typed
 `arguments` refusal and leave the instance usable.
@@ -46,7 +48,11 @@ arguments. Wrong argument types in WASM, including a BigInt, return a typed
 result, so `runnable` is true exactly when `run` succeeds and a refusal carries
 the same error. A held terminal position is known only after execution, so
 admission cannot be cheaper than a run. It also reports bar-spacing gaps
-(`timeline`) so the app can show where a series is not contiguous.
+(`timeline`) so the app can show where a series is not contiguous. Each listed gap has
+`index`, `previousOpenMs`, `openMs`, `deltaMs` and `onGrid`. `missingBars` is present
+only when `deltaMs` is a whole number of steps; an off-grid interval gets no
+missing-bar count, because none is defined and none is invented by rounding.
+At most 32 gaps are listed; `gapCount` is complete.
 
 Schemas: `spec/schemas/sequential-market-result-v2.schema.json` and
 `spec/schemas/sequential-market-admission-v2.schema.json`. Metrics, trade
@@ -228,9 +234,9 @@ treated as approval anywhere below.
 - Written status: unwritten. The accepted rule is "next open", and the corpus
   tests only 5-minute price gaps with no timestamp hole (`e1.gap_up_entry`).
 - Recommendation: yes, at the first observed open plus the usual adverse
-  slippage, with the existing wrong-side rejection against the actual fill. A
-  decision pending when an undeclared gap occurs is dropped with a `data_gap`
-  reason and never filled. Gap risk on an open position (stop at the reopened
+  slippage, with the existing wrong-side rejection against the actual fill. An
+  undeclared gap anywhere, including one that would strand a pending decision,
+  refuses the whole run as in D-A; nothing is dropped or filled across it. Gap risk on an open position (stop at the reopened
   open) already follows the accepted `min(open, stop)` rule.
 - Affected: cases with a decision on the last bar before a closure; stop exits
   at reopening.

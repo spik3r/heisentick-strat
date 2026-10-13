@@ -12,30 +12,30 @@ import (
 // returns one JSON envelope string, success or typed refusal, never a throw.
 func registerSequentialMarket() {
 	js.Global().Set("engineRunSequentialMarket", js.FuncOf(func(_ js.Value, args []js.Value) any {
-		return sequentialMarketExport(args, runSequentialMarket)
+		return sequentialMarketExport(args, runSequentialMarket, sequentialMarketFailure)
 	}))
 	js.Global().Set("engineAdmitSequentialMarket", js.FuncOf(func(_ js.Value, args []js.Value) any {
-		return sequentialMarketExport(args, admitSequentialMarket)
+		return sequentialMarketExport(args, admitSequentialMarket, sequentialMarketAdmissionFailure)
 	}))
 }
 
-func sequentialMarketExport(args []js.Value, run func(raw, source string) ([]byte, bool)) any {
+func sequentialMarketExport(args []js.Value, run func(raw, source string) ([]byte, bool), fail func(error) []byte) any {
 	if len(args) != 2 || !sequentialMarketStringArgument(args[0]) || !sequentialMarketStringArgument(args[1]) {
-		return string(sequentialMarketFailure(sequentialInvalid("arguments", "expected fixture JSON and source strings")))
+		return string(fail(sequentialInvalid("arguments", "expected fixture JSON and source strings")))
 	}
 	if js.Global().Get("Object").Invoke(args[0]).Length() > sequentialMaxFixture {
-		return string(sequentialMarketFailure(sequentialInvalid("fixture", "fixture JSON exceeds 64 MiB")))
+		return string(fail(sequentialInvalid("fixture", "fixture JSON exceeds 64 MiB")))
 	}
 	if js.Global().Get("Object").Invoke(args[1]).Length() > sequentialMaxSource {
-		return string(sequentialMarketFailure(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", sequentialSourceLimitMessage}))
+		return string(fail(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", sequentialSourceLimitMessage}))
 	}
 	source, err := sourcetext.FromJS(args[1])
 	if err != nil {
-		return string(sequentialMarketFailure(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()}))
+		return string(fail(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()}))
 	}
 	raw, err := sourcetext.FromJS(args[0])
 	if err != nil {
-		return string(sequentialMarketFailure(sequentialInvalid("fixture", "fixture JSON must contain valid UTF-16")))
+		return string(fail(sequentialInvalid("fixture", "fixture JSON must contain valid UTF-16")))
 	}
 	out, _ := run(raw, source)
 	return string(out)

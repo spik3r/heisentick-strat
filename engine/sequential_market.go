@@ -37,12 +37,16 @@ type SequentialMarketRun struct {
 }
 
 // SequentialMarketTimeGap describes one observed-bar interval longer than one
-// timeframe step. The engine does not decide whether it is a closure.
+// timeframe step. The engine does not decide whether it is a closure. When the
+// interval is not a whole number of steps (OnGrid false) no missing-bar count
+// is given: none is defined, and none is invented by rounding.
 type SequentialMarketTimeGap struct {
 	Index          int     `json:"index"`
 	PreviousOpenMS float64 `json:"previousOpenMs"`
 	OpenMS         float64 `json:"openMs"`
-	MissingBars    float64 `json:"missingBars"`
+	DeltaMS        float64 `json:"deltaMs"`
+	OnGrid         bool    `json:"onGrid"`
+	MissingBars    *int    `json:"missingBars,omitempty"`
 }
 
 // SequentialMarketTimeline is a read-only scan of bar spacing for diagnostics.
@@ -56,7 +60,7 @@ type SequentialMarketTimeline struct {
 
 const SequentialMarketMaxListedGaps = 32
 
-// ScanSequentialMarketTimeline reports forward gaps only. A duplicate,
+// ScanSequentialMarketTimeline reports forward gaps only (more than one step). A duplicate,
 // out-of-order or non-integral timestamp is a validation error, not a gap.
 func ScanSequentialMarketTimeline(fixture RunFixture, timeframeMS int64) SequentialMarketTimeline {
 	timeline := SequentialMarketTimeline{Bars: len(fixture.Bars), Gaps: []SequentialMarketTimeGap{}}
@@ -71,7 +75,12 @@ func ScanSequentialMarketTimeline(fixture RunFixture, timeframeMS int64) Sequent
 			timeline.GapsTruncated = true
 			continue
 		}
-		timeline.Gaps = append(timeline.Gaps, SequentialMarketTimeGap{i, previous, current, math.Round((current-previous)/step) - 1})
+		gap := SequentialMarketTimeGap{Index: i, PreviousOpenMS: previous, OpenMS: current, DeltaMS: current - previous}
+		if math.Mod(gap.DeltaMS, step) == 0 {
+			missing := int(gap.DeltaMS/step) - 1
+			gap.OnGrid, gap.MissingBars = true, &missing
+		}
+		timeline.Gaps = append(timeline.Gaps, gap)
 	}
 	return timeline
 }

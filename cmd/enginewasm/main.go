@@ -63,18 +63,24 @@ func sequentialMain(args []string) int {
 // --sequential-market run|admit fixture.json source.strat. Typed refusals are
 // printed as envelopes and exit 1, exactly as for the v1 dispatch.
 func sequentialMarketMain(args []string) int {
+	// The selected operation decides the envelope of every failure, including
+	// argument and file errors, so an admit reply always fits the admission schema.
+	fail := sequentialMarketFailure
+	if len(args) > 0 && args[0] == "admit" {
+		fail = sequentialMarketAdmissionFailure
+	}
 	if len(args) != 3 || (args[0] != "run" && args[0] != "admit") {
-		fmt.Println(string(sequentialMarketFailure(sequentialInvalid("arguments", "expected --sequential-market run|admit fixture.json source.strat"))))
+		fmt.Println(string(fail(sequentialInvalid("arguments", "expected --sequential-market run|admit fixture.json source.strat"))))
 		return 2
 	}
 	raw, err := readSequentialInput(args[1], sequentialMaxFixture)
 	if err != nil {
-		fmt.Println(string(sequentialMarketFailure(sequentialInvalid("fixture", err.Error()))))
+		fmt.Println(string(fail(sequentialInvalid("fixture", err.Error()))))
 		return 1
 	}
 	source, err := readSequentialInput(args[2], sequentialMaxSource)
 	if err != nil {
-		fmt.Println(string(sequentialMarketFailure(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()})))
+		fmt.Println(string(fail(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()})))
 		return 1
 	}
 	run := runSequentialMarket

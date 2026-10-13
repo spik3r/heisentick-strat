@@ -214,7 +214,7 @@ func TestSequentialMarketWeekendHoleIsRefusedAndReported(t *testing.T) {
 		t.Fatalf("admission: %+v", adm)
 	}
 	g := adm.Timeline.Gaps[0]
-	if g.Index != 7 || g.MissingBars != 48 || g.OpenMS-g.PreviousOpenMS != 49*3_600_000 {
+	if g.Index != 7 || !g.OnGrid || g.MissingBars == nil || *g.MissingBars != 48 || g.DeltaMS != 49*3_600_000 || g.OpenMS-g.PreviousOpenMS != 49*3_600_000 {
 		t.Fatalf("gap: %+v", g)
 	}
 }
@@ -395,5 +395,113 @@ func TestSequentialMarketAdoptionExamples(t *testing.T) {
 				t.Fatalf("refusal %+v / %s", e.Error, a.Disposition)
 			}
 		})
+	}
+}
+
+// Spacing at, below and above exactly one step, on and off the grid. Run and
+// admit must agree; off-grid gaps are reported without a fabricated bar count.
+func TestSequentialMarketStepBoundaries(t *testing.T) {
+	const step = 3_600_000
+	source := marketSource("XAUUSD", "1h", "E1")
+	cases := []struct {
+		name        string
+		delta       int64
+		code        string
+		disposition string
+		gapOnGrid   *bool
+	}{
+		{"one ms below a step", step - 1, "invalid-sequential-accounting", "invalid", nil},
+		{"exactly one step", step, "", "runnable", nil},
+		{"one ms above a step", step + 1, "unsupported-sequential-time-gap", "unsupported", boolPtr(false)},
+		{"one and a half steps", step + step/2, "unsupported-sequential-time-gap", "unsupported", boolPtr(false)},
+		{"just below two steps", 2*step - 1, "unsupported-sequential-time-gap", "unsupported", boolPtr(false)},
+		{"exactly two steps", 2 * step, "unsupported-sequential-time-gap", "unsupported", boolPtr(true)},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			// Change only the spacing between bars 6 and 7; later bars keep their
+			// spacing relative to bar 7 so exactly one interval is off.
+			fixture := marketFixtureWithDelta("XAUUSD", "1h", step, marketEntryAndTarget, marketCosts, 7, c.delta)
+			run, runOK := runSequentialMarket(fixture, source)
+			adm, admOK := admitSequentialMarket(fixture, source)
+			a := decodeAdmission(t, adm)
+			if runOK != admOK || runOK != a.Runnable || a.Disposition != c.disposition {
+				t.Fatalf("run ok=%v admit=%+v", runOK, a)
+			}
+			if c.code != "" {
+				e := decodeMarket(t, run)
+				if e.Error == nil || e.Error.Code != c.code || a.Error == nil || a.Error.Code != c.code {
+					t.Fatalf("code: run %s admit %+v", run, a.Error)
+				}
+			}
+			if c.gapOnGrid != nil {
+				if a.Timeline == nil || len(a.Timeline.Gaps) != 1 {
+					t.Fatalf("timeline: %+v", a.Timeline)
+				}
+				g := a.Timeline.Gaps[0]
+				if g.OnGrid != *c.gapOnGrid || g.DeltaMS != float64(c.delta) || (g.MissingBars != nil) != *c.gapOnGrid {
+					t.Fatalf("gap: %+v", g)
+				}
+			}
+			validateMarketSchemaShapes(t, run, adm)
+		})
+	}
+}
+
+func boolPtr(v bool) *bool { return &v }
+
+// marketFixtureWithDelta sets the interval before bar `at` to exactly delta ms.
+func marketFixtureWithDelta(symbol, timeframe string, stepMS int64, bars [][4]float64, costs string, at int, delta int64) string {
+	var rows []string
+	t := int64(marketMonday)
+	for i, b := range bars {
+		if i > 0 {
+			if i == at {
+				t += delta
+			} else {
+				t += stepMS
+			}
+		}
+		rows = append(rows, fmt.Sprintf("[%d,%s,%s,%s,%s,1]", t, num(b[0]), num(b[1]), num(b[2]), num(b[3])))
+	}
+	return fmt.Sprintf(`{"schema":"dsl-conformance-run-fixture-v1","case":"invented","strategyId":"invented-e1","symbol":%q,"timeframe":%q,"rangeMethod":"zone","costs":%s,"bars":[%s]}`,
+		symbol, timeframe, costs, strings.Join(rows, ","))
+}
+
+// validateMarketSchemaShapes is a light structural guard: the full draft 2020-12
+// validation of the same envelopes runs in scripts/checks/sequential-market-parity.mjs.
+func validateMarketSchemaShapes(t *testing.T, run, adm []byte) {
+	t.Helper()
+	var r, a map[string]any
+	if json.Unmarshal(run, &r) != nil || json.Unmarshal(adm, &a) != nil {
+		t.Fatal("not JSON")
+	}
+	if r["schema"] != "strat-sequential-market-result-v2" || a["schema"] != "strat-sequential-market-admission-v2" {
+		t.Fatalf("schemas: %v %v", r["schema"], a["schema"])
+	}
+	for _, key := range []string{"runnable", "disposition", "limits"} {
+		if _, ok := a[key]; !ok {
+			t.Fatalf("admission lacks %s: %s", key, adm)
+		}
+	}
+}
+
+// Every early admit failure keeps the admission envelope (review of 5903a1a).
+func TestSequentialMarketAdmissionFailureEnvelope(t *testing.T) {
+	for name, err := range map[string]error{
+		"arguments": sequentialInvalid("arguments", "expected fixture JSON and source strings"),
+		"fixture":   sequentialInvalid("fixture", "fixture JSON exceeds 64 MiB"),
+		"source":    &sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", sequentialSourceLimitMessage},
+	} {
+		t.Run(name, func(t *testing.T) {
+			a := decodeAdmission(t, sequentialMarketAdmissionFailure(err))
+			if a.Runnable || a.Disposition != "invalid" || a.Error == nil || a.Error.Field != name {
+				t.Fatalf("admission: %+v", a)
+			}
+		})
+	}
+	// The native dispatch uses the selected operation's envelope for argument errors.
+	if got := string(sequentialMarketFailure(sequentialInvalid("arguments", "x"))); !strings.Contains(got, "market-result-v2") {
+		t.Fatalf("run failure: %s", got)
 	}
 }

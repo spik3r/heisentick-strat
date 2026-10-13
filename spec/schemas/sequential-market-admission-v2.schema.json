@@ -114,13 +114,22 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 9007199254740991
+                  },
+                  "deltaMs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "onGrid": {
+                    "type": "boolean"
                   }
                 },
                 "required": [
                   "index",
                   "previousOpenMs",
                   "openMs",
-                  "missingBars"
+                  "deltaMs",
+                  "onGrid"
                 ]
               }
             },
@@ -286,13 +295,22 @@
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 9007199254740991
+                  },
+                  "deltaMs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "onGrid": {
+                    "type": "boolean"
                   }
                 },
                 "required": [
                   "index",
                   "previousOpenMs",
                   "openMs",
-                  "missingBars"
+                  "deltaMs",
+                  "onGrid"
                 ]
               }
             },

@@ -89,6 +89,15 @@ func sequentialMarketFailure(err error) []byte {
 	return raw
 }
 
+// sequentialMarketAdmissionFailure is the admission-envelope form of a refusal.
+// Every early failure of the admit operation, including transport argument
+// checks, uses it so the reply always matches the admission schema.
+func sequentialMarketAdmissionFailure(err error) []byte {
+	e := sequentialMarketError(err)
+	raw, _ := json.Marshal(sequentialMarketAdmission{Schema: sequentialMarketAdmissionSchema, ContractVersion: sequentialMarketVersion, Disposition: sequentialMarketDisposition(e), Limits: marketLimits(), Error: e})
+	return raw
+}
+
 // sequentialMarketDisposition separates an input the engine deliberately does
 // not support from one that is malformed. Both are refusals; neither returns
 // trades.

@@ -20,11 +20,16 @@ func TestSequentialMarketTimelineScan(t *testing.T) {
 	if got.Bars != 6 || got.GapCount != 2 || got.GapsTruncated || len(got.Gaps) != 2 {
 		t.Fatalf("timeline: %+v", got)
 	}
-	if g := got.Gaps[0]; g.Index != 3 || g.MissingBars != 2 || g.OpenMS-g.PreviousOpenMS != 3*step {
+	if g := got.Gaps[0]; g.Index != 3 || g.MissingBars == nil || *g.MissingBars != 2 || !g.OnGrid || g.OpenMS-g.PreviousOpenMS != 3*step {
 		t.Fatalf("first gap: %+v", g)
 	}
-	if g := got.Gaps[1]; g.Index != 5 || g.MissingBars != 49 {
+	if g := got.Gaps[1]; g.Index != 5 || g.MissingBars == nil || *g.MissingBars != 49 {
 		t.Fatalf("second gap: %+v", g)
+	}
+	// Off-grid intervals have no missing-bar count: 1.2 steps is neither 0 nor 1.
+	off := ScanSequentialMarketTimeline(RunFixture{Bars: []marketdata.Bar{{T: 0}, {T: 1.2 * step}}}, 3_600_000)
+	if off.GapCount != 1 || off.Gaps[0].OnGrid || off.Gaps[0].MissingBars != nil || off.Gaps[0].DeltaMS != 1.2*step {
+		t.Fatalf("off-grid gap: %+v", off)
 	}
 	// Duplicate and backward timestamps are validation errors elsewhere, not gaps.
 	if got := ScanSequentialMarketTimeline(mk(0, 1, 1, 0), 3_600_000); got.GapCount != 0 {

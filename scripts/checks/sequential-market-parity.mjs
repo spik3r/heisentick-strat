@@ -117,6 +117,16 @@ for (const [symbol, tf, step, scale] of routes) {
 const xau = routes[4];
 cases.push({ id: 'refuse/terminal-open', fixture: fixture(xau[0], xau[1], xau[2], heldAtEnd, xau[3], 0.01), source: source(xau[0], xau[1]), ok: false, code: 'unsupported-incomplete-terminal-run', disposition: 'unsupported' });
 cases.push({ id: 'refuse/weekend-hole', fixture: fixture(xau[0], xau[1], xau[2], target, xau[3], 0.01, { holes: { 7: 48 } }), source: source(xau[0], xau[1]), ok: false, code: 'unsupported-sequential-time-gap', disposition: 'unsupported' });
+for (const [name, delta, onGrid] of [['step+1ms', step => step + 1, false], ['1.5 steps', step => step * 1.5, false], ['2 steps-1ms', step => 2 * step - 1, false], ['2 steps', step => 2 * step, true]]) {
+  const f = JSON.parse(fixture(xau[0], xau[1], xau[2], target, 1, 0.01));
+  for (let i = 7; i < f.bars.length; i++) f.bars[i][0] += delta(xau[2]) - xau[2];
+  cases.push({ id: `refuse/off-grid/${name}`, fixture: JSON.stringify(f), source: source(xau[0], xau[1]), ok: false, code: 'unsupported-sequential-time-gap', disposition: 'unsupported', gap: { onGrid } });
+}
+for (const [name, delta, code] of [['step-1ms', 'less', 'invalid-sequential-accounting']]) {
+  const f = JSON.parse(fixture(xau[0], xau[1], xau[2], target, 1, 0.01));
+  for (let i = 7; i < f.bars.length; i++) f.bars[i][0] -= 1;
+  cases.push({ id: `refuse/sub-step/${name}`, fixture: JSON.stringify(f), source: source(xau[0], xau[1]), ok: false, code, disposition: 'invalid' });
+}
 cases.push({ id: 'refuse/route-mismatch', fixture: fixture('EURUSD', '1h', 3600e3, target, 1, 0.01), source: source(xau[0], xau[1]), ok: false, code: 'invalid-sequential-accounting', disposition: 'invalid' });
 cases.push({ id: 'refuse/no-start-equity', fixture: fixture(xau[0], xau[1], xau[2], target, 1, 0, { costs: { feePerUnit: 0, fillOn: 'open', slippage: 0.5 } }), source: source(xau[0], xau[1]), ok: false, code: 'invalid-sequential-accounting', disposition: 'invalid' });
 cases.push({ id: 'refuse/legacy-source', fixture: fixture(xau[0], xau[1], xau[2], target, 1, 0), source: readFileSync(join(root, 'conformance/parse/setup-legacy-setup9.strat'), 'utf8'), ok: false, code: 'invalid-sequential-accounting', disposition: 'unsupported' });
@@ -141,7 +151,7 @@ function nativeCall(mode, c) {
   return { raw: out.stdout.replace(/\n$/, ''), status: out.status };
 }
 
-const integerKeys = new Set(['index', 'entryIndex', 'exitIndex', 'barIndex', 'barCount', 'firstBarMs', 'lastBarMs', 't', 'entryT', 'exitT', 'trades', 'tradeCount', 'maxWinStreak', 'maxLossStreak', 'timeframeMs', 'gapCount', 'bars', 'previousOpenMs', 'openMs', 'missingBars', 'setupIndex', 'setupFirstIndex', 'decisionIndex', 'decisionOpenMs', 'decisionMs', 'nextOpenIndex', 'fillIndex', 'signalIndex']);
+const integerKeys = new Set(['index', 'entryIndex', 'exitIndex', 'barIndex', 'barCount', 'firstBarMs', 'lastBarMs', 't', 'entryT', 'exitT', 'trades', 'tradeCount', 'maxWinStreak', 'maxLossStreak', 'timeframeMs', 'gapCount', 'bars', 'previousOpenMs', 'openMs', 'missingBars', 'deltaMs', 'setupIndex', 'setupFirstIndex', 'decisionIndex', 'decisionOpenMs', 'decisionMs', 'nextOpenIndex', 'fillIndex', 'signalIndex']);
 let leaves = 0, inexact = 0, worst = 0;
 function compare(a, b, path, key) {
   assert.equal(Array.isArray(a), Array.isArray(b), `${path}: shape`);
@@ -188,17 +198,46 @@ for (const c of cases) {
     assert.equal(admit.error.code, c.code, `${c.id}: admission code`);
     assert.equal(admit.disposition, c.disposition, `${c.id}: disposition`);
     for (const key of ['identity', 'run', 'metrics', 'terminal', 'capabilities', 'limits']) assert(!(key in run), `${c.id}: refusal leaked ${key}`);
+    if (c.gap) {
+      assert.equal(admit.timeline.gaps.length, 1, `${c.id}: one gap`);
+      assert.equal(admit.timeline.gaps[0].onGrid, c.gap.onGrid, `${c.id}: onGrid`);
+      assert.equal('missingBars' in admit.timeline.gaps[0], c.gap.onGrid, `${c.id}: missingBars only on grid`);
+    }
     refusals++;
   }
   runs++;
 }
-// Foreign argument types must be refused in-band and must not stop the instance.
-for (const bad of [[], [1, 2], [1n, 'x'], ['x']]) {
-  for (const name of ['engineRunSequentialMarket', 'engineAdmitSequentialMarket']) {
-    const out = JSON.parse(globalThis[name](...bad));
-    assert.equal(out.error.field, 'arguments', `${name}(${bad.length} args)`);
+// Foreign argument types and size limits must be refused in-band, in the envelope
+// of the selected operation, and must not stop the instance.
+const operations = [['engineRunSequentialMarket', resultSchema, resultPath, 'strat-sequential-market-result-v2'], ['engineAdmitSequentialMarket', admissionSchema, admissionPath, 'strat-sequential-market-admission-v2']];
+const goodSource = cases[0].source, goodFixture = cases[0].fixture;
+const transport = [[[], 'arguments'], [[1, 2], 'arguments'], [[1n, 'x'], 'arguments'], [['x'], 'arguments'],
+  [[goodFixture, 'a'.repeat(8 * 1024 * 1024 + 1)], 'source'],
+  [[goodFixture, '\u20ac'.repeat(Math.floor(8 * 1024 * 1024 / 3) + 1)], 'source'],
+  [['{'.repeat(10), goodSource], null], [[goodFixture, '\ud800'], 'source']];
+let transportChecks = 0;
+for (const [name, schema, schemaPath, schemaId] of operations) {
+  for (const [bad, field] of transport) {
+    const raw = globalThis[name](...bad);
+    const out = JSON.parse(raw);
+    validate(out, schema, schema, schemaPath);
+    assert.equal(out.schema, schemaId, `${name}: envelope kind for ${bad.length} args / ${field}`);
+    assert(out.error, `${name}: error expected`);
+    if (field) assert.equal(out.error.field, field, `${name}: field`);
+    if (name === 'engineAdmitSequentialMarket') assert.equal(out.runnable, false);
+    transportChecks++;
   }
 }
 assert(JSON.parse(globalThis.engineRunSequentialMarket(cases[0].fixture, cases[0].source)).identity, 'instance survived malformed calls');
+for (const [mode, schema, schemaPath, id] of [['run', resultSchema, resultPath, 'strat-sequential-market-result-v2'], ['admit', admissionSchema, admissionPath, 'strat-sequential-market-admission-v2']]) {
+  for (const argv of [[], ['/nonexistent/fixture.json', sourcePath], [fixturePath, '/nonexistent/source.strat']]) {
+    const out = spawnSync(native, ['--sequential-market', mode, ...argv], { encoding: 'utf8' });
+    assert(out.status === 1 || out.status === 2, `native ${mode} ${argv.length} args: exit ${out.status}`);
+    const doc = JSON.parse(out.stdout);
+    validate(doc, schema, schema, schemaPath);
+    assert.equal(doc.schema, id, `native ${mode}: envelope kind`);
+    transportChecks++;
+  }
+}
 rmSync(scratch, { recursive: true, force: true });
-console.log(JSON.stringify({ comparisons: runs * 2, successes, refusals, leaves, nonIdenticalLeaves: inexact, worstRelativeDifference: worst, tolerance: MONEY_TOLERANCE, nativeHost: `${process.platform}/${process.arch}` }));
+console.log(JSON.stringify({ transportChecks, comparisons: runs * 2, successes, refusals, leaves, nonIdenticalLeaves: inexact, worstRelativeDifference: worst, tolerance: MONEY_TOLERANCE, nativeHost: `${process.platform}/${process.arch}` }));
