@@ -114,6 +114,13 @@ jobs:
           GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" ./cmd/enginewasm -run '^TestPaperBidAskBridge'
           node scripts/checks/paper-bidask-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
 
+      - name: Supply-demand retest native report and actual WASM parity
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 5
+        run: |
+          GOMAXPROCS=1 GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSupplyDemand(Retest|Report)' ./engine ./report ./cmd/enginewasm ./cmd/heisentick
+          GOMAXPROCS=1 node scripts/checks/supply-demand-retest-parity.mjs cmd/heisentick/heisentick cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
       - name: Down-shock source native report and WASM parity
         if: steps.mod.outputs.present == 'true'
         run: |

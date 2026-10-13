@@ -462,9 +462,10 @@ func sdZoneKey(zoneType string, start int, end int, lo float64, hi float64) stri
 // (-1 when unavailable) and how far the source has been processed. It lives
 // outside broker so the shared broker type is untouched.
 type sdEntryRetestRun struct {
-	src  *broker
-	idx  []int
-	done int
+	src      *broker
+	idx      []int
+	done     int
+	terminal *SupplyDemandRetestTerminal
 }
 
 // run drives the chart broker bar by bar with the same ordering as
@@ -489,9 +490,29 @@ func (r *sdEntryRetestRun) run(b *broker) []Trade {
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
 		}
+		if b.sequentialAccounting != nil {
+			b.sequentialAccounting.mark(b, i, false)
+		}
+	}
+	if r.terminal != nil {
+		// Observe actual queued orders before the legacy liquidation can remove
+		// deferred exits. No cancellation or fill is invented for this report.
+		*r.terminal = SupplyDemandRetestTerminal{
+			Policy: SupplyDemandRetestTerminalPolicy, Position: "flat",
+			Liquidated:           b.hasPosition,
+			PendingMarketOrders:  len(b.pendingOrders),
+			PendingLimitOrders:   len(b.limitOrders),
+			PendingDeferredExits: len(b.pendingExits),
+		}
 	}
 	if n > 0 && end >= 0 && b.hasPosition {
 		b.closePosition(b.series.C[end], end, ReasonEndOfTest, "")
+		if b.sequentialAccounting != nil {
+			b.sequentialAccounting.mark(b, end, true)
+		}
+		if r.terminal != nil {
+			r.terminal.EndOfTestTrades = 1
+		}
 	}
 	return b.trades
 }
