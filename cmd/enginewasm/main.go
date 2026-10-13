@@ -12,6 +12,9 @@ func main() {
 	if len(os.Args) > 1 && os.Args[1] == "--sequential-backtest" {
 		os.Exit(sequentialMain(os.Args[2:]))
 	}
+	if len(os.Args) > 1 && os.Args[1] == "--sequential-market" {
+		os.Exit(sequentialMarketMain(os.Args[2:]))
+	}
 	if len(os.Args) != 3 {
 		fmt.Fprintln(os.Stderr, "usage: enginewasm fixture.json source.strat")
 		os.Exit(2)
@@ -53,6 +56,42 @@ func sequentialMain(args []string) int {
 		return 1
 	}
 	fmt.Println(string(out))
+	return 0
+}
+
+// Explicit native parity dispatch for the v2 market companion:
+// --sequential-market run|admit fixture.json source.strat. Typed refusals are
+// printed as envelopes and exit 1, exactly as for the v1 dispatch.
+func sequentialMarketMain(args []string) int {
+	// The selected operation decides the envelope of every failure, including
+	// argument and file errors, so an admit reply always fits the admission schema.
+	fail := sequentialMarketFailure
+	if len(args) > 0 && args[0] == "admit" {
+		fail = sequentialMarketAdmissionFailure
+	}
+	if len(args) != 3 || (args[0] != "run" && args[0] != "admit") {
+		fmt.Println(string(fail(sequentialInvalid("arguments", "expected --sequential-market run|admit fixture.json source.strat"))))
+		return 2
+	}
+	raw, err := readSequentialInput(args[1], sequentialMaxFixture)
+	if err != nil {
+		fmt.Println(string(fail(sequentialInvalid("fixture", err.Error()))))
+		return 1
+	}
+	source, err := readSequentialInput(args[2], sequentialMaxSource)
+	if err != nil {
+		fmt.Println(string(fail(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()})))
+		return 1
+	}
+	run := runSequentialMarket
+	if args[0] == "admit" {
+		run = admitSequentialMarket
+	}
+	out, ok := run(string(raw), string(source))
+	fmt.Println(string(out))
+	if !ok {
+		return 1
+	}
 	return 0
 }
 

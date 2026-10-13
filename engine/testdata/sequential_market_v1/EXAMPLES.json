@@ -1,0 +1,62 @@
+{
+  "schema": "sequential-market-examples-v1",
+  "note": "Invented valid OHLC for adoption tests. Prices are not market data. Fixture bytes feed engineRunSequentialMarket / --sequential-market unchanged.",
+  "examples": [
+    {
+      "id": "xauusd-1h-e1-target",
+      "fixture": "xauusd-1h-e1-target.fixture.json",
+      "source": "xauusd-1h-e1-target.strat",
+      "expect": {
+        "ok": true,
+        "trades": 1
+      }
+    },
+    {
+      "id": "eurusd-5m-e1-stop",
+      "fixture": "eurusd-5m-e1-stop.fixture.json",
+      "source": "eurusd-5m-e1-stop.strat",
+      "expect": {
+        "ok": true,
+        "trades": 1
+      }
+    },
+    {
+      "id": "gbpusd-15m-e2-target",
+      "fixture": "gbpusd-15m-e2-target.fixture.json",
+      "source": "gbpusd-15m-e2-target.strat",
+      "expect": {
+        "ok": true,
+        "trades": 1
+      }
+    },
+    {
+      "id": "xauusd-1h-e1-pending-order-at-end",
+      "fixture": "xauusd-1h-e1-pending-order-at-end.fixture.json",
+      "source": "xauusd-1h-e1-pending-order-at-end.strat",
+      "expect": {
+        "ok": true,
+        "trades": 0
+      }
+    },
+    {
+      "id": "xauusd-1h-e1-open-position-at-end",
+      "fixture": "xauusd-1h-e1-open-position-at-end.fixture.json",
+      "source": "xauusd-1h-e1-open-position-at-end.strat",
+      "expect": {
+        "ok": false,
+        "code": "unsupported-incomplete-terminal-run",
+        "disposition": "unsupported"
+      }
+    },
+    {
+      "id": "xauusd-1h-e1-weekend-hole",
+      "fixture": "xauusd-1h-e1-weekend-hole.fixture.json",
+      "source": "xauusd-1h-e1-weekend-hole.strat",
+      "expect": {
+        "ok": false,
+        "code": "unsupported-sequential-time-gap",
+        "disposition": "unsupported"
+      }
+    }
+  ]
+}
