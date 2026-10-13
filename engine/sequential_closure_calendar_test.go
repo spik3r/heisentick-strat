@@ -87,6 +87,8 @@ func TestSequentialClosureCalendarRefusals(t *testing.T) {
 		{"digest of other content", calendarJSON(baseCalendarFields(), good, strings.Repeat("0", 64)), "calendar.sha256"},
 		{"digest in capitals", calendarJSON(baseCalendarFields(), good, strings.ToUpper(strings.Split(strings.Split(valid, `"sha256":"`)[1], `"`)[0])), "calendar.sha256"},
 		{"digest missing", strings.Replace(valid, `,"sha256"`, `,"sha257"`, 1), "calendar.json"},
+		{"closures key omitted", strings.Replace(calendarJSON(baseCalendarFields(), nil, ""), `"closures":[],`, "", 1), "calendar.closures"},
+		{"provider key omitted", strings.Replace(valid, `"provider":"venue-a",`, "", 1), "calendar.provider"},
 		{"edited after hashing", strings.Replace(valid, `"version":"7"`, `"version":"8"`, 1), "calendar.sha256"},
 	}
 	for _, c := range cases {

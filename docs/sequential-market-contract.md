@@ -370,11 +370,15 @@ missing candles.
 
 - `calendarId`, `provider`, `version`: `^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$`.
   `symbol` and `timeframe` must equal the source's route. A different route is
-  refused.
+  refused. Every key is required, including an empty `closures` list. The
+  request carries no provider field, so the engine cannot check the provider
+  against the bars: it is bound into the digest and echoed in the result, and the
+  consumer must supply the calendar that belongs to the data it sends.
 - A closure is the half-open UTC interval `[startMs, endMs)` of bar opens that
   were not published. It is a whole number of timeframe steps, closures are
   sorted, and each starts strictly after the previous one ends (touching closures
-  are one closure). At most 100,000 closures and 4 MiB.
+  are one closure). At most 100,000 closures and 4 MiB (about 86,000 closures fit in 4 MiB at 13-digit
+  timestamps).
 - `sha256` is the lowercase hex SHA-256 of the compact JSON
   `{"schema":..,"calendarId":..,"provider":..,"symbol":..,"timeframe":..,"version":..,"closures":[[startMs,endMs],...]}`
   in that key order, without the `sha256` key. Any edit changes it. The digest is
@@ -421,12 +425,14 @@ A position still open after the last bar is reported, not closed and not refused
   completed net). The open trade is in none of them. With no completed trade the
   usual `no-trades` reasons apply.
 - `metrics.marked` is the marked view: `endEquity` (cash, paid fees and
-  unrealized P&L), `net` (`endEquity - startEquity`), `returnPct`,
+  unrealized P&L), `net` (realized plus unrealized P&L, which is `endEquity - startEquity` before rounding), `returnPct`,
   `openUnrealizedPnl`, `openEntryFeePaid`. Marked return and completed-trade net
   profit differ by exactly the open position's unrealized P&L less its entry fee.
   For a flat run `marked` equals the headline values.
 - A decision on the last bar is still a valid `no_next_bar` outcome
   (`terminal.pendingOrderRejected`), never a fill at a price the series lacks.
+- `barsHeld` counts the entry bar as 1; a completed trade's `avgHoldBars` uses
+  exit index minus entry index, so compare them with that offset in mind.
 - `run.trades[]` lists completed trades only, with the existing 15-significant
   digit rounding; the open trade and `metrics` carry full binary64.
 

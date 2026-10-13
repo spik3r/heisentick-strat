@@ -178,6 +178,12 @@ func RunSequentialMarketV3(fixture RunFixture, source string, calendar *Sequenti
 		return SequentialMarketV3Run{}, sequentialAccountingError("open position identity", series.Len()-1)
 	}
 	data := capture.data
+	if last := series.Len() - 1; last >= 0 && len(data.Marks) == series.Len() {
+		// The last mark must carry the broker's own realized state and equity.
+		if math.Float64bits(data.Marks[last].Realized) != math.Float64bits(s.broker.realized) || math.Float64bits(data.EndEquity) != math.Float64bits(data.Marks[last].Equity) {
+			return SequentialMarketV3Run{}, sequentialAccountingError("terminal equity or realized", last)
+		}
+	}
 	if len(data.Marks) != series.Len() || len(data.Trades) != len(trades) || len(data.Events) != events {
 		return SequentialMarketV3Run{}, sequentialAccountingError("terminal counts", series.Len()-1)
 	}

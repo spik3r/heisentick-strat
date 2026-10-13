@@ -110,6 +110,20 @@ func DecodeSequentialClosureCalendar(raw string) (SequentialClosureCalendar, err
 	if err := decoder.Decode(&c); err != nil {
 		return SequentialClosureCalendar{}, sequentialCalendarError("calendar.json", -1)
 	}
+	// Every key is required, including an empty closures list: a missing key
+	// would otherwise hash as [] and pass.
+	var keys map[string]json.RawMessage
+	if err := json.Unmarshal([]byte(raw), &keys); err != nil {
+		return SequentialClosureCalendar{}, sequentialCalendarError("calendar.json", -1)
+	}
+	for _, key := range []string{"schema", "calendarId", "provider", "symbol", "timeframe", "version", "closures", "sha256"} {
+		if _, ok := keys[key]; !ok {
+			return SequentialClosureCalendar{}, sequentialCalendarError("calendar."+key, -1)
+		}
+	}
+	if c.Closures == nil {
+		c.Closures = []SequentialClosure{}
+	}
 	if c.Schema != SequentialClosureCalendarSchema {
 		return SequentialClosureCalendar{}, sequentialCalendarError("calendar.schema", -1)
 	}
