@@ -182,6 +182,13 @@ What v2 does today, and what each choice would do to the outputs:
 
 ## Decision sheet
 
+> Status: D-A to D-E below were approved by the repository owner on 2026-10-13
+> for implementation and synthetic testing, with one change: an undeclared gap
+> refuses the whole run, and a calendar is a hashed document tied to a provider,
+> symbol and timeframe. v3 (next section) implements them. v2, described above,
+> is unchanged and still refuses every hole and every held terminal position.
+> The text below is the original sheet and is kept for the record.
+
 Settled and implemented: route and policy from the authored source; explicit
 costs and start equity; contiguous observed bars; accepted E1/E2 conventions;
 v1 untouched. Open, with the written status of each. A chat summary was not
@@ -333,3 +340,172 @@ historical or holdout run, no browser check, no release or tag. Cross-target
 arithmetic uses the pinned schedules in
 `scripts/checks/sequential-arithmetic-schedules.json`; this slice changes no
 pinned arithmetic function, only the source inventory.
+
+## Version 3: declared closures and open terminal positions
+
+Implements the owner-approved conventions of 2026-10-13 (recorded in the HT-228
+claim, backlog PR 529) on a separate surface. v1 and v2 are unchanged.
+
+| Surface | Call |
+| --- | --- |
+| WASM | `engineRunSequentialMarketV3(fixtureJSON, source, calendarJSON)` and `engineAdmitSequentialMarketV3(...)`: exactly three strings. `calendarJSON` is `""` when there is no calendar. |
+| Native | `enginewasm --sequential-market-v3 run|admit fixture.json source.strat [calendar.json]` |
+| Schemas | `sequential-market-result-v3`, `sequential-market-admission-v3`, `sequential-closure-calendar-v1` |
+
+The fixture and source are exactly the v2 request. Costs, risk, cap and start
+equity stay explicit; nothing is defaulted and no study default is approved.
+
+### Closure calendar
+
+A hole in the bars is accepted only if a calendar declares it. The calendar is a
+document the caller supplies; the engine ships none and never infers one from
+missing candles.
+
+```json
+{"schema":"sequential-closure-calendar-v1","calendarId":"venue-a-xauusd-1h-2024w10",
+ "provider":"venue-a","symbol":"XAUUSD","timeframe":"1h","version":"1",
+ "closures":[{"startMs":1709532000000,"endMs":1709704800000}],
+ "sha256":"<64 lowercase hex>"}
+```
+
+- `calendarId`, `provider`, `version`: `^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$`.
+  `symbol` and `timeframe` must equal the source's route. A different route is
+  refused. Every key is required, including an empty `closures` list.
+- The provider is a declaration, not proof. The request carries no provider
+  field, so the engine cannot check that the bars came from that provider: the
+  value is bound into the digest and echoed, nothing more. A calendar hash alone
+  is not provider verification. The consumer must bind its own verified
+  data-source identity (provider, dataset, quote side, download or hash identity)
+  to the calendar it sends, and must not treat a matching `calendar.sha256` as
+  evidence of where the data came from.
+- A closure is the half-open UTC interval `[startMs, endMs)` of bar opens that
+  were not published. It is a whole number of timeframe steps, closures are
+  sorted, and each starts strictly after the previous one ends (touching closures
+  are one closure). At most 100,000 closures and 4 MiB (about 86,000 closures fit in 4 MiB at 13-digit
+  timestamps).
+- `sha256` is the lowercase hex SHA-256 of the compact JSON
+  `{"schema":..,"calendarId":..,"provider":..,"symbol":..,"timeframe":..,"version":..,"closures":[[startMs,endMs],...]}`
+  in that key order, without the `sha256` key. Any edit changes it. The digest is
+  echoed in the result, so a run is bound to the exact calendar.
+- Exact coverage: a hole between two consecutive observed bars must equal one
+  closure. It starts at the first missing bar open (previous open plus one step)
+  and ends at the next observed open. A closure that is one step short, one step
+  long, shifted or declared elsewhere does not cover it. The first uncovered hole
+  refuses the whole run with `unsupported-sequential-time-gap`. A closure that
+  contains an observed bar refuses the run with `invalid-sequential-calendar` /
+  `closures.contains-bar`. Closures wholly outside the supplied bars are ignored.
+- Exact grammar. Keys are matched case-sensitively on their decoded strings,
+  before any struct decoding, because Go's `encoding/json` would otherwise match
+  `Closures` or `StartMs` to the schema fields and let a later alias override an
+  earlier value while the digest still matched. The root has exactly the eight
+  keys above and every closure has exactly `startMs` and `endMs`. Refused with
+  `invalid-sequential-calendar`: a duplicate key (`calendar.duplicate-key`, also
+  through `\u` escapes), an unknown, case-variant or case-folded key such as
+  `Closures`, `StartMs` or `clo\u017fures` (`calendar.unknown-key`), a missing
+  root key (`calendar.<key>`, for example `calendar.closures`), a missing nested
+  key (`calendar.closures.startMs` or `.endMs`; a missing `startMs` never
+  defaults to 0), a value of the wrong JSON type, null, a closures value that is
+  not an array of objects (`calendar.type`, `calendar.json`), fractional or
+  oversize integers (`calendar.number`), trailing values (`calendar.trailing`)
+  and a wrong digest (`calendar.sha256`). Valid calendar bytes and the digest
+  recipe are unchanged.
+
+Observed-bar semantics across a declared closure: the Setup comparison
+(`close[t-4]`), ATR14, Setup and Countdown counts, the E1 response window,
+warm-up, order age and the holding period (4 or 12 bars) all count observed bars.
+A closure contributes no bar and no equity mark. The sequential core steps across
+it through `StepAfterClosure`; a plain `Step` across a hole still resets state
+and emits `data_gap`, which no admitted input reaches. A pending decision on the
+last bar before a closure fills at the first observed open after it, with the
+usual adverse slippage, sizing and wrong-side-stop rejection, and a stop gaps to
+the reopened open by the existing `min(open, stop)` rule. Metamorphic tests show
+that a series with declared holes yields the contiguous series' trades, marks and
+decisions bit for bit, apart from timestamps and the ids that embed them.
+
+### Open terminal positions
+
+A position still open after the last bar is reported, not closed and not refused.
+
+- `terminal.position` is `open` and `terminal.openTrade` holds `side`,
+  `entryIndex`, `entryT`, `entry`, `size`, `stop`, `target`, `barsHeld` (observed
+  bars, entry bar is 1), `markPrice` (last close), `unrealizedPnl` (no
+  hypothetical exit fee or slippage) and `entryFeePaid`. Otherwise `position` is
+  `flat` and `openTrade` is absent.
+- `metrics.equity[]` is the marked close-bar curve, one point per observed bar,
+  including the open position's unrealized P&L and its paid entry fee.
+- `metrics.headline.maxDD` and `maxDDpct` are the close-bar marked drawdown.
+- Everything else in `metrics.headline` counts completed trades only:
+  `trades`, win rate, profit factor, expectancy, averages, streaks, worst loss,
+  average hold, and `net`, `returnPct` and `endEquity` (settled: start equity plus
+  completed net). The open trade is in none of them. With no completed trade the
+  usual `no-trades` reasons apply.
+- `metrics.marked` is the marked view: `endEquity` (cash, paid fees and
+  unrealized P&L), `net` (realized plus unrealized P&L, which is `endEquity - startEquity` before rounding), `returnPct`,
+  `openUnrealizedPnl`, `openEntryFeePaid`. Marked return and completed-trade net
+  profit differ by exactly the open position's unrealized P&L less its entry fee.
+  For a flat run `marked` equals the headline values.
+- A decision on the last bar is still a valid `no_next_bar` outcome
+  (`terminal.pendingOrderRejected`), never a fill at a price the series lacks.
+- `barsHeld` counts the entry bar as 1; a completed trade's `avgHoldBars` uses
+  exit index minus entry index, so compare them with that offset in mind.
+- `run.trades[]` lists completed trades only, with the existing 15-significant
+  digit rounding; the open trade and `metrics` carry full binary64.
+
+### Admission
+
+`admit` runs the same stages as `run` and discards the result. Its `timeline`
+lists gaps with `declared` and, when declared, the `closureIndex`. Undeclared
+gaps are listed first and `undeclaredGapCount` is complete even if the 32-entry
+list is truncated. `calendar` appears once the calendar decoded. Every failure of
+either operation, including transport errors, uses that operation's v3 envelope.
+New codes: `invalid-sequential-calendar` (disposition `invalid`). A hole the
+calendar does not declare stays `unsupported-sequential-time-gap`
+(`unsupported`).
+
+### Consumer adoption contract for v3
+
+1. Build the calendar from the provider's published trading hours for the
+   route, hash it as above, store it with its provenance, and send the same bytes
+   every time. A changed hour list is a new `version`.
+2. Call `admit` first, or handle the `run` refusal. If `timeline.undeclaredGapCount`
+   is above zero, show the listed gaps; do not retry with a wider calendar.
+3. Render `terminal.position === "open"` with the open trade, label headline
+   net, return and end equity as completed trades, and `metrics.marked` as
+   marked. Never present a marked figure as realized profit.
+4. Runnable invented examples with expected outcomes: `engine/testdata/sequential_market_v3/`
+   (`EXAMPLES.json` indexes eleven: open position at the end, a falling open
+   position, a weekend inside the Setup, a reopened gap-up fill, a reopened fill
+   below the stop, a time exit counted in observed bars across closures, an open
+   position after a closure, and four refusals). They are not market data.
+5. Tests to run: the v2 tests and examples (unchanged), then
+   `GOOS=js GOARCH=wasm go test -run '^TestSequentialMarket|^TestSequentialClosure|^TestStepAfterClosure|^TestProjectSequentialMarket' ./engine ./engine/seqcore ./report ./cmd/enginewasm`,
+   `scripts/checks/sequential-market-parity.mjs` and
+   `scripts/checks/sequential-market-v3-parity.mjs`, and validate every envelope and
+   calendar against the three v3 schemas.
+
+### v3 evidence
+
+- `engine/sequential_market_v3_test.go`: every binding corpus case through v3
+  with holes before bars inside the Setup, around the decision, between decision
+  and entry, during the position and around the exit, on five routes, with and
+  without fees (relative 1e-9 against corpus numbers, ids re-labelled, calendar
+  digests computed independently); series truncated while a corpus trade is in
+  progress, with marked equity, drawdown, paid fees and completed-trade statistics
+  recomputed from the corpus trade; declared-hole versus contiguous bit-equality
+  on random walks; prefix causality with holes before and after the cut.
+- `engine/seqcore/closure_test.go`: `StepAfterClosure` equals contiguous stepping
+  on twelve random walks, plain `Step` across the same holes does not.
+- `report/sequential_market_metrics_test.go`: hand-derived open-position numbers,
+  flat run equals the v1 projection, the marked drawdown helper equals the v1
+  reducer bit for bit, nine inconsistent accountings are refused.
+- `cmd/enginewasm/sequential_market_v3_bridge_test.go`: hand-derived fees,
+  equity, drawdown, reopened fills (ordinary, gap-up, below the stop), hold
+  across closures, ten calendar refusals, run/admit agreement.
+- `scripts/checks/sequential-market-v3-parity.mjs`: native CLI against Node-hosted
+  WASM on invented fixtures over seven timeframes, schema validation, negative
+  schema mutations, transport failures. Tolerance 1e-12 relative on non-index
+  numbers; indices, timestamps, counts, strings and reasons exact.
+
+Remaining limits: no provider calendars are shipped or validated against real
+data; no E1/E2 prefix or checkpoint API; no P1 or Legacy route; no historical,
+holdout or Monte Carlo run; no browser check; no release.

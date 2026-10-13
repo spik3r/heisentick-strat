@@ -6,6 +6,23 @@ version and is named here.
 
 ## [Unreleased]
 
+### Sequential E1/E2 market companion v3 (additive, not released)
+
+- Add `engineRunSequentialMarketV3`, `engineAdmitSequentialMarketV3` and
+  `enginewasm --sequential-market-v3`: an optional hashed, versioned closure
+  calendar tied to provider, symbol and timeframe, and open-terminal reporting.
+  A hole is accepted only when a declared closure equals it exactly; any other hole
+  refuses the whole run. Observed bars are counted across a declared closure and a
+  pending entry fills at the reopened open. A position still open after the last
+  bar stays open: marked equity and drawdown include it, completed-trade
+  statistics exclude it, and `metrics.marked` separates marked from completed
+  results. Adds `seqcore.Engine.StepAfterClosure` (the default `Step` is
+  unchanged) and the schemas `sequential-market-result-v3`,
+  `sequential-market-admission-v3`, `sequential-closure-calendar-v1`. v1 and v2
+  are unchanged. The calendar grammar is exact and case-sensitive at the root
+  and in every closure. Owner-approved 2026-10-13 for implementation and synthetic
+  testing only; see [the contract](docs/sequential-market-contract.md).
+
 ### Sequential E1/E2 market companion v2 (additive, not released)
 
 - Add `engineRunSequentialMarket`, `engineAdmitSequentialMarket` and

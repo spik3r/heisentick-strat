@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sequential-closure-calendar-v1.schema.json",
+  "title": "Sequential closure calendar v1",
+  "description": "Caller-supplied, versioned, hashed trading-closure calendar tied to a provider, symbol and timeframe. Each closure is the half-open UTC interval [startMs, endMs) of bar opens the provider did not publish; it must be a whole number of timeframe steps, sorted, and separated from the next by at least one observed step. sha256 is the lowercase hex SHA-256 of the compact JSON {schema,calendarId,provider,symbol,timeframe,version,closures:[[startMs,endMs],...]} in that key order. Ordering, grid, hash and one-to-one hole coverage are enforced at runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "sequential-closure-calendar-v1"
+    },
+    "calendarId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "provider": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "symbol": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_.-]{0,31}$"
+    },
+    "timeframe": {
+      "enum": [
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "4h",
+        "1d"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "closures": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "startMs": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "endMs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "startMs",
+          "endMs"
+        ]
+      }
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "schema",
+    "calendarId",
+    "provider",
+    "symbol",
+    "timeframe",
+    "version",
+    "closures",
+    "sha256"
+  ]
+}

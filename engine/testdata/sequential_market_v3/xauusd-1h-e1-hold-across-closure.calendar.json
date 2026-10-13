@@ -1,0 +1,1 @@
+{"schema":"sequential-closure-calendar-v1","calendarId":"mid-trade","provider":"invented-venue","symbol":"XAUUSD","timeframe":"1h","version":"1","closures":[{"startMs":1709568000000,"endMs":1709928000000},{"startMs":1709935200000,"endMs":1709953200000}],"sha256":"183e34f1e4fb9bb49c6cbe57559212d16e6d2d8b03582526ca62c80178dfbea6"}

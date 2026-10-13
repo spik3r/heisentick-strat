@@ -81,7 +81,22 @@ func (e *Engine) Run(bars []Bar) (Trace, error) {
 
 // Step consumes a closed bar. Duplicate/out-of-order input permanently stops this
 // instance; a checkpoint taken before the error remains usable by Restore.
+// An open-time hole of more than one timeframe step resets Setup and Countdown
+// state and emits data_gap (synthetic_unexpected_gap.v1).
 func (e *Engine) Step(b Bar) (*Snapshot, []Event, error) {
+	return e.step(b, false)
+}
+
+// StepAfterClosure consumes a closed bar that follows a hole the caller has
+// declared a trading closure. State, history and comparisons continue across it
+// as if the bars were adjacent: observed bars are counted, no data_gap is
+// emitted and no candle is invented. The caller owns the declaration; the core
+// only refuses a call where there is no hole to explain. Step is unchanged.
+func (e *Engine) StepAfterClosure(b Bar) (*Snapshot, []Event, error) {
+	return e.step(b, true)
+}
+
+func (e *Engine) step(b Bar, declaredClosure bool) (*Snapshot, []Event, error) {
 	if e.terminal != nil {
 		x := *e.terminal
 		return nil, nil, &x
@@ -98,6 +113,9 @@ func (e *Engine) Step(b Bar) (*Snapshot, []Event, error) {
 	if !validBar(b) {
 		return nil, nil, &InvalidInputError{"OHLC must be finite and low <= open,close <= high"}
 	}
+	if declaredClosure && (e.lastOpen == nil || b.OpenMS <= *e.lastOpen+e.identity.TimeframeMS) {
+		return nil, nil, &InvalidInputError{"declared closure without a hole before this bar"}
+	}
 	if b.OpenMS > math.MaxInt64-e.identity.TimeframeMS {
 		return nil, nil, &InvalidInputError{"decision time overflows int64"}
 	}
@@ -113,7 +131,7 @@ func (e *Engine) Step(b Bar) (*Snapshot, []Event, error) {
 		e.lastEventSeq++
 		events = append(events, Event{EventSeq: e.lastEventSeq, BarIndex: e.lastIndex, Phase: phase, Type: kind, Side: side, Reason: reason, EpisodeID: episode, Detail: detail, BarOpenMS: b.OpenMS, DecisionMS: b.OpenMS + e.identity.TimeframeMS})
 	}
-	if e.lastOpen != nil && b.OpenMS > *e.lastOpen+e.identity.TimeframeMS {
+	if !declaredClosure && e.lastOpen != nil && b.OpenMS > *e.lastOpen+e.identity.TimeframeMS {
 		dropped := []string{}
 		seen := map[string]bool{}
 		add := func(id string) {

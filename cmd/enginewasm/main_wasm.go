@@ -16,6 +16,7 @@ func main() {
 	registerPaperPrefix()
 	registerSequentialInspection()
 	registerSequentialMarket()
+	registerSequentialMarketV3()
 	js.Global().Set("engineRunSequentialFixture", js.FuncOf(func(_ js.Value, args []js.Value) any {
 		if len(args) != 2 || args[0].Type() != js.TypeString || args[1].Type() != js.TypeString {
 			return string(sequentialFailure(sequentialInvalid("arguments", "expected fixture JSON and source strings")))
