@@ -66,6 +66,9 @@ type sequentialFullScheduler struct {
 	audit   SequentialFullAudit
 	pending int
 	hold    int
+	// afterClosure[i] marks bar i as the first observed bar after a declared
+	// closure. Nil (every v1 and v2 caller) keeps the unchanged Step path.
+	afterClosure []bool
 }
 
 func newSequentialFullScheduler(spec dsl.SequentialFullSpec, series marketdata.Series, fixture RunFixture) (*sequentialFullScheduler, error) {
@@ -114,7 +117,12 @@ func (s *sequentialFullScheduler) step(i int) error {
 	if err := s.checkBrokerNumbers(i); err != nil {
 		return err
 	}
-	_, events, err := s.core.Step(seqcore.Bar{OpenMS: int64(s.series.T[i]), O: s.series.O[i], H: s.series.H[i], L: s.series.L[i], C: s.series.C[i]})
+	bar := seqcore.Bar{OpenMS: int64(s.series.T[i]), O: s.series.O[i], H: s.series.H[i], L: s.series.L[i], C: s.series.C[i]}
+	step := s.core.Step
+	if s.afterClosure != nil && s.afterClosure[i] {
+		step = s.core.StepAfterClosure
+	}
+	_, events, err := step(bar)
 	if err != nil {
 		return &SequentialFullExecutionError{"invalid-sequential-input", err.Error(), i, ""}
 	}

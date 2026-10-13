@@ -150,7 +150,7 @@ jobs:
       - name: Synthetic Sequential E1/E2 under Node-hosted Go WASM
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 3
-        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards|Market)' ./dsl ./engine ./cmd/enginewasm
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^Test(Sequential(Full|IndependentAcceptance|AcceptanceAdapterGuards|Market|Closure)|StepAfterClosure|ProjectSequentialMarket|SequentialMarked)' ./dsl ./engine ./engine/seqcore ./report ./cmd/enginewasm
 
       # Independent accounting expectations: 58 binding variants, 2 diagnostic
       # provisional variants; injected-only descriptions are not execution gates.
@@ -185,6 +185,16 @@ jobs:
           trap 'rm -f "$native_engine"' EXIT
           go build -trimpath -o "$native_engine" ./cmd/enginewasm
           node scripts/checks/sequential-market-parity.mjs "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
+      # v3: declared closures and open terminal positions; invented inputs only.
+      - name: Sequential market companion v3 actual native and Node-WASM export parity
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 5
+        run: |
+          native_engine="$(mktemp "$RUNNER_TEMP/sequential-market-v3-engine.XXXXXX")"
+          trap 'rm -f "$native_engine"' EXIT
+          go build -trimpath -o "$native_engine" ./cmd/enginewasm
+          node scripts/checks/sequential-market-v3-parity.mjs "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
 
       - name: Upload Sequential synthetic qualification diagnostics
         if: always() && (steps.sequential_parity.outcome == 'success' || steps.sequential_parity.outcome == 'failure')

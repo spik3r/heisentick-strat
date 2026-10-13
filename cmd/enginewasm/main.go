@@ -6,11 +6,16 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/spik3r/heisentick-strat/engine"
 )
 
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "--sequential-backtest" {
 		os.Exit(sequentialMain(os.Args[2:]))
+	}
+	if len(os.Args) > 1 && os.Args[1] == "--sequential-market-v3" {
+		os.Exit(sequentialMarketV3Main(os.Args[2:]))
 	}
 	if len(os.Args) > 1 && os.Args[1] == "--sequential-market" {
 		os.Exit(sequentialMarketMain(os.Args[2:]))
@@ -88,6 +93,47 @@ func sequentialMarketMain(args []string) int {
 		run = admitSequentialMarket
 	}
 	out, ok := run(string(raw), string(source))
+	fmt.Println(string(out))
+	if !ok {
+		return 1
+	}
+	return 0
+}
+
+// Native parity dispatch for the v3 market companion:
+// --sequential-market-v3 run|admit fixture.json source.strat [calendar.json].
+// Omitting the calendar file means no closure calendar. Exit codes as for v2.
+func sequentialMarketV3Main(args []string) int {
+	fail := sequentialMarketV3Failure
+	if len(args) > 0 && args[0] == "admit" {
+		fail = sequentialMarketV3AdmissionFailure
+	}
+	if (len(args) != 3 && len(args) != 4) || (args[0] != "run" && args[0] != "admit") {
+		fmt.Println(string(fail(sequentialInvalid("arguments", "expected --sequential-market-v3 run|admit fixture.json source.strat [calendar.json]"))))
+		return 2
+	}
+	raw, err := readSequentialInput(args[1], sequentialMaxFixture)
+	if err != nil {
+		fmt.Println(string(fail(sequentialInvalid("fixture", err.Error()))))
+		return 1
+	}
+	source, err := readSequentialInput(args[2], sequentialMaxSource)
+	if err != nil {
+		fmt.Println(string(fail(&sequentialInputError{"SEQUENTIAL_DSL_INVALID", "source", err.Error()})))
+		return 1
+	}
+	var calendar []byte
+	if len(args) == 4 {
+		if calendar, err = readSequentialInput(args[3], engine.SequentialCalendarMaxBytes); err != nil {
+			fmt.Println(string(fail(sequentialInvalid("calendar", err.Error()))))
+			return 1
+		}
+	}
+	run := runSequentialMarketV3
+	if args[0] == "admit" {
+		run = admitSequentialMarketV3
+	}
+	out, ok := run(string(raw), string(source), string(calendar))
 	fmt.Println(string(out))
 	if !ok {
 		return 1

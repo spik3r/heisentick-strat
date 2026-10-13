@@ -137,7 +137,22 @@ func seqMarketCheckMetrics(t *testing.T, run engine.SequentialMarketRun, bars []
 	if err != nil {
 		t.Fatalf("metrics projection: %v", err)
 	}
-	want := seqMarketCompute(bars, trades, fee)
+	seqMarketCheckProjection(t, metrics, bars, trades, nil, fee)
+}
+
+// seqMarketCheckProjection compares a projection with the oracle. open, if not
+// nil, is a position still held after the last bar: it is in the marked curve
+// and the drawdown and in no completed-trade statistic.
+func seqMarketCheckProjection(t *testing.T, metrics report.SequentialMetrics, bars []marketdata.Bar, trades []seqMarketExpected, open *seqMarketExpected, fee float64) {
+	t.Helper()
+	all := append([]seqMarketExpected{}, trades...)
+	if open != nil {
+		held := *open
+		held.exitIndex = len(bars) // never closes inside the window
+		all = append(all, held)
+	}
+	want := seqMarketCompute(bars, all, fee)
+	want.net, want.entryFee, want.exitFee = want.net[:len(trades)], want.entryFee[:len(trades)], want.exitFee[:len(trades)]
 	if len(metrics.Equity) != len(bars) {
 		t.Fatalf("equity points %d, want one per bar (%d)", len(metrics.Equity), len(bars))
 	}
@@ -152,10 +167,12 @@ func seqMarketCheckMetrics(t *testing.T, run engine.SequentialMarketRun, bars []
 	for _, n := range want.net {
 		sum += n
 	}
-	seqAcceptanceNear(t, "net", h.Net, want.finalRealized)
+	if open == nil {
+		seqAcceptanceNear(t, "net", h.Net, want.finalRealized)
+	}
 	seqAcceptanceNear(t, "net vs sum of trade nets", h.Net, sum)
-	seqAcceptanceNear(t, "endEquity", h.EndEquity, seqMarketStartEquity+want.finalRealized)
-	seqAcceptanceNear(t, "returnPct", h.ReturnPct, want.finalRealized/seqMarketStartEquity*100)
+	seqAcceptanceNear(t, "endEquity", h.EndEquity, seqMarketStartEquity+sum)
+	seqAcceptanceNear(t, "returnPct", h.ReturnPct, sum/seqMarketStartEquity*100)
 	seqAcceptanceNear(t, "maxDD", h.MaxDD, want.maxDD)
 	seqAcceptanceNear(t, "maxDDpct", h.MaxDDpct, want.maxDDPct)
 	seqAcceptanceExact(t, "trades", h.Trades, len(trades))

@@ -1,0 +1,124 @@
+{
+  "schema": "sequential-market-examples-v3",
+  "note": "Invented valid OHLC and calendars for adoption tests. Prices, providers and closures are not market data. Fixture, source and calendar bytes feed engineRunSequentialMarketV3 / --sequential-market-v3 unchanged; an absent calendar means the empty string.",
+  "examples": [
+    {
+      "id": "xauusd-1h-e1-open-position-at-end",
+      "fixture": "xauusd-1h-e1-open-position-at-end.fixture.json",
+      "source": "xauusd-1h-e1-open-position-at-end.strat",
+      "expect": {
+        "ok": true,
+        "trades": 0,
+        "open": true
+      }
+    },
+    {
+      "id": "gbpusd-15m-e1-falling-open-position",
+      "fixture": "gbpusd-15m-e1-falling-open-position.fixture.json",
+      "source": "gbpusd-15m-e1-falling-open-position.strat",
+      "expect": {
+        "ok": true,
+        "trades": 0,
+        "open": true
+      }
+    },
+    {
+      "id": "xauusd-1h-e1-weekend-inside-setup",
+      "fixture": "xauusd-1h-e1-weekend-inside-setup.fixture.json",
+      "source": "xauusd-1h-e1-weekend-inside-setup.strat",
+      "expect": {
+        "ok": true,
+        "trades": 1,
+        "open": false
+      },
+      "calendar": "xauusd-1h-e1-weekend-inside-setup.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-reopened-fill-gap-up",
+      "fixture": "xauusd-1h-e1-reopened-fill-gap-up.fixture.json",
+      "source": "xauusd-1h-e1-reopened-fill-gap-up.strat",
+      "expect": {
+        "ok": true,
+        "trades": 1,
+        "open": false
+      },
+      "calendar": "xauusd-1h-e1-reopened-fill-gap-up.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-reopened-below-stop",
+      "fixture": "xauusd-1h-e1-reopened-below-stop.fixture.json",
+      "source": "xauusd-1h-e1-reopened-below-stop.strat",
+      "expect": {
+        "ok": true,
+        "trades": 0,
+        "open": false
+      },
+      "calendar": "xauusd-1h-e1-reopened-below-stop.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-hold-across-closure",
+      "fixture": "xauusd-1h-e1-hold-across-closure.fixture.json",
+      "source": "xauusd-1h-e1-hold-across-closure.strat",
+      "expect": {
+        "ok": true,
+        "trades": 1,
+        "open": false
+      },
+      "calendar": "xauusd-1h-e1-hold-across-closure.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-open-position-after-closure",
+      "fixture": "xauusd-1h-e1-open-position-after-closure.fixture.json",
+      "source": "xauusd-1h-e1-open-position-after-closure.strat",
+      "expect": {
+        "ok": true,
+        "trades": 0,
+        "open": true
+      },
+      "calendar": "xauusd-1h-e1-open-position-after-closure.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-weekend-hole-without-calendar",
+      "fixture": "xauusd-1h-e1-weekend-hole-without-calendar.fixture.json",
+      "source": "xauusd-1h-e1-weekend-hole-without-calendar.strat",
+      "expect": {
+        "ok": false,
+        "code": "unsupported-sequential-time-gap",
+        "disposition": "unsupported"
+      }
+    },
+    {
+      "id": "xauusd-1h-e1-calendar-covers-another-hole",
+      "fixture": "xauusd-1h-e1-calendar-covers-another-hole.fixture.json",
+      "source": "xauusd-1h-e1-calendar-covers-another-hole.strat",
+      "expect": {
+        "ok": false,
+        "code": "unsupported-sequential-time-gap",
+        "disposition": "unsupported"
+      },
+      "calendar": "xauusd-1h-e1-calendar-covers-another-hole.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-calendar-one-step-short",
+      "fixture": "xauusd-1h-e1-calendar-one-step-short.fixture.json",
+      "source": "xauusd-1h-e1-calendar-one-step-short.strat",
+      "expect": {
+        "ok": false,
+        "code": "unsupported-sequential-time-gap",
+        "disposition": "unsupported"
+      },
+      "calendar": "xauusd-1h-e1-calendar-one-step-short.calendar.json"
+    },
+    {
+      "id": "xauusd-1h-e1-calendar-hash-mismatch",
+      "fixture": "xauusd-1h-e1-calendar-hash-mismatch.fixture.json",
+      "source": "xauusd-1h-e1-calendar-hash-mismatch.strat",
+      "expect": {
+        "ok": false,
+        "code": "invalid-sequential-calendar",
+        "disposition": "invalid"
+      },
+      "calendar": "xauusd-1h-e1-calendar-hash-mismatch.calendar.json"
+    }
+  ]
+}
