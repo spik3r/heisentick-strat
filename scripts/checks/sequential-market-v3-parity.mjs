@@ -148,6 +148,39 @@ for (const [name, delta, onGrid] of [['step+1ms', 1, false], ['1.5 steps', 0.5, 
   cases.push({ id: `refuse/off-grid/${name}`, fixture: JSON.stringify(f), source: source(xau[0], xau[1]), calendar: '', ok: false, code: 'unsupported-sequential-time-gap', disposition: 'unsupported', gap: { onGrid } });
 }
 
+// Case-variant and missing calendar keys (review of df1e8cd). Every mutation
+// edits only the calendar text of a committed example and keeps its digest, so a
+// permissive decoder would still see a matching hash and a runnable request.
+{
+  const example = index.examples.find((e) => e.id === 'xauusd-1h-e1-open-position-after-closure');
+  const exFixture = readFileSync(join(exampleDir, example.fixture), 'utf8'), exSource = readFileSync(join(exampleDir, example.source), 'utf8');
+  const valid = readFileSync(join(exampleDir, example.calendar), 'utf8').trim();
+  const closure = JSON.stringify(JSON.parse(valid).closures[0]);
+  const { startMs, endMs } = JSON.parse(closure);
+  const mutations = {
+    'Closures overrides empty closures': valid.replace(`"closures":[${closure}]`, `"closures":[],"Closures":[${closure}]`),
+    'Closures replaces closures': valid.replace('"closures":', '"Closures":'),
+    'Provider overrides provider': valid.replace('"provider":"invented-venue"', '"provider":"other","Provider":"invented-venue"'),
+    'Symbol overrides symbol': valid.replace('"symbol":"XAUUSD"', '"symbol":"EURUSD","Symbol":"XAUUSD"'),
+    'StartMs replaces startMs': valid.replace('"startMs"', '"StartMs"'),
+    'StartMs overrides startMs': valid.replace(`{"startMs":${startMs},`, `{"startMs":0,"StartMs":${startMs},`),
+    'endms replaces endMs': valid.replace('"endMs"', '"endms"'),
+    'startMs omitted': valid.replace(`"startMs":${startMs},`, ''),
+    'endMs omitted': valid.replace(`,"endMs":${endMs}`, ''),
+    'escaped alias of closures': valid.replace(`"closures":[${closure}]`, `"closures":[${closure}],"clo\\u0073ures":[]`),
+    'long s alias of closures': valid.replace(`"closures":[${closure}]`, `"closures":[],"clo\\u017fures":[${closure}]`),
+    'unknown nested key': valid.replace(closure, `{"startMs":${startMs},"endMs":${endMs},"note":"x"}`),
+    'unknown root key': valid.replace('"version":"1"', '"version":"1","tz":"UTC"'),
+    'closures as object': valid.replace(`"closures":[${closure}]`, '"closures":{}'),
+  };
+  for (const [name, calendarText] of Object.entries(mutations)) {
+    assert.notEqual(calendarText, valid, `mutation ${name} changed nothing`);
+    cases.push({ id: `refuse/calendar-grammar/${name}`, fixture: exFixture, source: exSource, calendar: calendarText, ok: false, code: 'invalid-sequential-calendar', disposition: 'invalid', grammar: true });
+  }
+  assert(JSON.parse(exFixture).bars.length > 0);
+  cases.push({ id: 'example/valid-calendar-still-runs', fixture: exFixture, source: exSource, calendar: valid, ok: true, open: true });
+}
+
 // ---- runners --------------------------------------------------------------
 globalThis.crypto ??= webcrypto;
 createRequire(import.meta.url)(shim);

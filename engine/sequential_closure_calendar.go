@@ -110,17 +110,6 @@ func DecodeSequentialClosureCalendar(raw string) (SequentialClosureCalendar, err
 	if err := decoder.Decode(&c); err != nil {
 		return SequentialClosureCalendar{}, sequentialCalendarError("calendar.json", -1)
 	}
-	// Every key is required, including an empty closures list: a missing key
-	// would otherwise hash as [] and pass.
-	var keys map[string]json.RawMessage
-	if err := json.Unmarshal([]byte(raw), &keys); err != nil {
-		return SequentialClosureCalendar{}, sequentialCalendarError("calendar.json", -1)
-	}
-	for _, key := range []string{"schema", "calendarId", "provider", "symbol", "timeframe", "version", "closures", "sha256"} {
-		if _, ok := keys[key]; !ok {
-			return SequentialClosureCalendar{}, sequentialCalendarError("calendar."+key, -1)
-		}
-	}
 	if c.Closures == nil {
 		c.Closures = []SequentialClosure{}
 	}
@@ -159,61 +148,109 @@ func DecodeSequentialClosureCalendar(raw string) (SequentialClosureCalendar, err
 	return c, nil
 }
 
-// sequentialCalendarWalk rejects what struct decoding would hide: duplicate
-// keys, fractional or exponent numbers, nulls and trailing values.
+// sequentialCalendarKeys is the exact, case-sensitive grammar of a calendar
+// document: these root keys and, inside each closure, these two keys. Go's
+// encoding/json matches keys case-insensitively and would let "Closures" or
+// "StartMs" stand in for, or override, the schema-defined field, so the
+// grammar is enforced here on the decoded key strings before any struct decoding.
+var (
+	sequentialCalendarRootKeys    = []string{"schema", "calendarId", "provider", "symbol", "timeframe", "version", "closures", "sha256"}
+	sequentialCalendarClosureKeys = []string{"startMs", "endMs"}
+)
+
+// sequentialCalendarWalk rejects what struct decoding would hide: duplicate or
+// unknown or case-variant keys (including through unicode escapes, which the
+// token decoder resolves first), missing required keys at the root and in every
+// closure, values of the wrong JSON type, fractional or oversize integers, nulls
+// and trailing values.
 func sequentialCalendarWalk(raw []byte) error {
 	decoder := json.NewDecoder(bytes.NewReader(raw))
 	decoder.UseNumber()
-	var walk func(path string, depth int) error
-	walk = func(path string, depth int) error {
-		if depth > 6 {
-			return sequentialCalendarError("calendar.depth", -1)
-		}
+	// object reads one object whose keys must be exactly allowed (all required).
+	// value(key) validates one member's value.
+	var object func(path string, allowed []string, value func(key string) error) error
+	object = func(path string, allowed []string, value func(key string) error) error {
 		token, err := decoder.Token()
-		if err != nil {
+		if err != nil || token != json.Delim('{') {
 			return sequentialCalendarError("calendar.json", -1)
 		}
-		switch v := token.(type) {
-		case json.Delim:
-			if v == '{' {
-				seen := map[string]bool{}
-				for decoder.More() {
-					keyToken, err := decoder.Token()
-					key, ok := keyToken.(string)
-					if err != nil || !ok {
-						return sequentialCalendarError("calendar.json", -1)
-					}
-					if seen[key] {
-						return sequentialCalendarError("calendar.duplicate-key", -1)
-					}
-					seen[key] = true
-					if err := walk(path+"."+key, depth+1); err != nil {
-						return err
-					}
-				}
-				if end, err := decoder.Token(); err != nil || end != json.Delim('}') {
-					return sequentialCalendarError("calendar.json", -1)
-				}
-				return nil
-			}
-			for decoder.More() {
-				if err := walk(path+"[]", depth+1); err != nil {
-					return err
-				}
-			}
-			if end, err := decoder.Token(); err != nil || end != json.Delim(']') {
+		seen := map[string]bool{}
+		for decoder.More() {
+			keyToken, err := decoder.Token()
+			key, ok := keyToken.(string)
+			if err != nil || !ok {
 				return sequentialCalendarError("calendar.json", -1)
 			}
-		case json.Number:
-			if !sequentialExactJSONTimestamp(string(v)) {
-				return sequentialCalendarError("calendar.number", -1)
+			if seen[key] {
+				return sequentialCalendarError("calendar.duplicate-key", -1)
 			}
-		case nil:
-			return sequentialCalendarError("calendar.null", -1)
+			seen[key] = true
+			known := false
+			for _, name := range allowed {
+				known = known || name == key
+			}
+			if !known {
+				return sequentialCalendarError("calendar.unknown-key", -1)
+			}
+			if err := value(key); err != nil {
+				return err
+			}
+		}
+		if end, err := decoder.Token(); err != nil || end != json.Delim('}') {
+			return sequentialCalendarError("calendar.json", -1)
+		}
+		for _, name := range allowed {
+			if !seen[name] {
+				return sequentialCalendarError(path+"."+name, -1)
+			}
 		}
 		return nil
 	}
-	if err := walk("$", 0); err != nil {
+	str := func() error {
+		token, err := decoder.Token()
+		if _, ok := token.(string); err != nil || !ok {
+			return sequentialCalendarError("calendar.type", -1)
+		}
+		return nil
+	}
+	integer := func() error {
+		token, err := decoder.Token()
+		number, ok := token.(json.Number)
+		if err != nil {
+			return sequentialCalendarError("calendar.json", -1)
+		}
+		if !ok {
+			return sequentialCalendarError("calendar.type", -1)
+		}
+		if !sequentialExactJSONTimestamp(string(number)) {
+			return sequentialCalendarError("calendar.number", -1)
+		}
+		return nil
+	}
+	closure := func() error {
+		return object("calendar.closures", sequentialCalendarClosureKeys, func(string) error { return integer() })
+	}
+	closures := func() error {
+		if token, err := decoder.Token(); err != nil || token != json.Delim('[') {
+			return sequentialCalendarError("calendar.type", -1)
+		}
+		for decoder.More() {
+			if err := closure(); err != nil {
+				return err
+			}
+		}
+		if end, err := decoder.Token(); err != nil || end != json.Delim(']') {
+			return sequentialCalendarError("calendar.json", -1)
+		}
+		return nil
+	}
+	err := object("calendar", sequentialCalendarRootKeys, func(key string) error {
+		if key == "closures" {
+			return closures()
+		}
+		return str()
+	})
+	if err != nil {
 		return err
 	}
 	if _, err := decoder.Token(); err != io.EOF {

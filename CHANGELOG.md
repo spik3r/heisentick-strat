@@ -19,7 +19,8 @@ version and is named here.
   results. Adds `seqcore.Engine.StepAfterClosure` (the default `Step` is
   unchanged) and the schemas `sequential-market-result-v3`,
   `sequential-market-admission-v3`, `sequential-closure-calendar-v1`. v1 and v2
-  are unchanged. Owner-approved 2026-10-13 for implementation and synthetic
+  are unchanged. The calendar grammar is exact and case-sensitive at the root
+  and in every closure. Owner-approved 2026-10-13 for implementation and synthetic
   testing only; see [the contract](docs/sequential-market-contract.md).
 
 ### Sequential E1/E2 market companion v2 (additive, not released)

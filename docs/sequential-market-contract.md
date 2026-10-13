@@ -370,10 +370,14 @@ missing candles.
 
 - `calendarId`, `provider`, `version`: `^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$`.
   `symbol` and `timeframe` must equal the source's route. A different route is
-  refused. Every key is required, including an empty `closures` list. The
-  request carries no provider field, so the engine cannot check the provider
-  against the bars: it is bound into the digest and echoed in the result, and the
-  consumer must supply the calendar that belongs to the data it sends.
+  refused. Every key is required, including an empty `closures` list.
+- The provider is a declaration, not proof. The request carries no provider
+  field, so the engine cannot check that the bars came from that provider: the
+  value is bound into the digest and echoed, nothing more. A calendar hash alone
+  is not provider verification. The consumer must bind its own verified
+  data-source identity (provider, dataset, quote side, download or hash identity)
+  to the calendar it sends, and must not treat a matching `calendar.sha256` as
+  evidence of where the data came from.
 - A closure is the half-open UTC interval `[startMs, endMs)` of bar opens that
   were not published. It is a whole number of timeframe steps, closures are
   sorted, and each starts strictly after the previous one ends (touching closures
@@ -390,10 +394,21 @@ missing candles.
   refuses the whole run with `unsupported-sequential-time-gap`. A closure that
   contains an observed bar refuses the run with `invalid-sequential-calendar` /
   `closures.contains-bar`. Closures wholly outside the supplied bars are ignored.
-- Strict JSON: duplicate keys, unknown fields, nulls, fractional or non-integer
-  milliseconds, trailing values and a wrong digest are refused with
-  `invalid-sequential-calendar` (`calendar.json`, `.duplicate-key`, `.null`,
-  `.number`, `.trailing`, `.sha256`, `.closures.interval|grid|order`, ...).
+- Exact grammar. Keys are matched case-sensitively on their decoded strings,
+  before any struct decoding, because Go's `encoding/json` would otherwise match
+  `Closures` or `StartMs` to the schema fields and let a later alias override an
+  earlier value while the digest still matched. The root has exactly the eight
+  keys above and every closure has exactly `startMs` and `endMs`. Refused with
+  `invalid-sequential-calendar`: a duplicate key (`calendar.duplicate-key`, also
+  through `\u` escapes), an unknown, case-variant or case-folded key such as
+  `Closures`, `StartMs` or `clo\u017fures` (`calendar.unknown-key`), a missing
+  root key (`calendar.<key>`, for example `calendar.closures`), a missing nested
+  key (`calendar.closures.startMs` or `.endMs`; a missing `startMs` never
+  defaults to 0), a value of the wrong JSON type, null, a closures value that is
+  not an array of objects (`calendar.type`, `calendar.json`), fractional or
+  oversize integers (`calendar.number`), trailing values (`calendar.trailing`)
+  and a wrong digest (`calendar.sha256`). Valid calendar bytes and the digest
+  recipe are unchanged.
 
 Observed-bar semantics across a declared closure: the Setup comparison
 (`close[t-4]`), ATR14, Setup and Countdown counts, the E1 response window,

@@ -66,11 +66,11 @@ func TestSequentialClosureCalendarRefusals(t *testing.T) {
 		{"not JSON", "{", "calendar.json"},
 		{"trailing value", valid + " {}", "calendar.trailing"},
 		{"duplicate key", strings.Replace(valid, `"version":"7",`, `"version":"7","version":"8",`, 1), "calendar.duplicate-key"},
-		{"unknown field", strings.Replace(valid, `"version":"7",`, `"version":"7","tz":"UTC",`, 1), "calendar.json"},
-		{"null", strings.Replace(valid, `"provider":"venue-a"`, `"provider":null`, 1), "calendar.null"},
+		{"unknown field", strings.Replace(valid, `"version":"7",`, `"version":"7","tz":"UTC",`, 1), "calendar.unknown-key"},
+		{"null", strings.Replace(valid, `"provider":"venue-a"`, `"provider":null`, 1), "calendar.type"},
 		{"fractional ms", strings.Replace(valid, fmt.Sprint(10*calendarStep), fmt.Sprint(10*calendarStep)+".5", 1), "calendar.number"},
 		{"exponent form of an integer", strings.Replace(valid, fmt.Sprint(10*calendarStep), "3.6e7", 1), "calendar.json"},
-		{"ms as string", strings.Replace(valid, fmt.Sprintf(`"startMs":%d`, 10*calendarStep), fmt.Sprintf(`"startMs":"%d"`, 10*calendarStep), 1), "calendar.json"},
+		{"ms as string", strings.Replace(valid, fmt.Sprintf(`"startMs":%d`, 10*calendarStep), fmt.Sprintf(`"startMs":"%d"`, 10*calendarStep), 1), "calendar.type"},
 		{"wrong schema", calendarJSON(with("schema", `"sequential-closure-calendar-v2"`), good, ""), "calendar.schema"},
 		{"bad id characters", calendarJSON(with("calendarId", `"cal 1"`), good, ""), "calendar.calendarId"},
 		{"empty provider", calendarJSON(with("provider", `""`), good, ""), "calendar.provider"},
@@ -86,7 +86,7 @@ func TestSequentialClosureCalendarRefusals(t *testing.T) {
 		{"end beyond 2^53", calendarJSON(baseCalendarFields(), [][2]int64{{9_007_199_254_740_000, 9_007_199_254_740_992}}, ""), "calendar.number"},
 		{"digest of other content", calendarJSON(baseCalendarFields(), good, strings.Repeat("0", 64)), "calendar.sha256"},
 		{"digest in capitals", calendarJSON(baseCalendarFields(), good, strings.ToUpper(strings.Split(strings.Split(valid, `"sha256":"`)[1], `"`)[0])), "calendar.sha256"},
-		{"digest missing", strings.Replace(valid, `,"sha256"`, `,"sha257"`, 1), "calendar.json"},
+		{"digest missing", strings.Replace(valid, `,"sha256"`, `,"sha257"`, 1), "calendar.unknown-key"},
 		{"closures key omitted", strings.Replace(calendarJSON(baseCalendarFields(), nil, ""), `"closures":[],`, "", 1), "calendar.closures"},
 		{"provider key omitted", strings.Replace(valid, `"provider":"venue-a",`, "", 1), "calendar.provider"},
 		{"edited after hashing", strings.Replace(valid, `"version":"7"`, `"version":"8"`, 1), "calendar.sha256"},
@@ -167,5 +167,63 @@ func TestSequentialClosureCalendarMatchesHolesExactly(t *testing.T) {
 	}
 	if _, _, err := decode([2]int64{10 * calendarStep, 11 * calendarStep}).MatchBars(bars, calendarStep); err == nil {
 		t.Fatal("a closure over an observed bar was accepted")
+	}
+}
+
+// Go's encoding/json matches object keys case-insensitively, so "Closures" can
+// override "closures" and "StartMs" can stand in for "startMs" in a document that
+// still carries the original digest. The grammar is exact and case-sensitive:
+// every alias, unknown key and missing required key is refused before decoding.
+func TestSequentialClosureCalendarGrammarIsExactAndCaseSensitive(t *testing.T) {
+	pairs := [][2]int64{{10 * calendarStep, 12 * calendarStep}, {40 * calendarStep, 44 * calendarStep}}
+	valid := calendarJSON(baseCalendarFields(), pairs, "")
+	first := fmt.Sprintf(`{"startMs":%d,"endMs":%d}`, pairs[0][0], pairs[0][1])
+	both := strings.Join([]string{first, fmt.Sprintf(`{"startMs":%d,"endMs":%d}`, pairs[1][0], pairs[1][1])}, ",")
+	cases := []struct{ name, doc, field string }{
+		// Root: a shadow key after the real one overrides it; the digest still matches the shadow.
+		{"Closures overrides an empty closures", strings.Replace(valid, `"closures":[`+both+`]`, `"closures":[],"Closures":[`+both+`]`, 1), "calendar.unknown-key"},
+		{"Closures alone replaces closures", strings.Replace(valid, `"closures":`, `"Closures":`, 1), "calendar.unknown-key"},
+		{"CLOSURES", strings.Replace(valid, `"closures":`, `"CLOSURES":`, 1), "calendar.unknown-key"},
+		{"Provider shadows provider", strings.Replace(valid, `"provider":"venue-a"`, `"provider":"venue-b","Provider":"venue-a"`, 1), "calendar.unknown-key"},
+		{"Symbol shadows symbol", strings.Replace(valid, `"symbol":"XAUUSD"`, `"symbol":"EURUSD","Symbol":"XAUUSD"`, 1), "calendar.unknown-key"},
+		{"Timeframe", strings.Replace(valid, `"timeframe":"1h"`, `"timeframe":"4h","Timeframe":"1h"`, 1), "calendar.unknown-key"},
+		{"calendarid lowercase", strings.Replace(valid, `"calendarId":`, `"calendarid":`, 1), "calendar.unknown-key"},
+		{"SHA256 alias", strings.Replace(valid, `"sha256":`, `"SHA256":`, 1), "calendar.unknown-key"},
+		{"schema alias", strings.Replace(valid, `"schema":`, `"Schema":`, 1), "calendar.unknown-key"},
+		// Unicode: escapes resolve to the same string and are duplicates; folded letters are unknown.
+		{"escaped duplicate of closures", strings.Replace(valid, `"closures":[`+both+`]`, `"closures":[`+both+`],"clos\u0075res":[]`, 1), "calendar.duplicate-key"},
+		{"long s folds to s", strings.Replace(valid, `"closures":[`+both+`]`, `"closures":[],"clo\u017fures":[`+both+`]`, 1), "calendar.unknown-key"},
+		{"Kelvin sign key is unknown", strings.Replace(valid, `"version":"7",`, `"version":"7","\u212Aey":1,`, 1), "calendar.unknown-key"},
+		// Nested closure objects.
+		{"StartMs for startMs", strings.Replace(valid, `"startMs":`+fmt.Sprint(pairs[0][0]), `"StartMs":`+fmt.Sprint(pairs[0][0]), 1), "calendar.unknown-key"},
+		{"STARTMS", strings.Replace(valid, `"startMs":`+fmt.Sprint(pairs[0][0]), `"STARTMS":`+fmt.Sprint(pairs[0][0]), 1), "calendar.unknown-key"},
+		{"endms lowercase", strings.Replace(valid, `"endMs":`+fmt.Sprint(pairs[0][1]), `"endms":`+fmt.Sprint(pairs[0][1]), 1), "calendar.unknown-key"},
+		{"StartMs shadows startMs", strings.Replace(valid, first, fmt.Sprintf(`{"startMs":0,"StartMs":%d,"endMs":%d}`, pairs[0][0], pairs[0][1]), 1), "calendar.unknown-key"},
+		{"startMs omitted (would default to 0)", strings.Replace(valid, first, fmt.Sprintf(`{"endMs":%d}`, pairs[0][1]), 1), "calendar.closures.startMs"},
+		{"endMs omitted", strings.Replace(valid, first, fmt.Sprintf(`{"startMs":%d}`, pairs[0][0]), 1), "calendar.closures.endMs"},
+		{"empty closure object", strings.Replace(valid, first, `{}`, 1), "calendar.closures.startMs"},
+		{"extra nested key", strings.Replace(valid, first, fmt.Sprintf(`{"startMs":%d,"endMs":%d,"note":"x"}`, pairs[0][0], pairs[0][1]), 1), "calendar.unknown-key"},
+		{"duplicate nested key", strings.Replace(valid, first, fmt.Sprintf(`{"startMs":%d,"startMs":%d,"endMs":%d}`, pairs[0][0], pairs[0][0], pairs[0][1]), 1), "calendar.duplicate-key"},
+		{"nested null", strings.Replace(valid, fmt.Sprintf(`"endMs":%d}`, pairs[0][1]), `"endMs":null}`, 1), "calendar.type"},
+		{"closure as array", strings.Replace(valid, first, fmt.Sprintf(`[%d,%d]`, pairs[0][0], pairs[0][1]), 1), "calendar.json"},
+		{"closures as object", strings.Replace(valid, `"closures":[`+both+`]`, `"closures":{}`, 1), "calendar.type"},
+		{"provider as number", strings.Replace(valid, `"provider":"venue-a"`, `"provider":7`, 1), "calendar.type"},
+		{"root as array", "[" + valid + "]", "calendar.json"},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if c.doc == valid {
+				t.Fatal("mutation did not change the document")
+			}
+			_, err := engine.DecodeSequentialClosureCalendar(c.doc)
+			var typed *engine.SequentialCalendarError
+			if !errors.As(err, &typed) || typed.Kind != "invalid-sequential-calendar" || typed.Field != c.field {
+				t.Fatalf("error %v, want invalid-sequential-calendar / %s", err, c.field)
+			}
+		})
+	}
+	// The valid document, whose bytes and digest are unchanged, still decodes.
+	if c, err := engine.DecodeSequentialClosureCalendar(valid); err != nil || len(c.Closures) != 2 {
+		t.Fatalf("valid calendar refused: %v", err)
 	}
 }

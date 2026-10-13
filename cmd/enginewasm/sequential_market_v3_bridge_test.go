@@ -416,3 +416,57 @@ func TestSequentialMarketV3AdoptionExamples(t *testing.T) {
 		})
 	}
 }
+
+// Astra's review of df1e8cd: case-variant keys must not override or stand in for
+// the schema-defined calendar fields. Each mutation edits only the calendar text
+// of a committed example and keeps its original digest, so a permissive decoder
+// would still see a matching hash and a runnable request.
+func TestSequentialMarketV3CalendarAliasKeysAreRefused(t *testing.T) {
+	dir := "../../engine/testdata/sequential_market_v3/"
+	read := func(name string) string {
+		b, err := os.ReadFile(dir + name)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return strings.TrimSpace(string(b))
+	}
+	fixture, source := read("xauusd-1h-e1-open-position-after-closure.fixture.json"), read("xauusd-1h-e1-open-position-after-closure.strat")+"\n"
+	valid := read("xauusd-1h-e1-open-position-after-closure.calendar.json")
+	closure := `{"startMs":1709560800000,"endMs":1709776800000}`
+	if !strings.Contains(valid, closure) {
+		t.Fatal("example calendar changed; update the mutations")
+	}
+	if raw, ok := runSequentialMarketV3(fixture, source, valid); !ok || decodeV3(t, raw).Terminal.Position != "open" {
+		t.Fatalf("the unmodified example must run: %s", raw)
+	}
+	mutations := map[string]string{
+		"Closures overrides empty closures": strings.Replace(valid, `"closures":[`+closure+`]`, `"closures":[],"Closures":[`+closure+`]`, 1),
+		"Closures replaces closures":        strings.Replace(valid, `"closures":`, `"Closures":`, 1),
+		"Provider overrides provider":       strings.Replace(valid, `"provider":"invented-venue"`, `"provider":"other","Provider":"invented-venue"`, 1),
+		"Symbol overrides symbol":           strings.Replace(valid, `"symbol":"XAUUSD"`, `"symbol":"EURUSD","Symbol":"XAUUSD"`, 1),
+		"StartMs replaces startMs":          strings.Replace(valid, `"startMs"`, `"StartMs"`, 1),
+		"StartMs overrides startMs":         strings.Replace(valid, `{"startMs":1709560800000,`, `{"startMs":0,"StartMs":1709560800000,`, 1),
+		"endms replaces endMs":              strings.Replace(valid, `"endMs"`, `"endms"`, 1),
+		"startMs omitted":                   strings.Replace(valid, `"startMs":1709560800000,`, ``, 1),
+		"endMs omitted":                     strings.Replace(valid, `,"endMs":1709776800000`, ``, 1),
+		"escaped alias of closures":         strings.Replace(valid, `"closures":[`+closure+`]`, `"closures":[`+closure+`],"clo\u0073ures":[]`, 1),
+		"long s alias of closures":          strings.Replace(valid, `"closures":[`+closure+`]`, `"closures":[],"clo\u017fures":[`+closure+`]`, 1),
+		"unknown nested key":                strings.Replace(valid, closure, `{"startMs":1709560800000,"endMs":1709776800000,"note":"x"}`, 1),
+	}
+	for name, calendar := range mutations {
+		t.Run(name, func(t *testing.T) {
+			if calendar == valid {
+				t.Fatal("mutation did not change the calendar")
+			}
+			run, runOK := runSequentialMarketV3(fixture, source, calendar)
+			adm, admOK := admitSequentialMarketV3(fixture, source, calendar)
+			e, a := decodeV3(t, run), decodeV3Admission(t, adm)
+			if runOK || admOK || e.Error == nil || e.Error.Code != "invalid-sequential-calendar" || a.Runnable || a.Disposition != "invalid" || !reflect.DeepEqual(a.Error, e.Error) {
+				t.Fatalf("accepted or disagreed: run %s admit %s", run, adm)
+			}
+			if e.Run != nil || e.Metrics != nil || e.Identity != nil || e.Terminal != nil || a.Calendar != nil {
+				t.Fatalf("refusal leaked success fields: %s", run)
+			}
+		})
+	}
+}
