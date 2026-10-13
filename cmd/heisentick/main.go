@@ -6,6 +6,11 @@ import (
 	"os"
 )
 
+// Optional native commands register only from native-tagged files. A js/wasm
+// build keeps this registry empty and never references an excluded handler.
+var nativeExtraCommands = map[string]func([]string, io.Writer) error{}
+var nativeExtraUsage string
+
 func main() {
 	if err := run(os.Args[1:], os.Stdout); err != nil {
 		fmt.Fprintln(os.Stderr, "heisentick:", err)
@@ -52,6 +57,9 @@ func run(args []string, out io.Writer) error {
 		fmt.Fprint(out, usageText())
 		return nil
 	default:
+		if handler := nativeExtraCommands[args[0]]; handler != nil {
+			return handler(args[1:], out)
+		}
 		return usageError("unknown command %q", args[0])
 	}
 }
@@ -115,7 +123,7 @@ timed-report is an offline, one-unit delayed-open OHLC proxy. It requires an exp
   heisentick grid --dsl-file=<path> --symbol=<SYMBOL> --tf=<tf> --range=zone|pivot --set <param>=<v1,v2,...> [--route-mode=declared|transfer] [--json-only=1]
 
 forward-prefix always writes one JSON envelope for the loaded data prefix. Without checkpoint flags it preserves the existing full-replay behavior. Checkpoint mode supports reviewed ORB routes only, still requires the complete extended bar prefix, and writes the opaque successor to a new candidate file. Input and output paths must differ and an existing output is never replaced. Advance a durable checkpoint pointer only after exit 0 and complete stdout JSON capture; stdout and the candidate-file rename cannot be atomic together.
-`
+` + nativeExtraUsage
 }
 
 func usageError(format string, args ...any) error {

@@ -36,6 +36,10 @@ func eventPhase(event engine.AdaptiveFlagEvent) string {
 }
 
 func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
+	return validateRunWithLimits(run, portableLimits())
+}
+
+func validateRunWithLimits(run *engine.AdaptiveFlagResult, limits projectionLimits) (validationContext, error) {
 	var ctx validationContext
 	bad := func(op string, row, order, event int, message string) (validationContext, error) {
 		return validationContext{}, newCoreError("invalid_native_ledger", op, row, order, event, message)
@@ -53,7 +57,7 @@ func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
 	if n == 0 {
 		return bad("lifecycle", -1, -1, -1, "nonempty native snapshots are required")
 	}
-	if n > MaxRetainedRows || len(run.States) > MaxRetainedRows || len(run.Orders) > n || len(run.Events) > 4*n || len(run.Gaps) > n || len(run.Assumptions) > 13 {
+	if n > limits.rows || len(run.States) > limits.rows || len(run.Orders) > n || len(run.Events) > 4*n || len(run.Gaps) > n || len(run.Assumptions) > 13 {
 		return resource("output_bound", "native ledger exceeds a collection bound")
 	}
 	for i := range run.Orders {
@@ -111,7 +115,7 @@ func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
 		if state.RowIdx != i || state.CloseMS != row.CloseT {
 			return bad("lifecycle", i, -1, -1, "native state does not match its observed close")
 		}
-		if state.PendingAge < 0 || state.PendingAge > MaxRetainedRows {
+		if state.PendingAge < 0 || state.PendingAge > limits.rows {
 			return bad("lifecycle", i, -1, -1, "native state pending age is outside the admitted row bound")
 		}
 		for _, id := range []*int{state.PendingOrderID, state.PositionOrderID} {
@@ -133,7 +137,7 @@ func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
 		return domain("time_domain", -1, "execution window must be a positive calendar-bounded grid interval")
 	}
 	ctx.Days = int((ctx.End-1)/unitDayMS - ctx.Start/unitDayMS + 1)
-	if ctx.Days > MaxCalendarDays {
+	if ctx.Days > limits.days {
 		return resource("calendar_count", "execution window exceeds the calendar-day bound")
 	}
 	for i, row := range run.Snapshots {
@@ -156,7 +160,7 @@ func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
 		if order.ID != i || !eligible(order.SignalIdx) || (order.Side != "long" && order.Side != "short") {
 			return bad("lifecycle", order.SignalIdx, i, -1, "native order identity, side, or creation row is invalid")
 		}
-		if order.PendingAge < 0 || order.PendingAge > MaxRetainedRows || order.FillOpportunities < 0 || order.FillOpportunities > MaxRetainedRows {
+		if order.PendingAge < 0 || order.PendingAge > limits.rows || order.FillOpportunities < 0 || order.FillOpportunities > limits.rows {
 			return bad("lifecycle", order.SignalIdx, i, -1, "native order counters are outside the admitted row bound")
 		}
 		// The explicit float64 conversion is the declared binary64 rounding
@@ -299,7 +303,7 @@ func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
 		if exits[oid] >= 0 {
 			endpoint = run.Events[exits[oid]]
 		}
-		if err := countNativeExposure(&ctx, entry, endpoint, run.Snapshots); err != nil {
+		if err := countNativeExposureWithLimits(&ctx, entry, endpoint, run.Snapshots, limits); err != nil {
 			return validationContext{}, err
 		}
 	}
@@ -307,6 +311,10 @@ func validateRun(run *engine.AdaptiveFlagResult) (validationContext, error) {
 }
 
 func countNativeExposure(ctx *validationContext, entry, endpoint engine.AdaptiveFlagEvent, rows []engine.AdaptiveFlagSnapshot) error {
+	return countNativeExposureWithLimits(ctx, entry, endpoint, rows, portableLimits())
+}
+
+func countNativeExposureWithLimits(ctx *validationContext, entry, endpoint engine.AdaptiveFlagEvent, rows []engine.AdaptiveFlagSnapshot, limits projectionLimits) error {
 	a, z := entry.Time, endpoint.Time
 	for boundary := (a.LowerMS/unitDayMS + 1) * unitDayMS; boundary <= z.UpperMS; boundary += unitDayMS {
 		if a.LowerMS < boundary && (z.UpperMS > boundary || z.UpperInclusive) {
@@ -315,14 +323,14 @@ func countNativeExposure(ctx *validationContext, entry, endpoint engine.Adaptive
 		if (a.UpperMS < boundary || (a.UpperMS == boundary && !a.UpperInclusive)) && z.LowerMS >= boundary {
 			ctx.Midnights++
 		}
-		if ctx.Midnights > MaxExposureMidnights {
+		if ctx.Midnights > limits.midnights {
 			return newCoreError("resource_limit", "exposure_count", endpoint.RowIdx, entry.OrderID, endpoint.ID, "aggregate exposure midnight elements exceed the bound")
 		}
 	}
 	for i := entry.RowIdx + 1; i <= endpoint.RowIdx; i++ {
 		if rows[i].OpenT > rows[i-1].CloseT {
 			ctx.Gaps++
-			if ctx.Gaps > MaxExposureGaps {
+			if ctx.Gaps > limits.gaps {
 				return newCoreError("resource_limit", "exposure_count", endpoint.RowIdx, entry.OrderID, endpoint.ID, "aggregate copied exposure gaps exceed the bound")
 			}
 		}

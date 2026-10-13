@@ -119,13 +119,17 @@ type originCandidateIdentity struct {
 }
 
 func originIdentity(run *engine.AdaptiveFlagResult, side string, row int, sourceID string) (episode, candidate string, err error) {
+	return originIdentityWithLimit(run, side, row, sourceID, MaxRetainedRows)
+}
+
+func originIdentityWithLimit(run *engine.AdaptiveFlagResult, side string, row int, sourceID string, maxRows int) (episode, candidate string, err error) {
 	reject := func(message string) (string, string, error) {
 		return "", "", newCoreError("invalid_native_ledger", "identity", row, -1, -1, message)
 	}
 	if !validIdentitySourceID(sourceID) {
 		return "", "", newCoreError("projection_request_rejected", "identity", row, -1, -1, "invalid data source identity")
 	}
-	if run == nil || row < 0 || row >= len(run.Snapshots) || row >= MaxRetainedRows || len(run.Snapshots) > MaxRetainedRows {
+	if run == nil || row < 0 || row >= len(run.Snapshots) || row >= maxRows || len(run.Snapshots) > maxRows {
 		return reject("identity requires an admitted decision row")
 	}
 	if (side != "long" && side != "short") || !lowercaseHexOfLength(run.SourcePineSHA256, 64) || run.TimeframeMS <= 0 || run.TimeframeMS >= MaxCalendarEndpointMS {

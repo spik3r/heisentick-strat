@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/spik3r/heisentick-strat/engine"
-	"github.com/spik3r/heisentick-strat/report/adaptiveflag"
 )
 
 // ownedRaw is deliberately private and has no production constructor in B1.
@@ -92,6 +91,10 @@ func unitIsClose(x, y, delta float64) bool {
 func rawBytesSHA(b []byte) string { h := sha256.Sum256(b); return hex.EncodeToString(h[:]) }
 
 func projectCore(raw ownedRaw, request Request) (*Projection, error) {
+	return projectWithLimits(raw, request, portableLimits())
+}
+
+func projectWithLimits(raw ownedRaw, request Request, limits projectionLimits) (*Projection, error) {
 	if request.Schema != RequestSchema || request.Scenario != "UNIT_POINT_VALUE_1" || request.NumericalPolicy != "BINARY64_ORDERED_V1" || !validIdentitySourceID(request.DataSource.ID) || !lowercaseHexOfLength(request.DataSource.SourceSHA256, 64) {
 		return nil, newCoreError("projection_request_rejected", "projection_request", -1, -1, -1, "invalid closed unit request values")
 	}
@@ -100,11 +103,11 @@ func projectCore(raw ownedRaw, request Request) (*Projection, error) {
 		return nil, err
 	}
 	run := &raw.run
-	ctx, err := validateRun(run)
+	ctx, err := validateRunWithLimits(run, limits)
 	if err != nil {
 		return nil, err
 	}
-	rawLimit, err := adaptiveflag.RuntimeOutputBound(uint64(len(run.Snapshots)))
+	rawLimit, err := limits.rawBound(uint64(len(run.Snapshots)))
 	if err != nil {
 		return nil, newCoreError("resource_limit", "output_bound", -1, -1, -1, "invalid raw bound")
 	}
@@ -119,8 +122,8 @@ func projectCore(raw ownedRaw, request Request) (*Projection, error) {
 			return nil, newCoreError("invalid_native_ledger", "identity", -1, -1, -1, "missing owned raw file identity")
 		}
 	}
-	limit, err := GeneratedOutputBound(uint64(len(run.Snapshots)), uint64(ctx.Days), uint64(ctx.Midnights), uint64(ctx.Gaps))
-	if err != nil || limit > MaxOutputBytes {
+	limit, err := limits.outputBound(run, ctx)
+	if err != nil || limit > limits.maxOutput {
 		return nil, newCoreError("resource_limit", "output_bound", -1, -1, -1, "unit output exceeds its generated bound")
 	}
 	p := &Projection{Schema: ProjectionSchema, SourceAuthority: "native Go raw strategy ledger", Orders: make([]ProjectedOrder, 0, len(run.Orders)), InvalidPlannedRiskRejections: []InvalidRiskRejection{}, CostEvents: []CostEvent{}, ClosedTrades: []ClosedTrade{}, Marks: []Mark{}, Daily: []Daily{}, ByEntryYearCohort: map[string]Summary{}, ByCalendarYearMarkedChange: map[string]CalendarYear{}}
@@ -138,7 +141,7 @@ func projectCore(raw ownedRaw, request Request) (*Projection, error) {
 				q = unitPointer(v)
 			}
 		}
-		episode, candidate, e := originIdentity(run, order.Side, order.SignalIdx, request.DataSource.ID)
+		episode, candidate, e := originIdentityWithLimit(run, order.Side, order.SignalIdx, request.DataSource.ID, limits.rows)
 		if e != nil {
 			return nil, e
 		}
@@ -409,8 +412,14 @@ func projectCore(raw ownedRaw, request Request) (*Projection, error) {
 	if err != nil {
 		return nil, err
 	}
-	if err := validateProjectedCardinalities(p, ctx, len(run.Snapshots), len(run.Orders)); err != nil {
+	if err := validateProjectedCardinalitiesWithLimits(p, ctx, len(run.Snapshots), len(run.Orders), limits); err != nil {
 		return nil, err
+	}
+	if limits.checkBeforeSerialize != nil {
+		if err := limits.checkBeforeSerialize(p, limit); err != nil {
+			return nil, err
+		}
+		return p, nil
 	}
 	encoded, err := json.Marshal(p)
 	if err != nil {
@@ -513,6 +522,10 @@ func unitManifest(raw ownedRaw, request Request, policy CostPolicy, ctx validati
 // This guards future drift between exposure counting and construction as well as
 // the global caps; unused allowance in another term cannot hide an oversized list.
 func validateProjectedCardinalities(p *Projection, ctx validationContext, n, orders int) error {
+	return validateProjectedCardinalitiesWithLimits(p, ctx, n, orders, portableLimits())
+}
+
+func validateProjectedCardinalitiesWithLimits(p *Projection, ctx validationContext, n, orders int, limits projectionLimits) error {
 	bad := func() error {
 		return newCoreError("resource_limit", "output_bound", -1, -1, -1, "projection collections disagree with their admitted counts")
 	}
@@ -530,7 +543,7 @@ func validateProjectedCardinalities(p *Projection, ctx validationContext, n, ord
 		count(&p.ClosedTrades[i].Exposure)
 	}
 	count(p.Terminal.Exposure)
-	if e != ctx.Midnights || g != ctx.Gaps || e > MaxExposureMidnights || g > MaxExposureGaps {
+	if e != ctx.Midnights || g != ctx.Gaps || e > limits.midnights || g > limits.gaps {
 		return bad()
 	}
 	return nil

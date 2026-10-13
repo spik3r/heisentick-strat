@@ -226,6 +226,19 @@ func adaptiveFlagHash(value any) (string, error) {
 // RunAdaptiveVolumeFlag implements the isolated native delayed-bracket raw
 // reference. It provides model prices and state only, with no account inference.
 func RunAdaptiveVolumeFlag(request AdaptiveFlagRequest) (AdaptiveFlagResult, error) {
+	return runAdaptiveVolumeFlag(request, nil)
+}
+
+// RunAdaptiveVolumeFlagWithResultGuard uses the same raw strategy runner. A
+// trusted, non-mutating guard may refuse the complete owned result before its
+// final JSON validation allocation. It does not replace source admission or
+// bound earlier allocations; callers must admit input and those allocations.
+// No generic/WASM bridge exposes this Go callback or changes its existing path.
+func RunAdaptiveVolumeFlagWithResultGuard(request AdaptiveFlagRequest, guard func(AdaptiveFlagResult) error) (AdaptiveFlagResult, error) {
+	return runAdaptiveVolumeFlag(request, guard)
+}
+
+func runAdaptiveVolumeFlag(request AdaptiveFlagRequest, guard func(AdaptiveFlagResult) error) (AdaptiveFlagResult, error) {
 	spec, err := dsl.DecodeAdaptiveVolumeFlag(request.Config)
 	if err != nil {
 		return AdaptiveFlagResult{}, err
@@ -312,8 +325,20 @@ func RunAdaptiveVolumeFlag(request AdaptiveFlagRequest) (AdaptiveFlagResult, err
 		}
 	}
 	out.Orders, out.Events, out.States, out.Terminal = adaptiveFlagPortfolioFrom(series, bars, rows, spec.Rules, tradeFromMS)
-	if _, err = json.Marshal(out); err != nil {
-		return AdaptiveFlagResult{}, fmt.Errorf("adaptive volume flag nonfinite raw result: %w", err)
+	if err = adaptiveFlagValidateResultJSON(out, guard); err != nil {
+		return AdaptiveFlagResult{}, err
 	}
 	return out, nil
+}
+
+func adaptiveFlagValidateResultJSON(out AdaptiveFlagResult, guard func(AdaptiveFlagResult) error) error {
+	if guard != nil {
+		if err := guard(out); err != nil {
+			return err
+		}
+	}
+	if _, err := json.Marshal(out); err != nil {
+		return fmt.Errorf("adaptive volume flag nonfinite raw result: %w", err)
+	}
+	return nil
 }
