@@ -173,6 +173,7 @@ function compare(a, b, path, key) {
 }
 
 let runs = 0, successes = 0, refusals = 0;
+const admissions = new Map();
 for (const c of cases) {
   const nativeRun = nativeCall('run', c), nativeAdmit = nativeCall('admit', c);
   const wasmRun = globalThis.engineRunSequentialMarket(c.fixture, c.source), wasmAdmit = globalThis.engineAdmitSequentialMarket(c.fixture, c.source);
@@ -182,6 +183,15 @@ for (const c of cases) {
   for (const doc of [admit, admitN]) validate(doc, admissionSchema, admissionSchema, admissionPath);
   compare(run, runN, `${c.id}.run`, '');
   compare(admit, admitN, `${c.id}.admit`, '');
+  for (const gap of admit.timeline?.gaps ?? []) {
+    const step = admit.route.timeframeMs;
+    assert.equal(gap.deltaMs, gap.openMs - gap.previousOpenMs, `${c.id}: deltaMs accurate`);
+    assert(gap.deltaMs > step, `${c.id}: a listed gap is longer than one step`);
+    assert.equal(gap.onGrid, gap.deltaMs % step === 0, `${c.id}: onGrid accurate`);
+    if (gap.onGrid) assert.equal(gap.missingBars, gap.deltaMs / step - 1, `${c.id}: missingBars accurate`);
+    else assert(!('missingBars' in gap), `${c.id}: no count off the grid`);
+  }
+  admissions.set(c.id, admit);
   assert.equal(nativeRun.status === 0, c.ok, `${c.id}: native exit status`);
   assert.equal(nativeAdmit.status === 0, c.ok, `${c.id}: native admission exit status`);
   assert.equal(admit.runnable, c.ok, `${c.id}: admission runnable`);
@@ -207,6 +217,22 @@ for (const c of cases) {
   }
   runs++;
 }
+// Negative schema tests: the onGrid / missingBars relationship is enforced by the
+// schema itself, not only by the producer.
+function mutated(id, edit) { const doc = structuredClone(admissions.get(id)); edit(doc.timeline.gaps[0]); return doc; }
+let negatives = 0;
+for (const [label, id, edit] of [
+  ['on-grid gap without missingBars', 'refuse/weekend-hole', (g) => { delete g.missingBars; }],
+  ['off-grid gap with missingBars', 'refuse/off-grid/step+1ms', (g) => { g.missingBars = 1; }],
+  ['off-grid gap with missingBars 0', 'refuse/off-grid/1.5 steps', (g) => { g.missingBars = 0; }],
+  ['onGrid flag missing', 'refuse/weekend-hole', (g) => { delete g.onGrid; }],
+  ['deltaMs missing', 'refuse/weekend-hole', (g) => { delete g.deltaMs; }],
+  ['onGrid not a boolean', 'refuse/off-grid/2 steps', (g) => { g.onGrid = 1; }],
+]) {
+  assert.throws(() => validate(mutated(id, edit), admissionSchema, admissionSchema, admissionPath), undefined, `schema accepted: ${label}`);
+  negatives++;
+}
+for (const id of ['refuse/weekend-hole', 'refuse/off-grid/step+1ms']) validate(mutated(id, () => {}), admissionSchema, admissionSchema, admissionPath);
 // Foreign argument types and size limits must be refused in-band, in the envelope
 // of the selected operation, and must not stop the instance.
 const operations = [['engineRunSequentialMarket', resultSchema, resultPath, 'strat-sequential-market-result-v2'], ['engineAdmitSequentialMarket', admissionSchema, admissionPath, 'strat-sequential-market-admission-v2']];
@@ -240,4 +266,4 @@ for (const [mode, schema, schemaPath, id] of [['run', resultSchema, resultPath, 
   }
 }
 rmSync(scratch, { recursive: true, force: true });
-console.log(JSON.stringify({ transportChecks, comparisons: runs * 2, successes, refusals, leaves, nonIdenticalLeaves: inexact, worstRelativeDifference: worst, tolerance: MONEY_TOLERANCE, nativeHost: `${process.platform}/${process.arch}` }));
+console.log(JSON.stringify({ negativeSchemaChecks: negatives, transportChecks, comparisons: runs * 2, successes, refusals, leaves, nonIdenticalLeaves: inexact, worstRelativeDifference: worst, tolerance: MONEY_TOLERANCE, nativeHost: `${process.platform}/${process.arch}` }));

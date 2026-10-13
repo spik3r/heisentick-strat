@@ -49,8 +49,9 @@ result, so `runnable` is true exactly when `run` succeeds and a refusal carries
 the same error. A held terminal position is known only after execution, so
 admission cannot be cheaper than a run. It also reports bar-spacing gaps
 (`timeline`) so the app can show where a series is not contiguous. Each listed gap has
-`index`, `previousOpenMs`, `openMs`, `deltaMs` and `onGrid`. `missingBars` is present
-only when `deltaMs` is a whole number of steps; an off-grid interval gets no
+`index`, `previousOpenMs`, `openMs`, `deltaMs` and `onGrid`. `missingBars` is required when
+`deltaMs` is a whole number of steps (`onGrid` true) and absent otherwise, and the admission
+schema enforces that relationship itself; an off-grid interval gets no
 missing-bar count, because none is defined and none is invented by rounding.
 At most 32 gaps are listed; `gapCount` is complete.
 

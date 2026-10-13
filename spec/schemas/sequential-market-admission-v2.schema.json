@@ -130,7 +130,32 @@
                   "openMs",
                   "deltaMs",
                   "onGrid"
-                ]
+                ],
+                "if": {
+                  "properties": {
+                    "onGrid": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "onGrid"
+                  ],
+                  "type": "object"
+                },
+                "then": {
+                  "required": [
+                    "missingBars"
+                  ],
+                  "type": "object"
+                },
+                "else": {
+                  "not": {
+                    "required": [
+                      "missingBars"
+                    ],
+                    "type": "object"
+                  }
+                }
               }
             },
             "gapsTruncated": {
@@ -311,7 +336,32 @@
                   "openMs",
                   "deltaMs",
                   "onGrid"
-                ]
+                ],
+                "if": {
+                  "properties": {
+                    "onGrid": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "onGrid"
+                  ],
+                  "type": "object"
+                },
+                "then": {
+                  "required": [
+                    "missingBars"
+                  ],
+                  "type": "object"
+                },
+                "else": {
+                  "not": {
+                    "required": [
+                      "missingBars"
+                    ],
+                    "type": "object"
+                  }
+                }
               }
             },
             "gapsTruncated": {
