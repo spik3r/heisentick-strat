@@ -1,0 +1,204 @@
+{
+  "allowLong": 1,
+  "allowShort": 1,
+  "approachCandles": 3,
+  "approachDistanceAtr": 0,
+  "blockedLocalHours": [],
+  "blockedLocalWeekdays": [],
+  "blockedNewYorkHours": [],
+  "blockedPriorDayTypes": [],
+  "blockedSessionPhases": [],
+  "breakeven": {
+    "atR": 0,
+    "offsetAtr": 0.02
+  },
+  "channel": {
+    "activeWithinCandles": 12,
+    "directions": [],
+    "enabled": false,
+    "tradeMaxWidthAtr": 0,
+    "tradeMinWidthAtr": 0
+  },
+  "channelBreakHold": {},
+  "closeLocationMin": 0,
+  "cooldownCandles": 6,
+  "customLevels": [],
+  "dayOpen": {},
+  "dayThemes": [],
+  "dayTypeErEscape": 2,
+  "dayTypes": [
+    "trending",
+    "ranging",
+    "choppy"
+  ],
+  "description": "Research-only 15m retests of completed 4h zones with completed daily direction. Prototype defaults with native causal admission and accounting; no historical validation or live approval.",
+  "doubleTopBottom": {},
+  "elderTripleScreen": {},
+  "emaLen": 0,
+  "entryMode": {
+    "expireCandles": 5,
+    "type": "market"
+  },
+  "entryTf": "15m",
+  "fairValueGap": {},
+  "fibContinuation": {},
+  "flag": {},
+  "grade": {
+    "context": 0,
+    "location": 0,
+    "requireTotal": 0,
+    "riskReward": 0,
+    "sizeTiers": [],
+    "trigger": 0
+  },
+  "htf": {
+    "mode": "notAgainst",
+    "timeframe": "auto"
+  },
+  "levelConfluenceAtr": 0,
+  "levelDistanceAtr": 1.5,
+  "levelPriority": [
+    "PDH",
+    "PDL",
+    "WH",
+    "WL"
+  ],
+  "levelPriorityExplicit": false,
+  "localHours": [],
+  "localWeekdays": [],
+  "maxHoldCandles": 0,
+  "maxMovementEr": 2,
+  "name": "Supply Demand Entry Retest Research V1",
+  "newYorkHours": [],
+  "openLocations": [],
+  "openingRangeBreakout": {},
+  "partial": {
+    "enabled": 0,
+    "fraction": 0,
+    "moveBreakeven": 0,
+    "triggerR": 1
+  },
+  "priceMomentum": {},
+  "priorDay": {
+    "minRangeAtr": null
+  },
+  "priorDayTypes": [],
+  "range": {
+    "activeWithinCandles": 8,
+    "method": null
+  },
+  "rangeBreakFake": {},
+  "rangeStatFilters": [],
+  "riskUsd": 100,
+  "seasonalityFilters": [],
+  "sessionBiasFilters": [],
+  "sessionPhases": [],
+  "sessions": {
+    "asia": 0,
+    "london": 1,
+    "mid": 0,
+    "ny": 1
+  },
+  "setupType": "supplyDemand",
+  "slices": [
+    {
+      "symbol": "XAUUSD",
+      "tf": "15m"
+    },
+    {
+      "symbol": "EURUSD",
+      "tf": "15m"
+    },
+    {
+      "symbol": "GBPUSD",
+      "tf": "15m"
+    },
+    {
+      "symbol": "AUDUSD",
+      "tf": "15m"
+    },
+    {
+      "symbol": "USDJPY",
+      "tf": "15m"
+    },
+    {
+      "symbol": "EURGBP",
+      "tf": "15m"
+    }
+  ],
+  "sourceTimeframe": "4h",
+  "stop": {
+    "extremeCandles": 0,
+    "maxAtr": 3,
+    "minAtr": 0.4,
+    "paddingAtr": 0.3
+  },
+  "supplyDemand": {
+    "flipBrokenZones": 1,
+    "impulseAtr": 2.5,
+    "impulseCandles": 4,
+    "invalidationAtr": 0.05,
+    "maxBaseBodyAtr": 0.6,
+    "maxBaseCandles": 4,
+    "maxRetests": 1,
+    "maxZoneAgeCandles": 96,
+    "maxZoneAtr": 1,
+    "minBaseCandles": 1,
+    "minSourceAtr": 1,
+    "minWaitCandles": 1,
+    "patterns": [
+      "DBR",
+      "RBR",
+      "RBD",
+      "DBD"
+    ],
+    "requireRejectionClose": 1,
+    "retestOnEntryTimeframe": 1,
+    "retestToleranceAtr": 0.2,
+    "sourceCandles": 4,
+    "zoneBounds": "wick"
+  },
+  "sweepRules": {
+    "high": {
+      "reclaimCandles": 3,
+      "side": "short",
+      "sweepDistanceAtr": 0.1
+    },
+    "low": {
+      "reclaimCandles": 3,
+      "side": "long",
+      "sweepDistanceAtr": 0.1
+    }
+  },
+  "symbols": [],
+  "tailRejectionMin": 0,
+  "target": {
+    "edge": "range",
+    "fallbackR": 1,
+    "minR": 0.6,
+    "sdR": 2.5
+  },
+  "timeframes": [
+    "5m",
+    "15m"
+  ],
+  "tradeWindowMinuteRange": null,
+  "tradeWindowSegments": [],
+  "trail": {
+    "atr": 0,
+    "triggerR": 1
+  },
+  "trendPullback": {},
+  "trigger": {
+    "maxEntryDistanceAtr": 0,
+    "maxSetupAgeCandles": 0
+  },
+  "triggerCandles": [
+    "any"
+  ],
+  "triggerExplicit": true,
+  "triplePush": {},
+  "volumeAnomalyExhaustion": {},
+  "vp": [],
+  "vwapExtensionFade": {}
+}

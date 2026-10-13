@@ -215,7 +215,7 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	case "session":
 		p.parseSession(tokens[1:])
 	case "day":
-		p.parseDay(tokens[1:])
+		p.parseDay(line, tokens[1:])
 	case "prior":
 		p.parsePriorDay(tokens[1:])
 	case "movement", "maxmovementer", "trendiness":
