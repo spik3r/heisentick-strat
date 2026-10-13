@@ -11,7 +11,9 @@ import (
 
 // SequentialAccounting is raw, unrounded accounting from one admitted run.
 // It is separate from the unchanged conformance RunResult serialization. Only
-// the frozen Sequential fixture entry point can allocate its private collector.
+// dedicated admitted entry points can allocate its private collector, including
+// the source-entry supply/demand reporting companion. Reuse does not imply
+// Sequential strategy qualification.
 type SequentialAccounting struct {
 	Profile       string                      `json:"profile"`
 	Policy        string                      `json:"policy,omitempty"`

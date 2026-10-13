@@ -6,6 +6,20 @@ version and is named here.
 
 ## [Unreleased]
 
+
+### Supply-demand retest native reporting companion v1 (additive, not released)
+
+- Add `engineRunSupplyDemandRetestReport` and `heisentick supply-demand-retest-report`
+  with a closed, bounded request, native headline/trades/close-mark equity,
+  explicit pending-order/final-liquidation reporting and exact source/input identities.
+  Reuses authoritative broker accounting; no JS reconstruction or partial-exit profile.
+- Version the companion's completed-daily direction policy to evaluate stale-weekend
+  eligibility at the current 4h decision, fixing future-daily-timestamp influence
+  for this surface. Generic HTF callers and every prior golden remain unchanged.
+  The inherited Saturday-based reuse still has no maximum stale age or verified
+  provider holiday calendar. See [the contract](docs/supply-demand-retest-report.md).
+  Synthetic qualification does not promote a strategy, historical result or live use.
+
 ### Sequential E1/E2 market companion v3 (additive, not released)
 
 - Add `engineRunSequentialMarketV3`, `engineAdmitSequentialMarketV3` and

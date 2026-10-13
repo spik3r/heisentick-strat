@@ -200,13 +200,30 @@ func runSourceEntrySeries(fixture RunFixture, cfg dsl.Config, params flagParams,
 // runSourceRetestSeries runs supply/demand with zones from the source series and
 // the retest judged on the chart series (`retest on entry timeframe`).
 func runSourceRetestSeries(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed bool) []Trade {
+	return runSourceRetestSeriesWithOptions(fixture, cfg, params, chart, source, sourceHTF, execution, windowed, nil)
+}
+
+// supplyDemandRetestOptions keeps the selected HTF policy independent of
+// accounting observation. Ordinary callers pass nil and retain legacy policy.
+type supplyDemandRetestOptions struct {
+	sourceHTFTrend []int8
+	accounting     *sequentialAccountingCollector
+	terminal       *SupplyDemandRetestTerminal
+}
+
+func runSourceRetestSeriesWithOptions(fixture RunFixture, cfg dsl.Config, params flagParams, chart, source, sourceHTF marketdata.Series, execution ExecutionBounds, windowed bool, options *supplyDemandRetestOptions) []Trade {
 	sourceFixture := fixture
 	sourceFixture.Timeframe, _ = cfg["sourceTimeframe"].(string)
 	sourceFixture.SourceTimeframe = ""
 	sourceFixture.Bars = fixture.SourceBars
 	sourceFixture.HTFBars = fixture.SourceHTFBars
 	sourceCols := contextcols.Build(source, contextOptions(sourceFixture, cfg))
-	sourceHTFTrend := computeHTFTrendForConfig(source, sourceHTF, cfg)
+	var sourceHTFTrend []int8
+	if options == nil {
+		sourceHTFTrend = computeHTFTrendForConfig(source, sourceHTF, cfg)
+	} else {
+		sourceHTFTrend = options.sourceHTFTrend
+	}
 	sourceBroker := new(broker)
 	sourceBroker.reset(source, sourceCols, sourceHTFTrend, nil, nil, params, sourceFixture, nil)
 	var chartBroker broker
@@ -215,6 +232,10 @@ func runSourceRetestSeries(fixture RunFixture, cfg dsl.Config, params flagParams
 		chartBroker.setExecutionWindow(execution)
 	}
 	run := sdEntryRetestRun{src: sourceBroker, idx: sourceProjectionIndexes(chart, source), done: -1}
+	if options != nil {
+		chartBroker.sequentialAccounting = options.accounting
+		run.terminal = options.terminal
+	}
 	return run.run(&chartBroker)
 }
 

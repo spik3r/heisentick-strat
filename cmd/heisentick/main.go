@@ -23,6 +23,8 @@ func run(args []string, out io.Writer) error {
 		return usageError("missing command")
 	}
 	switch args[0] {
+	case "supply-demand-retest-report":
+		return runSupplyDemandRetestReport(args[1:], out)
 	case "paper-bidask":
 		return runPaperBidAsk(args[1:], out)
 	case "paper-prefix":
@@ -68,6 +70,10 @@ func usageText() string {
 	return `heisentick runs the Go DSL backtester.
 
 Usage:
+  heisentick supply-demand-retest-report --request-file=<JSON path> --dsl-file=<path>
+
+supply-demand-retest-report returns native trades, headline and original-bar close equity for the bounded supplied-input S&D entry-retest profile. Costs are explicit illustrative broker inputs; terminal exposure uses existing last-close liquidation. It does not establish profitability, market execution, or live/paper qualification.
+
   heisentick paper-bidask --request-file=<path>
 
 paper-bidask is the bounded native sampled-quote/closed-side-bar ORB paper model. It uses only supplied journal facts, preserves open exposure, and never places orders. Consumer authentication and durable arbitration remain separate requirements.
