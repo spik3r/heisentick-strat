@@ -6,6 +6,21 @@ version and is named here.
 
 ## [Unreleased]
 
+### Sequential E1/E2 market companion v2 (additive, not released)
+
+- Add `engineRunSequentialMarket`, `engineAdmitSequentialMarket` and
+  `enginewasm --sequential-market run|admit`: caller-authored Full E1/E2 sources
+  on any uppercase symbol and 1m to 1d timeframe, with trades, marked equity and
+  statistics from the existing Go execution, accounting collector and metrics
+  projection. Start equity must be explicit. Bars must be contiguous and the book
+  flat at the end; timestamp gaps and a held terminal position stay typed
+  refusals, and `admit` reports which. Result and admission schemas are
+  `sequential-market-result-v2` and `sequential-market-admission-v2`. The v1
+  export, schema, pinned sources and goldens are unchanged. Gap, closure,
+  observed-bar and terminal-open handling are open decisions; see
+  [the contract](docs/sequential-market-contract.md). No broker, seqcore,
+  Legacy, P1 or golden change.
+
 ### 0.32.0 candidate
 
 This is an undated candidate, not a published release. See the current

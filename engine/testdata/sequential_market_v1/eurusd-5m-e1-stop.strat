@@ -1,0 +1,5 @@
+dsl v7
+strategy "Invented EURUSD 5m E1" { description "Invented valid OHLC; not market data" }
+market { sequential symbol EURUSD sequential timeframe 5m }
+setup { type: sequential full sequential profile seq.full.public_approx.v1 sequential policy E1 }
+risk { sequential riskUsd 90 sequential maxNotionalUsd 1000000 }

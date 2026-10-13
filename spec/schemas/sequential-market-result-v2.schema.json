@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sequential-market-result-v2.schema.json",
+  "title": "Sequential E1/E2 market companion result v2",
+  "description": "Additive to sequential-backtest-result-v1. A success always has contiguous bars and a flat terminal book; a held terminal position, a timestamp gap, an unsupported route and invalid input are typed errors with no run or metrics. Metrics and capabilities reuse the v1 definitions. Equality, alignment and numerical refusal constraints are additionally enforced at runtime.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-market-result-v2"
+        },
+        "contractVersion": {
+          "const": 2
+        },
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fixtureSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "dslSha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "strategyId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "route": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_.-]{0,31}$"
+                },
+                "timeframe": {
+                  "enum": [
+                    "1m",
+                    "5m",
+                    "15m",
+                    "30m",
+                    "1h",
+                    "4h",
+                    "1d"
+                  ]
+                },
+                "timeframeMs": {
+                  "enum": [
+                    60000,
+                    300000,
+                    900000,
+                    1800000,
+                    3600000,
+                    14400000,
+                    86400000
+                  ]
+                },
+                "profile": {
+                  "const": "seq.full.public_approx.v1"
+                },
+                "policy": {
+                  "enum": [
+                    "E1",
+                    "E2"
+                  ]
+                },
+                "riskUsd": {
+                  "type": "number",
+                  "minimum": -1.7976931348623157e+308,
+                  "maximum": 1.7976931348623157e+308
+                },
+                "maxNotionalUsd": {
+                  "type": "number",
+                  "minimum": -1.7976931348623157e+308,
+                  "maximum": 1.7976931348623157e+308
+                }
+              },
+              "required": [
+                "symbol",
+                "timeframe",
+                "timeframeMs",
+                "profile",
+                "policy",
+                "riskUsd",
+                "maxNotionalUsd"
+              ]
+            },
+            "barCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500000
+            },
+            "firstBarMs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "lastBarMs": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "costs": {
+              "$ref": "run-fixture-v1.schema.json#/$defs/costs"
+            }
+          },
+          "required": [
+            "fixtureSha256",
+            "dslSha256",
+            "strategyId",
+            "route",
+            "barCount",
+            "firstBarMs",
+            "lastBarMs",
+            "costs"
+          ]
+        },
+        "run": {
+          "$ref": "trade-envelope-v1.schema.json"
+        },
+        "metrics": {
+          "$ref": "sequential-backtest-result-v1.schema.json#/oneOf/0/properties/metrics"
+        },
+        "terminal": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "position": {
+              "const": "flat"
+            },
+            "pendingOrderRejected": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "position",
+            "pendingOrderRejected"
+          ]
+        },
+        "capabilities": {
+          "$ref": "sequential-backtest-result-v1.schema.json#/oneOf/0/properties/capabilities"
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "contiguousBarsOnly": {
+              "const": true
+            },
+            "closureCalendar": {
+              "const": false
+            },
+            "terminalOpenPosition": {
+              "const": false
+            },
+            "maxBars": {
+              "const": 500000
+            }
+          },
+          "required": [
+            "contiguousBarsOnly",
+            "closureCalendar",
+            "terminalOpenPosition",
+            "maxBars"
+          ]
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "identity",
+        "run",
+        "metrics",
+        "terminal",
+        "capabilities",
+        "limits"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-market-result-v2"
+        },
+        "contractVersion": {
+          "const": 2
+        },
+        "error": {
+          "$ref": "sequential-backtest-result-v1.schema.json#/oneOf/1/properties/error"
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "error"
+      ]
+    }
+  ]
+}

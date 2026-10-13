@@ -1,0 +1,5 @@
+dsl v7
+strategy "Invented GBPUSD 15m E2" { description "Invented valid OHLC; not market data" }
+market { sequential symbol GBPUSD sequential timeframe 15m }
+setup { type: sequential full sequential profile seq.full.public_approx.v1 sequential policy E2 }
+risk { sequential riskUsd 90 sequential maxNotionalUsd 1000000 }

@@ -150,7 +150,7 @@ jobs:
       - name: Synthetic Sequential E1/E2 under Node-hosted Go WASM
         if: steps.mod.outputs.present == 'true'
         timeout-minutes: 3
-        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards)' ./dsl ./engine ./cmd/enginewasm
+        run: GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestSequential(Full|IndependentAcceptance|AcceptanceAdapterGuards|Market)' ./dsl ./engine ./cmd/enginewasm
 
       # Independent accounting expectations: 58 binding variants, 2 diagnostic
       # provisional variants; injected-only descriptions are not execution gates.
@@ -173,6 +173,18 @@ jobs:
           git archive "$baseline_commit" | tar -x -C "$baseline_dir"
           diagnostic_dir="$RUNNER_TEMP/sequential-diagnostics-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           node scripts/checks/sequential-backtest-parity.mjs --baseline-repo "$baseline_dir" --out "$diagnostic_dir"
+
+      # Invented valid OHLC only: v2 market companion run/admit, native CLI
+      # against the Node-hosted public WASM exports. Explicit relative 1e-12
+      # money tolerance; no historical, browser, consumer or release claim.
+      - name: Sequential market companion v2 actual native and Node-WASM export parity
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 5
+        run: |
+          native_engine="$(mktemp "$RUNNER_TEMP/sequential-market-engine.XXXXXX")"
+          trap 'rm -f "$native_engine"' EXIT
+          go build -trimpath -o "$native_engine" ./cmd/enginewasm
+          node scripts/checks/sequential-market-parity.mjs "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
 
       - name: Upload Sequential synthetic qualification diagnostics
         if: always() && (steps.sequential_parity.outcome == 'success' || steps.sequential_parity.outcome == 'failure')

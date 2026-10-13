@@ -1,0 +1,357 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "sequential-market-admission-v2.schema.json",
+  "title": "Sequential E1/E2 market admission v2",
+  "description": "Answers whether the exact request would run, by executing it. runnable is true exactly when the matching run envelope is a success. disposition separates inputs the engine deliberately does not support from malformed ones; both return no trades. route is present once the source decoded; timeline once the bars decoded.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-market-admission-v2"
+        },
+        "contractVersion": {
+          "const": 2
+        },
+        "route": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "symbol": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_.-]{0,31}$"
+            },
+            "timeframe": {
+              "enum": [
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "1h",
+                "4h",
+                "1d"
+              ]
+            },
+            "timeframeMs": {
+              "enum": [
+                60000,
+                300000,
+                900000,
+                1800000,
+                3600000,
+                14400000,
+                86400000
+              ]
+            },
+            "profile": {
+              "const": "seq.full.public_approx.v1"
+            },
+            "policy": {
+              "enum": [
+                "E1",
+                "E2"
+              ]
+            },
+            "riskUsd": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "maxNotionalUsd": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            }
+          },
+          "required": [
+            "symbol",
+            "timeframe",
+            "timeframeMs",
+            "profile",
+            "policy",
+            "riskUsd",
+            "maxNotionalUsd"
+          ]
+        },
+        "timeline": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "bars": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500000
+            },
+            "gapCount": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 500000
+            },
+            "gaps": {
+              "type": "array",
+              "maxItems": 32,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "previousOpenMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "openMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "missingBars": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "index",
+                  "previousOpenMs",
+                  "openMs",
+                  "missingBars"
+                ]
+              }
+            },
+            "gapsTruncated": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "bars",
+            "gapCount",
+            "gaps",
+            "gapsTruncated"
+          ]
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "contiguousBarsOnly": {
+              "const": true
+            },
+            "closureCalendar": {
+              "const": false
+            },
+            "terminalOpenPosition": {
+              "const": false
+            },
+            "maxBars": {
+              "const": 500000
+            }
+          },
+          "required": [
+            "contiguousBarsOnly",
+            "closureCalendar",
+            "terminalOpenPosition",
+            "maxBars"
+          ]
+        },
+        "runnable": {
+          "const": true
+        },
+        "disposition": {
+          "const": "runnable"
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "runnable",
+        "disposition",
+        "route",
+        "timeline",
+        "limits"
+      ]
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "strat-sequential-market-admission-v2"
+        },
+        "contractVersion": {
+          "const": 2
+        },
+        "route": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "symbol": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_.-]{0,31}$"
+            },
+            "timeframe": {
+              "enum": [
+                "1m",
+                "5m",
+                "15m",
+                "30m",
+                "1h",
+                "4h",
+                "1d"
+              ]
+            },
+            "timeframeMs": {
+              "enum": [
+                60000,
+                300000,
+                900000,
+                1800000,
+                3600000,
+                14400000,
+                86400000
+              ]
+            },
+            "profile": {
+              "const": "seq.full.public_approx.v1"
+            },
+            "policy": {
+              "enum": [
+                "E1",
+                "E2"
+              ]
+            },
+            "riskUsd": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            },
+            "maxNotionalUsd": {
+              "type": "number",
+              "minimum": -1.7976931348623157e+308,
+              "maximum": 1.7976931348623157e+308
+            }
+          },
+          "required": [
+            "symbol",
+            "timeframe",
+            "timeframeMs",
+            "profile",
+            "policy",
+            "riskUsd",
+            "maxNotionalUsd"
+          ]
+        },
+        "timeline": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "bars": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 500000
+            },
+            "gapCount": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 500000
+            },
+            "gaps": {
+              "type": "array",
+              "maxItems": 32,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "index": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "previousOpenMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "openMs": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "missingBars": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "index",
+                  "previousOpenMs",
+                  "openMs",
+                  "missingBars"
+                ]
+              }
+            },
+            "gapsTruncated": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "bars",
+            "gapCount",
+            "gaps",
+            "gapsTruncated"
+          ]
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "contiguousBarsOnly": {
+              "const": true
+            },
+            "closureCalendar": {
+              "const": false
+            },
+            "terminalOpenPosition": {
+              "const": false
+            },
+            "maxBars": {
+              "const": 500000
+            }
+          },
+          "required": [
+            "contiguousBarsOnly",
+            "closureCalendar",
+            "terminalOpenPosition",
+            "maxBars"
+          ]
+        },
+        "runnable": {
+          "const": false
+        },
+        "disposition": {
+          "enum": [
+            "unsupported",
+            "invalid"
+          ]
+        },
+        "error": {
+          "$ref": "sequential-backtest-result-v1.schema.json#/oneOf/1/properties/error"
+        }
+      },
+      "required": [
+        "schema",
+        "contractVersion",
+        "runnable",
+        "disposition",
+        "limits",
+        "error"
+      ]
+    }
+  ]
+}
