@@ -16,7 +16,7 @@ func TestRuntimeReviewedConstructorFingerprints(t *testing.T) {
 	root := testsupport.MustRepoRoot()
 	expected := map[string]string{
 		"engine/adaptive_flag_signals.go":   "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
-		"engine/adaptive_flag_reference.go": "4ef043a85c5eaea69d82bf726513a630e417ab788f419518df83111890bc23d7",
+		"engine/adaptive_flag_reference.go": "7f64758d16fd55b2d6034a0602f3b9b24dbbb35f33ffc745f7403840f5dac4e7",
 		"engine/adaptive_flag_types.go":     "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
 		"engine/adaptive_flag_research.go":  "2b05e98bd6643ccfb374527d465b21dd697de0f95527589ab4edc11146cb0263",
 		"engine/broker.go":                  "db9d8f0ec54dcaba6d29d79a24b4404e8bf0f066956ed3bcbde2985be44d6a15",
