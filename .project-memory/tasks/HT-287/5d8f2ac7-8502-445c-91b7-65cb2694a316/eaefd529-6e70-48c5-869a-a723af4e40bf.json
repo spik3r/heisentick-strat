@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "eaefd529-6e70-48c5-869a-a723af4e40bf",
+  "runId": "5d8f2ac7-8502-445c-91b7-65cb2694a316",
+  "kind": "complete",
+  "parents": [
+    "7b3473ce-04a7-4e0d-947f-1151f3950b07"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 supplied-event ledger receipt-v2",
+      "digest": "ca6a916b1e9c560af5d297c20b5d1592a89b345b5a4b0e0323913afb6700f2bb"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-supplied-ledger",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/134",
+  "at": "2026-10-14T21:52:26.640Z",
+  "summary": "Validated unchanged specification and 36 manual cases after joining both completed HT287 histories on actual PR136 main f8a80e3b; all prior source and lifecycle records preserved",
+  "next": "Independent append-only integration review, publish the exact reviewed union, and await fresh CI before source-only merge",
+  "files": [
+    "docs/supplied-ledger-v1.md",
+    "engine/suppliedledger/testdata/receipt-v2-manual.json"
+  ],
+  "validation": "Cloud Linux Go1.22.12: gofmt clean, go vet ./..., go test -count=1 -p=2 ./..., and conformance135 parse/109 run/0 TODO pass on the materialized union. Native CLI build passes with ordinary VCS stamping in the primary checkout of the same union; initial linked-worktree VCS discovery failed and is not treated as a successful build. Independent static audit verifies36 unique cases,27 complete atomic failures,9 economic projections and2 complete rational-accounting receipts. All1794 current-main tracked blobs/modes and all319 source hashes preserved; exact7 prior specification additions retained. No ledger implementation or empirical outcomes, release, pins or deployment. Fresh exact-head GitHub CI remains required.",
+  "snapshot": {
+    "docs/supplied-ledger-v1.md": {
+      "blob": "c7fbd8eae2280409226ec4d7f406bc9de14714df",
+      "mode": "100644"
+    },
+    "engine/suppliedledger/testdata/receipt-v2-manual.json": {
+      "blob": "f327d51ad6c9e9be5f0750077d93f5ff3bb8e7f1",
+      "mode": "100644"
+    }
+  }
+}

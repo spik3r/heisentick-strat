@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "7639ba74-3a4f-405f-bea0-01a4fea6015d",
+  "runId": "f496921c-4a93-4914-ac49-d5f87b7db516",
+  "kind": "complete",
+  "parents": [
+    "a8f112d6-c82a-4f7f-ac0c-7e99c4af686f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "9b3b17f38e6a0d05260386db02d99a8b52cd0a4d",
+    "blob": "3fa0d732a4728b80d398a735c2868cd07395fc86",
+    "claim": {
+      "heading": "Active claim: Codex HT287 supplied-event ledger receipt-v2",
+      "digest": "4b5424e89a0cd96142729b4afdf1174c289d429dedb2211689fbd56dc70d5aa4"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-supplied-ledger",
+  "pullRequest": null,
+  "at": "2026-10-14T11:27:35.672Z",
+  "summary": "Freeze exact synthetic receipt schema/refusal precedence/mark isolation and36 manual cases including2complete receipts after actual-main restack",
+  "next": "Astra revised exact-head spec review before transitions; no Pine adapter, registration or release",
+  "files": [
+    "docs/supplied-ledger-v1.md",
+    "engine/suppliedledger/testdata/receipt-v2-manual.json"
+  ],
+  "validation": "JSON36unique cases; all negative failure objects complete;2complete hand receipts continuity and balance+unrealized=equity checked; diffcheck passes. Margin1000required rejects999.75postfee and accepts1000equality. Original5285e3c/383b1c6 evidence historical; fresh validation against merged36cde2b after commit.",
+  "snapshot": {
+    "docs/supplied-ledger-v1.md": {
+      "blob": "c7fbd8eae2280409226ec4d7f406bc9de14714df",
+      "mode": "100644"
+    },
+    "engine/suppliedledger/testdata/receipt-v2-manual.json": {
+      "blob": "f327d51ad6c9e9be5f0750077d93f5ff3bb8e7f1",
+      "mode": "100644"
+    }
+  }
+}
