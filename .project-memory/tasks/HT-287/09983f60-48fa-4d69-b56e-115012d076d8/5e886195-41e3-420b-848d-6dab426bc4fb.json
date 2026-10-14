@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "5e886195-41e3-420b-848d-6dab426bc4fb",
+  "runId": "09983f60-48fa-4d69-b56e-115012d076d8",
+  "kind": "start",
+  "parents": [
+    "c7854a4e-fb1e-47e1-acb4-d2f4a2152420"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "9b3b17f38e6a0d05260386db02d99a8b52cd0a4d",
+    "blob": "3fa0d732a4728b80d398a735c2868cd07395fc86",
+    "claim": {
+      "heading": "Active claim: Codex HT287 supplied-event ledger receipt-v2",
+      "digest": "4b5424e89a0cd96142729b4afdf1174c289d429dedb2211689fbd56dc70d5aa4"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-supplied-ledger",
+  "pullRequest": null,
+  "at": "2026-10-14T11:12:20.920Z",
+  "summary": "Prepare separate supplied-event ledger and receipt-v2 specification for independent review before transition code",
+  "next": "Publish exact envelope, ordering, identity, fee, no-averaging and typed unsupported fixtures for Astra quick review; no Pine adapter or run",
+  "files": [
+    "docs/supplied-ledger-v1.md",
+    "engine/suppliedledger/testdata/receipt-v2-manual.json"
+  ]
+}

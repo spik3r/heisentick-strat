@@ -1,0 +1,1937 @@
+{
+  "schema": "supplied-ledger-manual-fixtures-v1",
+  "status": "review-draft-not-engine-golden",
+  "expectedArithmetic": "hand-authored economic rationals; not binary64 or Pine parity",
+  "cases": [
+    {
+      "id": "supplied-next-open-mark",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill60000",
+            "t": 60000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "103"
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "103.2"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "3999/4",
+        "cumulativeFees": "1/4",
+        "grossRealized": "0/1",
+        "unrealized": "2/5",
+        "equity": "20003/20",
+        "openQty": "2/1",
+        "pendingOrders": 0,
+        "completedTrades": 0
+      },
+      "derivation": "(103.2-103)*2=2/5; balance1000-1/4; equity1000.15. Fill103 explicitly supplied, no Pine scheduling inference."
+    },
+    {
+      "id": "profit-long",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "exit1",
+            "role": "exit",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": "alloc1"
+          },
+          {
+            "eventId": "fill61000",
+            "t": 61000,
+            "seq": 3,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "exit1",
+            "positionId": "pos1",
+            "allocationId": "alloc1",
+            "qty": "2",
+            "price": "104"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "2015/2",
+        "cumulativeFees": "1/2",
+        "grossRealized": "8/1",
+        "unrealized": "0/1",
+        "equity": "2015/2",
+        "openQty": null,
+        "pendingOrders": 0,
+        "completedTrades": 1
+      },
+      "derivation": "Signed fullqty2 realization; two full filled orders each fee1/4. Completed IDs entry1/exit1/pos1/alloc1 retained."
+    },
+    {
+      "id": "profit-short",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "short",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "exit1",
+            "role": "exit",
+            "positionId": "pos1",
+            "side": "short",
+            "qty": "2",
+            "allocationId": "alloc1"
+          },
+          {
+            "eventId": "fill61000",
+            "t": 61000,
+            "seq": 3,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "exit1",
+            "positionId": "pos1",
+            "allocationId": "alloc1",
+            "qty": "2",
+            "price": "98"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "2007/2",
+        "cumulativeFees": "1/2",
+        "grossRealized": "4/1",
+        "unrealized": "0/1",
+        "equity": "2007/2",
+        "openQty": null,
+        "pendingOrders": 0,
+        "completedTrades": 1
+      },
+      "derivation": "Signed fullqty2 realization; two full filled orders each fee1/4. Completed IDs entry1/exit1/pos1/alloc1 retained."
+    },
+    {
+      "id": "loss-long",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "exit1",
+            "role": "exit",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": "alloc1"
+          },
+          {
+            "eventId": "fill61000",
+            "t": 61000,
+            "seq": 3,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "exit1",
+            "positionId": "pos1",
+            "allocationId": "alloc1",
+            "qty": "2",
+            "price": "90"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "1959/2",
+        "cumulativeFees": "1/2",
+        "grossRealized": "-20/1",
+        "unrealized": "0/1",
+        "equity": "1959/2",
+        "openQty": null,
+        "pendingOrders": 0,
+        "completedTrades": 1
+      },
+      "derivation": "Signed fullqty2 realization; two full filled orders each fee1/4. Completed IDs entry1/exit1/pos1/alloc1 retained."
+    },
+    {
+      "id": "boundary-pending-entry",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 1,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "1000/1",
+        "cumulativeFees": "0/1",
+        "grossRealized": "0/1",
+        "unrealized": "0/1",
+        "equity": "1000/1",
+        "openQty": null,
+        "pendingOrders": 1,
+        "completedTrades": 0
+      },
+      "derivation": "Inclusive event boundary admits final instant submit; no supplied fill and no fee."
+    },
+    {
+      "id": "cancel-pending-no-fee",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "cancel1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "cancel",
+            "kind": "cancel",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "1000/1",
+        "cumulativeFees": "0/1",
+        "grossRealized": "0/1",
+        "unrealized": "0/1",
+        "equity": "1000/1",
+        "openQty": null,
+        "pendingOrders": 0,
+        "completedTrades": 0
+      },
+      "derivation": "Cancellation tombstones entry1/pos1 without fee."
+    },
+    {
+      "id": "open-position-reserved-exit-terminal",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "exit1",
+            "role": "exit",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": "alloc1"
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "101"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "3999/4",
+        "cumulativeFees": "1/4",
+        "grossRealized": "0/1",
+        "unrealized": "2/1",
+        "equity": "4007/4",
+        "openQty": "2/1",
+        "pendingOrders": 1,
+        "completedTrades": 0
+      },
+      "derivation": "Exit is unfilled/reserved2; only entry fee1/4; markgain2; no forced close."
+    },
+    {
+      "id": "winning-add-refused",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit2",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry2",
+            "role": "entry",
+            "positionId": "pos2",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "101"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_ADDITION",
+        "receipt": null
+      },
+      "derivation": "No additional entry allowed while live; whole request returns nullreceipt, including earlier transitions."
+    },
+    {
+      "id": "opposite-entry-refused",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit2",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry2",
+            "role": "entry",
+            "positionId": "pos2",
+            "side": "short",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "101"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_REVERSAL",
+        "receipt": null
+      },
+      "derivation": "No additional entry allowed while live; whole request returns nullreceipt, including earlier transitions."
+    },
+    {
+      "id": "pending-entry-add-refused",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "submit1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry2",
+            "role": "entry",
+            "positionId": "pos2",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_ADDITION",
+        "receipt": null
+      },
+      "derivation": "Pending entry prevents second entry."
+    },
+    {
+      "id": "partial-fill-refused",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "1",
+            "price": "100"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_PARTIAL_FILL",
+        "receipt": null
+      },
+      "derivation": "No fee/quantity partition or partial execution inference."
+    },
+    {
+      "id": "bracket-refresh-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "bracket-refresh"
+        ]
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_BRACKET_REFRESH",
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "reversal-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "reversal"
+        ]
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_REVERSAL",
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "stop-target-collision-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "stop-target-collision"
+        ]
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_COLLISION",
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "pine-admission-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "pine-admission"
+        ]
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_PINE_ADMISSION",
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "historical-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "historical"
+        ]
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_HISTORICAL",
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "missing-open-terminal-mark",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_TERMINAL_MARK",
+        "receipt": null
+      },
+      "derivation": "Open terminal requires explicit mark at endT."
+    },
+    {
+      "id": "cancelled-order-id-reuse",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "cancel1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "cancel",
+            "kind": "cancel",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos2",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_IDENTITY",
+        "receipt": null
+      },
+      "derivation": "Order ID remains consumed even though no fill occurred."
+    },
+    {
+      "id": "cancelled-position-id-reuse",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "cancel1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "cancel",
+            "kind": "cancel",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 2,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry2",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_IDENTITY",
+        "receipt": null
+      },
+      "derivation": "Position ID remains consumed at cancelled entry submission."
+    },
+    {
+      "id": "replayed-fill",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "fill2000",
+            "t": 2000,
+            "seq": 2,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_REFERENCE",
+        "receipt": null
+      },
+      "derivation": "Consumed order is no longer pending."
+    },
+    {
+      "id": "bad-price-grid",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100.01"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_GRID",
+        "receipt": null
+      },
+      "derivation": "100.01 is not multipleof0.1."
+    },
+    {
+      "id": "initial-margin-after-fee",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "1",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "20",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "20",
+            "price": "100"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_INITIAL_MARGIN",
+        "receipt": null
+      },
+      "derivation": "20*100/1=2000 >999.75; no partial receipt."
+    },
+    {
+      "id": "same-instant-phase-regression",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 0,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "submit1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_ORDERING",
+        "receipt": null
+      },
+      "derivation": "fillrank20 then submitrank10 atsameT invalid before reference checks."
+    },
+    {
+      "id": "structure-wins-before-unsupported",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "bad id",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "pine-admission"
+        ]
+      },
+      "handExpected": {
+        "status": "invalid-input",
+        "code": "INVALID_SCHEMA",
+        "receipt": null
+      },
+      "derivation": "Malformed ID beats requestedunsupported under documented precedence."
+    },
+    {
+      "id": "conversion-unsupported",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "fx-dynamic",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_CONVERSION",
+        "receipt": null
+      },
+      "derivation": "No exchange-rate provider or hidden conversion."
+    },
+    {
+      "id": "percent-fee-unsupported",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "percent",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "unsupported",
+        "code": "UNSUPPORTED_POLICY",
+        "receipt": null
+      },
+      "derivation": "Fixed fullorder feeonly."
+    }
+  ]
+}

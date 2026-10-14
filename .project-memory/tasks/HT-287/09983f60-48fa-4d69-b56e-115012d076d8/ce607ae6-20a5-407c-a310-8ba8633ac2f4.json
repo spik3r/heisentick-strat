@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "ce607ae6-20a5-407c-a310-8ba8633ac2f4",
+  "runId": "09983f60-48fa-4d69-b56e-115012d076d8",
+  "kind": "complete",
+  "parents": [
+    "5e886195-41e3-420b-848d-6dab426bc4fb"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "9b3b17f38e6a0d05260386db02d99a8b52cd0a4d",
+    "blob": "3fa0d732a4728b80d398a735c2868cd07395fc86",
+    "claim": {
+      "heading": "Active claim: Codex HT287 supplied-event ledger receipt-v2",
+      "digest": "4b5424e89a0cd96142729b4afdf1174c289d429dedb2211689fbd56dc70d5aa4"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-supplied-ledger",
+  "pullRequest": null,
+  "at": "2026-10-14T11:15:29.950Z",
+  "summary": "Prepare independent supplied-event ledger strict envelope/order/identity/fee/terminal draft and26 hand-authored cases; no transition code",
+  "next": "Astra quick review before any implementation; parent decides export/Pine protocol separately",
+  "files": [
+    "docs/supplied-ledger-v1.md",
+    "engine/suppliedledger/testdata/receipt-v2-manual.json"
+  ],
+  "validation": "JSON parses;26case IDs unique; economic rationals manually derived; git diff --check passes. No engine run/golden/qualification or full receipt implementation exists.",
+  "snapshot": {
+    "docs/supplied-ledger-v1.md": {
+      "blob": "bade529b0afb36bb6fa6ca5e0468cfb8320ae932",
+      "mode": "100644"
+    },
+    "engine/suppliedledger/testdata/receipt-v2-manual.json": {
+      "blob": "2370d531581d177a47b8ae851db0453a3b40c1bc",
+      "mode": "100644"
+    }
+  }
+}
