@@ -2,9 +2,12 @@ package adaptivemc
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -44,5 +47,19 @@ func TestRejectWrongRequestAndMissingReceiptBeforeAnalysis(t *testing.T) {
 	}
 	if _, e = ReadStreams(parsed); e == nil {
 		t.Fatal("missing/duplicate inputs")
+	}
+}
+
+func TestRejectUnhashedOversizedSuffix(t *testing.T) {
+	prefix := append([]byte(`{}`), bytes.Repeat([]byte(" "), (16<<20)-2)...)
+	h := sha256.Sum256(prefix)
+	p := filepath.Join(t.TempDir(), "oversized.json")
+	if e := os.WriteFile(p, append(prefix, []byte("INVALID UNHASHED SUFFIX")...), 0600); e != nil {
+		t.Fatal(e)
+	}
+	r := Request{Schema: "adaptive-bootstrap-request-v1", StudyHead: StudyHead, Inputs: make([]Input, 12)}
+	r.Inputs[0] = Input{ID: "B0:GROSS", Path: p, SHA256: fmt.Sprintf("%x", h)}
+	if _, e := ReadStreams(r); e == nil || !strings.Contains(e.Error(), "input size") {
+		t.Fatalf("expected oversized refusal, got %v", e)
 	}
 }

@@ -156,10 +156,13 @@ func ReadStreams(r Request) ([]Stream, error) {
 		if e != nil {
 			return nil, e
 		}
-		raw, e := io.ReadAll(io.LimitReader(f, 16<<20))
+		raw, e := io.ReadAll(io.LimitReader(f, (16<<20)+1))
 		f.Close()
 		if e != nil {
 			return nil, e
+		}
+		if len(raw) > 16<<20 {
+			return nil, fmt.Errorf("input size exceeds 16 MiB %s", in.ID)
 		}
 		h := sha256.Sum256(raw)
 		if hex.EncodeToString(h[:]) != in.SHA256 {

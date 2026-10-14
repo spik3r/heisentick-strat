@@ -1,0 +1,57 @@
+{
+  "formatVersion": 2,
+  "eventId": "888f2ee2-2a6c-4b08-b61a-eb06ecd50dfe",
+  "runId": "4ce5cc85-adc9-4f60-9104-d861f744e279",
+  "kind": "complete",
+  "parents": [
+    "ba14834e-b0bd-400d-84a2-42845aa9b1a8"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 descriptive development bootstrap",
+      "digest": "d12e6d07675fbc0e3574837bde431d51d8e2815d2d4976de9cd558114ad09ecf"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-descriptive-bootstrap",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/136",
+  "at": "2026-10-14T14:01:48.524Z",
+  "summary": "Reject oversized input and nonzero normalization/capital underflow; regressions pass native and WASM; corrected admission evidence",
+  "next": "Astra re-review exact repaired head before actual development MC execution",
+  "files": [
+    "internal/adaptivemc/input.go",
+    "internal/adaptivemc/bootstrap.go",
+    "internal/adaptivemc/input_test.go",
+    "internal/adaptivemc/bootstrap_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Go1.22.12 gofmt clean; vet/full tests pass; conformance135parse109run; native/WASMfocused regressions pass and unchanged synthetic report91fef0ac; all314oldhashes/fivecurrenthashes/buildtargetsverified; actual MC held",
+  "snapshot": {
+    "internal/adaptivemc/input.go": {
+      "blob": "561486b306a7727ecd249316ff70fd4fe30d1e69",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/bootstrap.go": {
+      "blob": "eee9e651ad886ce9aee6c81470f275732fb8c5f0",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/input_test.go": {
+      "blob": "40e5623321683fbce72ab4756d788cca64a2e4b8",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/bootstrap_test.go": {
+      "blob": "bbd4d795d3301776e1f63b5f5a5c00cd84d0b8fd",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "934c111c06c3e98c3b1ecc0ed36e9ebd7b904cc4",
+      "mode": "100644"
+    }
+  }
+}

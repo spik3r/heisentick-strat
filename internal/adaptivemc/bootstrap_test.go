@@ -234,3 +234,25 @@ func TestSharedMatricesAndPairedIdenticalSyntheticStreams(t *testing.T) {
 		}
 	}
 }
+
+func TestNonzeroNormalizationAndDebtUnderflowRefused(t *testing.T) {
+	for _, equity := range []float64{math.SmallestNonzeroFloat64, -math.SmallestNonzeroFloat64} {
+		if _, e := Group([]Mark{{T: utc(1, 1), Equity: equity}}); e == nil {
+			t.Fatal("normalization underflow accepted")
+		}
+	}
+	for _, end := range []float64{math.SmallestNonzeroFloat64, -math.SmallestNonzeroFloat64} {
+		days := []Day{{End: .5, Max: 1, Min: .5, DD: .5}, {End: end, Max: 1, Min: end, DD: 1, CapitalLoss: end < 0}}
+		if _, e := Aggregate(days, []int{0, 1}); e == nil {
+			t.Fatal("capital underflow accepted")
+		}
+	}
+	days, e := Group([]Mark{{T: utc(1, 1), Equity: 0}})
+	if e != nil {
+		t.Fatal(e)
+	}
+	o, e := Aggregate(days, []int{0})
+	if e != nil || !o.CapitalLoss || o.Return != -1 || o.UnclippedLossFactor != 0 {
+		t.Fatalf("genuine zero absorption: %+v %v", o, e)
+	}
+}

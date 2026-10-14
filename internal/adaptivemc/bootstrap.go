@@ -41,6 +41,9 @@ func Group(marks []Mark) (days []Day, err error) {
 			d.Marks++
 			d.Gap = d.Gap || m.Gap
 			factor := fp.Div(m.Equity, prior)
+			if factor == 0 && m.Equity != 0 {
+				return nil, fmt.Errorf("nonzero normalization underflow")
+			}
 			d.ActualEnd = factor
 			if d.CapitalLoss {
 				continue
@@ -102,13 +105,20 @@ func Aggregate(days []Day, indices []int) (o Outcome, err error) {
 			// be merged with max(): a smaller local peak overstates global debt DD.
 			p = math.Max(p, fp.Mul(s, x.Max))
 			s = fp.Mul(s, x.End)
+			if s == 0 && x.End != 0 {
+				return o, fmt.Errorf("signed capital underflow; debt must not be erased")
+			}
 			d = math.Max(d, fp.Sub(1, fp.Div(s, p)))
 			o.CapitalLoss = true
 			o.UnclippedLossFactor = s
 			break
 		}
 		// Positive-equity recurrence: drawdown BEFORE peak/capital updates.
-		d = math.Max(d, math.Max(fp.Sub(1, fp.Div(fp.Mul(s, x.Min), p)), x.DD))
+		low := fp.Mul(s, x.Min)
+		if low == 0 && x.Min != 0 {
+			return o, fmt.Errorf("nonzero minimum capital underflow")
+		}
+		d = math.Max(d, math.Max(fp.Sub(1, fp.Div(low, p)), x.DD))
 		p = math.Max(p, fp.Mul(s, x.Max))
 		s = fp.Mul(s, x.End)
 		if s == 0 {
