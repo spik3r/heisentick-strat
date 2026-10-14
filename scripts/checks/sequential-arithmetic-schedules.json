@@ -22,7 +22,8 @@
     "814a1f8e49730cd3aa0c9834bfcdb6c8636017ff",
     "eccabe50773b2d155039c9c99195276a29b3c6b2",
     "860f3b49631b75594d9a925751b3597ff07a8efa",
-    "acb556254c7b8a71b491acdaf225f5f85f657a1a"
+    "acb556254c7b8a71b491acdaf225f5f85f657a1a",
+    "edcaf1fa6ab810b019fbb19f12bb440c03b402a7"
   ],
   "build": {
     "CGO_ENABLED": "0",
@@ -85,6 +86,7 @@
     "cmd/heisentick/supply_demand_retest_report.go": "780b78658846c6d381c26f32d0146e7bdb948a0a6ddb562f6e6bc3a1126a1dd5",
     "cmd/heisentick/timed_report.go": "526afe5fd39da505f1a6e406ac3b8cc9f32501909bc369301988f10d9fa309a2",
     "cmd/heisentick/types.go": "82c0cf86505151777cb8dd26f064f21c032f490c90a219f7b67619c0fa8b56e9",
+    "cmd/regime-adaptive-inspect/main.go": "cb2e9fa543d45b444f9c1fda269eb88b53263cb14303407d885434fefcdf80f0",
     "contextcols/channels.go": "78eeff745502080952387e970963cb6020239e0a5083f29b84b8fc064f3d783b",
     "contextcols/columns.go": "835ce6c4939e4005382b3de4a1f59c1a3f168ce1a65b8ea41f54e9890bee74bb",
     "contextcols/daycontext.go": "4ea0731f743701739a59f16238be6be20553fbaab71a22c8057236a2e59a4fac",
@@ -264,6 +266,9 @@
     "engine/regime/run.go": "a20c91f0d11c0f7ded4208bfbfb1bdc9b0acd03df2ed99fcc70106365d324712",
     "engine/regime/types.go": "a5009107434e7d0ce7ebd364b6c068b368a017cfc00aebd5e9074f9d40c22fd1",
     "engine/regime_admission.go": "2b05669477164cfe4a336a7b793b303fb29e2ef64d5133375f231933da475c43",
+    "engine/regimeadaptive/indicators.go": "6c4a8d4126605a01204a87a1a71312314fda99967e3e1bceb99f11cea61ec020",
+    "engine/regimeadaptive/inspect.go": "0664d0d611ab36f26de2cc821d1f96e890dbe70763f96b54498a6119048be8e9",
+    "engine/regimeadaptive/types.go": "cbb8d3e703d61520942d71b77623f828ae2f37a529940da374651f6c89bc6513",
     "engine/rmv.go": "62e3223450b54ade9fb6699812144d94255fbc2c48a7a2d263df16906b086989",
     "engine/route_gate.go": "fee11342a193f1b741393012be7c16b8eeca93018c233073c9a47c038a4652ac",
     "engine/run.go": "9b3b612775da2ed173a9ca7510fb1ee7f0540ce397c4ad930a5c9d9a24d86fe1",
