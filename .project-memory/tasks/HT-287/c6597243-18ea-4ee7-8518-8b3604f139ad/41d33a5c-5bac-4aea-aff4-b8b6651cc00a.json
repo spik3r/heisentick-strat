@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "41d33a5c-5bac-4aea-aff4-b8b6651cc00a",
+  "runId": "c6597243-18ea-4ee7-8518-8b3604f139ad",
+  "kind": "start",
+  "parents": [
+    "c7854a4e-fb1e-47e1-acb4-d2f4a2152420"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "dbe25a74457f0e803a3bb42de49906520ac92cc3",
+    "blob": "b7547ef1d69e5ea62e0e54465297ea3d8412ae51",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Go-native flat-risk retrospective study",
+      "digest": "237d0c45554ff63e62a6285cce62bf6f3135b6d731728c12ad6046c78a4a4ee7"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-go-flat-study",
+  "pullRequest": null,
+  "at": "2026-10-14T11:44:10.349Z",
+  "summary": "Implement frozen retrospective Go flat-risk study adapter and decisive synthetic fixtures before historical outcomes",
+  "next": "Independent exacthead implementation review before B0development; datahash provenance/candidate/cost/split gates explicit",
+  "files": [
+    "docs/adaptive-study-v1.md",
+    "engine/regimeadaptive/research.go",
+    "engine/regimeadaptive/research_test.go",
+    "engine/adaptivestudy/types.go",
+    "engine/adaptivestudy/run.go",
+    "engine/adaptivestudy/metrics.go",
+    "engine/adaptivestudy/data.go",
+    "engine/adaptivestudy/run_test.go",
+    "cmd/adaptive-study/main.go",
+    "cmd/adaptive-study/main_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}

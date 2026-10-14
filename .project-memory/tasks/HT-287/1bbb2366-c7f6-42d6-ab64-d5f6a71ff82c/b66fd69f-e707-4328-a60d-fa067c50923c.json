@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "b66fd69f-e707-4328-a60d-fa067c50923c",
+  "runId": "1bbb2366-c7f6-42d6-ab64-d5f6a71ff82c",
+  "kind": "complete",
+  "parents": [
+    "8eb249e4-2475-4f70-b7b4-5ebfe1230f1f"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c5da6ab653c906ecdeff75df07e2aefc14acc288",
+    "blob": "e3343fdd45704b2e6fd9e54f4567faf54146d010",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Go-native flat-risk retrospective study",
+      "digest": "fd0bb3e897120e319233f8406f3a092f386272fac3d85133f9ce6670e6d0910c"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-go-flat-study",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/135",
+  "at": "2026-10-14T12:34:10.000Z",
+  "summary": "Version study execution as v2 with fee-aware fixed signal quantity, ceil ATR distances, exact risk/mirror/equality/gap fixtures and Astra assertion/eligibility/source-identity fixes",
+  "next": "Astra repaired exact-head correctness review before B0development; preserveae191 v1/no-outcome evidence; B0/B1/B2 unchanged",
+  "files": [
+    "docs/adaptive-study-v1.md",
+    "engine/regimeadaptive/research.go",
+    "engine/regimeadaptive/research_test.go",
+    "engine/adaptivestudy/types.go",
+    "engine/adaptivestudy/run.go",
+    "engine/adaptivestudy/metrics.go",
+    "engine/adaptivestudy/data.go",
+    "engine/adaptivestudy/run_test.go",
+    "cmd/adaptive-study/main.go",
+    "cmd/adaptive-study/main_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Go1.22.12 formatting/vet/full tests135parse109runconformance pass; native/WASM v2receipt digestc42cf623d718bae383b150ead1a1046cf6e0220c38eb2918b0e2b749c6096ed5 matches; indicatorae6738 unchanged; native/WASM builds. Fee cap100/99.810/99.690/99.995 and mirroredoffgrid1.81/3.21/27.624/49.99944 verified; adverseopening noresize. Original308source/instruction/closurepins unchanged. Warmup intendedrefusal, NaN/Infassertion, active B2 and wrongsource selector covered. No market outcomes.",
+  "snapshot": {
+    "docs/adaptive-study-v1.md": {
+      "blob": "1402a3c4720884ccaff4c375c8bb5a8ec73d4f4c",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/research.go": {
+      "blob": "5584b6b92f0c3bc054226e77b7f8033c811f3db1",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/research_test.go": {
+      "blob": "90450dc7402a2e823e24bac380aeafbd405bc973",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/types.go": {
+      "blob": "9625e4deef75b1e70968c6ec6ab716a5d82bb3cb",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/run.go": {
+      "blob": "0a5621f114b63aa9665e3fda9d8e7752bfae679f",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/metrics.go": {
+      "blob": "3963c3391e374b950c2fb8d78560d13f0ac8b588",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/data.go": {
+      "blob": "f84bfe381c55dab65344ee955e329fdd024702b6",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/run_test.go": {
+      "blob": "f037aaea31b3d4ebcb2d63a1a73a3f98bb868ecb",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study/main.go": {
+      "blob": "df822ef601f0cc4911708a78a25684b47b284525",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study/main_test.go": {
+      "blob": "66aa36ceefb244874b22fc52af3eb6733ff58ad3",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "1e68cff439fa8eadd1121414826b35adacfb37c8",
+      "mode": "100644"
+    }
+  }
+}

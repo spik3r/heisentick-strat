@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "0e1a36e0-eb6b-4286-9061-a81dabc64552",
+  "runId": "1b4f7cb7-941d-46ec-b665-63bbd53f5807",
+  "kind": "complete",
+  "parents": [
+    "65bf972f-644e-4242-a1ab-e6b8e9693a45"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c5da6ab653c906ecdeff75df07e2aefc14acc288",
+    "blob": "e3343fdd45704b2e6fd9e54f4567faf54146d010",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Go-native flat-risk retrospective study",
+      "digest": "fd0bb3e897120e319233f8406f3a092f386272fac3d85133f9ce6670e6d0910c"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-go-flat-study",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/135",
+  "at": "2026-10-14T12:45:23.398Z",
+  "summary": "Repair v2 exact-grid stop/target levels via integer tick offsets and one canonicaldivision; no comparisonepsilon widening or semantic/candidate change",
+  "next": "Astra exact-head tick proof review before four B0developmentcostruns; no marketoutcomes",
+  "files": [
+    "docs/adaptive-study-v1.md",
+    "engine/regimeadaptive/research.go",
+    "engine/regimeadaptive/research_test.go",
+    "engine/adaptivestudy/types.go",
+    "engine/adaptivestudy/run.go",
+    "engine/adaptivestudy/metrics.go",
+    "engine/adaptivestudy/data.go",
+    "engine/adaptivestudy/run_test.go",
+    "cmd/adaptive-study/main.go",
+    "cmd/adaptive-study/main_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "12exacttouch cases (long/short stops/targets incl4ticktargets andcarriedopening equality) pass; Go1.22.12 format/vet/fulltests135parse109runconformance pass; native/WASM receipt digest1aee10bd41c4239b028ccbcf89e5324069faf6ee9dab4143052b0a6df097b356 matches, indicatordigest unchangedae6738; CLI native/WASM builds. Existing308sourcehashes/targetclosure/instructionpins unchanged; sourceadmission refreshed. V2 semantics and0121 repro preserved; no historical outcomes.",
+  "snapshot": {
+    "docs/adaptive-study-v1.md": {
+      "blob": "85f4b02a01a9fd8a6a99d9784f499b59948297cd",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/research.go": {
+      "blob": "5584b6b92f0c3bc054226e77b7f8033c811f3db1",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/research_test.go": {
+      "blob": "90450dc7402a2e823e24bac380aeafbd405bc973",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/types.go": {
+      "blob": "9625e4deef75b1e70968c6ec6ab716a5d82bb3cb",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/run.go": {
+      "blob": "1aec7655ef86742f7c836fc7d3d6359c4641bcef",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/metrics.go": {
+      "blob": "3963c3391e374b950c2fb8d78560d13f0ac8b588",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/data.go": {
+      "blob": "f84bfe381c55dab65344ee955e329fdd024702b6",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/run_test.go": {
+      "blob": "2d1dc43a14075b1aaa577077f455c596e7c04f41",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study/main.go": {
+      "blob": "df822ef601f0cc4911708a78a25684b47b284525",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study/main_test.go": {
+      "blob": "66aa36ceefb244874b22fc52af3eb6733ff58ad3",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "9c9498b7caf3934467018d5d01c1917549cbfef0",
+      "mode": "100644"
+    }
+  }
+}

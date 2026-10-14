@@ -1,0 +1,420 @@
+package adaptivestudy
+
+import (
+	"crypto/sha256"
+	"encoding/json"
+	"fmt"
+	"github.com/spik3r/heisentick-strat/engine/regimeadaptive"
+	"math"
+	"reflect"
+	"strings"
+	"testing"
+)
+
+func TestPortableManualDigest(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 104, 98, 100)}
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("", 1, 100)}
+	payload := []Result{}
+	for _, cost := range []string{"GROSS", "BASIC", "HARSH", "SOURCE_FEE"} {
+		for _, stress := range []string{"none", "one-tick", "target-first", "skip-entry-gap"} {
+			payload = append(payload, fixture(t, bars, rows, cost, stress))
+		}
+	}
+	raw, e := json.Marshal(payload)
+	if e != nil {
+		t.Fatal(e)
+	}
+	t.Logf("PORTABLE_SHA256=%x", sha256.Sum256(raw))
+}
+
+func TestExactGridStopTargetTouchesAndOpeningEquality(t *testing.T) {
+	cases := []struct {
+		name, branch, reason            string
+		fill, level, atr, dStop, dTrend float64
+	}{
+		{"long-stop", "TL", "stop", 100.02, 99.84, .1, .18, .32}, {"short-stop", "TS", "stop", 100.01, 100.19, .1, .18, .32},
+		{"long-target", "TL", "target", 100.02, 100.34, .1, .18, .32}, {"short-target", "TS", "target", 100.01, 99.69, .1, .18, .32},
+		{"long-four-tick-target", "TL", "target", 100.01, 100.05, .01, .02, .04}, {"short-four-tick-target", "TS", "target", 100.02, 99.98, .01, .02, .04},
+	}
+	for _, c := range cases {
+		for _, carried := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s-carried%v", c.name, carried), func(t *testing.T) {
+				side := 1
+				if c.branch == "TS" {
+					side = -1
+				}
+				stop, target := bracketLevels(c.fill, c.dStop, c.dTrend, side)
+				want := stop
+				if c.reason == "target" {
+					want = target
+				}
+				if want != c.level {
+					t.Fatalf("grid level got%.17g want%.17g", want, c.level)
+				}
+				bars := []Bar{b(0, c.fill, c.fill+.01, c.fill-.01, c.fill), b(1, c.fill, c.fill+.01, c.fill-.01, c.fill)}
+				rows := []regimeadaptive.Row{row(c.branch, c.atr, c.fill), row("", c.atr, c.fill)}
+				if carried {
+					bars = append(bars, b(2, c.level, math.Max(c.level, c.fill+.01), math.Min(c.level, c.fill-.01), c.level))
+					rows = append(rows, row("", c.atr, c.fill))
+				} else if c.level < c.fill {
+					bars[1].Low = c.level
+				} else {
+					bars[1].High = c.level
+				}
+				r := fixture(t, bars, rows, "GROSS", "none")
+				if len(r.Trades) != 1 || r.Trades[0].Reason != c.reason || r.Trades[0].Exit != c.level {
+					t.Fatalf("exacttouch missed: %+v", r.Trades)
+				}
+				if carried && r.Trades[0].ExitStage != "open-gap-exit" {
+					t.Fatal("opening equality not honored")
+				}
+			})
+		}
+	}
+}
+
+func TestFeeAwareUnchangedOpeningAndAdverseGap(t *testing.T) {
+	cases := []struct {
+		cost                  string
+		qty, required, oneFee float64
+	}{{"GROSS", 100, 10000, 0}, {"BASIC", 99.810, 9999.9639, 9.48195}, {"HARSH", 99.690, 9999.9039, 15.45195}, {"SOURCE_FEE", 99.995, 10000, .25}}
+	for _, c := range cases {
+		for _, branch := range []string{"TL", "TS"} {
+			t.Run(c.cost+branch, func(t *testing.T) {
+				bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100)}
+				rows := []regimeadaptive.Row{row(branch, .1, 100), row("", .1, 100)}
+				r := fixture(t, bars, rows, c.cost, "none")
+				if r.Terminal.Open == nil || r.Diagnostics.RejectedCost != 0 || r.Diagnostics.RejectedCap != 0 {
+					t.Fatal("unchanged price should afford known fees")
+				}
+				p := r.Terminal.Open
+				near(t, p.Order.Qty, c.qty)
+				near(t, p.Order.SizingPrice, 100)
+				near(t, p.Order.Qty*p.Entry+2*c.oneFee, c.required)
+				near(t, r.Terminal.Fees, c.oneFee)
+				near(t, r.Terminal.Balance, 10000-c.oneFee)
+				bars[1] = b(1, 101, 101.1, 100.9, 101)
+				r = fixture(t, bars, rows, c.cost, "none")
+				if r.Terminal.Open != nil || r.Terminal.Fees != 0 || r.Diagnostics.RejectedCap+r.Diagnostics.RejectedCost != 1 {
+					t.Fatal("adverse notional opening resized/admitted")
+				}
+				near(t, r.Events[0].Qty, c.qty)
+			})
+		}
+	}
+	near(t, signalQty(.5, 100, .18, "SOURCE_FEE"), 0)
+	near(t, signalQty(.49, 100, .18, "SOURCE_FEE"), 0)
+}
+func TestCeilDistancesAndMirroredOffGridRisk(t *testing.T) {
+	for _, branch := range []string{"TL", "TS"} {
+		bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100)}
+		rows := []regimeadaptive.Row{row(branch, 1.001, 100), row("", 1.001, 100)}
+		r := fixture(t, bars, rows, "GROSS", "none")
+		if r.Terminal.Open == nil {
+			t.Fatal("missing open")
+		}
+		p := r.Terminal.Open
+		near(t, p.Order.StopDistance, 1.81)
+		near(t, p.Order.TrendDistance, 3.21)
+		near(t, p.Order.Qty, 27.624)
+		near(t, p.Order.PlannedRisk, 49.99944)
+		if branch == "TL" {
+			near(t, p.Stop, 98.19)
+			near(t, p.Target, 103.21)
+		} else {
+			near(t, p.Stop, 101.81)
+			near(t, p.Target, 96.79)
+		}
+	}
+	near(t, ceilDistance(1, 1.8), 1.8)
+	near(t, ceilDistance(1e-15, 1.8), .01)
+}
+func TestSignalAffordabilityUsesSameAdversePriceAsOpening(t *testing.T) {
+	for _, branch := range []string{"TL", "TS"} {
+		for _, stress := range []string{"none", "one-tick"} {
+			bars := []Bar{b(0, 100.001, 100.1, 99.9, 100.001), b(1, 100.001, 100.1, 99.9, 100.001)}
+			rows := []regimeadaptive.Row{row(branch, .1, 100), row("", .1, 100)}
+			r := fixture(t, bars, rows, "BASIC", stress)
+			if r.Terminal.Open == nil {
+				t.Fatal("same raw close/open must stay affordable", branch, stress)
+			}
+			p := r.Terminal.Open
+			near(t, p.Order.SizingPrice, p.Entry)
+			if p.Order.Qty*p.Entry+2*fee("BASIC", p.Order.Qty) > 10000+1e-8 {
+				t.Fatal("unaffordable signal qty")
+			}
+		}
+	}
+}
+
+func TestGapCapitalLossPreservesDebtAndStopsNewSizing(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100), b(4, 1000, 1001, 999, 1000)}
+	rows := []regimeadaptive.Row{row("TS", .1, 100), row("", .1, 100), row("TL", 1, 1000)}
+	r := fixture(t, bars, rows, "GROSS", "none")
+	near(t, r.Terminal.Equity, -80000)
+	near(t, r.Metrics.NetReturn, -9)
+	near(t, r.Metrics.MaxDrawdown, 9)
+	if r.Terminal.Pending != nil || r.Terminal.Open != nil || r.Diagnostics.RejectedQty != 1 || r.Diagnostics.GapStops != 1 {
+		t.Fatal("capital loss clipped or new risk admitted")
+	}
+}
+func TestSubstepQuantityAndTrendOnlyRangeRefusal(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100)}
+	rows := []regimeadaptive.Row{row("TL", 50000, 100)}
+	r := fixture(t, bars, rows, "GROSS", "none")
+	if r.Diagnostics.RejectedQty != 1 || r.Terminal.Pending != nil {
+		t.Fatal("substep qty admitted")
+	}
+	rows[0] = row("RL", 1, 101)
+	r, e := runRows(bars, rows, 0, Config{Candidate: "B1", Cost: "GROSS", Stress: "none", StartT: 0, EndT: Duration})
+	if e != nil || r.Terminal.Pending != nil {
+		t.Fatal("B1 range admitted", e)
+	}
+}
+
+func b(n int, o, h, l, c float64) Bar {
+	return Bar{T: int64(n) * Duration, CloseT: int64(n+1) * Duration, Open: o, High: h, Low: l, Close: c}
+}
+func row(branch string, atr, basis float64) regimeadaptive.Row {
+	s := regimeadaptive.Signals{FlatEligible: true}
+	switch branch {
+	case "TL":
+		s.InitialLong = true
+	case "TS":
+		s.InitialShort = true
+	case "RL":
+		s.RangeLong = true
+	case "RS":
+		s.RangeShort = true
+	case "both":
+		s.RangeLong = true
+		s.RangeShort = true
+		s.BothBands = true
+	}
+	return regimeadaptive.Row{ATR: &atr, BBBasis: &basis, Signals: s}
+}
+func fixture(t *testing.T, bars []Bar, rows []regimeadaptive.Row, cost, stress string) Result {
+	t.Helper()
+	r, e := runRows(bars, rows, 0, Config{Candidate: "B0", Cost: cost, Stress: stress, StartT: 0, EndT: bars[len(bars)-1].CloseT})
+	if e != nil {
+		t.Fatal(e)
+	}
+	return r
+}
+func near(t *testing.T, a, z float64) {
+	t.Helper()
+	if math.IsNaN(a) || math.IsNaN(z) || math.IsInf(a, 0) || math.IsInf(z, 0) || math.Abs(a-z) > 1e-8 {
+		t.Fatalf("got%.12g want%.12g", a, z)
+	}
+}
+func TestNextOpenFixedSizingAndTerminalCosts(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 103, 104, 102, 103.2)}
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("", 1, 100)}
+	for _, c := range []struct {
+		cost string
+		fee  float64
+	}{{"GROSS", 0}, {"SOURCE_FEE", .25}, {"BASIC", 27.777 * .095}, {"HARSH", 27.777 * .155}} {
+		t.Run(c.cost, func(t *testing.T) {
+			r := fixture(t, bars, rows, c.cost, "none")
+			p := r.Terminal.Open
+			if p == nil {
+				t.Fatal("missing open")
+			}
+			near(t, p.Entry, 103)
+			near(t, p.Order.Qty, 27.777)
+			near(t, p.Stop, 101.2)
+			near(t, p.Target, 106.2)
+			near(t, p.Order.PlannedRisk, 49.9986)
+			near(t, r.Terminal.Balance, 10000-c.fee)
+			near(t, r.Terminal.Unrealized, 5.5554)
+			near(t, r.Terminal.Equity, 10005.5554-c.fee)
+			near(t, r.Terminal.LiquidationEquivalentEquity, r.Terminal.Equity-c.fee)
+			if len(r.Trades) != 0 || r.Terminal.Pending != nil {
+				t.Fatal("terminal invented close/pending")
+			}
+		})
+	}
+}
+func TestBothHitEntryBarStopFirstAndNamedSensitivity(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 104, 98, 100)}
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("", 1, 100)}
+	a := fixture(t, bars, rows, "BASIC", "none")
+	z := fixture(t, bars, rows, "BASIC", "target-first")
+	if len(a.Trades) != 1 || len(z.Trades) != 1 || a.Diagnostics.Collisions != 1 || a.Diagnostics.EntryBarExits != 1 {
+		t.Fatal("collision accounting")
+	}
+	near(t, a.Trades[0].Exit, 98.2)
+	near(t, a.Trades[0].Gross, -49.9986)
+	near(t, a.Trades[0].Fees, 5.27763)
+	near(t, a.Trades[0].Net, -55.27623)
+	near(t, a.Terminal.Equity, 9944.72377)
+	near(t, z.Trades[0].Gross, 88.8864)
+	if a.Trades[0].IntrabarT != nil || a.Trades[0].ExitStage != "intrabar-exit" {
+		t.Fatal("fabricated intrabar time")
+	}
+}
+func TestNoAdditionsNoMovingBracket(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.5, 99.5, 100), b(2, 100, 100.5, 99.5, 100), b(3, 100, 101, 98.1, 99)}
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("TL", 10, 100), row("TS", 10, 100), row("", 1, 100)}
+	r := fixture(t, bars, rows, "SOURCE_FEE", "none")
+	if len(r.Trades) != 1 || r.Diagnostics.Occupied != 2 {
+		t.Fatal("added/reversed or moved brackets")
+	}
+	near(t, r.Trades[0].Position.Stop, 98.2)
+	near(t, r.Trades[0].Position.Target, 103.2)
+	near(t, r.Trades[0].Net, -50.4986)
+	near(t, r.Terminal.Balance, 9949.5014)
+}
+func TestCarriedGapStopAndOpeningTargetPrecedence(t *testing.T) {
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("", 1, 100), row("", 1, 100)}
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 101, 99, 100), b(4, 95, 96, 94, 95.5)}
+	r := fixture(t, bars, rows, "SOURCE_FEE", "none")
+	near(t, r.Trades[0].Exit, 95)
+	near(t, r.Trades[0].Net, -139.385)
+	if r.Diagnostics.GapStops != 1 || r.Diagnostics.HeldGaps != 1 || r.Diagnostics.MissingIntervals != 2 || r.Diagnostics.HeldGapMS != 2*Duration {
+		t.Fatal(r.Diagnostics)
+	}
+	bars[2] = b(4, 110, 111, 95, 100)
+	r = fixture(t, bars, rows, "GROSS", "none")
+	near(t, r.Trades[0].Exit, 103.2)
+	if r.Trades[0].Reason != "target" || r.Trades[0].ExitStage != "open-gap-exit" {
+		t.Fatal("known opening target lost to later unordered stop")
+	}
+}
+func TestProspectiveEntryGapThreshold(t *testing.T) {
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("", 1, 100)}
+	for _, n := range []int{2, 3} {
+		bars := []Bar{b(0, 100, 101, 99, 100), b(n, 100, 101, 99, 100)}
+		r := fixture(t, bars, rows, "GROSS", "skip-entry-gap")
+		if r.Diagnostics.PendingEntryGaps != 1 {
+			t.Fatal("gap not counted")
+		}
+		if n == 2 {
+			if r.Terminal.Open == nil || r.Diagnostics.SkippedEntryGaps != 0 {
+				t.Fatal("30m close-to-fill wrongly skipped")
+			}
+		} else if r.Terminal.Open != nil || r.Diagnostics.SkippedEntryGaps != 1 {
+			t.Fatal("prospective gap filter")
+		}
+	}
+}
+func TestOpeningCapAndFeeReservationNoFutureResize(t *testing.T) {
+	rows := []regimeadaptive.Row{row("TL", 1, 100), row("", 1, 100)}
+	r := fixture(t, []Bar{b(0, 100, 101, 99, 100), b(1, 1000, 1001, 999, 1000)}, rows, "GROSS", "none")
+	if r.Diagnostics.RejectedCap != 1 || r.Terminal.Fees != 0 || r.Terminal.Open != nil {
+		t.Fatal("future price resized qty")
+	}
+	rows[0] = row("TL", .1, 100)
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100)}
+	bars[1].Open = 100.01
+	r = fixture(t, bars, rows, "BASIC", "none")
+	if r.Diagnostics.RejectedCost != 1 || r.Terminal.Fees != 0 {
+		t.Fatal("cost reservation")
+	}
+	bars[1].Open = 100
+	r = fixture(t, bars, rows, "GROSS", "none")
+	if r.Terminal.Open == nil {
+		t.Fatal("gross equality cap refused")
+	}
+	near(t, r.Terminal.Open.Order.Qty, 100)
+}
+func TestRangeTargetWrongSideAndBothBand(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 103, 104, 102, 103)}
+	rows := []regimeadaptive.Row{row("RL", 1, 102), row("", 1, 100)}
+	r := fixture(t, bars, rows, "SOURCE_FEE", "none")
+	if r.Diagnostics.RejectedTarget != 1 || r.Terminal.Fees != 0 {
+		t.Fatal("wrong-side range target admitted")
+	}
+	rows[0] = row("both", 1, 105)
+	r = fixture(t, bars, rows, "GROSS", "none")
+	if r.Diagnostics.BothBand != 1 || r.Terminal.Open != nil || r.Terminal.Pending != nil {
+		t.Fatal("both-band not skipped")
+	}
+}
+func TestShortSymmetryAndSeparateSlippage(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 102, 96, 100)}
+	rows := []regimeadaptive.Row{row("TS", 1, 100), row("", 1, 100)}
+	r := fixture(t, bars, rows, "SOURCE_FEE", "none")
+	near(t, r.Trades[0].Exit, 101.8)
+	near(t, r.Trades[0].Net, -50.4986)
+	s := fixture(t, bars, rows, "SOURCE_FEE", "one-tick")
+	near(t, s.Trades[0].Position.Entry, 99.99)
+	near(t, s.Trades[0].Exit, 101.80)
+	near(t, s.Trades[0].Fees, .5)
+}
+func TestLastClosePendingAndPrefixDeterminism(t *testing.T) {
+	bars := []Bar{b(0, 100, 101, 99, 100)}
+	rows := []regimeadaptive.Row{row("TL", 1, 100)}
+	r := fixture(t, bars, rows, "SOURCE_FEE", "none")
+	if r.Terminal.Pending == nil || r.Terminal.Open != nil || r.Terminal.Fees != 0 || len(r.Trades) != 0 {
+		t.Fatal("last-close fabricated fill")
+	}
+	near(t, r.Terminal.Equity, 10000)
+	full := fixture(t, append(bars, b(1, 100, 101, 99, 100)), append(rows, row("", 1, 100)), "SOURCE_FEE", "none")
+	if !reflect.DeepEqual(r.Equity[0], full.Equity[0]) || !reflect.DeepEqual(r.Events[0], full.Events[0]) {
+		t.Fatal("future changed prefix")
+	}
+	a, _ := json.Marshal(full)
+	z, _ := json.Marshal(fixture(t, append(bars, b(1, 100, 101, 99, 100)), append(rows, row("", 1, 100)), "SOURCE_FEE", "none"))
+	if string(a) != string(z) {
+		t.Fatal("nondeterministic")
+	}
+}
+func TestSelectorEarlierYearsEligibilityAndTie(t *testing.T) {
+	end := date(2024, 1, 1)
+	base := Result{Schema: "adaptive-study-result-v1", Status: "retrospective-assumed-model-not-Pine-parity", Profile: Profile, SourceHash: regimeadaptive.SourceHash, DataHash: M30Hash, Config: Config{StartT: date(2021, 4, 1), EndT: end, Cost: "BASIC", Stress: "none"}, Metrics: Metrics{TradeCount: 30, NetReturn: .1, MaxDrawdown: .1}}
+	m := map[string]Result{}
+	for _, id := range []string{"B0", "B1", "B2"} {
+		r := base
+		r.Config.Candidate = id
+		m[id] = r
+	}
+	id, e := Select(m, end)
+	if e != nil || id != "B0" {
+		t.Fatal("tie", id, e)
+	}
+	r := m["B1"]
+	r.Metrics.NetReturn = .2
+	r.Metrics.MaxDrawdown = .11
+	m["B1"] = r
+	id, e = Select(m, end)
+	if e != nil || id != "B0" {
+		t.Fatal("DD guard")
+	}
+	r.Metrics.MaxDrawdown = .09
+	m["B1"] = r
+	id, e = Select(m, end)
+	if e != nil || id != "B1" {
+		t.Fatal("selection", id, e)
+	}
+	r.Config.EndT = end + Duration
+	m["B1"] = r
+	if _, e = Select(m, end); e == nil {
+		t.Fatal("future admitted")
+	}
+}
+
+func TestSelectorRejectsWrongSourceIdentity(t *testing.T) {
+	end := date(2024, 1, 1)
+	m := map[string]Result{}
+	for _, id := range []string{"B0", "B1", "B2"} {
+		m[id] = Result{Schema: "adaptive-study-result-v1", Profile: Profile, Status: "retrospective-assumed-model-not-Pine-parity", DataHash: M30Hash, SourceHash: regimeadaptive.SourceHash, Config: Config{Candidate: id, Cost: "BASIC", Stress: "none", StartT: date(2021, 4, 1), EndT: end}, Metrics: Metrics{TradeCount: 40, NetReturn: .1, MaxDrawdown: .1}}
+	}
+	r := m["B1"]
+	r.SourceHash = "wrong-source"
+	m["B1"] = r
+	if _, e := Select(m, end); e == nil {
+		t.Fatal("wrong source admitted")
+	}
+}
+func TestInputGuardsNoWarmupNoWrongData(t *testing.T) {
+	if _, e := decodeM30([]byte("bad")); e == nil {
+		t.Fatal("unverified data admitted")
+	}
+	start, end, _ := StudyWindow("development")
+	bar := Bar{T: start, CloseT: start + Duration, Open: 100, High: 101, Low: 99, Close: 100}
+	_, e := Run(VerifiedM30{bars: []Bar{bar}, hash: M30Hash}, Config{Candidate: "B0", Cost: "BASIC", Stress: "none", StartT: start, EndT: end})
+	if e == nil || !strings.Contains(e.Error(), "500 prior M30 warmup") {
+		t.Fatalf("intended warmup refusal missing: %v", e)
+	}
+}

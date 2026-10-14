@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "65bf972f-644e-4242-a1ab-e6b8e9693a45",
+  "runId": "1b4f7cb7-941d-46ec-b665-63bbd53f5807",
+  "kind": "start",
+  "parents": [
+    "b66fd69f-e707-4328-a60d-fa067c50923c"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c5da6ab653c906ecdeff75df07e2aefc14acc288",
+    "blob": "e3343fdd45704b2e6fd9e54f4567faf54146d010",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Go-native flat-risk retrospective study",
+      "digest": "fd0bb3e897120e319233f8406f3a092f386272fac3d85133f9ce6670e6d0910c"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-go-flat-study",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/135",
+  "at": "2026-10-14T12:40:26.703Z",
+  "summary": "Repair exact tick-grid bracket subtraction/addition under approvedv2 without widening touch tolerances; preserve0121 repro andno outcomes",
+  "next": "Exact long/short stop/target and opening equalityfixtures, focusednativeWASMproof and exacthead Astra review",
+  "files": [
+    "docs/adaptive-study-v1.md",
+    "engine/regimeadaptive/research.go",
+    "engine/regimeadaptive/research_test.go",
+    "engine/adaptivestudy/types.go",
+    "engine/adaptivestudy/run.go",
+    "engine/adaptivestudy/metrics.go",
+    "engine/adaptivestudy/data.go",
+    "engine/adaptivestudy/run_test.go",
+    "cmd/adaptive-study/main.go",
+    "cmd/adaptive-study/main_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}
