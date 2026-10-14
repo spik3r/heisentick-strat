@@ -1,0 +1,87 @@
+{
+  "formatVersion": 2,
+  "eventId": "7f58b90c-dc49-4cbe-9f8a-7371bb942704",
+  "runId": "c6597243-18ea-4ee7-8518-8b3604f139ad",
+  "kind": "complete",
+  "parents": [
+    "41d33a5c-5bac-4aea-aff4-b8b6651cc00a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "dbe25a74457f0e803a3bb42de49906520ac92cc3",
+    "blob": "b7547ef1d69e5ea62e0e54465297ea3d8412ae51",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Go-native flat-risk retrospective study",
+      "digest": "237d0c45554ff63e62a6285cce62bf6f3135b6d731728c12ad6046c78a4a4ee7"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-go-flat-study",
+  "pullRequest": null,
+  "at": "2026-10-14T12:07:11.967Z",
+  "summary": "Implement assumed retrospective Go flat-risk study adapter/protocol/selector with decisive synthetic tests and strict pinned-data admission; no market outcomes yet",
+  "next": "Astra exact-head review then B0development first; report actual losses/cost/branches/equity before bounded assessment; descriptiveMC later",
+  "files": [
+    "docs/adaptive-study-v1.md",
+    "engine/regimeadaptive/research.go",
+    "engine/regimeadaptive/research_test.go",
+    "engine/adaptivestudy/types.go",
+    "engine/adaptivestudy/run.go",
+    "engine/adaptivestudy/metrics.go",
+    "engine/adaptivestudy/data.go",
+    "engine/adaptivestudy/run_test.go",
+    "cmd/adaptive-study/main.go",
+    "cmd/adaptive-study/main_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Go1.22.12 gofmt/vet/full tests and135parse109run conformance pass. Native/WASM synthetic economic digest1fc550faae5a904163a22ccca39cb3e2119a727d156b12efa6f26aa3e2548359 and indicator digestae6738a35621968037cbadccff022d43cd2539f302106c88faec0300fd68d462 match Node24.10.0; CLI native/WASM builds. Zip/member/M30hash verified. Existing308source hashes, all3compileclosures/instruction pins unchanged;6additive sources admitted. Initial synthetic FMA digest mismatch fixed using explicit barriers; no historical outcome run/qualification claim.",
+  "snapshot": {
+    "docs/adaptive-study-v1.md": {
+      "blob": "1eeea21b3945d7f6bb2762c36bdc01adb8157ba6",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/research.go": {
+      "blob": "5584b6b92f0c3bc054226e77b7f8033c811f3db1",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/research_test.go": {
+      "blob": "30ae88d1c9c7c04dc4d0354fed191bb33d614001",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/types.go": {
+      "blob": "3988909c3f6f710c71a87301b00c143ab6e52272",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/run.go": {
+      "blob": "09e3a42e50f5cdbb37ea350b2c78e0df67c84d41",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/metrics.go": {
+      "blob": "41240e227c25a68bf9d8c57ef2d4c42a485d1b0e",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/data.go": {
+      "blob": "f84bfe381c55dab65344ee955e329fdd024702b6",
+      "mode": "100644"
+    },
+    "engine/adaptivestudy/run_test.go": {
+      "blob": "d25c16afaaba16a273142f2b1ea7d33b12158ca1",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study/main.go": {
+      "blob": "df822ef601f0cc4911708a78a25684b47b284525",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study/main_test.go": {
+      "blob": "66aa36ceefb244874b22fc52af3eb6733ff58ad3",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "ff3ead7ffd08eef953c035960d51892a82dc454c",
+      "mode": "100644"
+    }
+  }
+}
