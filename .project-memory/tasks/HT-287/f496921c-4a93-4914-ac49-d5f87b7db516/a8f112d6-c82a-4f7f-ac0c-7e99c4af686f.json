@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "a8f112d6-c82a-4f7f-ac0c-7e99c4af686f",
+  "runId": "f496921c-4a93-4914-ac49-d5f87b7db516",
+  "kind": "start",
+  "parents": [
+    "ce607ae6-20a5-407c-a310-8ba8633ac2f4"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "9b3b17f38e6a0d05260386db02d99a8b52cd0a4d",
+    "blob": "3fa0d732a4728b80d398a735c2868cd07395fc86",
+    "claim": {
+      "heading": "Active claim: Codex HT287 supplied-event ledger receipt-v2",
+      "digest": "4b5424e89a0cd96142729b4afdf1174c289d429dedb2211689fbd56dc70d5aa4"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-supplied-ledger",
+  "pullRequest": null,
+  "at": "2026-10-14T11:24:19.705Z",
+  "summary": "Repair Astra spec freeze gaps and margin/mark/refusal witnesses after clean restack on merged36cde2b",
+  "next": "Fresh spec review before transition code; preserve5285e3c validation as pre-restack history only",
+  "files": [
+    "docs/supplied-ledger-v1.md",
+    "engine/suppliedledger/testdata/receipt-v2-manual.json"
+  ]
+}

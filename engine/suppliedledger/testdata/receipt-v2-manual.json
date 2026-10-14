@@ -195,7 +195,542 @@
         "pendingOrders": 0,
         "completedTrades": 1
       },
-      "derivation": "Signed fullqty2 realization; two full filled orders each fee1/4. Completed IDs entry1/exit1/pos1/alloc1 retained."
+      "derivation": "Signed fullqty2 realization; two full filled orders each fee1/4. Completed IDs entry1/exit1/pos1/alloc1 retained.",
+      "completeHandReceipt": {
+        "schema": "synthetic-ledger-receipt-v2",
+        "profile": "supplied-event-ledger-v1",
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "envelope": {
+          "instrument": {
+            "id": "SYNTH_GOLD",
+            "priceCurrency": "USD",
+            "accountCurrency": "USD",
+            "pointValue": "1",
+            "tickSize": "0.1",
+            "quantityStep": "0.1",
+            "conversion": "identity",
+            "session": "synthetic-continuous"
+          },
+          "account": {
+            "initialBalance": "1000",
+            "leverage": "5",
+            "marginPolicy": "initial-only-no-liquidation",
+            "feePolicy": {
+              "kind": "fixed-per-full-filled-order",
+              "amount": "0.25"
+            },
+            "terminalPolicy": "keep-open",
+            "positionPolicy": "single-position-no-additions"
+          },
+          "window": {
+            "startT": 0,
+            "endT": 120000
+          },
+          "requestedSemantics": []
+        },
+        "lifecycle": [
+          {
+            "event": {
+              "eventId": "submit0",
+              "t": 0,
+              "seq": 0,
+              "phase": "submit",
+              "kind": "submit",
+              "orderId": "entry1",
+              "role": "entry",
+              "positionId": "pos1",
+              "side": "long",
+              "qty": "2",
+              "allocationId": null
+            },
+            "before": {
+              "balance": "1000/1",
+              "grossRealized": "0/1",
+              "fees": "0/1",
+              "unrealized": "0/1",
+              "equity": "1000/1",
+              "openPosition": null,
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [],
+                "orders": [],
+                "positions": [],
+                "allocations": []
+              }
+            },
+            "after": {
+              "balance": "1000/1",
+              "grossRealized": "0/1",
+              "fees": "0/1",
+              "unrealized": "0/1",
+              "equity": "1000/1",
+              "openPosition": null,
+              "pendingOrders": [
+                {
+                  "orderId": "entry1",
+                  "role": "entry",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": null,
+                  "submittedEventId": "submit0",
+                  "t": 0,
+                  "phase": "submit",
+                  "seq": 0
+                }
+              ],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "fill1000",
+              "t": 1000,
+              "seq": 1,
+              "phase": "fill",
+              "kind": "fill",
+              "orderId": "entry1",
+              "positionId": "pos1",
+              "allocationId": null,
+              "qty": "2",
+              "price": "100"
+            },
+            "before": {
+              "balance": "1000/1",
+              "grossRealized": "0/1",
+              "fees": "0/1",
+              "unrealized": "0/1",
+              "equity": "1000/1",
+              "openPosition": null,
+              "pendingOrders": [
+                {
+                  "orderId": "entry1",
+                  "role": "entry",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": null,
+                  "submittedEventId": "submit0",
+                  "t": 0,
+                  "phase": "submit",
+                  "seq": 0
+                }
+              ],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            },
+            "after": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "submit60000",
+              "t": 60000,
+              "seq": 2,
+              "phase": "submit",
+              "kind": "submit",
+              "orderId": "exit1",
+              "role": "exit",
+              "positionId": "pos1",
+              "side": "long",
+              "qty": "2",
+              "allocationId": "alloc1"
+            },
+            "before": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            },
+            "after": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "fill61000",
+              "t": 61000,
+              "seq": 3,
+              "phase": "fill",
+              "kind": "fill",
+              "orderId": "exit1",
+              "positionId": "pos1",
+              "allocationId": "alloc1",
+              "qty": "2",
+              "price": "104"
+            },
+            "before": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            },
+            "after": {
+              "balance": "2015/2",
+              "grossRealized": "8/1",
+              "fees": "1/2",
+              "unrealized": "0/1",
+              "equity": "2015/2",
+              "openPosition": null,
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000",
+                  "fill61000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "terminal120000",
+              "t": 120000,
+              "seq": 4,
+              "phase": "terminal",
+              "kind": "terminal"
+            },
+            "before": {
+              "balance": "2015/2",
+              "grossRealized": "8/1",
+              "fees": "1/2",
+              "unrealized": "0/1",
+              "equity": "2015/2",
+              "openPosition": null,
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000",
+                  "fill61000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            },
+            "after": {
+              "balance": "2015/2",
+              "grossRealized": "8/1",
+              "fees": "1/2",
+              "unrealized": "0/1",
+              "equity": "2015/2",
+              "openPosition": null,
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000",
+                  "fill61000",
+                  "terminal120000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            }
+          }
+        ],
+        "completedTrades": [
+          {
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2/1",
+            "entryOrderId": "entry1",
+            "exitOrderId": "exit1",
+            "allocationId": "alloc1",
+            "entryEventId": "fill1000",
+            "entryT": 1000,
+            "entryPhase": "fill",
+            "entrySeq": 1,
+            "exitEventId": "fill61000",
+            "exitT": 61000,
+            "exitPhase": "fill",
+            "exitSeq": 3,
+            "entryPrice": "100/1",
+            "exitPrice": "104/1",
+            "grossRealized": "8/1",
+            "entryFee": "1/4",
+            "exitFee": "1/4",
+            "totalFee": "1/2",
+            "netRealized": "15/2"
+          }
+        ],
+        "terminal": {
+          "watermark": {
+            "t": 120000,
+            "phase": "terminal",
+            "seq": 4
+          },
+          "initialBalance": "1000/1",
+          "state": {
+            "balance": "2015/2",
+            "grossRealized": "8/1",
+            "fees": "1/2",
+            "unrealized": "0/1",
+            "equity": "2015/2",
+            "openPosition": null,
+            "pendingOrders": [],
+            "reservations": [],
+            "currentMark": null,
+            "usedIds": {
+              "events": [
+                "submit0",
+                "fill1000",
+                "submit60000",
+                "fill61000",
+                "terminal120000"
+              ],
+              "orders": [
+                "entry1",
+                "exit1"
+              ],
+              "positions": [
+                "pos1"
+              ],
+              "allocations": [
+                "alloc1"
+              ]
+            }
+          }
+        }
+      }
     },
     {
       "id": "profit-short",
@@ -653,7 +1188,671 @@
         "pendingOrders": 1,
         "completedTrades": 0
       },
-      "derivation": "Exit is unfilled/reserved2; only entry fee1/4; markgain2; no forced close."
+      "derivation": "Exit is unfilled/reserved2; only entry fee1/4; markgain2; no forced close.",
+      "completeHandReceipt": {
+        "schema": "synthetic-ledger-receipt-v2",
+        "profile": "supplied-event-ledger-v1",
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "envelope": {
+          "instrument": {
+            "id": "SYNTH_GOLD",
+            "priceCurrency": "USD",
+            "accountCurrency": "USD",
+            "pointValue": "1",
+            "tickSize": "0.1",
+            "quantityStep": "0.1",
+            "conversion": "identity",
+            "session": "synthetic-continuous"
+          },
+          "account": {
+            "initialBalance": "1000",
+            "leverage": "5",
+            "marginPolicy": "initial-only-no-liquidation",
+            "feePolicy": {
+              "kind": "fixed-per-full-filled-order",
+              "amount": "0.25"
+            },
+            "terminalPolicy": "keep-open",
+            "positionPolicy": "single-position-no-additions"
+          },
+          "window": {
+            "startT": 0,
+            "endT": 120000
+          },
+          "requestedSemantics": []
+        },
+        "lifecycle": [
+          {
+            "event": {
+              "eventId": "submit0",
+              "t": 0,
+              "seq": 0,
+              "phase": "submit",
+              "kind": "submit",
+              "orderId": "entry1",
+              "role": "entry",
+              "positionId": "pos1",
+              "side": "long",
+              "qty": "2",
+              "allocationId": null
+            },
+            "before": {
+              "balance": "1000/1",
+              "grossRealized": "0/1",
+              "fees": "0/1",
+              "unrealized": "0/1",
+              "equity": "1000/1",
+              "openPosition": null,
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [],
+                "orders": [],
+                "positions": [],
+                "allocations": []
+              }
+            },
+            "after": {
+              "balance": "1000/1",
+              "grossRealized": "0/1",
+              "fees": "0/1",
+              "unrealized": "0/1",
+              "equity": "1000/1",
+              "openPosition": null,
+              "pendingOrders": [
+                {
+                  "orderId": "entry1",
+                  "role": "entry",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": null,
+                  "submittedEventId": "submit0",
+                  "t": 0,
+                  "phase": "submit",
+                  "seq": 0
+                }
+              ],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "fill1000",
+              "t": 1000,
+              "seq": 1,
+              "phase": "fill",
+              "kind": "fill",
+              "orderId": "entry1",
+              "positionId": "pos1",
+              "allocationId": null,
+              "qty": "2",
+              "price": "100"
+            },
+            "before": {
+              "balance": "1000/1",
+              "grossRealized": "0/1",
+              "fees": "0/1",
+              "unrealized": "0/1",
+              "equity": "1000/1",
+              "openPosition": null,
+              "pendingOrders": [
+                {
+                  "orderId": "entry1",
+                  "role": "entry",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": null,
+                  "submittedEventId": "submit0",
+                  "t": 0,
+                  "phase": "submit",
+                  "seq": 0
+                }
+              ],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            },
+            "after": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "submit60000",
+              "t": 60000,
+              "seq": 2,
+              "phase": "submit",
+              "kind": "submit",
+              "orderId": "exit1",
+              "role": "exit",
+              "positionId": "pos1",
+              "side": "long",
+              "qty": "2",
+              "allocationId": "alloc1"
+            },
+            "before": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [],
+              "reservations": [],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000"
+                ],
+                "orders": [
+                  "entry1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": []
+              }
+            },
+            "after": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "mark120000",
+              "t": 120000,
+              "seq": 3,
+              "phase": "mark",
+              "kind": "mark",
+              "positionId": "pos1",
+              "price": "101"
+            },
+            "before": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "0/1",
+              "equity": "3999/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": null,
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            },
+            "after": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "2/1",
+              "equity": "4007/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": {
+                "eventId": "mark120000",
+                "t": 120000,
+                "phase": "mark",
+                "seq": 3,
+                "positionId": "pos1",
+                "price": "101/1"
+              },
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000",
+                  "mark120000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            }
+          },
+          {
+            "event": {
+              "eventId": "terminal120000",
+              "t": 120000,
+              "seq": 4,
+              "phase": "terminal",
+              "kind": "terminal"
+            },
+            "before": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "2/1",
+              "equity": "4007/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": {
+                "eventId": "mark120000",
+                "t": 120000,
+                "phase": "mark",
+                "seq": 3,
+                "positionId": "pos1",
+                "price": "101/1"
+              },
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000",
+                  "mark120000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            },
+            "after": {
+              "balance": "3999/4",
+              "grossRealized": "0/1",
+              "fees": "1/4",
+              "unrealized": "2/1",
+              "equity": "4007/4",
+              "openPosition": {
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "entryPrice": "100/1",
+                "entryOrderId": "entry1",
+                "entryEventId": "fill1000",
+                "entryT": 1000,
+                "entryPhase": "fill",
+                "entrySeq": 1,
+                "entryFee": "1/4",
+                "requiredInitialMargin": "40/1"
+              },
+              "pendingOrders": [
+                {
+                  "orderId": "exit1",
+                  "role": "exit",
+                  "positionId": "pos1",
+                  "side": "long",
+                  "qty": "2/1",
+                  "allocationId": "alloc1",
+                  "submittedEventId": "submit60000",
+                  "t": 60000,
+                  "phase": "submit",
+                  "seq": 2
+                }
+              ],
+              "reservations": [
+                {
+                  "allocationId": "alloc1",
+                  "orderId": "exit1",
+                  "positionId": "pos1",
+                  "qty": "2/1"
+                }
+              ],
+              "currentMark": {
+                "eventId": "mark120000",
+                "t": 120000,
+                "phase": "mark",
+                "seq": 3,
+                "positionId": "pos1",
+                "price": "101/1"
+              },
+              "usedIds": {
+                "events": [
+                  "submit0",
+                  "fill1000",
+                  "submit60000",
+                  "mark120000",
+                  "terminal120000"
+                ],
+                "orders": [
+                  "entry1",
+                  "exit1"
+                ],
+                "positions": [
+                  "pos1"
+                ],
+                "allocations": [
+                  "alloc1"
+                ]
+              }
+            }
+          }
+        ],
+        "completedTrades": [],
+        "terminal": {
+          "watermark": {
+            "t": 120000,
+            "phase": "terminal",
+            "seq": 4
+          },
+          "initialBalance": "1000/1",
+          "state": {
+            "balance": "3999/4",
+            "grossRealized": "0/1",
+            "fees": "1/4",
+            "unrealized": "2/1",
+            "equity": "4007/4",
+            "openPosition": {
+              "positionId": "pos1",
+              "side": "long",
+              "qty": "2/1",
+              "entryPrice": "100/1",
+              "entryOrderId": "entry1",
+              "entryEventId": "fill1000",
+              "entryT": 1000,
+              "entryPhase": "fill",
+              "entrySeq": 1,
+              "entryFee": "1/4",
+              "requiredInitialMargin": "40/1"
+            },
+            "pendingOrders": [
+              {
+                "orderId": "exit1",
+                "role": "exit",
+                "positionId": "pos1",
+                "side": "long",
+                "qty": "2/1",
+                "allocationId": "alloc1",
+                "submittedEventId": "submit60000",
+                "t": 60000,
+                "phase": "submit",
+                "seq": 2
+              }
+            ],
+            "reservations": [
+              {
+                "allocationId": "alloc1",
+                "orderId": "exit1",
+                "positionId": "pos1",
+                "qty": "2/1"
+              }
+            ],
+            "currentMark": {
+              "eventId": "mark120000",
+              "t": 120000,
+              "phase": "mark",
+              "seq": 3,
+              "positionId": "pos1",
+              "price": "101/1"
+            },
+            "usedIds": {
+              "events": [
+                "submit0",
+                "fill1000",
+                "submit60000",
+                "mark120000",
+                "terminal120000"
+              ],
+              "orders": [
+                "entry1",
+                "exit1"
+              ],
+              "positions": [
+                "pos1"
+              ],
+              "allocations": [
+                "alloc1"
+              ]
+            }
+          }
+        }
+      }
     },
     {
       "id": "winning-add-refused",
@@ -712,9 +1911,18 @@
             "price": "100"
           },
           {
+            "eventId": "mark30000",
+            "t": 30000,
+            "seq": 2,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "101"
+          },
+          {
             "eventId": "submit2",
             "t": 60000,
-            "seq": 2,
+            "seq": 3,
             "phase": "submit",
             "kind": "submit",
             "orderId": "entry2",
@@ -727,7 +1935,7 @@
           {
             "eventId": "mark120000",
             "t": 120000,
-            "seq": 3,
+            "seq": 4,
             "phase": "mark",
             "kind": "mark",
             "positionId": "pos1",
@@ -736,7 +1944,7 @@
           {
             "eventId": "terminal120000",
             "t": 120000,
-            "seq": 4,
+            "seq": 5,
             "phase": "terminal",
             "kind": "terminal"
           }
@@ -744,11 +1952,14 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_ADDITION",
+        "eventId": "submit2",
         "receipt": null
       },
-      "derivation": "No additional entry allowed while live; whole request returns nullreceipt, including earlier transitions."
+      "derivation": "Profitable explicit mark101 precedes rejected addition at60000; no averaging regardless of PnL."
     },
     {
       "id": "opposite-entry-refused",
@@ -839,8 +2050,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_REVERSAL",
+        "eventId": "submit2",
         "receipt": null
       },
       "derivation": "No additional entry allowed while live; whole request returns nullreceipt, including earlier transitions."
@@ -913,8 +2127,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_ADDITION",
+        "eventId": "submit1000",
         "receipt": null
       },
       "derivation": "Pending entry prevents second entry."
@@ -986,8 +2203,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_PARTIAL_FILL",
+        "eventId": "fill1000",
         "receipt": null
       },
       "derivation": "No fee/quantity partition or partial execution inference."
@@ -1036,8 +2256,11 @@
         ]
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_BRACKET_REFRESH",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Unsupported before transitions, no admitted state."
@@ -1086,8 +2309,11 @@
         ]
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_REVERSAL",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Unsupported before transitions, no admitted state."
@@ -1136,8 +2362,11 @@
         ]
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_COLLISION",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Unsupported before transitions, no admitted state."
@@ -1186,8 +2415,11 @@
         ]
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_PINE_ADMISSION",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Unsupported before transitions, no admitted state."
@@ -1236,8 +2468,11 @@
         ]
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_HISTORICAL",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Unsupported before transitions, no admitted state."
@@ -1309,8 +2544,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_TERMINAL_MARK",
+        "eventId": "terminal120000",
         "receipt": null
       },
       "derivation": "Open terminal requires explicit mark at endT."
@@ -1393,8 +2631,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_IDENTITY",
+        "eventId": "submit60000",
         "receipt": null
       },
       "derivation": "Order ID remains consumed even though no fill occurred."
@@ -1477,8 +2718,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_IDENTITY",
+        "eventId": "submit60000",
         "receipt": null
       },
       "derivation": "Position ID remains consumed at cancelled entry submission."
@@ -1562,8 +2806,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_REFERENCE",
+        "eventId": "fill2000",
         "receipt": null
       },
       "derivation": "Consumed order is no longer pending."
@@ -1635,8 +2882,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_GRID",
+        "eventId": "fill1000",
         "receipt": null
       },
       "derivation": "100.01 is not multipleof0.1."
@@ -1682,7 +2932,7 @@
             "role": "entry",
             "positionId": "pos1",
             "side": "long",
-            "qty": "20",
+            "qty": "10",
             "allocationId": null
           },
           {
@@ -1694,7 +2944,7 @@
             "orderId": "entry1",
             "positionId": "pos1",
             "allocationId": null,
-            "qty": "20",
+            "qty": "10",
             "price": "100"
           },
           {
@@ -1708,11 +2958,14 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_INITIAL_MARGIN",
+        "eventId": "fill1000",
         "receipt": null
       },
-      "derivation": "20*100/1=2000 >999.75; no partial receipt."
+      "derivation": "Margin10*100/1=1000; postfee1000-0.25=999.75 => reject. Detects margin-before-fee mutant."
     },
     {
       "id": "same-instant-phase-regression",
@@ -1781,8 +3034,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_ORDERING",
+        "eventId": "submit1000",
         "receipt": null
       },
       "derivation": "fillrank20 then submitrank10 atsameT invalid before reference checks."
@@ -1831,8 +3087,11 @@
         ]
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "invalid-input",
         "code": "INVALID_SCHEMA",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Malformed ID beats requestedunsupported under documented precedence."
@@ -1879,8 +3138,11 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_CONVERSION",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "No exchange-rate provider or hidden conversion."
@@ -1927,11 +3189,782 @@
         "requestedSemantics": []
       },
       "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
         "status": "unsupported",
         "code": "UNSUPPORTED_POLICY",
+        "eventId": null,
         "receipt": null
       },
       "derivation": "Fixed fullorder feeonly."
+    },
+    {
+      "id": "losing-add-refused",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "mark30000",
+            "t": 30000,
+            "seq": 2,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "99"
+          },
+          {
+            "eventId": "submit2",
+            "t": 60000,
+            "seq": 3,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry2",
+            "role": "entry",
+            "positionId": "pos2",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 4,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "101"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 5,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_ADDITION",
+        "eventId": "submit2",
+        "receipt": null
+      },
+      "derivation": "Losing explicit mark99 precedes same rejected addition; no averaging."
+    },
+    {
+      "id": "initial-margin-postfee-equality-admitted",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000.25",
+          "leverage": "1",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "10",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "10",
+            "price": "100"
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "100"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 3,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "1000/1",
+        "cumulativeFees": "1/4",
+        "grossRealized": "0/1",
+        "unrealized": "0/1",
+        "equity": "1000/1",
+        "openQty": "10/1",
+        "pendingOrders": 0,
+        "completedTrades": 0
+      },
+      "derivation": "Postfee1000.25-0.25=1000 equals requiredmargin1000 => admitted; exact equality detects greater-only mutant."
+    },
+    {
+      "id": "averaging-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "averaging"
+        ]
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_AVERAGING",
+        "eventId": null,
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "forced-liquidation-typed",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "forced-liquidation"
+        ]
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_FORCED_LIQUIDATION",
+        "eventId": null,
+        "receipt": null
+      },
+      "derivation": "Unsupported before transitions, no admitted state."
+    },
+    {
+      "id": "overfill-invalid",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "3",
+            "price": "100"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 2,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "invalid-input",
+        "code": "INVALID_FILL_QTY",
+        "eventId": "fill1000",
+        "receipt": null
+      },
+      "derivation": "Fullorder2 cannot fill3; overfill invalid rather than partial-fill unsupported."
+    },
+    {
+      "id": "conversion-before-session-policy-request",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "fx-dynamic",
+          "session": "exchange-calendar"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "percent",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "averaging"
+        ]
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_CONVERSION",
+        "eventId": null,
+        "receipt": null
+      },
+      "derivation": "Explicit refusal priority/mapping witness; atomic nullreceipt."
+    },
+    {
+      "id": "session-before-policy-request",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "exchange-calendar"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "percent",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "forced-liquidation"
+        ]
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_SESSION",
+        "eventId": null,
+        "receipt": null
+      },
+      "derivation": "Explicit refusal priority/mapping witness; atomic nullreceipt."
+    },
+    {
+      "id": "policy-before-request",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "percent",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "averaging"
+        ]
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_POLICY",
+        "eventId": null,
+        "receipt": null
+      },
+      "derivation": "Explicit refusal priority/mapping witness; atomic nullreceipt."
+    },
+    {
+      "id": "requested-lexicographic-map",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 0,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": [
+          "forced-liquidation",
+          "averaging"
+        ]
+      },
+      "handExpected": {
+        "schema": "synthetic-ledger-result-v1",
+        "profile": "supplied-event-ledger-v1",
+        "status": "unsupported",
+        "code": "UNSUPPORTED_AVERAGING",
+        "eventId": null,
+        "receipt": null
+      },
+      "derivation": "Explicit refusal priority/mapping witness; atomic nullreceipt."
+    },
+    {
+      "id": "close-reopen-mark-isolation",
+      "request": {
+        "schema": "synthetic-ledger-request-v1",
+        "profile": "supplied-event-ledger-v1",
+        "instrument": {
+          "id": "SYNTH_GOLD",
+          "priceCurrency": "USD",
+          "accountCurrency": "USD",
+          "pointValue": "1",
+          "tickSize": "0.1",
+          "quantityStep": "0.1",
+          "conversion": "identity",
+          "session": "synthetic-continuous"
+        },
+        "account": {
+          "initialBalance": "1000",
+          "leverage": "5",
+          "marginPolicy": "initial-only-no-liquidation",
+          "feePolicy": {
+            "kind": "fixed-per-full-filled-order",
+            "amount": "0.25"
+          },
+          "terminalPolicy": "keep-open",
+          "positionPolicy": "single-position-no-additions"
+        },
+        "window": {
+          "startT": 0,
+          "endT": 120000
+        },
+        "events": [
+          {
+            "eventId": "submit0",
+            "t": 0,
+            "seq": 0,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry1",
+            "role": "entry",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill1000",
+            "t": 1000,
+            "seq": 1,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry1",
+            "positionId": "pos1",
+            "allocationId": null,
+            "qty": "2",
+            "price": "100"
+          },
+          {
+            "eventId": "mark30000",
+            "t": 30000,
+            "seq": 2,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos1",
+            "price": "101"
+          },
+          {
+            "eventId": "submit60000",
+            "t": 60000,
+            "seq": 3,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "exit1",
+            "role": "exit",
+            "positionId": "pos1",
+            "side": "long",
+            "qty": "2",
+            "allocationId": "alloc1"
+          },
+          {
+            "eventId": "fill61000",
+            "t": 61000,
+            "seq": 4,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "exit1",
+            "positionId": "pos1",
+            "allocationId": "alloc1",
+            "qty": "2",
+            "price": "104"
+          },
+          {
+            "eventId": "submit70000",
+            "t": 70000,
+            "seq": 5,
+            "phase": "submit",
+            "kind": "submit",
+            "orderId": "entry2",
+            "role": "entry",
+            "positionId": "pos2",
+            "side": "long",
+            "qty": "1",
+            "allocationId": null
+          },
+          {
+            "eventId": "fill71000",
+            "t": 71000,
+            "seq": 6,
+            "phase": "fill",
+            "kind": "fill",
+            "orderId": "entry2",
+            "positionId": "pos2",
+            "allocationId": null,
+            "qty": "1",
+            "price": "200"
+          },
+          {
+            "eventId": "mark120000",
+            "t": 120000,
+            "seq": 7,
+            "phase": "mark",
+            "kind": "mark",
+            "positionId": "pos2",
+            "price": "201"
+          },
+          {
+            "eventId": "terminal120000",
+            "t": 120000,
+            "seq": 8,
+            "phase": "terminal",
+            "kind": "terminal"
+          }
+        ],
+        "requestedSemantics": []
+      },
+      "handExpected": {
+        "status": "synthetic-success",
+        "qualification": "unqualified-not-Pine-parity",
+        "balance": "4029/4",
+        "cumulativeFees": "3/4",
+        "grossRealized": "8/1",
+        "unrealized": "1/1",
+        "equity": "4033/4",
+        "openQty": "1/1",
+        "pendingOrders": 0,
+        "completedTrades": 1
+      },
+      "derivation": "Closedgross8;3fees3/4 =>balance1007.25. Newposqty1 at200, freshmark201 =>equity1008.25; oldmark101 never inherited.",
+      "lifecycleAssertions": [
+        {
+          "eventId": "fill1000",
+          "currentMark": null,
+          "unrealized": "0/1"
+        },
+        {
+          "eventId": "mark30000",
+          "currentMarkEventId": "mark30000"
+        },
+        {
+          "eventId": "fill61000",
+          "currentMark": null,
+          "openPosition": null
+        },
+        {
+          "eventId": "fill71000",
+          "currentMark": null,
+          "unrealized": "0/1",
+          "equity": "4029/4"
+        },
+        {
+          "eventId": "mark120000",
+          "currentMarkEventId": "mark120000",
+          "currentMarkPositionId": "pos2"
+        }
+      ]
     }
-  ]
+  ],
+  "revision": "spec-freeze-repair-v2",
+  "expectationKinds": "All failure objects complete; success handExpected is economic assertion projection; two completeHandReceipt objects freeze all lifecycle/schema fields."
 }
