@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "c7854a4e-fb1e-47e1-acb4-d2f4a2152420",
+  "runId": "aefbccd7-371a-4629-9fc5-567c6ece78f8",
+  "kind": "complete",
+  "parents": [
+    "e7f45ba1-8e70-484d-b0f4-15de1c3692f9"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "0259aaa17264f21002ecde57e9f98e73940376c7",
+    "blob": "ddfbf13d0d05b067e0d39266786636c04a40a983",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Astra P2 verification repairs",
+      "digest": "a18c3e8da66b148b6e3730c62bea4e0160a11cffd7a31692e1ee4aa0010d9431"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-regime-synthetic",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/133",
+  "at": "2026-10-14T10:46:04.073Z",
+  "summary": "Append immutable correction for original wrong repository metadata and admit four additive inspector source files without changing arithmetic instructions or closure pins",
+  "next": "Fresh Astra review and Linux CI; Pine execution witness and lifecycle implementation remain pending",
+  "files": [
+    "engine/regimeadaptive/types.go",
+    "engine/regimeadaptive/indicators.go",
+    "engine/regimeadaptive/inspect.go",
+    "engine/regimeadaptive/inspect_test.go",
+    "engine/regimeadaptive/testdata/ramp-v1.json",
+    "cmd/regime-adaptive-inspect/main.go",
+    "cmd/regime-adaptive-inspect/main_test.go",
+    "docs/regime-adaptive-synthetic.md",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Go1.22.12 gofmt/vet/full tests and 135 parse/109 run conformance passed; source inventory308 validated; existing three closure pins identical; original three event bytes preserved. Correction12/12 and receipt28/28. Prior default repository validation withdrawn; full Linux qualification pending.",
+  "snapshot": {
+    "engine/regimeadaptive/types.go": {
+      "blob": "db78f738dff2f33ef9005d82d86c7a5fccfaef02",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/indicators.go": {
+      "blob": "eb592aa46a699e3741fb36e6826260f70393f1b8",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/inspect.go": {
+      "blob": "dcac76ffffdca818fd23a7a30441c789921bda38",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/inspect_test.go": {
+      "blob": "6a342f2583ac75e36ccacb596a098fc2931500d4",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/testdata/ramp-v1.json": {
+      "blob": "c200fffb8d8656df0c1a9bc08e0533ebb33ec47a",
+      "mode": "100644"
+    },
+    "cmd/regime-adaptive-inspect/main.go": {
+      "blob": "b26db5675933f009950eba654d8a6a5fe2f75e05",
+      "mode": "100644"
+    },
+    "cmd/regime-adaptive-inspect/main_test.go": {
+      "blob": "8812f3a766c55f7197ded63f964e23885b3b03c9",
+      "mode": "100644"
+    },
+    "docs/regime-adaptive-synthetic.md": {
+      "blob": "a598e0d55ee5f10ee15b0b37028cfa05b76cb1b7",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "353387ef61ee71f497878d0dff1fb08887ce6464",
+      "mode": "100644"
+    }
+  }
+}

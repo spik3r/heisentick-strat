@@ -1,0 +1,37 @@
+{
+  "formatVersion": 2,
+  "eventId": "4b5fd8b8-cd1e-4478-be7f-4b87905c7757",
+  "runId": "a1851adc-1dcd-40dd-87db-25caf2c9eb1e",
+  "kind": "checkpoint",
+  "parents": [
+    "e342b278-ce04-43b0-9887-0577ae3daca1"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c9f4c73431a4ae850e34d6c5f8273dc0b8b03fea",
+    "blob": "82e4d99129dad1ac12694fdf383650d6f9db740b",
+    "claim": {
+      "heading": "Active claim: Codex HT287 verification and synthetic producer slice",
+      "digest": "d60aeb4c0c46a7a543619f96ef21fd94299a532aac236a518e59ef5bdf4516fd"
+    }
+  },
+  "repository": "spik3r/heisentick",
+  "branch": "codex/ht287-regime-synthetic",
+  "pullRequest": null,
+  "at": "2026-10-14T09:41:06.011Z",
+  "summary": "Hand-derived indicator/signal fixtures pass; add synthetic request fixture and verify pinned native/WASM builds",
+  "next": "Run producer suite and independent review; retain execution/historical refusal",
+  "files": [
+    "engine/regimeadaptive/types.go",
+    "engine/regimeadaptive/indicators.go",
+    "engine/regimeadaptive/inspect.go",
+    "engine/regimeadaptive/inspect_test.go",
+    "engine/regimeadaptive/testdata/ramp-v1.json",
+    "cmd/regime-adaptive-inspect/main.go",
+    "cmd/regime-adaptive-inspect/main_test.go",
+    "docs/regime-adaptive-synthetic.md"
+  ]
+}

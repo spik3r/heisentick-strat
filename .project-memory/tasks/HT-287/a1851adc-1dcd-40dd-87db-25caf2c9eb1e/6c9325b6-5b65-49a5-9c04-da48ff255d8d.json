@@ -1,0 +1,72 @@
+{
+  "formatVersion": 2,
+  "eventId": "6c9325b6-5b65-49a5-9c04-da48ff255d8d",
+  "runId": "a1851adc-1dcd-40dd-87db-25caf2c9eb1e",
+  "kind": "complete",
+  "parents": [
+    "4b5fd8b8-cd1e-4478-be7f-4b87905c7757"
+  ],
+  "sequence": 2,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c9f4c73431a4ae850e34d6c5f8273dc0b8b03fea",
+    "blob": "82e4d99129dad1ac12694fdf383650d6f9db740b",
+    "claim": {
+      "heading": "Active claim: Codex HT287 verification and synthetic producer slice",
+      "digest": "d60aeb4c0c46a7a543619f96ef21fd94299a532aac236a518e59ef5bdf4516fd"
+    }
+  },
+  "repository": "spik3r/heisentick",
+  "branch": "codex/ht287-regime-synthetic",
+  "pullRequest": null,
+  "at": "2026-10-14T09:45:32.332Z",
+  "summary": "Synthetic Go indicator/signal inspector verified; execution/historical refused; independently reviewed first slice",
+  "next": "Review producer slice; obtain Pine witnesses before execution; no release/adoption yet",
+  "files": [
+    "engine/regimeadaptive/types.go",
+    "engine/regimeadaptive/indicators.go",
+    "engine/regimeadaptive/inspect.go",
+    "engine/regimeadaptive/inspect_test.go",
+    "engine/regimeadaptive/testdata/ramp-v1.json",
+    "cmd/regime-adaptive-inspect/main.go",
+    "cmd/regime-adaptive-inspect/main_test.go",
+    "docs/regime-adaptive-synthetic.md"
+  ],
+  "validation": "Go1.22.12 darwin/arm64: gofmt empty; go vet ./... PASS; go test ./... PASS; conformance135 parse109 run0 TODO PASS; native inspector and inspector/dslwasm/enginewasm builds PASS; Node24.10.0 matching-Go wasm glue synthetic90-bar JSON byte-identical sha256600e6aa9abdeec4e44e2af66f61c8e4d22e7f722797c9d88ece44e0f8dbc4ce5; independent re-review no blocking slice bugs; no Pine or Linux execution proof",
+  "snapshot": {
+    "engine/regimeadaptive/types.go": {
+      "blob": "db78f738dff2f33ef9005d82d86c7a5fccfaef02",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/indicators.go": {
+      "blob": "eb592aa46a699e3741fb36e6826260f70393f1b8",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/inspect.go": {
+      "blob": "dcac76ffffdca818fd23a7a30441c789921bda38",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/inspect_test.go": {
+      "blob": "6a342f2583ac75e36ccacb596a098fc2931500d4",
+      "mode": "100644"
+    },
+    "engine/regimeadaptive/testdata/ramp-v1.json": {
+      "blob": "c200fffb8d8656df0c1a9bc08e0533ebb33ec47a",
+      "mode": "100644"
+    },
+    "cmd/regime-adaptive-inspect/main.go": {
+      "blob": "b26db5675933f009950eba654d8a6a5fe2f75e05",
+      "mode": "100644"
+    },
+    "cmd/regime-adaptive-inspect/main_test.go": {
+      "blob": "8812f3a766c55f7197ded63f964e23885b3b03c9",
+      "mode": "100644"
+    },
+    "docs/regime-adaptive-synthetic.md": {
+      "blob": "4508b00f04b906ad2c221f72c4a72046aefb7913",
+      "mode": "100644"
+    }
+  }
+}

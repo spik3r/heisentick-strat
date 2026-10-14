@@ -1,0 +1,50 @@
+{
+  "formatVersion": 2,
+  "eventId": "e7f45ba1-8e70-484d-b0f4-15de1c3692f9",
+  "runId": "aefbccd7-371a-4629-9fc5-567c6ece78f8",
+  "kind": "start",
+  "parents": [
+    "6c9325b6-5b65-49a5-9c04-da48ff255d8d"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "0259aaa17264f21002ecde57e9f98e73940376c7",
+    "blob": "ddfbf13d0d05b067e0d39266786636c04a40a983",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Astra P2 verification repairs",
+      "digest": "a18c3e8da66b148b6e3730c62bea4e0160a11cffd7a31692e1ee4aa0010d9431"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-regime-synthetic",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/133",
+  "at": "2026-10-14T10:16:08.097Z",
+  "summary": "Correct mistaken application repository on original producer run append-only; default-context validation withdrawn; preserve original event bytes and reviewed inspector source",
+  "next": "Add only4 inspector source hashes to arithmetic inventory; revalidate producer and exact repository context; Astra re-review before merge/release",
+  "files": [
+    "engine/regimeadaptive/types.go",
+    "engine/regimeadaptive/indicators.go",
+    "engine/regimeadaptive/inspect.go",
+    "engine/regimeadaptive/inspect_test.go",
+    "engine/regimeadaptive/testdata/ramp-v1.json",
+    "cmd/regime-adaptive-inspect/main.go",
+    "cmd/regime-adaptive-inspect/main_test.go",
+    "docs/regime-adaptive-synthetic.md",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "repositoryCorrection": {
+    "schema": "project-memory-repository-correction-v1",
+    "from": "spik3r/heisentick",
+    "to": "spik3r/heisentick-strat",
+    "commit": "edcaf1fa6ab810b019fbb19f12bb440c03b402a7",
+    "headEventId": "6c9325b6-5b65-49a5-9c04-da48ff255d8d",
+    "events": {
+      "4b5fd8b8-cd1e-4478-be7f-4b87905c7757": "67545bff5846160f214e2ed3871b46e175577361132328279765b2e0e3e3d09e",
+      "6c9325b6-5b65-49a5-9c04-da48ff255d8d": "de90e19db96c7bf3f9ee1bed17bafc00e7f486d3a0f0a9bde70197c06f63b58d",
+      "e342b278-ce04-43b0-9887-0577ae3daca1": "6c0ac0072d8d09e22b4b23733ab8faaf3f2b2a721144341c72cb156dbaa99c2e"
+    }
+  }
+}
