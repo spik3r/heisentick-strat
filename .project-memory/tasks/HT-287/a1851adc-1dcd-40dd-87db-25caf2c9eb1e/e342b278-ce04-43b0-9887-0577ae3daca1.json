@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "e342b278-ce04-43b0-9887-0577ae3daca1",
+  "runId": "a1851adc-1dcd-40dd-87db-25caf2c9eb1e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c9f4c73431a4ae850e34d6c5f8273dc0b8b03fea",
+    "blob": "82e4d99129dad1ac12694fdf383650d6f9db740b",
+    "claim": {
+      "heading": "Active claim: Codex HT287 verification and synthetic producer slice",
+      "digest": "d60aeb4c0c46a7a543619f96ef21fd94299a532aac236a518e59ef5bdf4516fd"
+    }
+  },
+  "repository": "spik3r/heisentick",
+  "branch": "codex/ht287-regime-synthetic",
+  "pullRequest": null,
+  "at": "2026-10-14T09:30:58.931Z",
+  "summary": "Add strict research-only Go indicator/signal inspection; refuse execution; current producer main 33e2f61",
+  "next": "Implement hand-derived synthetic fixtures and pin toolchains; retain witness/release gates",
+  "files": [
+    "engine/regimeadaptive/types.go",
+    "engine/regimeadaptive/indicators.go",
+    "engine/regimeadaptive/inspect.go",
+    "engine/regimeadaptive/inspect_test.go",
+    "cmd/regime-adaptive-inspect/main.go",
+    "cmd/regime-adaptive-inspect/main_test.go",
+    "docs/regime-adaptive-synthetic.md"
+  ]
+}
