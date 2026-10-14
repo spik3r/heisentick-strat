@@ -3,7 +3,7 @@ package adaptivestudy
 
 import "github.com/spik3r/heisentick-strat/engine/regimeadaptive"
 
-const Profile = "regime-adaptive-v4.2-go-flat-risk-study-v1"
+const Profile = "regime-adaptive-v4.2-go-flat-risk-study-v2"
 const M30Hash = "a04fad3f6daa2b53addcd4b8b6fe6ba9c49afd329b7785d167724763d628d92f"
 const M5Hash = "1be64a5005f93bd8c70d2a61d408928a803537b9eddbd386d9ac53d33285e9ca"
 const Duration int64 = 1800000
@@ -17,17 +17,20 @@ type Config struct {
 	EndT      int64  `json:"endT"`
 }
 type Order struct {
-	ID           string  `json:"id"`
-	Side         int     `json:"side"`
-	Branch       string  `json:"branch"`
-	SignalBarT   int64   `json:"signalBarT"`
-	SignalCloseT int64   `json:"signalCloseT"`
-	SignalClose  float64 `json:"signalClose"`
-	SignalEquity float64 `json:"signalEquity"`
-	ATR          float64 `json:"atr"`
-	Basis        float64 `json:"basis"`
-	Qty          float64 `json:"qty"`
-	PlannedRisk  float64 `json:"plannedRisk"`
+	ID            string  `json:"id"`
+	Side          int     `json:"side"`
+	Branch        string  `json:"branch"`
+	SignalBarT    int64   `json:"signalBarT"`
+	SignalCloseT  int64   `json:"signalCloseT"`
+	SignalClose   float64 `json:"signalClose"`
+	SignalEquity  float64 `json:"signalEquity"`
+	SizingPrice   float64 `json:"sizingPrice"`
+	StopDistance  float64 `json:"stopDistance"`
+	TrendDistance float64 `json:"trendDistance"`
+	ATR           float64 `json:"atr"`
+	Basis         float64 `json:"basis"`
+	Qty           float64 `json:"qty"`
+	PlannedRisk   float64 `json:"plannedRisk"`
 }
 type Position struct {
 	Order     Order   `json:"order"`

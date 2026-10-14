@@ -24,7 +24,8 @@
     "860f3b49631b75594d9a925751b3597ff07a8efa",
     "acb556254c7b8a71b491acdaf225f5f85f657a1a",
     "edcaf1fa6ab810b019fbb19f12bb440c03b402a7",
-    "36cde2b0f5c9e56166e67a704a17691c565cf372"
+    "36cde2b0f5c9e56166e67a704a17691c565cf372",
+    "ae191567ee5c7db5c69af0a4bcf2a03c22405e65"
   ],
   "build": {
     "CGO_ENABLED": "0",
@@ -171,9 +172,9 @@
     "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
     "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
     "engine/adaptivestudy/data.go": "16b6fb9896035fb7bc694e8da68d0c2ebf1b47936cd09ed6c5ff08b434722998",
-    "engine/adaptivestudy/metrics.go": "1bdfc2c56b13dce1f33d57e1226bdc63449e33487b6115b51fb011574b52522d",
-    "engine/adaptivestudy/run.go": "272593e4e4165d03cd62af39e68c33c4b93a669653a9b09a0b1e66bfdde66d58",
-    "engine/adaptivestudy/types.go": "07be63f74cf57675ad7f8d129fec0a98386f839f3699a8c44828f0e023b34b4f",
+    "engine/adaptivestudy/metrics.go": "53f8ae058895e2aababb359fb78392d097c24f2ae5e2cc5aaff26ecdfe992beb",
+    "engine/adaptivestudy/run.go": "b73a321db4964a013058e67ca44ff486b18bfc0832dbd5d91757552f88960f5f",
+    "engine/adaptivestudy/types.go": "224643895e982f38a0332e15c0ff07e5626629a04047e5b4105f12ae1610992a",
     "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
     "engine/broker.go": "db9d8f0ec54dcaba6d29d79a24b4404e8bf0f066956ed3bcbde2985be44d6a15",
     "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",

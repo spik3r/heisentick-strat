@@ -9,17 +9,33 @@ import (
 	fp "github.com/spik3r/heisentick-strat/internal/float64contract"
 )
 
-func fee(cost string, qty float64) float64 {
+func feeTerms(cost string) (float64, float64) {
 	switch cost {
 	case "BASIC":
-		return fp.Mul(qty, .095)
+		return .095, 0
 	case "HARSH":
-		return fp.Mul(qty, .155)
+		return .155, 0
 	case "SOURCE_FEE":
-		return .25
+		return 0, .25
 	}
-	return 0
+	return 0, 0
 }
+func fee(cost string, qty float64) float64 { a, b := feeTerms(cost); return fp.Add(fp.Mul(a, qty), b) }
+func ceilDistance(atr, multiple float64) float64 {
+	steps := math.Max(1, math.Ceil(fp.Sub(fp.Div(fp.Mul(multiple, atr), .01), 1e-9)))
+	return fp.Mul(.01, steps)
+}
+
+func signalQty(equity, price, dStop float64, cost string) float64 {
+	a, b := feeTerms(cost)
+	if equity <= fp.Mul(2, b) {
+		return 0
+	}
+	risk := fp.Div(fp.Mul(equity, .005), dStop)
+	cap := fp.Div(fp.Sub(equity, fp.Mul(2, b)), fp.Add(price, fp.Mul(2, a)))
+	return fp.Mul(.001, math.Floor(fp.Add(fp.Div(math.Min(risk, cap), .001), 1e-9)))
+}
+
 func adverse(price float64, side int, stress string, marketOrStop bool) float64 {
 	if marketOrStop && stress == "one-tick" {
 		price = fp.Add(price, fp.Mul(float64(side), .01))
@@ -182,8 +198,8 @@ func runRows(bars []Bar, rows []regimeadaptive.Row, start int, c Config) (result
 				entry := adverse(b.Open, o.Side, c.Stress, true)
 				entryFee := fee(c.Cost, o.Qty)
 				exitReservation := fee(c.Cost, o.Qty)
-				stop := toward(fp.Sub(entry, fp.Mul(fp.Mul(float64(o.Side), 1.8), o.ATR)), -o.Side)
-				target := toward(fp.Add(entry, fp.Mul(fp.Mul(float64(o.Side), 3.2), o.ATR)), o.Side)
+				stop := fp.Sub(entry, fp.Mul(float64(o.Side), o.StopDistance))
+				target := fp.Add(entry, fp.Mul(float64(o.Side), o.TrendDistance))
 				if o.Branch == "range-long" || o.Branch == "range-short" {
 					target = toward(o.Basis, o.Side)
 				}
@@ -263,13 +279,15 @@ func runRows(bars []Bar, rows []regimeadaptive.Row, start int, c Config) (result
 			d.RejectedQty++
 			continue
 		}
-		qty := fp.Div(math.Floor(fp.Add(fp.Mul(math.Min(fp.Div(fp.Mul(equity, .005), fp.Mul(1.8, *row.ATR)), fp.Div(equity, b.Close)), 1000), 1e-9)), 1000)
-		if qty <= 0 {
+		sizingPrice := adverse(b.Close, side, c.Stress, true)
+		dStop, dTrend := ceilDistance(*row.ATR, 1.8), ceilDistance(*row.ATR, 3.2)
+		qty := signalQty(equity, sizingPrice, dStop, c.Cost)
+		if qty < .001 {
 			d.RejectedQty++
 			continue
 		}
 		orderCounter++
-		pending = &Order{ID: fmt.Sprintf("o%d", orderCounter), Side: side, Branch: branch, SignalBarT: b.T, SignalCloseT: b.CloseT, SignalClose: b.Close, SignalEquity: equity, ATR: *row.ATR, Basis: *row.BBBasis, Qty: qty, PlannedRisk: fp.Mul(fp.Mul(qty, 1.8), *row.ATR)}
+		pending = &Order{ID: fmt.Sprintf("o%d", orderCounter), Side: side, Branch: branch, SignalBarT: b.T, SignalCloseT: b.CloseT, SignalClose: b.Close, SignalEquity: equity, SizingPrice: sizingPrice, StopDistance: dStop, TrendDistance: dTrend, ATR: *row.ATR, Basis: *row.BBBasis, Qty: qty, PlannedRisk: fp.Mul(qty, dStop)}
 		emit(b, "closed-bar-signal", pending.ID, branch, qty, b.Close, 0)
 	}
 	last := bars[len(bars)-1]

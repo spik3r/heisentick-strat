@@ -1,6 +1,7 @@
 package adaptivestudy
 
 import (
+	"github.com/spik3r/heisentick-strat/engine/regimeadaptive"
 	fp "github.com/spik3r/heisentick-strat/internal/float64contract"
 	"math"
 )
@@ -46,7 +47,7 @@ func Select(training map[string]Result, nextFoldStart int64) (string, error) {
 	bestReturn := math.Inf(-1)
 	for _, id := range []string{"B0", "B1", "B2"} {
 		r, ok := training[id]
-		if !ok || r.Config.Candidate != id || r.Config.Cost != "BASIC" || r.Config.Stress != "none" || r.Config.EndT != nextFoldStart || r.Config.StartT != date(2021, 4, 1) || r.DataHash != M30Hash || r.Profile != Profile || r.Schema != "adaptive-study-result-v1" || r.Status != "retrospective-assumed-model-not-Pine-parity" || math.IsNaN(r.Metrics.NetReturn) || math.IsInf(r.Metrics.NetReturn, 0) || math.IsNaN(r.Metrics.MaxDrawdown) || math.IsInf(r.Metrics.MaxDrawdown, 0) || r.Metrics.MaxDrawdown < 0 {
+		if !ok || r.Config.Candidate != id || r.Config.Cost != "BASIC" || r.Config.Stress != "none" || r.Config.EndT != nextFoldStart || r.Config.StartT != date(2021, 4, 1) || r.DataHash != M30Hash || r.Profile != Profile || r.SourceHash != regimeadaptive.SourceHash || r.Schema != "adaptive-study-result-v1" || r.Status != "retrospective-assumed-model-not-Pine-parity" || math.IsNaN(r.Metrics.NetReturn) || math.IsInf(r.Metrics.NetReturn, 0) || math.IsNaN(r.Metrics.MaxDrawdown) || math.IsInf(r.Metrics.MaxDrawdown, 0) || r.Metrics.MaxDrawdown < 0 {
 			return "", errSelection("invalid expanding training identity")
 		}
 		if r.Metrics.TradeCount < 30 || r.Metrics.MaxDrawdown > base.Metrics.MaxDrawdown+1e-12 {

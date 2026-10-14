@@ -6,6 +6,7 @@ import (
 	"github.com/spik3r/heisentick-strat/engine/regimeadaptive"
 	"math"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -23,6 +24,80 @@ func TestPortableManualDigest(t *testing.T) {
 		t.Fatal(e)
 	}
 	t.Logf("PORTABLE_SHA256=%x", sha256.Sum256(raw))
+}
+
+func TestFeeAwareUnchangedOpeningAndAdverseGap(t *testing.T) {
+	cases := []struct {
+		cost                  string
+		qty, required, oneFee float64
+	}{{"GROSS", 100, 10000, 0}, {"BASIC", 99.810, 9999.9639, 9.48195}, {"HARSH", 99.690, 9999.9039, 15.45195}, {"SOURCE_FEE", 99.995, 10000, .25}}
+	for _, c := range cases {
+		for _, branch := range []string{"TL", "TS"} {
+			t.Run(c.cost+branch, func(t *testing.T) {
+				bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100)}
+				rows := []regimeadaptive.Row{row(branch, .1, 100), row("", .1, 100)}
+				r := fixture(t, bars, rows, c.cost, "none")
+				if r.Terminal.Open == nil || r.Diagnostics.RejectedCost != 0 || r.Diagnostics.RejectedCap != 0 {
+					t.Fatal("unchanged price should afford known fees")
+				}
+				p := r.Terminal.Open
+				near(t, p.Order.Qty, c.qty)
+				near(t, p.Order.SizingPrice, 100)
+				near(t, p.Order.Qty*p.Entry+2*c.oneFee, c.required)
+				near(t, r.Terminal.Fees, c.oneFee)
+				near(t, r.Terminal.Balance, 10000-c.oneFee)
+				bars[1] = b(1, 101, 101.1, 100.9, 101)
+				r = fixture(t, bars, rows, c.cost, "none")
+				if r.Terminal.Open != nil || r.Terminal.Fees != 0 || r.Diagnostics.RejectedCap+r.Diagnostics.RejectedCost != 1 {
+					t.Fatal("adverse notional opening resized/admitted")
+				}
+				near(t, r.Events[0].Qty, c.qty)
+			})
+		}
+	}
+	near(t, signalQty(.5, 100, .18, "SOURCE_FEE"), 0)
+	near(t, signalQty(.49, 100, .18, "SOURCE_FEE"), 0)
+}
+func TestCeilDistancesAndMirroredOffGridRisk(t *testing.T) {
+	for _, branch := range []string{"TL", "TS"} {
+		bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100)}
+		rows := []regimeadaptive.Row{row(branch, 1.001, 100), row("", 1.001, 100)}
+		r := fixture(t, bars, rows, "GROSS", "none")
+		if r.Terminal.Open == nil {
+			t.Fatal("missing open")
+		}
+		p := r.Terminal.Open
+		near(t, p.Order.StopDistance, 1.81)
+		near(t, p.Order.TrendDistance, 3.21)
+		near(t, p.Order.Qty, 27.624)
+		near(t, p.Order.PlannedRisk, 49.99944)
+		if branch == "TL" {
+			near(t, p.Stop, 98.19)
+			near(t, p.Target, 103.21)
+		} else {
+			near(t, p.Stop, 101.81)
+			near(t, p.Target, 96.79)
+		}
+	}
+	near(t, ceilDistance(1, 1.8), 1.8)
+	near(t, ceilDistance(1e-15, 1.8), .01)
+}
+func TestSignalAffordabilityUsesSameAdversePriceAsOpening(t *testing.T) {
+	for _, branch := range []string{"TL", "TS"} {
+		for _, stress := range []string{"none", "one-tick"} {
+			bars := []Bar{b(0, 100.001, 100.1, 99.9, 100.001), b(1, 100.001, 100.1, 99.9, 100.001)}
+			rows := []regimeadaptive.Row{row(branch, .1, 100), row("", .1, 100)}
+			r := fixture(t, bars, rows, "BASIC", stress)
+			if r.Terminal.Open == nil {
+				t.Fatal("same raw close/open must stay affordable", branch, stress)
+			}
+			p := r.Terminal.Open
+			near(t, p.Order.SizingPrice, p.Entry)
+			if p.Order.Qty*p.Entry+2*fee("BASIC", p.Order.Qty) > 10000+1e-8 {
+				t.Fatal("unaffordable signal qty")
+			}
+		}
+	}
 }
 
 func TestGapCapitalLossPreservesDebtAndStopsNewSizing(t *testing.T) {
@@ -81,7 +156,7 @@ func fixture(t *testing.T, bars []Bar, rows []regimeadaptive.Row, cost, stress s
 }
 func near(t *testing.T, a, z float64) {
 	t.Helper()
-	if math.Abs(a-z) > 1e-8 {
+	if math.IsNaN(a) || math.IsNaN(z) || math.IsInf(a, 0) || math.IsInf(z, 0) || math.Abs(a-z) > 1e-8 {
 		t.Fatalf("got%.12g want%.12g", a, z)
 	}
 }
@@ -184,10 +259,12 @@ func TestOpeningCapAndFeeReservationNoFutureResize(t *testing.T) {
 	}
 	rows[0] = row("TL", .1, 100)
 	bars := []Bar{b(0, 100, 101, 99, 100), b(1, 100, 100.1, 99.9, 100)}
+	bars[1].Open = 100.01
 	r = fixture(t, bars, rows, "BASIC", "none")
 	if r.Diagnostics.RejectedCost != 1 || r.Terminal.Fees != 0 {
 		t.Fatal("cost reservation")
 	}
+	bars[1].Open = 100
 	r = fixture(t, bars, rows, "GROSS", "none")
 	if r.Terminal.Open == nil {
 		t.Fatal("gross equality cap refused")
@@ -238,7 +315,7 @@ func TestLastClosePendingAndPrefixDeterminism(t *testing.T) {
 }
 func TestSelectorEarlierYearsEligibilityAndTie(t *testing.T) {
 	end := date(2024, 1, 1)
-	base := Result{Schema: "adaptive-study-result-v1", Status: "retrospective-assumed-model-not-Pine-parity", Profile: Profile, DataHash: M30Hash, Config: Config{StartT: date(2021, 4, 1), EndT: end, Cost: "BASIC", Stress: "none"}, Metrics: Metrics{TradeCount: 30, NetReturn: .1, MaxDrawdown: .1}}
+	base := Result{Schema: "adaptive-study-result-v1", Status: "retrospective-assumed-model-not-Pine-parity", Profile: Profile, SourceHash: regimeadaptive.SourceHash, DataHash: M30Hash, Config: Config{StartT: date(2021, 4, 1), EndT: end, Cost: "BASIC", Stress: "none"}, Metrics: Metrics{TradeCount: 30, NetReturn: .1, MaxDrawdown: .1}}
 	m := map[string]Result{}
 	for _, id := range []string{"B0", "B1", "B2"} {
 		r := base
@@ -269,11 +346,28 @@ func TestSelectorEarlierYearsEligibilityAndTie(t *testing.T) {
 		t.Fatal("future admitted")
 	}
 }
+
+func TestSelectorRejectsWrongSourceIdentity(t *testing.T) {
+	end := date(2024, 1, 1)
+	m := map[string]Result{}
+	for _, id := range []string{"B0", "B1", "B2"} {
+		m[id] = Result{Schema: "adaptive-study-result-v1", Profile: Profile, Status: "retrospective-assumed-model-not-Pine-parity", DataHash: M30Hash, SourceHash: regimeadaptive.SourceHash, Config: Config{Candidate: id, Cost: "BASIC", Stress: "none", StartT: date(2021, 4, 1), EndT: end}, Metrics: Metrics{TradeCount: 40, NetReturn: .1, MaxDrawdown: .1}}
+	}
+	r := m["B1"]
+	r.SourceHash = "wrong-source"
+	m["B1"] = r
+	if _, e := Select(m, end); e == nil {
+		t.Fatal("wrong source admitted")
+	}
+}
 func TestInputGuardsNoWarmupNoWrongData(t *testing.T) {
 	if _, e := decodeM30([]byte("bad")); e == nil {
 		t.Fatal("unverified data admitted")
 	}
-	if _, e := Run(VerifiedM30{bars: []Bar{b(0, 100, 101, 99, 100)}, hash: M30Hash}, Config{Candidate: "B0", Cost: "BASIC", Stress: "none", StartT: 0, EndT: Duration}); e == nil {
-		t.Fatal("missing warmup admitted")
+	start, end, _ := StudyWindow("development")
+	bar := Bar{T: start, CloseT: start + Duration, Open: 100, High: 101, Low: 99, Close: 100}
+	_, e := Run(VerifiedM30{bars: []Bar{bar}, hash: M30Hash}, Config{Candidate: "B0", Cost: "BASIC", Stress: "none", StartT: start, EndT: end})
+	if e == nil || !strings.Contains(e.Error(), "500 prior M30 warmup") {
+		t.Fatalf("intended warmup refusal missing: %v", e)
 	}
 }
