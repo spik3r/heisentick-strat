@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "c590c563-d882-46cf-8241-e0bb57455170",
+  "runId": "0af2c78d-2570-439b-b61c-e9d0d60b5c34",
+  "kind": "complete",
+  "parents": [
+    "caf505a4-dedf-4c5c-b048-47f17409310a"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 descriptive development bootstrap",
+      "digest": "d12e6d07675fbc0e3574837bde431d51d8e2815d2d4976de9cd558114ad09ecf"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-descriptive-bootstrap",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/136",
+  "at": "2026-10-14T20:51:37.734Z",
+  "summary": "All ten unchanged bootstrap paths revalidated after preserving reviewed tree7f540387 and joining squashed PR135 ancestry; prior narrowed five-path completion remains historical",
+  "next": "Independent metadata delta review, validate all ten paths against actual main6c8329a3, publish and await exact-head CI before source-only merge",
+  "files": [
+    "internal/adaptivemc/types.go",
+    "internal/adaptivemc/input.go",
+    "internal/adaptivemc/bootstrap.go",
+    "internal/adaptivemc/report.go",
+    "internal/adaptivemc/bootstrap_test.go",
+    "internal/adaptivemc/input_test.go",
+    "cmd/adaptive-study-bootstrap/main.go",
+    "cmd/adaptive-study-bootstrap/main_test.go",
+    "docs/adaptive-study-bootstrap-v1.md",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Actual cloud Linux AMD64 Go1.22.12: gofmt clean; go vet ./... and go test ./... pass; conformance135parse109run0TODO passes; native CLI builds. Actual Node24.19 Go-WASM tests pass for internal/adaptivemc and cmd/adaptive-study-bootstrap. Independently recomputed all319 source hashes; all314 predecessor source entries and schema/toolchain/build/target pins unchanged. git diff --check passes. No market/MC outcomes, release, pins or deployment. Exact-head GitHub CI remains a separate required gate.",
+  "snapshot": {
+    "internal/adaptivemc/types.go": {
+      "blob": "af7914626bc4b2b545718f28c240760d676ff901",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/input.go": {
+      "blob": "561486b306a7727ecd249316ff70fd4fe30d1e69",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/bootstrap.go": {
+      "blob": "eee9e651ad886ce9aee6c81470f275732fb8c5f0",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/report.go": {
+      "blob": "e3538ce0d6875cda71b896218935aaf1f72fce70",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/bootstrap_test.go": {
+      "blob": "bbd4d795d3301776e1f63b5f5a5c00cd84d0b8fd",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/input_test.go": {
+      "blob": "40e5623321683fbce72ab4756d788cca64a2e4b8",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study-bootstrap/main.go": {
+      "blob": "0373ab9a29e0881dd920f3ee35ee9541ae64cc02",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study-bootstrap/main_test.go": {
+      "blob": "1775284a12a0992bfff6a8ab6a3e59f2baa10613",
+      "mode": "100644"
+    },
+    "docs/adaptive-study-bootstrap-v1.md": {
+      "blob": "cd8bb9d3d844790115efa4bf28b12e93298f3d77",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "934c111c06c3e98c3b1ecc0ed36e9ebd7b904cc4",
+      "mode": "100644"
+    }
+  }
+}

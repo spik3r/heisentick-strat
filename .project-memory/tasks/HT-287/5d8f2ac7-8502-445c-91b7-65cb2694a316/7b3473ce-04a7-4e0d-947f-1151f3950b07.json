@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "7b3473ce-04a7-4e0d-947f-1151f3950b07",
+  "runId": "5d8f2ac7-8502-445c-91b7-65cb2694a316",
+  "kind": "start",
+  "parents": [
+    "7639ba74-3a4f-405f-bea0-01a4fea6015d",
+    "c590c563-d882-46cf-8241-e0bb57455170"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 supplied-event ledger receipt-v2",
+      "digest": "ca6a916b1e9c560af5d297c20b5d1592a89b345b5a4b0e0323913afb6700f2bb"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-supplied-ledger",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/134",
+  "at": "2026-10-14T21:47:55.311Z",
+  "summary": "Join the reviewed specification and completed research lifecycle heads after actual PR136 integration f8a80e3b; preserve every prior record and all source bytes",
+  "next": "Validate the unchanged two-path specification against actual integrated main, rerun union checks, and append a genuine completion before fresh exact-head CI",
+  "files": [
+    "docs/supplied-ledger-v1.md",
+    "engine/suppliedledger/testdata/receipt-v2-manual.json"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "formatVersion": 2,
+  "eventId": "8eb249e4-2475-4f70-b7b4-5ebfe1230f1f",
+  "runId": "1bbb2366-c7f6-42d6-ab64-d5f6a71ff82c",
+  "kind": "start",
+  "parents": [
+    "7f58b90c-dc49-4cbe-9f8a-7371bb942704"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "c5da6ab653c906ecdeff75df07e2aefc14acc288",
+    "blob": "e3343fdd45704b2e6fd9e54f4567faf54146d010",
+    "claim": {
+      "heading": "Active claim: Codex HT287 Go-native flat-risk retrospective study",
+      "digest": "fd0bb3e897120e319233f8406f3a092f386272fac3d85133f9ce6670e6d0910c"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-go-flat-study",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/135",
+  "at": "2026-10-14T12:23:58.617Z",
+  "summary": "Apply explicitly approved pre-outcome v2 affordability/ceil-distance correction; retain originalae191 head with no market outcomes",
+  "next": "Independent repairedhead review before outcomes; handfee/mirror/offgrid/gap/equality fixtures and NaN/warmup test fixes",
+  "files": [
+    "docs/adaptive-study-v1.md",
+    "engine/regimeadaptive/research.go",
+    "engine/regimeadaptive/research_test.go",
+    "engine/adaptivestudy/types.go",
+    "engine/adaptivestudy/run.go",
+    "engine/adaptivestudy/metrics.go",
+    "engine/adaptivestudy/data.go",
+    "engine/adaptivestudy/run_test.go",
+    "cmd/adaptive-study/main.go",
+    "cmd/adaptive-study/main_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}
