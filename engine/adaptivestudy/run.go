@@ -36,6 +36,24 @@ func signalQty(equity, price, dStop float64, cost string) float64 {
 	return fp.Mul(.001, math.Floor(fp.Add(fp.Div(math.Min(risk, cap), .001), 1e-9)))
 }
 
+// Tick indices are exact integers in the admitted research price domain. Convert
+// once by division by100 so decimal-grid OHLC touches compare to the same binary64
+// value. Raw fill-distance subtraction can land one ULP outside the intended grid.
+func bracketLevels(fill, stopDistance, trendDistance float64, side int) (float64, float64) {
+	ticks := math.Round(fp.Mul(fill, 100))
+	stopTicks := math.Round(fp.Mul(stopDistance, 100))
+	trendTicks := math.Round(fp.Mul(trendDistance, 100))
+	if ticks > 9007199254740991 || stopTicks > 9007199254740991 || trendTicks > 9007199254740991 {
+		panic(&fp.Error{Operation: "research tick index outside exact integer domain"})
+	}
+	f, s, t := int64(ticks), int64(stopTicks), int64(trendTicks)
+	stop, target := f-int64(side)*s, f+int64(side)*t
+	if stop < -9007199254740991 || target < -9007199254740991 || stop > 9007199254740991 || target > 9007199254740991 {
+		panic(&fp.Error{Operation: "research bracket tick index outside exact integer domain"})
+	}
+	return fp.Div(float64(stop), 100), fp.Div(float64(target), 100)
+}
+
 func adverse(price float64, side int, stress string, marketOrStop bool) float64 {
 	if marketOrStop && stress == "one-tick" {
 		price = fp.Add(price, fp.Mul(float64(side), .01))
@@ -198,8 +216,7 @@ func runRows(bars []Bar, rows []regimeadaptive.Row, start int, c Config) (result
 				entry := adverse(b.Open, o.Side, c.Stress, true)
 				entryFee := fee(c.Cost, o.Qty)
 				exitReservation := fee(c.Cost, o.Qty)
-				stop := fp.Sub(entry, fp.Mul(float64(o.Side), o.StopDistance))
-				target := fp.Add(entry, fp.Mul(float64(o.Side), o.TrendDistance))
+				stop, target := bracketLevels(entry, o.StopDistance, o.TrendDistance, o.Side)
 				if o.Branch == "range-long" || o.Branch == "range-short" {
 					target = toward(o.Basis, o.Side)
 				}

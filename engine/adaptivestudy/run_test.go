@@ -3,6 +3,7 @@ package adaptivestudy
 import (
 	"crypto/sha256"
 	"encoding/json"
+	"fmt"
 	"github.com/spik3r/heisentick-strat/engine/regimeadaptive"
 	"math"
 	"reflect"
@@ -24,6 +25,52 @@ func TestPortableManualDigest(t *testing.T) {
 		t.Fatal(e)
 	}
 	t.Logf("PORTABLE_SHA256=%x", sha256.Sum256(raw))
+}
+
+func TestExactGridStopTargetTouchesAndOpeningEquality(t *testing.T) {
+	cases := []struct {
+		name, branch, reason            string
+		fill, level, atr, dStop, dTrend float64
+	}{
+		{"long-stop", "TL", "stop", 100.02, 99.84, .1, .18, .32}, {"short-stop", "TS", "stop", 100.01, 100.19, .1, .18, .32},
+		{"long-target", "TL", "target", 100.02, 100.34, .1, .18, .32}, {"short-target", "TS", "target", 100.01, 99.69, .1, .18, .32},
+		{"long-four-tick-target", "TL", "target", 100.01, 100.05, .01, .02, .04}, {"short-four-tick-target", "TS", "target", 100.02, 99.98, .01, .02, .04},
+	}
+	for _, c := range cases {
+		for _, carried := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s-carried%v", c.name, carried), func(t *testing.T) {
+				side := 1
+				if c.branch == "TS" {
+					side = -1
+				}
+				stop, target := bracketLevels(c.fill, c.dStop, c.dTrend, side)
+				want := stop
+				if c.reason == "target" {
+					want = target
+				}
+				if want != c.level {
+					t.Fatalf("grid level got%.17g want%.17g", want, c.level)
+				}
+				bars := []Bar{b(0, c.fill, c.fill+.01, c.fill-.01, c.fill), b(1, c.fill, c.fill+.01, c.fill-.01, c.fill)}
+				rows := []regimeadaptive.Row{row(c.branch, c.atr, c.fill), row("", c.atr, c.fill)}
+				if carried {
+					bars = append(bars, b(2, c.level, math.Max(c.level, c.fill+.01), math.Min(c.level, c.fill-.01), c.level))
+					rows = append(rows, row("", c.atr, c.fill))
+				} else if c.level < c.fill {
+					bars[1].Low = c.level
+				} else {
+					bars[1].High = c.level
+				}
+				r := fixture(t, bars, rows, "GROSS", "none")
+				if len(r.Trades) != 1 || r.Trades[0].Reason != c.reason || r.Trades[0].Exit != c.level {
+					t.Fatalf("exacttouch missed: %+v", r.Trades)
+				}
+				if carried && r.Trades[0].ExitStage != "open-gap-exit" {
+					t.Fatal("opening equality not honored")
+				}
+			})
+		}
+	}
 }
 
 func TestFeeAwareUnchangedOpeningAndAdverseGap(t *testing.T) {
