@@ -1,0 +1,34 @@
+{
+  "formatVersion": 2,
+  "eventId": "ba14834e-b0bd-400d-84a2-42845aa9b1a8",
+  "runId": "4ce5cc85-adc9-4f60-9104-d861f744e279",
+  "kind": "start",
+  "parents": [
+    "17895919-d7c6-4139-b748-6b5287723ba4"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 descriptive development bootstrap",
+      "digest": "d12e6d07675fbc0e3574837bde431d51d8e2815d2d4976de9cd558114ad09ecf"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-descriptive-bootstrap",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/136",
+  "at": "2026-10-14T13:59:34.767Z",
+  "summary": "Repair Astra input-prefix and floating underflow blockers with regressions; update evidence metadata",
+  "next": "Full validation and exact-head independent re-review; actual MC remains held",
+  "files": [
+    "internal/adaptivemc/input.go",
+    "internal/adaptivemc/bootstrap.go",
+    "internal/adaptivemc/input_test.go",
+    "internal/adaptivemc/bootstrap_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}

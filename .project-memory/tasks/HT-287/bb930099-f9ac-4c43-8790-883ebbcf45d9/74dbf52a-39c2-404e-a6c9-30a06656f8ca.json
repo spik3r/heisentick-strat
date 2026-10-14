@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "74dbf52a-39c2-404e-a6c9-30a06656f8ca",
+  "runId": "bb930099-f9ac-4c43-8790-883ebbcf45d9",
+  "kind": "start",
+  "parents": [
+    "0e1a36e0-eb6b-4286-9061-a81dabc64552"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 descriptive development bootstrap",
+      "digest": "d12e6d07675fbc0e3574837bde431d51d8e2815d2d4976de9cd558114ad09ecf"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-descriptive-bootstrap",
+  "pullRequest": null,
+  "at": "2026-10-14T13:08:50.151Z",
+  "summary": "Implement separately claimed descriptive bootstrap and synthetic recurrence/indices/loss/reporting tests; frozenstudy engine untouched",
+  "next": "Astra exactcode/fixtures review before anyMCoutput; development12streams only, no assessment/selection/forecast",
+  "files": [
+    "internal/adaptivemc/types.go",
+    "internal/adaptivemc/input.go",
+    "internal/adaptivemc/bootstrap.go",
+    "internal/adaptivemc/report.go",
+    "internal/adaptivemc/bootstrap_test.go",
+    "internal/adaptivemc/input_test.go",
+    "cmd/adaptive-study-bootstrap/main.go",
+    "cmd/adaptive-study-bootstrap/main_test.go",
+    "docs/adaptive-study-bootstrap-v1.md",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "formatVersion": 2,
+  "eventId": "caf505a4-dedf-4c5c-b048-47f17409310a",
+  "runId": "0af2c78d-2570-439b-b61c-e9d0d60b5c34",
+  "kind": "start",
+  "parents": [
+    "888f2ee2-2a6c-4b08-b61a-eb06ecd50dfe"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 descriptive development bootstrap",
+      "digest": "d12e6d07675fbc0e3574837bde431d51d8e2815d2d4976de9cd558114ad09ecf"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-descriptive-bootstrap",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/136",
+  "at": "2026-10-14T20:47:08.075Z",
+  "summary": "Revalidate all ten unchanged bootstrap paths after exact-tree main ancestry integration; final repair previously narrowed completion coverage to five paths",
+  "next": "Run actual complete-scope synthetic checks, append completion and validate exact committed diff before CI and source-only merge",
+  "files": [
+    "internal/adaptivemc/types.go",
+    "internal/adaptivemc/input.go",
+    "internal/adaptivemc/bootstrap.go",
+    "internal/adaptivemc/report.go",
+    "internal/adaptivemc/bootstrap_test.go",
+    "internal/adaptivemc/input_test.go",
+    "cmd/adaptive-study-bootstrap/main.go",
+    "cmd/adaptive-study-bootstrap/main_test.go",
+    "docs/adaptive-study-bootstrap-v1.md",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}

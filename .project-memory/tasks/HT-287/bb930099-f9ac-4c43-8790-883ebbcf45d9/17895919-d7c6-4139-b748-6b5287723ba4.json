@@ -1,0 +1,82 @@
+{
+  "formatVersion": 2,
+  "eventId": "17895919-d7c6-4139-b748-6b5287723ba4",
+  "runId": "bb930099-f9ac-4c43-8790-883ebbcf45d9",
+  "kind": "complete",
+  "parents": [
+    "74dbf52a-39c2-404e-a6c9-30a06656f8ca"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-287",
+    "path": "tasks/HT-287-regime-adaptive-pine.md",
+    "revision": "44cf7f597286077cbf44d6b165624baeb1f5817c",
+    "blob": "a42989c97f8c18790bfa2bc0f59f212c344c11d8",
+    "claim": {
+      "heading": "Active claim: Codex HT287 descriptive development bootstrap",
+      "digest": "d12e6d07675fbc0e3574837bde431d51d8e2815d2d4976de9cd558114ad09ecf"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht287-descriptive-bootstrap",
+  "pullRequest": null,
+  "at": "2026-10-14T13:44:50.200Z",
+  "summary": "Implement separate frozen descriptive bootstrap with observedUTC grouping, shared pinned matrices, exactquantiles/Wilson and explicitdebt absorption; no actualMCoutputs",
+  "next": "Astra exactcode/fixture review before applying12developmentstreams; no selection/forecast/engine changes; laterfold primaryexecution ownedAstra",
+  "files": [
+    "internal/adaptivemc/types.go",
+    "internal/adaptivemc/input.go",
+    "internal/adaptivemc/bootstrap.go",
+    "internal/adaptivemc/report.go",
+    "internal/adaptivemc/bootstrap_test.go",
+    "internal/adaptivemc/input_test.go",
+    "cmd/adaptive-study-bootstrap/main.go",
+    "cmd/adaptive-study-bootstrap/main_test.go",
+    "docs/adaptive-study-bootstrap-v1.md",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Go1.22.12 formatting/vet/fulltests135parse109runconformance pass;128independent big.Rat full-path fixtures, handpositive/capital/globalpeak/date/block/RNG/quantile/Wilson/paired tests pass. Native/WASM syntheticreport hash91fef0ac437240b08fc074feb33872dc428dbb96e5c45bd8edac81812ca9dca0 and3blockhashes match Node24.10.0. NativeCLIbuild; exact314frozenengine hashes/targets preserved plus5analysis sources. Inputsource/profile/developmentwindow/hash guards;unsupportedpost-source-loss normalization explicit. No actual12stream MC applied.",
+  "snapshot": {
+    "internal/adaptivemc/types.go": {
+      "blob": "af7914626bc4b2b545718f28c240760d676ff901",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/input.go": {
+      "blob": "d0576100d2b0a126021286254c8048f3416c5541",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/bootstrap.go": {
+      "blob": "662b34dc4dc2410ea57fed0e1a2d8e17897cc59a",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/report.go": {
+      "blob": "e3538ce0d6875cda71b896218935aaf1f72fce70",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/bootstrap_test.go": {
+      "blob": "e07caa2d22ac0e6d26d4aa4a73cc6aa0ac7f39eb",
+      "mode": "100644"
+    },
+    "internal/adaptivemc/input_test.go": {
+      "blob": "9d35204682680a6f31b900edb27fd6d97624c366",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study-bootstrap/main.go": {
+      "blob": "0373ab9a29e0881dd920f3ee35ee9541ae64cc02",
+      "mode": "100644"
+    },
+    "cmd/adaptive-study-bootstrap/main_test.go": {
+      "blob": "1775284a12a0992bfff6a8ab6a3e59f2baa10613",
+      "mode": "100644"
+    },
+    "docs/adaptive-study-bootstrap-v1.md": {
+      "blob": "cd8bb9d3d844790115efa4bf28b12e93298f3d77",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "afe83dbf8771f027952fb266ecf39a0780f03ee4",
+      "mode": "100644"
+    }
+  }
+}
