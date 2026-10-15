@@ -255,3 +255,40 @@ func TestPaperBidAskDualEMATrailIsFutureOnlyAndGapFailsClosed(t *testing.T) {
 		}
 	}
 }
+
+func TestPaperBidAskDualEMAEntryCommitFreshnessKeepsORBContract(t *testing.T) {
+	gold := dualPaperRequest(t)
+	at, _ := bidAskTime(gold.ActivationFromT)
+	d := int64(14400000000000)
+	dualAppendBar(&gold, at, 114)
+	dualAppendBar(&gold, at+d, 119)
+	bidAskAddEntry(&gold, "118.9", "119.1")
+	original := bidAskTestRun(t, gold)
+	if original.Position == nil {
+		t.Fatal("fresh gold control did not fill")
+	}
+	quote := &gold.Records[len(gold.Records)-1]
+	provider, _ := bidAskTime(quote.Quote.ProviderT)
+	quote.CommitT = bidAskStamp(provider + 6000000000)
+	expired := bidAskTestRun(t, gold)
+	if expired.Position != nil {
+		t.Fatal("delayed gold entry commit filled")
+	}
+	found := false
+	for _, e := range expired.Events {
+		if e.Kind == "decision-outcome" && e.Outcome == "original-quote-expired" {
+			found = true
+		}
+	}
+	if !found {
+		t.Fatal("missing explicit expired outcome")
+	}
+	orb := bidAskTestRequest(t)
+	bidAskAddEntry(&orb, "101", "101.2")
+	quote = &orb.Records[len(orb.Records)-1]
+	provider, _ = bidAskTime(quote.Quote.ProviderT)
+	quote.CommitT = bidAskStamp(provider + 6000000000)
+	if got := bidAskTestRun(t, orb); got.Position == nil {
+		t.Fatal("existing ORB episode contract changed")
+	}
+}

@@ -457,7 +457,7 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 			return
 		}
 		episodeCommit, _ := bidAskTime(d.episodeCommitT)
-		if at < close || start < admit || start < episodeCommit || qualified-at > x.maxQuoteAge || commit > deadline || at >= close+x.maxSignalAge {
+		if at < close || start < admit || start < episodeCommit || qualified-at > x.maxQuoteAge || (x.binding.Family == "dualEmaResumption" && commit-at > x.maxQuoteAge) || commit > deadline || at >= close+x.maxSignalAge {
 			x.noFill(rec, "original-quote-expired", bidAskQuoteClock(q))
 			return
 		}
