@@ -109,6 +109,10 @@
       "rmv-named-level-allow",
       "rmv-named-level-block",
       "rmv-named-level-warmup",
+      "sar-named-level-allow",
+      "sar-named-level-block",
+      "sar-named-level-close-equality",
+      "sar-named-level-reversal",
       "seasonality-filter-min-samples"
     ],
     "todo": {}
@@ -124,14 +128,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 135,
+  "parseCases": 150,
   "parseCategories": {
     "deployed-book-dsl": 9,
     "diagnostic": 49,
     "family": 20,
-    "filters": 6,
+    "filters": 21,
     "setup-family": 51
   },
-  "runCases": 109,
+  "runCases": 113,
   "schema": "dsl-conformance-metadata-v1"
 }

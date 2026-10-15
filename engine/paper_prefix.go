@@ -399,7 +399,7 @@ func executePaperPrefix(r PaperPrefixRequest, p *PreparedRun, binding PaperBindi
 			break
 		}
 	}
-	p.broker.reset(p.series, p.cols, p.htfTrend, p.ema, p.emaSlope, p.params, p.fixture, p.trades)
+	p.resetBroker(p.trades)
 	capture := newPaperCollector(identity, r.Costs.StartEquity)
 	p.broker.paperAccounting = capture
 	if start < n {

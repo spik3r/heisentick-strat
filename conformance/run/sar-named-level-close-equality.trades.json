@@ -1,0 +1,17 @@
+{
+  "case": "sar-named-level-close-equality",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "sar-named-level-close-equality",
+  "symbol": "XAUUSD",
+  "timeframe": "4h",
+  "tradeCount": 0,
+  "trades": []
+}

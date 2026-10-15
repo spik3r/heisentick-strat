@@ -77,6 +77,7 @@ type parser struct {
 	smaGoldenCrossAudit smaGoldenCrossParseAudit
 	legacySetup9Audit   legacySetup9ParseAudit
 	rmvFields           map[string]bool
+	sarFields           map[string]bool
 	clockRange          clockRangeParse
 }
 
@@ -150,6 +151,7 @@ func (p *parser) parse() {
 	p.validateSMAGoldenCross()
 	p.validateLegacySetup9()
 	p.validateRMVSourceTimeframe()
+	p.validateParabolicSAR()
 	p.validateTimedReturn()
 	p.validateClockRangeBreakout()
 }
@@ -222,6 +224,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		p.parseMovement(tokens)
 	case "micro":
 		p.parseMicrostructure(line, tokens)
+	case "sar":
+		p.parseParabolicSAR(line, tokens)
 	case "rmv":
 		p.parseRelativeMeasuredVolatility(line, tokens)
 	case "approach":

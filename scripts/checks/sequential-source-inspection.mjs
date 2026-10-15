@@ -131,7 +131,7 @@ function reject(call, expectedCode) {
 try {
   const corpus = join(root, 'conformance/parse');
   const paths = readdirSync(corpus).filter((name) => name.endsWith('.strat')).sort();
-  assert.equal(paths.length, 135);
+  assert.equal(paths.length, 150);
   const runFixture = readFileSync(join(root, 'conformance/run/family-sequential-full-e1-long.fixture.json'), 'utf8');
   const runSource = readFileSync(join(root, 'conformance/run/family-sequential-full-e1-long.strat'), 'utf8');
   const runBefore = globalThis.engineRunFixture(runFixture, runSource);

@@ -1874,6 +1874,13 @@
       "since": 7
     },
     {
+      "id": "directive.sar",
+      "spelling": "sar",
+      "classification": "go-only",
+      "reason": "Go-authoritative Parabolic SAR filter; native and Go WASM share one implementation.",
+      "since": 7
+    },
+    {
       "id": "directive.rmv",
       "spelling": "rmv",
       "classification": "shared",

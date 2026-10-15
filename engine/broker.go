@@ -154,9 +154,12 @@ type broker struct {
 	windowed               bool
 	clock                  clockRangeState
 	paperAccounting        *paperCollector
+	// Tail-only extension preserves existing arithmetic field offsets.
+	parabolicSAR *parabolicSARRuntime
 }
 
 func (b *broker) reset(series marketdata.Series, cols contextcols.Columns, htfTrend []int8, ema []float64, emaSlope []float64, params flagParams, fixture RunFixture, trades []Trade) {
+	b.parabolicSAR = nil
 	b.series = series
 	b.cols = cols
 	b.htfTrend = htfTrend
@@ -427,7 +430,7 @@ func (b *broker) enter(i int, side side, setup flagSetup) {
 	if b.windowed && !b.executionIndexAllowed(i) {
 		return
 	}
-	if !b.guardedEntryAllowed(i) || !b.marketNonSessionGatesOK(i) || !b.seasonalityGatesOK(i, side) || !b.guardedCandleQualityOK(i, side) {
+	if !b.parabolicSARGateOK(i, side) || !b.guardedEntryAllowed(i) || !b.marketNonSessionGatesOK(i) || !b.seasonalityGatesOK(i, side) || !b.guardedCandleQualityOK(i, side) {
 		return
 	}
 	theme, ok := b.dayThemeAdmission(i, side)
@@ -496,7 +499,7 @@ func (b *broker) enterLimit(i int, limit float64, setup setupPlan, expireBars in
 	if b.windowed && !b.executionIndexAllowed(i) {
 		return false
 	}
-	if !b.rmvGateOK(i) || !b.guardedEntryAllowed(i) || !b.seasonalityGatesOK(i, setup.Side) || !b.guardedCandleQualityOK(i, setup.Side) {
+	if !b.parabolicSARGateOK(i, setup.Side) || !b.rmvGateOK(i) || !b.guardedEntryAllowed(i) || !b.seasonalityGatesOK(i, setup.Side) || !b.guardedCandleQualityOK(i, setup.Side) {
 		return false
 	}
 	theme, ok := b.dayThemeAdmission(i, setup.Side)

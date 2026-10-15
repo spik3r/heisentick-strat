@@ -6,6 +6,18 @@ version and is named here.
 
 ## [Unreleased]
 
+### Parabolic SAR indicator and DSL filters (HT289; additive minor semantics)
+
+- Add Go-authoritative chart-timeframe SAR with configurable start/step/max,
+  trend, strict close-position, reversal and side-aware entry predicates in v7.
+- Specify close-based initialization, strict reversal-before-clamp, EP/AF
+  reset/cap, two-prior-bar clamps, warm-up, gaps and fail-closed invalid inputs.
+- Gate signals before queue/capture, isolate numeric shared contexts, and reject
+  unsupported specialized/source-timeframe routes. Existing private PSAR and
+  strategies without SAR are unchanged. See `spec/parabolic-sar.md`.
+- Add hand-derived, causal-prefix, parser/run and actual native/WASM checks.
+  This is indicator/filter support; no stop-management or release is included.
+
 ### Compact market day-type escape correction (HT283)
 
 - Preserve the authored `day type in (...) or movement below X` escape when

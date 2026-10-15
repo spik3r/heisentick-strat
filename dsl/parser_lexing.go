@@ -202,7 +202,7 @@ func isNamedStrategyHeader(prefix string) bool {
 }
 
 func directiveStartsForSection(section string) []string {
-	starts := []string{"description", "slices", "symbols", "timeframes", "sessions", "windows", "day", "prior", "movement", "maxMovementEr", "trendiness", "priority", "near", "nearKeyLevel", "range", "channel", "higher", "side", "direction", "trigger", "rejection", "candle", "tail", "close", "entry", "when", "enter", "stop", "target", "take", "minimum", "fallback", "move", "partial", "trail", "wait", "maxHoldCandles", "maxHoldBars", "risk", "riskUsd", "context", "location", "require", "size", "signal", "breakout"}
+	starts := []string{"sar", "description", "slices", "symbols", "timeframes", "sessions", "windows", "day", "prior", "movement", "maxMovementEr", "trendiness", "priority", "near", "nearKeyLevel", "range", "channel", "higher", "side", "direction", "trigger", "rejection", "candle", "tail", "close", "entry", "when", "enter", "stop", "target", "take", "minimum", "fallback", "move", "partial", "trail", "wait", "maxHoldCandles", "maxHoldBars", "risk", "riskUsd", "context", "location", "require", "size", "signal", "breakout"}
 	if section == "risk" {
 		// `stop size min ... max ...` is one stop directive. Splitting at
 		// `size` makes the bound look like an unrelated grade-size clause.
@@ -263,6 +263,14 @@ func splitInlineBodyWithCoverage(body string, starts []string, section string, l
 		for _, start := range starts {
 			startLower := strings.ToLower(start)
 			if strings.HasPrefix(lower[i:], startLower) && inlineMarketBoundary(body, i+len(start), marketWhitespace) {
+				// SAR's close/entry operands belong to its filter, not a new
+				// inline directive. Keep trailing text for strict SAR validation.
+				if len(hits) > 0 && strings.EqualFold(hits[len(hits)-1].word, "sar") {
+					prefix := strings.ToLower(strings.TrimSpace(body[hits[len(hits)-1].index:i]))
+					if startLower == "close" && prefix == "sar" || startLower == "entry" && prefix == "sar supports" {
+						continue
+					}
+				}
 				// The escape is part of its owning day-type directive. A later
 				// standalone movement directive still starts a separate clause.
 				// Keep even a malformed escape together so the day parser can

@@ -5,6 +5,11 @@ package engine
 // scoreboard: every conformance/run fixture must appear in exactly one of the
 // two, and cmd/conformance writes both lists into conformance/metadata.json.
 var implementedRunCases = []string{
+	"sar-named-level-allow",
+	"sar-named-level-block",
+	"sar-named-level-reversal",
+	"sar-named-level-close-equality",
+
 	"family-sequential-full-e1-long",
 	"family-sequential-full-e1-short",
 	"family-sequential-full-e2-long",

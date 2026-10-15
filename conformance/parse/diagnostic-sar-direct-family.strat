@@ -1,0 +1,3 @@
+dsl v7
+setup { type: daily flush failure }
+filters { sar trend bullish }

@@ -130,6 +130,17 @@ jobs:
           node scripts/checks/down-shock-source-parity.mjs cmd/heisentick/heisentick "$native_engine" cmd/enginewasm/enginewasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
           GOOS=js GOARCH=wasm go test -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestDownShock' ./engine ./report ./cmd/heisentick
 
+      - name: Parabolic SAR native and actual WASM contract
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 5
+        run: |
+          GOOS=js GOARCH=wasm go test -count=1 -exec="$(go env GOROOT)/misc/wasm/go_js_wasm_exec" -run '^TestParabolicSAR' ./contextcols ./dsl ./engine ./cmd/enginewasm
+          native_dir="$(mktemp -d "$RUNNER_TEMP/parabolic-sar.XXXXXX")"
+          trap 'rm -rf "$native_dir"' EXIT
+          go build -trimpath -o "$native_dir/engine" ./cmd/enginewasm
+          go build -trimpath -o "$native_dir/dsl" ./cmd/dslwasm
+          node scripts/checks/parabolic-sar-parity.mjs "$native_dir/engine" cmd/enginewasm/enginewasm.wasm "$native_dir/dsl" cmd/dslwasm/dslwasm.wasm "$(go env GOROOT)/misc/wasm/wasm_exec.js"
+
       - name: Legacy Setup-9 native/WASM oracle parity
         if: steps.mod.outputs.present == 'true'
         run: |

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "parabolic-sar-config-v1.schema.json",
+  "title": "Parabolic SAR config value v1",
+  "description": "Value of the parabolicSAR config field. Defaults: start=0.02, step=0.02, max=0.2. The Go decoder also requires start<=max and step<=max, and validates the enclosing family and chart-only route.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "start": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+    "step": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+    "max": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+    "predicate": { "type": "string", "enum": ["bullish", "bearish", "closeAbove", "closeBelow", "flipBullish", "flipBearish", "supportsEntry"] }
+  }
+}

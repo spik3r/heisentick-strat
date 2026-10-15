@@ -102,13 +102,25 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	if err := validateSupplyDemandEntryRetest(parsed.Config, fixture.Timeframe); err != nil {
 		return RunResult{}, err
 	}
+	if err := validateParabolicSARConfig(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateRMVConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
 	if err := validateRMVSourceEntryRoute(fixture.Symbol, fixture.Timeframe, parsed.Config); err != nil {
 		return RunResult{}, err
 	}
+	if err := validateParabolicSARRoute(parsed.Config, fixture.Timeframe, fixture.SourceTimeframe); err != nil {
+		return RunResult{}, err
+	}
+	if err := validateParabolicSARFixture(parsed.Config, fixture); err != nil {
+		return RunResult{}, err
+	}
 	series := marketdata.SeriesFromBars(fixture.Bars)
+	if err := validateParabolicSARSeries(parsed.Config, series); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateClockRangeFixtureRows(parsed.Config, fixture); err != nil {
 		return RunResult{}, err
 	}
@@ -136,6 +148,7 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	}
 	var b broker
 	b.reset(series, cols, htfTrend, ema, emaSlope, params, fixture, nil)
+	b.parabolicSAR = prepareParabolicSAR(parsed.Config, series)
 	b.sequentialAccounting = capture
 	trades := b.run()
 	result, err := checkedResultEnvelope(fixture, trades)
@@ -280,16 +293,17 @@ func implementedFamily(setupType string) bool {
 }
 
 type PreparedRunner struct {
-	series   marketdata.Series
-	cols     contextcols.Columns
-	htfTrend []int8
-	ema      []float64
-	emaSlope []float64
-	params   flagParams
-	fixture  RunFixture
-	offRoute bool
-	broker   broker
-	trades   []Trade
+	series       marketdata.Series
+	cols         contextcols.Columns
+	htfTrend     []int8
+	ema          []float64
+	emaSlope     []float64
+	params       flagParams
+	fixture      RunFixture
+	offRoute     bool
+	broker       broker
+	trades       []Trade
+	parabolicSAR *parabolicSARRuntime
 }
 
 func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
@@ -306,15 +320,16 @@ func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
 		emaSlope = projectSourceFloat64(series, sourceSeries, emaSlope)
 	}
 	return PreparedRunner{
-		series:   series,
-		cols:     projectSourceColumns(series, sourceSeries, contextcols.Build(sourceSeries, contextOptions(fixture, cfg))),
-		htfTrend: projectSourceInt8(series, sourceSeries, computeHTFTrendForConfig(sourceSeries, sourceHTFSeries, cfg)),
-		ema:      ema,
-		emaSlope: emaSlope,
-		params:   params,
-		fixture:  fixture,
-		offRoute: !RouteAllowed(cfg, fixture.Symbol, fixture.Timeframe, series),
-		trades:   make([]Trade, 0, 32),
+		series:       series,
+		cols:         projectSourceColumns(series, sourceSeries, contextcols.Build(sourceSeries, contextOptions(fixture, cfg))),
+		htfTrend:     projectSourceInt8(series, sourceSeries, computeHTFTrendForConfig(sourceSeries, sourceHTFSeries, cfg)),
+		ema:          ema,
+		emaSlope:     emaSlope,
+		params:       params,
+		fixture:      fixture,
+		offRoute:     !RouteAllowed(cfg, fixture.Symbol, fixture.Timeframe, series),
+		trades:       make([]Trade, 0, 32),
+		parabolicSAR: prepareParabolicSAR(cfg, series),
 	}
 }
 
@@ -337,6 +352,7 @@ func (r *PreparedRunner) RunPrepared() []Trade {
 		return r.trades
 	}
 	r.broker.reset(r.series, r.cols, r.htfTrend, r.ema, r.emaSlope, r.params, r.fixture, r.trades)
+	r.broker.parabolicSAR = r.parabolicSAR
 	r.trades = r.broker.run()
 	return r.trades
 }

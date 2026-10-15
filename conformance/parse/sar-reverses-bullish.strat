@@ -1,0 +1,2 @@
+dsl v7
+filters { sar start 0.01 sar step 0.03 sar max 0.3 sar reverses bullish }

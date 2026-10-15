@@ -1,0 +1,6 @@
+dsl v7
+filters {
+ sar max 0.5
+ sar start 0.25
+ sar step 0.125
+}
