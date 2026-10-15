@@ -290,3 +290,39 @@ strict consumer validator, authenticated durable feed/start and final-head CI
 remain distinct gates. OHLC-only historical backtests are a different model;
 parity requires identical recorded MBA candles, sampled quotes, coverage and
 recovery facts. No historical outcome study is part of this tranche.
+
+## Dual EMA resumption paper extension
+
+The producer also admits the long-only dual EMA resumption family on XAUUSD
+4h, zone bars. The authored-source audit permits metadata, the declared route,
+EMA lengths/rise/Wilder ATR, initial ATR stop, close ATR trail, slow-EMA
+fallback, long-only side and USD risk. Other authored filters, generic
+management, family resets and route overrides are refused. Admission does not
+mean the consumer has installed or qualified this producer version.
+
+Warm-up advances the existing Go family's indicators and discards its entry
+and exit orders. Activation starts flat. A fresh completed-bar signal captures
+one next-open order; its original episode can fill from the first qualified
+observed ask, subject to the existing age, liquidity, slippage and risk-budget
+rules. It cannot execute the historical midpoint open retrospectively.
+
+A targetless position and its entry/protection events carry `noTarget: true`
+and decimal placeholder `target: "0"`. The flag means there is no target;
+zero is never an executable level. ORB records omit the flag and retain their
+existing target contract. Initial stops are anchored to the executable fill.
+The existing family tightens its stop from a completed midpoint close; the
+protection version takes effect only in later observations/intervals. A
+below-slow-EMA signal schedules an exit at the first fresh, tradeable
+liquidation-side quote after that close, before bracket checks. Missing or
+unfillable exit observations leave exposure unresolved; a later completed
+bar cannot retroactively supply its open as an executable fill. Stop gaps retain the
+side-open fill, and ordinary stops retain the side-bar stop-first model.
+
+Replay receipts bind every dual-family indicator, bounded slow-EMA history,
+tracked entry/best close and pending slow-EMA exit. They remain full-prefix
+replay receipts, not incremental checkpoints or authenticated feed evidence.
+Existing discontinuous-exposure refusal still applies, including closures for
+which the consumer has no reviewed calendar coverage contract. Financing is
+not modeled by this extension. These limitations must remain visible before
+an unattended multi-day run can be qualified; neither zero financing nor a
+weekend price path may be inferred from absent observations.

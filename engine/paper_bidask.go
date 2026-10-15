@@ -103,6 +103,7 @@ type BidAskEvent struct {
 	NetPnL                 string      `json:"netPnl"`
 	Stop                   string      `json:"stop"`
 	Target                 string      `json:"target"`
+	NoTarget               bool        `json:"noTarget,omitempty"`
 	ProtectionVersion      int         `json:"protectionVersion"`
 	PriorProtectionVersion int         `json:"priorProtectionVersion"`
 	Basis                  string      `json:"basis"`
@@ -118,6 +119,7 @@ type BidAskPosition struct {
 	Quantity                  string `json:"quantity"`
 	Stop                      string `json:"stop"`
 	Target                    string `json:"target"`
+	NoTarget                  bool   `json:"noTarget,omitempty"`
 	RiskBudget                string `json:"riskBudget"`
 	StopBudgetLoss            string `json:"stopBudgetLoss"`
 	EntryFee                  string `json:"entryFee"`
@@ -246,11 +248,17 @@ func prepareBidAsk(r PaperBidAskRequest, admitSource bool) (*PreparedRun, BidAsk
 	if e != nil || len(parsed.Errors) != 0 {
 		return nil, binding, bidAskError("SOURCE")
 	}
-	if setupTypeFromAny(parsed.Config["setupType"]) != string(dsl.FamilyOpeningRangeBreakout) {
+	family := setupTypeFromAny(parsed.Config["setupType"])
+	dualEMA := family == "dualEmaResumption"
+	if family != string(dsl.FamilyOpeningRangeBreakout) && !dualEMA {
 		return nil, binding, bidAskError("FAMILY_UNQUALIFIED")
 	}
 	if admitSource {
-		if e := bidAskAdmitSource(r.Source, parsed.Config, r.Route); e != nil {
+		admission := bidAskAdmitSource
+		if dualEMA {
+			admission = bidAskAdmitDualEMA
+		}
+		if e := admission(r.Source, parsed.Config, r.Route); e != nil {
 			return nil, binding, e
 		}
 	}
@@ -273,7 +281,7 @@ func prepareBidAsk(r PaperBidAskRequest, admitSource bool) (*PreparedRun, BidAsk
 	if configHash == "" {
 		return nil, binding, bidAskError("SOURCE_NUMERIC")
 	}
-	binding = BidAskBinding{Family: "openingRangeBreakout", Profile: "ordinary", SignalRecipe: "provider-midpoint-ohlc-price-count-v1", SizingPolicy: "source-risk-usd-total-stop-budget-v1", Contract: PaperBidAskSchema, Source: PaperSourceIdentity{SHA256: paperSourceDigest(r.Source), UTF8Bytes: len(r.Source)}, ConfigIdentity: SequentialInspectionConfigIdentity{SHA256: configHash, Encoding: SequentialInspectionConfigEncoding}, Route: r.Route, Identity: r.Identity, Product: r.Product, Economics: r.Economics, Policy: r.Policy, ActivationFromT: r.ActivationFromT, Producer: sequentialInspectionProducer()}
+	binding = BidAskBinding{Family: family, Profile: "ordinary", SignalRecipe: "provider-midpoint-ohlc-price-count-v1", SizingPolicy: "source-risk-usd-total-stop-budget-v1", Contract: PaperBidAskSchema, Source: PaperSourceIdentity{SHA256: paperSourceDigest(r.Source), UTF8Bytes: len(r.Source)}, ConfigIdentity: SequentialInspectionConfigIdentity{SHA256: configHash, Encoding: SequentialInspectionConfigEncoding}, Route: r.Route, Identity: r.Identity, Product: r.Product, Economics: r.Economics, Policy: r.Policy, ActivationFromT: r.ActivationFromT, Producer: sequentialInspectionProducer()}
 	if len(bars) == 0 {
 		return nil, binding, nil
 	}
