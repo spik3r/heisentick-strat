@@ -326,3 +326,15 @@ which the consumer has no reviewed calendar coverage contract. Financing is
 not modeled by this extension. These limitations must remain visible before
 an unattended multi-day run can be qualified; neither zero financing nor a
 weekend price path may be inferred from absent observations.
+
+### Inherited native request descriptor
+
+The native command also accepts exactly `--request-fd=N`, with canonical
+integer N from 3 through 64. It duplicates that inherited descriptor without
+reopening a proc pathname, requires read-only access and a bounded regular
+file, and applies the same decoder and model as file input. Writable
+files, pipes, directories, missing descriptors and extra arguments refuse.
+Ordinary `--request-file` input keeps nonblocking/no-follow checks; its symlink
+refusal is unchanged. This descriptor mode permits a verified consumer to
+execute unlinked immutable request bytes without weakening path-mode handling.
+It does not make the native filesystem command available under js/wasm.

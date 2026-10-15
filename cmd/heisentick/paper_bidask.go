@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 	"syscall"
 
@@ -28,10 +29,38 @@ func runPaperBidAsk(args []string, out io.Writer) error {
 		}
 		return nil
 	}
-	if len(args) != 1 || !strings.HasPrefix(args[0], "--request-file=") || len(args[0]) == len("--request-file=") {
+	if len(args) != 1 {
 		return refusal("PAPER_BIDASK_ARGUMENTS")
 	}
-	file, e := os.OpenFile(strings.TrimPrefix(args[0], "--request-file="), os.O_RDONLY|syscall.O_NONBLOCK|syscall.O_NOFOLLOW, 0)
+	var file *os.File
+	var e error
+	switch {
+	case strings.HasPrefix(args[0], "--request-file=") && len(args[0]) > len("--request-file="):
+		file, e = os.OpenFile(strings.TrimPrefix(args[0], "--request-file="), os.O_RDONLY|syscall.O_NONBLOCK|syscall.O_NOFOLLOW, 0)
+	case strings.HasPrefix(args[0], "--request-fd="):
+		value := strings.TrimPrefix(args[0], "--request-fd=")
+		fd, err := strconv.Atoi(value)
+		if err != nil || strconv.Itoa(fd) != value || fd < 3 || fd > 64 {
+			return refusal("PAPER_BIDASK_ARGUMENTS")
+		}
+		flags, _, errno := syscall.Syscall(syscall.SYS_FCNTL, uintptr(fd), syscall.F_GETFL, 0)
+		if errno != 0 || flags&syscall.O_ACCMODE != syscall.O_RDONLY {
+			return refusal("PAPER_BIDASK_INPUT")
+		}
+		// Duplicate the verified inherited descriptor directly. Reopening its proc
+		// pathname would follow a symlink and defeat the ordinary path-mode rule.
+		owned, err := syscall.Dup(fd)
+		if err != nil {
+			return refusal("PAPER_BIDASK_INPUT")
+		}
+		file = os.NewFile(uintptr(owned), "paper-bidask-request")
+		if file == nil {
+			_ = syscall.Close(owned)
+			return refusal("PAPER_BIDASK_INPUT")
+		}
+	default:
+		return refusal("PAPER_BIDASK_ARGUMENTS")
+	}
 	if e != nil {
 		return refusal("PAPER_BIDASK_INPUT")
 	}
