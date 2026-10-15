@@ -221,3 +221,31 @@ A qualified relation must never be reported as raw-bit identity. A failed or
 incomplete check remains a failure. Actual native ARM64/amd64 and Node-WASM
 evidence plus fresh independent verifier review are required after the final
 source union; cross-compilation alone is insufficient.
+
+## Gold paper source-pin review (2026-10-16)
+
+Gold paper source additions changed the complete compiler-input inventory, so
+Sequential qualification refused the old source pins before running a case.
+Review renewed only `sources` and each target's `buildInputs` in
+`sequential-arithmetic-schedules.json`. The global inventory adds
+`engine/paper_bidask_dual_ema.go` and `engine/paper_bidask_experiment.go` and
+changes five existing gold CLI, bridge and engine files. Each dependency closure
+adds those two files and changes four hashes; its package set is unchanged.
+
+Two independent compile-only observations with Go 1.22.12 compared all seven
+pinned instruction streams on Linux AMD64, Linux ARM64 and WASM. All 21 streams
+matched their previous hashes and instruction counts. Instruction pins,
+accounting schedules, source parents, compiler flags, toolchain requirements and
+the verifier remain unchanged.
+
+The unchanged full qualification then passed on actual Linux ARM64 with
+Go 1.22.12, CPython 3.12.14 and Node 24.21.0, using the authenticated prechange
+source tree and offline execution: 88 cases, 64 exact arithmetic pairs and all
+19 verifier self-tests. No evidence was missing and no mismatch was unexplained.
+Seven cross-target comparisons have the existing exact pinned-target arithmetic
+explanation; raw cross-target values are not all bit-identical. An initial local
+attempt stopped because the isolated image lacked Git; adding Git allowed the
+same provenance checks to run without changing them.
+
+This source-pin review establishes neither market profitability nor release,
+consumer adoption, deployment or forward activation.
