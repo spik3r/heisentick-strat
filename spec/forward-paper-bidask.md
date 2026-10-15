@@ -45,7 +45,7 @@ produce `PAPER_BIDASK_INTERNAL`, without exception/source/path disclosure.
 An ordinary refusal is a successful transport invocation, not financial success.
 
 Original UTF-16 is checked before conversion can replace an unpaired surrogate.
-The original code-unit count and actual UTF-8 bytes are bounded; exact 16 MiB
+The original code-unit count and actual UTF-8 bytes are bounded; exact 64 MiB
 input is allowed, with larger input refused. The Go decoder owns strict JSON
 shape, duplicate keys, escaped Unicode, depth and all model limits. A production
 JavaScript wrapper must pass raw JSON through without parsing and reserializing
@@ -269,8 +269,8 @@ episode outcome, input cursor and receipt. A dropped acknowledgement returns the
 existing committed result. Timeout, malformed/partial output or failed commit
 leaves the previous pointer intact. Native consistency cannot authenticate facts.
 
-Limits: 16 MiB input/output, 64 KiB source, 8192 records, 4096 bars, 32768 events,
-8192 distinct quote identities (also bounded by the total record limit),
+Limits: 64 MiB input, 128 MiB output, 64 KiB source, 65,536 records,
+4096 bars, 262,144 events and 65,536 distinct quote identities (also bounded by the total record limit),
 8 tiers per quote side, JSON depth64, bounded decimal digits and receipt4096
 bytes. CLI rejects special files and symlinks before reading, including FIFO
 nonblocking refusal. Reaching a bound refuses; history is never truncated/reset.
@@ -321,8 +321,9 @@ side-open fill, and ordinary stops retain the side-bar stop-first model.
 Replay receipts bind every dual-family indicator, bounded slow-EMA history,
 tracked entry/best close and pending slow-EMA exit. They remain full-prefix
 replay receipts, not incremental checkpoints or authenticated feed evidence.
-Existing discontinuous-exposure refusal still applies, including closures for
-which the consumer has no reviewed calendar coverage contract. Financing is
+Discontinuous live intervals still refuse, including flat intervals under the
+optional bounded experiment below. Expected closures require its reviewed dated
+calendar contract; a missing bar alone never proves a closure. Financing is
 not modeled by this extension. These limitations must remain visible before
 an unattended multi-day run can be qualified; neither zero financing nor a
 weekend price path may be inferred from absent observations.
@@ -338,3 +339,82 @@ Ordinary `--request-file` input keeps nonblocking/no-follow checks; its symlink
 refusal is unchanged. This descriptor mode permits a verified consumer to
 execute unlinked immutable request bytes without weakening path-mode handling.
 It does not make the native filesystem command available under js/wasm.
+
+
+## Bounded gold research experiment
+
+An optional `experiment` object is admitted only for dual-EMA resumption. Omitting
+it preserves the prior ORB and ordinary dual-EMA binding and execution behavior.
+Its complete contents enter the binding/checkpoint digest. Required fields, in
+Go struct order, are `calendarThroughT`, `profile`, `attestationDigest`,
+`entryUntilT`, `observationUntilT`, `sampleCadenceMs`, `closures`.
+`profile` is `oanda-au-v20-gold-dated-v1`; the attestation is a SHA-256 digest.
+It declares a principal-selected account division, not a division inferred from
+timezone or a Go assertion that broker schedules are true. Each ordered,
+nonoverlapping closure has `fromT` and `throughT`. At most 128 are admitted.
+The backend must bind the actual operator-selected account profile and reviewed
+weekly/dated exception evidence; unknown future holiday hours cannot be inferred
+from a weekly timetable. `calendarThroughT` is the explicit reviewed boundary.
+
+`entryUntilT` is activation plus 32 calendar days; `observationUntilT` is that
+boundary plus14calendar days. These are maxima. Calendar coverage ends after
+activation and at or before the observation horizon. No opening may become
+executable at or after either the entry horizon or calendar boundary, including
+a quote whose provider time preceded the boundary but commit followed it.
+Outside the opening window, existing stops, trails and slow-EMA exits continue
+until the observation/calendar/capacity boundary. No boundary fabricates a close.
+
+The frozen sampling declaration is `sampleCadenceMs: "300000"`: fixed UTC
+five-minute REST quote slots plus one immediate quote after every newly completed
+four-hour bar, independent of signal, position or outcome. Coincident requests deduplicate.
+One-minute candle-availability polling handles publication latency; it does not
+imply one-minute quote coverage. Failed planned observations remain incidents.
+This is a pre-outcome paper execution assumption, not tick or broker-fill proof.
+These hard transport ceilings do not certify processing cadence. Consumers must
+measure the complete native/validation/journal path on their deployed budget.
+
+A `market-closure` record has a `closure` payload with one-based `windowIndex`,
+`fromT`, `throughT`. Only complete missing UTC-grid intervals contained in that
+attested window can advance expected time. No indicator, bar index, price, stop,
+position, fee or P&L advances through absent candles. Actual partial opening or
+closing bars remain actual provider bars. A flat unknown live gap freezes entry
+admission just as an unknown held gap makes exposure unresolved. Nonactionable
+warmup history needs separate backend gap classification before admission.
+Observed complete bars inside a fully closed interval or tradeable quote times
+inside a declared closure contradict that calendar and refuse.
+
+A captured signal closing inside a declared closure retains its original signal
+clock and immutable `pending.executableFromT`, equal to the containing reviewed
+closure's end. Otherwise executable time is the original signal close. One
+unadmitted pending signal may survive explicit closure records; no unreviewed gap
+or repeated quote moves its clock. Episode admission is causal at or after that
+executable time, and the original maximum signal age is measured from it. An
+unadmitted expired signal can be sealed with `reason: "signal-expired"` only at
+or after its executable-time deadline, preserving a rejected-decision event.
+Existing admitted episode/recovery behavior is unchanged.
+
+For a partial reopen bar, a modeled side-open exit can use its actual OHLC open
+price while its modeled effective time is floored to the attested scheduled
+reopen. Its basis is `modeled-side-open-after-scheduled-reopen`. This is an
+assumed earliest tradable bound, not an observed first trade. The original bar
+UTC timestamps remain unchanged. Actual entry, sampled stop and slow-EMA exit
+quotes keep their exact provider/request/receipt/commit clocks and are not floored.
+
+A terminal `experiment-clock` record has `experimentClock: {effectiveT,reason}`.
+It must be the final record and commit no earlier than its effective time.
+Reasons are `experiment-observation-horizon`, `calendar-coverage-expired`, or
+`experiment-capacity-exhausted`. The first two require their exact declared
+boundary; capacity exhaustion must be within the bounded experiment. A terminal
+record may be committed after its scheduled boundary so a delayed backend clock
+can record the incident honestly. Other observations after that boundary refuse.
+A held position remains held and coverage becomes unresolved; a flat experiment
+ends without a synthetic fill. Same-prefix replay adds no duplicate effects.
+Reserve journal room for this record and retain all prior evidence.
+
+`product.accountCurrency: "USD"` denotes the app-paper ledger. An OANDA account's
+observed home currency is separate provenance and need not be USD, because this
+model uses no broker balance or currency conversion. Physical quantity and quote
+units still require the reviewed troy-ounce/USD product attestation. A consumer
+may run isolated research with commission/financing explicitly unpriced and
+numeric scenario costs clearly labelled; that evidence cannot support net-cost
+profitability or promotion claims until reconciled.

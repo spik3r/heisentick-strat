@@ -50,18 +50,20 @@ type BidAskPolicy struct {
 	Arithmetic     string `json:"arithmetic"`
 }
 type PaperBidAskRequest struct {
-	Schema          string          `json:"schema"`
-	Source          string          `json:"source"`
-	Route           PaperRoute      `json:"route"`
-	Identity        BidAskIdentity  `json:"identity"`
-	Product         BidAskProduct   `json:"product"`
-	Economics       BidAskEconomics `json:"economics"`
-	Policy          BidAskPolicy    `json:"policy"`
-	ActivationFromT string          `json:"activationFromT"`
-	Records         []BidAskRecord  `json:"records"`
-	Checkpoint      json.RawMessage `json:"checkpoint,omitempty"`
+	Experiment      *BidAskExperiment `json:"experiment,omitempty"`
+	Schema          string            `json:"schema"`
+	Source          string            `json:"source"`
+	Route           PaperRoute        `json:"route"`
+	Identity        BidAskIdentity    `json:"identity"`
+	Product         BidAskProduct     `json:"product"`
+	Economics       BidAskEconomics   `json:"economics"`
+	Policy          BidAskPolicy      `json:"policy"`
+	ActivationFromT string            `json:"activationFromT"`
+	Records         []BidAskRecord    `json:"records"`
+	Checkpoint      json.RawMessage   `json:"checkpoint,omitempty"`
 }
 type BidAskBinding struct {
+	Experiment      *BidAskExperiment                  `json:"experiment,omitempty"`
 	Family          string                             `json:"family"`
 	Profile         string                             `json:"profile"`
 	SignalRecipe    string                             `json:"signalRecipe"`
@@ -129,10 +131,11 @@ type BidAskPosition struct {
 	FullPhaseFromT            string `json:"fullPhaseFromT"`
 }
 type BidAskPending struct {
-	DecisionID     string `json:"decisionId"`
-	SignalSequence string `json:"signalSequence"`
-	State          string `json:"state"`
-	DeadlineT      string `json:"deadlineT"`
+	ExecutableFromT string `json:"executableFromT,omitempty"`
+	DecisionID      string `json:"decisionId"`
+	SignalSequence  string `json:"signalSequence"`
+	State           string `json:"state"`
+	DeadlineT       string `json:"deadlineT"`
 }
 type PaperBidAskResult struct {
 	Schema           string           `json:"schema"`
@@ -262,6 +265,9 @@ func prepareBidAsk(r PaperBidAskRequest, admitSource bool) (*PreparedRun, BidAsk
 			return nil, binding, e
 		}
 	}
+	if e := validateBidAskExperiment(r, family); e != nil {
+		return nil, binding, e
+	}
 	htf := mapValue(parsed.Config, "htf")
 	mode, _ := htf["mode"].(string)
 	if sourceTimeframeFromConfig(parsed.Config) != "" || (mode != "" && mode != "off") {
@@ -281,7 +287,7 @@ func prepareBidAsk(r PaperBidAskRequest, admitSource bool) (*PreparedRun, BidAsk
 	if configHash == "" {
 		return nil, binding, bidAskError("SOURCE_NUMERIC")
 	}
-	binding = BidAskBinding{Family: family, Profile: "ordinary", SignalRecipe: "provider-midpoint-ohlc-price-count-v1", SizingPolicy: "source-risk-usd-total-stop-budget-v1", Contract: PaperBidAskSchema, Source: PaperSourceIdentity{SHA256: paperSourceDigest(r.Source), UTF8Bytes: len(r.Source)}, ConfigIdentity: SequentialInspectionConfigIdentity{SHA256: configHash, Encoding: SequentialInspectionConfigEncoding}, Route: r.Route, Identity: r.Identity, Product: r.Product, Economics: r.Economics, Policy: r.Policy, ActivationFromT: r.ActivationFromT, Producer: sequentialInspectionProducer()}
+	binding = BidAskBinding{Experiment: r.Experiment, Family: family, Profile: "ordinary", SignalRecipe: "provider-midpoint-ohlc-price-count-v1", SizingPolicy: "source-risk-usd-total-stop-budget-v1", Contract: PaperBidAskSchema, Source: PaperSourceIdentity{SHA256: paperSourceDigest(r.Source), UTF8Bytes: len(r.Source)}, ConfigIdentity: SequentialInspectionConfigIdentity{SHA256: configHash, Encoding: SequentialInspectionConfigEncoding}, Route: r.Route, Identity: r.Identity, Product: r.Product, Economics: r.Economics, Policy: r.Policy, ActivationFromT: r.ActivationFromT, Producer: sequentialInspectionProducer()}
 	if len(bars) == 0 {
 		return nil, binding, nil
 	}
@@ -313,7 +319,7 @@ func EncodePaperBidAskResult(r PaperBidAskResult) ([]byte, error) {
 	if e != nil {
 		return nil, bidAskError("OUTPUT")
 	}
-	if len(b) > PaperBidAskMaxBytes {
+	if len(b) > PaperBidAskMaxOutputBytes {
 		return nil, bidAskError("OUTPUT_LIMIT")
 	}
 	return b, nil

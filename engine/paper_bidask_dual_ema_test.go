@@ -27,7 +27,7 @@ filters { side long only }
 execution { risk: 200 USD }
 `
 
-func dualPaperRequest(t *testing.T) PaperBidAskRequest {
+func dualPaperRequest(t testing.TB) PaperBidAskRequest {
 	r := bidAskTestRequest(t)
 	r.Source = dualPaperSource
 	r.Route.Timeframe = "4h"

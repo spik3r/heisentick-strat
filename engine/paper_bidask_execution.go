@@ -272,6 +272,11 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 		return
 	}
 	b := &x.prepared.broker
+	if x.request.Experiment != nil && x.position == nil && previousOpen >= 0 && open != previousOpen+x.duration {
+		x.coverage = "unhealthy-unaccounted-interval"
+		x.collector.account.MarkStatus = "stale-coverage-gap"
+		x.emit(rec, BidAskEvent{Kind: "coverage", Outcome: "missing-completed-interval", Basis: "entries-refused"})
+	}
 	if x.position != nil && previousOpen >= 0 && open != previousOpen+x.duration {
 		x.unresolved(rec, "missing-completed-interval")
 	}
@@ -309,11 +314,11 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 				x.unresolved(rec, "missing-slow-ema-exit-quote")
 				return
 			} else if bidAskDueSlot(b, i) {
-				clock.ModelEffectiveT = bar.OpenT
-				x.close(rec, o, "window-close", "modeled-side-open", clock)
+				clock, basis := x.modeledOpenClock(bar, clock)
+				x.close(rec, o, "window-close", basis, clock)
 			} else if (s == sideLong && o.Cmp(sl) <= 0) || (s == sideShort && o.Cmp(sl) >= 0) {
-				clock.ModelEffectiveT = bar.OpenT
-				x.close(rec, o, "stop-gap", "modeled-side-open", clock)
+				clock, basis := x.modeledOpenClock(bar, clock)
+				x.close(rec, o, "stop-gap", basis, clock)
 			} else if (s == sideLong && l.Cmp(sl) <= 0) || (s == sideShort && h.Cmp(sl) >= 0) {
 				x.close(rec, sl, "stop", "modeled-side-bar-stop-first", clock)
 			} else if !p.view.NoTarget && ((s == sideLong && h.Cmp(tp) >= 0) || (s == sideShort && l.Cmp(tp) <= 0)) {
@@ -362,7 +367,7 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 	before := len(b.capturedEntries)
 	b.captureEntries = true
 	if x.binding.Family == "dualEmaResumption" {
-		if ord := x.dualEMABar(i, true); ord != nil {
+		if ord := x.dualEMABar(i, x.entriesOpen(close)); ord != nil {
 			b.capturedEntries = append(b.capturedEntries, *ord)
 		}
 	} else {
@@ -380,6 +385,9 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 			Ordinal         int
 		}{x.identity, rec.Sequence, 0})
 		x.pending = &bidAskDecision{view: BidAskPending{DecisionID: id, SignalSequence: rec.Sequence, State: "awaiting-original-episode"}, order: ord, signal: *bar, index: i, signalCommitT: rec.CommitT}
+		if x.request.Experiment != nil {
+			x.pending.view.ExecutableFromT = bidAskStamp(x.signalExecutableFrom(close))
+		}
 		x.emit(rec, BidAskEvent{Kind: "decision", Outcome: "awaiting-original-episode", DecisionID: id, Side: ord.Side.String(), Basis: "go-family-capture", Clock: BidAskClock{SignalOpenT: bar.OpenT, SignalCloseT: bar.CloseT, ReceivedT: bar.ReceivedT, ModelEffectiveT: bar.CloseT}})
 	}
 }
@@ -417,6 +425,10 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 		x.err = bidAskError("EPISODE_STATE")
 		return
 	}
+	if original && (!x.entriesOpen(at) || !x.entriesOpen(commit)) && x.pending != nil {
+		x.noFill(rec, "experiment-entry-horizon", bidAskQuoteClock(q))
+		return
+	}
 	if known {
 		if original {
 			x.noFill(rec, "duplicate-original-observation", bidAskQuoteClock(q))
@@ -447,6 +459,7 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 		admit, _ := bidAskTime(d.episode.AdmittedT)
 		deadline, _ := bidAskTime(d.episode.DeadlineT)
 		close, _ := bidAskTime(d.signal.CloseT)
+		executableFrom := x.signalExecutableFrom(close)
 		start, _ := bidAskTime(q.RequestStartT)
 		if x.coverage != "sampled-observations-only" {
 			x.noFill(rec, "coverage-unhealthy", bidAskQuoteClock(q))
@@ -457,7 +470,7 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 			return
 		}
 		episodeCommit, _ := bidAskTime(d.episodeCommitT)
-		if at < close || start < admit || start < episodeCommit || qualified-at > x.maxQuoteAge || (x.binding.Family == "dualEmaResumption" && commit-at > x.maxQuoteAge) || commit > deadline || at >= close+x.maxSignalAge {
+		if at < executableFrom || start < admit || start < episodeCommit || qualified-at > x.maxQuoteAge || (x.binding.Family == "dualEmaResumption" && commit-at > x.maxQuoteAge) || commit > deadline || at >= executableFrom+x.maxSignalAge {
 			x.noFill(rec, "original-quote-expired", bidAskQuoteClock(q))
 			return
 		}
@@ -565,15 +578,17 @@ func (x *bidAskRunner) onEpisode(rec BidAskRecord) {
 	close, _ := bidAskTime(d.signal.CloseT)
 	admit, _ := bidAskTime(e.AdmittedT)
 	deadline, _ := bidAskTime(e.DeadlineT)
-	limit := close + x.maxSignalAge
-	if limit > close+x.duration {
-		limit = close + x.duration
+	executableFrom := x.signalExecutableFrom(close)
+	limit := executableFrom + x.maxSignalAge
+	intervalClose := (executableFrom/x.duration + 1) * x.duration
+	if limit > intervalClose {
+		limit = intervalClose
 	}
 	if slotEnd, ok := numericMetaValue(d.order.Meta["slotEnd"]); ok && int64(slotEnd)*1000000 < limit {
 		limit = int64(slotEnd) * 1000000
 	}
 	signalCommit, _ := bidAskTime(d.signalCommitT)
-	if admit < close || admit < signalCommit || deadline > limit || deadline <= admit {
+	if admit < executableFrom || admit < signalCommit || deadline > limit || deadline <= admit {
 		x.err = bidAskError("EPISODE_DEADLINE")
 		return
 	}
@@ -586,11 +601,26 @@ func (x *bidAskRunner) onEpisode(rec BidAskRecord) {
 func (x *bidAskRunner) onSeal(rec BidAskRecord) {
 	d := x.pending
 	s := rec.Seal
-	if d == nil || d.episode == nil || d.view.SignalSequence != s.SignalSequence {
+	if d == nil || d.view.SignalSequence != s.SignalSequence {
 		x.err = bidAskError("EPISODE_STATE")
 		return
 	}
 	at, _ := bidAskTime(s.EffectiveT)
+	if s.Reason == "signal-expired" {
+		close, _ := bidAskTime(d.signal.CloseT)
+		committed, _ := bidAskTime(d.signalCommitT)
+		if x.request.Experiment == nil || d.episode != nil || at < x.signalExecutableFrom(close)+x.maxSignalAge || at < committed {
+			x.err = bidAskError("SEAL_CLOCK")
+			return
+		}
+		x.emit(rec, BidAskEvent{Kind: "decision-outcome", Outcome: "expired-signal", DecisionID: d.view.DecisionID, Basis: "not-admitted-after-signal-deadline", Clock: BidAskClock{SignalOpenT: d.signal.OpenT, SignalCloseT: d.signal.CloseT, ModelEffectiveT: s.EffectiveT}})
+		x.pending = nil
+		return
+	}
+	if d.episode == nil {
+		x.err = bidAskError("EPISODE_STATE")
+		return
+	}
 	admit, _ := bidAskTime(d.episode.AdmittedT)
 	deadline, _ := bidAskTime(d.episode.DeadlineT)
 	if at < admit || (s.Reason == "deadline" && at < deadline) {
@@ -611,6 +641,10 @@ func executeBidAsk(r PaperBidAskRequest, p *PreparedRun, b BidAskBinding) (Paper
 			x.onQuote(rec)
 		case "seal":
 			x.onSeal(rec)
+		case "experiment-clock":
+			x.onExperimentClock(rec)
+		case "market-closure":
+			x.onClosure(rec)
 		case "coverage-gap":
 			if x.position != nil {
 				x.unresolved(rec, "recorded-coverage-gap")
