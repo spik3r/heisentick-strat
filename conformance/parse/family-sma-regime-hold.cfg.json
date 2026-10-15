@@ -167,8 +167,6 @@
   "diagnostics": [],
   "errors": [],
   "schema": "dsl-conformance-parse-v1",
-  "source": {
-    "kind": "committed-fixture"
-  },
+  "source": "HT-293 synthetic parse fixture; no market data.",
   "warnings": []
 }
