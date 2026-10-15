@@ -19,6 +19,8 @@ aliases, overrides, account sizing, equity defaults or custom baselines.
 
 ## Continuous state and bounds
 
+The original `adaptive-history-v1` profile retains the fixed limits below.
+
 | Resource | Fixed maximum |
 | --- | ---: |
 | Supplied BTB1 rows, including all warmup and any ignored suffix | 70,000 |
@@ -78,11 +80,31 @@ not guarantee observing every transient peak before it happens. Complete output
 is accepted only after exit zero, strict single-document validation and all
 resource/identity checks; failed partial bytes remain separately labeled.
 
+## Fixed long H1 profile
+
+`adaptive-history-long-h1-v1` is a second closed native profile for H1 source
+and requests only. It uses the same six admitted original source/preset
+combinations, existing cost selectors, prefix/warmup rules and semantic
+validation. It does not accept caller-supplied limits. Its fixed maxima are
+150,000 supplied/retained rows, 9,000 UTC trading-window date labels, 120,000
+global exposure midnights and 150,000 global copied gaps. Its internal JSON,
+raw output and final output caps are 512 MiB; the original profile retains its
+256 MiB caps.
+
+The 150,000-row ceiling does not promise that every input at that size runs.
+The closed type-derived internal JSON bound is 284,914,957 bytes at 141,397
+rows and 302,250,002 bytes at 150,000 rows. Both fit the long profile's
+512 MiB cap and exceed the original profile's 256 MiB cap. Separate raw and
+projection bounds use actual result cardinalities and can refuse a dense result
+before serialization when its conservative bound exceeds 512 MiB. Row, day,
+midnight and gap maxima are individual fixed ceilings, not a joint allowance.
+The external supervisor remains required.
+
 ## Distinct native evidence envelope
 
 The final schema is `strat-adaptive-volume-flag-unit-history-v1`. It contains:
 
-- `profile`, always `adaptive-history-v1`;
+- `profile`, the selected fixed native profile;
 - `rawEnvelopeSchema`, always `strat-adaptive-volume-flag-history-raw-v1`;
 - `rawEnvelopeSha256` and `rawEnvelopeBytes`, binding the freshly produced
   compact native raw document plus its trailing LF;
@@ -124,3 +146,53 @@ must distinguish unchanged raw execution from Python-versus-Go unit accounting,
 preserve all mismatches and original goldens, and identify inspected history as
 inspected. HT210 archived-draw reproduction and volume variants remain separate.
 No new holdout, parameter search, forward deployment or market order is enabled.
+
+
+## Source-pin qualification after PR137 review (2026-10-15)
+
+The bounded [HT210 review claim](https://github.com/spik3r/heisentick-backlog/blob/1978d2bcf4d237832e24b997dae4b3ae099d26ef/tasks/HT-210-adaptive-flag-trade-path-exit-audit.md#L486-L497)
+reviewed the complete production-source inventory at
+`d7ef1d06221d9bc79534a502a1acec7b1c8e7e9b` against base
+`08ee262ce2f653aff7c4f5f7579097e3d5435379`. Exactly four of 319 compiler-input
+source hashes changed: the native history CLI and three native history report
+files. The two native dependency closures each changed only those three report
+hashes; package/file membership and the WASM closure were unchanged. No engine,
+Sequential accounting or metric arithmetic source changed.
+
+Before renewing any source hash, compile-only observations with Go 1.22.12,
+CPython 3.12.14 and the original pinned flags compared all seven existing
+instruction streams on each of `linux-amd64`, `linux-arm64` and `js-wasm`.
+All 21 streams matched their original hashes and instruction counts exactly.
+ARM64 was cross-compiled on Linux AMD64, not executed on native ARM64. Independent
+review accepted only four global source-hash updates and three dependency-hash
+updates for each Linux target. Instruction hashes, accounting schedules,
+`sourceParents`, membership, the verifier and compiler flags remain unchanged.
+The renewed manifest SHA256 is
+`c160c67e4858e589c7df9e51fd98c8dcee43c65d8dc9c945319ebfe82c36ac8f`.
+
+After renewal, the unchanged official commands passed:
+
+```sh
+python -B scripts/checks/sequential-accounting-proof.py codegen "$PWD" "$PINNED_GO_1_22_12" "$EVIDENCE_DIR"
+python -B scripts/checks/sequential-accounting-proof-test.py
+```
+
+The official codegen check covers the actual Linux AMD64 host and WASM; all
+19 exact-arithmetic self-tests passed. The separate 21-stream independent
+acceptance receipt has SHA256
+`9c6cdc8713ae6e863f7678e4a205d4f72c10a558a97a8591e02f531aedb184f6`.
+
+Resource observations are retained honestly: the initial combined observation
+stopped its WASM compile at the 300 MiB working-storage budget. Its failure
+receipt and complete emitted listing were preserved; verified lossless listing
+compaction enabled a separately bounded WASM-only continuation with the same
+cap and 512 MiB free-space reserve. The official codegen then passed. The first
+self-test admission was held while compiler intermediates occupied headroom;
+the same unchanged tests passed after those task-owned intermediates were
+released. Neither event changed a qualification or CI guard.
+
+This repair qualifies reviewed source pins and unchanged compiler schedules.
+It does not independently re-accept the earlier Darwin capacity/historical
+receipts, establish native ARM64 execution, or rerun market history. Exact-head
+hosted checks and the separate private historical-evidence handoff remain
+independent review requirements.

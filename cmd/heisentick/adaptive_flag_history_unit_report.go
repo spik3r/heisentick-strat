@@ -15,7 +15,7 @@ import (
 
 func init() {
 	nativeExtraCommands["adaptive-flag-history-unit-report"] = runAdaptiveFlagHistoryUnitReport
-	nativeExtraUsage += "\n  heisentick adaptive-flag-history-unit-report --profile=adaptive-history-v1 --request-file=<JSON path> --projection-file=<JSON path> --dsl-file=<path> --bars-file=<six-column BTB1 path>\n\nNative-only continuous research accounting: at most 70,000 supplied rows including all warmup, 2,200 UTC trading date labels and 256 MiB output. Requires an external time/memory/output supervisor; profile selection is not study authorization.\n"
+	nativeExtraUsage += "\n  heisentick adaptive-flag-history-unit-report --profile=adaptive-history-v1|adaptive-history-long-h1-v1 --request-file=<JSON path> --projection-file=<JSON path> --dsl-file=<path> --bars-file=<six-column BTB1 path>\n\nNative-only continuous research accounting uses fixed profile limits: v1 has a 256 MiB output cap; long H1 has a 512 MiB cap. Requires an external time/memory/output supervisor; profile selection is not study authorization.\n"
 }
 
 func runAdaptiveFlagHistoryUnitReport(args []string, out io.Writer) (err error) {
@@ -62,7 +62,8 @@ func runAdaptiveFlagHistoryUnitReport(args []string, out io.Writer) (err error) 
 			return adaptiveflagunit.Rejection("projection_request_rejected", "native_io", "unit report requires profile and all four file flags")
 		}
 	}
-	if flags.one("profile", "") != adaptiveflag.HistoryProfile {
+	profile := flags.one("profile", "")
+	if !adaptiveflag.IsHistoryProfile(profile) {
 		return adaptiveflagunit.Rejection("projection_request_rejected", "native_io", "explicit adaptive-history-v1 native profile required")
 	}
 	rawMetadata, err := readAdaptiveFlagUnitFile(flags.one("request-file", ""), adaptiveflag.MaxMetadataBytes, "raw_request_rejected")
@@ -79,11 +80,11 @@ func runAdaptiveFlagHistoryUnitReport(args []string, out io.Writer) (err error) 
 	}
 	// Both metadata documents and complete source admission precede even the
 	// bars file open. The original portable Stage A reader stays unchanged.
-	prepared, err := adaptiveflagunit.PrepareHistory(flags.one("profile", ""), string(rawMetadata), string(projectionMetadata), string(source))
+	prepared, err := adaptiveflagunit.PrepareHistory(profile, string(rawMetadata), string(projectionMetadata), string(source))
 	if err != nil {
 		return err
 	}
-	data, err := readAdaptiveFlagHistoryBarsFile(flags.one("bars-file", ""))
+	data, err := readAdaptiveFlagHistoryBarsFile(profile, flags.one("bars-file", ""))
 	if err != nil {
 		return err
 	}
@@ -96,26 +97,34 @@ func runAdaptiveFlagHistoryUnitReport(args []string, out io.Writer) (err error) 
 	return writeAdaptiveFlagUnitOutput(out, report)
 }
 
-func readAdaptiveFlagHistoryBarsFile(path string) ([]byte, error) {
+func readAdaptiveFlagHistoryBarsFile(profile, path string) ([]byte, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, adaptiveflagunit.Rejection("raw_input_rejected", "native_io", "cannot open native history BTB1")
 	}
 	defer file.Close()
-	return readAdaptiveFlagHistoryBars(file)
+	return readAdaptiveFlagHistoryBarsWithProfile(profile, file)
 }
 
 func readAdaptiveFlagHistoryBars(reader io.Reader) ([]byte, error) {
+	return readAdaptiveFlagHistoryBarsWithProfile(adaptiveflag.HistoryProfile, reader)
+}
+
+func readAdaptiveFlagHistoryBarsWithProfile(profile string, reader io.Reader) ([]byte, error) {
 	var header [16]byte
 	if _, err := io.ReadFull(reader, header[:]); err != nil {
 		return nil, adaptiveflagunit.Rejection("raw_input_rejected", "native_io", "cannot read native history BTB1 header")
 	}
 	count := uint64(binary.LittleEndian.Uint32(header[8:12]))
 	expected := uint64(16) + count*48
-	if expected > adaptiveflag.HistoryMaxInputBytes {
+	maxRows := uint64(adaptiveflag.HistoryMaxRows)
+	if profile == adaptiveflag.HistoryLongH1Profile {
+		maxRows = adaptiveflag.HistoryLongH1MaxRows
+	}
+	if count > maxRows {
 		return nil, adaptiveflagunit.Rejection("resource_limit", "native_io", "native history BTB1 exceeds supplied-row limit")
 	}
-	if err := adaptiveflag.ValidateHistoryHeader(header[:], int(expected)); err != nil {
+	if err := adaptiveflag.ValidateHistoryHeaderWithProfile(profile, header[:], int(expected)); err != nil {
 		return nil, err
 	}
 	data := make([]byte, int(expected))

@@ -160,8 +160,12 @@ func TestHistoryBoundsBeforeSerialization(t *testing.T) {
 			t.Fatal("escaping/numeric bound underestimated")
 		}
 	}
-	if _, err := historyJSONBound(extreme{Text: strings.Repeat("\x00", HistoryMaxOutputBytes/6+1)}); err == nil {
+	wide := extreme{Text: strings.Repeat("\x00", HistoryMaxOutputBytes/6+1)}
+	if _, err := historyJSONBound(wide); err == nil {
 		t.Fatal("oversize escaped value admitted before marshal")
+	}
+	if _, err := historyJSONBoundForProfile(adaptiveflag.HistoryLongH1Profile, wide); err != nil {
+		t.Fatal("long profile rejected a value above the unchanged v1 cap", err)
 	}
 	if _, err := historyJSONBound(json.RawMessage(`{"unbounded":true}`)); err == nil {
 		t.Fatal("custom marshaler admitted")
@@ -205,5 +209,62 @@ func TestHistoryExposureCapsAreGlobalAndOldCapsRemain(t *testing.T) {
 	}
 	if !reflect.DeepEqual(a, b) {
 		t.Fatal("resource profile altered hand accounting")
+	}
+}
+
+func TestHistoryLongH1ProjectionCapsAreFixedAndV1StaysNarrow(t *testing.T) {
+	rows, days, midnights, gaps := profileCaps(adaptiveflag.HistoryLongH1Profile)
+	if rows != 150000 || days != 9000 || midnights != 120000 || gaps != 150000 {
+		t.Fatal("long profile caps changed", rows, days, midnights, gaps)
+	}
+	oldRows, oldDays, oldMidnights, oldGaps := profileCaps(adaptiveflag.HistoryProfile)
+	if oldRows != 70000 || oldDays != 2200 || oldMidnights != 30000 || oldGaps != 70000 {
+		t.Fatal("adaptive-history-v1 caps changed", oldRows, oldDays, oldMidnights, oldGaps)
+	}
+	if HistoryMaxOutputBytes != 256*1024*1024 || HistoryLongH1MaxOutputBytes != 512*1024*1024 {
+		t.Fatal("native history output caps changed")
+	}
+	for _, tc := range []struct {
+		profile string
+		ctx     validationContext
+		wantErr bool
+	}{
+		{adaptiveflag.HistoryLongH1Profile, validationContext{Days: 9000, Midnights: 120000, Gaps: 150000}, false},
+		{adaptiveflag.HistoryLongH1Profile, validationContext{Days: 9001}, true},
+		{adaptiveflag.HistoryLongH1Profile, validationContext{Midnights: 120001}, true},
+		{adaptiveflag.HistoryLongH1Profile, validationContext{Gaps: 150001}, true},
+		{adaptiveflag.HistoryProfile, validationContext{Days: 2201}, true},
+	} {
+		run := &engine.AdaptiveFlagResult{Snapshots: make([]engine.AdaptiveFlagSnapshot, 1)}
+		if _, err := historyProjectionBoundWithLimits(run, tc.ctx, tc.profile); (err != nil) != tc.wantErr {
+			t.Fatalf("profile %s context %+v err %v", tc.profile, tc.ctx, err)
+		}
+	}
+	// Even individually admitted long-profile cardinalities cannot bypass the
+	// profile-specific 512 MiB conservative result bound.
+	run := &engine.AdaptiveFlagResult{Snapshots: make([]engine.AdaptiveFlagSnapshot, 150000), Orders: make([]engine.AdaptiveFlagOrder, 150000)}
+	if _, err := historyProjectionBoundWithLimits(run, validationContext{Days: 9000, Midnights: 120000, Gaps: 150000}, adaptiveflag.HistoryLongH1Profile); err == nil {
+		t.Fatal("dense result exceeded no conservative bound")
+	}
+}
+
+func TestHistoryLongH1BuildIsProfileTagged(t *testing.T) {
+	rawMetadata, projectionMetadata, source, _ := runtimeInputs(t)
+	rawMetadata = strings.Replace(rawMetadata, `"timeframe":"M30"`, `"timeframe":"H1"`, 1)
+	source = strings.Replace(source, "timeframe M30", "timeframe H1", 1)
+	bars := runtimeBars([]float64{0, 3600000, 7200000})
+	output, err := BuildHistory(adaptiveflag.HistoryLongH1Profile, rawMetadata, projectionMetadata, source, bars)
+	if err != nil {
+		t.Fatal(ErrorJSON(err))
+	}
+	var envelope HistoryEnvelope
+	if err := json.Unmarshal(output, &envelope); err != nil {
+		t.Fatal(err)
+	}
+	if envelope.Profile != adaptiveflag.HistoryLongH1Profile {
+		t.Fatal("long profile identity missing", envelope.Profile)
+	}
+	if _, err := BuildHistory(adaptiveflag.HistoryLongH1Profile, strings.Replace(rawMetadata, `"timeframe":"H1"`, `"timeframe":"M30"`, 1), projectionMetadata, strings.Replace(source, "timeframe H1", "timeframe M30", 1), runtimeBars([]float64{0, 1800000})); err == nil {
+		t.Fatal("long profile admitted M30")
 	}
 }

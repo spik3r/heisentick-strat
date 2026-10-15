@@ -181,6 +181,31 @@ func TestAdaptiveFlagHistoryBTB1HeaderFirstExactRead(t *testing.T) {
 	}
 }
 
+func TestAdaptiveFlagHistoryLongH1HeaderLimit(t *testing.T) {
+	makeHeader := func(rows uint32) []byte {
+		header := make([]byte, 16)
+		binary.LittleEndian.PutUint32(header, 0x31425442)
+		binary.LittleEndian.PutUint32(header[4:], 1)
+		binary.LittleEndian.PutUint32(header[8:], rows)
+		binary.LittleEndian.PutUint32(header[12:], 6)
+		return header
+	}
+	tooMany := makeHeader(adaptiveflag.HistoryLongH1MaxRows + 1)
+	reader := &adaptiveRuntimeCountReader{reader: bytes.NewReader(tooMany)}
+	if got, err := readAdaptiveFlagHistoryBarsWithProfile(adaptiveflag.HistoryLongH1Profile, reader); err == nil || got != nil || reader.read != 16 {
+		t.Fatal("long H1 row limit was checked after payload read", reader.read, err)
+	}
+	if _, err := readAdaptiveFlagHistoryBarsWithProfile(adaptiveflag.HistoryProfile, bytes.NewReader(makeHeader(adaptiveflag.HistoryLongH1MaxRows))); err == nil {
+		t.Fatal("original profile admitted long H1 row count")
+	}
+	data := make([]byte, 16+adaptiveflag.HistoryLongH1MaxRows*48)
+	copy(data, makeHeader(adaptiveflag.HistoryLongH1MaxRows))
+	got, err := readAdaptiveFlagHistoryBarsWithProfile(adaptiveflag.HistoryLongH1Profile, bytes.NewReader(data))
+	if err != nil || !bytes.Equal(got, data) {
+		t.Fatal("exact long H1 input ceiling refused", err)
+	}
+}
+
 func TestAdaptiveFlagHistoryCLIOutputFailures(t *testing.T) {
 	args, _, _, _, _, _, _ := adaptiveHistoryCLIInputs(t)
 	for _, input := range [][]string{args, append(append([]string{}, args...), "--unknown=true")} {

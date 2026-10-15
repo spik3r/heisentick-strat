@@ -19,13 +19,17 @@ import (
 )
 
 const (
-	HistoryProfile                    = "adaptive-history-v1"
-	HistoryRawSchema                  = "strat-adaptive-volume-flag-history-raw-v1"
-	HistoryMaxRows                    = 70000
-	HistoryMaxInputBytes              = 16 + HistoryMaxRows*6*8
-	HistoryMaxCalendarDays            = 2200
-	HistoryMaxInternalJSONBytes       = 256 * 1024 * 1024
-	historyCalendarEndpointMS   int64 = 253402300800000
+	HistoryProfile                     = "adaptive-history-v1"
+	HistoryLongH1Profile               = "adaptive-history-long-h1-v1"
+	HistoryRawSchema                   = "strat-adaptive-volume-flag-history-raw-v1"
+	HistoryMaxRows                     = 70000
+	HistoryMaxInputBytes               = 16 + HistoryMaxRows*6*8
+	HistoryMaxCalendarDays             = 2200
+	HistoryMaxInternalJSONBytes        = 256 * 1024 * 1024
+	HistoryLongH1MaxJSONBytes          = 512 * 1024 * 1024
+	HistoryLongH1MaxRows               = 150000
+	HistoryLongH1MaxCalendarDays       = 9000
+	historyCalendarEndpointMS    int64 = 253402300800000
 )
 
 // HistoryDocument is a freshly owned native result, never a caller ledger input.
@@ -44,45 +48,94 @@ type HistoryDocument struct {
 	Run           engine.AdaptiveFlagResult `json:"run"`
 }
 
-type PreparedHistory struct{ runtime *PreparedRuntime }
+type historyLimits struct {
+	rows, days                                     int
+	inputBytes, internalJSONBytes, outputJSONBytes uint64
+}
+
+func historyProfileLimits(profile string) (historyLimits, bool) {
+	switch profile {
+	case HistoryProfile:
+		return historyLimits{HistoryMaxRows, HistoryMaxCalendarDays, uint64(HistoryMaxInputBytes), HistoryMaxInternalJSONBytes, HistoryMaxInternalJSONBytes}, true
+	case HistoryLongH1Profile:
+		return historyLimits{HistoryLongH1MaxRows, HistoryLongH1MaxCalendarDays, 16 + uint64(HistoryLongH1MaxRows)*48, HistoryLongH1MaxJSONBytes, HistoryLongH1MaxJSONBytes}, true
+	default:
+		return historyLimits{}, false
+	}
+}
+
+// IsHistoryProfile reports only the two closed native profile names.
+func IsHistoryProfile(profile string) bool { _, ok := historyProfileLimits(profile); return ok }
+
+type PreparedHistory struct {
+	runtime *PreparedRuntime
+	profile string
+	limits  historyLimits
+}
 
 func PrepareHistory(profile, metadata, source string) (*PreparedHistory, error) {
-	if profile != HistoryProfile {
+	limits, ok := historyProfileLimits(profile)
+	if !ok {
 		return nil, Rejection("request", "explicit adaptive-history-v1 native profile required")
 	}
 	p, err := PrepareRuntime(metadata, source)
 	if err != nil {
 		return nil, err
 	}
+	if profile == HistoryLongH1Profile && p.request.Timeframe != "H1" {
+		return nil, Rejection("request", "adaptive-history-long-h1-v1 requires H1")
+	}
 	if w := p.request.ExecutionWindow; w != nil {
-		if err := historyCalendar(w.TradeFromMS, w.TradeToMS); err != nil {
+		if err := historyCalendarWithLimit(w.TradeFromMS, w.TradeToMS, limits.days); err != nil {
 			return nil, err
 		}
 	}
-	return &PreparedHistory{p}, nil
+	return &PreparedHistory{p, profile, limits}, nil
 }
 
 func historyCalendar(start, end int64) error {
+	return historyCalendarWithLimit(start, end, HistoryMaxCalendarDays)
+}
+
+func historyCalendarWithLimit(start, end int64, maxDays int) error {
 	if start < 0 || end <= start || end > historyCalendarEndpointMS {
 		return Rejection("request", "native history window is outside UTC 1970..9999")
 	}
-	if (end-1)/86400000-start/86400000+1 > HistoryMaxCalendarDays {
-		return Rejection("resource", "native history window exceeds 2200 UTC date labels")
+	if (end-1)/86400000-start/86400000+1 > int64(maxDays) {
+		if maxDays == HistoryMaxCalendarDays {
+			return Rejection("resource", "native history window exceeds 2200 UTC date labels")
+		}
+		return Rejection("resource", "native history window exceeds UTC date-label limit")
 	}
 	return nil
 }
 
 // ValidateHistoryHeader may inspect only the header, before a bounded full read.
 func ValidateHistoryHeader(header []byte, actualBytes int) error {
-	if len(header) < 16 || actualBytes < 16 || actualBytes > HistoryMaxInputBytes {
+	return ValidateHistoryHeaderWithLimit(header, actualBytes, HistoryMaxRows, uint64(HistoryMaxInputBytes))
+}
+
+func ValidateHistoryHeaderWithProfile(profile string, header []byte, actualBytes int) error {
+	limits, ok := historyProfileLimits(profile)
+	if !ok {
+		return Rejection("request", "unsupported native history profile")
+	}
+	return ValidateHistoryHeaderWithLimit(header, actualBytes, limits.rows, limits.inputBytes)
+}
+
+func ValidateHistoryHeaderWithLimit(header []byte, actualBytes, maxRows int, maxBytes uint64) error {
+	if len(header) < 16 || actualBytes < 16 || uint64(actualBytes) > maxBytes {
 		return Rejection("resource", "native history BTB1 length outside bounded profile")
 	}
 	if binary.LittleEndian.Uint32(header[:4]) != 0x31425442 || binary.LittleEndian.Uint32(header[4:8]) != 1 {
 		return Rejection("input", "native history requires BTB1 version 1")
 	}
 	n := uint64(binary.LittleEndian.Uint32(header[8:12]))
-	if n == 0 || n > HistoryMaxRows || binary.LittleEndian.Uint32(header[12:16]) != 6 {
-		return Rejection("input", "native history requires 1..70000 supplied rows and exactly six columns")
+	if n == 0 || n > uint64(maxRows) || binary.LittleEndian.Uint32(header[12:16]) != 6 {
+		if maxRows == HistoryMaxRows {
+			return Rejection("input", "native history requires 1..70000 supplied rows and exactly six columns")
+		}
+		return Rejection("input", "native history supplied rows exceed the fixed profile or columns are not six")
 	}
 	if uint64(actualBytes) != 16+n*48 {
 		return Rejection("input", "native history BTB1 exact byte length mismatch")
@@ -96,7 +149,7 @@ func (p *PreparedHistory) Preflight(data []byte) (int, error) {
 	if p == nil || p.runtime == nil || !p.runtime.ready {
 		return 0, Rejection("request", "native history source was not prepared")
 	}
-	if err := ValidateHistoryHeader(data, len(data)); err != nil {
+	if err := ValidateHistoryHeaderWithLimit(data, len(data), p.limits.rows, p.limits.inputBytes); err != nil {
 		return 0, err
 	}
 	n := int(binary.LittleEndian.Uint32(data[8:12]))
@@ -143,7 +196,7 @@ func (p *PreparedHistory) Preflight(data []byte) (int, error) {
 	if w := p.runtime.request.ExecutionWindow; w != nil {
 		start, end = w.TradeFromMS, w.TradeToMS
 	}
-	if err := historyCalendar(start, end); err != nil {
+	if err := historyCalendarWithLimit(start, end, p.limits.days); err != nil {
 		return 0, err
 	}
 	return retained, nil
@@ -158,7 +211,7 @@ func (p *PreparedHistory) Build(data []byte) (*HistoryDocument, error) {
 	}
 	// The unchanged engine marshals snapshots for finite-value validation and
 	// ordered six-number rows for identity. Bound both before entering it.
-	if _, err := historyInternalJSONBound(n); err != nil {
+	if _, err := historyInternalJSONBoundWithLimit(n, p.limits.internalJSONBytes, p.limits.rows); err != nil {
 		return nil, Rejection("resource", "native history internal JSON bound exceeded")
 	}
 	r := p.runtime
@@ -166,7 +219,7 @@ func (p *PreparedHistory) Build(data []byte) (*HistoryDocument, error) {
 	if err != nil {
 		return nil, Rejection("input", err.Error())
 	}
-	result, err := engine.RunAdaptiveVolumeFlagWithResultGuard(engine.AdaptiveFlagRequest{Config: r.config, Series: series, Window: r.request.ExecutionWindow}, historyResultGuard)
+	result, err := engine.RunAdaptiveVolumeFlagWithResultGuard(engine.AdaptiveFlagRequest{Config: r.config, Series: series, Window: r.request.ExecutionWindow}, func(result engine.AdaptiveFlagResult) error { return historyResultGuardWithLimits(result, p.limits) })
 	if err != nil {
 		if _, ok := err.(*runtimeRejection); ok {
 			return nil, err
@@ -192,7 +245,7 @@ func (p *PreparedHistory) Build(data []byte) (*HistoryDocument, error) {
 		window := *request.ExecutionWindow
 		request.ExecutionWindow = &window
 	}
-	return &HistoryDocument{HistoryRawSchema, HistoryProfile, request, r.requestHash, hash([]byte(r.source)), hash(config), hash(data), true, "raw-model-only", ownedConfig, result}, nil
+	return &HistoryDocument{HistoryRawSchema, p.profile, request, r.requestHash, hash([]byte(r.source)), hash(config), hash(data), true, "raw-model-only", ownedConfig, result}, nil
 }
 
 // This closed proof covers the engine's repeated internal compact-JSON
@@ -261,7 +314,11 @@ func historyInternalTypeBoundAt(typ reflect.Type, role string, depth int) (uint6
 }
 
 func historyInternalJSONBound(n int) (uint64, error) {
-	if n < 1 || n > HistoryMaxRows {
+	return historyInternalJSONBoundWithLimit(n, HistoryMaxInternalJSONBytes, HistoryMaxRows)
+}
+
+func historyInternalJSONBoundWithLimit(n int, maxBytes uint64, maxRows int) (uint64, error) {
+	if n < 1 || n > maxRows {
 		return 0, fmt.Errorf("native history internal row bound")
 	}
 	one, err := historyInternalTypeBound(reflect.TypeOf(engine.AdaptiveFlagSnapshot{}), "")
@@ -281,7 +338,7 @@ func historyInternalJSONBound(n int) (uint64, error) {
 	if config > snapshots {
 		snapshots = config
 	}
-	if snapshots > HistoryMaxInternalJSONBytes {
+	if snapshots > maxBytes {
 		return 0, fmt.Errorf("internal JSON allocation exceeds256MiB")
 	}
 	return snapshots, nil
@@ -290,8 +347,12 @@ func historyInternalJSONBound(n int) (uint64, error) {
 // historyResultGuard is side-effect-free. It runs on the actual complete engine
 // result before that engine's final serializer, not after a large allocation.
 func historyResultGuard(result engine.AdaptiveFlagResult) error {
+	return historyResultGuardWithLimits(result, historyLimits{rows: HistoryMaxRows, internalJSONBytes: HistoryMaxInternalJSONBytes})
+}
+
+func historyResultGuardWithLimits(result engine.AdaptiveFlagResult, limits historyLimits) error {
 	n := len(result.Snapshots)
-	if n < 1 || n > HistoryMaxRows || len(result.States) != n || len(result.Orders) > n || len(result.Events) > 4*n || len(result.Gaps) > n || len(result.Assumptions) > 13 {
+	if n < 1 || n > limits.rows || len(result.States) != n || len(result.Orders) > n || len(result.Events) > 4*n || len(result.Gaps) > n || len(result.Assumptions) > 13 {
 		return Rejection("resource", "native history complete result collection bound exceeded")
 	}
 	for _, order := range result.Orders {
@@ -299,7 +360,7 @@ func historyResultGuard(result engine.AdaptiveFlagResult) error {
 			return Rejection("resource", "native history order event-link bound exceeded")
 		}
 	}
-	if _, err := HistoryJSONBound(result); err != nil {
+	if _, err := historyJSONBound(result, limits.internalJSONBytes); err != nil {
 		return Rejection("resource", "native history complete result pre-serialization bound rejected")
 	}
 	return nil
@@ -312,13 +373,26 @@ func historyResultGuard(result engine.AdaptiveFlagResult) error {
 // Custom marshalers and newly unhandled kinds fail closed. No map/array is
 // produced here, and traversal itself is capped independently of the byte cap.
 func HistoryJSONBound(value any) (uint64, error) {
+	return historyJSONBound(value, HistoryMaxInternalJSONBytes)
+}
+
+// HistoryJSONBoundForProfile selects only a reviewed, fixed native profile cap.
+func HistoryJSONBoundForProfile(profile string, value any) (uint64, error) {
+	limits, ok := historyProfileLimits(profile)
+	if !ok {
+		return 0, fmt.Errorf("unsupported native history profile")
+	}
+	return historyJSONBound(value, limits.outputJSONBytes)
+}
+
+func historyJSONBound(value any, maxBytes uint64) (uint64, error) {
 	nodes := 0
 	marshaler := reflect.TypeOf((*json.Marshaler)(nil)).Elem()
 	textMarshaler := reflect.TypeOf((*encoding.TextMarshaler)(nil)).Elem()
 	var walk func(reflect.Value, int) (uint64, error)
 	add := func(a, b uint64) (uint64, error) {
-		if a > HistoryMaxInternalJSONBytes || b > HistoryMaxInternalJSONBytes-a {
-			return 0, fmt.Errorf("native history JSON byte bound exceeds 256 MiB")
+		if a > maxBytes || b > maxBytes-a {
+			return 0, fmt.Errorf("native history JSON byte bound exceeds fixed profile cap")
 		}
 		return a + b, nil
 	}
@@ -326,7 +400,7 @@ func HistoryJSONBound(value any) (uint64, error) {
 		if !utf8.ValidString(s) {
 			return 0, fmt.Errorf("invalid UTF-8 in native history output")
 		}
-		if uint64(len(s)) > (HistoryMaxInternalJSONBytes-2)/6 {
+		if uint64(len(s)) > (maxBytes-2)/6 {
 			return 0, fmt.Errorf("native history string exceeds byte bound")
 		}
 		return 6*uint64(len(s)) + 2, nil
