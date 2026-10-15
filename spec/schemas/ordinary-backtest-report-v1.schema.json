@@ -1,0 +1,2258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:heisentick:strat:ordinary-backtest-report:v1",
+  "$comment": "Operation-specific run response: complete report success or run error. Select this schema from the called operation before examining the response. Identity, capture and metric semantic checks are additionally required; see docs/ordinary-backtest-contract.md.",
+  "$ref": "#/$defs/runResponse",
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$",
+      "minLength": 40,
+      "maxLength": 40
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "utf8Bytes"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "utf8Bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "symbol",
+        "timeframe"
+      ],
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "timeframe": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        }
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feePerUnit",
+        "fillOn",
+        "slippage",
+        "slippageBps",
+        "startEquity"
+      ],
+      "properties": {
+        "feePerUnit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fillOn": {
+          "enum": [
+            "close",
+            "open",
+            "nextOpen"
+          ]
+        },
+        "slippage": {
+          "type": "number",
+          "minimum": 0
+        },
+        "slippageBps": {
+          "type": "number",
+          "minimum": 0
+        },
+        "startEquity": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rangeMethod",
+        "costs",
+        "params",
+        "forceRoute",
+        "chartType"
+      ],
+      "properties": {
+        "rangeMethod": {
+          "enum": [
+            "zone",
+            "pivot"
+          ]
+        },
+        "costs": {
+          "$ref": "#/$defs/costs"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        "forceRoute": {
+          "const": false
+        },
+        "chartType": {
+          "const": "candles"
+        }
+      }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo",
+        "tag",
+        "sourceCommit",
+        "sourceTree",
+        "target",
+        "goVersion",
+        "schemaSetSha256"
+      ],
+      "properties": {
+        "repo": {
+          "const": "spik3r/heisentick-strat"
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "sourceCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "sourceTree": {
+          "$ref": "#/$defs/commit"
+        },
+        "target": {
+          "const": "js/wasm"
+        },
+        "goVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "schemaSetSha256": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "request",
+        "data",
+        "producer",
+        "strategyId",
+        "route",
+        "execution",
+        "configSha256"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/identity"
+        },
+        "request": {
+          "$ref": "#/$defs/identity"
+        },
+        "data": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/identity"
+            }
+          ]
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "strategyId": {
+          "$ref": "#/$defs/strategyId"
+        },
+        "route": {
+          "$ref": "#/$defs/route"
+        },
+        "execution": {
+          "$ref": "#/$defs/execution"
+        },
+        "configSha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/digest"
+            }
+          ]
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "line",
+        "col"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "line": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ]
+        },
+        "col": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ]
+        }
+      }
+    },
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startEquity",
+        "completedEndEquity",
+        "completedNetPnl",
+        "completedReturnPct",
+        "realizedCashPnl",
+        "markedEndEquity",
+        "markedNetPnl",
+        "markedReturnPct",
+        "openUnrealizedPnl",
+        "openEntryFeePaid",
+        "entryFeesPaid",
+        "exitFeesPaid"
+      ],
+      "properties": {
+        "startEquity": {
+          "$ref": "#/$defs/metric_account_startEquity"
+        },
+        "completedEndEquity": {
+          "$ref": "#/$defs/metric_account_completedEndEquity"
+        },
+        "completedNetPnl": {
+          "$ref": "#/$defs/metric_account_completedNetPnl"
+        },
+        "completedReturnPct": {
+          "$ref": "#/$defs/metric_account_completedReturnPct"
+        },
+        "realizedCashPnl": {
+          "$ref": "#/$defs/metric_account_realizedCashPnl"
+        },
+        "markedEndEquity": {
+          "$ref": "#/$defs/metric_account_markedEndEquity"
+        },
+        "markedNetPnl": {
+          "$ref": "#/$defs/metric_account_markedNetPnl"
+        },
+        "markedReturnPct": {
+          "$ref": "#/$defs/metric_account_markedReturnPct"
+        },
+        "openUnrealizedPnl": {
+          "$ref": "#/$defs/metric_account_openUnrealizedPnl"
+        },
+        "openEntryFeePaid": {
+          "$ref": "#/$defs/metric_account_openEntryFeePaid"
+        },
+        "entryFeesPaid": {
+          "$ref": "#/$defs/metric_account_entryFeesPaid"
+        },
+        "exitFeesPaid": {
+          "$ref": "#/$defs/metric_account_exitFeesPaid"
+        }
+      }
+    },
+    "completed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "count",
+        "wins",
+        "losses",
+        "breakeven",
+        "winRate",
+        "profitFactor",
+        "expectancy",
+        "averageWin",
+        "averageLoss",
+        "worstLoss",
+        "netPnl"
+      ],
+      "properties": {
+        "count": {
+          "$ref": "#/$defs/metric_completed_count"
+        },
+        "wins": {
+          "$ref": "#/$defs/metric_completed_wins"
+        },
+        "losses": {
+          "$ref": "#/$defs/metric_completed_losses"
+        },
+        "breakeven": {
+          "$ref": "#/$defs/metric_completed_breakeven"
+        },
+        "winRate": {
+          "$ref": "#/$defs/metric_completed_winRate"
+        },
+        "profitFactor": {
+          "$ref": "#/$defs/metric_completed_profitFactor"
+        },
+        "expectancy": {
+          "$ref": "#/$defs/metric_completed_expectancy"
+        },
+        "averageWin": {
+          "$ref": "#/$defs/metric_completed_averageWin"
+        },
+        "averageLoss": {
+          "$ref": "#/$defs/metric_completed_averageLoss"
+        },
+        "worstLoss": {
+          "$ref": "#/$defs/metric_completed_worstLoss"
+        },
+        "netPnl": {
+          "$ref": "#/$defs/metric_completed_netPnl"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "count": {
+                "properties": {
+                  "value": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "allOf": [
+              {
+                "properties": {
+                  "winRate": {
+                    "properties": {
+                      "status": {
+                        "const": "unavailable"
+                      },
+                      "reason": {
+                        "const": "no-trades"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "profitFactor": {
+                    "properties": {
+                      "status": {
+                        "const": "unavailable"
+                      },
+                      "reason": {
+                        "const": "no-trades"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "else": {
+            "allOf": [
+              {
+                "properties": {
+                  "winRate": {
+                    "properties": {
+                      "status": {
+                        "const": "available"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "losses": {
+                      "properties": {
+                        "value": {
+                          "const": 0
+                        }
+                      }
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "profitFactor": {
+                      "properties": {
+                        "status": {
+                          "const": "unavailable"
+                        },
+                        "reason": {
+                          "const": "no-losses"
+                        }
+                      }
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "profitFactor": {
+                      "properties": {
+                        "status": {
+                          "const": "available"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drawdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "basis",
+        "amount",
+        "percent",
+        "amountAt",
+        "percentAt"
+      ],
+      "properties": {
+        "basis": {
+          "const": "post-execution-original-close-running-peak-v1"
+        },
+        "amount": {
+          "$ref": "#/$defs/metric_drawdown_amount"
+        },
+        "percent": {
+          "$ref": "#/$defs/metric_drawdown_percent"
+        },
+        "amountAt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "index",
+                "t"
+              ],
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "t": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              }
+            }
+          ]
+        },
+        "percentAt": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "index",
+                "t"
+              ],
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "t": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "amount": {
+                "properties": {
+                  "value": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "amountAt": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "amountAt": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "percent": {
+                "properties": {
+                  "value": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "percentAt": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "percentAt": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "mark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "t",
+        "realizedCashPnl",
+        "unrealizedPnl",
+        "entryFeesPaid",
+        "exitFeesPaid",
+        "equity"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "t": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "realizedCashPnl": {
+          "type": "number"
+        },
+        "unrealizedPnl": {
+          "type": "number"
+        },
+        "entryFeesPaid": {
+          "type": "number"
+        },
+        "exitFeesPaid": {
+          "type": "number"
+        },
+        "equity": {
+          "type": "number"
+        }
+      }
+    },
+    "jsonValue": {
+      "anyOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          },
+          "maxItems": 256
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "maxLength": 128
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          },
+          "maxProperties": 128
+        }
+      ]
+    },
+    "trade": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry",
+        "entryIndex",
+        "entryT",
+        "exit",
+        "exitIndex",
+        "exitT",
+        "initialSl",
+        "initialTp",
+        "meta",
+        "pnl",
+        "points",
+        "reason",
+        "side",
+        "size",
+        "sl",
+        "tag",
+        "tp"
+      ],
+      "properties": {
+        "entry": {
+          "type": "number"
+        },
+        "entryIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "entryT": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "exit": {
+          "type": "number"
+        },
+        "exitIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "exitT": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "initialSl": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "initialTp": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "meta": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          },
+          "maxProperties": 128
+        },
+        "pnl": {
+          "type": "number"
+        },
+        "points": {
+          "type": "number"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "side": {
+          "enum": [
+            "long",
+            "short"
+          ]
+        },
+        "size": {
+          "type": "number"
+        },
+        "sl": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "tp": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "partial": {
+          "type": "boolean"
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      }
+    },
+    "nativeCosts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feePerUnit",
+        "fillOn",
+        "slippage",
+        "startEquity"
+      ],
+      "properties": {
+        "feePerUnit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fillOn": {
+          "enum": [
+            "close",
+            "open",
+            "nextOpen"
+          ]
+        },
+        "slippage": {
+          "type": "number",
+          "minimum": 0
+        },
+        "slippageBps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "startEquity": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "nativeRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "case",
+        "strategyId",
+        "symbol",
+        "timeframe",
+        "higherTimeframe",
+        "rangeMethod",
+        "costs",
+        "tradeCount",
+        "trades"
+      ],
+      "properties": {
+        "schema": {
+          "const": "dsl-conformance-trades-v1"
+        },
+        "case": {
+          "$ref": "#/$defs/requestId"
+        },
+        "strategyId": {
+          "$ref": "#/$defs/strategyId"
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "timeframe": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "higherTimeframe": {
+          "const": null
+        },
+        "rangeMethod": {
+          "enum": [
+            "zone",
+            "pivot"
+          ]
+        },
+        "costs": {
+          "$ref": "#/$defs/nativeCosts"
+        },
+        "tradeCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "trades": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trade"
+          },
+          "maxItems": 40000
+        }
+      }
+    },
+    "optionalAnalyses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "groupings",
+        "rDistribution",
+        "monthlyReturns",
+        "costSweep",
+        "portfolioFit",
+        "replayMetrics",
+        "persistedSummary"
+      ],
+      "properties": {
+        "groupings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        },
+        "rDistribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        },
+        "monthlyReturns": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        },
+        "costSweep": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        },
+        "portfolioFit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        },
+        "replayMetrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        },
+        "persistedSummary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "const": "not-in-contract"
+            }
+          }
+        }
+      }
+    },
+    "report": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "ok",
+        "requestId",
+        "operation",
+        "binding",
+        "execution",
+        "nativeRun",
+        "account",
+        "completedPositions",
+        "drawdown",
+        "equity",
+        "analyses",
+        "diagnostics"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-ordinary-backtest-report-v1"
+        },
+        "ok": {
+          "const": true
+        },
+        "requestId": {
+          "$ref": "#/$defs/requestId"
+        },
+        "binding": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/binding"
+            },
+            {
+              "properties": {
+                "configSha256": {
+                  "$ref": "#/$defs/digest"
+                },
+                "data": {
+                  "$ref": "#/$defs/identity"
+                }
+              }
+            }
+          ]
+        },
+        "execution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "profile",
+            "terminalPolicy",
+            "finalizationReason",
+            "barCount",
+            "firstT",
+            "lastT"
+          ],
+          "properties": {
+            "status": {
+              "const": "completed"
+            },
+            "profile": {
+              "const": "original-chart-bars-v1"
+            },
+            "terminalPolicy": {
+              "const": "existing-native-finalization"
+            },
+            "finalizationReason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "barCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000
+            },
+            "firstT": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "lastT": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          }
+        },
+        "nativeRun": {
+          "$ref": "#/$defs/nativeRun"
+        },
+        "account": {
+          "$ref": "#/$defs/account"
+        },
+        "completedPositions": {
+          "$ref": "#/$defs/completed"
+        },
+        "drawdown": {
+          "$ref": "#/$defs/drawdown"
+        },
+        "equity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/mark"
+          },
+          "maxItems": 10000,
+          "minItems": 1
+        },
+        "analyses": {
+          "$ref": "#/$defs/optionalAnalyses"
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          },
+          "maxItems": 256
+        },
+        "operation": {
+          "const": "run"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "ok",
+        "requestId",
+        "operation",
+        "binding",
+        "error",
+        "diagnostics"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-ordinary-backtest-error-v1"
+        },
+        "ok": {
+          "const": false
+        },
+        "requestId": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/requestId"
+            }
+          ]
+        },
+        "binding": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/binding"
+            }
+          ]
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "stage",
+            "field",
+            "barIndex",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "enum": [
+                "BACKTEST_ARGUMENTS",
+                "BACKTEST_SOURCE_ENCODING",
+                "BACKTEST_JSON_ENCODING",
+                "BACKTEST_DUPLICATE_KEY",
+                "BACKTEST_UNKNOWN_FIELD",
+                "BACKTEST_SCHEMA",
+                "BACKTEST_INPUT_LIMIT",
+                "BACKTEST_PARSE_REJECTED",
+                "BACKTEST_ROUTE_UNSUPPORTED",
+                "BACKTEST_OPTIONS_UNSUPPORTED",
+                "BACKTEST_DATA_REQUIRED",
+                "BACKTEST_DATA_INVALID",
+                "BACKTEST_DATA_LIMIT",
+                "BACKTEST_FORMING_BAR",
+                "BACKTEST_DEDICATED_REQUIRED",
+                "BACKTEST_ACCOUNTING_UNAVAILABLE",
+                "BACKTEST_OUTPUT_LIMIT",
+                "BACKTEST_NONFINITE_OUTPUT",
+                "BACKTEST_INTERNAL"
+              ]
+            },
+            "stage": {
+              "enum": [
+                "transport",
+                "parse",
+                "admission",
+                "execution",
+                "report"
+              ]
+            },
+            "field": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              ]
+            },
+            "barIndex": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          },
+          "maxItems": 256
+        },
+        "operation": {
+          "enum": [
+            "inspect",
+            "run"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "transport"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_ARGUMENTS",
+                      "BACKTEST_SOURCE_ENCODING",
+                      "BACKTEST_JSON_ENCODING",
+                      "BACKTEST_DUPLICATE_KEY",
+                      "BACKTEST_UNKNOWN_FIELD",
+                      "BACKTEST_SCHEMA",
+                      "BACKTEST_INPUT_LIMIT",
+                      "BACKTEST_DATA_REQUIRED",
+                      "BACKTEST_DATA_LIMIT",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "type": "null"
+              },
+              "binding": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "parse"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_PARSE_REJECTED",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/binding"
+                  },
+                  {
+                    "properties": {
+                      "configSha256": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "admission"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_ROUTE_UNSUPPORTED",
+                      "BACKTEST_OPTIONS_UNSUPPORTED",
+                      "BACKTEST_DATA_INVALID",
+                      "BACKTEST_FORMING_BAR",
+                      "BACKTEST_DEDICATED_REQUIRED",
+                      "BACKTEST_ACCOUNTING_UNAVAILABLE",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/binding"
+                  },
+                  {
+                    "properties": {
+                      "configSha256": {
+                        "$ref": "#/$defs/digest"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "execution"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/binding"
+                  },
+                  {
+                    "properties": {
+                      "configSha256": {
+                        "$ref": "#/$defs/digest"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "report"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_OUTPUT_LIMIT",
+                      "BACKTEST_NONFINITE_OUTPUT",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "$ref": "#/$defs/binding"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "operation": {
+                      "const": "run"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "binding": {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/binding"
+                        },
+                        {
+                          "properties": {
+                            "configSha256": {
+                              "$ref": "#/$defs/digest"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    },
+    "strategyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    },
+    "runError": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/error"
+        },
+        {
+          "properties": {
+            "operation": {
+              "const": "run"
+            }
+          }
+        }
+      ]
+    },
+    "runResponse": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/report"
+        },
+        {
+          "$ref": "#/$defs/runError"
+        }
+      ]
+    },
+    "metric_account_startEquity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "explicit-start-equity-v1"
+        }
+      }
+    },
+    "metric_account_completedNetPnl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "broker-last-flat-completed-v1"
+        }
+      }
+    },
+    "metric_account_completedEndEquity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "broker-last-flat-completed-v1"
+        }
+      }
+    },
+    "metric_account_completedReturnPct": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "percent"
+        },
+        "basis": {
+          "const": "broker-last-flat-completed-v1"
+        }
+      }
+    },
+    "metric_account_realizedCashPnl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "broker-realized-terminal-v1"
+        }
+      }
+    },
+    "metric_account_markedEndEquity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "broker-close-mtm-terminal-v1"
+        }
+      }
+    },
+    "metric_account_markedNetPnl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "broker-close-mtm-terminal-v1"
+        }
+      }
+    },
+    "metric_account_markedReturnPct": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "percent"
+        },
+        "basis": {
+          "const": "broker-close-mtm-terminal-v1"
+        }
+      }
+    },
+    "metric_account_openUnrealizedPnl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "original-close-open-position-v1"
+        }
+      }
+    },
+    "metric_account_openEntryFeePaid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "actual-open-entry-fee-v1"
+        }
+      }
+    },
+    "metric_account_entryFeesPaid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "nominal-entry-fees-event-order-v1"
+        }
+      }
+    },
+    "metric_account_exitFeesPaid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "nominal-exit-fees-event-order-v1"
+        }
+      }
+    },
+    "metric_completed_count": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "unit": {
+          "const": "count"
+        },
+        "basis": {
+          "const": "logical-position-completed-v1"
+        }
+      }
+    },
+    "metric_completed_wins": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "unit": {
+          "const": "count"
+        },
+        "basis": {
+          "const": "logical-position-completed-v1"
+        }
+      }
+    },
+    "metric_completed_losses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "unit": {
+          "const": "count"
+        },
+        "basis": {
+          "const": "logical-position-completed-v1"
+        }
+      }
+    },
+    "metric_completed_breakeven": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "unit": {
+          "const": "count"
+        },
+        "basis": {
+          "const": "logical-position-completed-v1"
+        }
+      }
+    },
+    "metric_completed_netPnl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "logical-position-net-reduction-v1"
+        }
+      }
+    },
+    "metric_completed_winRate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "value",
+            "unit",
+            "basis"
+          ],
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "unit": {
+              "const": "ratio"
+            },
+            "basis": {
+              "const": "logical-position-completed-v1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason",
+            "unit",
+            "basis"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "enum": [
+                "no-trades"
+              ]
+            },
+            "unit": {
+              "const": "ratio"
+            },
+            "basis": {
+              "const": "logical-position-completed-v1"
+            }
+          }
+        }
+      ]
+    },
+    "metric_completed_profitFactor": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "value",
+            "unit",
+            "basis"
+          ],
+          "properties": {
+            "status": {
+              "const": "available"
+            },
+            "value": {
+              "type": "number",
+              "minimum": 0
+            },
+            "unit": {
+              "const": "ratio"
+            },
+            "basis": {
+              "const": "logical-position-completed-v1"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason",
+            "unit",
+            "basis"
+          ],
+          "properties": {
+            "status": {
+              "const": "unavailable"
+            },
+            "reason": {
+              "enum": [
+                "no-trades",
+                "no-losses"
+              ]
+            },
+            "unit": {
+              "const": "ratio"
+            },
+            "basis": {
+              "const": "logical-position-completed-v1"
+            }
+          }
+        }
+      ]
+    },
+    "metric_completed_expectancy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "unavailable"
+        },
+        "reason": {
+          "enum": [
+            "not-in-contract"
+          ]
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "ordinary-statistic-not-in-contract-v1"
+        }
+      }
+    },
+    "metric_completed_averageWin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "unavailable"
+        },
+        "reason": {
+          "enum": [
+            "not-in-contract"
+          ]
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "ordinary-statistic-not-in-contract-v1"
+        }
+      }
+    },
+    "metric_completed_averageLoss": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "unavailable"
+        },
+        "reason": {
+          "enum": [
+            "not-in-contract"
+          ]
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "ordinary-statistic-not-in-contract-v1"
+        }
+      }
+    },
+    "metric_completed_worstLoss": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "unavailable"
+        },
+        "reason": {
+          "enum": [
+            "not-in-contract"
+          ]
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "ordinary-statistic-not-in-contract-v1"
+        }
+      }
+    },
+    "metric_drawdown_amount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "const": "native-account-unit"
+        },
+        "basis": {
+          "const": "post-execution-original-close-running-peak-v1"
+        }
+      }
+    },
+    "metric_drawdown_percent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "value",
+        "unit",
+        "basis"
+      ],
+      "properties": {
+        "status": {
+          "const": "available"
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "const": "percent"
+        },
+        "basis": {
+          "const": "post-execution-original-close-running-peak-v1"
+        }
+      }
+    }
+  }
+}
