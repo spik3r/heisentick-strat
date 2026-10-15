@@ -146,3 +146,53 @@ must distinguish unchanged raw execution from Python-versus-Go unit accounting,
 preserve all mismatches and original goldens, and identify inspected history as
 inspected. HT210 archived-draw reproduction and volume variants remain separate.
 No new holdout, parameter search, forward deployment or market order is enabled.
+
+
+## Source-pin qualification after PR137 review (2026-10-15)
+
+The bounded [HT210 review claim](https://github.com/spik3r/heisentick-backlog/blob/1978d2bcf4d237832e24b997dae4b3ae099d26ef/tasks/HT-210-adaptive-flag-trade-path-exit-audit.md#L486-L497)
+reviewed the complete production-source inventory at
+`d7ef1d06221d9bc79534a502a1acec7b1c8e7e9b` against base
+`08ee262ce2f653aff7c4f5f7579097e3d5435379`. Exactly four of 319 compiler-input
+source hashes changed: the native history CLI and three native history report
+files. The two native dependency closures each changed only those three report
+hashes; package/file membership and the WASM closure were unchanged. No engine,
+Sequential accounting or metric arithmetic source changed.
+
+Before renewing any source hash, compile-only observations with Go 1.22.12,
+CPython 3.12.14 and the original pinned flags compared all seven existing
+instruction streams on each of `linux-amd64`, `linux-arm64` and `js-wasm`.
+All 21 streams matched their original hashes and instruction counts exactly.
+ARM64 was cross-compiled on Linux AMD64, not executed on native ARM64. Independent
+review accepted only four global source-hash updates and three dependency-hash
+updates for each Linux target. Instruction hashes, accounting schedules,
+`sourceParents`, membership, the verifier and compiler flags remain unchanged.
+The renewed manifest SHA256 is
+`c160c67e4858e589c7df9e51fd98c8dcee43c65d8dc9c945319ebfe82c36ac8f`.
+
+After renewal, the unchanged official commands passed:
+
+```sh
+python -B scripts/checks/sequential-accounting-proof.py codegen "$PWD" "$PINNED_GO_1_22_12" "$EVIDENCE_DIR"
+python -B scripts/checks/sequential-accounting-proof-test.py
+```
+
+The official codegen check covers the actual Linux AMD64 host and WASM; all
+19 exact-arithmetic self-tests passed. The separate 21-stream independent
+acceptance receipt has SHA256
+`9c6cdc8713ae6e863f7678e4a205d4f72c10a558a97a8591e02f531aedb184f6`.
+
+Resource observations are retained honestly: the initial combined observation
+stopped its WASM compile at the 300 MiB working-storage budget. Its failure
+receipt and complete emitted listing were preserved; verified lossless listing
+compaction enabled a separately bounded WASM-only continuation with the same
+cap and 512 MiB free-space reserve. The official codegen then passed. The first
+self-test admission was held while compiler intermediates occupied headroom;
+the same unchanged tests passed after those task-owned intermediates were
+released. Neither event changed a qualification or CI guard.
+
+This repair qualifies reviewed source pins and unchanged compiler schedules.
+It does not independently re-accept the earlier Darwin capacity/historical
+receipts, establish native ARM64 execution, or rerun market history. Exact-head
+hosted checks and the separate private historical-evidence handoff remain
+independent review requirements.
