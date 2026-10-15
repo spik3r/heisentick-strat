@@ -19,6 +19,8 @@ aliases, overrides, account sizing, equity defaults or custom baselines.
 
 ## Continuous state and bounds
 
+The original `adaptive-history-v1` profile retains the fixed limits below.
+
 | Resource | Fixed maximum |
 | --- | ---: |
 | Supplied BTB1 rows, including all warmup and any ignored suffix | 70,000 |
@@ -78,11 +80,31 @@ not guarantee observing every transient peak before it happens. Complete output
 is accepted only after exit zero, strict single-document validation and all
 resource/identity checks; failed partial bytes remain separately labeled.
 
+## Fixed long H1 profile
+
+`adaptive-history-long-h1-v1` is a second closed native profile for H1 source
+and requests only. It uses the same six admitted original source/preset
+combinations, existing cost selectors, prefix/warmup rules and semantic
+validation. It does not accept caller-supplied limits. Its fixed maxima are
+150,000 supplied/retained rows, 9,000 UTC trading-window date labels, 120,000
+global exposure midnights and 150,000 global copied gaps. Its internal JSON,
+raw output and final output caps are 512 MiB; the original profile retains its
+256 MiB caps.
+
+The 150,000-row ceiling does not promise that every input at that size runs.
+The closed type-derived internal JSON bound is 284,914,957 bytes at 141,397
+rows and 302,250,002 bytes at 150,000 rows. Both fit the long profile's
+512 MiB cap and exceed the original profile's 256 MiB cap. Separate raw and
+projection bounds use actual result cardinalities and can refuse a dense result
+before serialization when its conservative bound exceeds 512 MiB. Row, day,
+midnight and gap maxima are individual fixed ceilings, not a joint allowance.
+The external supervisor remains required.
+
 ## Distinct native evidence envelope
 
 The final schema is `strat-adaptive-volume-flag-unit-history-v1`. It contains:
 
-- `profile`, always `adaptive-history-v1`;
+- `profile`, the selected fixed native profile;
 - `rawEnvelopeSchema`, always `strat-adaptive-volume-flag-history-raw-v1`;
 - `rawEnvelopeSha256` and `rawEnvelopeBytes`, binding the freshly produced
   compact native raw document plus its trailing LF;

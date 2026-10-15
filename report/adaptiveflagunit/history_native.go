@@ -14,6 +14,7 @@ const (
 	HistoryMaxExposureMidnights = 30000
 	HistoryMaxExposureGaps      = 70000
 	HistoryMaxOutputBytes       = 256 * 1024 * 1024
+	HistoryLongH1MaxOutputBytes = 512 * 1024 * 1024
 )
 
 type HistoryEnvelope struct {
@@ -35,10 +36,11 @@ type PreparedHistory struct {
 	raw        *adaptiveflag.PreparedHistory
 	request    Request
 	requestSHA string
+	profile    string
 }
 
 func PrepareHistory(profile, rawMetadata, projectionMetadata, source string) (*PreparedHistory, error) {
-	if profile != adaptiveflag.HistoryProfile {
+	if !adaptiveflag.IsHistoryProfile(profile) {
 		return nil, Rejection("projection_request_rejected", "projection_request", "explicit adaptive-history-v1 native profile required")
 	}
 	request, err := DecodeRuntimeRequest(projectionMetadata)
@@ -49,7 +51,7 @@ func PrepareHistory(profile, rawMetadata, projectionMetadata, source string) (*P
 	if err != nil {
 		return nil, err
 	}
-	return &PreparedHistory{raw, request, rawBytesSHA([]byte(projectionMetadata))}, nil
+	return &PreparedHistory{raw, request, rawBytesSHA([]byte(projectionMetadata)), profile}, nil
 }
 
 func BuildHistory(profile, rawMetadata, projectionMetadata, source string, data []byte) ([]byte, error) {
@@ -76,15 +78,17 @@ func (p *PreparedHistory) Build(data []byte) (output []byte, err error) {
 	}
 	// The raw allocation is row/input bounded. Validate all actual fields and
 	// global exposure cardinalities before raw serialization or unit allocation.
-	ctx, err := validateRunWithLimits(&document.Run, historyLimits())
+	limits := historyLimitsFor(p.profile)
+	ctx, err := validateRunWithLimits(&document.Run, limits)
 	if err != nil {
 		return nil, err
 	}
-	if _, err = historyProjectionBound(&document.Run, ctx); err != nil {
+	if _, err = historyProjectionBoundWithLimits(&document.Run, ctx, p.profile); err != nil {
 		return nil, Rejection("resource_limit", "output_bound", "native history projection conservative bound exceeded")
 	}
-	rawBound, err := historyJSONBound(document)
-	if err != nil || rawBound+1 > HistoryMaxOutputBytes {
+	maxOutput := historyMaxOutputBytes(p.profile)
+	rawBound, err := historyJSONBoundForProfile(p.profile, document)
+	if err != nil || rawBound+1 > maxOutput {
 		return nil, Rejection("resource_limit", "output_bound", "native history raw conservative bound exceeded")
 	}
 	raw, err := json.Marshal(document)
@@ -96,13 +100,13 @@ func (p *PreparedHistory) Build(data []byte) (output []byte, err error) {
 		return nil, Rejection("resource_limit", "output_bound", "native history raw bound violated")
 	}
 	owned := ownedRaw{document.Run, raw, document.DSLSHA256, document.ConfigSHA256, document.BTB1SHA256}
-	projection, err := projectWithLimits(owned, p.request, historyLimits())
+	projection, err := projectWithLimits(owned, p.request, limits)
 	if err != nil {
 		return nil, err
 	}
-	envelope := HistoryEnvelope{HistoryEnvelopeSchema, adaptiveflag.HistoryProfile, adaptiveflag.HistoryRawSchema, rawBytesSHA(raw), len(raw), document.Request, document.RequestSHA256, p.request, p.requestSHA, projection}
-	bound, err := historyJSONBound(envelope)
-	if err != nil || bound+1 > HistoryMaxOutputBytes {
+	envelope := HistoryEnvelope{HistoryEnvelopeSchema, p.profile, adaptiveflag.HistoryRawSchema, rawBytesSHA(raw), len(raw), document.Request, document.RequestSHA256, p.request, p.requestSHA, projection}
+	bound, err := historyJSONBoundForProfile(p.profile, envelope)
+	if err != nil || bound+1 > maxOutput {
 		return nil, Rejection("resource_limit", "output_bound", "native history final conservative bound exceeded")
 	}
 	output, err = json.Marshal(envelope)

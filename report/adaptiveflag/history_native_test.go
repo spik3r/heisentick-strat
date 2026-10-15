@@ -148,6 +148,54 @@ func TestHistoryRawRowsCalendarAndMalformedBounds(t *testing.T) {
 	}
 }
 
+func TestHistoryLongH1FixedProfileAdmission(t *testing.T) {
+	profile := HistoryLongH1Profile
+	for _, tf := range []string{"M30", "H1"} {
+		_, err := PrepareHistory(profile, testMetadata(tf, nil), testSource(t, "INITIAL", tf))
+		if (tf == "H1") != (err == nil) {
+			t.Fatalf("long profile timeframe %s: %v", tf, err)
+		}
+	}
+	source := testSource(t, "INITIAL", "H1")
+	for _, days := range []int64{9000, 9001} {
+		window := &engine.AdaptiveFlagExecutionWindow{TradeFromMS: 0, TradeToMS: days * 86400000}
+		_, err := PrepareHistory(profile, testMetadata("H1", window), source)
+		if (days == 9000) != (err == nil) {
+			t.Fatalf("long calendar days %d: %v", days, err)
+		}
+	}
+	for _, rows := range []int{HistoryLongH1MaxRows, HistoryLongH1MaxRows + 1} {
+		n := uint32(rows)
+		header := make([]byte, 16)
+		binary.LittleEndian.PutUint32(header, 0x31425442)
+		binary.LittleEndian.PutUint32(header[4:], 1)
+		binary.LittleEndian.PutUint32(header[8:], n)
+		binary.LittleEndian.PutUint32(header[12:], 6)
+		err := ValidateHistoryHeaderWithProfile(profile, header, 16+rows*48)
+		if (rows == HistoryLongH1MaxRows) != (err == nil) {
+			t.Fatalf("long header rows %d: %v", rows, err)
+		}
+	}
+	// The original fixed profile still refuses the long header.
+	header := make([]byte, 16)
+	binary.LittleEndian.PutUint32(header, 0x31425442)
+	binary.LittleEndian.PutUint32(header[4:], 1)
+	binary.LittleEndian.PutUint32(header[8:], HistoryLongH1MaxRows)
+	binary.LittleEndian.PutUint32(header[12:], 6)
+	if err := ValidateHistoryHeaderWithProfile(HistoryProfile, header, 16+HistoryLongH1MaxRows*48); err == nil {
+		t.Fatal("original profile admitted long row count")
+	}
+	if _, err := historyInternalJSONBoundWithLimit(141397, HistoryMaxInternalJSONBytes, HistoryLongH1MaxRows); err == nil {
+		t.Fatal("original internal cap admitted the 141,397-row proof")
+	}
+	if _, err := historyInternalJSONBoundWithLimit(141397, HistoryLongH1MaxJSONBytes, HistoryLongH1MaxRows); err != nil {
+		t.Fatal("long profile internal cap refused 141,397-row proof", err)
+	}
+	if _, err := historyInternalJSONBoundWithLimit(HistoryLongH1MaxRows, HistoryLongH1MaxJSONBytes, HistoryLongH1MaxRows); err != nil {
+		t.Fatal("long profile maximum row proof refused under 512 MiB", err)
+	}
+}
+
 func TestHistoryInternalSerializationBoundAndOwnership(t *testing.T) {
 	maximum, err := historyInternalJSONBound(70000)
 	if err != nil || maximum > HistoryMaxInternalJSONBytes {
