@@ -14,7 +14,9 @@ const args = process.argv.slice(2);
 assert(args.length === 3 || args.length === 4, 'three artifact paths and optional evidence directory required');
 const [nativeCLI, wasmPath, shim, evidence] = args.map((path) => resolve(path));
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const maxBytes = 16 << 20;
+const maxBytes = 64 << 20;
+const maxOutputBytes = 128 << 20;
+const maxRecords = 65536;
 const schema = 'heisentick-paper-bidask-v1';
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const clone = (value) => structuredClone(value);
@@ -43,18 +45,18 @@ const call = globalThis.engineRunPaperBidAsk;
 function wasm(...values) {
   const raw = call(...values);
   assert.equal(typeof raw, 'string');
-  assert(Buffer.byteLength(raw) <= maxBytes, 'unbounded public output');
+  assert(Buffer.byteLength(raw) <= maxOutputBytes, 'unbounded public output');
   return { raw, value: JSON.parse(raw) };
 }
 function native(raw) {
   writeFileSync(requestPath, raw);
   const result = spawnSync(nativeCLI, ['paper-bidask', `--request-file=${requestPath}`],
-    { encoding: 'utf8', timeout: 120000, maxBuffer: maxBytes + 4096 });
+    { encoding: 'utf8', timeout: 120000, maxBuffer: maxOutputBytes + 4096 });
   assert.equal(result.error, undefined);
   assert.equal(result.status, 0, result.stderr); // Refusals also exit normally.
   assert.equal(result.stderr, '');
   assert(result.stdout.endsWith('\n'), 'native must return one complete JSON line');
-  assert(Buffer.byteLength(result.stdout) <= maxBytes + 1);
+  assert(Buffer.byteLength(result.stdout) <= maxOutputBytes + 1);
   return { raw: result.stdout.slice(0, -1), value: JSON.parse(result.stdout) };
 }
 
@@ -783,19 +785,19 @@ try {
   compare(bars, 'exact-4096-bars-retry', barResult.map((v) => v.checkpoint), barResult.map((v) => v.events));
   addBar(bars, 4096n * 5n * minute); bad(bars, 'BAR_LIMIT', '4097-bars');
   const quotes = clone(admissionBase);
-  for (let i = 0; i < 8192; i++) {
+  for (let i = 0; i < maxRecords; i++) {
     const q = quote(quotes, BigInt(i), '100', '100.2'); append(quotes, 'quote', q, q.qualifiedT);
   }
-  const quoteResult = compare(quotes, 'exact-8192-records-and-quote-identities');
-  for (const v of quoteResult) { assert.equal(v.processedRecords, 8192); assert.equal(v.processedBars, 0); assert.equal(v.events.length, 0); }
-  compare(quotes, 'exact-8192-quotes-retry', quoteResult.map((v) => v.checkpoint), quoteResult.map((v) => v.events));
+  const quoteResult = compare(quotes, 'exact-65536-records-and-quote-identities');
+  for (const v of quoteResult) { assert.equal(v.processedRecords, maxRecords); assert.equal(v.processedBars, 0); assert.equal(v.events.length, 0); }
+  compare(quotes, 'exact-65536-quotes-retry', quoteResult.map((v) => v.checkpoint), quoteResult.map((v) => v.events));
   const earliest = clone(quotes.records[0].quote); earliest.bids[0].liquidity = '9999';
   earliest.receivedT = quotes.records.at(-1).quote.receivedT; earliest.qualifiedT = quotes.records.at(-1).quote.qualifiedT;
   const conflictingQuotes = clone(quotes); conflictingQuotes.records.at(-1).quote = earliest;
-  bad(conflictingQuotes, 'QUOTE_CONFLICT', 'earliest-identity-retained-at-capacity');
-  const q = quote(quotes, 8192n, '100', '100.2'); append(quotes, 'quote', q, q.qualifiedT);
-  bad(quotes, 'INPUT', '8193-records');
-  // An 8193rd identity beyond the common 8192-record/identity ceiling is not
+  bad(conflictingQuotes, 'QUOTE_CONFLICT', 'earliest-identity-retained-at-65536-capacity');
+  const q = quote(quotes, BigInt(maxRecords), '100', '100.2'); append(quotes, 'quote', q, q.qualifiedT);
+  bad(quotes, 'INPUT', '65537-records');
+  // A 65537th identity beyond the common 65536-record/identity ceiling is not
   // publicly reachable. Direct limit/output branches are covered by Go tests;
   // this harness neither weakens those limits nor invents a second encoder.
   const exact = healthyRaw + ' '.repeat(maxBytes - Buffer.byteLength(healthyRaw));
@@ -818,7 +820,7 @@ try {
   const summary = { schema: 'paper-bidask-public-export-proof-v1', status: 'passed',
     runtime: 'actual-native-cli-and-node-hosted-public-go-wasm-export', export: 'engineRunPaperBidAsk',
     comparisons, checkpointResumeSplits: resumeSplits, refusals, priorExportFunctions: oldExports.length,
-    inputMaxUTF8Bytes: maxBytes, outputMaxUTF8Bytes: maxBytes, financialComparison: 'exact-no-tolerance',
+    inputMaxUTF8Bytes: maxBytes, outputMaxUTF8Bytes: maxOutputBytes, financialComparison: 'exact-no-tolerance',
     targetBoundIdentityProof: 'source-config-producer-binding-input-decision-position-event-cumulative-event-receipt',
     normalizedFields: ['binding.producer.goos', 'binding.producer.goarch', 'bindingDigest', 'events[].id',
       'events[].decisionId', 'events[].positionId', 'position.id', 'position.decisionId', 'pending.decisionId',
