@@ -67,6 +67,7 @@ var implementedRunCases = []string{
 	"research-dsl-daily-snd-retest-xauusd-4h",
 	"family-intra-hour-run-exhaustion",
 	"family-sma-golden-cross",
+	"family-sma-regime-hold",
 	"family-sma-golden-cross-protected",
 	"deployed-dsl-sma-golden-cross-xauusd-one-minute-canary",
 	"family-keltner-reversion",

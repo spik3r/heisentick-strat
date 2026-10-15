@@ -157,6 +157,7 @@ type flagParams struct {
 	TPBVWAPReclaim             bool
 	DualEMA                    dualEMAResumptionParams
 	SMAGoldenCross             smaGoldenCrossParams
+	SMARegimeHold              smaRegimeHoldParams
 	SessionPhases              []string
 	LocalWeekdays              []string
 	BlockedLocalWeekdays       []string
@@ -294,6 +295,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		RiskUSD:                    numberFromAny(cfg["riskUsd"], 200),
 		DualEMA:                    dualEMAParams(cfg),
 		SMAGoldenCross:             smaGoldenCrossParamsFromConfig(cfg),
+		SMARegimeHold:              smaRegimeHoldParamsFromConfig(cfg),
 		Partial: partialParams{
 			Enabled:       boolValue(partial, "enabled", false),
 			Fraction:      numberValue(partial, "fraction", 0),

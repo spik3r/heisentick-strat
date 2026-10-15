@@ -123,6 +123,13 @@ func TestRegimeEngineReservesSelectorsAndAuthoredFields(t *testing.T) {
 			regimeRejectSource(t, "dsl v7\nstrategy \"x\"\nsetup { type: "+value+suffix+" }")
 		}
 	}
+	validSMA, err := Parse("dsl v7\nsetup { type: sma regime hold }\n")
+	if err != nil || len(validSMA.Errors) != 0 || validSMA.Config["setupType"] != string(FamilySMARegimeHold) {
+		t.Fatalf("exact SMA regime selector should bypass only the unrelated regime-engine reservation: result=%+v err=%v", validSMA, err)
+	}
+	for _, value := range []string{"sma regime hold extra", "unknown sma regime hold", "regime hold"} {
+		regimeRejectSource(t, "dsl v7\nstrategy \"x\"\nsetup { type: "+value+" }")
+	}
 	for _, clause := range []string{"regime mode source-like-v1", "regime profile v9-floor-half-v1", "regime timeframe M30 from M5", "regimeEngine null", "REGIMEENGINE: null"} {
 		for _, section := range []string{"setup", "risk", "execution", "market"} {
 			regimeRejectSource(t, "dsl v7\nstrategy \"x\"\n"+section+" { "+clause+" }\nsetup { type: flag continuation }")

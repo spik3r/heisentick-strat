@@ -75,6 +75,9 @@ type parser struct {
 	entryTfLine         *logicalLine
 	dualEMAAudit        dualEMAParseAudit
 	smaGoldenCrossAudit smaGoldenCrossParseAudit
+	smaRegimeHoldAudit  []string
+	smaRegimeHoldSeen   bool
+	smaRegimeHoldTypes  int
 	legacySetup9Audit   legacySetup9ParseAudit
 	rmvFields           map[string]bool
 	sarFields           map[string]bool
@@ -149,6 +152,7 @@ func (p *parser) parse() {
 	p.validateFairValueGap()
 	p.validateDualEMAResumption()
 	p.validateSMAGoldenCross()
+	p.validateSMARegimeHold()
 	p.validateLegacySetup9()
 	p.validateRMVSourceTimeframe()
 	p.validateParabolicSAR()
@@ -168,6 +172,7 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	head := strings.ToLower(tokens[0])
 	p.recordDualEMAAuthored(line, tokens, head)
 	p.recordSMAGoldenCrossAuthored(line, head)
+	p.recordSMARegimeHoldAuthored(line, head, tokens)
 	p.recordLegacySetup9Authored(line, head, tokens)
 	if head != "dsl" {
 		p.reportMalformedNumbers(line, tokens)
@@ -405,8 +410,12 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 			p.unknownDirective(line, tokens[0])
 		} else if p.config["setupType"] == string(FamilySMAGoldenCross) && !p.parseSMAGoldenCross(tokens) {
 			p.err(line, "unrecognized sma line — sma-golden-cross phrases only", "")
+		} else if p.config["setupType"] == string(FamilySMARegimeHold) && !p.parseSMARegimeHold(tokens) {
+			p.err(line, "unrecognized sma line — sma-regime-hold phrases only", "")
 		} else if p.config["setupType"] != string(FamilySMAGoldenCross) {
-			p.unknownDirective(line, tokens[0])
+			if p.config["setupType"] != string(FamilySMARegimeHold) {
+				p.unknownDirective(line, tokens[0])
+			}
 		}
 	case "sequential":
 		p.parseLegacySetup9(line, tokens)
@@ -471,6 +480,9 @@ func (p *parser) reportDeprecatedSpellings(line logicalLine, tokens []string) {
 	}
 	head := strings.ToLower(tokens[0])
 	if head == "description" || head == "name" || head == "strategy" {
+		return
+	}
+	if line.section == "setup" && head == "type" && strings.Contains(strings.ToLower(line.text), "sma regime hold") {
 		return
 	}
 	reported := map[string]bool{}

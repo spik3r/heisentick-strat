@@ -28,6 +28,7 @@ const (
 	FamilyTrendPullback           FamilyID = "trendPullback"
 	FamilyDualEMAResumption       FamilyID = "dualEmaResumption"
 	FamilySMAGoldenCross          FamilyID = "smaGoldenCross"
+	FamilySMARegimeHold           FamilyID = "smaRegimeHold"
 	FamilyFibContinuation         FamilyID = "fibContinuation"
 	FamilyTriplePushExhaustion    FamilyID = "triplePushExhaustion"
 	FamilyVWAPExtensionFade       FamilyID = "vwapExtensionFade"
