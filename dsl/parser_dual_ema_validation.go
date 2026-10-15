@@ -47,7 +47,7 @@ func (p *parser) validateDualEMAResumption() {
 	allowed := map[string]bool{
 		"|dsl": true, "strategy|strategy": true, "strategy|description": true, "market|slices": true,
 		"setup|type": true, "setup|ema": true, "setup|stop": true,
-		"setup|trail": true, "setup|fallback": true, "filters|side": true,
+		"setup|trail": true, "setup|fallback": true, "filters|side": true, "filters|sar": true,
 		"execution|risk": true, "execution|riskusd": true,
 	}
 	for _, authored := range audit.authored {

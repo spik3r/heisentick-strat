@@ -42,7 +42,7 @@ func newBidAskRunner(r PaperBidAskRequest, p *PreparedRun, b BidAskBinding) *bid
 	signalAge, _ := strconv.ParseInt(r.Policy.MaxSignalAgeMS, 10, 64)
 	x := &bidAskRunner{request: r, prepared: p, binding: b, identity: bidAskHash(b), collector: newBidAskCollector(r.Economics.StartEquity), events: []BidAskEvent{}, coverage: "sampled-observations-only", duration: paperTimeframeMS(r.Route.Timeframe) * 1000000, activation: activation, maxQuoteAge: quoteAge * 1000000, maxSignalAge: signalAge * 1000000, lastBarOpen: -1, lastBarClose: -1, lastQuoteT: -1, quoteIdentities: make(map[int64]string), barIndex: -1}
 	if p != nil {
-		p.broker.reset(p.series, p.cols, p.htfTrend, p.ema, p.emaSlope, p.params, p.fixture, nil)
+		p.resetBroker(nil)
 	}
 	return x
 }

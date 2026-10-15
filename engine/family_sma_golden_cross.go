@@ -102,7 +102,7 @@ func (b *broker) onSMAGoldenCrossBar(i int) {
 		return
 	}
 
-	if !b.rmvGateOK(i) {
+	if !b.parabolicSARGateOK(i, sideLong) || !b.rmvGateOK(i) {
 		return
 	}
 	order := order{

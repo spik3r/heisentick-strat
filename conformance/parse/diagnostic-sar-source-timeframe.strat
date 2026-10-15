@@ -1,0 +1,2 @@
+dsl v7
+filters { source timeframe 4h sar supports entry }

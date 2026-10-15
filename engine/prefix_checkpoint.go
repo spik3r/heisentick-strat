@@ -252,7 +252,7 @@ func RunPrefixResumable(request RunRequest, raw json.RawMessage) (PrefixResult, 
 	if err != nil {
 		return PrefixResult{}, nil, err
 	}
-	prepared.broker.reset(prepared.series, prepared.cols, prepared.htfTrend, prepared.ema, prepared.emaSlope, prepared.params, prepared.fixture, prepared.trades)
+	prepared.resetBroker(prepared.trades)
 	start := 0
 	if len(raw) != 0 {
 		restoreCheckpointState(&prepared.broker, checkpoint.State)

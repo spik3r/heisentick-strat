@@ -57,6 +57,7 @@ type PreparedRun struct {
 	c5             bool
 	execution      ExecutionBounds
 	windowed       bool
+	parabolicSAR   *parabolicSARRuntime
 }
 
 // ReportTradeContext exposes the canonical context labels for one executed
@@ -88,6 +89,7 @@ type SharedRunContext struct {
 	execution    ExecutionBounds
 	windowed     bool
 	forceRoute   bool
+	parabolicSAR *parabolicSARRuntime
 }
 
 // SharedContextKey returns a stable key for the context columns a request needs.
@@ -134,7 +136,8 @@ func SharedContextKey(request RunRequest) (string, error) {
 		SourceTimeframe string
 		Execution       ExecutionBounds
 		Windowed        bool
-	}{Options: options, SourceTimeframe: fixture.SourceTimeframe, Execution: execution, Windowed: request.ExecutionWindow != nil}
+		ParabolicSAR    *contextcols.ParabolicSAROptions `json:",omitempty"`
+	}{Options: options, SourceTimeframe: fixture.SourceTimeframe, Execution: execution, Windowed: request.ExecutionWindow != nil, ParabolicSAR: parabolicSAROptions(request.Config)}
 	raw, err := json.Marshal(identity)
 	if err != nil {
 		return "", err
@@ -199,6 +202,7 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 		execution:    execution,
 		windowed:     request.ExecutionWindow != nil,
 		forceRoute:   request.ForceRoute,
+		parabolicSAR: prepareParabolicSAR(request.Config, series),
 	}, nil
 }
 
@@ -248,6 +252,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if err := validateLegacySetup9Execution(cfg, s.fixture.Costs); err != nil {
 		return nil, err
 	}
+	if err := validateParabolicSARConfig(cfg); err != nil {
+		return nil, err
+	}
 	if err := validateRMVConfig(cfg); err != nil {
 		return nil, err
 	}
@@ -266,6 +273,19 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if err := validateClockRangeRun(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series); err != nil {
 		return nil, err
 	}
+	if err := validateParabolicSARRoute(cfg, s.fixture.Timeframe, s.fixture.SourceTimeframe); err != nil {
+		return nil, err
+	}
+	var sar *parabolicSARRuntime
+	if s.parabolicSAR != nil {
+		spec, _, _ := dsl.DecodeParabolicSAR(cfg)
+		if options := parabolicSAROptions(cfg); options == nil || options.Start != s.parabolicSAR.spec.Start || options.Step != s.parabolicSAR.spec.Step || options.Max != s.parabolicSAR.spec.Max {
+			return nil, errors.New("variant config requires different SAR context columns")
+		}
+		sar = &parabolicSARRuntime{spec: spec, columns: s.parabolicSAR.columns}
+	} else if parabolicSAROptions(cfg) != nil {
+		return nil, errors.New("variant config requires different SAR context columns")
+	}
 	options := contextOptions(s.fixture, cfg)
 	options.NeedReportTradeContext = s.options.NeedReportTradeContext
 	if !reflect.DeepEqual(options, s.options) {
@@ -280,22 +300,26 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 		emaSlope = projectSourceFloat64(s.series, s.sourceSeries, emaSlope)
 	}
 	return &PreparedRun{
-		series:    s.series,
-		cols:      s.cols,
-		htfTrend:  s.htfTrend,
-		ema:       ema,
-		emaSlope:  emaSlope,
-		params:    params,
-		fixture:   s.fixture,
-		offRoute:  !s.forceRoute && !RouteAllowed(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series),
-		trades:    make([]Trade, 0, 32),
-		execution: s.execution,
-		windowed:  s.windowed,
+		series:       s.series,
+		cols:         s.cols,
+		htfTrend:     s.htfTrend,
+		ema:          ema,
+		emaSlope:     emaSlope,
+		params:       params,
+		fixture:      s.fixture,
+		offRoute:     !s.forceRoute && !RouteAllowed(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series),
+		trades:       make([]Trade, 0, 32),
+		execution:    s.execution,
+		windowed:     s.windowed,
+		parabolicSAR: sar,
 	}, nil
 }
 
 // PrepareRun builds the causal context columns and setup state for a strategy.
 func PrepareRun(request RunRequest) (*PreparedRun, error) {
+	if err := validateParabolicSARConfig(request.Config); err != nil {
+		return nil, err
+	}
 	if dsl.IsSequentialFullReserved(request.Config) {
 		return prepareSequentialFull(request)
 	}
@@ -402,6 +426,12 @@ func validateRunRequest(request RunRequest) error {
 	if err := validateLegacySetup9Execution(request.Config, request.Costs); err != nil {
 		return err
 	}
+	if err := validateParabolicSARConfig(request.Config); err != nil {
+		return err
+	}
+	if err := validateParabolicSARRoute(request.Config, request.Timeframe, request.SourceTimeframe); err != nil {
+		return err
+	}
 	if err := validateRMVConfig(request.Config); err != nil {
 		return err
 	}
@@ -421,6 +451,9 @@ func validateRunRequest(request RunRequest) error {
 		return err
 	}
 	if err := validateSeriesShape("higher-timeframe", request.HTFSeries); err != nil {
+		return err
+	}
+	if err := validateParabolicSARSeries(request.Config, request.Series); err != nil {
 		return err
 	}
 	if err := validateSeriesValues("market", request.Series); err != nil {
@@ -578,7 +611,7 @@ func (r *PreparedRun) runRaw(costs Costs) []Trade {
 		r.trades = trades
 		return r.trades
 	}
-	r.broker.reset(r.series, r.cols, r.htfTrend, r.ema, r.emaSlope, r.params, r.fixture, r.trades)
+	r.resetBroker(r.trades)
 	if r.windowed {
 		r.broker.setExecutionWindow(r.execution)
 	}
@@ -626,6 +659,9 @@ func (r *PreparedRun) RunChecked(costs Costs) (RunResult, error) {
 
 // Run executes a direct engine request in one call.
 func Run(request RunRequest) (RunResult, error) {
+	if err := validateParabolicSARConfig(request.Config); err != nil {
+		return RunResult{}, err
+	}
 	if dsl.IsSequentialFullReserved(request.Config) {
 		prepared, err := prepareSequentialFull(request)
 		if err != nil {

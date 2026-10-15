@@ -212,7 +212,7 @@ func RunPrefix(request RunRequest) (PrefixResult, error) {
 	if prepared.offRoute {
 		return PrefixResult{Trades: []PrefixClosedTrade{}, OpenPositions: []OpenPositionSnapshot{}, CheckpointDigest: checkpointDigest}, nil
 	}
-	prepared.broker.reset(prepared.series, prepared.cols, prepared.htfTrend, prepared.ema, prepared.emaSlope, prepared.params, prepared.fixture, prepared.trades)
+	prepared.resetBroker(prepared.trades)
 	if prepared.windowed {
 		prepared.broker.setExecutionWindow(prepared.execution)
 	}

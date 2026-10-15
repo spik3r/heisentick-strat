@@ -293,6 +293,14 @@ Context columns:
 
 Structure filters:
 
+- `sar start N`, `sar step N`, `sar max N` (defaults 0.02/0.02/0.2) and at most
+  one of `sar trend bullish|bearish`, `sar close above|below`,
+  `sar reverses bullish|bearish`, `sar supports entry`. Available only in v7
+  `filters {}` on supported ordinary chart-timeframe broker families.
+  Parameters alone request columns; predicates gate closed-bar entry signals.
+  See [Parabolic SAR](parabolic-sar.md) for the exact numerical variant,
+  initialization, equality, warm-up, invalid-input and route contracts.
+
 - `range method pivot|zone` — how ranges are detected (strategy metadata may
   set a preferred method; reports can force either).
 - `range active within N candles` — max age of the last range

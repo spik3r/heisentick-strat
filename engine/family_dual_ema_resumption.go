@@ -49,7 +49,7 @@ func (b *broker) onDualEMAResumptionBar(i int) {
 	if i < warmup || len(b.dualSlowHistory) < p.RiseBars+1 {
 		return
 	}
-	if b.dualFast > b.dualSlow && b.dualSlow > b.dualSlowHistory[0] && oldClose <= previousFast && close > b.dualFast {
+	if b.parabolicSARGateOK(i, sideLong) && b.dualFast > b.dualSlow && b.dualSlow > b.dualSlowHistory[0] && oldClose <= previousFast && close > b.dualFast {
 		b.pendingOrders = append(b.pendingOrders, order{Side: sideLong, RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: "DSL-DER", Index: i + 1, StopDistance: p.StopATR * b.dualATR, HasStopDistance: true, GapAwareStop: true, NoTarget: true})
 		b.pendingOrders[len(b.pendingOrders)-1].Meta = TradeMeta{
 			"setup": "dualEmaResumption", "signalIndex": i, "signalAtr": b.dualATR,
