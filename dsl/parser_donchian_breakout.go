@@ -3,21 +3,24 @@ package dsl
 import (
 	"math"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
 // donchianBreakoutAudit records the authored directives the family's
 // post-parse step needs: which market gates the author wrote, and whether any
-// stop or target phrase falls outside the family's supported shapes.
+// stop or target phrase falls outside the family's supported shapes, or
+// any enter directive was authored. Refusals remain sticky across later lines.
 type donchianBreakoutAudit struct {
 	sessionsAuthored bool
 	dayTypeAuthored  bool
 	movementAuthored bool
 	otherStop        bool
 	otherTarget      bool
+	enterAuthored    bool
 }
 
-var donchianTargetR = regexp.MustCompile(`(?i)^[\d.]+R$`)
+var donchianTargetR = regexp.MustCompile(`(?i)^(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)R$`)
 
 func (p *parser) recordDonchianBreakoutAuthored(line logicalLine, tokens []string, head string) {
 	audit := &p.donchianAudit
@@ -32,22 +35,49 @@ func (p *parser) recordDonchianBreakoutAuthored(line logicalLine, tokens []strin
 		}
 	case "movement", "maxmovementer", "maxer", "trendiness":
 		audit.movementAuthored = true
+	case "enter":
+		audit.enterAuthored = true
 	case "stop":
 		if !isDonchianATRStop(tokens) {
 			audit.otherStop = true
 		}
 	}
-	if line.section == "target" && !(head == "target" && len(tokens) == 2 && donchianTargetR.MatchString(tokens[1])) {
+	if (line.section == "target" || head == "target") && !(head == "target" && len(tokens) == 2 && isDonchianTargetR(tokens[1])) {
 		audit.otherTarget = true
 	}
 }
 
-// isDonchianATRStop matches exactly `stop N ATR` with positive N.
-func isDonchianATRStop(tokens []string) bool {
-	if len(tokens) != 3 || !strings.EqualFold(tokens[2], "atr") || !isNumberToken(tokens[1]) {
+// isDonchianTargetR admits one unsigned decimal component and an R suffix.
+// Literal zero disables the target; a nonzero decimal that underflows must not.
+func isDonchianTargetR(token string) bool {
+	if !donchianTargetR.MatchString(token) {
 		return false
 	}
-	return parseNumber(tokens[1], 0) > 0
+	value, err := strconv.ParseFloat(token[:len(token)-1], 64)
+	if err != nil || !isFiniteNumber(value) {
+		return false
+	}
+	if value == 0 {
+		return !strings.ContainsAny(token, "123456789")
+	}
+	return value > 0
+}
+
+// isDonchianATRStop matches exactly `stop N ATR` with finite, positive N.
+func isDonchianATRStop(tokens []string) bool {
+	if len(tokens) != 3 || !strings.EqualFold(tokens[2], "atr") {
+		return false
+	}
+	value, err := strconv.ParseFloat(tokens[1], 64)
+	return err == nil && isFiniteNumber(value) && value > 0
+}
+
+// donchianCount parses the exact unsuffixed token. The exclusive power-of-two
+// bound is representable even when float64(MaxInt) rounds up to that bound.
+func donchianCount(token string) (float64, bool) {
+	value, err := strconv.ParseFloat(token, 64)
+	return value, err == nil && isFiniteNumber(value) && value >= 1 &&
+		math.Trunc(value) == value && value < math.Ldexp(1, strconv.IntSize-1)
 }
 
 // parseDonchianBreakoutLine handles the setup-section phrases `channel N
@@ -58,16 +88,16 @@ func (p *parser) parseDonchianBreakoutLine(line logicalLine, tokens []string, he
 	}
 	switch head {
 	case "channel":
-		value := firstNumber(tokens, 1, math.NaN())
-		if len(tokens) != 3 || tokens[2] != "candles" || !isPositiveInteger(value) {
+		value, valid := donchianCount(tokenAt(tokens, 1))
+		if len(tokens) != 3 || tokens[2] != "candles" || !valid {
 			p.err(line, "donchian-breakout channel must be exactly: channel N candles, with positive integer N", "")
 			return true
 		}
 		p.setDonchianBreakoutValue("channelBars", value)
 		return true
 	case "trend":
-		value := firstNumber(tokens, 2, math.NaN())
-		if len(tokens) != 3 || tokens[1] != "ema" || !isPositiveInteger(value) {
+		value, valid := donchianCount(tokenAt(tokens, 2))
+		if len(tokens) != 3 || tokens[1] != "ema" || !valid {
 			p.err(line, "donchian-breakout trend gate must be exactly: trend ema N, with positive integer N", "")
 			return true
 		}
@@ -78,15 +108,27 @@ func (p *parser) parseDonchianBreakoutLine(line logicalLine, tokens []string, he
 }
 
 // parseDonchianBreakoutStop writes the family's fixed ATR stop in the shape
-// the JavaScript parser produces. Other stop shapes fall through to the shared
-// parser and are refused after parsing.
+// the JavaScript parser produces. Invalid exact ATR phrases are consumed so
+// shared fallback parsing cannot put nonfinite values in the refused config.
+// Other stop shapes retain their shared projections and post-parse refusal.
 func (p *parser) parseDonchianBreakoutStop(tokens []string) bool {
-	if p.config["setupType"] != string(FamilyDonchianBreakout) || !isDonchianATRStop(tokens) {
+	if p.config["setupType"] != string(FamilyDonchianBreakout) {
 		return false
 	}
+	exactATR := len(tokens) == 3 && strings.EqualFold(tokens[2], "atr")
+	// normalizeLine separates a leading plus. The phrase is still invalid,
+	// but must not reach parseStop's `plus`/`+` padding fallback (e.g. +Inf).
+	separatedPlusATR := len(tokens) == 4 && tokens[1] == "+" && strings.EqualFold(tokens[3], "atr")
+	if !exactATR && !separatedPlusATR {
+		return false
+	}
+	if !isDonchianATRStop(tokens) {
+		return true
+	}
+	value, _ := strconv.ParseFloat(tokens[1], 64) // checked by isDonchianATRStop
 	stop := copyMap(p.config["stop"])
 	stop["type"] = "atr"
-	stop["atrMult"] = parseNumber(tokens[1], 0)
+	stop["atrMult"] = value
 	p.config["stop"] = stop
 	return true
 }
@@ -122,13 +164,14 @@ func (p *parser) finalizeDonchianBreakout() {
 		p.errorAt(nil, nil, `donchian breakout requires "channel N candles".`, "")
 	}
 	stop := copyMap(p.config["stop"])
-	if audit.otherStop || stop["type"] != "atr" || !(numberFromValue(stop["atrMult"]) > 0) {
+	stopATR := numberFromValue(stop["atrMult"])
+	if audit.otherStop || stop["type"] != "atr" || !isFiniteNumber(stopATR) || !(stopATR > 0) {
 		p.errorAt(nil, nil, "donchian breakout supports only a fixed ATR stop: stop N ATR.", "")
 	}
 	if audit.otherTarget {
 		p.errorAt(nil, nil, "donchian breakout supports only target NR.", "")
 	}
-	if entry := copyMap(p.config["entryMode"]); entry["type"] != "market" {
+	if entry := copyMap(p.config["entryMode"]); audit.enterAuthored || entry["type"] != "market" {
 		p.errorAt(nil, nil, "donchian breakout enters at the signal close; enter phrases are not supported.", "")
 	}
 	if source, ok := p.config["sourceTimeframe"].(string); ok && source != "" {

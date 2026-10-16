@@ -100,12 +100,19 @@ func (b *broker) onDonchianBreakoutBar(i int) {
 	}
 	atr := finiteOrZero(b.cols.ATR[i])
 	stopATR := p.DonchianBreakout.StopATR
-	if atr <= 0 || !(stopATR > 0) {
+	if atr <= 0 || !isFinite(stopATR) || !(stopATR > 0) || !isFinite(p.TargetR) || p.TargetR < 0 {
 		return
 	}
 	entry := b.series.C[i]
 	sign := float64(s)
+	if !isFinite(entry) {
+		return
+	}
 	stop := entry - sign*stopATR*atr
+	stopDistance := sign * (entry - stop)
+	if !isFinite(stop) || !isFinite(stopDistance) || stopDistance <= 0 {
+		return
+	}
 	meta := TradeMeta{
 		"setup":       "donchianBreakout",
 		"side":        s.String(),
@@ -120,6 +127,10 @@ func (b *broker) onDonchianBreakoutBar(i int) {
 	setup := setupPlan{Side: s, Stop: stop, Tag: "DSL-DCB", Meta: gradeMeta(meta), NoTarget: true}
 	if p.TargetR > 0 {
 		setup.Target = entry + sign*stopATR*atr*p.TargetR
+		targetDistance := sign * (setup.Target - entry)
+		if !isFinite(setup.Target) || !isFinite(targetDistance) || targetDistance <= 0 {
+			return
+		}
 		setup.NoTarget = false
 	}
 	b.enterSetup(i, setup)

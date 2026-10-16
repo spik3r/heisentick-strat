@@ -108,6 +108,9 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	if err := validatePriceMomentumStopConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
+	if err := validateDonchianBreakoutConfig(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateRMVConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}

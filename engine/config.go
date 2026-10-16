@@ -422,8 +422,8 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 			StopATR:      fixedATRStop(stop),
 		},
 		DonchianBreakout: donchianBreakoutParams{
-			ChannelBars: intValue(donchianBreakout, "channelBars", 0),
-			TrendEMALen: intValue(donchianBreakout, "trendEmaLen", 0),
+			ChannelBars: donchianCountValue(donchianBreakout, "channelBars", 0),
+			TrendEMALen: donchianCountValue(donchianBreakout, "trendEmaLen", 0),
 			StopATR:     numberValue(stop, "atrMult", 2),
 		},
 		DailyFlushFailure: dailyFlushFailureParams{

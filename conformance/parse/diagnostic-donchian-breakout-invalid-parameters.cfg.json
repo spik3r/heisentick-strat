@@ -1,0 +1,215 @@
+{
+  "case": "diagnostic-donchian-breakout-invalid-parameters",
+  "category": "diagnostic",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0,
+      "offsetAtr": 0
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 0,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "trending",
+      "ranging",
+      "choppy"
+    ],
+    "description": "Refuses invalid counts stops targets and authored entry despite later valid directives.",
+    "donchianBreakout": {
+      "channelBars": 55,
+      "trendEmaLen": 300
+    },
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 1,
+    "name": "Donchian Invalid Parameters",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": null
+    },
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 1,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "donchianBreakout",
+    "slices": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "4h"
+      }
+    ],
+    "stop": {
+      "atrMult": 2,
+      "extremeCandles": 0,
+      "maxAtr": 0,
+      "minAtr": 0,
+      "paddingAtr": 0,
+      "type": "atr"
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "dcbR": 0,
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowMode": "unrestricted",
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 0
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Donchian breakout retains invalid count, stop, target and authored-entry refusals despite later valid numeric directives.",
+  "diagnostics": [
+    {
+      "col": 3,
+      "line": 8,
+      "message": "donchian-breakout channel must be exactly: channel N candles, with positive integer N",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 10,
+      "message": "donchian-breakout trend gate must be exactly: trend ema N, with positive integer N",
+      "severity": "error"
+    },
+    {
+      "col": null,
+      "line": null,
+      "message": "donchian breakout supports only a fixed ATR stop: stop N ATR.",
+      "severity": "error"
+    },
+    {
+      "col": null,
+      "line": null,
+      "message": "donchian breakout supports only target NR.",
+      "severity": "error"
+    },
+    {
+      "col": null,
+      "line": null,
+      "message": "donchian breakout enters at the signal close; enter phrases are not supported.",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "line 8: donchian-breakout channel must be exactly: channel N candles, with positive integer N",
+    "line 10: donchian-breakout trend gate must be exactly: trend ema N, with positive integer N",
+    "donchian breakout supports only a fixed ATR stop: stop N ATR.",
+    "donchian breakout supports only target NR.",
+    "donchian breakout enters at the signal close; enter phrases are not supported."
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT295 invented donchian breakout boundary-repair fixture",
+  "warnings": []
+}
