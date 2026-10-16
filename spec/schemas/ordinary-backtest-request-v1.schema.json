@@ -1,0 +1,281 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:heisentick:strat:ordinary-backtest-request:v1",
+  "$comment": "Strict decoding, transport limits, immutable capture and semantic admission are additionally required; see docs/ordinary-backtest-contract.md. This schema does not activate execution or establish a release.",
+  "$ref": "#/$defs/request",
+  "$defs": {
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "symbol",
+        "timeframe"
+      ],
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "timeframe": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        }
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feePerUnit",
+        "fillOn",
+        "slippage",
+        "slippageBps",
+        "startEquity"
+      ],
+      "properties": {
+        "feePerUnit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fillOn": {
+          "enum": [
+            "close",
+            "open",
+            "nextOpen"
+          ]
+        },
+        "slippage": {
+          "type": "number",
+          "minimum": 0
+        },
+        "slippageBps": {
+          "type": "number",
+          "minimum": 0
+        },
+        "startEquity": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rangeMethod",
+        "costs",
+        "params",
+        "forceRoute",
+        "chartType"
+      ],
+      "properties": {
+        "rangeMethod": {
+          "enum": [
+            "zone",
+            "pivot"
+          ]
+        },
+        "costs": {
+          "$ref": "#/$defs/costs"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        "forceRoute": {
+          "const": false
+        },
+        "chartType": {
+          "const": "candles"
+        }
+      }
+    },
+    "row": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number",
+          "minimum": 0
+        }
+      ],
+      "minItems": 6,
+      "maxItems": 6,
+      "items": false
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "profile",
+        "bars",
+        "firstT",
+        "lastT",
+        "closedThroughT",
+        "origin"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-original-bars-v1"
+        },
+        "profile": {
+          "const": "original-chart-bars-v1"
+        },
+        "bars": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/row"
+          },
+          "maxItems": 10000,
+          "minItems": 1
+        },
+        "firstT": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "lastT": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "closedThroughT": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "origin": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "datasetId",
+            "historyGeneration",
+            "provenance"
+          ],
+          "properties": {
+            "datasetId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "historyGeneration": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "provenance": {
+              "const": "caller-declared"
+            }
+          }
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "requestId",
+        "operation",
+        "strategyId",
+        "route",
+        "execution",
+        "reportingBasis",
+        "data"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-ordinary-backtest-request-v1"
+        },
+        "requestId": {
+          "$ref": "#/$defs/requestId"
+        },
+        "operation": {
+          "enum": [
+            "inspect",
+            "run"
+          ]
+        },
+        "strategyId": {
+          "$ref": "#/$defs/strategyId"
+        },
+        "route": {
+          "$ref": "#/$defs/route"
+        },
+        "execution": {
+          "$ref": "#/$defs/execution"
+        },
+        "reportingBasis": {
+          "const": "ordinary-logical-completed-close-mtm-v1"
+        },
+        "data": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/data"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operation": {
+                "const": "run"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "data": {
+                "$ref": "#/$defs/data"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    },
+    "strategyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    }
+  }
+}
