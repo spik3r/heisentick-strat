@@ -53,6 +53,7 @@ var implementedRunCases = []string{
 	"family-elder-triple-screen-trail-override",
 	"family-price-momentum",
 	"family-price-momentum-guarded",
+	"family-price-momentum-atr-stop",
 	"family-fair-value-gap",
 	"family-weekend-extreme-fade",
 	"deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",

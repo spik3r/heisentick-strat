@@ -417,6 +417,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		PriceMomentum: priceMomentumParams{
 			LookbackBars: intValue(priceMomentum, "lookbackBars", 0),
 			ThresholdPct: numberValue(priceMomentum, "thresholdPct", 0),
+			StopATR:      fixedATRStop(stop),
 		},
 		DailyFlushFailure: dailyFlushFailureParams{
 			ATRLength:             20,

@@ -40,6 +40,22 @@ The type starts with a recent-extreme stop over 3 candles plus 0.25 ATR,
 trail, max-hold, fixed-risk, session, side, and cooldown phrases override those
 values without adding family-specific money rules.
 
+`stop N ATR` replaces the recent-extreme stop with a fixed stop `N × ATR` from
+the signal close (below it for longs, above it for shorts). The stop padding
+and extreme lookback are ignored. The stop-size bounds still apply, so an `N`
+outside them rejects every entry. They are compared with `N` itself and are
+inclusive: `stop 2 ATR` with `stop size min 2` trades. The bound is not
+re-derived from the rounded stop price. The computed stop must also be finite
+and on the losing side of the signal close. For stops parsed as `fixedAtr`,
+`N` must be finite and positive. `stop 0 ATR`, `stop -1 ATR`, `stop NaN ATR`,
+`stop Inf ATR` and `stop -Inf ATR` are parse errors; direct price-momentum
+`fixedAtr` configurations also reject nonpositive, non-finite, missing or
+nonnumeric multiples. A pre-existing lexer limitation remains: `stop +Inf ATR`
+and out-of-range numeric literals can enter the generic stop branch instead,
+so this change does not guarantee rejection of those spellings.
+The stop stays anchored to the signal close with either fill model; with a
+next-open fill, size uses the distance from the slipped fill to that stop.
+
 `wait N candles after trade` measures from the accepted entry bar. Re-entry is
 blocked while `currentBar - priorEntryBar < N` and is permitted at equality. A
 trade held through that boundary has no residual wait after exit.

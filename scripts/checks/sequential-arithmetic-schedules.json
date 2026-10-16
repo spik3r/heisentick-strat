@@ -149,7 +149,7 @@
     "dsl/parser_market_context.go": "98eb8d9f0ea115acd2be39a7d8ca06d107dc6c9592bf95e0ef9cb359fefde7a3",
     "dsl/parser_named_level_sweep.go": "e5a9d196dd22c46b985e9fa6030ecc319fdf4fb7217c3896f3fb15eb4e58faad",
     "dsl/parser_opening_range.go": "9daf1d392e586626051a0fb9d60c628c4e2fdadd3d01e88ddf5113d3263265ac",
-    "dsl/parser_price_momentum.go": "4ba3312cdce8b96ee5cef1bc73e1456ae8790ce65ffb62858b4b1acceb0ed12e",
+    "dsl/parser_price_momentum.go": "7a48eca6deabf42a5ab034704a6a9d55eca2f71c1dc3325b5985b5f4f6d6d1de",
     "dsl/parser_seasonality.go": "aa2655f2c3d0fd24017a8c41f7bd1e147d7db6ff595f29a9bcda1449320a4803",
     "dsl/parser_setup_ema.go": "8accfbb6a2538ccfb229777bf01042fceffba9dcba3ace6e50ef5ecd0b1f5d94",
     "dsl/parser_setup_phrases.go": "24e01a20864d9549958460e6e9a1263aacc41b5ee332f9f83f4d016f94d977ad",
@@ -186,7 +186,7 @@
     "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
     "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
     "engine/calendar_helpers.go": "fd37cd57a8d81bf5431e7ad1f896e14d541c7d040a9f7ae8c62253aa83d5618e",
-    "engine/config.go": "c12226c82586cdb810b4960e982650a589d5d3fc4658818bb96013efdbb98fc2",
+    "engine/config.go": "1b0cf045e56e1e9117dab56d99e98437c6354f173df4d348c4abfcfc1c7b21fc",
     "engine/config_defaults.go": "473139ecfc2e02c75406dc1f47fcbbbbcc91f8f7f9a22251fc1acc88d683092a",
     "engine/config_dual_ema.go": "138c8a0bcfca5195b90700a0560e46ba300ef12a9b33a543fdc11060edd67f86",
     "engine/config_filters.go": "a5730c57b892ee8a891e89311d396fab9ac4d13101444d662956e324aa21f855",
@@ -194,9 +194,9 @@
     "engine/config_legacy_setup9.go": "ed8b218fde74f3642b6440f3ff63f40693a38cc09dc36da6ce1eb10df4571b46",
     "engine/config_levels.go": "1e5e6ec2823436b4cdce7c05f10ddcc297941cf904d1b89db478d72aa8c46442",
     "engine/config_risk_management.go": "e71307ef708b85d86d4cad1de3d48dc282359ee2162b920568377dc459dfbefd",
-    "engine/config_setups.go": "acf8c8aa564b0c163f0fdf5afca010517e5e60202e44aae56d319e17c37ecb27",
+    "engine/config_setups.go": "4ef79c9f745cca090d639075f472be597c9eaf0f5187bf666147b64cdec6c3a5",
     "engine/config_sma_golden_cross.go": "5caac94aceddace038f6bf0074ec557a919b0a87e8504ad60121dc2b7917b370",
-    "engine/conformance.go": "f7aca527aa4a3017fe4ca2a7a76695b5411d97dfaf6e312972c95d67d7203039",
+    "engine/conformance.go": "e16e570d57acc99bbdcb42ec540cb63780fbdcd6edd6de36a0971729a7496005",
     "engine/entry_scheduler.go": "c453612acc1ececa9932d347ff6ed3e1eb02aaa002fe0903fc473ecbd2012e90",
     "engine/family_break_retest.go": "1b95503ebac529d7b875fa6530ceadafa088a0c690bc762b33c4419604849f01",
     "engine/family_channel_break_hold.go": "7a30fd2fd3191e54b4bf19bf3adf527b0f2790ac770c04e81beda67c2d455ab0",
@@ -220,7 +220,7 @@
     "engine/family_named_level_flag.go": "4d05f8e154e0d0643fcd450c7a8efc6240e28ce3864bf66d5a912a411091fe40",
     "engine/family_named_level_sweep.go": "8d8850050f5977eee83d2b2cb80f1ae1b2f826a04e9fcae0adf3c0744b01a410",
     "engine/family_opening_range_breakout.go": "7527a4b280bd340aed740e14a2f039028353421f53eaea7ee5f3cb3ac33512bd",
-    "engine/family_price_momentum.go": "33b5c0924c5b7433ef5d165ad7676f9fd5d0a2234f11b669d619d366fdfb6c2e",
+    "engine/family_price_momentum.go": "2fff1bba3b95efc9e214efbccdb44ad8c54683cad207b80df96a41857c04d3b7",
     "engine/family_range_break_fake.go": "f2617c25af04045fc039f64ad5811eb0ef515dc003e79e4d6acee466c04db8fb",
     "engine/family_session_break_hold.go": "3913824a2619cb16a4dcdb5f739c81900ce6be9d7be5a9873a677d8d1596cd27",
     "engine/family_sma_golden_cross.go": "50e716787794c7140e0d357ae6145ee5e751ff273c22db044787f7509e2fedea",
@@ -287,9 +287,9 @@
     "engine/regimeadaptive/types.go": "cbb8d3e703d61520942d71b77623f828ae2f37a529940da374651f6c89bc6513",
     "engine/rmv.go": "62e3223450b54ade9fb6699812144d94255fbc2c48a7a2d263df16906b086989",
     "engine/route_gate.go": "fee11342a193f1b741393012be7c16b8eeca93018c233073c9a47c038a4652ac",
-    "engine/run.go": "38ef6468b7cd52b13ae274b7fccae6084f478c6be82a52b99d722b00eb87237c",
+    "engine/run.go": "b1a7769fdf869b637a844023b038a62214a3f4beb73ab01e62bf79810a0bd4df",
     "engine/run_todo.go": "4e6eb11e2fbca851891ca5991313d78a9bb405e77d8085a5e26c6648c4b81130",
-    "engine/runner.go": "59be5f3d58896476845d2a90642a27726a57e908edf34d97589169e29daeef35",
+    "engine/runner.go": "91111d47b99c3f7cf9aee2a6a25dfd56b1bb46eab20d094f0000ddead6487c7c",
     "engine/seasonality.go": "27c81ce516068a850beae7d127266b4464d5987aa5c167ee485f7d81724cd488",
     "engine/seqcore/checkpoint.go": "fe7c59db89e36e6be50a6314edb835cb1a5af363968361258ff8d30fc3c435e7",
     "engine/seqcore/core.go": "748894eb66f3d1a6a9113b6a41dfa98ba811882a7d494bbbce75141c083100b3",
@@ -375,23 +375,23 @@
       "accountingSchedule": "separate",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "sha256": "d920b1f7a329f9ede2db2c330c663718431a66d53797c9c4e0cdf3a53ea08787",
+          "sha256": "85fd3f5cde2e160a4da91cb049d974668875b175424d19bdad91617d41c31254",
           "instructionCount": 209
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "sha256": "cb4ddd5596ff479c4dfd4143fedf63c2532d2175293b405f6ed37e8b5e1d773f",
+          "sha256": "9aee6bcfa79e2828881051d5e5455bb721d524ab2cdd1a75e5d4930f555f0c6e",
           "instructionCount": 297
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
-          "sha256": "a7a1cdfa37834f5ea5d4338c40d3216d0da9e09d19ec4e66ca645a3ed632aff3",
+          "sha256": "f87d9b93b972a2f4c1a4296b2ab6dc01fb20735f98138734844cdefafd62de6d",
           "instructionCount": 225
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
-          "sha256": "93b4dfb38a9f4f334f4fb119eea9920845f8660ffc1eb510e3fbbb3a0f1b3a70",
+          "sha256": "dcf19ce02f8071a88cbb8a6d57d29ddd6f7a0dea57bdbdf391767bb2e19aaa1f",
           "instructionCount": 305
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
-          "sha256": "6878db2da63103e016f7258a4b0f851d3573bac9965a099a1a39f68395de99e3",
+          "sha256": "836a01a115e981d6b92ac28a6e45dec3de27ebb1e54129d43303fd849ffa9793",
           "instructionCount": 314
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
@@ -489,7 +489,7 @@
           "dsl/parser_market_context.go": "98eb8d9f0ea115acd2be39a7d8ca06d107dc6c9592bf95e0ef9cb359fefde7a3",
           "dsl/parser_named_level_sweep.go": "e5a9d196dd22c46b985e9fa6030ecc319fdf4fb7217c3896f3fb15eb4e58faad",
           "dsl/parser_opening_range.go": "9daf1d392e586626051a0fb9d60c628c4e2fdadd3d01e88ddf5113d3263265ac",
-          "dsl/parser_price_momentum.go": "4ba3312cdce8b96ee5cef1bc73e1456ae8790ce65ffb62858b4b1acceb0ed12e",
+          "dsl/parser_price_momentum.go": "7a48eca6deabf42a5ab034704a6a9d55eca2f71c1dc3325b5985b5f4f6d6d1de",
           "dsl/parser_seasonality.go": "aa2655f2c3d0fd24017a8c41f7bd1e147d7db6ff595f29a9bcda1449320a4803",
           "dsl/parser_setup_ema.go": "8accfbb6a2538ccfb229777bf01042fceffba9dcba3ace6e50ef5ecd0b1f5d94",
           "dsl/parser_setup_phrases.go": "24e01a20864d9549958460e6e9a1263aacc41b5ee332f9f83f4d016f94d977ad",
@@ -522,7 +522,7 @@
           "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
           "engine/calendar_helpers.go": "fd37cd57a8d81bf5431e7ad1f896e14d541c7d040a9f7ae8c62253aa83d5618e",
-          "engine/config.go": "c12226c82586cdb810b4960e982650a589d5d3fc4658818bb96013efdbb98fc2",
+          "engine/config.go": "1b0cf045e56e1e9117dab56d99e98437c6354f173df4d348c4abfcfc1c7b21fc",
           "engine/config_defaults.go": "473139ecfc2e02c75406dc1f47fcbbbbcc91f8f7f9a22251fc1acc88d683092a",
           "engine/config_dual_ema.go": "138c8a0bcfca5195b90700a0560e46ba300ef12a9b33a543fdc11060edd67f86",
           "engine/config_filters.go": "a5730c57b892ee8a891e89311d396fab9ac4d13101444d662956e324aa21f855",
@@ -530,9 +530,9 @@
           "engine/config_legacy_setup9.go": "ed8b218fde74f3642b6440f3ff63f40693a38cc09dc36da6ce1eb10df4571b46",
           "engine/config_levels.go": "1e5e6ec2823436b4cdce7c05f10ddcc297941cf904d1b89db478d72aa8c46442",
           "engine/config_risk_management.go": "e71307ef708b85d86d4cad1de3d48dc282359ee2162b920568377dc459dfbefd",
-          "engine/config_setups.go": "acf8c8aa564b0c163f0fdf5afca010517e5e60202e44aae56d319e17c37ecb27",
+          "engine/config_setups.go": "4ef79c9f745cca090d639075f472be597c9eaf0f5187bf666147b64cdec6c3a5",
           "engine/config_sma_golden_cross.go": "5caac94aceddace038f6bf0074ec557a919b0a87e8504ad60121dc2b7917b370",
-          "engine/conformance.go": "f7aca527aa4a3017fe4ca2a7a76695b5411d97dfaf6e312972c95d67d7203039",
+          "engine/conformance.go": "e16e570d57acc99bbdcb42ec540cb63780fbdcd6edd6de36a0971729a7496005",
           "engine/entry_scheduler.go": "c453612acc1ececa9932d347ff6ed3e1eb02aaa002fe0903fc473ecbd2012e90",
           "engine/family_break_retest.go": "1b95503ebac529d7b875fa6530ceadafa088a0c690bc762b33c4419604849f01",
           "engine/family_channel_break_hold.go": "7a30fd2fd3191e54b4bf19bf3adf527b0f2790ac770c04e81beda67c2d455ab0",
@@ -556,7 +556,7 @@
           "engine/family_named_level_flag.go": "4d05f8e154e0d0643fcd450c7a8efc6240e28ce3864bf66d5a912a411091fe40",
           "engine/family_named_level_sweep.go": "8d8850050f5977eee83d2b2cb80f1ae1b2f826a04e9fcae0adf3c0744b01a410",
           "engine/family_opening_range_breakout.go": "7527a4b280bd340aed740e14a2f039028353421f53eaea7ee5f3cb3ac33512bd",
-          "engine/family_price_momentum.go": "33b5c0924c5b7433ef5d165ad7676f9fd5d0a2234f11b669d619d366fdfb6c2e",
+          "engine/family_price_momentum.go": "2fff1bba3b95efc9e214efbccdb44ad8c54683cad207b80df96a41857c04d3b7",
           "engine/family_range_break_fake.go": "f2617c25af04045fc039f64ad5811eb0ef515dc003e79e4d6acee466c04db8fb",
           "engine/family_session_break_hold.go": "3913824a2619cb16a4dcdb5f739c81900ce6be9d7be5a9873a677d8d1596cd27",
           "engine/family_sma_golden_cross.go": "50e716787794c7140e0d357ae6145ee5e751ff273c22db044787f7509e2fedea",
@@ -604,9 +604,9 @@
           "engine/regime_admission.go": "2b05669477164cfe4a336a7b793b303fb29e2ef64d5133375f231933da475c43",
           "engine/rmv.go": "62e3223450b54ade9fb6699812144d94255fbc2c48a7a2d263df16906b086989",
           "engine/route_gate.go": "fee11342a193f1b741393012be7c16b8eeca93018c233073c9a47c038a4652ac",
-          "engine/run.go": "38ef6468b7cd52b13ae274b7fccae6084f478c6be82a52b99d722b00eb87237c",
+          "engine/run.go": "b1a7769fdf869b637a844023b038a62214a3f4beb73ab01e62bf79810a0bd4df",
           "engine/run_todo.go": "4e6eb11e2fbca851891ca5991313d78a9bb405e77d8085a5e26c6648c4b81130",
-          "engine/runner.go": "59be5f3d58896476845d2a90642a27726a57e908edf34d97589169e29daeef35",
+          "engine/runner.go": "91111d47b99c3f7cf9aee2a6a25dfd56b1bb46eab20d094f0000ddead6487c7c",
           "engine/seasonality.go": "27c81ce516068a850beae7d127266b4464d5987aa5c167ee485f7d81724cd488",
           "engine/seqcore/checkpoint.go": "fe7c59db89e36e6be50a6314edb835cb1a5af363968361258ff8d30fc3c435e7",
           "engine/seqcore/core.go": "748894eb66f3d1a6a9113b6a41dfa98ba811882a7d494bbbce75141c083100b3",
@@ -680,23 +680,23 @@
       "accountingSchedule": "fused",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "sha256": "69c009399a78b86693db5d2f1321b4c6b310b4d1e0322be2a78884d744b4dcf0",
-          "instructionCount": 180
+          "sha256": "d7cb140a558836da7474cd2102cfc7429c24968262684cbe96e8c416fdeee0d9",
+          "instructionCount": 179
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "sha256": "0ee9d1a61399b27b705d2db38c64fbf8b389d95fec32fce1e1b763eb198ec5be",
-          "instructionCount": 289
+          "sha256": "11399ff4e7470f1c8b73d5d3228b5f7f775778067a5e6735ab3eadc7d080a97f",
+          "instructionCount": 288
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
-          "sha256": "5c742c154f433125d506107191ce54d21b0737b5e3e829142074f42e7fa1524a",
-          "instructionCount": 237
+          "sha256": "97ff5efacaf3c519ec9e7793e23bcaa92db00c64587e28b2a656e4fbf3fd0f7c",
+          "instructionCount": 236
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
-          "sha256": "e5b47cf8e6e0c5bab40813e7021cdf8ea799a174bde4402dcc3ad3e803befca6",
+          "sha256": "568bcdc61e7da01fe46f2df86b54c133e5e5d259d95e8647199784e6a5e610f4",
           "instructionCount": 317
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
-          "sha256": "30b5cc18903b033fb059ff5b888ce73735f936ee2d5125727dfea9a7b43c8ec4",
+          "sha256": "e8402378f02b838050fbdf92f96258e54dddbd18d47e4a92e57dec410a0b977e",
           "instructionCount": 316
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
@@ -794,7 +794,7 @@
           "dsl/parser_market_context.go": "98eb8d9f0ea115acd2be39a7d8ca06d107dc6c9592bf95e0ef9cb359fefde7a3",
           "dsl/parser_named_level_sweep.go": "e5a9d196dd22c46b985e9fa6030ecc319fdf4fb7217c3896f3fb15eb4e58faad",
           "dsl/parser_opening_range.go": "9daf1d392e586626051a0fb9d60c628c4e2fdadd3d01e88ddf5113d3263265ac",
-          "dsl/parser_price_momentum.go": "4ba3312cdce8b96ee5cef1bc73e1456ae8790ce65ffb62858b4b1acceb0ed12e",
+          "dsl/parser_price_momentum.go": "7a48eca6deabf42a5ab034704a6a9d55eca2f71c1dc3325b5985b5f4f6d6d1de",
           "dsl/parser_seasonality.go": "aa2655f2c3d0fd24017a8c41f7bd1e147d7db6ff595f29a9bcda1449320a4803",
           "dsl/parser_setup_ema.go": "8accfbb6a2538ccfb229777bf01042fceffba9dcba3ace6e50ef5ecd0b1f5d94",
           "dsl/parser_setup_phrases.go": "24e01a20864d9549958460e6e9a1263aacc41b5ee332f9f83f4d016f94d977ad",
@@ -827,7 +827,7 @@
           "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
           "engine/calendar_helpers.go": "fd37cd57a8d81bf5431e7ad1f896e14d541c7d040a9f7ae8c62253aa83d5618e",
-          "engine/config.go": "c12226c82586cdb810b4960e982650a589d5d3fc4658818bb96013efdbb98fc2",
+          "engine/config.go": "1b0cf045e56e1e9117dab56d99e98437c6354f173df4d348c4abfcfc1c7b21fc",
           "engine/config_defaults.go": "473139ecfc2e02c75406dc1f47fcbbbbcc91f8f7f9a22251fc1acc88d683092a",
           "engine/config_dual_ema.go": "138c8a0bcfca5195b90700a0560e46ba300ef12a9b33a543fdc11060edd67f86",
           "engine/config_filters.go": "a5730c57b892ee8a891e89311d396fab9ac4d13101444d662956e324aa21f855",
@@ -835,9 +835,9 @@
           "engine/config_legacy_setup9.go": "ed8b218fde74f3642b6440f3ff63f40693a38cc09dc36da6ce1eb10df4571b46",
           "engine/config_levels.go": "1e5e6ec2823436b4cdce7c05f10ddcc297941cf904d1b89db478d72aa8c46442",
           "engine/config_risk_management.go": "e71307ef708b85d86d4cad1de3d48dc282359ee2162b920568377dc459dfbefd",
-          "engine/config_setups.go": "acf8c8aa564b0c163f0fdf5afca010517e5e60202e44aae56d319e17c37ecb27",
+          "engine/config_setups.go": "4ef79c9f745cca090d639075f472be597c9eaf0f5187bf666147b64cdec6c3a5",
           "engine/config_sma_golden_cross.go": "5caac94aceddace038f6bf0074ec557a919b0a87e8504ad60121dc2b7917b370",
-          "engine/conformance.go": "f7aca527aa4a3017fe4ca2a7a76695b5411d97dfaf6e312972c95d67d7203039",
+          "engine/conformance.go": "e16e570d57acc99bbdcb42ec540cb63780fbdcd6edd6de36a0971729a7496005",
           "engine/entry_scheduler.go": "c453612acc1ececa9932d347ff6ed3e1eb02aaa002fe0903fc473ecbd2012e90",
           "engine/family_break_retest.go": "1b95503ebac529d7b875fa6530ceadafa088a0c690bc762b33c4419604849f01",
           "engine/family_channel_break_hold.go": "7a30fd2fd3191e54b4bf19bf3adf527b0f2790ac770c04e81beda67c2d455ab0",
@@ -861,7 +861,7 @@
           "engine/family_named_level_flag.go": "4d05f8e154e0d0643fcd450c7a8efc6240e28ce3864bf66d5a912a411091fe40",
           "engine/family_named_level_sweep.go": "8d8850050f5977eee83d2b2cb80f1ae1b2f826a04e9fcae0adf3c0744b01a410",
           "engine/family_opening_range_breakout.go": "7527a4b280bd340aed740e14a2f039028353421f53eaea7ee5f3cb3ac33512bd",
-          "engine/family_price_momentum.go": "33b5c0924c5b7433ef5d165ad7676f9fd5d0a2234f11b669d619d366fdfb6c2e",
+          "engine/family_price_momentum.go": "2fff1bba3b95efc9e214efbccdb44ad8c54683cad207b80df96a41857c04d3b7",
           "engine/family_range_break_fake.go": "f2617c25af04045fc039f64ad5811eb0ef515dc003e79e4d6acee466c04db8fb",
           "engine/family_session_break_hold.go": "3913824a2619cb16a4dcdb5f739c81900ce6be9d7be5a9873a677d8d1596cd27",
           "engine/family_sma_golden_cross.go": "50e716787794c7140e0d357ae6145ee5e751ff273c22db044787f7509e2fedea",
@@ -909,9 +909,9 @@
           "engine/regime_admission.go": "2b05669477164cfe4a336a7b793b303fb29e2ef64d5133375f231933da475c43",
           "engine/rmv.go": "62e3223450b54ade9fb6699812144d94255fbc2c48a7a2d263df16906b086989",
           "engine/route_gate.go": "fee11342a193f1b741393012be7c16b8eeca93018c233073c9a47c038a4652ac",
-          "engine/run.go": "38ef6468b7cd52b13ae274b7fccae6084f478c6be82a52b99d722b00eb87237c",
+          "engine/run.go": "b1a7769fdf869b637a844023b038a62214a3f4beb73ab01e62bf79810a0bd4df",
           "engine/run_todo.go": "4e6eb11e2fbca851891ca5991313d78a9bb405e77d8085a5e26c6648c4b81130",
-          "engine/runner.go": "59be5f3d58896476845d2a90642a27726a57e908edf34d97589169e29daeef35",
+          "engine/runner.go": "91111d47b99c3f7cf9aee2a6a25dfd56b1bb46eab20d094f0000ddead6487c7c",
           "engine/seasonality.go": "27c81ce516068a850beae7d127266b4464d5987aa5c167ee485f7d81724cd488",
           "engine/seqcore/checkpoint.go": "fe7c59db89e36e6be50a6314edb835cb1a5af363968361258ff8d30fc3c435e7",
           "engine/seqcore/core.go": "748894eb66f3d1a6a9113b6a41dfa98ba811882a7d494bbbce75141c083100b3",
@@ -985,23 +985,23 @@
       "accountingSchedule": "separate",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "sha256": "38b8b68bfda4dfa308a77f61f08e11c98b844198e4240329d3886aa6595f6984",
+          "sha256": "24fca89cd76225f8670774bc2da0f01e1ea8e39fd6f17910078084bb88b1d03a",
           "instructionCount": 881
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "sha256": "154558e5dbce3bcecdf7f61600c69b1e1e6e42d3546f178b19abbe4a95006533",
+          "sha256": "3660dd478b51acb5e5b15ff019558905daa20eb8cc78f6b4754df46576c6bd89",
           "instructionCount": 1316
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
-          "sha256": "96becad4f609c50302eb8c32408f314911466d198a374d414e261c79f9c2e043",
+          "sha256": "da22f14b2b5af740acc1cba868d45233ddf7c846b0c1e0f0b72a2dda263fa09d",
           "instructionCount": 1015
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).exit": {
-          "sha256": "db87082aa7692ce4b9531133255ce56567a78bec29effe929196dc2fe0675674",
+          "sha256": "acb70b8e9fd67123857dd111a21dc98c143d71fffa73b4e7425d3ee44dccc76b",
           "instructionCount": 1457
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).mark": {
-          "sha256": "44dde235b7ed8084bcc516f1dbe2cf52854b29cf39a9ca7c2f12552730a65c0a",
+          "sha256": "003b7a7b77b7509cb77b9bebf405dfdff93824ed482fec8f5e0d2507e56d7dcc",
           "instructionCount": 1453
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).finish": {
@@ -1109,7 +1109,7 @@
           "dsl/parser_market_context.go": "98eb8d9f0ea115acd2be39a7d8ca06d107dc6c9592bf95e0ef9cb359fefde7a3",
           "dsl/parser_named_level_sweep.go": "e5a9d196dd22c46b985e9fa6030ecc319fdf4fb7217c3896f3fb15eb4e58faad",
           "dsl/parser_opening_range.go": "9daf1d392e586626051a0fb9d60c628c4e2fdadd3d01e88ddf5113d3263265ac",
-          "dsl/parser_price_momentum.go": "4ba3312cdce8b96ee5cef1bc73e1456ae8790ce65ffb62858b4b1acceb0ed12e",
+          "dsl/parser_price_momentum.go": "7a48eca6deabf42a5ab034704a6a9d55eca2f71c1dc3325b5985b5f4f6d6d1de",
           "dsl/parser_seasonality.go": "aa2655f2c3d0fd24017a8c41f7bd1e147d7db6ff595f29a9bcda1449320a4803",
           "dsl/parser_setup_ema.go": "8accfbb6a2538ccfb229777bf01042fceffba9dcba3ace6e50ef5ecd0b1f5d94",
           "dsl/parser_setup_phrases.go": "24e01a20864d9549958460e6e9a1263aacc41b5ee332f9f83f4d016f94d977ad",
@@ -1142,7 +1142,7 @@
           "engine/broker_dispatch.go": "0408522922df83c651e3c31a39f14fdef940d4ede7b643a66857f3b088b64e0c",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
           "engine/calendar_helpers.go": "fd37cd57a8d81bf5431e7ad1f896e14d541c7d040a9f7ae8c62253aa83d5618e",
-          "engine/config.go": "c12226c82586cdb810b4960e982650a589d5d3fc4658818bb96013efdbb98fc2",
+          "engine/config.go": "1b0cf045e56e1e9117dab56d99e98437c6354f173df4d348c4abfcfc1c7b21fc",
           "engine/config_defaults.go": "473139ecfc2e02c75406dc1f47fcbbbbcc91f8f7f9a22251fc1acc88d683092a",
           "engine/config_dual_ema.go": "138c8a0bcfca5195b90700a0560e46ba300ef12a9b33a543fdc11060edd67f86",
           "engine/config_filters.go": "a5730c57b892ee8a891e89311d396fab9ac4d13101444d662956e324aa21f855",
@@ -1150,9 +1150,9 @@
           "engine/config_legacy_setup9.go": "ed8b218fde74f3642b6440f3ff63f40693a38cc09dc36da6ce1eb10df4571b46",
           "engine/config_levels.go": "1e5e6ec2823436b4cdce7c05f10ddcc297941cf904d1b89db478d72aa8c46442",
           "engine/config_risk_management.go": "e71307ef708b85d86d4cad1de3d48dc282359ee2162b920568377dc459dfbefd",
-          "engine/config_setups.go": "acf8c8aa564b0c163f0fdf5afca010517e5e60202e44aae56d319e17c37ecb27",
+          "engine/config_setups.go": "4ef79c9f745cca090d639075f472be597c9eaf0f5187bf666147b64cdec6c3a5",
           "engine/config_sma_golden_cross.go": "5caac94aceddace038f6bf0074ec557a919b0a87e8504ad60121dc2b7917b370",
-          "engine/conformance.go": "f7aca527aa4a3017fe4ca2a7a76695b5411d97dfaf6e312972c95d67d7203039",
+          "engine/conformance.go": "e16e570d57acc99bbdcb42ec540cb63780fbdcd6edd6de36a0971729a7496005",
           "engine/entry_scheduler.go": "c453612acc1ececa9932d347ff6ed3e1eb02aaa002fe0903fc473ecbd2012e90",
           "engine/family_break_retest.go": "1b95503ebac529d7b875fa6530ceadafa088a0c690bc762b33c4419604849f01",
           "engine/family_channel_break_hold.go": "7a30fd2fd3191e54b4bf19bf3adf527b0f2790ac770c04e81beda67c2d455ab0",
@@ -1176,7 +1176,7 @@
           "engine/family_named_level_flag.go": "4d05f8e154e0d0643fcd450c7a8efc6240e28ce3864bf66d5a912a411091fe40",
           "engine/family_named_level_sweep.go": "8d8850050f5977eee83d2b2cb80f1ae1b2f826a04e9fcae0adf3c0744b01a410",
           "engine/family_opening_range_breakout.go": "7527a4b280bd340aed740e14a2f039028353421f53eaea7ee5f3cb3ac33512bd",
-          "engine/family_price_momentum.go": "33b5c0924c5b7433ef5d165ad7676f9fd5d0a2234f11b669d619d366fdfb6c2e",
+          "engine/family_price_momentum.go": "2fff1bba3b95efc9e214efbccdb44ad8c54683cad207b80df96a41857c04d3b7",
           "engine/family_range_break_fake.go": "f2617c25af04045fc039f64ad5811eb0ef515dc003e79e4d6acee466c04db8fb",
           "engine/family_session_break_hold.go": "3913824a2619cb16a4dcdb5f739c81900ce6be9d7be5a9873a677d8d1596cd27",
           "engine/family_sma_golden_cross.go": "50e716787794c7140e0d357ae6145ee5e751ff273c22db044787f7509e2fedea",
@@ -1224,9 +1224,9 @@
           "engine/regime_admission.go": "2b05669477164cfe4a336a7b793b303fb29e2ef64d5133375f231933da475c43",
           "engine/rmv.go": "62e3223450b54ade9fb6699812144d94255fbc2c48a7a2d263df16906b086989",
           "engine/route_gate.go": "fee11342a193f1b741393012be7c16b8eeca93018c233073c9a47c038a4652ac",
-          "engine/run.go": "38ef6468b7cd52b13ae274b7fccae6084f478c6be82a52b99d722b00eb87237c",
+          "engine/run.go": "b1a7769fdf869b637a844023b038a62214a3f4beb73ab01e62bf79810a0bd4df",
           "engine/run_todo.go": "4e6eb11e2fbca851891ca5991313d78a9bb405e77d8085a5e26c6648c4b81130",
-          "engine/runner.go": "59be5f3d58896476845d2a90642a27726a57e908edf34d97589169e29daeef35",
+          "engine/runner.go": "91111d47b99c3f7cf9aee2a6a25dfd56b1bb46eab20d094f0000ddead6487c7c",
           "engine/seasonality.go": "27c81ce516068a850beae7d127266b4464d5987aa5c167ee485f7d81724cd488",
           "engine/seqcore/checkpoint.go": "fe7c59db89e36e6be50a6314edb835cb1a5af363968361258ff8d30fc3c435e7",
           "engine/seqcore/core.go": "748894eb66f3d1a6a9113b6a41dfa98ba811882a7d494bbbce75141c083100b3",

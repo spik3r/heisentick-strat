@@ -16,6 +16,14 @@ func (p *parser) validatePriceMomentum() {
 	if _, ok := momentum["thresholdPct"]; !ok {
 		p.errorAt(nil, nil, `price momentum requires "neutral zone X percent".`, "")
 	}
+	// An explicit `stop N ATR` must name a usable multiple. A zero, negative
+	// or non-finite N would otherwise read as no fixed stop, and the family
+	// would silently trade its recent-extreme stop instead.
+	if stop := copyMap(p.config["stop"]); stop["type"] == "fixedAtr" {
+		if multiple, ok := stop["atr"].(float64); !ok || !isFiniteNumber(multiple) || multiple <= 0 {
+			p.errorAt(nil, nil, "price momentum stop N ATR requires a finite positive N.", "stop 2 ATR")
+		}
+	}
 }
 
 func (p *parser) parseLookback(line logicalLine, tokens []string) {
