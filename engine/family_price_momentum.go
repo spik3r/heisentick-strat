@@ -55,11 +55,16 @@ func (b *broker) onPriceMomentumBar(i int) {
 		return
 	}
 	entry := b.series.C[i]
-	stop := recentExtreme(b.series, i, p.StopLookbackCandles, s)
-	if s == sideLong {
-		stop -= atr * p.StopBufferATR
+	var stop float64
+	if p.PriceMomentum.StopATR > 0 {
+		stop = entry - float64(s)*atr*p.PriceMomentum.StopATR
 	} else {
-		stop += atr * p.StopBufferATR
+		stop = recentExtreme(b.series, i, p.StopLookbackCandles, s)
+		if s == sideLong {
+			stop -= atr * p.StopBufferATR
+		} else {
+			stop += atr * p.StopBufferATR
+		}
 	}
 	if !stopOK(entry, stop, atr, p.MinStopATR, p.MaxStopATR) {
 		return

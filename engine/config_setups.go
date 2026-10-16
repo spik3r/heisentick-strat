@@ -156,6 +156,9 @@ type elderTripleScreenParams struct {
 type priceMomentumParams struct {
 	LookbackBars int
 	ThresholdPct float64
+	// StopATR > 0 places the stop a fixed ATR multiple from entry
+	// (`stop N ATR`) instead of beyond the recent candle extreme.
+	StopATR float64
 }
 
 type keltnerParams struct {
@@ -233,4 +236,13 @@ func applyExtractedSetupParams(p *flagParams, cfg, stop, openingRange dsl.Config
 	p.WeekendExtremeFade = weekendExtremeFadeParamsFromConfig(cfg, stop)
 	p.IntraHourRunExhaustion = intraHourRunExhaustionParamsFromConfig(cfg, stop, mapValue(cfg, "target"))
 	p.ORBOpeningSessionsOverride = setupType == string(dsl.FamilyOpeningRangeBreakout) && rawLengthNonempty(openingRange["openingSessions"])
+}
+
+// fixedATRStop returns the `stop N ATR` multiple, or 0 when the program
+// declares another stop type.
+func fixedATRStop(stop map[string]any) float64 {
+	if stringValue(stop, "type", "") != "fixedAtr" {
+		return 0
+	}
+	return numberValue(stop, "atr", 0)
 }

@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+### Price momentum honours `stop N ATR` (minor semantics)
+
+- `type: price momentum` with `stop N ATR` now places the stop `N × ATR` from
+  the signal close. Before, the family ignored the phrase and kept the
+  3-candle recent-extreme stop, so a declared ATR stop had no effect.
+  Stop-size bounds still apply. Programs without `stop N ATR` are unchanged.
+- Add run case `family-price-momentum-atr-stop` (147 trades; sl, tp and time
+  exits). No existing golden changed.
+
 ### Parabolic SAR indicator and DSL filters (HT289; additive minor semantics)
 
 - Add Go-authoritative chart-timeframe SAR with configurable start/step/max,

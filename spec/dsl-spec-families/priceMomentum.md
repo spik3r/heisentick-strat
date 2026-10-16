@@ -40,6 +40,11 @@ The type starts with a recent-extreme stop over 3 candles plus 0.25 ATR,
 trail, max-hold, fixed-risk, session, side, and cooldown phrases override those
 values without adding family-specific money rules.
 
+`stop N ATR` replaces the recent-extreme stop with a fixed stop `N × ATR` from
+the signal close (below it for longs, above it for shorts). The stop padding
+and extreme lookback are ignored; the stop-size bounds still apply, so an `N`
+outside them rejects every entry.
+
 `wait N candles after trade` measures from the accepted entry bar. Re-entry is
 blocked while `currentBar - priorEntryBar < N` and is permitted at equality. A
 trade held through that boundary has no residual wait after exit.
