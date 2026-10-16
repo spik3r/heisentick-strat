@@ -1,0 +1,11 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "dcb-trend-ema-gate",
+  "trades": [],
+  "notes": [
+    "EMA(10) uses alpha = 2/11 and is seeded with the first close. Closes are 2100 for bars 0-24, so the EMA is 2100 through bar 24.",
+    "Bars 25-29 close 2000. After five closes at 2000 the EMA is 2000 + 100 x (9/11)^5 = 2036.66 at bar 29.",
+    "Bar 30 closes 2010 above its channel high (bars 27-29, 2005), a breakout. Its EMA is 2036.66 + (2/11) x (2010 - 2036.66) = 2031.82. 2010 is not above 2031.82, so the trend gate blocks the entry.",
+    "Bars 31-34 are flat at 2010 with highs 2015; their channel highs are 2010 then 2015, so no later close breaks out."
+  ]
+}

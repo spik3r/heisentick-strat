@@ -53,6 +53,8 @@
       "family-clock-range-breakout-year-end",
       "family-daily-flush-failure",
       "family-day-open-reclaim",
+      "family-donchian-breakout",
+      "family-donchian-breakout-two-sided",
       "family-double-top-bottom",
       "family-down-shock-immediate-13bp",
       "family-down-shock-immediate-atr",
@@ -129,14 +131,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 152,
+  "parseCases": 160,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 51,
+    "diagnostic": 57,
     "family": 20,
     "filters": 21,
-    "setup-family": 51
+    "setup-family": 53
   },
-  "runCases": 114,
+  "runCases": 116,
   "schema": "dsl-conformance-metadata-v1"
 }

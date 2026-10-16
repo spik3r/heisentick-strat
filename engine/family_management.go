@@ -18,6 +18,7 @@ func usesGenericTrail(setupType string) bool {
 		string(dsl.FamilyTrendPullback),
 		string(dsl.FamilyFailedBreakout),
 		string(dsl.FamilyPriceMomentum),
+		string(dsl.FamilyDonchianBreakout),
 		string(dsl.FamilyFairValueGap),
 		string(dsl.FamilyKeltnerReversion),
 		string(dsl.FamilyKeltnerExpansion):

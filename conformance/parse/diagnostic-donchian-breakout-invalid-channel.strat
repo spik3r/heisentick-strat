@@ -1,0 +1,7 @@
+dsl v7
+strategy "Donchian Invalid Channel" { description "Refuses a non-positive channel length." }
+market conditions { slices(XAUUSD 4h) }
+setup {
+  type: donchian breakout
+  channel 0 candles
+}

@@ -334,6 +334,7 @@ func (b *broker) applyPartialManagement(i int) {
 		TP:         pos.TP,
 		InitialSL:  pos.InitialSL,
 		InitialTP:  pos.InitialTP,
+		NoTarget:   pos.NoTarget,
 		Meta:       pos.Meta,
 		Partial:    true,
 		Size:       closedSize,

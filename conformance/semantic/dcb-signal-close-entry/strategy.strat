@@ -1,0 +1,29 @@
+dsl v7
+strategy "Semantic donchian signal-close entry" {
+  description "Semantic fixture: 3-candle donchian breakout, long only, 2 ATR stop, 1R target."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: donchian breakout
+  channel 3 candles
+}
+
+filters {
+  side long only
+}
+
+risk {
+  stop 2 ATR
+}
+
+target {
+  target 1R
+}
+
+execution {
+  risk 200 USD
+}

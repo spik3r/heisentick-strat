@@ -42,6 +42,8 @@ func setupTargetKey(raw any) string {
 		return "nlsR"
 	case string(FamilyNamedLevelFlag):
 		return "nlfR"
+	case string(FamilyDonchianBreakout):
+		return "dcbR"
 	default:
 		return ""
 	}

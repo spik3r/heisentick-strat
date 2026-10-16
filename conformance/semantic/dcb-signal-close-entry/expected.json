@@ -1,0 +1,25 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "dcb-signal-close-entry",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 20,
+      "entryT": 1767643200000,
+      "entry": 2010,
+      "initialSl": 1990,
+      "initialTp": 2030,
+      "exitIndex": 22,
+      "exitT": 1767650400000,
+      "exit": 2030,
+      "reason": "tp"
+    }
+  ],
+  "notes": [
+    "Bars 0-19 are flat: open 2000, high 2005, low 1995, close 2000. Every bar through 21 has a 10-point true range, so ATR = 10.",
+    "Bar 20 closes 2010. Its channel is bars 17-19 (high 2005), so 2010 > 2005 is a long breakout. Bar 20's own high (2010) is not in its channel; if it were, 2010 > 2010 would fail and no trade would open.",
+    "Entry fills at the signal close, 2010. Stop = 2010 - 2 x 10 = 1990. Target = 2010 + 1 x 20 = 2030.",
+    "Bar 21 trades 2010-2020: neither level is reached. Bar 22 high 2030 reaches the target: exit 2030, reason tp.",
+    "Bar 22 closes 2018, below its channel high (bars 19-21, 2020), so no new entry opens on the exit bar. Bars 23-26 close 2018, below their channel highs (2030 then 2023): no further trades."
+  ]
+}

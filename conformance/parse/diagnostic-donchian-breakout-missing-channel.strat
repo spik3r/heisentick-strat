@@ -1,0 +1,8 @@
+dsl v7
+strategy "Donchian Missing Channel" { description "Refuses a donchian breakout without a channel length." }
+market conditions { slices(XAUUSD 4h) }
+setup {
+  type: donchian breakout
+  trend ema 300
+}
+risk { stop 2 ATR }

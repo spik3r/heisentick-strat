@@ -6,6 +6,31 @@ version and is named here.
 
 ## [Unreleased]
 
+### Donchian breakout setup family (HT295; additive minor semantics)
+
+- Add `type: donchian breakout` with `channel N candles` (close strictly beyond
+  the highest high or lowest low of the N bars before the signal bar) and an
+  optional `trend ema N` gate (EMA of closes seeded with the first close).
+- Family defaults: fixed 2 ATR stop from the signal close, no target, no
+  breakeven, trail trigger 0R, no cooldown or max hold. Unless authored, the
+  trade window is unrestricted, all three day types pass and the
+  movement-efficiency cap is off. Other stop shapes, non-`NR` targets,
+  `enter` phrases and source-timeframe execution are refused.
+- Validate Donchian counts before signed-int conversion, require finite positive
+  ATR stops and precise finite decimal-R targets, preserve `target 0R` as no
+  target, and keep all authored `enter` refusals sticky. Invalid exact ATR
+  stops leave a JSON-serializable refused config.
+- Validate direct configs on all run-entry routes, preserving documented
+  defaults and numeric-zero trend/target settings. Reject malformed explicit
+  values and fail closed when derived brackets overflow or round to the signal
+  close. Preserve absent-target metadata through partial exits.
+- Clarify signal-close bracket anchoring with shared next-open fill mode and
+  the shared pre-handler trail, partial, breakeven and max-hold order.
+- Add 8 parse cases, 2 run cases on XAUUSD 4h slices and 3 hand-derived
+  `dcb-*` semantic cases. No existing golden changes. Matches the unreleased
+  JS reference in the heisentick app trade for trade.
+  See `spec/dsl-spec-families/donchianBreakout.md`.
+
 ### Price momentum honours `stop N ATR` (minor semantics)
 
 - `type: price momentum` with `stop N ATR` now places the stop `N × ATR` from
