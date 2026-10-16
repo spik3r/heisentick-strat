@@ -1,0 +1,35 @@
+dsl v7
+strategy "Price Momentum Conformance" {
+  description "Fixture-only: an explicit stop 0 ATR is refused, not replaced by the recent-extreme stop."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(asia, mid, london, ny)
+  day type in (trending, ranging, choppy) or movement below 1.1
+}
+
+setup {
+  type: price momentum
+  lookback 20 candles
+  neutral zone 0.5 percent
+}
+
+risk {
+  stop 0 ATR
+  stop size min 0.2 max 3
+}
+
+target {
+  target 2R
+}
+
+management {
+  move stop to breakeven after 0.5R plus 0.05 ATR
+  wait 3 candles after trade
+  maxHoldCandles 24
+}
+
+execution {
+  risk 200 USD
+}

@@ -64,6 +64,12 @@ Workflow changes: keep `runs-on` exactly
 `${{ fromJSON(vars.CI_RUNNER_MODE == 'self-hosted' && '["self-hosted","linux"]' || '["ubuntu-24.04"]') }}`.
 Self-hosted runners are registered per repository; this repo has none yet.
 
+Owner-approved exception (2026-10-16):
+`.github/workflows/gold-native-amd64-qualification.yml` uses `ubuntu-24.04`
+for the bounded gold-source native AMD64 qualification on
+`codex/gold-bidask-paper`. This exception does not change the normal CI runner
+selector, repository variables, spending limits or deployment workflows.
+
 ## Repo layout
 
 Root `*.md`: `README.md`, `CHANGELOG.md`, `agents.md`, `claude.md`,

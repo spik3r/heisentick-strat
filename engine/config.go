@@ -419,6 +419,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		PriceMomentum: priceMomentumParams{
 			LookbackBars: intValue(priceMomentum, "lookbackBars", 0),
 			ThresholdPct: numberValue(priceMomentum, "thresholdPct", 0),
+			StopATR:      fixedATRStop(stop),
 		},
 		DonchianBreakout: donchianBreakoutParams{
 			ChannelBars: intValue(donchianBreakout, "channelBars", 0),

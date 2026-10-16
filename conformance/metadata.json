@@ -81,6 +81,7 @@
       "family-named-level-sweep",
       "family-opening-range-breakout",
       "family-price-momentum",
+      "family-price-momentum-atr-stop",
       "family-price-momentum-guarded",
       "family-range-break-fake",
       "family-sequential-full-e1-long",
@@ -130,14 +131,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 157,
+  "parseCases": 159,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 54,
+    "diagnostic": 56,
     "family": 20,
     "filters": 21,
     "setup-family": 53
   },
-  "runCases": 115,
+  "runCases": 116,
   "schema": "dsl-conformance-metadata-v1"
 }

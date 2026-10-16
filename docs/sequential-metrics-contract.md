@@ -221,3 +221,154 @@ A qualified relation must never be reported as raw-bit identity. A failed or
 incomplete check remains a failure. Actual native ARM64/amd64 and Node-WASM
 evidence plus fresh independent verifier review are required after the final
 source union; cross-compilation alone is insufficient.
+
+## Gold paper source-pin review (2026-10-16)
+
+Gold paper source additions changed the complete compiler-input inventory, so
+Sequential qualification refused the old source pins before running a case.
+Review renewed only `sources` and each target's `buildInputs` in
+`sequential-arithmetic-schedules.json`. The global inventory adds
+`engine/paper_bidask_dual_ema.go` and `engine/paper_bidask_experiment.go` and
+changes five existing gold CLI, bridge and engine files. Each dependency closure
+adds those two files and changes four hashes; its package set is unchanged.
+
+Two independent compile-only observations with Go 1.22.12 compared all seven
+pinned instruction streams on Linux AMD64, Linux ARM64 and WASM. All 21 streams
+matched their previous hashes and instruction counts. Instruction pins,
+accounting schedules, source parents, compiler flags, toolchain requirements and
+the verifier remain unchanged.
+
+The unchanged full qualification then passed on actual Linux ARM64 with
+Go 1.22.12, CPython 3.12.14 and Node 24.21.0, using the authenticated prechange
+source tree and offline execution: 88 cases, 64 exact arithmetic pairs and all
+19 verifier self-tests. No evidence was missing and no mismatch was unexplained.
+Seven cross-target comparisons have the existing exact pinned-target arithmetic
+explanation; raw cross-target values are not all bit-identical. An initial local
+attempt stopped because the isolated image lacked Git; adding Git allowed the
+same provenance checks to run without changing them.
+
+This source-pin review establishes neither market profitability nor release,
+consumer adoption, deployment or forward activation.
+
+## Price momentum fixed ATR stop: historical layout review (2026-10-16)
+
+This section preserves the original repair evidence for PR142 head
+`f2828115fb558f0eab64b48fa378bfa5656a8676` against main
+`557e4d1de91371a7aa7a0e94a3cba991f8b1d33b`. Statements about committed pins,
+pending review and local ARM64 results below describe that earlier source
+state, not the later integrated head. See the independent renewal section
+below for the current-main source union and its separately qualified evidence.
+
+PR142 adds `StopATR float64` to `priceMomentumParams`, a struct embedded by
+value in `flagParams`, which `broker` embeds. The struct grows from 16 to 24
+bytes and now ends at broker offset 6064 instead of 6056; the broker grows
+from 9,704 to 9,712 bytes (Go 1.22.12, 64-bit targets). No protected function
+body was edited, but every broker field after the new member moves by 8 bytes.
+
+Sequential qualification therefore refused that head's committed manifest before any
+case ran (CI run 38833834951: source inventory). Seven sources differ:
+`dsl/parser_price_momentum.go`, `engine/config.go`, `engine/config_setups.go`,
+`engine/conformance.go`, `engine/family_price_momentum.go`, `engine/run.go` and
+`engine/runner.go`. Each target's dependency closure changes the same seven
+hashes; package sets are unchanged.
+
+Two independent Go 1.22.12 observations compared all seven pinned instruction
+streams on Linux AMD64, Linux ARM64 and WASM: a cross-compile on Darwin ARM64,
+and a build inside a Linux ARM64 container (native ARM64 and WASM, AMD64
+cross-compiled). The observation harness uses the proof script's own
+`source_hashes`, `dependency_inputs` and `instruction_lists`, and first
+reproduced every pin on main 557e4d1 exactly. Both observations agree byte for
+byte. `finish` and `ProjectSequentialMetrics` are unchanged on all targets.
+`openPosition`, `closePosition` and the collector's `entry`, `exit` and `mark`
+change on all three targets, 15 streams in total. Every changed instruction
+is one of:
+
+- the same opcode with only a broker-field displacement at or above offset
+  8,000 moved by exactly +8 (all AMD64 and WASM changes);
+- on ARM64, `MOVD $8184, R3; ADD R3, R0, R21` becoming `ADD $8192, R0, R21`,
+  because 8,192 fits the shifted 12-bit immediate form, one instruction shorter
+  in `openPosition`, `closePosition` and `entry` (counts 180 to 179, 289 to
+  288, 237 to 236);
+- on ARM64, a branch or `ADR` PC-relative operand moved by exactly -4 after that
+  collapse (`B*`, `CB*`, `TBNZ`, `JMP`, and `ADR` into `runtime.duffcopy` /
+  `runtime.duffzero`).
+
+No floating-point, integer arithmetic, comparison or call instruction differs
+in opcode or in any operand other than those listed. The review repair on top
+of PR142 (bounds and invalid-stop checks) produces instruction streams
+identical to the PR142 head; only the new field changes them.
+
+A proposed manifest that renews only `sources`, each target's `buildInputs`
+and the 15 changed instruction pins (schema, versions, build settings,
+`sourceParents` and accounting schedules byte-identical) is attached to the PR
+for proof-owner review. It was not committed on that head. Its instruction pins,
+the verifier and compiler flags were unchanged.
+
+Local qualification ran in a Linux ARM64 container (Go 1.22.12, CPython
+3.12.15, Node 24.21.0, all checksum-verified downloads), executing the CI
+job's own steps on that earlier repair tree:
+
+- With the committed manifest, every step but one passed. Sequential companion
+  parity failed exactly as in CI (0/88 cases, hard failure on the source
+  inventory).
+- With the proposed manifest, committed locally only, all 31 steps passed.
+  Sequential companion parity ran 88/88 cases, 64 exact arithmetic pairs and
+  19/19 verifier self-tests, with 0 unexplained and 7 explained cross-target
+  comparisons (87 explained raw leaves). All nine same-architecture checks
+  passed, including pre-change baseline f8aba9e to current on native and
+  Node-WASM, so no trade arithmetic changed.
+
+These were local results. Exact-head CI on GitHub and the proof owners' review
+of that proposed renewal were still required. They do not establish native
+ARM64 runtime qualification of a later integrated source tree, release,
+consumer adoption, deployment or forward activation.
+
+
+## Price momentum fixed ATR stop: independently reviewed renewal (2026-10-16)
+
+The bounded HT-298 continuation preserves the original implementation and
+Claude repair. Merge `326c7b194992e8000bc06b7ffc7830b019ca221f` combines the
+original head above with current main
+`a5cdb5142eed6da6a0b0a8ad17ab2ffcd3ef1d04`, preserving all PR144 helpers and
+eight source-inventory additions. Its exact union tree is
+`dab153dfcc83fcaa73a33378624e8deb4d805495`. Manifest-only renewal
+`717214d98c6fb4315e223189edb7b700e77c6fdd` has qualification tree
+`3cd1790013eaef5cb72f1e5f06f5aa267ac9733c` and manifest SHA256
+`2620685d140ec5ccde7bad4c37e30f682ab61b6f51a8f270d57d0103df95c08d`.
+
+Fresh pinned Go 1.22.12 Linux compilation reproduces all 21 current-main
+protected pins and accounts for all 21 union streams across AMD64, ARM64 and
+WASM. Six streams are identical. Actual layouts and dataflow establish every
+changed operand: 140 same-member relocations, three ARM64 address-materialization
+contractions, and 52 unchanged-target branch/ADR relocations. Protected
+arithmetic, comparisons, call targets and operation order remain unchanged.
+This is a bounded shared-accounting proof; PM fixed-ATR behavior intentionally
+changes. Exactly 46 manifest leaves are renewed, with verifier, schemas,
+versions, compiler flags, sourceParents and accounting schedules unchanged.
+
+Actual native AMD64 and Node-hosted Go-WASM qualification on the tree above
+passes the accepted frozen Sequential companion corpus: 88/88 cases, 64
+arithmetic pairs, 47,740 exact arithmetic checks and 92,156 complete float-bit
+checks, with zero mismatches or unexplained comparisons. All 30 tested native
+packages pass; conformance reports 152 parse and 114 run cases with zero TODO
+and no changed existing golden. Focused and supplemental PM/accounting tests
+produce 43 top-level tests and 322 pass records per target. The unchanged
+verifier refuses the original unrenewed union and accepts this candidate.
+
+A fresh independent artifact review verified source/commit/tree/toolchain
+identities, all extracted streams and layouts, native and WASM pointer
+provenance, linked runtime helpers, exact manifest scope, and persisted runtime
+operands. It gave GO for this exact renewal. The authoritative proof packet v2
+seal is `f5b0556869ed24116c7504d883568b76e2f990811b7f3c317264c89d3b79b6c1`;
+the independent review seal is
+`d8d7ac285820ce047e8e174b0108a40c72e2399d23ea9d35e60e18b0d7519856`.
+The earlier seal's disclosed packaging-output mismatch was corrected without
+changing source, compiler or runtime evidence.
+
+These cloud runtime results are AMD64 and actual WASM; ARM64 was cross-compiled
+and inspected, not executed here. Full CI and actual native ARM64 execution
+must be tied to the exact final published source, including any later changes.
+[PR142](https://github.com/spik3r/heisentick-strat/pull/142) records the current
+head, independent reviews and CI receipts. The earlier local ARM64 results
+above must not substitute for that gate. No historical profitability, release,
+consumer adoption, deployment or forward-activation claim follows.
