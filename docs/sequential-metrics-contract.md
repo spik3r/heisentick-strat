@@ -249,3 +249,68 @@ same provenance checks to run without changing them.
 
 This source-pin review establishes neither market profitability nor release,
 consumer adoption, deployment or forward activation.
+
+## Price momentum fixed ATR stop: layout review (2026-10-16, pending)
+
+PR142 adds `StopATR float64` to `priceMomentumParams`, a struct embedded by
+value in `flagParams`, which `broker` embeds. The struct grows from 16 to 24
+bytes and now ends at broker offset 6064 instead of 6056; the broker grows
+from 9,704 to 9,712 bytes (Go 1.22.12, 64-bit targets). No protected function
+body was edited, but every broker field after the new member moves by 8 bytes.
+
+Sequential qualification therefore refuses the committed manifest before any
+case runs (CI run 38833834951: source inventory). Seven sources differ:
+`dsl/parser_price_momentum.go`, `engine/config.go`, `engine/config_setups.go`,
+`engine/conformance.go`, `engine/family_price_momentum.go`, `engine/run.go` and
+`engine/runner.go`. Each target's dependency closure changes the same seven
+hashes; package sets are unchanged.
+
+Two independent Go 1.22.12 observations compared all seven pinned instruction
+streams on Linux AMD64, Linux ARM64 and WASM: a cross-compile on Darwin ARM64,
+and a build inside a Linux ARM64 container (native ARM64 and WASM, AMD64
+cross-compiled). The observation harness uses the proof script's own
+`source_hashes`, `dependency_inputs` and `instruction_lists`, and first
+reproduced every pin on main 557e4d1 exactly. Both observations agree byte for
+byte. `finish` and `ProjectSequentialMetrics` are unchanged on all targets.
+`openPosition`, `closePosition` and the collector's `entry`, `exit` and `mark`
+change on all three targets, 15 streams in total. Every changed instruction
+is one of:
+
+- the same opcode with only a broker-field displacement at or above offset
+  8,000 moved by exactly +8 (all AMD64 and WASM changes);
+- on ARM64, `MOVD $8184, R3; ADD R3, R0, R21` becoming `ADD $8192, R0, R21`,
+  because 8,192 fits the shifted 12-bit immediate form, one instruction shorter
+  in `openPosition`, `closePosition` and `entry` (counts 180 to 179, 289 to
+  288, 237 to 236);
+- on ARM64, a branch or `ADR` PC-relative operand moved by exactly -4 after that
+  collapse (`B*`, `CB*`, `TBNZ`, `JMP`, and `ADR` into `runtime.duffcopy` /
+  `runtime.duffzero`).
+
+No floating-point, integer arithmetic, comparison or call instruction differs
+in opcode or in any operand other than those listed. The review repair on top
+of PR142 (bounds and invalid-stop checks) produces instruction streams
+identical to the PR142 head; only the new field changes them.
+
+A proposed manifest that renews only `sources`, each target's `buildInputs`
+and the 15 changed instruction pins (schema, versions, build settings,
+`sourceParents` and accounting schedules byte-identical) is attached to the PR
+for proof-owner review. It is not committed. The committed instruction pins,
+the verifier and compiler flags are unchanged.
+
+Local qualification ran in a Linux ARM64 container (Go 1.22.12, CPython
+3.12.15, Node 24.21.0, all checksum-verified downloads), executing the CI
+job's own steps on the final tree:
+
+- With the committed manifest, every step but one passed. Sequential companion
+  parity failed exactly as in CI (0/88 cases, hard failure on the source
+  inventory).
+- With the proposed manifest, committed locally only, all 31 steps passed.
+  Sequential companion parity ran 88/88 cases, 64 exact arithmetic pairs and
+  19/19 verifier self-tests, with 0 unexplained and 7 explained cross-target
+  comparisons (87 explained raw leaves). All nine same-architecture checks
+  passed, including pre-change baseline f8aba9e to current on native and
+  Node-WASM, so no trade arithmetic changed.
+
+These are local results. Exact-head CI on GitHub and the proof owners' review
+of the pin renewal are still required before merge. This review establishes
+neither release, consumer adoption, deployment nor forward activation.
