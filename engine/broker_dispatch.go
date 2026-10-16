@@ -49,6 +49,8 @@ func (b *broker) onBar(i int) {
 		b.onElderTripleScreenBar(i)
 	case "priceMomentum":
 		b.onPriceMomentumBar(i)
+	case "donchianBreakout":
+		b.onDonchianBreakoutBar(i)
 	case "fairValueGap":
 		b.onFairValueGapBar(i)
 	case "keltnerReversion", "keltnerExpansion":

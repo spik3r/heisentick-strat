@@ -273,6 +273,7 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyVolumeAnomalyExhaustion),
 		string(dsl.FamilyElderTripleScreen),
 		string(dsl.FamilyPriceMomentum),
+		string(dsl.FamilyDonchianBreakout),
 		string(dsl.FamilyDailyFlushFailure),
 		string(dsl.FamilyFairValueGap),
 		string(dsl.FamilyWeekendExtremeFade),
@@ -358,6 +359,12 @@ func (r *PreparedRunner) RunPrepared() []Trade {
 }
 
 func computeSetupEMA(series marketdata.Series, params flagParams) ([]float64, []float64) {
+	if params.SetupType == string(dsl.FamilyDonchianBreakout) {
+		if params.DonchianBreakout.TrendEMALen <= 0 {
+			return nil, nil
+		}
+		return computeEMA(series, params.DonchianBreakout.TrendEMALen), nil
+	}
 	if params.SetupType != string(dsl.FamilyTrendPullback) {
 		return nil, nil
 	}

@@ -1,0 +1,9 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "dcb-close-equal-rail-no-entry",
+  "trades": [],
+  "notes": [
+    "Bars 0-19 are flat at 2000 with highs 2005. Bar 20 closes 2005, equal to its channel high (bars 17-19, 2005). The comparison is strict, so there is no signal.",
+    "Bar 21 opens 2005 and closes 2000; bars 22-25 are flat at 2000. Every later channel high is 2005 and no close exceeds it, so the case has no trade."
+  ]
+}

@@ -1,0 +1,30 @@
+dsl v7
+strategy "Donchian Breakout Conformance" {
+  description "Parse fixture: long donchian breakout with an EMA trend gate and an ATR trail."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+
+setup {
+  type: donchian breakout
+  channel 55 candles
+  trend ema 300
+}
+
+filters {
+  side: long only
+}
+
+risk {
+  stop 2 ATR
+}
+
+management {
+  trail 3 ATR after 0R
+}
+
+execution {
+  risk 200 USD
+}

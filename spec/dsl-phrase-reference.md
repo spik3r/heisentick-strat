@@ -115,6 +115,9 @@ own phrases.
 | `type: price momentum` | Close-to-close time-series momentum. | `type: price momentum` |
 | `lookback N candles` | Sets the price-momentum ROC lookback. | `lookback 20 candles` |
 | `neutral zone X percent` | Sets the symmetric no-signal threshold. | `neutral zone 1 percent` |
+| `type: donchian breakout` | Close beyond the prior N-bar high or low. | `type: donchian breakout` |
+| `channel N candles` | Sets the donchian-breakout channel length (setup section). | `channel 55 candles` |
+| `trend ema N` | Requires the close on the trend side of EMA(N). | `trend ema 300` |
 
 ## Risk, Target, Management
 

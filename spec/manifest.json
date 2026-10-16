@@ -168,6 +168,13 @@
       "since": 7
     },
     {
+      "id": "donchianBreakout",
+      "canonicalSpelling": "donchian breakout",
+      "canonicalExample": "type: donchian breakout\n  channel 55 candles\n  trend ema 300",
+      "classification": "shared",
+      "since": 7
+    },
+    {
       "id": "dailyFlushFailure",
       "canonicalSpelling": "daily flush failure",
       "canonicalExample": "type: daily flush failure\n  flush range at least 1.25 ATR\n  flush close in bottom 25 percent",
@@ -743,6 +750,14 @@
       "since": 7
     },
     {
+      "id": "alias.js-setup-type.donchian-breakout",
+      "source": "js-setup-type",
+      "spelling": "donchian breakout",
+      "familyId": "donchianBreakout",
+      "classification": "shared",
+      "since": 7
+    },
+    {
       "id": "alias.js-setup-type.daily-flush-failure",
       "source": "js-setup-type",
       "spelling": "daily flush failure",
@@ -923,6 +938,14 @@
       "source": "go-inline-setup-type",
       "spelling": "price momentum",
       "familyId": "priceMomentum",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.donchian-breakout",
+      "source": "go-inline-setup-type",
+      "spelling": "donchian breakout",
+      "familyId": "donchianBreakout",
       "classification": "shared",
       "since": 7
     },
@@ -1435,6 +1458,14 @@
       "source": "go-canonical-setup-type",
       "spelling": "price momentum",
       "familyId": "priceMomentum",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.donchian-breakout",
+      "source": "go-canonical-setup-type",
+      "spelling": "donchian breakout",
+      "familyId": "donchianBreakout",
       "classification": "shared",
       "since": 7
     },

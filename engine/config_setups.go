@@ -158,6 +158,12 @@ type priceMomentumParams struct {
 	ThresholdPct float64
 }
 
+type donchianBreakoutParams struct {
+	ChannelBars int
+	TrendEMALen int
+	StopATR     float64
+}
+
 type keltnerParams struct {
 	EMALen         int
 	BandATR        float64

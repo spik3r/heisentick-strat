@@ -1,0 +1,32 @@
+dsl v7
+strategy "Donchian Breakout Two Sided Conformance" {
+  description "Fixture-only two-sided donchian breakout with an R target, breakeven and cooldown."
+}
+
+market conditions {
+  slices(XAUUSD 4h)
+}
+
+setup {
+  type: donchian breakout
+  channel 20 candles
+}
+
+risk {
+  stop 1.5 ATR
+}
+
+target {
+  target 3R
+}
+
+management {
+  move stop to breakeven after 1R plus 0.1 ATR
+  trail 2.5 ATR after 1.5R
+  wait 6 candles after trade
+  maxHoldCandles 60
+}
+
+execution {
+  risk 200 USD
+}

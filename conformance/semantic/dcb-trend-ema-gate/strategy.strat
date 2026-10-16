@@ -1,0 +1,30 @@
+dsl v7
+strategy "Semantic donchian trend EMA gate" {
+  description "Semantic fixture: a channel breakout below EMA(10) of closes does not enter."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: donchian breakout
+  channel 3 candles
+  trend ema 10
+}
+
+filters {
+  side long only
+}
+
+risk {
+  stop 2 ATR
+}
+
+target {
+  target 1R
+}
+
+execution {
+  risk 200 USD
+}

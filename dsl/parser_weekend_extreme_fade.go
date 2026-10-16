@@ -12,6 +12,8 @@ func (p *parser) parseStopDirective(line logicalLine, tokens []string) {
 		p.parseWeekendExtremeFade(line, tokens)
 	} else if p.config["setupType"] == string(FamilyNamedLevelSweep) && p.parseNamedLevelSweepStopLine(line, tokens) {
 		// handled
+	} else if p.parseDonchianBreakoutStop(tokens) {
+		// handled
 	} else if p.config["setupType"] != string(FamilyDualEMAResumption) {
 		p.parseStop(line, tokens)
 	}

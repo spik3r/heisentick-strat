@@ -511,6 +511,7 @@ are errors. The `type` value itself is written in trading language
 | `volume anomaly exhaustion` | volumeAnomalyExhaustion |
 | `elder triple screen` | elderTripleScreen |
 | `price momentum` | priceMomentum |
+| `donchian breakout` | donchianBreakout |
 | `daily flush failure` | dailyFlushFailure |
 | `keltner reversion` | keltnerReversion |
 | `keltner expansion` | keltnerExpansion |
