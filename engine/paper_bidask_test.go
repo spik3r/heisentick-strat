@@ -15,7 +15,7 @@ import (
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
-func bidAskTestRequest(t *testing.T) PaperBidAskRequest {
+func bidAskTestRequest(t testing.TB) PaperBidAskRequest {
 	t.Helper()
 	old := paperORBRequest(t, "close")
 	r := PaperBidAskRequest{Schema: PaperBidAskRequestSchema, Source: old.Source, Route: old.Route, Identity: BidAskIdentity{strings.Repeat("a", 64), strings.Repeat("1", 64), strings.Repeat("2", 64), strings.Repeat("3", 64), strings.Repeat("4", 64)}, Product: BidAskProduct{"oanda-v20", "XAU_USD", strings.Repeat("5", 64), "USD", "USD/troy-ounce", "troy-ounce", "1"}, Economics: BidAskEconomics{"1000", "0", "0", "0", "0", "0.25", "0.25", "10000", "none", "0"}, Policy: BidAskPolicy{PaperBidAskModel, "5000", "290000", "refuse-discontinuous-exposure", "decimal-rational-family-shortest-v1"}, ActivationFromT: bidAskStamp(int64(old.Bars[0][0]) * 1000000), Records: []BidAskRecord{}}

@@ -24,6 +24,16 @@ version and is named here.
   exits) and parse cases `diagnostic-price-momentum-stop-atr-{zero,negative}`.
   No existing golden changed.
 
+### Dual EMA sampled bid/ask paper execution (HT243; additive minor semantics)
+
+- Admit long-only XAUUSD 4h dual EMA resumption through the existing native
+  sampled bid/ask model, with a fill-relative stop and explicit absent target.
+- Advance indicators during warm-up without orders, apply close trails only
+  forward, and execute slow-EMA fallback from a causal fresh quote.
+- Preserve open exposure across replay and refuse missing exit observations or
+  discontinuous coverage. Financing and consumer activation remain unqualified.
+- Existing ORB output and source admission retain their prior contract.
+
 ### Parabolic SAR indicator and DSL filters (HT289; additive minor semantics)
 
 - Add Go-authoritative chart-timeframe SAR with configurable start/step/max,
