@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func paperORBRequest(t *testing.T, fill string) PaperPrefixRequest {
+func paperORBRequest(t testing.TB, fill string) PaperPrefixRequest {
 	t.Helper()
 	source, err := os.ReadFile(filepath.Join(runFixtureDir(), "../parse/setup-opening-range-breakout.strat"))
 	if err != nil {

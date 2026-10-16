@@ -12,11 +12,12 @@ import (
 	"unicode/utf8"
 )
 
-const PaperBidAskMaxBytes = 16 << 20
-const PaperBidAskMaxRecords = 8192
+const PaperBidAskMaxBytes = 64 << 20
+const PaperBidAskMaxRecords = 65536
 const PaperBidAskMaxQuoteIdentities = PaperBidAskMaxRecords
 const PaperBidAskMaxBars = 4096
-const PaperBidAskMaxEvents = 32768
+const PaperBidAskMaxEvents = 262144
+const PaperBidAskMaxOutputBytes = 128 << 20
 const PaperBidAskMaxSourceBytes = 64 << 10
 
 // Decimal transport is exact; family binary64 operands cross into the financial
@@ -118,15 +119,17 @@ type BidAskGap struct {
 	Reason   string `json:"reason"`
 }
 type BidAskRecord struct {
-	Sequence string         `json:"sequence"`
-	Epoch    string         `json:"epoch"`
-	CommitT  string         `json:"commitT"`
-	Kind     string         `json:"kind"`
-	Bar      *BidAskBar     `json:"bar,omitempty"`
-	Episode  *BidAskEpisode `json:"episode,omitempty"`
-	Quote    *BidAskQuote   `json:"quote,omitempty"`
-	Seal     *BidAskSeal    `json:"seal,omitempty"`
-	Gap      *BidAskGap     `json:"gap,omitempty"`
+	ExperimentClock *BidAskExperimentClock `json:"experimentClock,omitempty"`
+	Closure         *BidAskClosure         `json:"closure,omitempty"`
+	Sequence        string                 `json:"sequence"`
+	Epoch           string                 `json:"epoch"`
+	CommitT         string                 `json:"commitT"`
+	Kind            string                 `json:"kind"`
+	Bar             *BidAskBar             `json:"bar,omitempty"`
+	Episode         *BidAskEpisode         `json:"episode,omitempty"`
+	Quote           *BidAskQuote           `json:"quote,omitempty"`
+	Seal            *BidAskSeal            `json:"seal,omitempty"`
+	Gap             *BidAskGap             `json:"gap,omitempty"`
 }
 
 // Strict shape checks cover absent zero-valued fields, case aliases, nulls,
@@ -244,9 +247,12 @@ func validateBidAskRecords(r PaperBidAskRequest, duration int64) ([]BidAskBar, e
 		if e != nil || commit < lastCommit {
 			return nil, bidAskError("COMMIT_ORDER")
 		}
+		if err := validateBidAskExperimentRecord(r, rec); err != nil {
+			return nil, err
+		}
 		lastCommit = commit
 		count := 0
-		for _, present := range []bool{rec.Bar != nil, rec.Episode != nil, rec.Quote != nil, rec.Seal != nil, rec.Gap != nil} {
+		for _, present := range []bool{rec.Bar != nil, rec.Episode != nil, rec.Quote != nil, rec.Seal != nil, rec.Gap != nil, rec.Closure != nil, rec.ExperimentClock != nil} {
 			if present {
 				count++
 			}
@@ -371,7 +377,7 @@ func validateBidAskRecords(r PaperBidAskRequest, duration int64) ([]BidAskBar, e
 			}
 		case "seal":
 			s := rec.Seal
-			if s == nil || (s.Reason != "recovery" && s.Reason != "deadline") {
+			if s == nil || (s.Reason != "recovery" && s.Reason != "deadline" && !(s.Reason == "signal-expired" && r.Experiment != nil)) {
 				return nil, bidAskError("SEAL")
 			}
 			if _, e := bidAskSequence(s.SignalSequence); e != nil {
@@ -380,6 +386,62 @@ func validateBidAskRecords(r PaperBidAskRequest, duration int64) ([]BidAskBar, e
 			at, e := bidAskTime(s.EffectiveT)
 			if e != nil || at > commit {
 				return nil, bidAskError("SEAL")
+			}
+		case "experiment-clock":
+			c := rec.ExperimentClock
+			if c == nil || r.Experiment == nil || i != len(r.Records)-1 {
+				return nil, bidAskError("EXPERIMENT_CLOCK")
+			}
+			at, err := bidAskTime(c.EffectiveT)
+			if err != nil {
+				return nil, err
+			}
+			until, err := bidAskTime(r.Experiment.ObservationUntilT)
+			if err != nil {
+				return nil, err
+			}
+			activation, err := bidAskTime(r.ActivationFromT)
+			if err != nil {
+				return nil, err
+			}
+			calendarThrough, err := bidAskTime(r.Experiment.CalendarThroughT)
+			if err != nil {
+				return nil, err
+			}
+			if (c.Reason == "calendar-coverage-expired" && at != calendarThrough) || at > calendarThrough {
+				return nil, bidAskError("EXPERIMENT_CLOCK")
+			}
+			if at > commit || at < activation || at > until || (c.Reason != "experiment-observation-horizon" && c.Reason != "experiment-capacity-exhausted" && c.Reason != "calendar-coverage-expired") || (c.Reason == "experiment-observation-horizon" && at != until) {
+				return nil, bidAskError("EXPERIMENT_CLOCK")
+			}
+		case "market-closure":
+			c := rec.Closure
+			if c == nil || r.Experiment == nil {
+				return nil, bidAskError("CLOSURE")
+			}
+			index, err := bidAskSequence(c.WindowIndex)
+			if err != nil || index > len(r.Experiment.Closures) {
+				return nil, bidAskError("CLOSURE")
+			}
+			from, err := bidAskTime(c.FromT)
+			if err != nil {
+				return nil, err
+			}
+			through, err := bidAskTime(c.ThroughT)
+			if err != nil {
+				return nil, err
+			}
+			window := r.Experiment.Closures[index-1]
+			windowFrom, err := bidAskTime(window.FromT)
+			if err != nil {
+				return nil, err
+			}
+			windowThrough, err := bidAskTime(window.ThroughT)
+			if err != nil {
+				return nil, err
+			}
+			if from%duration != 0 || through%duration != 0 || from >= through || from < windowFrom || through > windowThrough || commit < through {
+				return nil, bidAskError("CLOSURE")
 			}
 		case "coverage-gap":
 			g := rec.Gap

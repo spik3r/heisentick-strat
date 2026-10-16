@@ -180,7 +180,7 @@ func TestPaperBidAskBridgeSafeErrorsAndOutputLimit(t *testing.T) {
 			t.Fatal("typed code lost")
 		}
 	}
-	_, err := engine.EncodePaperBidAskResult(engine.PaperBidAskResult{Coverage: strings.Repeat("x", engine.PaperBidAskMaxBytes)})
+	_, err := engine.EncodePaperBidAskResult(engine.PaperBidAskResult{Coverage: strings.Repeat("x", engine.PaperBidAskMaxOutputBytes)})
 	if err == nil || paperBidAskError(err) != paperBidAskFailure("PAPER_BIDASK_OUTPUT_LIMIT") {
 		t.Fatal("producer output bound lost")
 	}
