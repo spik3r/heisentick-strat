@@ -46,9 +46,13 @@ and extreme lookback are ignored. The stop-size bounds still apply, so an `N`
 outside them rejects every entry. They are compared with `N` itself and are
 inclusive: `stop 2 ATR` with `stop size min 2` trades. The bound is not
 re-derived from the rounded stop price. The computed stop must also be finite
-and on the losing side of the signal close. `N` must be finite and positive;
-`stop 0 ATR`, a negative `N` or a non-finite `N` is a parse error (and a refused
-engine configuration), never a silent fallback to the recent-extreme stop.
+and on the losing side of the signal close. For stops parsed as `fixedAtr`,
+`N` must be finite and positive. `stop 0 ATR`, `stop -1 ATR`, `stop NaN ATR`,
+`stop Inf ATR` and `stop -Inf ATR` are parse errors; direct price-momentum
+`fixedAtr` configurations also reject nonpositive, non-finite, missing or
+nonnumeric multiples. A pre-existing lexer limitation remains: `stop +Inf ATR`
+and out-of-range numeric literals can enter the generic stop branch instead,
+so this change does not guarantee rejection of those spellings.
 The stop stays anchored to the signal close with either fill model; with a
 next-open fill, size uses the distance from the slipped fill to that stop.
 

@@ -15,11 +15,11 @@ version and is named here.
   inclusive bound is admitted (rebuilding the distance from the rounded stop
   price rejected `stop 2 ATR` with `stop size min 2` at ATR 0.3). Programs
   without `stop N ATR` are unchanged.
-- An explicit price-momentum `stop N ATR` with `N` zero, negative or
-  non-finite is now a parse error, and the engine refuses such a direct
-  configuration. Before, the value read as "no fixed stop" and the family
-  traded its recent-extreme stop. That fallback predates this change; it was
-  an unresolved input contract, not a new regression.
+- Price-momentum stops parsed as `fixedAtr` now reject zero, negative or
+  non-finite multiples, as do direct engine `fixedAtr` configurations. These
+  previously fell back to the recent-extreme stop. That fallback predates
+  this change. Pre-existing lexer gaps remain for `stop +Inf ATR` and
+  out-of-range numeric literals, which may enter the generic stop branch.
 - Add run case `family-price-momentum-atr-stop` (147 trades; sl, tp and time
   exits) and parse cases `diagnostic-price-momentum-stop-atr-{zero,negative}`.
   No existing golden changed.
