@@ -1,0 +1,69 @@
+name: Gold source native AMD64 qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/gold-bidask-paper]
+    paths:
+      - .github/workflows/gold-native-amd64-qualification.yml
+      - scripts/checks/sequential-arithmetic-schedules.json
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gold-native-amd64-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  qualification:
+    if: github.repository == 'spik3r/heisentick-strat'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require a native Linux AMD64 runner
+        run: |
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = x86_64
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.12'
+          cache: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Run the unchanged Sequential qualification
+        id: proof
+        env:
+          CGO_ENABLED: '0'
+          GOTOOLCHAIN: local
+          GOWORK: 'off'
+          GOAMD64: v1
+          GOPROXY: 'off'
+        run: |
+          test "$(go env GOVERSION)" = go1.22.12
+          test "$(go env GOHOSTOS)" = linux
+          test "$(go env GOHOSTARCH)" = amd64
+          node -e 'if (process.platform !== "linux" || process.arch !== "x64") process.exit(1)'
+          baseline_dir="$(mktemp -d "$RUNNER_TEMP/sequential-baseline.XXXXXX")"
+          trap 'rm -rf "$baseline_dir"' EXIT
+          baseline_commit=f8aba9ef13e22ace21ce31f2ed06cd86ad53464d
+          test "$(git rev-parse "$baseline_commit^{tree}")" = 8e4ef994a636f2125bab2bb909c28fca5db2351d
+          git archive "$baseline_commit" | tar -x -C "$baseline_dir"
+          diagnostic_dir="$RUNNER_TEMP/gold-native-amd64-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          node scripts/checks/sequential-backtest-parity.mjs --baseline-repo "$baseline_dir" --out "$diagnostic_dir"
+      - name: Preserve qualification evidence
+        if: always() && (steps.proof.outcome == 'success' || steps.proof.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: gold-native-amd64-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/gold-native-amd64-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          retention-days: 7
