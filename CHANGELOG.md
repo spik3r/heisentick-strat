@@ -11,9 +11,18 @@ version and is named here.
 - `type: price momentum` with `stop N ATR` now places the stop `N × ATR` from
   the signal close. Before, the family ignored the phrase and kept the
   3-candle recent-extreme stop, so a declared ATR stop had no effect.
-  Stop-size bounds still apply. Programs without `stop N ATR` are unchanged.
+  Stop-size bounds still apply, compared with `N` directly so an `N` on an
+  inclusive bound is admitted (rebuilding the distance from the rounded stop
+  price rejected `stop 2 ATR` with `stop size min 2` at ATR 0.3). Programs
+  without `stop N ATR` are unchanged.
+- An explicit price-momentum `stop N ATR` with `N` zero, negative or
+  non-finite is now a parse error, and the engine refuses such a direct
+  configuration. Before, the value read as "no fixed stop" and the family
+  traded its recent-extreme stop. That fallback predates this change; it was
+  an unresolved input contract, not a new regression.
 - Add run case `family-price-momentum-atr-stop` (147 trades; sl, tp and time
-  exits). No existing golden changed.
+  exits) and parse cases `diagnostic-price-momentum-stop-atr-{zero,negative}`.
+  No existing golden changed.
 
 ### Parabolic SAR indicator and DSL filters (HT289; additive minor semantics)
 

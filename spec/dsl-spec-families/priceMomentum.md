@@ -42,8 +42,15 @@ values without adding family-specific money rules.
 
 `stop N ATR` replaces the recent-extreme stop with a fixed stop `N × ATR` from
 the signal close (below it for longs, above it for shorts). The stop padding
-and extreme lookback are ignored; the stop-size bounds still apply, so an `N`
-outside them rejects every entry.
+and extreme lookback are ignored. The stop-size bounds still apply, so an `N`
+outside them rejects every entry. They are compared with `N` itself and are
+inclusive: `stop 2 ATR` with `stop size min 2` trades. The bound is not
+re-derived from the rounded stop price. The computed stop must also be finite
+and on the losing side of the signal close. `N` must be finite and positive;
+`stop 0 ATR`, a negative `N` or a non-finite `N` is a parse error (and a refused
+engine configuration), never a silent fallback to the recent-extreme stop.
+The stop stays anchored to the signal close with either fill model; with a
+next-open fill, size uses the distance from the slipped fill to that stop.
 
 `wait N candles after trade` measures from the accepted entry bar. Re-entry is
 blocked while `currentBar - priorEntryBar < N` and is permitted at equality. A

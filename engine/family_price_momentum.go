@@ -56,8 +56,17 @@ func (b *broker) onPriceMomentumBar(i int) {
 	}
 	entry := b.series.C[i]
 	var stop float64
-	if p.PriceMomentum.StopATR > 0 {
-		stop = entry - float64(s)*atr*p.PriceMomentum.StopATR
+	if multiple := p.PriceMomentum.StopATR; multiple > 0 {
+		// Check the multiplier against the inclusive `stop size` bounds before
+		// the price subtraction: rebuilding |entry - stop| afterwards loses
+		// bits near the entry price and can push an exact bound outside.
+		if !(multiple >= p.MinStopATR && multiple <= p.MaxStopATR) {
+			return
+		}
+		stop = entry - float64(s)*atr*multiple
+		if !isFinite(stop) || float64(s)*(entry-stop) <= 0 {
+			return
+		}
 	} else {
 		stop = recentExtreme(b.series, i, p.StopLookbackCandles, s)
 		if s == sideLong {
@@ -65,9 +74,9 @@ func (b *broker) onPriceMomentumBar(i int) {
 		} else {
 			stop += atr * p.StopBufferATR
 		}
-	}
-	if !stopOK(entry, stop, atr, p.MinStopATR, p.MaxStopATR) {
-		return
+		if !stopOK(entry, stop, atr, p.MinStopATR, p.MaxStopATR) {
+			return
+		}
 	}
 	risk := math.Abs(entry - stop)
 	setup := setupPlan{

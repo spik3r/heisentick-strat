@@ -1,6 +1,8 @@
 package engine
 
 import (
+	"errors"
+	"math"
 	"reflect"
 
 	"github.com/spik3r/heisentick-strat/dsl"
@@ -245,4 +247,36 @@ func fixedATRStop(stop map[string]any) float64 {
 		return 0
 	}
 	return numberValue(stop, "atr", 0)
+}
+
+// validatePriceMomentumStopConfig refuses an explicit price-momentum `stop N
+// ATR` whose multiple is not a finite positive number. Without it a zero,
+// negative or non-numeric multiple reads as "no fixed stop" and the family
+// would trade the recent-extreme stop instead of the declared one. Absent
+// fixed stops and other families are unaffected.
+func validatePriceMomentumStopConfig(cfg dsl.Config) error {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyPriceMomentum) {
+		return nil
+	}
+	stop := mapValue(cfg, "stop")
+	if stringValue(stop, "type", "") != "fixedAtr" {
+		return nil
+	}
+	var multiple float64
+	switch v := stop["atr"].(type) {
+	case float64:
+		multiple = v
+	case float32:
+		multiple = float64(v)
+	case int:
+		multiple = float64(v)
+	case int64:
+		multiple = float64(v)
+	default:
+		return errors.New("price momentum stop N ATR requires a numeric multiple")
+	}
+	if math.IsNaN(multiple) || math.IsInf(multiple, 0) || multiple <= 0 {
+		return errors.New("price momentum stop N ATR requires a finite positive multiple")
+	}
+	return nil
 }
