@@ -349,6 +349,7 @@
     "report/adaptiveflagunit/runtime.go": "a0efabc461c321aa263910cf8ca81db6401eebddac4cb5a6deac637fa0572550",
     "report/adaptiveflagunit/types.go": "512cd5ab35da0e4e9a382a7ac2b85cbec1fa689a09614bbfd98cd21fd612997b",
     "report/adaptiveflagunit/validate.go": "064e6450fa3f45a30a7c3cb010de0a1a803e58623a4fe737459ffd77d1ddafb8",
+    "report/ordinary_backtest.go": "eed177803adf8cf23365b0c4306d9b7e5cfed18251d473bfb2bb1c07e3c66038",
     "report/build.go": "08af699f4714e3a002f02a5257cd2a7b7a2aae9127add7ce1eecf4288f22af93",
     "report/costs.go": "8ec1c2276e58c09ba5e87db4f3542f792dea68368935d212ce58ab83b7230242",
     "report/document.go": "cb4811219b9dd011ffc8c501ed8a3a9bd68f8539c000227a1896312440f18ec8",
@@ -365,6 +366,7 @@
     "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e",
     "testsupport/down_shock.go": "e87fdbc07e3ea580143595fa7b8d73c6778bd91c8408440e6329f98ad480784a",
     "testsupport/reporoot.go": "ae96fce6fe803c3adcafebc12e47f460024417006fb854adb8320c618f61d4e5",
+    "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
     "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
     "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64"
   },
@@ -653,6 +655,7 @@
           "report/adaptiveflagunit/runtime.go": "a0efabc461c321aa263910cf8ca81db6401eebddac4cb5a6deac637fa0572550",
           "report/adaptiveflagunit/types.go": "512cd5ab35da0e4e9a382a7ac2b85cbec1fa689a09614bbfd98cd21fd612997b",
           "report/adaptiveflagunit/validate.go": "064e6450fa3f45a30a7c3cb010de0a1a803e58623a4fe737459ffd77d1ddafb8",
+          "report/ordinary_backtest.go": "eed177803adf8cf23365b0c4306d9b7e5cfed18251d473bfb2bb1c07e3c66038",
           "report/build.go": "08af699f4714e3a002f02a5257cd2a7b7a2aae9127add7ce1eecf4288f22af93",
           "report/costs.go": "8ec1c2276e58c09ba5e87db4f3542f792dea68368935d212ce58ab83b7230242",
           "report/document.go": "cb4811219b9dd011ffc8c501ed8a3a9bd68f8539c000227a1896312440f18ec8",
@@ -667,6 +670,7 @@
           "report/statistics.go": "92d20500d1f9ed5cf9fd73cdcd1a29866746494c4e5242c6228bd841d7f0a926",
           "report/supply_demand_retest.go": "83ca1278ccb5620cc94966e898befacf072f298d0d1bde80fca2f00cf6690eac",
           "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e",
+          "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64"
         }
@@ -956,6 +960,7 @@
           "report/adaptiveflagunit/runtime.go": "a0efabc461c321aa263910cf8ca81db6401eebddac4cb5a6deac637fa0572550",
           "report/adaptiveflagunit/types.go": "512cd5ab35da0e4e9a382a7ac2b85cbec1fa689a09614bbfd98cd21fd612997b",
           "report/adaptiveflagunit/validate.go": "064e6450fa3f45a30a7c3cb010de0a1a803e58623a4fe737459ffd77d1ddafb8",
+          "report/ordinary_backtest.go": "eed177803adf8cf23365b0c4306d9b7e5cfed18251d473bfb2bb1c07e3c66038",
           "report/build.go": "08af699f4714e3a002f02a5257cd2a7b7a2aae9127add7ce1eecf4288f22af93",
           "report/costs.go": "8ec1c2276e58c09ba5e87db4f3542f792dea68368935d212ce58ab83b7230242",
           "report/document.go": "cb4811219b9dd011ffc8c501ed8a3a9bd68f8539c000227a1896312440f18ec8",
@@ -970,6 +975,7 @@
           "report/statistics.go": "92d20500d1f9ed5cf9fd73cdcd1a29866746494c4e5242c6228bd841d7f0a926",
           "report/supply_demand_retest.go": "83ca1278ccb5620cc94966e898befacf072f298d0d1bde80fca2f00cf6690eac",
           "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e",
+          "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64"
         }
@@ -1268,6 +1274,7 @@
           "report/adaptiveflagunit/runtime.go": "a0efabc461c321aa263910cf8ca81db6401eebddac4cb5a6deac637fa0572550",
           "report/adaptiveflagunit/types.go": "512cd5ab35da0e4e9a382a7ac2b85cbec1fa689a09614bbfd98cd21fd612997b",
           "report/adaptiveflagunit/validate.go": "064e6450fa3f45a30a7c3cb010de0a1a803e58623a4fe737459ffd77d1ddafb8",
+          "report/ordinary_backtest.go": "eed177803adf8cf23365b0c4306d9b7e5cfed18251d473bfb2bb1c07e3c66038",
           "report/build.go": "08af699f4714e3a002f02a5257cd2a7b7a2aae9127add7ce1eecf4288f22af93",
           "report/costs.go": "8ec1c2276e58c09ba5e87db4f3542f792dea68368935d212ce58ab83b7230242",
           "report/document.go": "cb4811219b9dd011ffc8c501ed8a3a9bd68f8539c000227a1896312440f18ec8",
@@ -1282,6 +1289,7 @@
           "report/statistics.go": "92d20500d1f9ed5cf9fd73cdcd1a29866746494c4e5242c6228bd841d7f0a926",
           "report/supply_demand_retest.go": "83ca1278ccb5620cc94966e898befacf072f298d0d1bde80fca2f00cf6690eac",
           "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e",
+          "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64"
         }
