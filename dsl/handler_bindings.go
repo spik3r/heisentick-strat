@@ -133,6 +133,7 @@ var parserFamilyHandlerBindings = map[string]string{
 	"trendPullback":           "parser.parseSetupType",
 	"dualEmaResumption":       "parser.parseSetupType",
 	"smaGoldenCross":          "parser.parseSetupType",
+	"smaRegimeHold":           "parser.parseSetupType",
 	"fibContinuation":         "parser.parseSetupType",
 	"triplePushExhaustion":    "parser.parseSetupType",
 	"vwapExtensionFade":       "parser.parseSetupType",

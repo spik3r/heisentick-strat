@@ -6,6 +6,16 @@ version and is named here.
 
 ## [Unreleased]
 
+### SMA regime-hold research family (HT-293; additive semantics)
+
+- Add a completed-close SMA long/cash family that initializes on the first
+  full window and queues exposure transitions at the next bar open. Equality
+  remains cash; the existing SMA golden-cross family is unchanged.
+- Keep engine sizing fixed at one unit with no stop or target. The family does
+  not model ETF distributions, idle-cash yield, CFD financing or notional, and
+  is not admitted as a funded/forward strategy. See
+  `spec/dsl-spec-families/smaRegimeHold.md`.
+
 ### Parabolic SAR indicator and DSL filters (HT289; additive minor semantics)
 
 - Add Go-authoritative chart-timeframe SAR with configurable start/step/max,

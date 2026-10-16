@@ -1,0 +1,43 @@
+{
+  "case": "family-sma-regime-hold",
+  "costs": {
+    "feePerUnit": 0,
+    "fillOn": "close",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": "1d",
+  "rangeMethod": "zone",
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "dslSmaRegimeHoldSynthetic",
+  "symbol": "SPYCFD",
+  "timeframe": "1d",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 12,
+      "entryIndex": 3,
+      "entryT": 1704326400000,
+      "exit": 8,
+      "exitIndex": 4,
+      "exitT": 1704412800000,
+      "initialSl": null,
+      "initialTp": null,
+      "meta": {
+        "setup": "smaRegimeHold",
+        "signalIndex": 2,
+        "signalSMA": 10.5,
+        "smaPeriod": 2
+      },
+      "pnl": -4,
+      "points": -4,
+      "reason": "rule",
+      "rule": "sma-regime-below-or-equal",
+      "side": "long",
+      "size": 1,
+      "sl": null,
+      "tag": "DSL-SMA-REGIME",
+      "tp": null
+    }
+  ]
+}

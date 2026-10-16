@@ -505,6 +505,7 @@ are errors. The `type` value itself is written in trading language
 | `range break fake` | rangeBreakFake |
 | `trend pullback` | trendPullback |
 | `sma golden cross` | smaGoldenCross |
+| `sma regime hold` | smaRegimeHold |
 | `fib continuation` | fibContinuation |
 | `triple push exhaustion` | triplePushExhaustion |
 | `vwap extension fade` | vwapExtensionFade |

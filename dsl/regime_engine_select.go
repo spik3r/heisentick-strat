@@ -17,10 +17,28 @@ func regimeTypeIntent(tokens []frozenProbeToken, i int) bool {
 	for i < len(tokens) && tokens[i].text == "\n" {
 		i++
 	}
-	// No supported legacy setup contains this reserved family stem. Inspect
-	// the selector clause even when malformed punctuation precedes it, without
-	// accepting that text as an alias. Stop at metadata/list clauses: their
-	// ordinary values (such as symbols REGIME) are not setup selectors.
+	// The SMA regime family shares one word with this reserved parser. Exempt
+	// only complete, generated aliases for that exact family; every other
+	// authored selector keeps the existing reserved-intent behavior below.
+	var selector []string
+	for j := i; j < len(tokens); j++ {
+		token := tokens[j]
+		if token.quoted {
+			break
+		}
+		value := strings.ToLower(token.text)
+		switch value {
+		case "\n", "{", "}", "type", "strategy", "name", "description", "symbols", "timeframes", "slices", "sessions", "windows":
+			j = len(tokens)
+			continue
+		}
+		selector = append(selector, token.text)
+	}
+	if generatedCanonicalSetupFamilies[strings.ToLower(strings.Join(selector, " "))] == string(FamilySMARegimeHold) {
+		return false
+	}
+	// No unsupported setup should hide the reserved family stem behind extra
+	// text or malformed punctuation. Stop at metadata/list clauses.
 	for ; i < len(tokens); i++ {
 		value := strings.ToLower(tokens[i].text)
 		if !tokens[i].quoted {

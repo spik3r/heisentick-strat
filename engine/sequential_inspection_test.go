@@ -24,7 +24,7 @@ func inspectionSource(policy string) string {
 
 func TestSequentialInspectionExistingParserCorpus(t *testing.T) {
 	paths, err := filepath.Glob(filepath.Join(testsupport.StratConformanceRoot(), "parse", "*.strat"))
-	if err != nil || len(paths) != 150 {
+	if err != nil || len(paths) != 151 {
 		t.Fatalf("parser corpus: %d %v", len(paths), err)
 	}
 	for _, path := range paths {
