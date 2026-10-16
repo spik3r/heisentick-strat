@@ -1,0 +1,708 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:heisentick:strat:ordinary-backtest-error:v1",
+  "$comment": "Operation-specific producer error branches. Runtime callers must select inspectResponse or runResponse before the call, rather than accepting an error from either operation. See docs/ordinary-backtest-contract.md for exact stage bindings and semantic checks.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/inspectError"
+    },
+    {
+      "$ref": "#/$defs/runError"
+    }
+  ],
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$",
+      "minLength": 40,
+      "maxLength": 40
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "utf8Bytes"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "utf8Bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "symbol",
+        "timeframe"
+      ],
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "timeframe": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 16
+        }
+      }
+    },
+    "costs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "feePerUnit",
+        "fillOn",
+        "slippage",
+        "slippageBps",
+        "startEquity"
+      ],
+      "properties": {
+        "feePerUnit": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fillOn": {
+          "enum": [
+            "close",
+            "open",
+            "nextOpen"
+          ]
+        },
+        "slippage": {
+          "type": "number",
+          "minimum": 0
+        },
+        "slippageBps": {
+          "type": "number",
+          "minimum": 0
+        },
+        "startEquity": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rangeMethod",
+        "costs",
+        "params",
+        "forceRoute",
+        "chartType"
+      ],
+      "properties": {
+        "rangeMethod": {
+          "enum": [
+            "zone",
+            "pivot"
+          ]
+        },
+        "costs": {
+          "$ref": "#/$defs/costs"
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {}
+        },
+        "forceRoute": {
+          "const": false
+        },
+        "chartType": {
+          "const": "candles"
+        }
+      }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo",
+        "tag",
+        "sourceCommit",
+        "sourceTree",
+        "target",
+        "goVersion",
+        "schemaSetSha256"
+      ],
+      "properties": {
+        "repo": {
+          "const": "spik3r/heisentick-strat"
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "sourceCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "sourceTree": {
+          "$ref": "#/$defs/commit"
+        },
+        "target": {
+          "const": "js/wasm"
+        },
+        "goVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "schemaSetSha256": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "request",
+        "data",
+        "producer",
+        "strategyId",
+        "route",
+        "execution",
+        "configSha256"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/identity"
+        },
+        "request": {
+          "$ref": "#/$defs/identity"
+        },
+        "data": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/identity"
+            }
+          ]
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        },
+        "strategyId": {
+          "$ref": "#/$defs/strategyId"
+        },
+        "route": {
+          "$ref": "#/$defs/route"
+        },
+        "execution": {
+          "$ref": "#/$defs/execution"
+        },
+        "configSha256": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/digest"
+            }
+          ]
+        }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "line",
+        "col"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "severity": {
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "line": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ]
+        },
+        "col": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ]
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "ok",
+        "requestId",
+        "operation",
+        "binding",
+        "error",
+        "diagnostics"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-ordinary-backtest-error-v1"
+        },
+        "ok": {
+          "const": false
+        },
+        "requestId": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/requestId"
+            }
+          ]
+        },
+        "binding": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/binding"
+            }
+          ]
+        },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "stage",
+            "field",
+            "barIndex",
+            "message"
+          ],
+          "properties": {
+            "code": {
+              "enum": [
+                "BACKTEST_ARGUMENTS",
+                "BACKTEST_SOURCE_ENCODING",
+                "BACKTEST_JSON_ENCODING",
+                "BACKTEST_DUPLICATE_KEY",
+                "BACKTEST_UNKNOWN_FIELD",
+                "BACKTEST_SCHEMA",
+                "BACKTEST_INPUT_LIMIT",
+                "BACKTEST_PARSE_REJECTED",
+                "BACKTEST_ROUTE_UNSUPPORTED",
+                "BACKTEST_OPTIONS_UNSUPPORTED",
+                "BACKTEST_DATA_REQUIRED",
+                "BACKTEST_DATA_INVALID",
+                "BACKTEST_DATA_LIMIT",
+                "BACKTEST_FORMING_BAR",
+                "BACKTEST_DEDICATED_REQUIRED",
+                "BACKTEST_ACCOUNTING_UNAVAILABLE",
+                "BACKTEST_OUTPUT_LIMIT",
+                "BACKTEST_NONFINITE_OUTPUT",
+                "BACKTEST_INTERNAL"
+              ]
+            },
+            "stage": {
+              "enum": [
+                "transport",
+                "parse",
+                "admission",
+                "execution",
+                "report"
+              ]
+            },
+            "field": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                }
+              ]
+            },
+            "barIndex": {
+              "oneOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                }
+              ]
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            }
+          }
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/diagnostic"
+          },
+          "maxItems": 256
+        },
+        "operation": {
+          "enum": [
+            "inspect",
+            "run"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "transport"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_ARGUMENTS",
+                      "BACKTEST_SOURCE_ENCODING",
+                      "BACKTEST_JSON_ENCODING",
+                      "BACKTEST_DUPLICATE_KEY",
+                      "BACKTEST_UNKNOWN_FIELD",
+                      "BACKTEST_SCHEMA",
+                      "BACKTEST_INPUT_LIMIT",
+                      "BACKTEST_DATA_REQUIRED",
+                      "BACKTEST_DATA_LIMIT",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "type": "null"
+              },
+              "binding": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "parse"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_PARSE_REJECTED",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/binding"
+                  },
+                  {
+                    "properties": {
+                      "configSha256": {
+                        "type": "null"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "admission"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_ROUTE_UNSUPPORTED",
+                      "BACKTEST_OPTIONS_UNSUPPORTED",
+                      "BACKTEST_DATA_INVALID",
+                      "BACKTEST_FORMING_BAR",
+                      "BACKTEST_DEDICATED_REQUIRED",
+                      "BACKTEST_ACCOUNTING_UNAVAILABLE",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/binding"
+                  },
+                  {
+                    "properties": {
+                      "configSha256": {
+                        "$ref": "#/$defs/digest"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "execution"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/binding"
+                  },
+                  {
+                    "properties": {
+                      "configSha256": {
+                        "$ref": "#/$defs/digest"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "stage": {
+                    "const": "report"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "BACKTEST_OUTPUT_LIMIT",
+                      "BACKTEST_NONFINITE_OUTPUT",
+                      "BACKTEST_INTERNAL"
+                    ]
+                  }
+                }
+              },
+              "requestId": {
+                "$ref": "#/$defs/requestId"
+              },
+              "binding": {
+                "$ref": "#/$defs/binding"
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "operation": {
+                      "const": "run"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "binding": {
+                      "allOf": [
+                        {
+                          "$ref": "#/$defs/binding"
+                        },
+                        {
+                          "properties": {
+                            "configSha256": {
+                              "$ref": "#/$defs/digest"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    },
+    "strategyId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+      "not": {
+        "pattern": "[^A-Za-z0-9._:-]"
+      }
+    },
+    "inspectError": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/error"
+        },
+        {
+          "properties": {
+            "operation": {
+              "const": "inspect"
+            },
+            "error": {
+              "properties": {
+                "stage": {
+                  "enum": [
+                    "transport",
+                    "parse",
+                    "admission",
+                    "report"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "runError": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/error"
+        },
+        {
+          "properties": {
+            "operation": {
+              "const": "run"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
