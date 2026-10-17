@@ -317,6 +317,7 @@ func (b *broker) applyPartialManagement(i int) {
 		b.closePosition(b.series.C[i], i, "partial", "")
 		return
 	}
+	b.paperAccounting.ordinaryObserve(b, "before-partial", i)
 	closedSize := pos.Size * fraction
 	px := b.series.C[i] - sign*b.slippageAt(b.series.C[i])
 	points := (px - pos.Entry) * sign
