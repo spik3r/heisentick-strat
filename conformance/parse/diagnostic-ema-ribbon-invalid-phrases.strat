@@ -1,0 +1,14 @@
+dsl v7
+strategy "EMA Ribbon Invalid Phrases" {
+  description "Diagnostic: malformed ribbon, pullback, trend filter, short gate and act window phrases."
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 21 13
+  pullback ema 0
+  trend filter 3h ribbon
+  trend filter 4h ema 21 above 8
+  shorts below weekly ema 50
+  act hours 22 to 22 utc
+}

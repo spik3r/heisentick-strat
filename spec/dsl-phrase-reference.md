@@ -118,6 +118,12 @@ own phrases.
 | `type: donchian breakout` | Close beyond the prior N-bar high or low. | `type: donchian breakout` |
 | `channel N candles` | Sets the donchian-breakout channel length (setup section). | `channel 55 candles` |
 | `trend ema N` | Requires the close on the trend side of EMA(N). | `trend ema 300` |
+| `type: ema ribbon` | Trend following while a ribbon of EMAs stays in order. | `type: ema ribbon` |
+| `ribbon ema N1 N2 ...` | Sets the ema-ribbon EMA lengths, fastest first (setup section). | `ribbon ema 8 13 21 34 55` |
+| `pullback ema N` | Re-enters an aligned ribbon after a close past EMA(N). | `pullback ema 13` |
+| `trend filter TF ribbon` / `trend filter TF ema F above S` | Higher-timeframe ema-ribbon filter built from the route's bars. | `trend filter 4h ema 8 above 21` |
+| `shorts below daily ema N` | Ema-ribbon shorts need the last closed day below its EMA(N). | `shorts below daily ema 50` |
+| `act hours A to B utc` | Ema-ribbon entries and signal exits only in these UTC hours. | `act hours 22 to 12 utc` |
 
 ## Risk, Target, Management
 

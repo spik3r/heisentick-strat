@@ -1,0 +1,10 @@
+dsl v7
+strategy "EMA Ribbon Defaults" {
+  description "Minimal ema ribbon: only the ribbon; the 3 ATR stop and no target are family defaults."
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 8 21
+  trend filter 1d ribbon
+}

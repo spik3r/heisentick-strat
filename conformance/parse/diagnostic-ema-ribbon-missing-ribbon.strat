@@ -1,0 +1,9 @@
+dsl v7
+strategy "EMA Ribbon Missing Ribbon" {
+  description "Diagnostic: the ribbon phrase is required."
+}
+
+setup {
+  type: ema ribbon
+  pullback ema 13
+}

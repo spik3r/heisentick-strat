@@ -579,6 +579,8 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		p.TargetR = numberValue(target, "fallbackR", 1)
 	case string(dsl.FamilyDonchianBreakout):
 		p.TargetR = numberValue(target, "dcbR", 0)
+	case string(dsl.FamilyEMARibbon):
+		p.TargetR = numberValue(target, "erR", 0)
 	case string(dsl.FamilyFairValueGap):
 		p.TargetR = numberValue(target, "fvgR", 1)
 	case string(dsl.FamilyKeltnerReversion), string(dsl.FamilyKeltnerExpansion):

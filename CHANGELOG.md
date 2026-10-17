@@ -6,6 +6,32 @@ version and is named here.
 
 ## [Unreleased]
 
+### EMA ribbon setup family (HT300; additive minor semantics)
+
+- Add `type: ema ribbon`: trend following while `ribbon ema N1 N2 ...` (2 to
+  8 strictly increasing lengths) stays strictly ordered. Entry on a fresh
+  alignment, or with `pullback ema N` after a close on the wrong side of
+  EMA(N), when the close is beyond the fastest EMA. Fills at the next open
+  with a `stop N ATR` (default 3, Wilder ATR(14)) measured from the fill and
+  an optional `target NR`. Exits at the next open after the ribbon loses
+  alignment (reason `rule`, rule `ribbon-break`).
+- Optional `trend filter TF ribbon` / `trend filter TF ema F above S`
+  (TF 2h, 4h, 8h, 1d) and `shorts below daily ema N`, both built from the
+  route's own bars in UTC buckets closed by the decision bar's close, and
+  `act hours A to B utc`, judged at the decision bar's close, for entries and
+  signal exits.
+- The family refuses shared session, day-type, movement, higher-timeframe
+  and time gates, breakeven/trail/partial/wait/max-hold phrases, other stop
+  and target shapes, `enter` phrases and source-timeframe execution. Direct
+  configs are validated on all run-entry routes.
+- Implemented without new broker or `flagParams` fields: the decisions are
+  precomputed into the existing setup columns once per run.
+- Add 5 parse cases, 2 run cases on XAUUSD 1h slices and 1 hand-derived
+  `er-*` semantic case. No existing golden changes. Matches the unreleased
+  JS reference in the heisentick app trade for trade, and the research
+  harness on XAUUSD 1h 2003-2026 (1,980 trades).
+  See `spec/dsl-spec-families/emaRibbon.md`.
+
 ### Donchian breakout setup family (HT295; additive minor semantics)
 
 - Add `type: donchian breakout` with `channel N candles` (close strictly beyond

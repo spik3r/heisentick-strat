@@ -92,6 +92,7 @@ it is information, not a verdict.
 | `dcb-signal-close-entry` | Donchian breakout: strict close above the prior N-bar high, signal bar outside its own channel, entry at the signal close, ATR stop and R target from that close | `donchianBreakout.md` Purpose, Entry/stop/target | derived | match (unreleased JS reference, 2026-10-16) |
 | `dcb-close-equal-rail-no-entry` | Donchian breakout: a close equal to the channel high is not a breakout | `donchianBreakout.md` Purpose | derived | match (unreleased JS reference, 2026-10-16) |
 | `dcb-trend-ema-gate` | Donchian breakout: `trend ema N` blocks a breakout below EMA(N) seeded with the first close | `donchianBreakout.md` Phrases | derived | match (unreleased JS reference, 2026-10-16) |
+| `er-next-open-entry-ribbon-break` | EMA ribbon: a fresh strict alignment enters at the next open with a stop from the fill; a ribbon break exits at the next open (`rule`, `ribbon-break`); no entry while a position is open | `emaRibbon.md` Definitions, Entry, Stop and target, Exit | derived | match (unreleased JS reference, 2026-10-17) |
 
 Semantics required by the ticket and where they are covered: order timing
 (`sma-cross-next-open-entry-exit`, `pm-signal-close-entry`,
