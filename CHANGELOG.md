@@ -26,12 +26,19 @@ version and is named here.
   configs are validated on all run-entry routes.
 - Implemented without new broker or `flagParams` fields: the decisions are
   precomputed into the existing setup columns once per run.
+- Bar length comes from the route timeframe (1m-4h), not from the series.
+  Runs are refused for an unsupported timeframe, a trend filter not coarser
+  than the route, malformed series, bars off the UTC grid or bars less than
+  one bar apart, so decisions are prefix invariant.
+- `target NR` above 1000 is a parse error, and a signal whose target would
+  not be finite takes no trade instead of trading without a target.
+- Classified go-only: the Go engine is the execution authority and the
+  legacy JS runtime refuses the family.
 - Family phrases written outside the setup section are refused rather than
   dropped.
-- Add 6 parse cases, 2 run cases on XAUUSD 1h slices and 1 hand-derived
-  `er-*` semantic case. No existing golden changes. Matches the unreleased
-  JS reference in the heisentick app trade for trade, and the research
-  harness on XAUUSD 1h 2003-2026 (1,980 trades).
+- Add 7 parse cases, 2 run cases on XAUUSD 1h slices and 1 hand-derived
+  `er-*` semantic case. No existing golden changes. Matches the research
+  harness trade for trade on XAUUSD 1h 2003-2026 (1,980 trades).
   See `spec/dsl-spec-families/emaRibbon.md`.
 
 ### Donchian breakout setup family (HT295; additive minor semantics)

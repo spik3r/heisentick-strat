@@ -228,6 +228,9 @@ func (p *parser) finalizeEMARibbon() {
 	if audit.otherTarget {
 		p.errorAt(nil, nil, "ema ribbon supports only target NR.", "")
 	}
+	if r := numberFromValue(copyMap(p.config["target"])["erR"]); isFiniteNumber(r) && r > 1000 {
+		p.errorAt(nil, nil, "ema ribbon target must be at most 1000R.", "")
+	}
 	if audit.marketGateAuthored {
 		p.errorAt(nil, nil, `ema ribbon sets its own time window ("act hours A to B utc") and trend filter; session, day-type, movement and higher-timeframe gates are not supported.`, "")
 	}

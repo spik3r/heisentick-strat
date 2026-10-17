@@ -133,6 +133,9 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	if err := validateClockRangeFixtureRows(parsed.Config, fixture); err != nil {
 		return RunResult{}, err
 	}
+	if err := validateEMARibbonRun(parsed.Config, fixture.Timeframe, series); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateClockRangeRun(parsed.Config, fixture.Symbol, fixture.Timeframe, series); err != nil {
 		return RunResult{}, err
 	}
@@ -150,7 +153,7 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	}
 	cols := projectSourceColumns(series, sourceSeries, contextcols.Build(sourceSeries, contextOptions(fixture, parsed.Config)))
 	htfTrend := projectSourceInt8(series, sourceSeries, computeHTFTrendForConfig(sourceSeries, sourceHTFSeries, parsed.Config))
-	ema, emaSlope := computeSetupColumns(sourceSeries, params, parsed.Config)
+	ema, emaSlope := computeSetupColumns(sourceSeries, params, parsed.Config, fixture.Timeframe)
 	if sourceSeries.Len() != series.Len() {
 		ema = projectSourceFloat64(series, sourceSeries, ema)
 		emaSlope = projectSourceFloat64(series, sourceSeries, emaSlope)
@@ -325,7 +328,7 @@ func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
 		panic(err)
 	}
 	params := paramsFromConfig(cfg)
-	ema, emaSlope := computeSetupColumns(sourceSeries, params, cfg)
+	ema, emaSlope := computeSetupColumns(sourceSeries, params, cfg, fixture.Timeframe)
 	if sourceSeries.Len() != series.Len() {
 		ema = projectSourceFloat64(series, sourceSeries, ema)
 		emaSlope = projectSourceFloat64(series, sourceSeries, emaSlope)

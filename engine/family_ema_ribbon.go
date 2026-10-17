@@ -2,6 +2,7 @@ package engine
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"time"
 
@@ -45,6 +46,17 @@ type emaRibbonSpec struct {
 }
 
 var errEMARibbonConfig = errors.New("ema ribbon config is invalid")
+
+// emaRibbonMaxTargetR bounds `target NR`; the parser refuses larger values,
+// so an authored target can never overflow into "no target".
+const emaRibbonMaxTargetR = 1000
+
+// emaRibbonBarMs is the explicit bar length of each supported route
+// timeframe. Decisions use it instead of anything inferred from the series,
+// so appending bars can never change an earlier decision.
+var emaRibbonBarMs = map[string]float64{
+	"1m": 60000, "5m": 300000, "15m": 900000, "30m": 1800000, "1h": 3600000, "2h": 7200000, "4h": 14400000,
+}
 
 // decodeEMARibbonSpec reads the parsed config strictly; a malformed raw
 // config is refused rather than defaulted.
@@ -130,7 +142,7 @@ func decodeEMARibbonSpec(cfg dsl.Config) (emaRibbonSpec, error) {
 	if target != nil {
 		if raw, present := target["erR"]; present {
 			r, ok := donchianNumber(raw)
-			if !ok || r < 0 {
+			if !ok || r < 0 || r > emaRibbonMaxTargetR {
 				return spec, errEMARibbonConfig
 			}
 			spec.targetR = r
@@ -154,6 +166,45 @@ func validateEMARibbonConfig(cfg dsl.Config) error {
 	}
 	_, err := decodeEMARibbonSpec(cfg)
 	return err
+}
+
+// validateEMARibbonRun refuses a run the family cannot evaluate causally: an
+// unsupported route timeframe, a trend filter not coarser than and aligned
+// with the bar, or a series that is malformed, off the timeframe's UTC grid,
+// or spaced more finely than one bar.
+func validateEMARibbonRun(cfg dsl.Config, timeframe string, series marketdata.Series) error {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyEMARibbon) {
+		return nil
+	}
+	spec, err := decodeEMARibbonSpec(cfg)
+	if err != nil {
+		return err
+	}
+	barMs, ok := emaRibbonBarMs[timeframe]
+	if !ok {
+		return fmt.Errorf("ema ribbon: unsupported route timeframe %q (supported: 1m 5m 15m 30m 1h 2h 4h)", timeframe)
+	}
+	if spec.filter != nil {
+		width := spec.filter.hours * 3600000
+		if width <= barMs || math.Mod(width, barMs) != 0 {
+			return fmt.Errorf("ema ribbon: trend filter timeframe must be coarser than and a multiple of the %s route", timeframe)
+		}
+	}
+	if err := validateSeriesShape("market", series); err != nil {
+		return fmt.Errorf("ema ribbon: malformed series: %w", err)
+	}
+	if err := validateSeriesValues("market", series); err != nil {
+		return fmt.Errorf("ema ribbon: malformed series: %w", err)
+	}
+	for i := 0; i < series.Len(); i++ {
+		if math.Mod(series.T[i], barMs) != 0 {
+			return fmt.Errorf("ema ribbon: bar %d is not on the %s UTC grid", i, timeframe)
+		}
+		if i > 0 && series.T[i]-series.T[i-1] < barMs {
+			return fmt.Errorf("ema ribbon: bar %d is less than one %s bar after the previous bar", i, timeframe)
+		}
+	}
+	return nil
 }
 
 // emaRibbonEMA is an EMA of values seeded with the first value; index j is
@@ -266,14 +317,15 @@ func emaRibbonInWindow(spec emaRibbonSpec, t float64) bool {
 }
 
 // computeEMARibbonColumns builds the entry and exit columns described above.
-func computeEMARibbonColumns(series marketdata.Series, spec emaRibbonSpec) ([]float64, []float64) {
+// barMs is the route timeframe's bar length; each decision at bar i reads
+// only bars 0..i and the constant barMs, so it is prefix invariant.
+func computeEMARibbonColumns(series marketdata.Series, spec emaRibbonSpec, barMs float64) ([]float64, []float64) {
 	n := series.Len()
 	entry := make([]float64, n)
 	exit := make([]float64, n)
-	if n == 0 {
+	if n == 0 || !(barMs > 0) {
 		return entry, exit
 	}
-	barMs := inferSeriesDurationMs(series)
 	lines := make([][]float64, len(spec.emas))
 	for k, length := range spec.emas {
 		lines[k] = emaRibbonEMA(series.C, length)
@@ -380,15 +432,16 @@ func computeEMARibbonColumns(series marketdata.Series, spec emaRibbonSpec) ([]fl
 
 // computeSetupColumns returns the broker's setup columns for a run: the
 // ema-ribbon family's precomputed decisions, or the shared setup EMA.
-func computeSetupColumns(series marketdata.Series, params flagParams, cfg dsl.Config) ([]float64, []float64) {
+func computeSetupColumns(series marketdata.Series, params flagParams, cfg dsl.Config, timeframe string) ([]float64, []float64) {
 	if params.SetupType == string(dsl.FamilyEMARibbon) {
-		// validateEMARibbonConfig refuses an undecodable config on every run
-		// path before this point; empty columns are a fail-closed fallback.
+		// validateEMARibbonRun refuses an undecodable config or unsupported
+		// timeframe on every run path before this point; empty columns are a
+		// fail-closed fallback.
 		spec, err := decodeEMARibbonSpec(cfg)
 		if err != nil {
 			return make([]float64, series.Len()), make([]float64, series.Len())
 		}
-		return computeEMARibbonColumns(series, spec)
+		return computeEMARibbonColumns(series, spec, emaRibbonBarMs[timeframe])
 	}
 	return computeSetupEMA(series, params)
 }
@@ -439,8 +492,15 @@ func (b *broker) onEMARibbonBar(i int) {
 		StopDistance: distance, HasStopDistance: true, GapAwareStop: true, NoTarget: true,
 		Meta: TradeMeta{"setup": "emaRibbon", "side": s.String(), "signalIndex": float64(i), "stopDistance": distance},
 	}
-	if isFinite(p.TargetR) && p.TargetR > 0 {
-		ord.TargetDistance = p.TargetR * distance
+	if p.TargetR > 0 {
+		// An authored target must never degrade to "no target": when the
+		// target distance or price would not be finite, take no trade.
+		targetDistance := p.TargetR * distance
+		close := b.series.C[i]
+		if !isFinite(targetDistance) || !(targetDistance > 0) || !isFinite(close+targetDistance) || !isFinite(close-targetDistance) {
+			return
+		}
+		ord.TargetDistance = targetDistance
 		ord.HasTargetDistance = true
 		ord.NoTarget = false
 	}

@@ -3,11 +3,12 @@
 Status: specified (2026-10-17)
 
 Specified against `dsl/parser_ema_ribbon.go`, `engine/family_ema_ribbon.go`,
-the JavaScript reference in the heisentick app
-(`engine/dsl/setups/emaRibbon.js`,
-`strat/implementations/browser-runtime/compiler/parseSetups/emaRibbonPhrases.js`,
-`strat/implementations/browser-runtime/compiler/finalizeEmaRibbon.js`), the
-`*ema-ribbon*` parse and run conformance cases and the `er-*` semantic cases.
+the `*ema-ribbon*` parse and run conformance cases and the `er-*` semantic
+cases.
+
+Classification: **go-only**. The Go engine is the only execution authority.
+Browser and app consumers run the family through the Go engine (WASM or
+native); the legacy JavaScript runtime refuses it.
 
 Part of `spec/dsl-spec.md` §9.
 
@@ -49,9 +50,11 @@ is an error naming its exact shape.
   Equal values are not aligned.
 - **ATR(14)** is Wilder's: the first bar's high minus low, then
   `ATR += (TR - ATR) / 14`. It is valid from index 14.
-- **Bar duration** is the smallest positive gap between consecutive bar times
-  in the series. The **decision time** of bar `i` is its open time plus that
-  duration, which is its close.
+- **Bar duration** is fixed by the route timeframe: 1m, 5m, 15m, 30m, 1h, 2h
+  or 4h. It is never inferred from the bars. The **decision time** of bar
+  `i` is its open time plus that duration, which is its close. Every
+  decision at bar `i` reads only bars `0..i` and that constant, so appending
+  bars never changes an earlier decision.
 - **Buckets** for the trend filter and the daily gate are UTC-aligned
   (`key = t - t mod width`; widths 2h, 4h, 8h, 24h). A bucket's close is the
   close of its last bar. At bar `i`, the filter reads the last bucket whose
@@ -83,7 +86,10 @@ The order fills at bar `i + 1`'s open (`DSL-ER`). `side: long only` and
 - `stop N ATR` sets `k`; the default is 3. The stop is `k x ATR(14)[i]` from
   the **fill price**, active from the fill bar.
 - `target NR` places a target `R x stop distance` from the fill. With no
-  target phrase, or `target 0R`, there is no target.
+  target phrase, or `target 0R`, there is no target. `R` must be at most
+  1000; a larger value is a parse error. If the target distance or the
+  target price measured from the signal close would not be finite, the
+  signal takes no trade. An authored target never becomes "no target".
 
 ## Exit
 
@@ -93,6 +99,21 @@ act window, the position closes at bar `j + 1`'s open with reason `rule` and
 rule `ribbon-break`. Outside the window the exit waits: the condition is
 checked again at each later bar's close, and the stop stays active. A stop
 or target touched intrabar closes the position first.
+
+## Input contract
+
+A run is refused, before any bar is evaluated, when:
+
+- the route timeframe is not one of 1m, 5m, 15m, 30m, 1h, 2h, 4h;
+- the trend filter timeframe is not coarser than, and a whole multiple of,
+  the route timeframe;
+- the series is malformed (non-increasing times, non-finite or inconsistent
+  OHLC);
+- any bar time is not on the route timeframe's UTC grid, or any two
+  consecutive bars are less than one bar apart.
+
+Gaps (missing bars, weekends, daily breaks) are allowed: buckets and the act
+window use bar times, not bar counts.
 
 ## Market gates and management
 
@@ -112,10 +133,11 @@ ribbon-break exit replaces shared management.
 
 ## Forward use
 
-Every decision reads only bars up to the decision bar, and the act window is
-judged at the decision bar's close rather than at the next bar's open. A
-forward runner that sets a target (forward paper requires one) should use a
-far target such as `target 10R`; the ribbon-break exit is a strategy exit.
+Every decision reads only bars up to the decision bar and the route
+timeframe, and the act window is judged at the decision bar's close rather
+than at the next bar's open. The family's intended contract has no target:
+the ribbon-break exit is a strategy exit. A consumer that requires a target
+must support that contract; adding a target makes a different strategy.
 
 ## Example
 
