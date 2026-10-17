@@ -74,7 +74,16 @@ func emaRibbonHour(token string) (int, bool) {
 //
 // It reports whether the head belongs to the family.
 func (p *parser) parseEMARibbonLine(line logicalLine, tokens []string, head string) bool {
-	if p.config["setupType"] != string(FamilyEMARibbon) || line.section != "setup" {
+	if p.config["setupType"] != string(FamilyEMARibbon) {
+		return false
+	}
+	if line.section != "setup" {
+		// A family phrase in another section would otherwise reach a shared
+		// handler and be dropped without effect.
+		if isEMARibbonPhrase(tokens, head) {
+			p.err(line, "ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section", "")
+			return true
+		}
 		return false
 	}
 	switch head {
@@ -141,6 +150,25 @@ func (p *parser) parseEMARibbonLine(line logicalLine, tokens []string, head stri
 		p.setEMARibbonValue("actFromUtc", float64(from))
 		p.setEMARibbonValue("actToUtc", float64(to))
 		return true
+	}
+	return false
+}
+
+// isEMARibbonPhrase reports whether a line has the shape of an ema-ribbon
+// setup phrase.
+func isEMARibbonPhrase(tokens []string, head string) bool {
+	second := strings.ToLower(tokenAt(tokens, 1))
+	switch head {
+	case "ribbon":
+		return second == "ema"
+	case "pullback":
+		return second == "ema"
+	case "trend":
+		return second == "filter"
+	case "shorts":
+		return second == "below"
+	case "act":
+		return second == "hours"
 	}
 	return false
 }

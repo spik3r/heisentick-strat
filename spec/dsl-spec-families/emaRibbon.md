@@ -23,7 +23,8 @@ which the strategy acts. The research behind it is
 
 ## Phrases
 
-All family phrases are written in the `setup` section.
+All family phrases are written in the `setup` section; the same phrase shape
+in another section is an error.
 
 | Phrase shape | Meaning | Default | Config keys |
 | --- | --- | --- | --- |

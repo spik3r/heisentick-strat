@@ -153,6 +153,7 @@ func ordinaryRunOptions(r RunRequest) error {
 		func() error { return validateParabolicSARConfig(r.Config) },
 		func() error { return validatePriceMomentumStopConfig(r.Config) },
 		func() error { return validateDonchianBreakoutConfig(r.Config) },
+		func() error { return validateEMARibbonConfig(r.Config) },
 		func() error { return validateParabolicSARRoute(r.Config, r.Timeframe, r.SourceTimeframe) },
 		func() error { return validateRMVConfig(r.Config) },
 		func() error { return validateRMVSourceEntryRoute(r.Symbol, r.Timeframe, r.Config) },

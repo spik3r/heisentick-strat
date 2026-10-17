@@ -123,7 +123,11 @@ func decodeEMARibbonSpec(cfg dsl.Config) (emaRibbonSpec, error) {
 		return spec, errEMARibbonConfig
 	}
 	spec.stopATR = stopATR
-	if target, err := donchianConfigMap(cfg, "target"); err == nil && target != nil {
+	target, err := donchianConfigMap(cfg, "target")
+	if err != nil {
+		return spec, errEMARibbonConfig
+	}
+	if target != nil {
 		if raw, present := target["erR"]; present {
 			r, ok := donchianNumber(raw)
 			if !ok || r < 0 {
@@ -142,7 +146,7 @@ func emaRibbonString(value any) string {
 
 // validateEMARibbonConfig refuses an ema-ribbon config the family cannot run.
 func validateEMARibbonConfig(cfg dsl.Config) error {
-	if setupType, _ := cfg["setupType"].(string); setupType != string(dsl.FamilyEMARibbon) {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyEMARibbon) {
 		return nil
 	}
 	if source, ok := cfg["sourceTimeframe"].(string); ok && source != "" {
@@ -378,6 +382,8 @@ func computeEMARibbonColumns(series marketdata.Series, spec emaRibbonSpec) ([]fl
 // ema-ribbon family's precomputed decisions, or the shared setup EMA.
 func computeSetupColumns(series marketdata.Series, params flagParams, cfg dsl.Config) ([]float64, []float64) {
 	if params.SetupType == string(dsl.FamilyEMARibbon) {
+		// validateEMARibbonConfig refuses an undecodable config on every run
+		// path before this point; empty columns are a fail-closed fallback.
 		spec, err := decodeEMARibbonSpec(cfg)
 		if err != nil {
 			return make([]float64, series.Len()), make([]float64, series.Len())

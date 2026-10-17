@@ -290,6 +290,7 @@ func TestValidateEMARibbonConfig(t *testing.T) {
 		"negative target":  func(c dsl.Config) { c["target"] = map[string]any{"erR": -1.0} },
 		"source timeframe": func(c dsl.Config) { c["sourceTimeframe"] = "5m" },
 		"family not a map": func(c dsl.Config) { c["emaRibbon"] = "8 21" },
+		"target not a map": func(c dsl.Config) { c["target"] = "x" },
 	}
 	for name, mutate := range bad {
 		cfg := good()
@@ -297,6 +298,12 @@ func TestValidateEMARibbonConfig(t *testing.T) {
 		if err := validateEMARibbonConfig(cfg); err == nil {
 			t.Errorf("%s: config accepted", name)
 		}
+	}
+	typed := good()
+	typed["setupType"] = dsl.FamilyEMARibbon
+	typed["emaRibbon"] = map[string]any{"emas": []any{21.0, 8.0}}
+	if err := validateEMARibbonConfig(typed); err == nil {
+		t.Fatal("a dsl.FamilyID setup type must be validated too")
 	}
 	if err := validateEMARibbonConfig(dsl.Config{"setupType": "donchianBreakout"}); err != nil {
 		t.Fatalf("other families must pass through: %v", err)

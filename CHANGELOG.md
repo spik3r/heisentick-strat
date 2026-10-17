@@ -26,7 +26,9 @@ version and is named here.
   configs are validated on all run-entry routes.
 - Implemented without new broker or `flagParams` fields: the decisions are
   precomputed into the existing setup columns once per run.
-- Add 5 parse cases, 2 run cases on XAUUSD 1h slices and 1 hand-derived
+- Family phrases written outside the setup section are refused rather than
+  dropped.
+- Add 6 parse cases, 2 run cases on XAUUSD 1h slices and 1 hand-derived
   `er-*` semantic case. No existing golden changes. Matches the unreleased
   JS reference in the heisentick app trade for trade, and the research
   harness on XAUUSD 1h 2003-2026 (1,980 trades).
