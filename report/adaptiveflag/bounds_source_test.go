@@ -19,7 +19,7 @@ func TestRuntimeReviewedConstructorFingerprints(t *testing.T) {
 		"engine/adaptive_flag_reference.go": "7f64758d16fd55b2d6034a0602f3b9b24dbbb35f33ffc745f7403840f5dac4e7",
 		"engine/adaptive_flag_types.go":     "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
 		"engine/adaptive_flag_research.go":  "2b05e98bd6643ccfb374527d465b21dd697de0f95527589ab4edc11146cb0263",
-		"engine/broker.go":                  "115d4046bc2cd30341d4e601669f55ea209eca8311243c5e707e5dd89154dbac",
+		"engine/broker.go":                  "368bf8168f5d9c608d1842e2acdd543bb89ffdfea8a8385ba0d94d74b1ccdd56",
 		"engine/broker_special_setups.go":   "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
 		"dsl/adaptive_flag_config.go":       "45bb5cefb226a6919c28ea260eb604be188a1e38717fa9326810d52b34324039",
 		"marketdata/btb1.go":                "33b06da51bc378f140a529b5b169295263e1df4e45b9173a98277d4ea35fdc61",

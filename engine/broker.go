@@ -304,12 +304,36 @@ func (b *broker) runRangeWithFinalization(start int, liquidateAtEnd bool) []Trad
 		if b.windowed && i < b.executionStart() {
 			b.clearExecutionOrders()
 		}
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "before-pending-exits", i)
+		}
 		b.fillPendingExits(i)
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "after-pending-exits", i)
+		}
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "before-pending-entries", i)
+		}
 		b.fillPending(i)
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "after-pending-entries", i)
+		}
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "before-limit-orders", i)
+		}
 		b.fillLimits(i)
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "after-limit-orders", i)
+		}
 		b.closeExpiredWindowPosition(i)
 		b.resolveIntrabarExit(i)
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "before-on-bar", i)
+		}
 		b.onBar(i)
+		if b.paperAccounting != nil {
+			b.paperAccounting.ordinaryObserve(b, "after-on-bar", i)
+		}
 		if b.sequentialAccounting != nil {
 			b.sequentialAccounting.mark(b, i, false)
 		}
@@ -538,6 +562,9 @@ func (b *broker) openPosition(s side, fillPrice float64, ord order, index int) {
 	if b.windowed && !b.executionIndexAllowed(index) {
 		return
 	}
+	if b.paperAccounting != nil {
+		b.paperAccounting.ordinaryObserve(b, "before-entry", index)
+	}
 	sign := float64(s)
 	px := fillPrice
 	if !ord.NoSlip {
@@ -595,6 +622,9 @@ func (b *broker) openPosition(s side, fillPrice float64, ord order, index int) {
 // category; rule carries the strategy-rule identity and must be non-empty
 // only for reason "rule".
 func (b *broker) closePosition(exitPrice float64, index int, reason, rule string) {
+	if b.paperAccounting != nil {
+		b.paperAccounting.ordinaryObserve(b, "before-exit", index)
+	}
 	pos := b.position
 	sign := float64(pos.Side)
 	px := exitPrice - sign*b.slippageAt(exitPrice)

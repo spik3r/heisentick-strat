@@ -182,7 +182,7 @@
     "engine/adaptivestudy/run.go": "cd45c10d4f75ecddd0573a32a5ab925821777d00a0367827cbeffe49a171526f",
     "engine/adaptivestudy/types.go": "224643895e982f38a0332e15c0ff07e5626629a04047e5b4105f12ae1610992a",
     "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-    "engine/broker.go": "115d4046bc2cd30341d4e601669f55ea209eca8311243c5e707e5dd89154dbac",
+    "engine/broker.go": "368bf8168f5d9c608d1842e2acdd543bb89ffdfea8a8385ba0d94d74b1ccdd56",
     "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
     "engine/broker_dispatch.go": "337b2d60d9b98b348d1f854099ab0cf6a64ec1f733f59153ad2f4118dea4320e",
     "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -234,7 +234,7 @@
     "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
     "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
     "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-    "engine/flag.go": "5f13f524d1b12094adf12de6a259510241ca160caef389121e8b8502413c9fd8",
+    "engine/flag.go": "0e776fee2ca32743e127d45243e3d26630881e2726907716e3537d1f8f902283",
     "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
     "engine/frozencontrol/context.go": "22b64bea2c7de1feccc12919ae56dbf1854e37ff8e6a0b227315a501ebf28d29",
     "engine/frozencontrol/fills.go": "420296bf34a1f319d63a51383a9fef43d5d5ff96b28ca20963891c0bd136e693",
@@ -265,6 +265,7 @@
     "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
     "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
     "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+    "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
     "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
     "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
     "engine/paper_bidask_checkpoint.go": "19fb9f7ecb5cd2b71bbe459c6c5729a965f9c4d613f707aac11c85eae0bb9b61",
@@ -273,7 +274,7 @@
     "engine/paper_bidask_experiment.go": "a6d4e48aef9a019bd1dec180cd44b41b1a73125725d8e8058f8861279dd24386",
     "engine/paper_bidask_input.go": "cf979340eed6f6425ded34857f304f11356dcf907fc1b0bc1e67527ed8cdee63",
     "engine/paper_prefix.go": "f8d2b3662d24d33daeb9751708c95fb8b817e2cb52536435430e96aaf16b04f3",
-    "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+    "engine/paper_prefix_accounting.go": "d85987dcabddf44b81f769752299236a8703a91918a8505ca4d20d9189bf83c2",
     "engine/paper_prefix_checkpoint.go": "133b68859975476e794fbbad5fc7cbc81c9d09033bf05589fe0181c1a14fb034",
     "engine/paper_prefix_orb.go": "1b65a60d4fec9d6709a6654698509dab15f84b2d5a89177d0d6374135c986955",
     "engine/paper_prefix_vwap.go": "7a5d8076369d41cc42ae292bf0264d91a5261ca699b367d121947add9f533028",
@@ -378,12 +379,12 @@
       "accountingSchedule": "separate",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "instructionCount": 297,
-          "sha256": "1fcb851bad1e13e121653e94effc370e616fab6fd3c0249fc63c50daceded329"
+          "instructionCount": 322,
+          "sha256": "41f1d78a7bffc2e0b2d5326724f145e70517f1cf39fba3faa4c13f55f7e4a351"
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "instructionCount": 209,
-          "sha256": "1972e6d38cc4d0f8dd81aee837bcd90645a254c4802c5f32e03a0ec741a14072"
+          "instructionCount": 231,
+          "sha256": "5528d95fe052bb68f1241d4dc34f80257b06ea0966d5d29fe268c52a05269634"
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
           "instructionCount": 225,
@@ -505,7 +506,7 @@
           "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
           "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
           "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-          "engine/broker.go": "115d4046bc2cd30341d4e601669f55ea209eca8311243c5e707e5dd89154dbac",
+          "engine/broker.go": "368bf8168f5d9c608d1842e2acdd543bb89ffdfea8a8385ba0d94d74b1ccdd56",
           "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
           "engine/broker_dispatch.go": "337b2d60d9b98b348d1f854099ab0cf6a64ec1f733f59153ad2f4118dea4320e",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -557,7 +558,7 @@
           "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
           "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
           "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-          "engine/flag.go": "5f13f524d1b12094adf12de6a259510241ca160caef389121e8b8502413c9fd8",
+          "engine/flag.go": "0e776fee2ca32743e127d45243e3d26630881e2726907716e3537d1f8f902283",
           "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
           "engine/gold_flag_admission.go": "e1f2e41e2b8a86d3e336c408c37682de1797a31add9926ee3108567f4a5d4140",
           "engine/gold_flag_reference.go": "e9aff912089edc43ddabd460d358cf82c6bc5661f4811fa6c26573d01097e324",
@@ -573,6 +574,7 @@
           "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+          "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
           "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
           "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
           "engine/paper_bidask_checkpoint.go": "19fb9f7ecb5cd2b71bbe459c6c5729a965f9c4d613f707aac11c85eae0bb9b61",
@@ -581,7 +583,7 @@
           "engine/paper_bidask_experiment.go": "a6d4e48aef9a019bd1dec180cd44b41b1a73125725d8e8058f8861279dd24386",
           "engine/paper_bidask_input.go": "cf979340eed6f6425ded34857f304f11356dcf907fc1b0bc1e67527ed8cdee63",
           "engine/paper_prefix.go": "f8d2b3662d24d33daeb9751708c95fb8b817e2cb52536435430e96aaf16b04f3",
-          "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+          "engine/paper_prefix_accounting.go": "d85987dcabddf44b81f769752299236a8703a91918a8505ca4d20d9189bf83c2",
           "engine/paper_prefix_checkpoint.go": "133b68859975476e794fbbad5fc7cbc81c9d09033bf05589fe0181c1a14fb034",
           "engine/paper_prefix_orb.go": "1b65a60d4fec9d6709a6654698509dab15f84b2d5a89177d0d6374135c986955",
           "engine/paper_prefix_vwap.go": "7a5d8076369d41cc42ae292bf0264d91a5261ca699b367d121947add9f533028",
@@ -686,12 +688,12 @@
       "accountingSchedule": "fused",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "instructionCount": 289,
-          "sha256": "8ed58bae1dff708d07e1da0116e44295dfbc8288e8872afb6456463e362139ed"
+          "instructionCount": 312,
+          "sha256": "e997577f3fa1fd939211196a65c23fea8dd60d0c541932dee3780375fd65b0c3"
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "instructionCount": 180,
-          "sha256": "2b6fa8aab333c3b32d6e673b059db4ec9fda8255e1c45e03b9aeba6b1a9f8700"
+          "instructionCount": 198,
+          "sha256": "1ca94a77e4aeb862c776e885c16bb741a085cc411baf38fefe1b4a68d9424bfd"
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
           "instructionCount": 237,
@@ -813,7 +815,7 @@
           "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
           "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
           "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-          "engine/broker.go": "115d4046bc2cd30341d4e601669f55ea209eca8311243c5e707e5dd89154dbac",
+          "engine/broker.go": "368bf8168f5d9c608d1842e2acdd543bb89ffdfea8a8385ba0d94d74b1ccdd56",
           "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
           "engine/broker_dispatch.go": "337b2d60d9b98b348d1f854099ab0cf6a64ec1f733f59153ad2f4118dea4320e",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -865,7 +867,7 @@
           "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
           "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
           "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-          "engine/flag.go": "5f13f524d1b12094adf12de6a259510241ca160caef389121e8b8502413c9fd8",
+          "engine/flag.go": "0e776fee2ca32743e127d45243e3d26630881e2726907716e3537d1f8f902283",
           "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
           "engine/gold_flag_admission.go": "e1f2e41e2b8a86d3e336c408c37682de1797a31add9926ee3108567f4a5d4140",
           "engine/gold_flag_reference.go": "e9aff912089edc43ddabd460d358cf82c6bc5661f4811fa6c26573d01097e324",
@@ -881,6 +883,7 @@
           "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+          "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
           "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
           "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
           "engine/paper_bidask_checkpoint.go": "19fb9f7ecb5cd2b71bbe459c6c5729a965f9c4d613f707aac11c85eae0bb9b61",
@@ -889,7 +892,7 @@
           "engine/paper_bidask_experiment.go": "a6d4e48aef9a019bd1dec180cd44b41b1a73125725d8e8058f8861279dd24386",
           "engine/paper_bidask_input.go": "cf979340eed6f6425ded34857f304f11356dcf907fc1b0bc1e67527ed8cdee63",
           "engine/paper_prefix.go": "f8d2b3662d24d33daeb9751708c95fb8b817e2cb52536435430e96aaf16b04f3",
-          "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+          "engine/paper_prefix_accounting.go": "d85987dcabddf44b81f769752299236a8703a91918a8505ca4d20d9189bf83c2",
           "engine/paper_prefix_checkpoint.go": "133b68859975476e794fbbad5fc7cbc81c9d09033bf05589fe0181c1a14fb034",
           "engine/paper_prefix_orb.go": "1b65a60d4fec9d6709a6654698509dab15f84b2d5a89177d0d6374135c986955",
           "engine/paper_prefix_vwap.go": "7a5d8076369d41cc42ae292bf0264d91a5261ca699b367d121947add9f533028",
@@ -994,12 +997,12 @@
       "accountingSchedule": "separate",
       "instructions": {
         "github.com/spik3r/heisentick-strat/engine.(*broker).closePosition": {
-          "instructionCount": 1316,
-          "sha256": "0acb4290a210d58dba270e66f8266828076079d98b831b935a2ecfb2302f7e2c"
+          "instructionCount": 1401,
+          "sha256": "6113118d19a4f3401f7c44b1c11ab839e544d675cbef3b05a69205a336b0c3d1"
         },
         "github.com/spik3r/heisentick-strat/engine.(*broker).openPosition": {
-          "instructionCount": 881,
-          "sha256": "6932812c315edcab09cc060028b6ef6229ffe7d2b2144446ce9473429ec5d9e6"
+          "instructionCount": 966,
+          "sha256": "44aa57e1d72ba0c08022d680dfa9bb7a92b8b0aeeaf63ae4ef50bcf69d3a42d7"
         },
         "github.com/spik3r/heisentick-strat/engine.(*sequentialAccountingCollector).entry": {
           "instructionCount": 1015,
@@ -1130,7 +1133,7 @@
           "engine/adaptive_flag_signals.go": "53bcd15bc99478fe0b2c4320074055a7bdb7d825b34a4335722e042c76f7cc97",
           "engine/adaptive_flag_types.go": "21732bd4779fe8cd6c0493441959e33e3112699f4058b99a64db4dee8465beed",
           "engine/asia_london_sweep.go": "7ff49f9ec81353623060134afecc500c65d9addc862c5c06c08412bc48c537d4",
-          "engine/broker.go": "115d4046bc2cd30341d4e601669f55ea209eca8311243c5e707e5dd89154dbac",
+          "engine/broker.go": "368bf8168f5d9c608d1842e2acdd543bb89ffdfea8a8385ba0d94d74b1ccdd56",
           "engine/broker_deferred_exits.go": "10faf6306a4a5dd98a97ce0793777362dbd17546f706a4383b4b4632764e1973",
           "engine/broker_dispatch.go": "337b2d60d9b98b348d1f854099ab0cf6a64ec1f733f59153ad2f4118dea4320e",
           "engine/broker_special_setups.go": "4240e6a82b7b96fe53a48480ac2affc1821a7acdd164810463f8df6a7d987d13",
@@ -1182,7 +1185,7 @@
           "engine/family_vwap_extension_fade.go": "1a80842be633eea0af5fe31ccc908ba2092c556e45a694943307801ec18b88d4",
           "engine/family_weekend_extreme_fade.go": "89577d55455b9f6015943e3025208e71908522936e092c123eb899cd3c87b010",
           "engine/fixture.go": "07096d1f24854980a3df70bdbe8fbe82dd7aff21d23dcafbaf086434677f5e9b",
-          "engine/flag.go": "5f13f524d1b12094adf12de6a259510241ca160caef389121e8b8502413c9fd8",
+          "engine/flag.go": "0e776fee2ca32743e127d45243e3d26630881e2726907716e3537d1f8f902283",
           "engine/frozen_level_admission.go": "f70868fb1053124b1e85016fd2002476c2489b50c6451229393656d129a41f50",
           "engine/gold_flag_admission.go": "e1f2e41e2b8a86d3e336c408c37682de1797a31add9926ee3108567f4a5d4140",
           "engine/gold_flag_reference.go": "e9aff912089edc43ddabd460d358cf82c6bc5661f4811fa6c26573d01097e324",
@@ -1198,6 +1201,7 @@
           "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+          "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
           "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
           "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
           "engine/paper_bidask_checkpoint.go": "19fb9f7ecb5cd2b71bbe459c6c5729a965f9c4d613f707aac11c85eae0bb9b61",
@@ -1206,7 +1210,7 @@
           "engine/paper_bidask_experiment.go": "a6d4e48aef9a019bd1dec180cd44b41b1a73125725d8e8058f8861279dd24386",
           "engine/paper_bidask_input.go": "cf979340eed6f6425ded34857f304f11356dcf907fc1b0bc1e67527ed8cdee63",
           "engine/paper_prefix.go": "f8d2b3662d24d33daeb9751708c95fb8b817e2cb52536435430e96aaf16b04f3",
-          "engine/paper_prefix_accounting.go": "22bd490374bde6a7a00b2e8395b2e768899b10e4fa4c9e477968ad4e19d65120",
+          "engine/paper_prefix_accounting.go": "d85987dcabddf44b81f769752299236a8703a91918a8505ca4d20d9189bf83c2",
           "engine/paper_prefix_checkpoint.go": "133b68859975476e794fbbad5fc7cbc81c9d09033bf05589fe0181c1a14fb034",
           "engine/paper_prefix_orb.go": "1b65a60d4fec9d6709a6654698509dab15f84b2d5a89177d0d6374135c986955",
           "engine/paper_prefix_vwap.go": "7a5d8076369d41cc42ae292bf0264d91a5261ca699b367d121947add9f533028",
