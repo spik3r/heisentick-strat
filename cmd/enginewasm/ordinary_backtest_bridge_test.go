@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -400,8 +401,34 @@ func TestOrdinaryBacktestBridgeExactOutputBoundaries(t *testing.T) {
 	}
 }
 
-// Invoked explicitly by the bounded parity script. Values below are synthetic
-// transport/runner evidence and do not constitute any release receipt.
+func TestOrdinaryBacktestQualificationRequiresBuildStamp(t *testing.T) {
+	ordinaryBridgeTestStamp(t)
+	raw, source, _ := ordinaryBridgeFixture(t, "sar-named-level-allow", "inspect")
+	capture, err := engine.DecodeOrdinaryBacktestRequest("inspect", raw, source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	validate := func() error {
+		_, err := capture.ErrorEnvelope("inspect", ordinaryBacktestProducer(), nil, ordinaryBacktestFault("INTERNAL", "parse"))
+		return err
+	}
+	if err := validate(); err != nil {
+		t.Fatal("complete test-only stamp refused", err)
+	}
+	for _, field := range []*string{&ordinaryBacktestBuildTag, &ordinaryBacktestBuildSourceCommit, &ordinaryBacktestBuildSourceTree, &ordinaryBacktestBuildSchemaSetSHA256} {
+		original := *field
+		for _, invalid := range []string{"", strings.Repeat("z", 65), "\xff"} {
+			*field = invalid
+			if validate() == nil {
+				t.Fatal("missing or invalid qualification stamp accepted")
+			}
+		}
+		*field = original
+	}
+}
+
+// Invoked explicitly by the bounded parity script. Synthetic input cases remain
+// test evidence; the producer identity must be supplied by the actual build.
 func TestOrdinaryBacktestParityCorpus(t *testing.T) {
 	input, output := os.Getenv("ORDINARY_BACKTEST_PARITY_INPUT"), os.Getenv("ORDINARY_BACKTEST_PARITY_OUTPUT")
 	if input == "" && output == "" {
@@ -410,7 +437,16 @@ func TestOrdinaryBacktestParityCorpus(t *testing.T) {
 	if input == "" || output == "" {
 		t.Fatal("both parity paths are required")
 	}
-	ordinaryBridgeTestStamp(t)
+	// Explicit qualification must use the real linker-supplied identity. Unit
+	// tests keep their isolated synthetic stamp; never overwrite this build.
+	rawRequest, source, _ := ordinaryBridgeFixture(t, "sar-named-level-allow", "inspect")
+	capture, err := engine.DecodeOrdinaryBacktestRequest("inspect", rawRequest, source)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := capture.ErrorEnvelope("inspect", ordinaryBacktestProducer(), nil, ordinaryBacktestFault("INTERNAL", "parse")); err != nil {
+		t.Fatal("explicit parity requires a complete valid linker-supplied ordinary build stamp")
+	}
 	file, err := os.Open(input)
 	if err != nil {
 		t.Fatal(err)
@@ -424,12 +460,15 @@ func TestOrdinaryBacktestParityCorpus(t *testing.T) {
 		t.Fatal("parity corpus byte limit")
 	}
 	var cases []struct {
-		Name         string          `json:"name"`
-		Operation    string          `json:"operation"`
-		RequestJSON  string          `json:"requestJSON"`
-		Source       string          `json:"source"`
-		Response     json.RawMessage `json:"response,omitempty"`
-		ExpectedCode *string         `json:"expectedCode"`
+		Name             string                             `json:"name"`
+		Operation        string                             `json:"operation"`
+		RequestJSON      string                             `json:"requestJSON"`
+		Source           string                             `json:"source"`
+		Response         json.RawMessage                    `json:"response,omitempty"`
+		ExpectedCode     *string                            `json:"expectedCode"`
+		Financials       *engine.OrdinaryBacktestFinancials `json:"financials,omitempty"`
+		CaptureTarget    string                             `json:"captureTarget,omitempty"`
+		CaptureGoVersion string                             `json:"captureGoVersion,omitempty"`
 	}
 	if err := json.Unmarshal(raw, &cases); err != nil {
 		t.Fatal(err)
@@ -442,7 +481,22 @@ func TestOrdinaryBacktestParityCorpus(t *testing.T) {
 		if c.Operation != "inspect" && c.Operation != "run" {
 			t.Fatal("invalid parity operation")
 		}
-		c.Response = json.RawMessage(ordinaryBacktestJSON(c.Operation, c.RequestJSON, c.Source, ordinaryBacktestDefaultDependencies()))
+		deps := ordinaryBacktestDefaultDependencies()
+		if c.Name == "partial-finalization" {
+			c.CaptureTarget = runtime.GOOS + "-" + runtime.GOARCH
+			c.CaptureGoVersion = runtime.Version()
+			// Test-only raw observations from the SAME execution returned below.
+			// Do not mutate the response or rerun a strategy to recreate evidence.
+			deps.run = func(capture *engine.OrdinaryBacktestCapture) (*engine.OrdinaryBacktestRun, *engine.OrdinaryBacktestPlan, error) {
+				run, plan, err := engine.RunOrdinaryBacktest(capture)
+				if run != nil {
+					financials := run.Financials()
+					c.Financials = &financials
+				}
+				return run, plan, err
+			}
+		}
+		c.Response = json.RawMessage(ordinaryBacktestJSON(c.Operation, c.RequestJSON, c.Source, deps))
 	}
 	raw, err = json.Marshal(cases)
 	if err != nil {

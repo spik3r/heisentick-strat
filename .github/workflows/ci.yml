@@ -89,6 +89,27 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Ordinary stamped native and public WASM qualification
+        id: ordinary_api_qualification
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 10
+        run: |
+          qualification_dir="$RUNNER_TEMP/ordinary-api-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$qualification_dir"
+          node scripts/checks/ordinary-backtest-parity.mjs --build-and-qualify "ci-$(git rev-parse HEAD)" "$qualification_dir"
+
+      - name: Upload ordinary public API qualification diagnostics
+        if: always() && (steps.ordinary_api_qualification.outcome == 'success' || steps.ordinary_api_qualification.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordinary-api-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ordinary-api-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+            ${{ runner.temp }}/ordinary-api-${{ github.run_id }}-${{ github.run_attempt }}/*.log
+            ${{ runner.temp }}/ordinary-api-${{ github.run_id }}-${{ github.run_attempt }}/*.instructions.txt
+          if-no-files-found: error
+          retention-days: 3
+
       - name: Ordinary state same-target baseline preservation
         id: ordinary_state_preservation
         if: steps.mod.outputs.present == 'true'
