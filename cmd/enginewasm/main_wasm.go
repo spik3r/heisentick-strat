@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+	registerOrdinaryBacktest()
 	registerPaperPrefix()
 	registerSequentialInspection()
 	registerSequentialMarket()
