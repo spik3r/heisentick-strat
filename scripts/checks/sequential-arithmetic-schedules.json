@@ -41,8 +41,8 @@
     "GOWORK": "off"
   },
   "sources": {
-    "cmd/adaptive-study-bootstrap/main.go": "82b4789445517814d7faed8a2828e39e6a5aab99bf9627410e2d2b2501d68bf0",
     "cmd/adaptive-study/main.go": "c3b8023df60ae32416dd9ae65a36db306e637f198130651a8e3765837f381060",
+    "cmd/adaptive-study-bootstrap/main.go": "82b4789445517814d7faed8a2828e39e6a5aab99bf9627410e2d2b2501d68bf0",
     "cmd/conformance/corpus.go": "97ce147a68945ce964a1b6d8cc3a17482a0885f568764c9749f7ed6d30020c55",
     "cmd/conformance/main.go": "4290b7dbf8ec3793c505d1e86e5c0b7afa1f20ade9f99260f46d0c6bd7d30864",
     "cmd/dslwasm/envelope.go": "3b4b8efc4b969bf33a9c603685a11e9c962def254e505cf440d46356adbb3fab",
@@ -54,9 +54,11 @@
     "cmd/enginewasm/adaptive_flag_unit_bridge_wasm.go": "d7a7e38d5ee7d7d72cd596cba06dc526f8220afb87844a22e8a5ff3038f1b40d",
     "cmd/enginewasm/bridge.go": "049c0bed16ae6c543660c783edb8558e7be311d6e8f46a6336ff0a0ccfd685dc",
     "cmd/enginewasm/main.go": "874a31061541214d4475e783469a6b1ca377dceaecaa9e8b9080f11089a12095",
-    "cmd/enginewasm/main_wasm.go": "11626daaf01f6bf611495dcd5ddbe0ed9508531703f46b28cb98a532d68f14a7",
+    "cmd/enginewasm/main_wasm.go": "016d8785c4da68ff89651be4a5ba2a97c548c254e2153ff38b36a03e107c782d",
     "cmd/enginewasm/master_bridge.go": "4272d5a49f680bc3eae83b549fc02a2470778ea1cdd6350e995ff2d67d104776",
     "cmd/enginewasm/master_bridge_wasm.go": "68765f1ce7652cbe76a62570b61d09429661bf46c382a8b59ca6a08eca4aebc8",
+    "cmd/enginewasm/ordinary_backtest_bridge.go": "c069ffe52686b1468375bff178c996a46899e5d7337b5e67d4a6501ae37b4365",
+    "cmd/enginewasm/ordinary_backtest_bridge_wasm.go": "da6d5f0262c625921038ed19baf03053cd71914901b033e20d588713ff6d3eeb",
     "cmd/enginewasm/paper_bidask_bridge.go": "b9a83a87edc8c240d4a9a3ab2b8a1f6ed2d110fa04eec8e9486c74f5a1da162b",
     "cmd/enginewasm/paper_bidask_bridge_wasm.go": "96881a04247d4dc7f1bf7ca112c0c7680f56f10826dc0b6b4cc5cf69d59a107c",
     "cmd/enginewasm/paper_prefix_bridge.go": "f35c7ff3f22dc68df1b9ec100cea5aa6891b85979db2c5e77bdd5b39a523a958",
@@ -265,6 +267,8 @@
     "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
     "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
     "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+    "engine/ordinary_backtest_execution.go": "a4ab07b590217e9ac61fb17c0ba149c60781a65e634801545120f03cbf566ed5",
+    "engine/ordinary_backtest_inspection.go": "cf9c27b670a630e48118e9561c293fc2e3fffbeaeef7c5c87a71e02d23b82d21",
     "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
     "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
     "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
@@ -408,6 +412,22 @@
         }
       },
       "buildInputs": {
+        "packages": [
+          "github.com/spik3r/heisentick-strat/cmd/dslwasm",
+          "github.com/spik3r/heisentick-strat/cmd/enginewasm",
+          "github.com/spik3r/heisentick-strat/contextcols",
+          "github.com/spik3r/heisentick-strat/dsl",
+          "github.com/spik3r/heisentick-strat/engine",
+          "github.com/spik3r/heisentick-strat/engine/master",
+          "github.com/spik3r/heisentick-strat/engine/regime",
+          "github.com/spik3r/heisentick-strat/engine/seqcore",
+          "github.com/spik3r/heisentick-strat/internal/float64contract",
+          "github.com/spik3r/heisentick-strat/marketdata",
+          "github.com/spik3r/heisentick-strat/report",
+          "github.com/spik3r/heisentick-strat/report/adaptiveflag",
+          "github.com/spik3r/heisentick-strat/report/adaptiveflagunit",
+          "github.com/spik3r/heisentick-strat/report/masterstructural"
+        ],
         "files": {
           "cmd/dslwasm/envelope.go": "3b4b8efc4b969bf33a9c603685a11e9c962def254e505cf440d46356adbb3fab",
           "cmd/dslwasm/main.go": "54f0d3bdf367f5aae4c7f5eb9543011f28db0b8ae63411e0bbc2fba08f60c2a2",
@@ -416,6 +436,7 @@
           "cmd/enginewasm/bridge.go": "049c0bed16ae6c543660c783edb8558e7be311d6e8f46a6336ff0a0ccfd685dc",
           "cmd/enginewasm/main.go": "874a31061541214d4475e783469a6b1ca377dceaecaa9e8b9080f11089a12095",
           "cmd/enginewasm/master_bridge.go": "4272d5a49f680bc3eae83b549fc02a2470778ea1cdd6350e995ff2d67d104776",
+          "cmd/enginewasm/ordinary_backtest_bridge.go": "c069ffe52686b1468375bff178c996a46899e5d7337b5e67d4a6501ae37b4365",
           "cmd/enginewasm/paper_bidask_bridge.go": "b9a83a87edc8c240d4a9a3ab2b8a1f6ed2d110fa04eec8e9486c74f5a1da162b",
           "cmd/enginewasm/paper_prefix_bridge.go": "f35c7ff3f22dc68df1b9ec100cea5aa6891b85979db2c5e77bdd5b39a523a958",
           "cmd/enginewasm/r11_bridge.go": "cd2af516b20d8c521ebbf233a567e7f199d93e1d4b01b932d0932dc502ddfd2b",
@@ -574,6 +595,8 @@
           "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+          "engine/ordinary_backtest_execution.go": "a4ab07b590217e9ac61fb17c0ba149c60781a65e634801545120f03cbf566ed5",
+          "engine/ordinary_backtest_inspection.go": "cf9c27b670a630e48118e9561c293fc2e3fffbeaeef7c5c87a71e02d23b82d21",
           "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
           "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
           "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
@@ -665,23 +688,7 @@
           "report/statistics.go": "92d20500d1f9ed5cf9fd73cdcd1a29866746494c4e5242c6228bd841d7f0a926",
           "report/supply_demand_retest.go": "83ca1278ccb5620cc94966e898befacf072f298d0d1bde80fca2f00cf6690eac",
           "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e"
-        },
-        "packages": [
-          "github.com/spik3r/heisentick-strat/cmd/dslwasm",
-          "github.com/spik3r/heisentick-strat/cmd/enginewasm",
-          "github.com/spik3r/heisentick-strat/contextcols",
-          "github.com/spik3r/heisentick-strat/dsl",
-          "github.com/spik3r/heisentick-strat/engine",
-          "github.com/spik3r/heisentick-strat/engine/master",
-          "github.com/spik3r/heisentick-strat/engine/regime",
-          "github.com/spik3r/heisentick-strat/engine/seqcore",
-          "github.com/spik3r/heisentick-strat/internal/float64contract",
-          "github.com/spik3r/heisentick-strat/marketdata",
-          "github.com/spik3r/heisentick-strat/report",
-          "github.com/spik3r/heisentick-strat/report/adaptiveflag",
-          "github.com/spik3r/heisentick-strat/report/adaptiveflagunit",
-          "github.com/spik3r/heisentick-strat/report/masterstructural"
-        ]
+        }
       }
     },
     "linux-arm64": {
@@ -717,6 +724,22 @@
         }
       },
       "buildInputs": {
+        "packages": [
+          "github.com/spik3r/heisentick-strat/cmd/dslwasm",
+          "github.com/spik3r/heisentick-strat/cmd/enginewasm",
+          "github.com/spik3r/heisentick-strat/contextcols",
+          "github.com/spik3r/heisentick-strat/dsl",
+          "github.com/spik3r/heisentick-strat/engine",
+          "github.com/spik3r/heisentick-strat/engine/master",
+          "github.com/spik3r/heisentick-strat/engine/regime",
+          "github.com/spik3r/heisentick-strat/engine/seqcore",
+          "github.com/spik3r/heisentick-strat/internal/float64contract",
+          "github.com/spik3r/heisentick-strat/marketdata",
+          "github.com/spik3r/heisentick-strat/report",
+          "github.com/spik3r/heisentick-strat/report/adaptiveflag",
+          "github.com/spik3r/heisentick-strat/report/adaptiveflagunit",
+          "github.com/spik3r/heisentick-strat/report/masterstructural"
+        ],
         "files": {
           "cmd/dslwasm/envelope.go": "3b4b8efc4b969bf33a9c603685a11e9c962def254e505cf440d46356adbb3fab",
           "cmd/dslwasm/main.go": "54f0d3bdf367f5aae4c7f5eb9543011f28db0b8ae63411e0bbc2fba08f60c2a2",
@@ -725,6 +748,7 @@
           "cmd/enginewasm/bridge.go": "049c0bed16ae6c543660c783edb8558e7be311d6e8f46a6336ff0a0ccfd685dc",
           "cmd/enginewasm/main.go": "874a31061541214d4475e783469a6b1ca377dceaecaa9e8b9080f11089a12095",
           "cmd/enginewasm/master_bridge.go": "4272d5a49f680bc3eae83b549fc02a2470778ea1cdd6350e995ff2d67d104776",
+          "cmd/enginewasm/ordinary_backtest_bridge.go": "c069ffe52686b1468375bff178c996a46899e5d7337b5e67d4a6501ae37b4365",
           "cmd/enginewasm/paper_bidask_bridge.go": "b9a83a87edc8c240d4a9a3ab2b8a1f6ed2d110fa04eec8e9486c74f5a1da162b",
           "cmd/enginewasm/paper_prefix_bridge.go": "f35c7ff3f22dc68df1b9ec100cea5aa6891b85979db2c5e77bdd5b39a523a958",
           "cmd/enginewasm/r11_bridge.go": "cd2af516b20d8c521ebbf233a567e7f199d93e1d4b01b932d0932dc502ddfd2b",
@@ -883,6 +907,8 @@
           "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+          "engine/ordinary_backtest_execution.go": "a4ab07b590217e9ac61fb17c0ba149c60781a65e634801545120f03cbf566ed5",
+          "engine/ordinary_backtest_inspection.go": "cf9c27b670a630e48118e9561c293fc2e3fffbeaeef7c5c87a71e02d23b82d21",
           "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
           "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
           "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
@@ -974,23 +1000,7 @@
           "report/statistics.go": "92d20500d1f9ed5cf9fd73cdcd1a29866746494c4e5242c6228bd841d7f0a926",
           "report/supply_demand_retest.go": "83ca1278ccb5620cc94966e898befacf072f298d0d1bde80fca2f00cf6690eac",
           "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e"
-        },
-        "packages": [
-          "github.com/spik3r/heisentick-strat/cmd/dslwasm",
-          "github.com/spik3r/heisentick-strat/cmd/enginewasm",
-          "github.com/spik3r/heisentick-strat/contextcols",
-          "github.com/spik3r/heisentick-strat/dsl",
-          "github.com/spik3r/heisentick-strat/engine",
-          "github.com/spik3r/heisentick-strat/engine/master",
-          "github.com/spik3r/heisentick-strat/engine/regime",
-          "github.com/spik3r/heisentick-strat/engine/seqcore",
-          "github.com/spik3r/heisentick-strat/internal/float64contract",
-          "github.com/spik3r/heisentick-strat/marketdata",
-          "github.com/spik3r/heisentick-strat/report",
-          "github.com/spik3r/heisentick-strat/report/adaptiveflag",
-          "github.com/spik3r/heisentick-strat/report/adaptiveflagunit",
-          "github.com/spik3r/heisentick-strat/report/masterstructural"
-        ]
+        }
       }
     },
     "js-wasm": {
@@ -1026,6 +1036,23 @@
         }
       },
       "buildInputs": {
+        "packages": [
+          "github.com/spik3r/heisentick-strat/cmd/dslwasm",
+          "github.com/spik3r/heisentick-strat/cmd/enginewasm",
+          "github.com/spik3r/heisentick-strat/contextcols",
+          "github.com/spik3r/heisentick-strat/dsl",
+          "github.com/spik3r/heisentick-strat/engine",
+          "github.com/spik3r/heisentick-strat/engine/master",
+          "github.com/spik3r/heisentick-strat/engine/regime",
+          "github.com/spik3r/heisentick-strat/engine/seqcore",
+          "github.com/spik3r/heisentick-strat/internal/float64contract",
+          "github.com/spik3r/heisentick-strat/internal/sourcetext",
+          "github.com/spik3r/heisentick-strat/marketdata",
+          "github.com/spik3r/heisentick-strat/report",
+          "github.com/spik3r/heisentick-strat/report/adaptiveflag",
+          "github.com/spik3r/heisentick-strat/report/adaptiveflagunit",
+          "github.com/spik3r/heisentick-strat/report/masterstructural"
+        ],
         "files": {
           "cmd/dslwasm/envelope.go": "3b4b8efc4b969bf33a9c603685a11e9c962def254e505cf440d46356adbb3fab",
           "cmd/dslwasm/main_wasm.go": "5f3c712ea493c9fd0a8b759c10d6efc978ea03bb5a2ab0686aba092b9803cf14",
@@ -1034,9 +1061,11 @@
           "cmd/enginewasm/adaptive_flag_unit_bridge.go": "f7ee6f6e1bef0fec0f07a97580d3feade0b44bc5b2906265603b757704d126e2",
           "cmd/enginewasm/adaptive_flag_unit_bridge_wasm.go": "d7a7e38d5ee7d7d72cd596cba06dc526f8220afb87844a22e8a5ff3038f1b40d",
           "cmd/enginewasm/bridge.go": "049c0bed16ae6c543660c783edb8558e7be311d6e8f46a6336ff0a0ccfd685dc",
-          "cmd/enginewasm/main_wasm.go": "11626daaf01f6bf611495dcd5ddbe0ed9508531703f46b28cb98a532d68f14a7",
+          "cmd/enginewasm/main_wasm.go": "016d8785c4da68ff89651be4a5ba2a97c548c254e2153ff38b36a03e107c782d",
           "cmd/enginewasm/master_bridge.go": "4272d5a49f680bc3eae83b549fc02a2470778ea1cdd6350e995ff2d67d104776",
           "cmd/enginewasm/master_bridge_wasm.go": "68765f1ce7652cbe76a62570b61d09429661bf46c382a8b59ca6a08eca4aebc8",
+          "cmd/enginewasm/ordinary_backtest_bridge.go": "c069ffe52686b1468375bff178c996a46899e5d7337b5e67d4a6501ae37b4365",
+          "cmd/enginewasm/ordinary_backtest_bridge_wasm.go": "da6d5f0262c625921038ed19baf03053cd71914901b033e20d588713ff6d3eeb",
           "cmd/enginewasm/paper_bidask_bridge.go": "b9a83a87edc8c240d4a9a3ab2b8a1f6ed2d110fa04eec8e9486c74f5a1da162b",
           "cmd/enginewasm/paper_bidask_bridge_wasm.go": "96881a04247d4dc7f1bf7ca112c0c7680f56f10826dc0b6b4cc5cf69d59a107c",
           "cmd/enginewasm/paper_prefix_bridge.go": "f35c7ff3f22dc68df1b9ec100cea5aa6891b85979db2c5e77bdd5b39a523a958",
@@ -1201,6 +1230,8 @@
           "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
           "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
           "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
+          "engine/ordinary_backtest_execution.go": "a4ab07b590217e9ac61fb17c0ba149c60781a65e634801545120f03cbf566ed5",
+          "engine/ordinary_backtest_inspection.go": "cf9c27b670a630e48118e9561c293fc2e3fffbeaeef7c5c87a71e02d23b82d21",
           "engine/ordinary_backtest_state.go": "d6a165f87b3e1c274b1485c6c2a01b0be53826fa578ab68e075635d9f67c1a98",
           "engine/paper_bidask.go": "18216c11ff3ab1fbb39e0b5ce321a75b0a7c9d1c5efadf60cc0b29a3f77088eb",
           "engine/paper_bidask_accounting.go": "b3c0f6226e8ba2864ea86c15fcb040fa445c83b03024fa5e063da1362e651e75",
@@ -1291,24 +1322,7 @@
           "report/statistics.go": "92d20500d1f9ed5cf9fd73cdcd1a29866746494c4e5242c6228bd841d7f0a926",
           "report/supply_demand_retest.go": "83ca1278ccb5620cc94966e898befacf072f298d0d1bde80fca2f00cf6690eac",
           "report/trade_export.go": "972080eb0ce63be62cc0eced16c7ddde6ac4cfed4e2a327a1871ce094b81327e"
-        },
-        "packages": [
-          "github.com/spik3r/heisentick-strat/cmd/dslwasm",
-          "github.com/spik3r/heisentick-strat/cmd/enginewasm",
-          "github.com/spik3r/heisentick-strat/contextcols",
-          "github.com/spik3r/heisentick-strat/dsl",
-          "github.com/spik3r/heisentick-strat/engine",
-          "github.com/spik3r/heisentick-strat/engine/master",
-          "github.com/spik3r/heisentick-strat/engine/regime",
-          "github.com/spik3r/heisentick-strat/engine/seqcore",
-          "github.com/spik3r/heisentick-strat/internal/float64contract",
-          "github.com/spik3r/heisentick-strat/internal/sourcetext",
-          "github.com/spik3r/heisentick-strat/marketdata",
-          "github.com/spik3r/heisentick-strat/report",
-          "github.com/spik3r/heisentick-strat/report/adaptiveflag",
-          "github.com/spik3r/heisentick-strat/report/adaptiveflagunit",
-          "github.com/spik3r/heisentick-strat/report/masterstructural"
-        ]
+        }
       }
     }
   }
