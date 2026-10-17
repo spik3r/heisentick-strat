@@ -41,8 +41,10 @@ function block(name, key = 'run', indent = 8) {
 function command(exe, args, cwd, env = process.env) {
   return execFileSync(exe, args, { cwd, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 }
+// Match GitHub's unspecified Linux shell (bash -e). A step needing pipeline
+// failure propagation must enable it in its own script, as the real workflow does.
 function shell(script, cwd, env) {
-  return command('bash', ['--noprofile', '--norc', '-e', '-o', 'pipefail', '-c', script], cwd, env);
+  return command('bash', ['--noprofile', '--norc', '-e', '-c', script], cwd, env);
 }
 function git(root, ...args) { return command('git', args, root).trim(); }
 function digest(bytes) { return createHash('sha256').update(bytes).digest('hex'); }
@@ -71,11 +73,23 @@ function fixture(t) {
     'go.mod': 'module release-fixture\n\ngo 1.22\n',
     'cmd/heisentick/main.go': 'package main\nfunc main() {}\n',
     'cmd/dslwasm/main.go': 'package main\nfunc main() {}\n',
-    'cmd/enginewasm/main.go': 'package main\nfunc main() {}\n',
+    'cmd/enginewasm/main.go': `package main
+import ("encoding/json"; "os")
+var ordinaryBacktestBuildTag, ordinaryBacktestBuildSourceCommit, ordinaryBacktestBuildSourceTree, ordinaryBacktestBuildSchemaSetSHA256 string
+func main() { _ = json.NewEncoder(os.Stdout).Encode([]string{ordinaryBacktestBuildTag, ordinaryBacktestBuildSourceCommit, ordinaryBacktestBuildSourceTree, ordinaryBacktestBuildSchemaSetSHA256}) }
+`,
+    'cmd/enginewasm/main_test.go': `package main
+import ("encoding/json"; "fmt"; "testing")
+func TestLinkerStamp(t *testing.T) { stamp, err := json.Marshal([]string{ordinaryBacktestBuildTag, ordinaryBacktestBuildSourceCommit, ordinaryBacktestBuildSourceTree, ordinaryBacktestBuildSchemaSetSHA256}); if err != nil { t.Fatal(err) }; fmt.Println("STAMP:" + string(stamp)) }
+`,
+    'scripts/checks/ordinary-backtest-parity.mjs': readFileSync(new URL('./ordinary-backtest-parity.mjs', import.meta.url), 'utf8'),
     'conformance/nested/case with spaces.json': '{"invented":true}\n',
     'spec/contract.json': '{"version":1}\n',
     'examples/program.strat': 'invented fixture only\n',
   };
+  for (const kind of ['error', 'inspection', 'report', 'request']) {
+    files[`spec/schemas/ordinary-backtest-${kind}-v1.schema.json`] = JSON.stringify({ invented: kind }) + '\n';
+  }
   for (const [name, value] of Object.entries(files)) {
     mkdirSync(path.dirname(path.join(root, name)), { recursive: true });
     writeFileSync(path.join(root, name), value);
@@ -84,7 +98,8 @@ function fixture(t) {
   git(root, 'add', '.');
   git(root, '-c', 'user.name=Release Test', '-c', 'user.email=release-test@example.invalid',
     '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Invented release fixture');
-  const env = { ...process.env, RUNNER_TEMP: runnerTemp, GITHUB_ENV: path.join(temp, 'github-env'),
+  git(root, 'tag', 'v1.2.3-fixture');
+  const env = { ...process.env, GITHUB_REF: 'refs/tags/v1.2.3-fixture', RUNNER_TEMP: runnerTemp, GITHUB_ENV: path.join(temp, 'github-env'),
     CGO_ENABLED: '0', GOTOOLCHAIN: 'local', GOPROXY: 'off', GOSUMDB: 'off', GOFLAGS: '' };
   writeFileSync(env.GITHUB_ENV, '');
   return { root, env, files };
@@ -106,7 +121,7 @@ test('packaging keeps every build clean and preserves all eight assets', (t) => 
   for (const name of runNames) {
     // Baseline mode intentionally reaches its old builds, exposing contamination.
     if (name === 'Prepare release directory' && !steps.has(name)) continue;
-    const scripts = name === 'Build release binaries' ? block(name).split('\n') : [block(name)];
+    const scripts = [block(name)];
     for (const script of scripts) {
       shell(script, root, env);
       updateEnv(env);
@@ -115,6 +130,31 @@ test('packaging keeps every build clean and preserves all eight assets', (t) => 
     }
   }
   assert.ok(env.RELEASE_DIR && !env.RELEASE_DIR.startsWith(root + path.sep));
+  const schemaManifest = ['error', 'inspection', 'report', 'request'].map((kind) => {
+    const name = `spec/schemas/ordinary-backtest-${kind}-v1.schema.json`;
+    return `${digest(readFileSync(path.join(root, name)))}  ${name}\n`;
+  }).join('');
+  const expectedStamp = ['v1.2.3-fixture', revision, git(root, 'rev-parse', 'HEAD^{tree}'), digest(schemaManifest)];
+  assert.deepEqual([env.ORDINARY_BACKTEST_BUILD_TAG, env.ORDINARY_BACKTEST_BUILD_SOURCE_COMMIT,
+    env.ORDINARY_BACKTEST_BUILD_SOURCE_TREE, env.ORDINARY_BACKTEST_BUILD_SCHEMA_SET_SHA256], expectedStamp);
+  const toolchain = command('go', ['env', 'GOROOT'], root, env).trim();
+  const wasmRunner = ['misc/wasm/go_js_wasm_exec', 'lib/wasm/go_js_wasm_exec']
+    .map((name) => path.join(toolchain, name)).find(existsSync);
+  assert.ok(wasmRunner, 'official Go WASM runner required');
+  assert.deepEqual(JSON.parse(command(wasmRunner, [path.join(env.RELEASE_DIR, 'enginewasm.wasm')], root,
+    { PATH: env.PATH, GOMAXPROCS: '1' })), expectedStamp, 'actual compiled WASM must retain the complete stamp');
+  const fields = ['Tag', 'SourceCommit', 'SourceTree', 'SchemaSetSHA256'];
+  const flags = (prefix) => fields.map((field, i) => `-X ${prefix}.ordinaryBacktestBuild${field}=${expectedStamp[i]}`).join(' ');
+  const testStamp = (prefix) => {
+    const output = command('go', ['test', '-count=1', '-v', '-ldflags', flags(prefix), '-run', '^TestLinkerStamp$', './cmd/enginewasm'], root, env);
+    const stamp = /^STAMP:(.+)$/m.exec(output);
+    assert.ok(stamp, 'test binary must expose its complete linker identity');
+    return JSON.parse(stamp[1]);
+  };
+  assert.deepEqual(testStamp('main'), ['', '', '', ''], 'test package is not the test binary main');
+  assert.deepEqual(testStamp('release-fixture/cmd/enginewasm'), expectedStamp, 'test binary requires import-path linker symbols');
+  assert.equal(git(root, 'status', '--porcelain'), '');
+  assert.deepEqual(snapshot(root), before);
   assert.deepEqual(readdirSync(env.RELEASE_DIR).sort(), [...assets].sort());
   for (const [index, name] of buildAssets.entries()) {
     const file = path.join(env.RELEASE_DIR, name);
@@ -164,6 +204,74 @@ test('dirty source and an in-tree output directory fail closed', (t) => {
   rmSync(path.join(root, 'untracked'));
   assert.throws(() => shell(block('Prepare release directory'), root, { ...env, RUNNER_TEMP: root }));
   assert.equal(readFileSync(env.GITHUB_ENV, 'utf8'), '');
+});
+
+test('missing, invalid, absent and wrong-commit release tags fail before output creation', (t) => {
+  const { root, env } = fixture(t);
+  for (const ref of ['', 'refs/heads/main', 'refs/tags/v', 'refs/tags/v1.2.3/bad',
+    `refs/tags/v1.${'2'.repeat(64)}`, 'refs/tags/v9.9.9']) {
+    assert.throws(() => shell(block('Prepare release directory'), root, { ...env, GITHUB_REF: ref }), ref);
+    assert.equal(readFileSync(env.GITHUB_ENV, 'utf8'), '');
+    assert.deepEqual(readdirSync(env.RUNNER_TEMP), []);
+  }
+  writeFileSync(path.join(root, 'new-file'), 'a different commit\n');
+  git(root, 'add', 'new-file');
+  git(root, '-c', 'user.name=Release Test', '-c', 'user.email=release-test@example.invalid',
+    '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Move HEAD beyond release tag');
+  assert.throws(() => shell(block('Prepare release directory'), root, env));
+  assert.equal(readFileSync(env.GITHUB_ENV, 'utf8'), '');
+});
+
+test('missing or inconsistent build stamps fail before any binary is written', (t) => {
+  const { root, env } = fixture(t);
+  shell(block('Prepare release directory'), root, env); updateEnv(env);
+  for (const key of ['ORDINARY_BACKTEST_BUILD_TAG', 'ORDINARY_BACKTEST_BUILD_SOURCE_COMMIT',
+    'ORDINARY_BACKTEST_BUILD_SOURCE_TREE', 'ORDINARY_BACKTEST_BUILD_SCHEMA_SET_SHA256']) {
+    for (const value of ['', 'invalid', '0'.repeat(key.endsWith('SHA256') ? 64 : 40)]) {
+      assert.throws(() => shell(block('Build release binaries'), root, { ...env, [key]: value }), `${key}: ${value}`);
+      assert.deepEqual(readdirSync(env.RELEASE_DIR), []);
+    }
+  }
+  writeFileSync(path.join(root, 'dirty-after-preparation'), 'dirty');
+  assert.throws(() => shell(block('Build release binaries'), root, env));
+  assert.deepEqual(readdirSync(env.RELEASE_DIR), []);
+});
+
+test('release and qualification reject inherited and persisted unsupported compiler settings', (t) => {
+  const { root, env } = fixture(t);
+  shell(block('Prepare release directory'), root, env); updateEnv(env);
+  const badSettings = { GOFLAGS: '-gcflags=all=-N', GOEXPERIMENT: 'none', GOAMD64: 'v3',
+    GOWASM: 'satconv', GOCOMPILEDEBUG: 'fmahash=1', GODEBUG: 'cpu.all=off' };
+  const check = (changed, label) => {
+    assert.throws(() => shell(block('Build release binaries'), root, changed), label);
+    assert.deepEqual(readdirSync(env.RELEASE_DIR), [], `${label}: no release binary created`);
+    const out = path.join(env.RUNNER_TEMP, `qualification-${label}`); mkdirSync(out);
+    assert.throws(() => command(process.execPath,
+      ['scripts/checks/ordinary-backtest-parity.mjs', '--build-and-qualify', 'ci-fixture', out], root, changed), label);
+    assert.equal(existsSync(path.join(out, 'enginewasm.wasm')), false, `${label}: no qualification binary created`);
+  };
+  for (const [key, value] of Object.entries(badSettings)) check({ ...env, [key]: value }, key);
+  for (const key of ['GOFLAGS', 'GOAMD64', 'GOWASM']) {
+    const config = path.join(env.RUNNER_TEMP, `goenv-${key}`);
+    writeFileSync(config, `${key}=${badSettings[key]}\n`);
+    const changed = { ...env, GOENV: config }; delete changed[key];
+    check(changed, `persisted-${key}`);
+  }
+  const workspace = path.join(env.RUNNER_TEMP, 'go.work'); writeFileSync(workspace, 'go 1.22\n');
+  check({ ...env, GOWORK: workspace }, 'GOWORK');
+  assert.equal(git(root, 'status', '--porcelain'), '');
+});
+
+test('a missing ordinary schema fails even in a clean checkout', (t) => {
+  const { root, env } = fixture(t);
+  git(root, 'rm', 'spec/schemas/ordinary-backtest-error-v1.schema.json');
+  git(root, '-c', 'user.name=Release Test', '-c', 'user.email=release-test@example.invalid',
+    '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Missing schema fixture');
+  git(root, 'tag', 'v1.2.4-fixture');
+  assert.throws(() => shell(block('Prepare release directory'), root,
+    { ...env, GITHUB_REF: 'refs/tags/v1.2.4-fixture' }));
+  assert.equal(readFileSync(env.GITHUB_ENV, 'utf8'), '');
+  assert.deepEqual(readdirSync(env.RUNNER_TEMP), []);
 });
 
 test('release guard admits only an absent release, including draft pagination', async () => {
@@ -226,12 +334,27 @@ test('release contract preserves permissions, runner, toolchain and strict uploa
   assert.ok(workflow.includes('runs-on: ${{ fromJSON(vars.CI_RUNNER_MODE == \'self-hosted\' && \'["self-hosted","linux"]\' || \'["ubuntu-24.04"]\') }}'));
   assert.match(workflow, /go-version: "1\.22\.x"/);
   assert.match(workflow, /CGO_ENABLED: "0"/);
-  assert.doesNotMatch(block('Build release binaries'), /-buildvcs|-ldflags/);
+  assert.doesNotMatch(block('Build release binaries'), /-buildvcs/);
+  const build = block('Build release binaries');
+  assert.equal((build.match(/-ldflags/g) ?? []).length, 1);
+  for (const suffix of ['Tag', 'SourceCommit', 'SourceTree', 'SchemaSetSHA256']) {
+    assert.equal(build.split(`-X main.ordinaryBacktestBuild${suffix}=`).length - 1, 1);
+  }
+  assert.match(build, /GOOS=js GOARCH=wasm go build -trimpath -ldflags "\$ordinary_ldflags" -o "\$RELEASE_DIR\/enginewasm.wasm"/);
+  assert.match(block('Qualify ordinary release API'), /ordinary-backtest-parity\.mjs --qualify/);
+  assert.match(block('Qualify ordinary release API'), /\$RELEASE_DIR\/enginewasm.wasm/);
+  assert.match(block('Qualify ordinary release API'), /\$RELEASE_DIR\/wasm_exec.js/);
+  assert.match(block('Qualify ordinary release API'), /qualification_dir="\$RUNNER_TEMP\/ordinary-release-\$GITHUB_RUN_ID-\$GITHUB_RUN_ATTEMPT"/);
+  assert.match(block('Qualify ordinary release API'), /mkdir "\$qualification_dir"/);
+  assert.match(steps.get('Upload ordinary release qualification diagnostics'), /\*\.instructions\.txt/);
   assert.match(steps.get('Create GitHub Release'), /overwrite_files: false\n/);
   assert.match(steps.get('Create GitHub Release'), /fail_on_unmatched_files: true\n/);
   assert.match(steps.get('Refuse an existing release'), /uses: actions\/github-script@v7/);
   assert.doesNotMatch(steps.get('Refuse an existing release'), /github-token:|permissions:|secrets\./);
   const ordered = [...steps.keys()];
   assert.equal(ordered.indexOf('Refuse an existing release') + 1, ordered.indexOf('Create GitHub Release'));
-  assert.deepEqual([...steps].filter(([, value]) => /^        run:/m.test(value)).map(([name]) => name), runNames);
+  assert.deepEqual([...steps].filter(([, value]) => /^        run:/m.test(value)).map(([name]) => name),
+    [...runNames.slice(0, 3), 'Qualify ordinary release API', ...runNames.slice(3)]);
+  assert.ok(ordered.indexOf('Qualify ordinary release API') < ordered.indexOf('Write checksums'));
+  assert.ok(ordered.indexOf('Qualify ordinary release API') < ordered.indexOf('Refuse an existing release'));
 });

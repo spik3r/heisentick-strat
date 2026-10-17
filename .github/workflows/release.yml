@@ -34,22 +34,56 @@ jobs:
       # clean VCS stamp as the first build. Do not hide artifacts with gitignore.
       - name: Prepare release directory
         run: |
+          set -o pipefail
           test -z "$(git status --porcelain)"
+          case "${GITHUB_REF:-}" in
+            refs/tags/v*) tag="${GITHUB_REF#refs/tags/}" ;;
+            *) echo "A release tag reference is required" >&2; exit 1 ;;
+          esac
+          [[ "$tag" =~ ^v[0-9][0-9A-Za-z.+-]*$ && ${#tag} -le 64 ]]
+          source_commit="$(git rev-parse --verify HEAD)"
+          test "$(git rev-parse --verify "$GITHUB_REF^{commit}")" = "$source_commit"
+          source_tree="$(git rev-parse --verify 'HEAD^{tree}')"
+          schema_sha="$(LC_ALL=C sha256sum spec/schemas/ordinary-backtest-{error,inspection,report,request}-v1.schema.json | sha256sum | cut -d ' ' -f 1)"
           release_dir="$(mktemp -d "$RUNNER_TEMP/heisentick-release.XXXXXX")"
           release_dir="$(realpath "$release_dir")"
           source_dir="$(git rev-parse --show-toplevel)"
           case "$release_dir/" in
             "$source_dir/"*) echo "Release directory must be outside the source tree" >&2; exit 1 ;;
           esac
-          echo "RELEASE_DIR=$release_dir" >> "$GITHUB_ENV"
+          {
+            echo "RELEASE_DIR=$release_dir"
+            echo "ORDINARY_BACKTEST_BUILD_TAG=$tag"
+            echo "ORDINARY_BACKTEST_BUILD_SOURCE_COMMIT=$source_commit"
+            echo "ORDINARY_BACKTEST_BUILD_SOURCE_TREE=$source_tree"
+            echo "ORDINARY_BACKTEST_BUILD_SCHEMA_SET_SHA256=$schema_sha"
+          } >> "$GITHUB_ENV"
 
       - name: Build release binaries
         run: |
+          set -o pipefail
+          test -z "$(git status --porcelain)"
+          test "${ORDINARY_BACKTEST_BUILD_TAG:?}" = "${GITHUB_REF#refs/tags/}"
+          test "${ORDINARY_BACKTEST_BUILD_SOURCE_COMMIT:?}" = "$(git rev-parse --verify HEAD)"
+          test "$(git rev-parse --verify "refs/tags/$ORDINARY_BACKTEST_BUILD_TAG^{commit}")" = "$ORDINARY_BACKTEST_BUILD_SOURCE_COMMIT"
+          test "${ORDINARY_BACKTEST_BUILD_SOURCE_TREE:?}" = "$(git rev-parse --verify 'HEAD^{tree}')"
+          test "${ORDINARY_BACKTEST_BUILD_SCHEMA_SET_SHA256:?}" = "$(LC_ALL=C sha256sum spec/schemas/ordinary-backtest-{error,inspection,report,request}-v1.schema.json | sha256sum | cut -d ' ' -f 1)"
+          test "$(go env GOVERSION)" = "go1.22.12"
+          for setting in GOFLAGS GOEXPERIMENT GOWASM; do test -z "$(go env "$setting")"; done
+          test -z "${GOCOMPILEDEBUG:-}${GODEBUG:-}${GOARM64:-}"
+          case "${GOAMD64:-v1}" in v1) ;; *) exit 1 ;; esac
+          case "$(go env GOAMD64)" in ""|v1) ;; *) exit 1 ;; esac
+          case "$(go env GOWORK)" in ""|off) ;; *) exit 1 ;; esac
+          test "$(GOARCH=amd64 go env GOAMD64)" = v1
+          test -z "$(GOOS=js GOARCH=wasm go env GOWASM)"
+          export GOROOT="$(go env GOROOT)"
+          export GOENV=off GOWORK=off GOAMD64=v1 GOTOOLCHAIN=local
+          ordinary_ldflags="-X main.ordinaryBacktestBuildTag=$ORDINARY_BACKTEST_BUILD_TAG -X main.ordinaryBacktestBuildSourceCommit=$ORDINARY_BACKTEST_BUILD_SOURCE_COMMIT -X main.ordinaryBacktestBuildSourceTree=$ORDINARY_BACKTEST_BUILD_SOURCE_TREE -X main.ordinaryBacktestBuildSchemaSetSHA256=$ORDINARY_BACKTEST_BUILD_SCHEMA_SET_SHA256"
           GOOS=linux GOARCH=arm64 go build -trimpath -o "$RELEASE_DIR/heisentick-linux-arm64" ./cmd/heisentick
           GOOS=linux GOARCH=amd64 go build -trimpath -o "$RELEASE_DIR/heisentick-linux-amd64" ./cmd/heisentick
           GOOS=darwin GOARCH=arm64 go build -trimpath -o "$RELEASE_DIR/heisentick-darwin-arm64" ./cmd/heisentick
           GOOS=js GOARCH=wasm go build -trimpath -o "$RELEASE_DIR/dslwasm.wasm" ./cmd/dslwasm
-          GOOS=js GOARCH=wasm go build -trimpath -o "$RELEASE_DIR/enginewasm.wasm" ./cmd/enginewasm
+          GOOS=js GOARCH=wasm go build -trimpath -ldflags "$ordinary_ldflags" -o "$RELEASE_DIR/enginewasm.wasm" ./cmd/enginewasm
 
       # The JS glue the Go toolchain ships for running its WASM builds. It
       # must come from the same toolchain as the .wasm files, so it is a
@@ -63,6 +97,31 @@ jobs:
           else
             cp "$goroot/lib/wasm/wasm_exec.js" "$RELEASE_DIR/wasm_exec.js"
           fi
+
+      - name: Set up Node for ordinary release qualification
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Qualify ordinary release API
+        id: ordinary_release_qualification
+        timeout-minutes: 10
+        run: |
+          qualification_dir="$RUNNER_TEMP/ordinary-release-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$qualification_dir"
+          node scripts/checks/ordinary-backtest-parity.mjs --qualify "$ORDINARY_BACKTEST_BUILD_TAG" "$RELEASE_DIR/enginewasm.wasm" "$RELEASE_DIR/wasm_exec.js" "$qualification_dir"
+
+      - name: Upload ordinary release qualification diagnostics
+        if: always() && (steps.ordinary_release_qualification.outcome == 'success' || steps.ordinary_release_qualification.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordinary-release-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ordinary-release-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+            ${{ runner.temp }}/ordinary-release-${{ github.run_id }}-${{ github.run_attempt }}/*.log
+            ${{ runner.temp }}/ordinary-release-${{ github.run_id }}-${{ github.run_attempt }}/*.instructions.txt
+          if-no-files-found: error
+          retention-days: 3
 
       # Consumers unpack this instead of importing the Go module: the corpus,
       # the semantic fixtures, the spec manifest and schemas, the spec docs

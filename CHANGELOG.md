@@ -6,6 +6,15 @@ version and is named here.
 
 ## [Unreleased]
 
+### Ordinary browser release qualification
+
+- Stamp the ordinary public WASM API with the release tag, clean source commit
+  and tree, and dynamically derived ordinary schema-set digest. Missing or
+  inconsistent release identity fails before packaging.
+- Qualify the actual stamped public exports against complete same-target Go
+  responses and exact target-specific arithmetic evidence before publication.
+  Keep the existing eight release assets and official Go runtime shim.
+
 ### Donchian breakout setup family (HT295; additive minor semantics)
 
 - Add `type: donchian breakout` with `channel N candles` (close strictly beyond
