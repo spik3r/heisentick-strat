@@ -1,0 +1,25 @@
+dsl v7
+strategy "EMA Ribbon Conformance" {
+  description "Fixture-only two-sided ema ribbon with pullback re-entry, a 4h EMA pair filter, a daily short gate and an act window."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 8 13 21 34 55
+  pullback ema 13
+  trend filter 4h ema 8 above 21
+  shorts below daily ema 10
+  act hours 22 to 12 utc
+}
+
+risk {
+  stop 3 ATR
+}
+
+execution {
+  risk 200 USD
+}

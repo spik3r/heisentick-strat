@@ -44,6 +44,8 @@ func setupTargetKey(raw any) string {
 		return "nlfR"
 	case string(FamilyDonchianBreakout):
 		return "dcbR"
+	case string(FamilyEMARibbon):
+		return "erR"
 	default:
 		return ""
 	}

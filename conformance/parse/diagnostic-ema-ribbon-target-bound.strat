@@ -1,0 +1,17 @@
+dsl v7
+strategy "EMA Ribbon Target Bound" {
+  description "Diagnostic: an ema ribbon target above 1000R is refused so it cannot overflow into no target."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 8 13 21
+}
+
+target {
+  target 1000000R
+}

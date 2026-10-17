@@ -1,0 +1,203 @@
+{
+  "case": "diagnostic-ema-ribbon-phrase-section",
+  "category": "diagnostic",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0,
+      "offsetAtr": 0
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 0,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "trending",
+      "ranging",
+      "choppy"
+    ],
+    "description": "Diagnostic ema ribbon phrases outside the setup section are refused not dropped.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "emaRibbon": {
+      "emas": [
+        8,
+        13,
+        21
+      ]
+    },
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 1,
+    "name": "EMA Ribbon Phrase Section",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": null
+    },
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 1,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "emaRibbon",
+    "slices": [
+      {
+        "symbol": "XAUUSD",
+        "tf": "1h"
+      }
+    ],
+    "stop": {
+      "atrMult": 3,
+      "extremeCandles": 0,
+      "maxAtr": 0,
+      "minAtr": 0,
+      "paddingAtr": 0,
+      "type": "atr"
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowMode": "unrestricted",
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 0
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Ema ribbon refuses its setup phrases written in other sections instead of dropping them.",
+  "diagnostics": [
+    {
+      "col": 3,
+      "line": 16,
+      "message": "ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 21,
+      "message": "ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 22,
+      "message": "ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "line 16: ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section",
+    "line 21: ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section",
+    "line 22: ema-ribbon phrases (ribbon, pullback ema, trend filter, shorts below, act hours) belong in the setup section"
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT300 review finding M1",
+  "warnings": []
+}

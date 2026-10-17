@@ -14,6 +14,8 @@ func (p *parser) parseStopDirective(line logicalLine, tokens []string) {
 		// handled
 	} else if p.parseDonchianBreakoutStop(tokens) {
 		// handled
+	} else if p.parseEMARibbonStop(tokens) {
+		// handled
 	} else if p.config["setupType"] != string(FamilyDualEMAResumption) {
 		p.parseStop(line, tokens)
 	}

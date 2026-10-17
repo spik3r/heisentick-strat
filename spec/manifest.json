@@ -175,6 +175,14 @@
       "since": 7
     },
     {
+      "id": "emaRibbon",
+      "canonicalSpelling": "ema ribbon",
+      "canonicalExample": "type: ema ribbon\n  ribbon ema 8 13 21 34 55\n  pullback ema 13\n  trend filter 4h ema 8 above 21",
+      "classification": "go-only",
+      "reason": "Native Go producer only; browser and app consumers adopt it through the Go engine (WASM or native), and the legacy JS runtime refuses it (HT-300).",
+      "since": 7
+    },
+    {
       "id": "dailyFlushFailure",
       "canonicalSpelling": "daily flush failure",
       "canonicalExample": "type: daily flush failure\n  flush range at least 1.25 ATR\n  flush close in bottom 25 percent",
@@ -950,6 +958,15 @@
       "since": 7
     },
     {
+      "id": "alias.go-inline-setup-type.ema-ribbon",
+      "source": "go-inline-setup-type",
+      "spelling": "ema ribbon",
+      "familyId": "emaRibbon",
+      "classification": "go-only",
+      "reason": "Native Go producer only; browser and app consumers adopt it through the Go engine (WASM or native), and the legacy JS runtime refuses it (HT-300).",
+      "since": 7
+    },
+    {
       "id": "alias.go-inline-setup-type.daily-flush-failure",
       "source": "go-inline-setup-type",
       "spelling": "daily flush failure",
@@ -1467,6 +1484,15 @@
       "spelling": "donchian breakout",
       "familyId": "donchianBreakout",
       "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.ema-ribbon",
+      "source": "go-canonical-setup-type",
+      "spelling": "ema ribbon",
+      "familyId": "emaRibbon",
+      "classification": "go-only",
+      "reason": "Native Go producer only; browser and app consumers adopt it through the Go engine (WASM or native), and the legacy JS runtime refuses it (HT-300).",
       "since": 7
     },
     {

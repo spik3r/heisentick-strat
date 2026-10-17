@@ -1,0 +1,26 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "er-next-open-entry-ribbon-break",
+  "trades": [
+    {
+      "side": "long",
+      "entryIndex": 21,
+      "entryT": 1767646800000,
+      "entry": 2010,
+      "initialSl": 1980,
+      "exitIndex": 24,
+      "exitT": 1767657600000,
+      "exit": 2000,
+      "reason": "rule",
+      "rule": "ribbon-break"
+    }
+  ],
+  "notes": [
+    "EMA(2) uses alpha 2/3 and EMA(3) alpha 1/2, both seeded with the first close; EMA(N) is valid from bar 3N, so the ribbon can align from bar 9. Wilder ATR(14) is valid from bar 14 and stays 10 because every bar through 23 has a 10-point true range.",
+    "Bars 0-19 close 2000: both EMAs are 2000, which is not strictly ordered, so the ribbon is not aligned.",
+    "Bar 20 closes 2010: EMA(2) = 2006.667, EMA(3) = 2005, so the ribbon turns long-aligned (it was not aligned on bar 19) and the close is above EMA(2). The long signal fills at bar 21's open, 2010, with stop 2010 - 3 x 10 = 1980 measured from the fill. There is no target.",
+    "Bar 21 closes 2020 (EMA 2015.556 / 2012.5) and bar 22 closes 2010 (EMA 2011.852 / 2011.25): still long-aligned, so the position stays open. No low reaches 1980.",
+    "Bar 23 closes 2000: EMA(2) = 2003.951 < EMA(3) = 2005.625, so the ribbon is no longer long-aligned. The exit fills at bar 24's open, 2000, reason rule (ribbon-break). Bar 23 is also a fresh short alignment, but no entry is placed while the long is open.",
+    "Bar 24 is the exit bar and stays short-aligned (2001.317 < 2002.813), so it is not a fresh alignment and there is no pullback EMA: no entry. Bars 25-29 close 2000; both EMAs fall toward 2000 with EMA(2) below EMA(3), so no later bar is a fresh alignment."
+  ]
+}

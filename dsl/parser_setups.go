@@ -95,6 +95,13 @@ func (p *parser) parseSetupType(tokens []string) {
 		p.config["trail"] = map[string]any{"atr": 0, "triggerR": 0}
 		p.config["cooldownCandles"] = 0
 		p.config["maxHoldCandles"] = 0
+	case string(FamilyEMARibbon):
+		p.config["emaRibbon"] = map[string]any{}
+		p.config["stop"] = map[string]any{"type": "atr", "atrMult": 3, "extremeCandles": 0, "maxAtr": 0, "minAtr": 0, "paddingAtr": 0}
+		p.config["breakeven"] = map[string]any{"atR": 0, "offsetAtr": 0}
+		p.config["trail"] = map[string]any{"atr": 0, "triggerR": 0}
+		p.config["cooldownCandles"] = 0
+		p.config["maxHoldCandles"] = 0
 	case string(FamilyDailyFlushFailure):
 		p.config["dailyFlushFailure"] = map[string]any{}
 		p.config["stop"] = map[string]any{"extremeCandles": 2, "maxAtr": 3, "minAtr": 0.5, "paddingAtr": 0.1}
