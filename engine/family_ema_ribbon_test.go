@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/spik3r/heisentick-strat/dsl"
@@ -474,5 +475,61 @@ func TestEMARibbonTargetOverflowTakesNoTrade(t *testing.T) {
 	b.onEMARibbonBar(20)
 	if len(b.pendingOrders) != 0 {
 		t.Fatalf("an overflowing target must not place an order: %+v", b.pendingOrders)
+	}
+}
+
+func TestEMARibbonOHLCAdmissionAcrossRoutes(t *testing.T) {
+	dir := filepath.Join(testsupport.StratConformanceRoot(), "semantic", "er-next-open-entry-ribbon-break")
+	fixture, err := LoadRunFixture(filepath.Join(dir, "fixture.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	source, err := os.ReadFile(filepath.Join(dir, "strategy.strat"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	parsed, err := dsl.Parse(string(source))
+	if err != nil || len(parsed.Errors) != 0 {
+		t.Fatalf("parse: %v %v", err, parsed.Errors)
+	}
+	cases := []struct {
+		name       string
+		o, h, l, c float64
+		valid      bool
+	}{
+		{"inverted", 100, 90, 110, 100, false},
+		{"open above", 111, 110, 90, 100, false},
+		{"open below", 89, 110, 90, 100, false},
+		{"close above", 100, 110, 90, 111, false},
+		{"close below", 100, 110, 90, 89, false},
+		{"equal boundaries", 110, 110, 90, 90, true},
+		{"flat", 100, 100, 100, 100, true},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			f := fixture
+			f.Bars = append([]marketdata.Bar(nil), fixture.Bars...)
+			b := &f.Bars[0]
+			b.O, b.H, b.L, b.C = tc.o, tc.h, tc.l, tc.c
+			req := RunRequest{Config: parsed.Config, Series: marketdata.SeriesFromBars(f.Bars), Symbol: f.Symbol, Timeframe: f.Timeframe, ForceRoute: true}
+			_, runErr := Run(req)
+			_, fixtureErr := RunFixtureCase(f, string(source))
+			// Build the shared context independently of this family's variant admission.
+			contextReq := req
+			contextReq.Config = dsl.Config{"setupType": "smaGoldenCross"}
+			shared, sharedErr := PrepareSharedRunContext(contextReq)
+			if sharedErr != nil {
+				t.Fatalf("shared context: %v", sharedErr)
+			}
+			_, variantErr := shared.PrepareVariant(parsed.Config)
+			for route, e := range map[string]error{"run": runErr, "fixture": fixtureErr, "variant": variantErr} {
+				if (e == nil) != tc.valid {
+					t.Errorf("%s valid=%v: %v", route, tc.valid, e)
+				}
+				if !tc.valid && e != nil && !strings.Contains(e.Error(), "inconsistent OHLC") {
+					t.Errorf("%s wrong refusal: %v", route, e)
+				}
+			}
+		})
 	}
 }

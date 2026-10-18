@@ -197,6 +197,9 @@ func validateEMARibbonRun(cfg dsl.Config, timeframe string, series marketdata.Se
 		return fmt.Errorf("ema ribbon: malformed series: %w", err)
 	}
 	for i := 0; i < series.Len(); i++ {
+		if series.H[i] < series.L[i] || series.O[i] > series.H[i] || series.O[i] < series.L[i] || series.C[i] > series.H[i] || series.C[i] < series.L[i] {
+			return fmt.Errorf("ema ribbon: malformed series: bar %d has inconsistent OHLC", i)
+		}
 		if math.Mod(series.T[i], barMs) != 0 {
 			return fmt.Errorf("ema ribbon: bar %d is not on the %s UTC grid", i, timeframe)
 		}
