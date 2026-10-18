@@ -2,11 +2,7 @@ package engine
 
 import "github.com/spik3r/heisentick-strat/dsl"
 
-type smaRegimeHoldParams struct {
-	Period int
-}
-
-func smaRegimeHoldParamsFromConfig(cfg dsl.Config) smaRegimeHoldParams {
+func smaRegimeHoldPeriodFromConfig(cfg dsl.Config) int {
 	values := mapValue(cfg, "smaRegimeHold")
-	return smaRegimeHoldParams{Period: intValue(values, "period", 200)}
+	return intValue(values, "period", 200)
 }

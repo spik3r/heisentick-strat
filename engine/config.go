@@ -158,7 +158,6 @@ type flagParams struct {
 	TPBVWAPReclaim             bool
 	DualEMA                    dualEMAResumptionParams
 	SMAGoldenCross             smaGoldenCrossParams
-	SMARegimeHold              smaRegimeHoldParams
 	SessionPhases              []string
 	LocalWeekdays              []string
 	BlockedLocalWeekdays       []string
@@ -297,7 +296,6 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		RiskUSD:                    numberFromAny(cfg["riskUsd"], 200),
 		DualEMA:                    dualEMAParams(cfg),
 		SMAGoldenCross:             smaGoldenCrossParamsFromConfig(cfg),
-		SMARegimeHold:              smaRegimeHoldParamsFromConfig(cfg),
 		Partial: partialParams{
 			Enabled:       boolValue(partial, "enabled", false),
 			Fraction:      numberValue(partial, "fraction", 0),
@@ -539,6 +537,12 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		NamedLevelFlag:            namedLevelFlagParamsFromConfig(cfg),
 		LegacySetup9:              legacySetup9ParamsFromConfig(cfg),
 		NLSUseTrigger:             triggerExplicit && !containsString(triggerCandles, "any"),
+	}
+	// SMA families are mutually exclusive. Reuse the existing SMA length slot
+	// for regime hold so adding this family preserves the broker layout and
+	// the pinned accounting instruction operands.
+	if setupType == string(dsl.FamilySMARegimeHold) {
+		p.SMAGoldenCross.FastLen = smaRegimeHoldPeriodFromConfig(cfg)
 	}
 	applyExtractedSetupParams(&p, cfg, stop, orb, setupType)
 	if setupType == string(dsl.FamilyClockRangeBreakout) {

@@ -3,6 +3,8 @@ package engine
 import (
 	"testing"
 
+	"github.com/spik3r/heisentick-strat/dsl"
+
 	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
@@ -17,8 +19,8 @@ func TestSMARegimeHoldSeedsFromFirstValidPriceAndExecutesNextOpen(t *testing.T) 
 			V: []float64{1, 1, 1, 1, 1},
 		},
 		params: flagParams{
-			SetupType:     "smaRegimeHold",
-			SMARegimeHold: smaRegimeHoldParams{Period: 2},
+			SetupType:      "smaRegimeHold",
+			SMAGoldenCross: smaGoldenCrossParams{FastLen: 2},
 		},
 		costs: Costs{FillOn: "close"},
 	}
@@ -52,7 +54,7 @@ func TestSMARegimeHoldEqualityStaysInCashAtInitialization(t *testing.T) {
 			C: []float64{10, 10, 11},
 			V: []float64{1, 1, 1},
 		},
-		params: flagParams{SetupType: "smaRegimeHold", SMARegimeHold: smaRegimeHoldParams{Period: 2}},
+		params: flagParams{SetupType: "smaRegimeHold", SMAGoldenCross: smaGoldenCrossParams{FastLen: 2}},
 		costs:  Costs{FillOn: "close"},
 	}
 	if trades := b.run(); len(trades) != 0 {
@@ -70,11 +72,30 @@ func TestSMARegimeHoldEntersAtFirstEligibleCloseWithoutPriorCross(t *testing.T) 
 			C: []float64{9, 11, 12},
 			V: []float64{1, 1, 1},
 		},
-		params: flagParams{SetupType: "smaRegimeHold", SMARegimeHold: smaRegimeHoldParams{Period: 2}},
+		params: flagParams{SetupType: "smaRegimeHold", SMAGoldenCross: smaGoldenCrossParams{FastLen: 2}},
 		costs:  Costs{FillOn: "close"},
 	}
 	trades := b.run()
 	if len(trades) != 1 || trades[0].EntryIndex != 2 || trades[0].Entry != 12 {
 		t.Fatalf("trades = %+v, want entry at first signal's next open (index 2, price 12)", trades)
+	}
+}
+
+func TestSMAFamilyParameterStorageRemainsIndependent(t *testing.T) {
+	for _, period := range []int{2, 200, 2147483647} {
+		cfg := dsl.Config{"setupType": "smaRegimeHold", "smaRegimeHold": map[string]any{"period": float64(period)}, "smaGoldenCross": map[string]any{"fastSmaLen": 7.0, "slowSmaLen": 21.0, "atrLen": 14.0, "stopAtr": 2.0, "targetAtr": 3.0}}
+		regime := paramsFromConfig(cfg)
+		if regime.SMAGoldenCross.FastLen != period {
+			t.Fatalf("regime period = %d, want %d", regime.SMAGoldenCross.FastLen, period)
+		}
+		cfg["setupType"] = "smaGoldenCross"
+		golden := paramsFromConfig(cfg)
+		if golden.SMAGoldenCross != smaGoldenCrossParamsFromConfig(cfg) {
+			t.Fatalf("regime config changed golden cross: %+v", golden.SMAGoldenCross)
+		}
+	}
+	defaults := paramsFromConfig(dsl.Config{"setupType": "smaRegimeHold"})
+	if defaults.SMAGoldenCross.FastLen != 200 {
+		t.Fatalf("default regime period = %d", defaults.SMAGoldenCross.FastLen)
 	}
 }

@@ -1,7 +1,7 @@
 package engine
 
 func (b *broker) onSMARegimeHoldBar(i int) {
-	period := b.params.SMARegimeHold.Period
+	period := b.params.SMAGoldenCross.FastLen
 	average, ready := simpleMovingAverage(b.series, i, period)
 	if !ready {
 		return
