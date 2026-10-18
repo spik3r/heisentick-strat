@@ -1,0 +1,33 @@
+dsl v7
+strategy "EMA Ribbon Parse" {
+  description "Parse fixture for every ema ribbon setup phrase."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 8 13 21 34 55
+  pullback ema 13
+  trend filter 4h ema 8 above 21
+  shorts below daily ema 50
+  act hours 22 to 12 utc
+}
+
+filters {
+  side: long only
+}
+
+risk {
+  stop 3 ATR
+}
+
+target {
+  target 10R
+}
+
+execution {
+  risk 200 USD
+}

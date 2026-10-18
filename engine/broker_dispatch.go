@@ -53,6 +53,8 @@ func (b *broker) onBar(i int) {
 		b.onPriceMomentumBar(i)
 	case "donchianBreakout":
 		b.onDonchianBreakoutBar(i)
+	case "emaRibbon":
+		b.onEMARibbonBar(i)
 	case "fairValueGap":
 		b.onFairValueGapBar(i)
 	case "keltnerReversion", "keltnerExpansion":

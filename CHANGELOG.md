@@ -15,6 +15,40 @@ version and is named here.
   not model ETF distributions, idle-cash yield, CFD financing or notional, and
   is not admitted as a funded/forward strategy. See
   `spec/dsl-spec-families/smaRegimeHold.md`.
+### EMA ribbon setup family (HT300; additive minor semantics)
+
+- Add `type: ema ribbon`: trend following while `ribbon ema N1 N2 ...` (2 to
+  8 strictly increasing lengths) stays strictly ordered. Entry on a fresh
+  alignment, or with `pullback ema N` after a close on the wrong side of
+  EMA(N), when the close is beyond the fastest EMA. Fills at the next open
+  with a `stop N ATR` (default 3, Wilder ATR(14)) measured from the fill and
+  an optional `target NR`. Exits at the next open after the ribbon loses
+  alignment (reason `rule`, rule `ribbon-break`).
+- Optional `trend filter TF ribbon` / `trend filter TF ema F above S`
+  (TF 2h, 4h, 8h, 1d) and `shorts below daily ema N`, both built from the
+  route's own bars in UTC buckets closed by the decision bar's close, and
+  `act hours A to B utc`, judged at the decision bar's close, for entries and
+  signal exits.
+- The family refuses shared session, day-type, movement, higher-timeframe
+  and time gates, breakeven/trail/partial/wait/max-hold phrases, other stop
+  and target shapes, `enter` phrases and source-timeframe execution. Direct
+  configs are validated on all run-entry routes.
+- Implemented without new broker or `flagParams` fields: the decisions are
+  precomputed into the existing setup columns once per run.
+- Bar length comes from the route timeframe (1m-4h), not from the series.
+  Runs are refused for an unsupported timeframe, a trend filter not coarser
+  than the route, malformed series, bars off the UTC grid or bars less than
+  one bar apart, so decisions are prefix invariant.
+- `target NR` above 1000 is a parse error, and a signal whose target would
+  not be finite takes no trade instead of trading without a target.
+- Classified go-only: the Go engine is the execution authority and the
+  legacy JS runtime refuses the family.
+- Family phrases written outside the setup section are refused rather than
+  dropped.
+- Add 7 parse cases, 2 run cases on XAUUSD 1h slices and 1 hand-derived
+  `er-*` semantic case. No existing golden changes. Matches the research
+  harness trade for trade on XAUUSD 1h 2003-2026 (1,980 trades).
+  See `spec/dsl-spec-families/emaRibbon.md`.
 ### Ordinary browser release qualification
 
 - Stamp the ordinary public WASM API with the release tag, clean source commit

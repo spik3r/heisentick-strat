@@ -261,6 +261,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if err := validateDonchianBreakoutConfig(cfg); err != nil {
 		return nil, err
 	}
+	if err := validateEMARibbonConfig(cfg); err != nil {
+		return nil, err
+	}
 	if err := validateRMVConfig(cfg); err != nil {
 		return nil, err
 	}
@@ -274,6 +277,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 		return nil, err
 	}
 	if err := validateSessionBreakHoldLevelPriority(cfg); err != nil {
+		return nil, err
+	}
+	if err := validateEMARibbonRun(cfg, s.fixture.Timeframe, s.series); err != nil {
 		return nil, err
 	}
 	if err := validateClockRangeRun(cfg, s.fixture.Symbol, s.fixture.Timeframe, s.series); err != nil {
@@ -300,7 +306,7 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	params := paramsFromConfig(cfg)
 	// Context and setup indicators are source-derived; the runner still walks
 	// chart bars, preserving C4's no-entry-scheduler boundary.
-	ema, emaSlope := computeSetupEMA(s.sourceSeries, params)
+	ema, emaSlope := computeSetupColumns(s.sourceSeries, params, cfg, s.fixture.Timeframe)
 	if s.sourceSeries.Len() != s.series.Len() {
 		ema = projectSourceFloat64(s.series, s.sourceSeries, ema)
 		emaSlope = projectSourceFloat64(s.series, s.sourceSeries, emaSlope)
@@ -330,6 +336,9 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 		return nil, err
 	}
 	if err := validateDonchianBreakoutConfig(request.Config); err != nil {
+		return nil, err
+	}
+	if err := validateEMARibbonConfig(request.Config); err != nil {
 		return nil, err
 	}
 	if dsl.IsSequentialFullReserved(request.Config) {
@@ -447,6 +456,9 @@ func validateRunRequest(request RunRequest) error {
 	if err := validateDonchianBreakoutConfig(request.Config); err != nil {
 		return err
 	}
+	if err := validateEMARibbonConfig(request.Config); err != nil {
+		return err
+	}
 	if err := validateParabolicSARRoute(request.Config, request.Timeframe, request.SourceTimeframe); err != nil {
 		return err
 	}
@@ -475,6 +487,9 @@ func validateRunRequest(request RunRequest) error {
 		return err
 	}
 	if err := validateSeriesValues("market", request.Series); err != nil {
+		return err
+	}
+	if err := validateEMARibbonRun(request.Config, request.Timeframe, request.Series); err != nil {
 		return err
 	}
 	if err := validateClockRangeRun(request.Config, request.Symbol, request.Timeframe, request.Series); err != nil {
@@ -684,6 +699,9 @@ func Run(request RunRequest) (RunResult, error) {
 		return RunResult{}, err
 	}
 	if err := validateDonchianBreakoutConfig(request.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := validateEMARibbonConfig(request.Config); err != nil {
 		return RunResult{}, err
 	}
 	if dsl.IsSequentialFullReserved(request.Config) {

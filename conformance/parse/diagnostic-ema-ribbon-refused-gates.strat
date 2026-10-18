@@ -1,0 +1,26 @@
+dsl v7
+strategy "EMA Ribbon Refused Gates" {
+  description "Diagnostic: shared market gates, management, other stops and other targets are refused."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+  sessions(london, ny)
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 8 13 21
+}
+
+risk {
+  stop beyond last 5 candle extreme by 0.25 ATR
+}
+
+target {
+  minimum reward 2
+}
+
+management {
+  move stop to breakeven after 1R plus 0.05 ATR
+}

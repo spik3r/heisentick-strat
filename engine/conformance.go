@@ -56,6 +56,8 @@ var implementedRunCases = []string{
 	"family-price-momentum-atr-stop",
 	"family-donchian-breakout",
 	"family-donchian-breakout-two-sided",
+	"family-ema-ribbon",
+	"family-ema-ribbon-ribbon-filter-target",
 	"family-fair-value-gap",
 	"family-weekend-extreme-fade",
 	"deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
