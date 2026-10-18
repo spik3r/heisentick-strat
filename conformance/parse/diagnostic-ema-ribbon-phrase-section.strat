@@ -1,0 +1,23 @@
+dsl v7
+strategy "EMA Ribbon Phrase Section" {
+  description "Diagnostic: ema ribbon phrases outside the setup section are refused, not dropped."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 8 13 21
+}
+
+risk {
+  pullback ema 13
+  stop 3 ATR
+}
+
+filters {
+  trend filter 4h ribbon
+  shorts below daily ema 50
+}

@@ -80,6 +80,7 @@ type parser struct {
 	sarFields           map[string]bool
 	clockRange          clockRangeParse
 	donchianAudit       donchianBreakoutAudit
+	emaRibbonAudit      emaRibbonAudit
 }
 
 type logicalLine struct {
@@ -146,6 +147,7 @@ func (p *parser) parse() {
 	p.validateEntryTimeframe()
 	p.validatePriceMomentum()
 	p.finalizeDonchianBreakout()
+	p.finalizeEMARibbon()
 	p.validateDailyFlushFailure()
 	p.validateDownShockRebound()
 	p.validateFairValueGap()
@@ -172,6 +174,7 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	p.recordSMAGoldenCrossAuthored(line, head)
 	p.recordLegacySetup9Authored(line, head, tokens)
 	p.recordDonchianBreakoutAuthored(line, tokens, head)
+	p.recordEMARibbonAuthored(line, tokens, head)
 	if head != "dsl" {
 		p.reportMalformedNumbers(line, tokens)
 		p.reportDeprecatedSpellings(line, tokens)
@@ -183,6 +186,9 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 		return
 	}
 	if p.parseDonchianBreakoutLine(line, tokens, head) {
+		return
+	}
+	if p.parseEMARibbonLine(line, tokens, head) {
 		return
 	}
 	switch head {

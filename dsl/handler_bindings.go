@@ -140,6 +140,7 @@ var parserFamilyHandlerBindings = map[string]string{
 	"elderTripleScreen":       "parser.parseSetupType",
 	"priceMomentum":           "parser.parseSetupType",
 	"donchianBreakout":        "parser.parseSetupType",
+	"emaRibbon":               "parser.parseSetupType",
 	"dailyFlushFailure":       "parser.parseSetupType",
 	"fairValueGap":            "parser.parseSetupType",
 	"weekendExtremeFade":      "parser.parseSetupType",

@@ -512,6 +512,7 @@ are errors. The `type` value itself is written in trading language
 | `elder triple screen` | elderTripleScreen |
 | `price momentum` | priceMomentum |
 | `donchian breakout` | donchianBreakout |
+| `ema ribbon` | emaRibbon |
 | `daily flush failure` | dailyFlushFailure |
 | `keltner reversion` | keltnerReversion |
 | `keltner expansion` | keltnerExpansion |

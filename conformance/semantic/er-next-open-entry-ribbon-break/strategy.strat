@@ -1,0 +1,21 @@
+dsl v7
+strategy "EMA Ribbon Next Open Entry" {
+  description "Semantic fixture: ema ribbon enters at the next open with a fill-relative ATR stop and exits at the next open after the ribbon breaks."
+}
+
+market conditions {
+  slices(XAUUSD 1h)
+}
+
+setup {
+  type: ema ribbon
+  ribbon ema 2 3
+}
+
+risk {
+  stop 3 ATR
+}
+
+execution {
+  risk 200 USD
+}

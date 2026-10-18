@@ -1,0 +1,220 @@
+{
+  "case": "diagnostic-ema-ribbon-invalid-phrases",
+  "category": "diagnostic",
+  "cfg": {
+    "allowLong": 1,
+    "allowShort": 1,
+    "approachCandles": 3,
+    "approachDistanceAtr": 0,
+    "blockedLocalHours": [],
+    "blockedLocalWeekdays": [],
+    "blockedNewYorkHours": [],
+    "blockedPriorDayTypes": [],
+    "blockedSessionPhases": [],
+    "breakeven": {
+      "atR": 0,
+      "offsetAtr": 0
+    },
+    "channel": {
+      "activeWithinCandles": 12,
+      "directions": [],
+      "enabled": false,
+      "tradeMaxWidthAtr": 0,
+      "tradeMinWidthAtr": 0
+    },
+    "channelBreakHold": {},
+    "closeLocationMin": 0,
+    "cooldownCandles": 0,
+    "customLevels": [],
+    "dayOpen": {},
+    "dayThemes": [],
+    "dayTypeErEscape": 0.55,
+    "dayTypes": [
+      "trending",
+      "ranging",
+      "choppy"
+    ],
+    "description": "Diagnostic malformed ribbon pullback trend filter short gate and act window phrases.",
+    "doubleTopBottom": {},
+    "elderTripleScreen": {},
+    "emaLen": 0,
+    "emaRibbon": {},
+    "entryMode": {
+      "expireCandles": 5,
+      "type": "market"
+    },
+    "entryTf": "current",
+    "fairValueGap": {},
+    "fibContinuation": {},
+    "flag": {},
+    "grade": {
+      "context": 0,
+      "location": 0,
+      "requireTotal": 0,
+      "riskReward": 0,
+      "sizeTiers": [],
+      "trigger": 0
+    },
+    "htf": {
+      "mode": "off",
+      "timeframe": "auto"
+    },
+    "levelConfluenceAtr": 0,
+    "levelDistanceAtr": 1.5,
+    "levelPriority": [
+      "PDH",
+      "PDL",
+      "WH",
+      "WL"
+    ],
+    "levelPriorityExplicit": false,
+    "localHours": [],
+    "localWeekdays": [],
+    "maxHoldCandles": 0,
+    "maxMovementEr": 1,
+    "name": "EMA Ribbon Invalid Phrases",
+    "newYorkHours": [],
+    "openLocations": [],
+    "openingRangeBreakout": {},
+    "partial": {
+      "enabled": 0,
+      "fraction": 0,
+      "moveBreakeven": 0,
+      "triggerR": 1
+    },
+    "priceMomentum": {},
+    "priorDay": {
+      "minRangeAtr": null
+    },
+    "priorDayTypes": [],
+    "range": {
+      "activeWithinCandles": 8,
+      "method": null
+    },
+    "rangeBreakFake": {},
+    "rangeStatFilters": [],
+    "riskUsd": 200,
+    "seasonalityFilters": [],
+    "sessionBiasFilters": [],
+    "sessionPhases": [],
+    "sessions": {
+      "asia": 1,
+      "london": 1,
+      "mid": 0,
+      "ny": 1
+    },
+    "setupType": "emaRibbon",
+    "slices": [],
+    "stop": {
+      "atrMult": 3,
+      "extremeCandles": 0,
+      "maxAtr": 0,
+      "minAtr": 0,
+      "paddingAtr": 0,
+      "type": "atr"
+    },
+    "supplyDemand": {},
+    "sweepRules": {
+      "high": {
+        "reclaimCandles": 3,
+        "side": "short",
+        "sweepDistanceAtr": 0.1
+      },
+      "low": {
+        "reclaimCandles": 3,
+        "side": "long",
+        "sweepDistanceAtr": 0.1
+      }
+    },
+    "symbols": [],
+    "tailRejectionMin": 0,
+    "target": {
+      "edge": "range",
+      "fallbackR": 1,
+      "minR": 0.6
+    },
+    "timeframes": [
+      "5m",
+      "15m"
+    ],
+    "tradeWindowMinuteRange": null,
+    "tradeWindowMode": "unrestricted",
+    "tradeWindowSegments": [],
+    "trail": {
+      "atr": 0,
+      "triggerR": 0
+    },
+    "trendPullback": {},
+    "trigger": {
+      "maxEntryDistanceAtr": 0,
+      "maxSetupAgeCandles": 0
+    },
+    "triggerCandles": [
+      "pin",
+      "engulf",
+      "outside"
+    ],
+    "triggerExplicit": false,
+    "triplePush": {},
+    "volumeAnomalyExhaustion": {},
+    "vp": [],
+    "vwapExtensionFade": {}
+  },
+  "description": "Ema ribbon refuses malformed ribbon, pullback, trend filter, short gate and act window phrases.",
+  "diagnostics": [
+    {
+      "col": 3,
+      "line": 8,
+      "message": "ema-ribbon ribbon must be exactly: ribbon ema N1 N2 ..., with 2 to 8 strictly increasing positive integers",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 9,
+      "message": "ema-ribbon pullback must be exactly: pullback ema N, with positive integer N",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 10,
+      "message": "ema-ribbon trend filter must be: trend filter TF ribbon, or trend filter TF ema F above S, with TF one of 2h 4h 8h 1d",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 11,
+      "message": "ema-ribbon trend filter must be: trend filter TF ribbon, or trend filter TF ema F above S, with TF one of 2h 4h 8h 1d and F < S",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 12,
+      "message": "ema-ribbon short gate must be exactly: shorts below daily ema N, with positive integer N",
+      "severity": "error"
+    },
+    {
+      "col": 3,
+      "line": 13,
+      "message": "ema-ribbon window must be exactly: act hours A to B utc, with whole hours 0-23 and A different from B",
+      "severity": "error"
+    },
+    {
+      "col": null,
+      "line": null,
+      "message": "ema ribbon requires \"ribbon ema N1 N2 ...\".",
+      "severity": "error"
+    }
+  ],
+  "errors": [
+    "line 8: ema-ribbon ribbon must be exactly: ribbon ema N1 N2 ..., with 2 to 8 strictly increasing positive integers",
+    "line 9: ema-ribbon pullback must be exactly: pullback ema N, with positive integer N",
+    "line 10: ema-ribbon trend filter must be: trend filter TF ribbon, or trend filter TF ema F above S, with TF one of 2h 4h 8h 1d",
+    "line 11: ema-ribbon trend filter must be: trend filter TF ribbon, or trend filter TF ema F above S, with TF one of 2h 4h 8h 1d and F < S",
+    "line 12: ema-ribbon short gate must be exactly: shorts below daily ema N, with positive integer N",
+    "line 13: ema-ribbon window must be exactly: act hours A to B utc, with whole hours 0-23 and A different from B",
+    "ema ribbon requires \"ribbon ema N1 N2 ...\"."
+  ],
+  "schema": "dsl-conformance-parse-v1",
+  "source": "HT300 invented ema ribbon fixture",
+  "warnings": []
+}
