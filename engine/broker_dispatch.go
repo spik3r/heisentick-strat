@@ -23,6 +23,8 @@ func (b *broker) onBar(i int) {
 		b.onDualEMAResumptionBar(i)
 	case "smaGoldenCross":
 		b.onSMAGoldenCrossBar(i)
+	case "smaRegimeHold":
+		b.onSMARegimeHoldBar(i)
 	case "supplyDemand":
 		b.onSupplyDemandBar(i)
 	case "doubleTopBottom":

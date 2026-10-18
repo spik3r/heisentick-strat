@@ -92,6 +92,7 @@
       "family-sequential-full-e2-short",
       "family-sma-golden-cross",
       "family-sma-golden-cross-protected",
+      "family-sma-regime-hold",
       "family-supply-demand",
       "family-supply-demand-retest-entry-timeframe",
       "family-timed-return",
@@ -133,14 +134,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 167,
+  "parseCases": 170,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 62,
+    "diagnostic": 64,
     "family": 20,
     "filters": 21,
-    "setup-family": 55
+    "setup-family": 56
   },
-  "runCases": 118,
+  "runCases": 119,
   "schema": "dsl-conformance-metadata-v1"
 }

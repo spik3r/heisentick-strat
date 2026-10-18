@@ -57,6 +57,12 @@ func (p *parser) parseSetupType(tokens []string) {
 		p.config["smaGoldenCross"] = map[string]any{"fastSmaLen": 50.0, "slowSmaLen": 200.0}
 		p.config["allowLong"] = 1
 		p.config["allowShort"] = 0
+	case string(FamilySMARegimeHold):
+		p.config["cooldownCandles"] = 0
+		p.config["maxHoldCandles"] = 0
+		p.config["smaRegimeHold"] = map[string]any{"period": 200.0}
+		p.config["allowLong"] = 1
+		p.config["allowShort"] = 0
 	case string(FamilyLegacySetup9):
 		// The legacy controls have no breakeven, cooldown, time exit or stop
 		// rules of the ordinary families; the profile owns every rule.

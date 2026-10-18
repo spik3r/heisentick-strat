@@ -293,6 +293,7 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyIntraHourRunExhaustion),
 		string(dsl.FamilyDualEMAResumption),
 		string(dsl.FamilySMAGoldenCross),
+		string(dsl.FamilySMARegimeHold),
 		string(dsl.FamilyKeltnerReversion),
 		string(dsl.FamilyKeltnerExpansion),
 		string(dsl.FamilyNamedLevelSweep),

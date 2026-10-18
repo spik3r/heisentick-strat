@@ -538,6 +538,12 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		LegacySetup9:              legacySetup9ParamsFromConfig(cfg),
 		NLSUseTrigger:             triggerExplicit && !containsString(triggerCandles, "any"),
 	}
+	// SMA families are mutually exclusive. Reuse the existing SMA length slot
+	// for regime hold so adding this family preserves the broker layout and
+	// the pinned accounting instruction operands.
+	if setupType == string(dsl.FamilySMARegimeHold) {
+		p.SMAGoldenCross.FastLen = smaRegimeHoldPeriodFromConfig(cfg)
+	}
 	applyExtractedSetupParams(&p, cfg, stop, orb, setupType)
 	if setupType == string(dsl.FamilyClockRangeBreakout) {
 		// Run entry points validate the config first; a decode failure here

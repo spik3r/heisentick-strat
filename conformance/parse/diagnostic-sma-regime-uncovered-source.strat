@@ -1,0 +1,2 @@
+dsl v7
+setup { type: sma regime hold } leverage 5

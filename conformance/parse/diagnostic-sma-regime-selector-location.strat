@@ -1,0 +1,4 @@
+dsl v7
+type: smaRegimeHold
+filters { side short only }
+execution { risk: 25 USD }

@@ -126,6 +126,13 @@
       "since": 7
     },
     {
+      "id": "smaRegimeHold",
+      "canonicalSpelling": "sma regime hold",
+      "canonicalExample": "type: sma regime hold",
+      "classification": "shared",
+      "since": 7
+    },
+    {
       "id": "fibContinuation",
       "canonicalSpelling": "fib continuation",
       "canonicalExample": "type: fib continuation",
@@ -618,6 +625,22 @@
       "source": "js-setup-type",
       "spelling": "sma golden cross",
       "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.sma-regime-hold",
+      "source": "js-setup-type",
+      "spelling": "sma regime hold",
+      "familyId": "smaRegimeHold",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.js-setup-type.smaregimehold",
+      "source": "js-setup-type",
+      "spelling": "smaRegimeHold",
+      "familyId": "smaRegimeHold",
       "classification": "shared",
       "since": 7
     },
@@ -1223,6 +1246,22 @@
       "since": 7
     },
     {
+      "id": "alias.go-inline-setup-type.sma-regime-hold",
+      "source": "go-inline-setup-type",
+      "spelling": "sma regime hold",
+      "familyId": "smaRegimeHold",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-inline-setup-type.smaregimehold",
+      "source": "go-inline-setup-type",
+      "spelling": "smaregimehold",
+      "familyId": "smaRegimeHold",
+      "classification": "shared",
+      "since": 7
+    },
+    {
       "id": "alias.go-inline-setup-type.smagoldencross",
       "source": "go-inline-setup-type",
       "spelling": "smagoldencross",
@@ -1251,6 +1290,22 @@
       "source": "go-canonical-setup-type",
       "spelling": "sma golden cross",
       "familyId": "smaGoldenCross",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.sma-regime-hold",
+      "source": "go-canonical-setup-type",
+      "spelling": "sma regime hold",
+      "familyId": "smaRegimeHold",
+      "classification": "shared",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.smaregimehold",
+      "source": "go-canonical-setup-type",
+      "spelling": "smaregimehold",
+      "familyId": "smaRegimeHold",
       "classification": "shared",
       "since": 7
     },
