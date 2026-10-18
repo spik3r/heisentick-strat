@@ -61,3 +61,40 @@ func TestSMARegimeHoldRejectsInvalidPeriodAndExtraRuleDirectives(t *testing.T) {
 		t.Fatal("resetting the family after selecting sma regime hold must be rejected")
 	}
 }
+
+func TestSMARegimeHoldAuditsAllAuthoredSelectors(t *testing.T) {
+	for _, version := range []string{"6", "7"} {
+		for _, selector := range []string{"sma regime hold", "smaRegimeHold"} {
+			for _, source := range []string{
+				"type: " + selector + "\nfilters { side short only }\nexecution { risk: 25 USD }",
+				"filters {\n type: " + selector + "\n}",
+				"type: " + selector + "\nsetup { type: failed breakout }",
+				"setup { type: " + selector + " }\ntype: failed breakout",
+			} {
+				result, err := Parse("dsl v" + version + "\n" + source)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(result.Errors) == 0 {
+					t.Errorf("v%s accepted %q", version, source)
+				}
+			}
+		}
+	}
+	for _, source := range []string{
+		"setup { leverage 5 type: sma regime hold }",
+		"setup { type: sma regime hold } leverage 5",
+	} {
+		result, err := Parse("dsl v7\n" + source)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if len(result.Errors) == 0 {
+			t.Errorf("accepted uncovered source %q", source)
+		}
+	}
+	result, err := Parse("dsl v7\nstrategy \"type: smaRegimeHold { leverage 5 }\" {\n description \"leverage 5 } {\"\n}\n# leverage 5\nsetup { type: sma regime hold } # ignored\n")
+	if err != nil || len(result.Errors) != 0 {
+		t.Fatalf("quoted metadata/comment control: %v %v", err, result.Errors)
+	}
+}

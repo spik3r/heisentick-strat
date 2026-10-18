@@ -7,7 +7,7 @@ import (
 
 func (p *parser) recordSMARegimeHoldAuthored(line logicalLine, head string, tokens []string) {
 	p.smaRegimeHoldAudit = append(p.smaRegimeHoldAudit, line.section+"|"+head)
-	if line.section == "setup" && head == "type" {
+	if head == "type" {
 		p.smaRegimeHoldTypes++
 		if canonicalSetupFamily(tokens[1:]) == string(FamilySMARegimeHold) {
 			p.smaRegimeHoldSeen = true
@@ -33,7 +33,7 @@ func (p *parser) parseSMARegimeHold(tokens []string) bool {
 }
 
 func (p *parser) validateSMARegimeHold() {
-	if !p.smaRegimeHoldSeen {
+	if !p.smaRegimeHoldSeen && p.config["setupType"] != string(FamilySMARegimeHold) {
 		return
 	}
 	if p.config["setupType"] != string(FamilySMARegimeHold) {
@@ -41,6 +41,9 @@ func (p *parser) validateSMARegimeHold() {
 	}
 	if p.smaRegimeHoldTypes != 1 {
 		p.errorAt(nil, nil, "sma regime hold requires exactly one setup type directive", "")
+	}
+	for _, issue := range AuditOrdinarySource(p.source).Issues {
+		p.errorAt(nil, nil, "sma regime hold does not support uncovered source: "+issue.Text, "")
 	}
 	config := copyMap(p.config["smaRegimeHold"])
 	period, ok := config["period"].(float64)
