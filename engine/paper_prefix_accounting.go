@@ -79,6 +79,8 @@ type paperCollector struct {
 	lastIndex  int
 	ordinal    int
 	err        error
+	// Optional ordinary witness; tail-only so existing accounting fields retain layout.
+	ordinaryState *ordinaryBacktestStateCapture
 }
 
 func newPaperCollector(binding string, start float64) *paperCollector {
@@ -176,6 +178,7 @@ func (c *paperCollector) entry(b *broker, before float64) {
 	c.account.EntryFees = float64(c.account.EntryFees + fee)
 	c.account.Fees = float64(c.account.EntryFees + c.account.ExitFees)
 	c.emit(PaperEvent{Kind: "entry", PositionID: id, Index: p.EntryIndex, T: p.EntryT, RealizedBefore: before, RealizedAfter: b.realized, Effect: &PaperExecutionEffect{Side: p.Side.String(), Price: p.Entry, Size: p.Size, Fee: fee, Stop: paperOptional(p.SL, p.NoStop), Target: paperOptional(p.TP, p.NoTarget)}})
+	c.ordinaryObserve(b, "after-entry", p.EntryIndex)
 }
 
 func (c *paperCollector) exit(b *broker, before, credit float64, index int, partial bool) {
@@ -247,6 +250,7 @@ func (c *paperCollector) exit(b *broker, before, credit float64, index int, part
 		c.open = nil
 	}
 	c.emit(PaperEvent{Kind: kind, PositionID: open.PositionID, Index: index, T: b.series.T[index], RealizedBefore: before, RealizedAfter: b.realized, Effect: effect})
+	c.ordinaryObserve(b, "after-"+kind, index)
 }
 
 func (c *paperCollector) mark(b *broker, index int) {
@@ -287,4 +291,5 @@ func (c *paperCollector) mark(b *broker, index int) {
 	}
 	snapshot := *a
 	c.emit(PaperEvent{Kind: "mark", Index: index, T: b.series.T[index], RealizedBefore: b.realized, RealizedAfter: b.realized, Account: &snapshot})
+	c.ordinaryObserve(b, "original-close", index)
 }

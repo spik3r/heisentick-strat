@@ -72,6 +72,7 @@ type flagParams struct {
 	VolumeAnomalyExhaustion    volumeAnomalyExhaustionParams
 	ElderTripleScreen          elderTripleScreenParams
 	PriceMomentum              priceMomentumParams
+	DonchianBreakout           donchianBreakoutParams
 	DailyFlushFailure          dailyFlushFailureParams
 	FairValueGap               fairValueGapParams
 	WeekendExtremeFade         weekendExtremeFadeParams
@@ -204,6 +205,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 	volumeAnomaly := mapValue(cfg, "volumeAnomalyExhaustion")
 	elderTripleScreen := mapValue(cfg, "elderTripleScreen")
 	priceMomentum := mapValue(cfg, "priceMomentum")
+	donchianBreakout := mapValue(cfg, "donchianBreakout")
 	dailyFlushFailure := mapValue(cfg, "dailyFlushFailure")
 	keltner := mapValue(cfg, "keltnerReversion")
 	fairValueGap := mapValue(cfg, "fairValueGap")
@@ -419,6 +421,12 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		PriceMomentum: priceMomentumParams{
 			LookbackBars: intValue(priceMomentum, "lookbackBars", 0),
 			ThresholdPct: numberValue(priceMomentum, "thresholdPct", 0),
+			StopATR:      fixedATRStop(stop),
+		},
+		DonchianBreakout: donchianBreakoutParams{
+			ChannelBars: donchianCountValue(donchianBreakout, "channelBars", 0),
+			TrendEMALen: donchianCountValue(donchianBreakout, "trendEmaLen", 0),
+			StopATR:     numberValue(stop, "atrMult", 2),
 		},
 		DailyFlushFailure: dailyFlushFailureParams{
 			ATRLength:             20,
@@ -571,6 +579,8 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 		p.TargetR = p.ElderTripleScreen.TargetR
 	case string(dsl.FamilyPriceMomentum):
 		p.TargetR = numberValue(target, "fallbackR", 1)
+	case string(dsl.FamilyDonchianBreakout):
+		p.TargetR = numberValue(target, "dcbR", 0)
 	case string(dsl.FamilyFairValueGap):
 		p.TargetR = numberValue(target, "fvgR", 1)
 	case string(dsl.FamilyKeltnerReversion), string(dsl.FamilyKeltnerExpansion):

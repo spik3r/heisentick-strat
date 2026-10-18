@@ -32,6 +32,7 @@ type bidAskRunner struct {
 	duration, activation, maxQuoteAge, maxSignalAge int64
 	lastBarOpen, lastBarClose, lastQuoteT           int64
 	quoteIdentities                                 map[int64]string
+	slowExitCommitT                                 string
 	barIndex                                        int
 	err                                             error
 }
@@ -116,6 +117,7 @@ func (x *bidAskRunner) close(rec BidAskRecord, price *big.Rat, why, basis string
 	b.hasPosition = false
 	b.lastExitIndex = x.barIndex
 	x.position = nil
+	x.slowExitCommitT = ""
 	x.mark(rec, nil, basis, clock)
 }
 func (x *bidAskRunner) fill(rec BidAskRecord, q *BidAskQuote) {
@@ -133,7 +135,11 @@ func (x *bidAskRunner) fill(rec BidAskRecord, q *BidAskQuote) {
 		x.err = e
 		return
 	}
-	target, e := bidAskFamily(d.order.TP)
+	targetValue := d.order.TP
+	if d.order.NoTarget {
+		targetValue = 0
+	}
+	target, e := bidAskFamily(targetValue)
 	if e != nil {
 		x.err = e
 		return
@@ -158,11 +164,11 @@ func (x *bidAskRunner) fill(rec BidAskRecord, q *BidAskQuote) {
 	clock := bidAskQuoteClock(q)
 	clock.SignalOpenT = d.signal.OpenT
 	clock.SignalCloseT = d.signal.CloseT
-	if entry.Sign() <= 0 || stop.Sign() <= 0 || target.Sign() <= 0 || bidAskSigned(newRatSub(entry, stop), s).Sign() <= 0 || bidAskSigned(newRatSub(target, entry), s).Sign() <= 0 || bidAskSigned(newRatSub(bidAskRat(liquidTier.Price), stop), s).Sign() <= 0 {
+	if entry.Sign() <= 0 || stop.Sign() <= 0 || (!d.order.NoTarget && target.Sign() <= 0) || bidAskSigned(newRatSub(entry, stop), s).Sign() <= 0 || (!d.order.NoTarget && bidAskSigned(newRatSub(target, entry), s).Sign() <= 0) || bidAskSigned(newRatSub(bidAskRat(liquidTier.Price), stop), s).Sign() <= 0 {
 		x.noFill(rec, "invalid-or-breached-protection", clock)
 		return
 	}
-	if d.order.HasLimit || d.order.HasSize || d.order.NoStop || d.order.NoTarget || !d.order.HasRisk || d.order.NoSlip {
+	if d.order.HasLimit || d.order.HasSize || d.order.NoStop || (d.order.NoTarget && x.binding.Family != "dualEmaResumption") || !d.order.HasRisk || d.order.NoSlip {
 		x.err = bidAskError("ORDER_UNQUALIFIED")
 		return
 	}
@@ -213,11 +219,15 @@ func (x *bidAskRunner) fill(rec BidAskRecord, q *BidAskQuote) {
 	}
 	// This is the only shared protection position. Legacy midpoint economics and
 	// collectors are never called by this execution model.
-	b.position = position{Side: s, Entry: entryFloat, Size: qtyFloat, SL: stopFloat, TP: targetFloat, InitialSL: stopFloat, InitialTP: targetFloat, Meta: d.order.Meta, EntryIndex: d.index, EntryT: float64(entryT) / 1000000, Tag: d.order.Tag, GapAwareStop: true}
+	b.position = position{Side: s, Entry: entryFloat, Size: qtyFloat, SL: stopFloat, TP: targetFloat, InitialSL: stopFloat, InitialTP: targetFloat, NoTarget: d.order.NoTarget, Meta: d.order.Meta, EntryIndex: d.index, EntryT: float64(entryT) / 1000000, Tag: d.order.Tag, GapAwareStop: true}
 	b.hasPosition = true
 	fee := newRatMul(quantity, bidAskRat(ec.EntryFee))
 	x.collector.entry(fee)
 	p := &bidAskOpen{entry: entry, qty: quantity, entryFee: fee, entryT: entryT, fullFrom: full, view: BidAskPosition{ID: bidAskHash(struct{ Decision string }{d.view.DecisionID}), DecisionID: d.view.DecisionID, Side: s.String(), Entry: bidAskCash(entry), Quantity: bidAskCash(quantity), Stop: bidAskCash(stop), Target: bidAskCash(target), RiskBudget: bidAskCash(risk), StopBudgetLoss: bidAskCash(newRatMul(quantity, loss)), EntryFee: bidAskCash(fee), ProtectionVersion: 1, SignalIndex: d.index, EntryProviderT: q.ProviderT, FullPhaseFromT: bidAskStamp(full)}}
+	if d.order.NoTarget {
+		p.view.Target = "0"
+		p.view.NoTarget = true
+	}
 	p.view.Phase = "sampled-straddle"
 	if entryT == full {
 		p.view.Phase = "full-bar"
@@ -225,7 +235,7 @@ func (x *bidAskRunner) fill(rec BidAskRecord, q *BidAskQuote) {
 	p.view.ExpectedFullIntervalOpenT = bidAskStamp(full)
 	x.position = p
 	x.pending = nil
-	x.emit(rec, BidAskEvent{Kind: "entry", Outcome: "filled", DecisionID: p.view.DecisionID, PositionID: p.view.ID, Side: p.view.Side, Price: p.view.Entry, Quantity: p.view.Quantity, Fee: p.view.EntryFee, Stop: p.view.Stop, Target: p.view.Target, ProtectionVersion: 1, Basis: "observed-entry-side-with-modeled-costs", Clock: clock})
+	x.emit(rec, BidAskEvent{Kind: "entry", Outcome: "filled", DecisionID: p.view.DecisionID, PositionID: p.view.ID, Side: p.view.Side, Price: p.view.Entry, Quantity: p.view.Quantity, Fee: p.view.EntryFee, Stop: p.view.Stop, Target: p.view.Target, NoTarget: p.view.NoTarget, ProtectionVersion: 1, Basis: "observed-entry-side-with-modeled-costs", Clock: clock})
 	x.mark(rec, bidAskRat(liquidTier.Price), "entry-liquidation-side-quote", clock)
 }
 func bidAskDueSlot(b *broker, i int) bool {
@@ -252,6 +262,9 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 		return
 	}
 	if open < x.activation {
+		if x.binding.Family == "dualEmaResumption" && x.prepared != nil {
+			x.dualEMABar(i, false)
+		}
 		return
 	}
 	if x.prepared == nil {
@@ -259,6 +272,11 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 		return
 	}
 	b := &x.prepared.broker
+	if x.request.Experiment != nil && x.position == nil && previousOpen >= 0 && open != previousOpen+x.duration {
+		x.coverage = "unhealthy-unaccounted-interval"
+		x.collector.account.MarkStatus = "stale-coverage-gap"
+		x.emit(rec, BidAskEvent{Kind: "coverage", Outcome: "missing-completed-interval", Basis: "entries-refused"})
+	}
 	if x.position != nil && previousOpen >= 0 && open != previousOpen+x.duration {
 		x.unresolved(rec, "missing-completed-interval")
 	}
@@ -292,15 +310,18 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 			}
 			o, h, l := bidAskRat(sideBar.Open), bidAskRat(sideBar.High), bidAskRat(sideBar.Low)
 			s := b.position.Side
-			if bidAskDueSlot(b, i) {
-				clock.ModelEffectiveT = bar.OpenT
-				x.close(rec, o, "window-close", "modeled-side-open", clock)
+			if x.binding.Family == "dualEmaResumption" && b.dualExitPending {
+				x.unresolved(rec, "missing-slow-ema-exit-quote")
+				return
+			} else if bidAskDueSlot(b, i) {
+				clock, basis := x.modeledOpenClock(bar, clock)
+				x.close(rec, o, "window-close", basis, clock)
 			} else if (s == sideLong && o.Cmp(sl) <= 0) || (s == sideShort && o.Cmp(sl) >= 0) {
-				clock.ModelEffectiveT = bar.OpenT
-				x.close(rec, o, "stop-gap", "modeled-side-open", clock)
+				clock, basis := x.modeledOpenClock(bar, clock)
+				x.close(rec, o, "stop-gap", basis, clock)
 			} else if (s == sideLong && l.Cmp(sl) <= 0) || (s == sideShort && h.Cmp(sl) >= 0) {
 				x.close(rec, sl, "stop", "modeled-side-bar-stop-first", clock)
-			} else if (s == sideLong && h.Cmp(tp) >= 0) || (s == sideShort && l.Cmp(tp) <= 0) {
+			} else if !p.view.NoTarget && ((s == sideLong && h.Cmp(tp) >= 0) || (s == sideShort && l.Cmp(tp) <= 0)) {
 				x.close(rec, tp, "target", "modeled-side-bar-stop-first", clock)
 			}
 		}
@@ -309,7 +330,14 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 		}
 		if b.hasPosition {
 			old := b.position.SL
-			b.moveStopToBreakeven(i)
+			if x.binding.Family == "dualEmaResumption" {
+				x.dualEMABar(i, true)
+				if b.dualExitPending && x.slowExitCommitT == "" {
+					x.slowExitCommitT = rec.CommitT
+				}
+			} else {
+				b.moveStopToBreakeven(i)
+			}
 			if old != b.position.SL {
 				stop, e := bidAskFamily(b.position.SL)
 				if e != nil {
@@ -319,7 +347,11 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 				p.view.Stop = bidAskCash(stop)
 				p.view.ProtectionVersion++
 				clock.ModelEffectiveT = bar.CloseT
-				x.emit(rec, BidAskEvent{Kind: "protection", Outcome: "breakeven", PositionID: p.view.ID, DecisionID: p.view.DecisionID, Stop: p.view.Stop, Target: p.view.Target, ProtectionVersion: p.view.ProtectionVersion, PriorProtectionVersion: p.view.ProtectionVersion - 1, Basis: "future-only-midpoint-close-management", Clock: clock})
+				outcome := "breakeven"
+				if x.binding.Family == "dualEmaResumption" {
+					outcome = "close-trail"
+				}
+				x.emit(rec, BidAskEvent{Kind: "protection", Outcome: outcome, PositionID: p.view.ID, DecisionID: p.view.DecisionID, Stop: p.view.Stop, Target: p.view.Target, NoTarget: p.view.NoTarget, ProtectionVersion: p.view.ProtectionVersion, PriorProtectionVersion: p.view.ProtectionVersion - 1, Basis: "future-only-midpoint-close-management", Clock: clock})
 			}
 			if bidAskDueHold(b, i) {
 				clock.ModelEffectiveT = bar.CloseT
@@ -334,7 +366,13 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 	// source gates decide whether a new decision exists. Warmup never gets here.
 	before := len(b.capturedEntries)
 	b.captureEntries = true
-	b.onBar(i)
+	if x.binding.Family == "dualEmaResumption" {
+		if ord := x.dualEMABar(i, x.entriesOpen(close)); ord != nil {
+			b.capturedEntries = append(b.capturedEntries, *ord)
+		}
+	} else {
+		b.onBar(i)
+	}
 	b.captureEntries = false
 	if len(b.capturedEntries)-before > 1 {
 		x.err = bidAskError("MULTIPLE_DECISIONS")
@@ -347,6 +385,9 @@ func (x *bidAskRunner) onBar(rec BidAskRecord) {
 			Ordinal         int
 		}{x.identity, rec.Sequence, 0})
 		x.pending = &bidAskDecision{view: BidAskPending{DecisionID: id, SignalSequence: rec.Sequence, State: "awaiting-original-episode"}, order: ord, signal: *bar, index: i, signalCommitT: rec.CommitT}
+		if x.request.Experiment != nil {
+			x.pending.view.ExecutableFromT = bidAskStamp(x.signalExecutableFrom(close))
+		}
 		x.emit(rec, BidAskEvent{Kind: "decision", Outcome: "awaiting-original-episode", DecisionID: id, Side: ord.Side.String(), Basis: "go-family-capture", Clock: BidAskClock{SignalOpenT: bar.OpenT, SignalCloseT: bar.CloseT, ReceivedT: bar.ReceivedT, ModelEffectiveT: bar.CloseT}})
 	}
 }
@@ -384,6 +425,10 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 		x.err = bidAskError("EPISODE_STATE")
 		return
 	}
+	if original && (!x.entriesOpen(at) || !x.entriesOpen(commit)) && x.pending != nil {
+		x.noFill(rec, "experiment-entry-horizon", bidAskQuoteClock(q))
+		return
+	}
 	if known {
 		if original {
 			x.noFill(rec, "duplicate-original-observation", bidAskQuoteClock(q))
@@ -414,6 +459,7 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 		admit, _ := bidAskTime(d.episode.AdmittedT)
 		deadline, _ := bidAskTime(d.episode.DeadlineT)
 		close, _ := bidAskTime(d.signal.CloseT)
+		executableFrom := x.signalExecutableFrom(close)
 		start, _ := bidAskTime(q.RequestStartT)
 		if x.coverage != "sampled-observations-only" {
 			x.noFill(rec, "coverage-unhealthy", bidAskQuoteClock(q))
@@ -424,7 +470,7 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 			return
 		}
 		episodeCommit, _ := bidAskTime(d.episodeCommitT)
-		if at < close || start < admit || start < episodeCommit || qualified-at > x.maxQuoteAge || commit > deadline || at >= close+x.maxSignalAge {
+		if at < executableFrom || start < admit || start < episodeCommit || qualified-at > x.maxQuoteAge || (x.binding.Family == "dualEmaResumption" && commit-at > x.maxQuoteAge) || commit > deadline || at >= executableFrom+x.maxSignalAge {
 			x.noFill(rec, "original-quote-expired", bidAskQuoteClock(q))
 			return
 		}
@@ -439,6 +485,33 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 		return
 	}
 	p := x.position
+	b := &x.prepared.broker
+	// A closed-bar fallback is executable at the next qualified observation,
+	// before bracket checks. A later completed bar cannot reveal an earlier fill.
+	if x.binding.Family == "dualEmaResumption" && b.dualExitPending && at >= x.lastBarClose {
+		start, _ := bidAskTime(q.RequestStartT)
+		decided, err := bidAskTime(x.slowExitCommitT)
+		if err != nil {
+			x.err = bidAskError("INTERNAL")
+			return
+		}
+		if start < decided {
+			x.emit(rec, BidAskEvent{Kind: "observation", Outcome: "predecision-slow-ema-exit-observation", Basis: "no-retrospective-exit", Clock: bidAskQuoteClock(q)})
+			return
+		}
+		if !q.Tradeable || qualified-at > x.maxQuoteAge || commit-at > x.maxQuoteAge {
+			x.unresolved(rec, "unqualified-slow-ema-exit-quote")
+			return
+		}
+		tier := q.Bids[0]
+		if p.qty.Cmp(bidAskRat(tier.Liquidity)) > 0 {
+			x.unresolved(rec, "insufficient-slow-ema-exit-liquidity")
+			return
+		}
+		x.close(rec, bidAskRat(tier.Price), "slow-ema", "observed-liquidation-side-with-modeled-costs", bidAskQuoteClock(q))
+		b.pendingExits = b.pendingExits[:0]
+		return
+	}
 	// At and after the first grid boundary there is one authority: completed side
 	// bars. A delayed bar does not let these observations compete with its extrema.
 	if at >= p.fullFrom {
@@ -463,7 +536,6 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 		x.unresolved(rec, "unqualified-straddle-observation")
 		return
 	}
-	b := &x.prepared.broker
 	tier := q.Bids[0]
 	if b.position.Side == sideShort {
 		tier = q.Asks[0]
@@ -481,7 +553,7 @@ func (x *bidAskRunner) onQuote(rec BidAskRecord) {
 	}
 	s := b.position.Side
 	stop := (s == sideLong && price.Cmp(sl) <= 0) || (s == sideShort && price.Cmp(sl) >= 0)
-	target := (s == sideLong && price.Cmp(tp) >= 0) || (s == sideShort && price.Cmp(tp) <= 0)
+	target := !p.view.NoTarget && ((s == sideLong && price.Cmp(tp) >= 0) || (s == sideShort && price.Cmp(tp) <= 0))
 	if stop || target {
 		if p.qty.Cmp(bidAskRat(tier.Liquidity)) > 0 {
 			x.unresolved(rec, "insufficient-sampled-exit-liquidity")
@@ -506,15 +578,17 @@ func (x *bidAskRunner) onEpisode(rec BidAskRecord) {
 	close, _ := bidAskTime(d.signal.CloseT)
 	admit, _ := bidAskTime(e.AdmittedT)
 	deadline, _ := bidAskTime(e.DeadlineT)
-	limit := close + x.maxSignalAge
-	if limit > close+x.duration {
-		limit = close + x.duration
+	executableFrom := x.signalExecutableFrom(close)
+	limit := executableFrom + x.maxSignalAge
+	intervalClose := (executableFrom/x.duration + 1) * x.duration
+	if limit > intervalClose {
+		limit = intervalClose
 	}
 	if slotEnd, ok := numericMetaValue(d.order.Meta["slotEnd"]); ok && int64(slotEnd)*1000000 < limit {
 		limit = int64(slotEnd) * 1000000
 	}
 	signalCommit, _ := bidAskTime(d.signalCommitT)
-	if admit < close || admit < signalCommit || deadline > limit || deadline <= admit {
+	if admit < executableFrom || admit < signalCommit || deadline > limit || deadline <= admit {
 		x.err = bidAskError("EPISODE_DEADLINE")
 		return
 	}
@@ -527,11 +601,26 @@ func (x *bidAskRunner) onEpisode(rec BidAskRecord) {
 func (x *bidAskRunner) onSeal(rec BidAskRecord) {
 	d := x.pending
 	s := rec.Seal
-	if d == nil || d.episode == nil || d.view.SignalSequence != s.SignalSequence {
+	if d == nil || d.view.SignalSequence != s.SignalSequence {
 		x.err = bidAskError("EPISODE_STATE")
 		return
 	}
 	at, _ := bidAskTime(s.EffectiveT)
+	if s.Reason == "signal-expired" {
+		close, _ := bidAskTime(d.signal.CloseT)
+		committed, _ := bidAskTime(d.signalCommitT)
+		if x.request.Experiment == nil || d.episode != nil || at < x.signalExecutableFrom(close)+x.maxSignalAge || at < committed {
+			x.err = bidAskError("SEAL_CLOCK")
+			return
+		}
+		x.emit(rec, BidAskEvent{Kind: "decision-outcome", Outcome: "expired-signal", DecisionID: d.view.DecisionID, Basis: "not-admitted-after-signal-deadline", Clock: BidAskClock{SignalOpenT: d.signal.OpenT, SignalCloseT: d.signal.CloseT, ModelEffectiveT: s.EffectiveT}})
+		x.pending = nil
+		return
+	}
+	if d.episode == nil {
+		x.err = bidAskError("EPISODE_STATE")
+		return
+	}
 	admit, _ := bidAskTime(d.episode.AdmittedT)
 	deadline, _ := bidAskTime(d.episode.DeadlineT)
 	if at < admit || (s.Reason == "deadline" && at < deadline) {
@@ -552,6 +641,10 @@ func executeBidAsk(r PaperBidAskRequest, p *PreparedRun, b BidAskBinding) (Paper
 			x.onQuote(rec)
 		case "seal":
 			x.onSeal(rec)
+		case "experiment-clock":
+			x.onExperimentClock(rec)
+		case "market-closure":
+			x.onClosure(rec)
 		case "coverage-gap":
 			if x.position != nil {
 				x.unresolved(rec, "recorded-coverage-gap")
@@ -586,6 +679,18 @@ func executeBidAsk(r PaperBidAskRequest, p *PreparedRun, b BidAskBinding) (Paper
 			HasPosition bool
 			Pending     *bidAskDecision
 		}{p.broker.orbLastEntry, p.broker.hasORBEntry, p.broker.seen.orb.day, append([]string{}, p.broker.seen.orb.keys...), p.broker.position, p.broker.hasPosition, x.pending}
+	}
+	if p != nil && b.Family == "dualEmaResumption" {
+		q := &p.broker
+		state = struct {
+			SlowExitCommitT                                         string
+			Protection                                              any
+			Fast, Slow, ATR, PreviousClose, PreviousFast, BestClose float64
+			Initialized, HasPositionEntry, ExitPending              bool
+			PositionEntry                                           int
+			SlowHistory                                             []float64
+			PendingExits                                            []pendingExit
+		}{x.slowExitCommitT, state, q.dualFast, q.dualSlow, q.dualATR, q.dualPreviousClose, q.dualPreviousFast, q.dualBestClose, q.dualInitialized, q.dualHasPositionEntry, q.dualExitPending, q.dualPositionEntry, q.dualSlowHistory, q.pendingExits}
 	}
 	// Private pending order data is included explicitly because its fields are not
 	// exported; no mutable broker/account object is ever restored from the host.

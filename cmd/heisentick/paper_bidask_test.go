@@ -263,3 +263,72 @@ func TestPaperBidAskOutputFailure(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestPaperBidAskInheritedReadOnlyDescriptor(t *testing.T) {
+	dir := t.TempDir()
+	binary := filepath.Join(dir, "heisentick")
+	if out, e := exec.Command(filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-buildvcs=false", "-o", binary, ".").CombinedOutput(); e != nil {
+		t.Fatalf("build %v %s", e, out)
+	}
+	raw, e := json.Marshal(paperBidAskCLIRequest(t, false))
+	if e != nil {
+		t.Fatal(e)
+	}
+	path := filepath.Join(dir, "request.json")
+	if e = os.WriteFile(path, raw, 0600); e != nil {
+		t.Fatal(e)
+	}
+	invoke := func(file *os.File, arg string) []byte {
+		t.Helper()
+		cmd := exec.Command(binary, "paper-bidask", arg)
+		cmd.ExtraFiles = []*os.File{file}
+		out, e := cmd.CombinedOutput()
+		if e != nil {
+			t.Fatalf("descriptor command %v %s", e, out)
+		}
+		return out
+	}
+	read, e := os.Open(path)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer read.Close()
+	out := invoke(read, "--request-fd=3")
+	var result engine.PaperBidAskResult
+	if json.Unmarshal(out, &result) != nil || result.Mode != "replay-verified-candidate" {
+		t.Fatalf("read descriptor refused %s", out)
+	}
+	if _, e = read.Stat(); e != nil {
+		t.Fatal("child closed parent descriptor", e)
+	}
+	write, e := os.OpenFile(path, os.O_RDWR, 0)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer write.Close()
+	if out = invoke(write, "--request-fd=3"); !bytes.Contains(out, []byte("PAPER_BIDASK_INPUT")) {
+		t.Fatalf("writable descriptor admitted %s", out)
+	}
+	directory, e := os.Open(dir)
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer directory.Close()
+	if out = invoke(directory, "--request-fd=3"); !bytes.Contains(out, []byte("PAPER_BIDASK_INPUT")) {
+		t.Fatalf("directory admitted %s", out)
+	}
+	pipeReader, pipeWriter, e := os.Pipe()
+	if e != nil {
+		t.Fatal(e)
+	}
+	defer pipeReader.Close()
+	defer pipeWriter.Close()
+	if out = invoke(pipeReader, "--request-fd=3"); !bytes.Contains(out, []byte("PAPER_BIDASK_INPUT")) {
+		t.Fatalf("pipe admitted %s", out)
+	}
+	for _, arg := range []string{"--request-fd=0", "--request-fd=03", "--request-fd=65", "--request-fd=missing", "--request-fd="} {
+		if out = invoke(read, arg); !bytes.Contains(out, []byte("PAPER_BIDASK_ARGUMENTS")) {
+			t.Fatalf("bad descriptor argument %s", out)
+		}
+	}
+}

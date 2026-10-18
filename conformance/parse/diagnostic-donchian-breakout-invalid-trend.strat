@@ -1,0 +1,8 @@
+dsl v7
+strategy "Donchian Invalid Trend" { description "Refuses a trend gate that is not an EMA." }
+market conditions { slices(XAUUSD 4h) }
+setup {
+  type: donchian breakout
+  channel 55 candles
+  trend sma 300
+}

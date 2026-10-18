@@ -225,3 +225,73 @@ func TestApplyPartialManagementMarksNegativeSizedPositionWithoutReducingIt(t *te
 		}
 	}
 }
+
+func TestApplyPartialManagementPreservesTargetMetadataAndMoney(t *testing.T) {
+	for _, s := range []side{sideLong, sideShort} {
+		for _, noTarget := range []bool{false, true} {
+			for _, fraction := range []float64{0.5, 1} {
+				t.Run(fmt.Sprintf("%s/noTarget=%v/fraction=%v", s.String(), noTarget, fraction), func(t *testing.T) {
+					sign := float64(s)
+					target := 100 + sign*10
+					if noTarget {
+						target = 0
+					}
+					b := broker{series: marketdata.Series{T: []float64{1000, 2000}, C: []float64{100 + sign*2.5, 100 + sign*4}}, costs: Costs{Slippage: 0.1, FeePerUnit: 0.2}, realized: 40,
+						params:   flagParams{Partial: partialParams{Enabled: true, Fraction: fraction, TriggerR: 0.25}},
+						position: position{Side: s, Entry: 100, Size: 10, SL: 100 - sign*10, TP: target, InitialSL: 100 - sign*10, InitialTP: target, NoTarget: noTarget, EntryIndex: 0, EntryT: 500, Tag: "DSL-DCB", Meta: TradeMeta{"setup": "donchianBreakout"}}, hasPosition: true}
+					b.applyPartialManagement(0)
+					if len(b.trades) != 1 {
+						t.Fatalf("partial trades=%+v", b.trades)
+					}
+					first := b.trades[0]
+					wantSize := 10 * fraction
+					if first.Size != wantSize || math.Abs(first.Exit-(100+sign*2.4)) > 1e-12 || math.Abs(first.Points-2.4) > 1e-12 || math.Abs(first.PnL-2.2*wantSize) > 1e-12 || math.Abs(b.realized-(40+first.PnL)) > 1e-12 || first.Partial != (fraction < 1) {
+						t.Fatalf("partial cashflow changed: %+v realized=%v", first, b.realized)
+					}
+					if fraction < 1 {
+						if !b.hasPosition || b.position.Size != 5 {
+							t.Fatalf("remaining position=%+v", b.position)
+						}
+						b.closePosition(b.series.C[1], 1, "end", "")
+						if math.Abs(b.trades[1].PnL-18.5) > 1e-12 {
+							t.Fatalf("final fee/cashflow=%+v", b.trades[1])
+						}
+					} else if b.hasPosition {
+						t.Fatal("full partial left position open")
+					}
+					total := 40.0
+					for _, trade := range b.trades {
+						total += trade.PnL
+						raw, err := json.Marshal(RunResult{Trades: []Trade{trade}})
+						if err != nil {
+							t.Fatal(err)
+						}
+						var envelope struct {
+							Trades []map[string]any `json:"trades"`
+						}
+						if err = json.Unmarshal(raw, &envelope); err != nil {
+							t.Fatal(err)
+						}
+						fields := envelope.Trades[0]
+						if trade.NoTarget != noTarget {
+							t.Fatalf("NoTarget lost: %+v", trade)
+						}
+						if noTarget {
+							if fields["tp"] != nil || fields["initialTp"] != nil {
+								t.Fatalf("no-target JSON=%s", raw)
+							}
+						} else if fields["tp"] != target || fields["initialTp"] != target {
+							t.Fatalf("target JSON=%s", raw)
+						}
+						if trade.SL != 100-sign*10 || trade.InitialSL != 100-sign*10 || trade.Entry != 100 || trade.EntryT != 500 || trade.Tag != "DSL-DCB" {
+							t.Fatalf("unchanged trade fields changed: %+v", trade)
+						}
+					}
+					if math.Abs(b.realized-total) > 1e-12 {
+						t.Fatalf("realized=%v sum=%v", b.realized, total)
+					}
+				})
+			}
+		}
+	}
+}

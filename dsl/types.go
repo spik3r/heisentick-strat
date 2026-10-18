@@ -35,6 +35,7 @@ const (
 	FamilyVolumeAnomalyExhaustion FamilyID = "volumeAnomalyExhaustion"
 	FamilyElderTripleScreen       FamilyID = "elderTripleScreen"
 	FamilyPriceMomentum           FamilyID = "priceMomentum"
+	FamilyDonchianBreakout        FamilyID = "donchianBreakout"
 	FamilyDailyFlushFailure       FamilyID = "dailyFlushFailure"
 	FamilyFairValueGap            FamilyID = "fairValueGap"
 	FamilyWeekendExtremeFade      FamilyID = "weekendExtremeFade"

@@ -15,6 +15,67 @@ version and is named here.
   not model ETF distributions, idle-cash yield, CFD financing or notional, and
   is not admitted as a funded/forward strategy. See
   `spec/dsl-spec-families/smaRegimeHold.md`.
+### Ordinary browser release qualification
+
+- Stamp the ordinary public WASM API with the release tag, clean source commit
+  and tree, and dynamically derived ordinary schema-set digest. Missing or
+  inconsistent release identity fails before packaging.
+- Qualify the actual stamped public exports against complete same-target Go
+  responses and exact target-specific arithmetic evidence before publication.
+  Keep the existing eight release assets and official Go runtime shim.
+
+### Donchian breakout setup family (HT295; additive minor semantics)
+
+- Add `type: donchian breakout` with `channel N candles` (close strictly beyond
+  the highest high or lowest low of the N bars before the signal bar) and an
+  optional `trend ema N` gate (EMA of closes seeded with the first close).
+- Family defaults: fixed 2 ATR stop from the signal close, no target, no
+  breakeven, trail trigger 0R, no cooldown or max hold. Unless authored, the
+  trade window is unrestricted, all three day types pass and the
+  movement-efficiency cap is off. Other stop shapes, non-`NR` targets,
+  `enter` phrases and source-timeframe execution are refused.
+- Validate Donchian counts before signed-int conversion, require finite positive
+  ATR stops and precise finite decimal-R targets, preserve `target 0R` as no
+  target, and keep all authored `enter` refusals sticky. Invalid exact ATR
+  stops leave a JSON-serializable refused config.
+- Validate direct configs on all run-entry routes, preserving documented
+  defaults and numeric-zero trend/target settings. Reject malformed explicit
+  values and fail closed when derived brackets overflow or round to the signal
+  close. Preserve absent-target metadata through partial exits.
+- Clarify signal-close bracket anchoring with shared next-open fill mode and
+  the shared pre-handler trail, partial, breakeven and max-hold order.
+- Add 8 parse cases, 2 run cases on XAUUSD 4h slices and 3 hand-derived
+  `dcb-*` semantic cases. No existing golden changes. Matches the unreleased
+  JS reference in the heisentick app trade for trade.
+  See `spec/dsl-spec-families/donchianBreakout.md`.
+
+### Price momentum honours `stop N ATR` (minor semantics)
+
+- `type: price momentum` with `stop N ATR` now places the stop `N × ATR` from
+  the signal close. Before, the family ignored the phrase and kept the
+  3-candle recent-extreme stop, so a declared ATR stop had no effect.
+  Stop-size bounds still apply, compared with `N` directly so an `N` on an
+  inclusive bound is admitted (rebuilding the distance from the rounded stop
+  price rejected `stop 2 ATR` with `stop size min 2` at ATR 0.3). Programs
+  without `stop N ATR` are unchanged.
+- Price-momentum stops parsed as `fixedAtr` now reject zero, negative or
+  non-finite multiples, as do direct engine `fixedAtr` configurations. These
+  previously fell back to the recent-extreme stop. That fallback predates
+  this change. Pre-existing lexer gaps remain for `stop +Inf ATR` and
+  out-of-range numeric literals, which may enter the generic stop branch.
+- Add run case `family-price-momentum-atr-stop` (147 trades; sl, tp and time
+  exits) and parse cases `diagnostic-price-momentum-stop-atr-{zero,negative}`.
+  No existing golden changed.
+
+### Dual EMA sampled bid/ask paper execution (HT243; additive minor semantics)
+
+- Admit long-only XAUUSD 4h dual EMA resumption through the existing native
+  sampled bid/ask model, with a fill-relative stop and explicit absent target.
+- Advance indicators during warm-up without orders, apply close trails only
+  forward, and execute slow-EMA fallback from a causal fresh quote.
+- Preserve open exposure across replay and refuse missing exit observations or
+  discontinuous coverage. Financing and consumer activation remain unqualified.
+- Existing ORB output and source admission retain their prior contract.
 
 ### Parabolic SAR indicator and DSL filters (HT289; additive minor semantics)
 

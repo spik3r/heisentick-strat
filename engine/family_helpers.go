@@ -15,6 +15,8 @@ type setupPlan struct {
 	Target float64
 	Tag    string
 	Meta   TradeMeta
+	// NoTarget opens the position without a take-profit; Target is ignored.
+	NoTarget bool
 }
 
 type dailySeenSet struct {
@@ -572,14 +574,15 @@ func (b *broker) enterSetup(i int, setup setupPlan) bool {
 	}
 	setup.Meta = b.seasonalityTradeMeta(i, annotateDayTheme(setup.Meta, theme))
 	ord := order{
-		Side:    setup.Side,
-		SL:      setup.Stop,
-		TP:      setup.Target,
-		RiskUSD: b.params.RiskUSD,
-		HasRisk: true,
-		Tag:     setup.Tag,
-		Meta:    setup.Meta,
-		Index:   i,
+		Side:     setup.Side,
+		SL:       setup.Stop,
+		TP:       setup.Target,
+		RiskUSD:  b.params.RiskUSD,
+		HasRisk:  true,
+		Tag:      setup.Tag,
+		Meta:     setup.Meta,
+		Index:    i,
+		NoTarget: setup.NoTarget,
 	}
 	if anchor, ok := setup.Meta["forwardBracketAnchor"].(string); ok && anchor == "entry-fill" {
 		if distance, ok := numericMetaValue(setup.Meta["forwardStopDistance"]); ok && distance > 0 {

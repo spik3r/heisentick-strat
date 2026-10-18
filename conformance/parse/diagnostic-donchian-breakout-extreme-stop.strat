@@ -1,0 +1,10 @@
+dsl v7
+strategy "Donchian Extreme Stop" { description "Refuses a stop phrase other than stop N ATR." }
+market conditions { slices(XAUUSD 4h) }
+setup {
+  type: donchian breakout
+  channel 55 candles
+}
+risk {
+  stop beyond last 3 candle extreme by 0.25 ATR
+}

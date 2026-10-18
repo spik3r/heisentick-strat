@@ -89,6 +89,47 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Ordinary stamped native and public WASM qualification
+        id: ordinary_api_qualification
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 10
+        run: |
+          qualification_dir="$RUNNER_TEMP/ordinary-api-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir "$qualification_dir"
+          node scripts/checks/ordinary-backtest-parity.mjs --build-and-qualify "ci-$(git rev-parse HEAD)" "$qualification_dir"
+
+      - name: Upload ordinary public API qualification diagnostics
+        if: always() && (steps.ordinary_api_qualification.outcome == 'success' || steps.ordinary_api_qualification.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordinary-api-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ordinary-api-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+            ${{ runner.temp }}/ordinary-api-${{ github.run_id }}-${{ github.run_attempt }}/*.log
+            ${{ runner.temp }}/ordinary-api-${{ github.run_id }}-${{ github.run_attempt }}/*.instructions.txt
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Ordinary state same-target baseline preservation
+        id: ordinary_state_preservation
+        if: steps.mod.outputs.present == 'true'
+        timeout-minutes: 18
+        run: |
+          baseline_commit=94a2b5a16eae61ffab53a933a78aa302ce57379c
+          git fetch --depth=1 origin "$baseline_commit"
+          test "$(git rev-parse FETCH_HEAD)" = "$baseline_commit"
+          python3 scripts/checks/ordinary-state-preservation.py --out "$RUNNER_TEMP/ordinary-state-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+
+      - name: Upload ordinary state preservation diagnostics
+        if: always() && (steps.ordinary_state_preservation.outcome == 'success' || steps.ordinary_state_preservation.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ordinary-state-${{ runner.os }}-${{ runner.arch }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ordinary-state-${{ github.run_id }}-${{ github.run_attempt }}/*.json
+            ${{ runner.temp }}/ordinary-state-${{ github.run_id }}-${{ github.run_attempt }}/*.log
+          if-no-files-found: error
+
       - name: Release packaging and publication guard regression
         if: steps.mod.outputs.present == 'true'
         run: node --test scripts/checks/release-packaging.test.mjs

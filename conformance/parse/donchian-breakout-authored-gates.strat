@@ -1,0 +1,20 @@
+dsl v7
+strategy "Donchian Authored Gates" {
+  description "Authored session, day-type and movement gates replace the family defaults."
+}
+market conditions {
+  slices(XAUUSD 4h)
+  sessions(london, ny)
+  day type in (trending)
+  movement below 0.7
+}
+setup {
+  type: donchian breakout
+  channel 40 candles
+}
+target {
+  target 50R
+}
+execution {
+  risk 200 USD
+}

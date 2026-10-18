@@ -1,0 +1,8 @@
+dsl v7
+strategy "Donchian Target Shape" { description "Refuses a target phrase other than target NR." }
+market conditions { slices(XAUUSD 4h) }
+setup {
+  type: donchian breakout
+  channel 55 candles
+}
+target { minimum reward 2 }

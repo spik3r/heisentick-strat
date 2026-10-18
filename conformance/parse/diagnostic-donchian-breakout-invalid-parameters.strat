@@ -1,0 +1,23 @@
+dsl v7
+strategy "Donchian Invalid Parameters" {
+  description "Refuses invalid counts, stops, targets and authored entry despite later valid directives."
+}
+market conditions { slices(XAUUSD 4h) }
+setup {
+  type: donchian breakout
+  channel 9223372036854775808 candles
+  channel 55 candles
+  trend ema 9223372036854775808
+  trend ema 300
+}
+risk {
+  stop Inf ATR
+  stop 2 ATR
+}
+target {
+  target 1..2R
+  target 0R
+}
+entry {
+  enter at next open
+}
