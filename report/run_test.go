@@ -1,9 +1,11 @@
 package report
 
 import (
+	"encoding/json"
 	"math"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -31,27 +33,44 @@ func TestRunPreparedCostRowsPropagatesCheckedErrorAndDiscardsPartialOutputs(t *t
 }
 
 func TestOriginalNamedLevelFixturesRunWithNextOpen(t *testing.T) {
-	for _, tc := range []struct {
-		name   string
-		trades int
-		entry  float64
-	}{
-		{"family-named-level-flag", 1, 103.7},
-		{"family-named-level-flag-short-only", 0, 0},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			cfg, route, strategy := loadConformanceCase(t, tc.name)
+	for _, name := range []string{"family-named-level-flag", "family-named-level-flag-short-only"} {
+		t.Run(name, func(t *testing.T) {
+			runDir := filepath.Join(testsupport.StratConformanceRoot(), "run")
+			raw, err := os.ReadFile(filepath.Join(runDir, name+".trades.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			var golden engine.RunResult
+			if err := json.Unmarshal(raw, &golden); err != nil {
+				t.Fatal(err)
+			}
+			if golden.Costs.FillOn != "nextOpen" {
+				t.Fatalf("golden fill mode = %q", golden.Costs.FillOn)
+			}
+			cfg, route, strategy := loadConformanceCase(t, name)
 			rows, trades, _, err := runCostRows(cfg, route, strategy, []CostMode{{Label: "raw"}}, 0, nil, false, nil, false, "nextOpen")
 			if err != nil {
 				t.Fatal(err)
 			}
-			if len(rows) != 1 || rows[0].Trades != tc.trades || len(trades) != tc.trades {
+			if len(rows) != 1 || rows[0].Trades != golden.TradeCount || len(trades) != golden.TradeCount {
 				t.Fatalf("nextOpen rows=%+v trades=%+v", rows, trades)
 			}
-			if tc.trades > 0 && trades[0].Entry != tc.entry {
-				t.Fatalf("entry=%v, want %v", trades[0].Entry, tc.entry)
+			if !reflect.DeepEqual(trades, golden.Trades) {
+				t.Fatalf("native trades differ from original golden\ngot:  %+v\nwant: %+v", trades, golden.Trades)
 			}
-			if tc.trades > 0 {
+			// The conformance envelope has no summary row; derive report-only
+			// metrics from its unchanged trades using the report definitions.
+			wantRow, err := summarize("raw", 0, golden)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(rows[0], wantRow) {
+				t.Fatalf("summary got %+v, want %+v", rows[0], wantRow)
+			}
+			if golden.TradeCount == 0 && (trades == nil || rows[0].Net != 0 || rows[0].WinRate != 0 || rows[0].Expectancy != 0 || rows[0].DD != 0) {
+				t.Fatalf("zero-trade fixture lost empty trade list or zero metrics: trades=%#v row=%+v", trades, rows[0])
+			}
+			if golden.TradeCount > 0 {
 				_, closeTrades, _, err := runCostRows(cfg, route, strategy, []CostMode{{Label: "raw"}}, 0, nil, false, nil, false, "close")
 				if err != nil {
 					t.Fatal(err)

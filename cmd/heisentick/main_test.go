@@ -68,8 +68,17 @@ func TestReportFillFlagValidationAndIsolation(t *testing.T) {
 	if output, err := call("--fill-on=nextOpen", "--trade-export=1", "--include-trades=1"); err == nil || output != "" {
 		t.Fatalf("unrepresented trade export: output %q, error %v", output, err)
 	}
-	if _, err := call(); err != nil {
+	finalOutput, err := call()
+	if err != nil {
 		t.Fatalf("default after mixed calls: %v", err)
+	}
+	var finalDoc report.Document
+	if err := json.Unmarshal([]byte(finalOutput), &finalDoc); err != nil {
+		t.Fatal(err)
+	}
+	finalDoc.GeneratedAt, finalDoc.EvidenceEnvelope.GeneratedAt = "", ""
+	if !reflect.DeepEqual(defaultDoc, finalDoc) {
+		t.Fatal("default report changed after mixed invocations")
 	}
 }
 
@@ -78,7 +87,10 @@ func TestReportCLIOriginalNamedLevelNextOpenFixtures(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			dslFile, dataRoot, golden := writeConformanceCLIInputs(t, name)
 			var out bytes.Buffer
-			err := run([]string{"report", "--dsl-file=" + dslFile, "--symbol=XAUUSD", "--tf=5m", "--range=zone", "--slippage=0", "--fill-on=nextOpen", "--include-trades=1", "--json-only=1", "--data-root=" + dataRoot}, &out)
+			if golden.Costs.FillOn != "nextOpen" || golden.Costs.StartEquity != 10000 || golden.Costs.Slippage != 0 || golden.Costs.FeePerUnit != 0 {
+				t.Fatalf("original fixture cost contract = %+v", golden.Costs)
+			}
+			err := run([]string{"report", "--dsl-file=" + dslFile, "--symbol=XAUUSD", "--tf=5m", "--range=zone", "--slippage=0", "--fill-on=nextOpen", "--include-trades=1", "--evidence=1", "--json-only=1", "--data-root=" + dataRoot}, &out)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -89,13 +101,34 @@ func TestReportCLIOriginalNamedLevelNextOpenFixtures(t *testing.T) {
 			if got := doc.Costs[0].Trades; got != golden.TradeCount {
 				t.Fatalf("trades=%d, original golden=%d", got, golden.TradeCount)
 			}
-			if golden.TradeCount > 0 {
-				if doc.Slices[0].Trades == nil || len(*doc.Slices[0].Trades) != golden.TradeCount {
-					t.Fatal("missing original trade count")
+			if len(doc.Slices) != 1 || doc.Slices[0].Trades == nil || len(*doc.Slices[0].Trades) != golden.TradeCount {
+				t.Fatalf("embedded trade list missing or wrong length: %+v", doc.Slices)
+			}
+			for i, got := range *doc.Slices[0].Trades {
+				if !reflect.DeepEqual(got.Trade, golden.Trades[i]) {
+					t.Fatalf("trade %d differs from unchanged golden\ngot:  %+v\nwant: %+v", i, got.Trade, golden.Trades[i])
 				}
-				if (*doc.Slices[0].Trades)[0].Entry != golden.Trades[0].Entry {
-					t.Fatalf("entry differs from original golden")
+			}
+			// Conformance goldens have trades but no statistical row. For these
+			// zero- and one-trade cases, derive common report fields directly
+			// from the unchanged golden PnL and 10000 starting equity.
+			wantNet, wantDD := 0.0, 0.0
+			if golden.TradeCount == 1 {
+				wantNet = golden.Trades[0].PnL
+				if wantNet < 0 {
+					endEquity := 10000 + wantNet
+					wantDD = (10000 - endEquity) / 10000 * 100
 				}
+			}
+			row := doc.Costs[0]
+			if row.Label != "slip 0" || row.Slippage != 0 || row.SlippageBps != 0 || row.Trades != golden.TradeCount || row.WinRate != 0 || row.Net != wantNet || row.Expectancy != wantNet || row.DD != wantDD || row.PF == nil || *row.PF != 0 {
+				t.Fatalf("native statistical row %+v differs from golden-derived net=%v dd=%v", row, wantNet, wantDD)
+			}
+			if doc.Headline == nil || doc.Headline.Trades != golden.TradeCount || doc.Headline.Net != wantNet || doc.Headline.MaxDrawdown != wantDD {
+				t.Fatalf("headline %+v differs from golden-derived statistics", doc.Headline)
+			}
+			if golden.TradeCount == 0 && (doc.Slices[0].Trades == nil || *doc.Slices[0].Trades == nil || doc.Headline.WinRate != nil || doc.Headline.Expectancy != nil || doc.Headline.ProfitFactor != nil || doc.Headline.ProfitFactorReason != report.ProfitFactorNoTrades) {
+				t.Fatalf("zero-trade fixture did not emit [] and zero headline: %+v", doc)
 			}
 		})
 	}
