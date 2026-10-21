@@ -20,6 +20,8 @@ type ExecutionWindow = engine.ExecutionWindow
 
 // Request describes one report run.
 type Request struct {
+	// FillOn selects close (the default) or nextOpen execution.
+	FillOn string
 	// Config is the parsed strategy (dsl.Parse(...).Config).
 	Config dsl.Config
 	// RouteMode is "declared" (the default) or "transfer". Transfer runs
@@ -70,6 +72,12 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if request.Config == nil {
 		return Document{}, errors.New("report: strategy config is required")
 	}
+	if request.FillOn == "" {
+		request.FillOn = "close"
+	}
+	if request.FillOn != "close" && request.FillOn != "nextOpen" {
+		return Document{}, fmt.Errorf("report: invalid fill mode %q: expected close or nextOpen", request.FillOn)
+	}
 	if request.RouteMode == "" {
 		request.RouteMode = "declared"
 	}
@@ -108,7 +116,7 @@ func Build(ctx context.Context, request Request) (Document, error) {
 	if generatedAt.IsZero() {
 		generatedAt = time.Now()
 	}
-	rows, trades, prepared, err := runCostRows(request.Config, route, request.StrategyID, modes, primary.Index, request.SlippageBps, request.IncludeTrades, request.ExecutionWindow, request.RouteMode == "transfer")
+	rows, trades, prepared, err := runCostRows(request.Config, route, request.StrategyID, modes, primary.Index, request.SlippageBps, request.IncludeTrades, request.ExecutionWindow, request.RouteMode == "transfer", request.FillOn)
 	if err != nil {
 		return Document{}, err
 	}

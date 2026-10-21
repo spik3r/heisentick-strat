@@ -14,7 +14,7 @@ const defaultStartEquity = 10000
 // runCostRows prepares the route once and runs it per cost mode. The trades
 // of the primary row are returned alongside the rows; tradeContext asks the
 // engine for the per-trade context columns the annotated trade list needs.
-func runCostRows(cfg dsl.Config, route Route, strategy string, modes []CostMode, primaryIndex int, bps *float64, tradeContext bool, executionWindow *engine.ExecutionWindow, forceRoute bool) ([]CostRow, []engine.Trade, *engine.PreparedRun, error) {
+func runCostRows(cfg dsl.Config, route Route, strategy string, modes []CostMode, primaryIndex int, bps *float64, tradeContext bool, executionWindow *engine.ExecutionWindow, forceRoute bool, fillOn string) ([]CostRow, []engine.Trade, *engine.PreparedRun, error) {
 	prepared, err := engine.PrepareRun(engine.RunRequest{
 		Config:             cfg,
 		Series:             route.Series,
@@ -30,12 +30,12 @@ func runCostRows(cfg dsl.Config, route Route, strategy string, modes []CostMode,
 		ReportTradeContext: tradeContext,
 		ForceRoute:         forceRoute,
 		ExecutionWindow:    executionWindow,
-		Costs:              engine.Costs{FillOn: "close", StartEquity: defaultStartEquity},
+		Costs:              engine.Costs{FillOn: fillOn, StartEquity: defaultStartEquity},
 	})
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	rows, trades, err := runPreparedCostRows(prepared, modes, primaryIndex, bps)
+	rows, trades, err := runPreparedCostRows(prepared, modes, primaryIndex, bps, fillOn)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -49,7 +49,7 @@ func RunCostRowsFromShared(shared *engine.SharedRunContext, cfg dsl.Config, mode
 	if err != nil {
 		return nil, err
 	}
-	rows, _, err := runPreparedCostRows(prepared, modes, -1, nil)
+	rows, _, err := runPreparedCostRows(prepared, modes, -1, nil, "close")
 	if err != nil {
 		return nil, err
 	}
@@ -60,13 +60,13 @@ func RunCostRowsFromShared(shared *engine.SharedRunContext, cfg dsl.Config, mode
 // trades of the mode at captureTradesAt are copied out (an empty, non-nil
 // slice when that mode produced none); -1 captures nothing. A checked run or
 // summary error discards every row.
-func runPreparedCostRows(prepared *engine.PreparedRun, modes []CostMode, captureTradesAt int, slippageBps *float64) ([]CostRow, []engine.Trade, error) {
+func runPreparedCostRows(prepared *engine.PreparedRun, modes []CostMode, captureTradesAt int, slippageBps *float64, fillOn string) ([]CostRow, []engine.Trade, error) {
 	rows := make([]CostRow, 0, len(modes))
 	var captured []engine.Trade
 	for index, mode := range modes {
 		bps := effectiveSlippageBps(mode, slippageBps)
 		result, err := prepared.RunChecked(engine.Costs{
-			FillOn:      "close",
+			FillOn:      fillOn,
 			StartEquity: defaultStartEquity,
 			Slippage:    mode.Slip,
 			SlippageBps: bps,

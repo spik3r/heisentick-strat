@@ -46,6 +46,13 @@ func runReport(args []string, out io.Writer) error {
 		return err
 	}
 	routeMode := flags.one("route-mode", "declared")
+	fillOn := flags.one("fill-on", "close")
+	if fillOn != "close" && fillOn != "nextOpen" {
+		return fmt.Errorf("invalid --fill-on %q: expected close or nextOpen", fillOn)
+	}
+	if fillOn == "nextOpen" && boolFlag(flags.one("trade-export", "0")) {
+		return fmt.Errorf("--trade-export=1 does not represent --fill-on=nextOpen")
+	}
 	if routeMode != "declared" && routeMode != "transfer" {
 		return fmt.Errorf("invalid --route-mode %q: expected declared or transfer", routeMode)
 	}
@@ -73,6 +80,7 @@ func runReport(args []string, out io.Writer) error {
 	}
 	document, err := report.Build(context.Background(), report.Request{
 		Config:          parsed.Config,
+		FillOn:          fillOn,
 		RouteMode:       routeMode,
 		Route:           route,
 		StrategyID:      id,

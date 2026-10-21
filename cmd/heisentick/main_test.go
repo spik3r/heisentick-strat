@@ -26,6 +26,81 @@ func TestHelpDocumentsOptInTradeExport(t *testing.T) {
 	}
 }
 
+func TestReportFillFlagValidationAndIsolation(t *testing.T) {
+	dslFile, dataRoot := writeCLIInputs(t)
+	base := []string{"report", "--dsl-file=" + dslFile, "--symbol=XAUUSD", "--tf=5m", "--range=zone", "--json-only=1", "--data-root=" + dataRoot}
+	call := func(extra ...string) (string, error) {
+		t.Helper()
+		var out bytes.Buffer
+		err := run(append(append([]string{}, base...), extra...), &out)
+		return out.String(), err
+	}
+	defaultOutput, err := call()
+	if err != nil {
+		t.Fatal(err)
+	}
+	closeOutput, err := call("--fill-on=close")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var defaultDoc, closeDoc report.Document
+	if err := json.Unmarshal([]byte(defaultOutput), &defaultDoc); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal([]byte(closeOutput), &closeDoc); err != nil {
+		t.Fatal(err)
+	}
+	defaultDoc.GeneratedAt, closeDoc.GeneratedAt = "", ""
+	defaultDoc.EvidenceEnvelope.GeneratedAt, closeDoc.EvidenceEnvelope.GeneratedAt = "", ""
+	if !reflect.DeepEqual(defaultDoc, closeDoc) {
+		t.Fatal("default and explicit close reports differ")
+	}
+	for _, mode := range []string{"nextOpen", "close", "nextOpen"} {
+		if _, err := call("--fill-on=" + mode); err != nil {
+			t.Fatalf("%s: %v", mode, err)
+		}
+	}
+	for _, mode := range []string{"open", "nextopen", "bogus"} {
+		if output, err := call("--fill-on=" + mode); err == nil || output != "" {
+			t.Fatalf("%s: output %q, error %v", mode, output, err)
+		}
+	}
+	if output, err := call("--fill-on=nextOpen", "--trade-export=1", "--include-trades=1"); err == nil || output != "" {
+		t.Fatalf("unrepresented trade export: output %q, error %v", output, err)
+	}
+	if _, err := call(); err != nil {
+		t.Fatalf("default after mixed calls: %v", err)
+	}
+}
+
+func TestReportCLIOriginalNamedLevelNextOpenFixtures(t *testing.T) {
+	for _, name := range []string{"family-named-level-flag", "family-named-level-flag-short-only"} {
+		t.Run(name, func(t *testing.T) {
+			dslFile, dataRoot, golden := writeConformanceCLIInputs(t, name)
+			var out bytes.Buffer
+			err := run([]string{"report", "--dsl-file=" + dslFile, "--symbol=XAUUSD", "--tf=5m", "--range=zone", "--slippage=0", "--fill-on=nextOpen", "--include-trades=1", "--json-only=1", "--data-root=" + dataRoot}, &out)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var doc report.Document
+			if err := json.Unmarshal(out.Bytes(), &doc); err != nil {
+				t.Fatal(err)
+			}
+			if got := doc.Costs[0].Trades; got != golden.TradeCount {
+				t.Fatalf("trades=%d, original golden=%d", got, golden.TradeCount)
+			}
+			if golden.TradeCount > 0 {
+				if doc.Slices[0].Trades == nil || len(*doc.Slices[0].Trades) != golden.TradeCount {
+					t.Fatal("missing original trade count")
+				}
+				if (*doc.Slices[0].Trades)[0].Entry != golden.Trades[0].Entry {
+					t.Fatalf("entry differs from original golden")
+				}
+			}
+		})
+	}
+}
+
 func TestReportJSONOnlyUsesLoadedBTB1(t *testing.T) {
 	dslFile, dataRoot := writeCLIInputs(t)
 	var out bytes.Buffer

@@ -23,10 +23,44 @@ func TestRunPreparedCostRowsPropagatesCheckedErrorAndDiscardsPartialOutputs(t *t
 	rows, trades, err := runPreparedCostRows(prepared, []CostMode{
 		{Label: "finite", Slip: 0},
 		{Label: "max slip", Slip: math.MaxFloat64},
-	}, 0, nil)
+	}, 0, nil, "close")
 	assertCheckedCostError(t, err, `cost mode "max slip":`)
 	if rows != nil || trades != nil {
 		t.Fatalf("checked error returned partial rows/trades: rows=%#v trades=%#v", rows, trades)
+	}
+}
+
+func TestOriginalNamedLevelFixturesRunWithNextOpen(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		trades int
+		entry  float64
+	}{
+		{"family-named-level-flag", 1, 103.7},
+		{"family-named-level-flag-short-only", 0, 0},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			cfg, route, strategy := loadConformanceCase(t, tc.name)
+			rows, trades, _, err := runCostRows(cfg, route, strategy, []CostMode{{Label: "raw"}}, 0, nil, false, nil, false, "nextOpen")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(rows) != 1 || rows[0].Trades != tc.trades || len(trades) != tc.trades {
+				t.Fatalf("nextOpen rows=%+v trades=%+v", rows, trades)
+			}
+			if tc.trades > 0 && trades[0].Entry != tc.entry {
+				t.Fatalf("entry=%v, want %v", trades[0].Entry, tc.entry)
+			}
+			if tc.trades > 0 {
+				_, closeTrades, _, err := runCostRows(cfg, route, strategy, []CostMode{{Label: "raw"}}, 0, nil, false, nil, false, "close")
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(closeTrades) == len(trades) && len(closeTrades) > 0 && closeTrades[0].Entry == trades[0].Entry {
+					t.Fatal("close-only diagnostic unexpectedly matched original nextOpen entry")
+				}
+			}
+		})
 	}
 }
 
@@ -35,7 +69,7 @@ func TestCostRowWrappersPropagateCheckedError(t *testing.T) {
 	modes := []CostMode{{Label: "max slip", Slip: math.MaxFloat64}}
 
 	t.Run("report wrapper", func(t *testing.T) {
-		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false)
+		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false, "close")
 		assertCheckedCostError(t, err, `cost mode "max slip":`)
 		if rows != nil || trades != nil || prepared != nil {
 			t.Fatalf("checked error returned partial report outputs: rows=%#v trades=%#v prepared=%#v", rows, trades, prepared)
@@ -62,7 +96,7 @@ func TestCostRowWrappersPropagateSummaryError(t *testing.T) {
 	want := `cost mode "summary overflow": summary grossWin contains non-finite value`
 
 	t.Run("report wrapper", func(t *testing.T) {
-		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false)
+		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false, "close")
 		if err == nil || err.Error() != want {
 			t.Fatalf("report wrapper error = %v, rows=%+v, want %q", err, rows, want)
 		}
