@@ -30,7 +30,11 @@ const hex = /^[0-9a-f]{64}$/;
 // Keep stdout reserved for the existing final proof and never log input bytes.
 const progressStart = process.hrtime.bigint();
 let activeCase = 'setup';
+let diagnosticCaseNumber = 0;
 let operationSequence = 0;
+// IDs are generated independently of assertion/capture labels, which may
+// contain literal strategy text and must never be copied into CI logs.
+function diagnosticCase(kind) { return `${kind}-${++diagnosticCaseNumber}`; }
 function progress(phase, target, sequence, durationMs = null) {
   const elapsedMs = Number((process.hrtime.bigint() - progressStart) / 1000000n);
   process.stderr.write(`[paper-bidask-parity] case=${activeCase} phase=${phase} target=${target} sequence=${sequence} elapsedMs=${elapsedMs}${durationMs === null ? '' : ` durationMs=${durationMs}`}\n`);
@@ -269,7 +273,7 @@ function comparable(result, prior = []) {
 let comparisons = 0, refusals = 0, resumeSplits = 0;
 const captures = [];
 function compare(r, label, checkpoints, previous) {
-  activeCase = label;
+  activeCase = diagnosticCase('comparison');
   const raw = [0, 1].map((i) => JSON.stringify({ ...r, ...(checkpoints ? { checkpoint: checkpoints[i] } : {}) }));
   const pair = [native(raw[0]), wasm(raw[1])];
   const inspectors = inspect(r.source);
@@ -337,7 +341,7 @@ function liveness() {
 }
 function envelope(value, code, label) { assert.deepEqual(value, { schema, status: 'refused', code: `PAPER_BIDASK_${code}` }, label); }
 function refuse(values, code, nativeRaw, label = code) {
-  activeCase = `refusal-${label}`;
+  activeCase = diagnosticCase('refusal');
   envelope(wasm(...values).value, code, label);
   if (nativeRaw !== undefined) envelope(native(nativeRaw).value, code, label);
   liveness(); refusals++;
@@ -511,6 +515,7 @@ try {
     for (let split = 0; split < conflict.records.length; split++) {
       const prior = compare(prefix(r, split), `historical-${short}-${state}-conflict-prefix-${split}`);
       for (let i = 0; i < 2; i++) {
+        activeCase = diagnosticCase('historical-checkpoint-conflict');
         const raw = JSON.stringify({ ...conflict, checkpoint: prior[i].checkpoint });
         envelope((i ? wasm(raw) : native(raw)).value, 'QUOTE_CONFLICT'); refusals++; liveness();
       }
@@ -578,6 +583,7 @@ try {
     else record.episode.deadlineT = stamp(20n * minute + 199000000000n);
   }]);
   for (const [label, change] of [...receiptChanges, ...bindingChanges, ...recordChanges]) for (let target = 0; target < 2; target++) {
+    activeCase = diagnosticCase('atomic-receipt-mutation');
     const r = clone(receiptRequest); r.checkpoint = clone(receipts[target].checkpoint); change(r);
     const raw = JSON.stringify(r); envelope((target ? wasm(raw) : native(raw)).value, 'CHECKPOINT', label);
     refusals++; liveness(); captures.push({ label: `atomic-${target}-${label}`, code: 'PAPER_BIDASK_CHECKPOINT' });
@@ -593,11 +599,13 @@ try {
   // Timeframe mismatch is already checked independently through public source
   // admission below; with this receipt it must still refuse before any effects.
   for (const [label, change, code] of structurallyFixedBindings) for (let target = 0; target < 2; target++) {
+    activeCase = diagnosticCase('structural-receipt-mutation');
     const r = clone(receiptRequest); r.checkpoint = clone(receipts[target].checkpoint); change(r);
     envelope((target ? wasm(JSON.stringify(r)) : native(JSON.stringify(r))).value, code, label);
     refusals++; liveness();
   }
   for (let target = 0; target < 2; target++) {
+    activeCase = diagnosticCase('cross-target-receipt');
     const raw = JSON.stringify({ ...receiptRequest, checkpoint: receipts[1 - target].checkpoint });
     envelope((target ? wasm(raw) : native(raw)).value, 'CHECKPOINT'); refusals++; liveness();
   }
@@ -605,9 +613,11 @@ try {
   for (let target = 0; target < 2; target++) {
     const cp = JSON.stringify(receipts[target].checkpoint), without = JSON.stringify(receiptRequest);
     const exact = without.slice(0, -1) + ',"checkpoint":' + cp.slice(0, -1) + ' '.repeat(4096 - Buffer.byteLength(cp)) + '}}';
+    activeCase = diagnosticCase('exact-receipt-byte-limit');
     const out = (target ? wasm(exact) : native(exact)).value;
     assert.equal(out.mode, 'replay-verified-candidate');
     const over = exact.slice(0, -2) + ' ' + exact.slice(-2);
+    activeCase = diagnosticCase('over-receipt-byte-limit');
     envelope((target ? wasm(over) : native(over)).value, 'CHECKPOINT'); refusals++; liveness();
   }
 
