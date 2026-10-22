@@ -51,6 +51,14 @@ const (
 	ClockReasonInvalidStop       = "invalid-stop-distance"
 	ClockReasonInvalidSize       = "invalid-size"
 	ClockReasonOutsideExecWindow = "outside-execution-window"
+	// Optional gates.
+	ClockReasonNoDailyATR      = "no-daily-atr"
+	ClockReasonRangeTooNarrow  = "range-too-narrow"
+	ClockReasonNoPriorDay      = "no-prior-day"
+	ClockReasonNoDirection     = "no-direction"
+	ClockReasonOppositeTrigger = "opposite-triggered-first"
+	clockRangeTargetExitReason = "target"
+	clockTradingDayMinSpanMs   = int64(4 * 60 * 60 * 1000)
 )
 
 // ClockRangeDay records what happened to one declared-clock range day so
@@ -79,6 +87,10 @@ type clockPendingOrders struct {
 	buy, sell  float64
 	hasLong    bool
 	hasShort   bool
+	// cancelLong / cancelShort mark a trigger that cancels the day instead of
+	// filling (cancel when opposite side triggers first).
+	cancelLong  bool
+	cancelShort bool
 }
 
 type clockRangeState struct {
@@ -86,12 +98,76 @@ type clockRangeState struct {
 	pending *clockPendingOrders
 	// closeT is the resolved clock-close instant of the open position.
 	closeT float64
+	daily  clockTradingDays
 }
 
 func (s *clockRangeState) reset() {
 	s.days = s.days[:0]
 	s.pending = nil
 	s.closeT = 0
+	s.daily = clockTradingDays{}
+}
+
+// clockTradingDays is the trading-day OHLC series the optional gates read.
+// A trading day is a declared-clock date; a date whose bars span less than
+// four hours (such as the weekend reopen) is merged into the next date that
+// has bars. key is the clock day the trading day is filed under.
+type clockTradingDays struct {
+	key        []int64
+	o, h, l, c []float64
+}
+
+// buildClockTradingDays aggregates every bar of the series. Lookups only read
+// trading days filed before the range date, whose bars all precede the range,
+// and whether a date is merged depends only on that date's own bars, so
+// building the whole series up front reads no future data.
+func buildClockTradingDays(schedule clockSchedule, t, o, h, l, c []float64) clockTradingDays {
+	var days clockTradingDays
+	var carry *[3]float64 // open, high, low of a merged short date
+	tf := int64(schedule.timeframe)
+	for first := 0; first < len(t); {
+		day := schedule.clockDayOf(t[first])
+		last := first
+		for last+1 < len(t) && schedule.clockDayOf(t[last+1]) == day {
+			last++
+		}
+		open, high, low := o[first], h[first], l[first]
+		for j := first + 1; j <= last; j++ {
+			high, low = math.Max(high, h[j]), math.Min(low, l[j])
+		}
+		if carry != nil {
+			open, high, low = carry[0], math.Max(high, carry[1]), math.Min(low, carry[2])
+			carry = nil
+		}
+		span := int64(t[last]) + tf - int64(t[first])
+		if span < clockTradingDayMinSpanMs && last+1 < len(t) {
+			carry = &[3]float64{open, high, low}
+		} else {
+			days.key = append(days.key, day)
+			days.o, days.h, days.l, days.c = append(days.o, open), append(days.h, high), append(days.l, low), append(days.c, c[last])
+		}
+		first = last + 1
+	}
+	return days
+}
+
+// priorIndex is the last trading day filed before clock day, or -1.
+func (d clockTradingDays) priorIndex(day int64) int {
+	return sort.Search(len(d.key), func(i int) bool { return d.key[i] >= day }) - 1
+}
+
+// atr is the mean true range of the n trading days ending at index i. Each
+// true range needs the trading day before it.
+func (d clockTradingDays) atr(i, n int) (float64, bool) {
+	if i < n {
+		return 0, false
+	}
+	sum := 0.0
+	for j := i - n + 1; j <= i; j++ {
+		prevClose := d.c[j-1]
+		sum += math.Max(d.h[j]-d.l[j], math.Max(math.Abs(d.h[j]-prevClose), math.Abs(d.l[j]-prevClose)))
+	}
+	return sum / float64(n), true
 }
 
 type clockSchedule struct {
@@ -244,6 +320,9 @@ func (b *broker) runClockRangeBreakout(liquidateAtEnd bool) []Trade {
 	if err != nil || !pipOK || spec.Validate() != nil || end < 0 {
 		return b.trades
 	}
+	if spec.UsesDailyInputs() {
+		b.clock.daily = buildClockTradingDays(schedule, b.series.T, b.series.O, b.series.H, b.series.L, b.series.C)
+	}
 	nextDay := schedule.clockDayOf(b.series.T[0]) - 1
 	for schedule.rangeEnd(nextDay) <= b.series.T[0] {
 		nextDay++
@@ -261,7 +340,7 @@ func (b *broker) runClockRangeBreakout(liquidateAtEnd bool) []Trade {
 				b.closeClockRangePosition(b.series.O[i], i, ReasonRule, clockRangeCloseRule, "clock")
 				exited = true
 			case i > b.position.EntryIndex:
-				exited = b.clockRangeStopOnLaterBar(i)
+				exited = b.clockRangeExitOnLaterBar(i)
 			}
 		}
 		if pending := b.clock.pending; pending != nil {
@@ -340,7 +419,13 @@ func (b *broker) placeClockRangeOrders(schedule clockSchedule, day int64, barInd
 		buy: high + spec.BufferPips*pipSize, sell: low - spec.BufferPips*pipSize,
 		hasLong: spec.AllowLong, hasShort: spec.AllowShort,
 	}
-	if (pending.hasLong && !(isFinite(pending.buy) && pending.buy > 0)) || (pending.hasShort && !(isFinite(pending.sell) && pending.sell > 0)) {
+	if reason := b.applyClockRangeGates(spec, day, pending); reason != "" {
+		reject(reason)
+		return
+	}
+	needBuy := pending.hasLong || pending.cancelLong
+	needSell := pending.hasShort || pending.cancelShort
+	if (needBuy && !(isFinite(pending.buy) && pending.buy > 0)) || (needSell && !(isFinite(pending.sell) && pending.sell > 0)) {
 		reject(ClockReasonInvalidPrice)
 		return
 	}
@@ -354,11 +439,44 @@ func (b *broker) placeClockRangeOrders(schedule clockSchedule, day int64, barInd
 	b.clock.pending = pending
 }
 
+// applyClockRangeGates applies the optional placement-time gates to a day
+// whose range is valid. It returns a rejection reason, or "" when the day
+// keeps its orders. Only trading days filed before the range date are read.
+func (b *broker) applyClockRangeGates(spec dsl.ClockRangeSpec, day int64, pending *clockPendingOrders) string {
+	if !spec.UsesDailyInputs() {
+		return ""
+	}
+	prior := b.clock.daily.priorIndex(day)
+	if spec.WidthATRDays > 0 {
+		atr, ok := b.clock.daily.atr(prior, spec.WidthATRDays)
+		if !ok || !isFinite(atr) || !(atr > 0) {
+			return ClockReasonNoDailyATR
+		}
+		if pending.rangeHigh-pending.rangeLow < spec.WidthMinATR*atr {
+			return ClockReasonRangeTooNarrow
+		}
+	}
+	if spec.PriorDayCandle {
+		if prior < 0 {
+			return ClockReasonNoPriorDay
+		}
+		colour := b.clock.daily.c[prior] - b.clock.daily.o[prior]
+		if colour == 0 {
+			return ClockReasonNoDirection
+		}
+		pending.hasLong, pending.hasShort = colour > 0, colour < 0
+		if spec.CancelOnOpposite {
+			pending.cancelLong, pending.cancelShort = colour < 0, colour > 0
+		}
+	}
+	return ""
+}
+
 // fillClockRangeOrders tests the pending stop orders against bar i.
 func (b *broker) fillClockRangeOrders(schedule clockSchedule, pending *clockPendingOrders, i int) {
 	open, high, low := b.series.O[i], b.series.H[i], b.series.L[i]
-	longTouched := pending.hasLong && high >= pending.buy
-	shortTouched := pending.hasShort && low <= pending.sell
+	longTouched := (pending.hasLong || pending.cancelLong) && high >= pending.buy
+	shortTouched := (pending.hasShort || pending.cancelShort) && low <= pending.sell
 	if !longTouched && !shortTouched {
 		return
 	}
@@ -369,6 +487,10 @@ func (b *broker) fillClockRangeOrders(schedule clockSchedule, pending *clockPend
 	long := longTouched
 	if longTouched && shortTouched {
 		long = math.Abs(open-pending.buy) <= math.Abs(open-pending.sell)
+	}
+	if (long && pending.cancelLong) || (!long && pending.cancelShort) {
+		b.finishClockRangeDay(pending, ClockDayRejected, ClockReasonOppositeTrigger)
+		return
 	}
 	side, fillBase := sideShort, math.Min(pending.sell, open)
 	if long {
@@ -385,11 +507,27 @@ func (b *broker) openClockRangePosition(schedule clockSchedule, pending *clockPe
 		reject(ClockReasonInvalidFill)
 		return
 	}
-	distance := fill * schedule.spec.StopPercent / 100
+	spec := schedule.spec
+	distance := fill * spec.StopPercent / 100
 	stop := fill - sign*distance
+	if spec.StopMode == dsl.ClockStopOppositeRangeEdge {
+		stop = pending.rangeLow
+		if s == sideShort {
+			stop = pending.rangeHigh
+		}
+		distance = sign * (fill - stop)
+	}
 	if !isFinite(distance) || !(distance > 0) || !isFinite(stop) || !(math.Abs(fill-stop) > 0) {
 		reject(ClockReasonInvalidStop)
 		return
+	}
+	target := 0.0
+	if spec.TargetR > 0 {
+		target = fill + sign*spec.TargetR*distance
+		if !isFinite(target) || !(target > 0) {
+			reject(ClockReasonInvalidStop)
+			return
+		}
 	}
 	// Size is the risk over the stated distance, not over fill - stop, which
 	// loses digits to cancellation. An explicit zero risk gives size zero.
@@ -409,8 +547,8 @@ func (b *broker) openClockRangePosition(schedule clockSchedule, pending *clockPe
 	// The slippage above is the single entry slippage; NoSlip keeps the shared
 	// broker from applying it a second time.
 	b.openPosition(s, fill, order{
-		Side: s, SL: stop, Size: size, HasSize: true, RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: clockRangeTag,
-		Meta: meta, Index: i, NoSlip: true, NoTarget: true,
+		Side: s, SL: stop, TP: target, Size: size, HasSize: true, RiskUSD: b.params.RiskUSD, HasRisk: true, Tag: clockRangeTag,
+		Meta: meta, Index: i, NoSlip: true, NoTarget: target == 0,
 	}, i)
 	if !b.hasPosition {
 		reject(ClockReasonOutsideExecWindow)
@@ -420,15 +558,18 @@ func (b *broker) openClockRangePosition(schedule clockSchedule, pending *clockPe
 	b.clock.days[pending.auditIndex].Side = s.String()
 	b.clock.closeT = pending.closeT
 	// The whole entry bar is tested against the stop, even when its extreme
-	// may have come before the fill.
+	// may have come before the fill. The target is not tested on the entry
+	// bar: a favourable extreme there may also have come before the fill.
 	if pos := b.position; (pos.Side == sideLong && b.series.L[i] <= pos.SL) || (pos.Side == sideShort && b.series.H[i] >= pos.SL) {
 		b.closeClockRangePosition(pos.SL, i, "sl", "", "stop")
 	}
 }
 
-// clockRangeStopOnLaterBar exits at the open when the bar opens through the
-// stop and at the stop on an ordinary touch.
-func (b *broker) clockRangeStopOnLaterBar(i int) bool {
+// clockRangeExitOnLaterBar exits at the open when the bar opens through the
+// stop and at the stop on an ordinary touch. The stop is tested before the
+// target. A target touch, including a bar opening beyond it, fills at the
+// target level.
+func (b *broker) clockRangeExitOnLaterBar(i int) bool {
 	pos := b.position
 	if (pos.Side == sideLong && b.series.O[i] <= pos.SL) || (pos.Side == sideShort && b.series.O[i] >= pos.SL) {
 		b.closeClockRangePosition(b.series.O[i], i, "sl", "", "stop")
@@ -436,6 +577,10 @@ func (b *broker) clockRangeStopOnLaterBar(i int) bool {
 	}
 	if (pos.Side == sideLong && b.series.L[i] <= pos.SL) || (pos.Side == sideShort && b.series.H[i] >= pos.SL) {
 		b.closeClockRangePosition(pos.SL, i, "sl", "", "stop")
+		return true
+	}
+	if !pos.NoTarget && ((pos.Side == sideLong && b.series.H[i] >= pos.TP) || (pos.Side == sideShort && b.series.L[i] <= pos.TP)) {
+		b.closeClockRangePosition(pos.TP, i, "tp", "", clockRangeTargetExitReason)
 		return true
 	}
 	return false

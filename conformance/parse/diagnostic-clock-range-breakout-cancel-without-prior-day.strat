@@ -1,0 +1,23 @@
+dsl v7
+strategy "diagnostic-clock-range-breakout-cancel-without-prior-day" {
+  description "synthetic example"
+}
+market conditions {
+  slices(XAUUSD 1h)
+  clock UTC+0
+}
+setup {
+  type: clock range breakout
+  range 00:00 to 03:00
+  orders expire 06:00
+  cancel when opposite side triggers first
+}
+risk {
+  stop beyond opposite range edge
+}
+management {
+  close positions at 09:00
+}
+execution {
+  risk: 100 USD
+}

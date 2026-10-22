@@ -18,7 +18,16 @@ const (
 	ClockMinOffsetMinutes = -720
 	ClockMaxOffsetMinutes = 840
 
+	// ClockMaxWidthATRDays bounds the daily ATR lookback of the range width gate.
+	ClockMaxWidthATRDays = 1000
+
 	minutesPerDay = 24 * 60
+)
+
+// Stop modes of the clock range breakout family.
+const (
+	ClockStopPercent           = "percent"
+	ClockStopOppositeRangeEdge = "oppositeRangeEdge"
 )
 
 // ClockRangeSpec is the decoded clock range breakout configuration. Minutes
@@ -30,9 +39,35 @@ type ClockRangeSpec struct {
 	ExpireMinute     int
 	CloseMinute      int
 	BufferPips       float64
-	StopPercent      float64
-	AllowLong        bool
-	AllowShort       bool
+	// StopMode is ClockStopPercent (StopPercent of the fill; also the empty
+	// value, as in v1) or ClockStopOppositeRangeEdge (the range edge opposite
+	// the fill side).
+	StopMode    string
+	StopPercent float64
+	AllowLong   bool
+	AllowShort  bool
+
+	// Optional placement-time gates. Zero values switch them off, so a v1
+	// config decodes to the v1 behaviour.
+	//
+	// WidthMinATR and WidthATRDays skip a day whose range width is below
+	// WidthMinATR times the mean true range of the WidthATRDays trading days
+	// before it.
+	WidthMinATR  float64
+	WidthATRDays int
+	// PriorDayCandle gives an order only to the side of the prior trading
+	// day's candle (close above open: long; below: short).
+	PriorDayCandle bool
+	// CancelOnOpposite keeps the other range edge as a cancel-only trigger:
+	// if it is touched first, the day ends with no trade.
+	CancelOnOpposite bool
+	// TargetR is a profit target in multiples of the stop distance; 0 is none.
+	TargetR float64
+}
+
+// UsesDailyInputs reports whether placement reads the trading-day series.
+func (s ClockRangeSpec) UsesDailyInputs() bool {
+	return s.WidthATRDays > 0 || s.PriorDayCandle
 }
 
 // ResolvedExpiryMinute is the expiry as minutes after range-date midnight. A
@@ -85,11 +120,41 @@ func (s ClockRangeSpec) Validate() error {
 	if math.IsNaN(s.BufferPips) || math.IsInf(s.BufferPips, 0) || s.BufferPips < 0 {
 		return fmt.Errorf("buffer must be finite and nonnegative")
 	}
-	if math.IsNaN(s.StopPercent) || math.IsInf(s.StopPercent, 0) || !(s.StopPercent > 0) || s.StopPercent > 100 {
-		return fmt.Errorf("stop percent must be finite and within (0, 100]")
+	switch s.StopMode {
+	case ClockStopPercent, "":
+		if math.IsNaN(s.StopPercent) || math.IsInf(s.StopPercent, 0) || !(s.StopPercent > 0) || s.StopPercent > 100 {
+			return fmt.Errorf("stop percent must be finite and within (0, 100]")
+		}
+		if s.TargetR != 0 {
+			return fmt.Errorf("target <N>R requires stop beyond opposite range edge")
+		}
+	case ClockStopOppositeRangeEdge:
+		if s.StopPercent != 0 {
+			return fmt.Errorf("use either stop <N> percent or stop beyond opposite range edge, not both")
+		}
+	default:
+		return fmt.Errorf("stop must be stop <N> percent or stop beyond opposite range edge")
+	}
+	if math.IsNaN(s.TargetR) || math.IsInf(s.TargetR, 0) || s.TargetR < 0 {
+		return fmt.Errorf("target R must be finite and positive")
 	}
 	if !s.AllowLong && !s.AllowShort {
 		return fmt.Errorf("at least one side must be allowed")
+	}
+	if (s.WidthATRDays == 0) != (s.WidthMinATR == 0) {
+		return fmt.Errorf("range width at least <X> daily ATR <N> needs both X and N")
+	}
+	if s.WidthATRDays < 0 || s.WidthATRDays > ClockMaxWidthATRDays {
+		return fmt.Errorf("range width daily ATR days must be within 1 and %d", ClockMaxWidthATRDays)
+	}
+	if math.IsNaN(s.WidthMinATR) || math.IsInf(s.WidthMinATR, 0) || s.WidthMinATR < 0 {
+		return fmt.Errorf("range width ATR multiple must be finite and positive")
+	}
+	if s.PriorDayCandle && !(s.AllowLong && s.AllowShort) {
+		return fmt.Errorf("trade with prior day candle chooses the side itself; remove side long only / side short only")
+	}
+	if s.CancelOnOpposite && !s.PriorDayCandle {
+		return fmt.Errorf("cancel when opposite side triggers first requires trade with prior day candle")
 	}
 	return nil
 }
@@ -266,9 +331,10 @@ func DecodeClockRangeBreakout(cfg Config) (ClockRangeSpec, error) {
 		return spec, fmt.Errorf("clock range breakout requires clockRangeBreakout config")
 	}
 	stop, ok := cfg["stop"].(map[string]any)
-	if !ok || stop["type"] != "percent" {
-		return spec, fmt.Errorf("clock range breakout requires stop.type percent")
+	if !ok || (stop["type"] != ClockStopPercent && stop["type"] != ClockStopOppositeRangeEdge) {
+		return spec, fmt.Errorf("clock range breakout requires stop.type percent or oppositeRangeEdge")
 	}
+	spec.StopMode, _ = stop["type"].(string)
 	var err error
 	if spec.UTCOffsetMinutes, err = clockConfigInt(clock, "utcOffsetMinutes"); err != nil {
 		return spec, err
@@ -287,7 +353,12 @@ func DecodeClockRangeBreakout(cfg Config) (ClockRangeSpec, error) {
 	if spec.BufferPips, err = clockConfigFloat(family, "bufferPips"); err != nil {
 		return spec, err
 	}
-	if spec.StopPercent, err = clockConfigFloat(stop, "percent"); err != nil {
+	if spec.StopMode == ClockStopPercent {
+		if spec.StopPercent, err = clockConfigFloat(stop, "percent"); err != nil {
+			return spec, err
+		}
+	}
+	if err := decodeClockRangeGates(family, &spec); err != nil {
 		return spec, err
 	}
 	long, longOK := clockConfigFlag(cfg["allowLong"])
@@ -297,6 +368,46 @@ func DecodeClockRangeBreakout(cfg Config) (ClockRangeSpec, error) {
 	}
 	spec.AllowLong, spec.AllowShort = long, short
 	return spec, spec.Validate()
+}
+
+// decodeClockRangeGates reads the optional gate keys. Absent keys leave the
+// gate off; present keys must be well-formed.
+func decodeClockRangeGates(family map[string]any, spec *ClockRangeSpec) error {
+	var err error
+	if _, ok := family["widthAtrDays"]; ok {
+		if spec.WidthATRDays, err = clockConfigInt(family, "widthAtrDays"); err != nil {
+			return err
+		}
+		if spec.WidthMinATR, err = clockConfigFloat(family, "widthMinAtr"); err != nil {
+			return err
+		}
+		if spec.WidthATRDays < 1 || !(spec.WidthMinATR > 0) {
+			return fmt.Errorf("range width at least <X> daily ATR <N> needs X > 0 and N >= 1")
+		}
+	} else if _, ok := family["widthMinAtr"]; ok {
+		return fmt.Errorf("widthMinAtr requires widthAtrDays")
+	}
+	for _, flag := range []struct {
+		key  string
+		into *bool
+	}{{"priorDayCandle", &spec.PriorDayCandle}, {"cancelOnOpposite", &spec.CancelOnOpposite}} {
+		if raw, ok := family[flag.key]; ok {
+			value, valid := clockConfigFlag(raw)
+			if !valid {
+				return fmt.Errorf("%s must be 0 or 1", flag.key)
+			}
+			*flag.into = value
+		}
+	}
+	if _, ok := family["targetR"]; ok {
+		if spec.TargetR, err = clockConfigFloat(family, "targetR"); err != nil {
+			return err
+		}
+		if !(spec.TargetR > 0) {
+			return fmt.Errorf("targetR must be positive")
+		}
+	}
+	return nil
 }
 
 func clockConfigInt(values map[string]any, key string) (int, error) {

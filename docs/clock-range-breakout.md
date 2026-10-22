@@ -18,6 +18,7 @@ edge, a basket decision or permission for forward or live use.
 | App JavaScript runtime | Not implemented. Go/WASM/JS parity is pending |
 | Release tag, consumer pin, strategy registration | Not done; separate reviewed steps |
 | Historical reconciliation against the archival script | Not run; see "What is still needed" |
+| Optional gates (width vs daily ATR, prior-day candle, cancel trigger, range-edge stop, R target) | Implemented, unreleased; see the spec section "Optional gates, range-edge stop and target (v2)" and `engine/clock_range_breakout_gates_test.go` |
 
 ## Acceptance groups and their fixtures
 

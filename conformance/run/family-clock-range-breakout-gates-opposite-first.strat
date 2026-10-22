@@ -1,0 +1,24 @@
+dsl v7
+strategy "family-clock-range-breakout-gates-opposite-first" {
+  description "synthetic clock range breakout gates case: green prior day, the cancel-only sell edge is touched first, so the later buy touch makes no trade"
+}
+market conditions {
+  slices(XAUUSD 1h)
+  clock UTC+0
+}
+setup {
+  type: clock range breakout
+  range 00:00 to 03:00
+  orders expire 06:00
+  trade with prior day candle
+  cancel when opposite side triggers first
+}
+risk {
+  stop beyond opposite range edge
+}
+management {
+  close positions at 09:00
+}
+execution {
+  risk: 100 USD
+}

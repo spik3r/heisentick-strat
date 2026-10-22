@@ -1,0 +1,28 @@
+dsl v7
+strategy "setup-clock-range-breakout-gates" {
+  description "synthetic clock range breakout with every optional gate"
+}
+market conditions {
+  slices(XAUUSD 1h)
+  clock UTC+0
+}
+setup {
+  type: clock range breakout
+  range 00:00 to 03:00
+  orders expire 06:00
+  range width at least 0.42 daily ATR 14
+  trade with prior day candle
+  cancel when opposite side triggers first
+}
+risk {
+  stop beyond opposite range edge
+}
+target {
+  target 4R
+}
+management {
+  close positions at 09:00
+}
+execution {
+  risk: 100 USD
+}
