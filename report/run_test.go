@@ -1,9 +1,11 @@
 package report
 
 import (
+	"encoding/json"
 	"math"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -23,10 +25,61 @@ func TestRunPreparedCostRowsPropagatesCheckedErrorAndDiscardsPartialOutputs(t *t
 	rows, trades, err := runPreparedCostRows(prepared, []CostMode{
 		{Label: "finite", Slip: 0},
 		{Label: "max slip", Slip: math.MaxFloat64},
-	}, 0, nil)
+	}, 0, nil, "close")
 	assertCheckedCostError(t, err, `cost mode "max slip":`)
 	if rows != nil || trades != nil {
 		t.Fatalf("checked error returned partial rows/trades: rows=%#v trades=%#v", rows, trades)
+	}
+}
+
+func TestOriginalNamedLevelFixturesRunWithNextOpen(t *testing.T) {
+	for _, name := range []string{"family-named-level-flag", "family-named-level-flag-short-only"} {
+		t.Run(name, func(t *testing.T) {
+			runDir := filepath.Join(testsupport.StratConformanceRoot(), "run")
+			raw, err := os.ReadFile(filepath.Join(runDir, name+".trades.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			var golden engine.RunResult
+			if err := json.Unmarshal(raw, &golden); err != nil {
+				t.Fatal(err)
+			}
+			if golden.Costs.FillOn != "nextOpen" {
+				t.Fatalf("golden fill mode = %q", golden.Costs.FillOn)
+			}
+			cfg, route, strategy := loadConformanceCase(t, name)
+			rows, trades, _, err := runCostRows(cfg, route, strategy, []CostMode{{Label: "raw"}}, 0, nil, false, nil, false, "nextOpen")
+			if err != nil {
+				t.Fatal(err)
+			}
+			if len(rows) != 1 || rows[0].Trades != golden.TradeCount || len(trades) != golden.TradeCount {
+				t.Fatalf("nextOpen rows=%+v trades=%+v", rows, trades)
+			}
+			if !reflect.DeepEqual(trades, golden.Trades) {
+				t.Fatalf("native trades differ from original golden\ngot:  %+v\nwant: %+v", trades, golden.Trades)
+			}
+			// The conformance envelope has no summary row; derive report-only
+			// metrics from its unchanged trades using the report definitions.
+			wantRow, err := summarize("raw", 0, golden)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(rows[0], wantRow) {
+				t.Fatalf("summary got %+v, want %+v", rows[0], wantRow)
+			}
+			if golden.TradeCount == 0 && (trades == nil || rows[0].Net != 0 || rows[0].WinRate != 0 || rows[0].Expectancy != 0 || rows[0].DD != 0) {
+				t.Fatalf("zero-trade fixture lost empty trade list or zero metrics: trades=%#v row=%+v", trades, rows[0])
+			}
+			if golden.TradeCount > 0 {
+				_, closeTrades, _, err := runCostRows(cfg, route, strategy, []CostMode{{Label: "raw"}}, 0, nil, false, nil, false, "close")
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(closeTrades) == len(trades) && len(closeTrades) > 0 && closeTrades[0].Entry == trades[0].Entry {
+					t.Fatal("close-only diagnostic unexpectedly matched original nextOpen entry")
+				}
+			}
+		})
 	}
 }
 
@@ -35,7 +88,7 @@ func TestCostRowWrappersPropagateCheckedError(t *testing.T) {
 	modes := []CostMode{{Label: "max slip", Slip: math.MaxFloat64}}
 
 	t.Run("report wrapper", func(t *testing.T) {
-		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false)
+		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false, "close")
 		assertCheckedCostError(t, err, `cost mode "max slip":`)
 		if rows != nil || trades != nil || prepared != nil {
 			t.Fatalf("checked error returned partial report outputs: rows=%#v trades=%#v prepared=%#v", rows, trades, prepared)
@@ -62,7 +115,7 @@ func TestCostRowWrappersPropagateSummaryError(t *testing.T) {
 	want := `cost mode "summary overflow": summary grossWin contains non-finite value`
 
 	t.Run("report wrapper", func(t *testing.T) {
-		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false)
+		rows, trades, prepared, err := runCostRows(cfg, route, strategy, modes, 0, nil, false, nil, false, "close")
 		if err == nil || err.Error() != want {
 			t.Fatalf("report wrapper error = %v, rows=%+v, want %q", err, rows, want)
 		}

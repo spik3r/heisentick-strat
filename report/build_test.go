@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -96,6 +97,39 @@ func TestBuildOmitsHoldoutAndTradesUnlessRequested(t *testing.T) {
 	}
 	if document.Headline == nil || document.Headline.FirstTradeT == nil {
 		t.Fatalf("headline trade times need the primary trades even without IncludeTrades: %+v", document.Headline)
+	}
+}
+
+func TestBuildFillModeValidationAndIsolation(t *testing.T) {
+	cfg, route, strategy := loadConformanceCase(t, "money-risk-sizing")
+	base := Request{Config: cfg, Route: route, StrategyID: strategy, GeneratedAt: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)}
+	build := func(mode string) Document {
+		t.Helper()
+		request := base
+		request.FillOn = mode
+		doc, err := Build(context.Background(), request)
+		if err != nil {
+			t.Fatalf("Build(%q): %v", mode, err)
+		}
+		return doc
+	}
+	defaultDoc := build("")
+	closeDoc := build("close")
+	if !reflect.DeepEqual(defaultDoc, closeDoc) {
+		t.Fatal("default and explicit close differ")
+	}
+	for _, mode := range []string{"nextOpen", "close", "nextOpen", ""} {
+		_ = build(mode)
+	}
+	if !reflect.DeepEqual(defaultDoc, build("")) {
+		t.Fatal("fill mode leaked between builds")
+	}
+	for _, mode := range []string{"open", "nextopen", "invalid"} {
+		request := base
+		request.FillOn = mode
+		if _, err := Build(context.Background(), request); err == nil || !strings.Contains(err.Error(), "invalid fill mode") {
+			t.Fatalf("Build(%q) error = %v", mode, err)
+		}
 	}
 }
 
