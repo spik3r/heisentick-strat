@@ -1,0 +1,66 @@
+{
+  "formatVersion": 2,
+  "eventId": "632fa68e-0ff4-48b8-a92a-0db04511f087",
+  "runId": "197f9191-6ff7-41ca-896a-bca9d4e89720",
+  "kind": "start",
+  "parents": [
+    "17311f74-706c-4600-8249-3e5e7cce8fd0"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-314",
+    "path": "tasks/HT-314-clock-range-breakout-gates.md",
+    "revision": "20b929736c3889cda14086092d85551b5311aa63",
+    "blob": "ce88bd0c7aebb6cf8651546b6401fddc0a830d0e",
+    "claim": {
+      "heading": "Claim — 2026-10-22",
+      "digest": "8f0a0c70fd482636c9c7814049d35663cca15324973a1561a7fcd33c55ba7248"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "claude/clock-range-colour-gates",
+  "pullRequest": null,
+  "at": "2026-10-22T10:20:35.768Z",
+  "summary": "Run 14545a2c recorded the code repository as spik3r/heisentick (the helper default); the work is in spik3r/heisentick-strat. Its validation is withdrawn",
+  "next": "Run fresh checks and complete",
+  "files": [
+    "CHANGELOG.md",
+    "cmd/conformance/main_test.go",
+    "cmd/enginewasm/sequential_inspection_bridge_test.go",
+    "conformance/metadata.json",
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.cfg.json",
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.strat",
+    "conformance/parse/setup-clock-range-breakout-gates.cfg.json",
+    "conformance/parse/setup-clock-range-breakout-gates.strat",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.strat",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.trades.json",
+    "conformance/run/family-clock-range-breakout-gates-target.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-target.strat",
+    "conformance/run/family-clock-range-breakout-gates-target.trades.json",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.strat",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.trades.json",
+    "docs/clock-range-breakout.md",
+    "dsl/clock_range_breakout.go",
+    "dsl/parser_clock_range_breakout.go",
+    "dsl/parser_clock_range_gates_test.go",
+    "engine/clock_range_breakout_gates_test.go",
+    "engine/conformance.go",
+    "engine/family_clock_range_breakout.go",
+    "engine/sequential_inspection_test.go",
+    "spec/dsl-spec-families/clockRangeBreakout.md"
+  ],
+  "repositoryCorrection": {
+    "schema": "project-memory-repository-correction-v1",
+    "from": "spik3r/heisentick",
+    "to": "spik3r/heisentick-strat",
+    "commit": "7e0532e5d0efa50efe905783afb597e48240dfbf",
+    "headEventId": "17311f74-706c-4600-8249-3e5e7cce8fd0",
+    "events": {
+      "17311f74-706c-4600-8249-3e5e7cce8fd0": "2189e28e5273c290004b0d239287f1a6df91243426366da8867a8729d168f62c",
+      "200287ca-475d-47ea-80b8-e135c5329f21": "e55037ac3970943e242f6402e44ffc6abc957560b565de76f2aff649bf14a44a"
+    }
+  }
+}
