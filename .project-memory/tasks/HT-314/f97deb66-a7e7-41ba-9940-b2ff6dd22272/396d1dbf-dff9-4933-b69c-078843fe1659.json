@@ -1,0 +1,59 @@
+{
+  "formatVersion": 2,
+  "eventId": "396d1dbf-dff9-4933-b69c-078843fe1659",
+  "runId": "f97deb66-a7e7-41ba-9940-b2ff6dd22272",
+  "kind": "start",
+  "parents": [
+    "262b4a3d-00fa-406f-b122-cdb4d3798f89"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-314",
+    "path": "tasks/HT-314-clock-range-breakout-gates.md",
+    "revision": "20b929736c3889cda14086092d85551b5311aa63",
+    "blob": "ce88bd0c7aebb6cf8651546b6401fddc0a830d0e",
+    "claim": {
+      "heading": "Claim — 2026-10-22",
+      "digest": "8f0a0c70fd482636c9c7814049d35663cca15324973a1561a7fcd33c55ba7248"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "claude/clock-range-colour-gates",
+  "pullRequest": null,
+  "at": "2026-10-22T11:12:21.550Z",
+  "summary": "Keep the pinned broker layout: move the gates out of ClockRangeSpec and the broker-embedded state, renew the arithmetic manifest source and build-input hashes",
+  "next": "Complete on committed content",
+  "files": [
+    "CHANGELOG.md",
+    "cmd/conformance/main_test.go",
+    "cmd/enginewasm/sequential_inspection_bridge_test.go",
+    "conformance/metadata.json",
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.cfg.json",
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.strat",
+    "conformance/parse/setup-clock-range-breakout-gates.cfg.json",
+    "conformance/parse/setup-clock-range-breakout-gates.strat",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.strat",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.trades.json",
+    "conformance/run/family-clock-range-breakout-gates-target.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-target.strat",
+    "conformance/run/family-clock-range-breakout-gates-target.trades.json",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.strat",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.trades.json",
+    "docs/clock-range-breakout.md",
+    "dsl/clock_range_breakout.go",
+    "dsl/parser_clock_range_breakout.go",
+    "dsl/parser_clock_range_gates_test.go",
+    "engine/clock_range_breakout_gates_test.go",
+    "engine/conformance.go",
+    "engine/family_clock_range_breakout.go",
+    "engine/parabolic_sar.go",
+    "engine/run.go",
+    "engine/runner.go",
+    "engine/sequential_inspection_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "spec/dsl-spec-families/clockRangeBreakout.md"
+  ]
+}
