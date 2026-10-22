@@ -26,6 +26,7 @@ func prepareParabolicSAR(cfg dsl.Config, series marketdata.Series) *parabolicSAR
 func (r *PreparedRun) resetBroker(trades []Trade) {
 	r.broker.reset(r.series, r.cols, r.htfTrend, r.ema, r.emaSlope, r.params, r.fixture, trades)
 	r.broker.parabolicSAR = r.parabolicSAR
+	r.broker.clock.installClockRangeGates(r.clockGates)
 }
 
 func validateParabolicSARConfig(cfg dsl.Config) error {

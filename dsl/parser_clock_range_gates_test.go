@@ -75,16 +75,17 @@ func TestClockRangeGatesCompileToFamilyConfig(t *testing.T) {
 	if _, present := stop["percent"]; present {
 		t.Errorf("range-edge stop carries a percent: %#v", stop)
 	}
-	spec, err := DecodeClockRangeBreakout(result.Config)
+	spec, gates, err := DecodeClockRangeBreakoutGates(result.Config)
 	if err != nil {
 		t.Fatal(err)
 	}
-	wantSpec := ClockRangeSpec{
-		RangeEndMinute: 420, ExpireMinute: 780, CloseMinute: 1245, StopMode: ClockStopOppositeRangeEdge,
-		AllowLong: true, AllowShort: true, WidthMinATR: 0.42, WidthATRDays: 14, PriorDayCandle: true, CancelOnOpposite: true, TargetR: 4,
-	}
+	wantSpec := ClockRangeSpec{RangeEndMinute: 420, ExpireMinute: 780, CloseMinute: 1245, AllowLong: true, AllowShort: true}
 	if spec != wantSpec {
 		t.Errorf("spec = %+v\nwant %+v", spec, wantSpec)
+	}
+	wantGates := ClockRangeGates{StopMode: ClockStopOppositeRangeEdge, WidthMinATR: 0.42, WidthATRDays: 14, PriorDayCandle: true, CancelOnOpposite: true, TargetR: 4}
+	if gates != wantGates {
+		t.Errorf("gates = %+v\nwant %+v", gates, wantGates)
 	}
 }
 
@@ -97,12 +98,12 @@ func TestClockRangeV1ProgramHasNoGates(t *testing.T) {
 			t.Errorf("v1 config gained %s", key)
 		}
 	}
-	spec, err := DecodeClockRangeBreakout(result.Config)
+	_, gates, err := DecodeClockRangeBreakoutGates(result.Config)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if spec.UsesDailyInputs() || spec.TargetR != 0 || spec.CancelOnOpposite || spec.StopMode != ClockStopPercent {
-		t.Errorf("v1 spec = %+v", spec)
+	if gates != (ClockRangeGates{StopMode: ClockStopPercent}) {
+		t.Errorf("v1 gates = %+v", gates)
 	}
 }
 
@@ -202,28 +203,35 @@ func TestClockRangeEdgeStopInlineFailsClosed(t *testing.T) {
 }
 
 func TestClockRangeSpecValidateGates(t *testing.T) {
-	base := ClockRangeSpec{RangeEndMinute: 420, ExpireMinute: 780, CloseMinute: 1245, StopMode: ClockStopOppositeRangeEdge, AllowLong: true, AllowShort: true}
-	if err := base.Validate(); err != nil {
+	spec := ClockRangeSpec{RangeEndMinute: 420, ExpireMinute: 780, CloseMinute: 1245, AllowLong: true, AllowShort: true}
+	base := ClockRangeGates{StopMode: ClockStopOppositeRangeEdge}
+	if err := ValidateClockRange(spec, base); err != nil {
 		t.Fatal(err)
+	}
+	if err := spec.Validate(); err == nil {
+		t.Error("v1 Validate accepted a spec without a stop percent")
 	}
 	tests := []struct {
 		name   string
-		mutate func(*ClockRangeSpec)
+		mutate func(*ClockRangeSpec, *ClockRangeGates)
 		want   string
 	}{
-		{"unknown stop mode", func(s *ClockRangeSpec) { s.StopMode = "atr" }, "stop must be"},
-		{"edge stop with percent", func(s *ClockRangeSpec) { s.StopPercent = 1 }, "not both"},
-		{"percent stop with target", func(s *ClockRangeSpec) { s.StopMode, s.StopPercent, s.TargetR = ClockStopPercent, 1, 2 }, "requires stop beyond opposite range edge"},
-		{"negative target", func(s *ClockRangeSpec) { s.TargetR = -1 }, "target R"},
-		{"width days without multiple", func(s *ClockRangeSpec) { s.WidthATRDays = 14 }, "needs both"},
-		{"width multiple without days", func(s *ClockRangeSpec) { s.WidthMinATR = 0.4 }, "needs both"},
-		{"cancel without prior day", func(s *ClockRangeSpec) { s.CancelOnOpposite = true }, "requires trade with prior day candle"},
-		{"prior day with one side", func(s *ClockRangeSpec) { s.PriorDayCandle, s.AllowShort = true, false }, "chooses the side itself"},
+		{"unknown stop mode", func(_ *ClockRangeSpec, g *ClockRangeGates) { g.StopMode = "atr" }, "stop must be"},
+		{"edge stop with percent", func(s *ClockRangeSpec, _ *ClockRangeGates) { s.StopPercent = 1 }, "not both"},
+		{"percent stop with target", func(s *ClockRangeSpec, g *ClockRangeGates) {
+			g.StopMode, s.StopPercent, g.TargetR = ClockStopPercent, 1, 2
+		}, "requires stop beyond opposite range edge"},
+		{"percent stop without percent", func(_ *ClockRangeSpec, g *ClockRangeGates) { g.StopMode = ClockStopPercent }, "stop percent"},
+		{"negative target", func(_ *ClockRangeSpec, g *ClockRangeGates) { g.TargetR = -1 }, "target R"},
+		{"width days without multiple", func(_ *ClockRangeSpec, g *ClockRangeGates) { g.WidthATRDays = 14 }, "needs both"},
+		{"width multiple without days", func(_ *ClockRangeSpec, g *ClockRangeGates) { g.WidthMinATR = 0.4 }, "needs both"},
+		{"cancel without prior day", func(_ *ClockRangeSpec, g *ClockRangeGates) { g.CancelOnOpposite = true }, "requires trade with prior day candle"},
+		{"prior day with one side", func(s *ClockRangeSpec, g *ClockRangeGates) { g.PriorDayCandle, s.AllowShort = true, false }, "chooses the side itself"},
 	}
 	for _, test := range tests {
-		spec := base
-		test.mutate(&spec)
-		if err := spec.Validate(); err == nil || !strings.Contains(err.Error(), test.want) {
+		s, g := spec, base
+		test.mutate(&s, &g)
+		if err := ValidateClockRange(s, g); err == nil || !strings.Contains(err.Error(), test.want) {
 			t.Errorf("%s: err = %v, want %q", test.name, err, test.want)
 		}
 	}

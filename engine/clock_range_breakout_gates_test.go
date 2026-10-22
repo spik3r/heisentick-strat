@@ -302,7 +302,7 @@ func TestClockTradingDaysMergeShortDates(t *testing.T) {
 	}
 }
 
-// A v1 percent-stop strategy reads no trading days and carries no target.
+// A v1 percent-stop strategy has every gate off and carries no target.
 func TestClockRangeV1RunBuildsNoTradingDays(t *testing.T) {
 	source := crgSource(nil, "stop 1 percent", "")
 	result, prepared := crgRun(t, source, append(crgHistory(true), crgRangeDay(4, 100, 103, 104, crbBar(0, 102, 103.5, 101.8, 103.2))...))
@@ -314,7 +314,7 @@ func TestClockRangeV1RunBuildsNoTradingDays(t *testing.T) {
 			t.Errorf("v1 trade carries a target: %+v", trade)
 		}
 	}
-	if len(prepared.broker.clock.daily.key) != 0 {
-		t.Error("v1 run built a trading-day series")
+	if g := prepared.clockGates; g == nil || g.UsesDailyInputs() || g.RangeEdgeStop() || g.TargetR != 0 {
+		t.Errorf("v1 gates = %+v", g)
 	}
 }

@@ -96,16 +96,46 @@ type clockPendingOrders struct {
 type clockRangeState struct {
 	days    []ClockRangeDay
 	pending *clockPendingOrders
+	// run replaces v1's closeT float64 with a pointer of the same size, so the
+	// broker layout and the pinned arithmetic offsets after it do not move.
+	run *clockRunState
+}
+
+// clockRunState is the per-run family state behind clockRangeState.run.
+type clockRunState struct {
 	// closeT is the resolved clock-close instant of the open position.
 	closeT float64
-	daily  clockTradingDays
+	// gates are the decoded optional gates, installed after broker reset.
+	gates dsl.ClockRangeGates
 }
 
 func (s *clockRangeState) reset() {
 	s.days = s.days[:0]
 	s.pending = nil
-	s.closeT = 0
-	s.daily = clockTradingDays{}
+	s.run = nil
+}
+
+// installClockRangeGates gives the next run its decoded gates. gates is nil
+// for other families, which then allocate nothing; a clock run without
+// installed gates gets v1 behaviour.
+func (s *clockRangeState) installClockRangeGates(gates *dsl.ClockRangeGates) {
+	if gates != nil {
+		s.run = &clockRunState{gates: *gates}
+	}
+}
+
+// prepareClockRangeGates returns the decoded optional gates of a clock range
+// breakout config, or nil for other families and invalid configs (public
+// callers validate first; a nil runtime with gate config fails closed).
+func prepareClockRangeGates(cfg dsl.Config) *dsl.ClockRangeGates {
+	if setupTypeFromAny(cfg["setupType"]) != string(dsl.FamilyClockRangeBreakout) {
+		return nil
+	}
+	_, gates, err := dsl.DecodeClockRangeBreakoutGates(cfg)
+	if err != nil {
+		return nil
+	}
+	return &gates
 }
 
 // clockTradingDays is the trading-day OHLC series the optional gates read.
@@ -170,10 +200,14 @@ func (d clockTradingDays) atr(i, n int) (float64, bool) {
 	return sum / float64(n), true
 }
 
+// clockSchedule is local to one run. gates and daily carry the optional
+// placement inputs so no broker field changes layout.
 type clockSchedule struct {
 	spec      dsl.ClockRangeSpec
 	offsetMs  int64
 	timeframe float64
+	gates     dsl.ClockRangeGates
+	daily     clockTradingDays
 }
 
 func (c clockSchedule) dayStart(day int64) int64 { return day*msPerClockDay - c.offsetMs }
@@ -309,19 +343,24 @@ func (r *PreparedRun) ClockRangeDays() []ClockRangeDay {
 
 func (b *broker) runClockRangeBreakout(liquidateAtEnd bool) []Trade {
 	spec := b.params.ClockRange
+	if b.clock.run == nil {
+		b.clock.run = &clockRunState{}
+	}
+	gates := b.clock.run.gates
 	pipSize, pipOK := dsl.ReviewedInstrumentPip(b.fixture.Symbol)
 	schedule, err := newClockSchedule(spec, b.fixture.Timeframe)
+	schedule.gates = gates
 	n := b.series.Len()
 	end := b.executionEnd()
 	if end >= n {
 		end = n - 1
 	}
 	// A run that skipped validateClockRangeRun cannot trade: fail closed.
-	if err != nil || !pipOK || spec.Validate() != nil || end < 0 {
+	if err != nil || !pipOK || dsl.ValidateClockRange(spec, gates) != nil || end < 0 {
 		return b.trades
 	}
-	if spec.UsesDailyInputs() {
-		b.clock.daily = buildClockTradingDays(schedule, b.series.T, b.series.O, b.series.H, b.series.L, b.series.C)
+	if gates.UsesDailyInputs() {
+		schedule.daily = buildClockTradingDays(schedule, b.series.T, b.series.O, b.series.H, b.series.L, b.series.C)
 	}
 	nextDay := schedule.clockDayOf(b.series.T[0]) - 1
 	for schedule.rangeEnd(nextDay) <= b.series.T[0] {
@@ -336,7 +375,7 @@ func (b *broker) runClockRangeBreakout(liquidateAtEnd bool) []Trade {
 		exited := false
 		if b.hasPosition {
 			switch {
-			case t >= b.clock.closeT:
+			case t >= b.clock.run.closeT:
 				b.closeClockRangePosition(b.series.O[i], i, ReasonRule, clockRangeCloseRule, "clock")
 				exited = true
 			case i > b.position.EntryIndex:
@@ -419,7 +458,7 @@ func (b *broker) placeClockRangeOrders(schedule clockSchedule, day int64, barInd
 		buy: high + spec.BufferPips*pipSize, sell: low - spec.BufferPips*pipSize,
 		hasLong: spec.AllowLong, hasShort: spec.AllowShort,
 	}
-	if reason := b.applyClockRangeGates(spec, day, pending); reason != "" {
+	if reason := applyClockRangeGates(schedule, day, pending); reason != "" {
 		reject(reason)
 		return
 	}
@@ -442,30 +481,31 @@ func (b *broker) placeClockRangeOrders(schedule clockSchedule, day int64, barInd
 // applyClockRangeGates applies the optional placement-time gates to a day
 // whose range is valid. It returns a rejection reason, or "" when the day
 // keeps its orders. Only trading days filed before the range date are read.
-func (b *broker) applyClockRangeGates(spec dsl.ClockRangeSpec, day int64, pending *clockPendingOrders) string {
-	if !spec.UsesDailyInputs() {
+func applyClockRangeGates(schedule clockSchedule, day int64, pending *clockPendingOrders) string {
+	gates, daily := schedule.gates, schedule.daily
+	if !gates.UsesDailyInputs() {
 		return ""
 	}
-	prior := b.clock.daily.priorIndex(day)
-	if spec.WidthATRDays > 0 {
-		atr, ok := b.clock.daily.atr(prior, spec.WidthATRDays)
+	prior := daily.priorIndex(day)
+	if gates.WidthATRDays > 0 {
+		atr, ok := daily.atr(prior, gates.WidthATRDays)
 		if !ok || !isFinite(atr) || !(atr > 0) {
 			return ClockReasonNoDailyATR
 		}
-		if pending.rangeHigh-pending.rangeLow < spec.WidthMinATR*atr {
+		if pending.rangeHigh-pending.rangeLow < gates.WidthMinATR*atr {
 			return ClockReasonRangeTooNarrow
 		}
 	}
-	if spec.PriorDayCandle {
+	if gates.PriorDayCandle {
 		if prior < 0 {
 			return ClockReasonNoPriorDay
 		}
-		colour := b.clock.daily.c[prior] - b.clock.daily.o[prior]
+		colour := daily.c[prior] - daily.o[prior]
 		if colour == 0 {
 			return ClockReasonNoDirection
 		}
 		pending.hasLong, pending.hasShort = colour > 0, colour < 0
-		if spec.CancelOnOpposite {
+		if gates.CancelOnOpposite {
 			pending.cancelLong, pending.cancelShort = colour < 0, colour > 0
 		}
 	}
@@ -507,10 +547,10 @@ func (b *broker) openClockRangePosition(schedule clockSchedule, pending *clockPe
 		reject(ClockReasonInvalidFill)
 		return
 	}
-	spec := schedule.spec
-	distance := fill * spec.StopPercent / 100
+	gates := schedule.gates
+	distance := fill * schedule.spec.StopPercent / 100
 	stop := fill - sign*distance
-	if spec.StopMode == dsl.ClockStopOppositeRangeEdge {
+	if gates.RangeEdgeStop() {
 		stop = pending.rangeLow
 		if s == sideShort {
 			stop = pending.rangeHigh
@@ -522,8 +562,8 @@ func (b *broker) openClockRangePosition(schedule clockSchedule, pending *clockPe
 		return
 	}
 	target := 0.0
-	if spec.TargetR > 0 {
-		target = fill + sign*spec.TargetR*distance
+	if gates.TargetR > 0 {
+		target = fill + sign*gates.TargetR*distance
 		if !isFinite(target) || !(target > 0) {
 			reject(ClockReasonInvalidStop)
 			return
@@ -556,7 +596,7 @@ func (b *broker) openClockRangePosition(schedule clockSchedule, pending *clockPe
 	}
 	b.finishClockRangeDay(pending, ClockDayEntered, "")
 	b.clock.days[pending.auditIndex].Side = s.String()
-	b.clock.closeT = pending.closeT
+	b.clock.run.closeT = pending.closeT
 	// The whole entry bar is tested against the stop, even when its extreme
 	// may have come before the fill. The target is not tested on the entry
 	// bar: a favourable extreme there may also have come before the fill.
