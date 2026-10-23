@@ -186,6 +186,12 @@ func (p *parser) validateScheduledTrade() {
 			p.err(line, "scheduled trade does not support authored directive "+k, "")
 			continue
 		}
+		if (head == "strategy" || head == "description") && !timedQuotedMetadata.MatchString(strings.TrimSpace(line.text)) {
+			p.err(line, "scheduled metadata must contain only one quoted string", "")
+		}
+		if head == "dsl" && (len(tokens) != 2 || tokens[1] != "v7") {
+			p.err(line, "scheduled version header must be exactly dsl v7", "")
+		}
 		if head == "type" || head == "slices" || head == "dsl" {
 			if seen[head] {
 				p.err(line, "duplicate scheduled directive "+head, "")

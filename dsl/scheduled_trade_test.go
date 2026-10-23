@@ -61,6 +61,21 @@ func TestScheduledTradeRejectsDuplicatesAndUnsupportedAuthorship(t *testing.T) {
 	}
 }
 
+func TestScheduledTradeRejectsDiscardedHeaderTail(t *testing.T) {
+	for _, tc := range []struct{ source, want string }{
+		{strings.Replace(validScheduledTradeSource, `strategy "Tokyo settlement short"`, `strategy "Tokyo settlement short" orders`, 1), "scheduled metadata must contain only one quoted string"},
+		{strings.Replace(validScheduledTradeSource, "dsl v7", "dsl v7 ignored", 1), "scheduled version header must be exactly dsl v7"},
+	} {
+		got, err := Parse(tc.source)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !diagnosticsContain(got.Errors, tc.want) {
+			t.Fatalf("discarded header tail accepted: %v", got.Errors)
+		}
+	}
+}
+
 func withScheduledDirective(directive string) string {
 	end := strings.LastIndex(validScheduledTradeSource, "\n}")
 	if end < 0 {
