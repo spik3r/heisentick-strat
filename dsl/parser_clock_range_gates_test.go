@@ -107,6 +107,18 @@ func TestClockRangeV1ProgramHasNoGates(t *testing.T) {
 	}
 }
 
+func TestClockRangeRejectsMixedStopsInDirectConfig(t *testing.T) {
+	result := parseClock(t, clockGateProgram(nil))
+	if len(result.Errors) != 0 {
+		t.Fatalf("errors = %q", result.Errors)
+	}
+	stop := result.Config["stop"].(map[string]any)
+	stop["percent"] = 1.0
+	if _, _, err := DecodeClockRangeBreakoutGates(result.Config); err == nil || !strings.Contains(err.Error(), "not both") {
+		t.Fatalf("mixed stops error = %v", err)
+	}
+}
+
 func TestClockRangeGatesAreIndependent(t *testing.T) {
 	tests := []struct {
 		name   string

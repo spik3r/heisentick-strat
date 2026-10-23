@@ -397,6 +397,8 @@ func decodeClockRange(cfg Config) (ClockRangeSpec, ClockRangeGates, error) {
 		if spec.StopPercent, err = clockConfigFloat(stop, "percent"); err != nil {
 			return spec, gates, err
 		}
+	} else if _, present := stop["percent"]; present {
+		return spec, gates, fmt.Errorf("use either stop <N> percent or stop beyond opposite range edge, not both")
 	}
 	if err := decodeClockRangeGates(family, &gates); err != nil {
 		return spec, gates, err
