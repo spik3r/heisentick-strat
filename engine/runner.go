@@ -161,6 +161,7 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	var b broker
 	b.reset(series, cols, htfTrend, ema, emaSlope, params, fixture, nil)
 	b.parabolicSAR = prepareParabolicSAR(parsed.Config, series)
+	b.clock.installClockRangeGates(prepareClockRangeGates(parsed.Config))
 	b.sequentialAccounting = capture
 	trades := b.run()
 	result, err := checkedResultEnvelope(fixture, trades)
@@ -319,6 +320,7 @@ type PreparedRunner struct {
 	broker       broker
 	trades       []Trade
 	parabolicSAR *parabolicSARRuntime
+	clockGates   *dsl.ClockRangeGates
 }
 
 func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
@@ -345,6 +347,7 @@ func newPreparedRunner(fixture RunFixture, cfg dsl.Config) PreparedRunner {
 		offRoute:     !RouteAllowed(cfg, fixture.Symbol, fixture.Timeframe, series),
 		trades:       make([]Trade, 0, 32),
 		parabolicSAR: prepareParabolicSAR(cfg, series),
+		clockGates:   prepareClockRangeGates(cfg),
 	}
 }
 
@@ -368,6 +371,7 @@ func (r *PreparedRunner) RunPrepared() []Trade {
 	}
 	r.broker.reset(r.series, r.cols, r.htfTrend, r.ema, r.emaSlope, r.params, r.fixture, r.trades)
 	r.broker.parabolicSAR = r.parabolicSAR
+	r.broker.clock.installClockRangeGates(r.clockGates)
 	r.trades = r.broker.run()
 	return r.trades
 }

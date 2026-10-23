@@ -58,6 +58,7 @@ type PreparedRun struct {
 	execution      ExecutionBounds
 	windowed       bool
 	parabolicSAR   *parabolicSARRuntime
+	clockGates     *dsl.ClockRangeGates
 }
 
 // ReportTradeContext exposes the canonical context labels for one executed
@@ -324,6 +325,7 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 		execution:    s.execution,
 		windowed:     s.windowed,
 		parabolicSAR: sar,
+		clockGates:   prepareClockRangeGates(cfg),
 	}, nil
 }
 

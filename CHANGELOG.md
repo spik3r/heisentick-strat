@@ -6,6 +6,22 @@ version and is named here.
 
 ## [Unreleased]
 
+### Clock range breakout optional gates (additive minor semantics)
+
+- Add opt-in `clock range breakout` phrases: `range width at least <X> daily
+  ATR <N>`, `trade with prior day candle`, `cancel when opposite side triggers
+  first`, `stop beyond opposite range edge` and, with that stop, `target <N>R`.
+- The gates read a trading-day series built from the route bars on the
+  declared clock; dates spanning under four hours (weekend and holiday
+  reopens) merge into the next date. New rejection reasons: `no-daily-atr`,
+  `range-too-narrow`, `no-prior-day`, `no-direction`,
+  `opposite-triggered-first`.
+- Programs without the new phrases compile and run as before; no existing
+  golden changed. New corpus cases: run `family-clock-range-breakout-gates-*`
+  (3), parse `setup-clock-range-breakout-gates` and
+  `diagnostic-clock-range-breakout-cancel-without-prior-day`. Go-only, like v1;
+  the app JavaScript runtime does not implement the family.
+
 ### SMA regime-hold research family (HT-293; additive semantics)
 
 - Add a completed-close SMA long/cash family that initializes on the first

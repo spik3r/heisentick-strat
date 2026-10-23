@@ -1,0 +1,28 @@
+dsl v7
+strategy "family-clock-range-breakout-gates-target" {
+  description "synthetic clock range breakout gates case: green prior day, long at 103, range-low stop 100, 2R target 109 touched on the next bar"
+}
+market conditions {
+  slices(XAUUSD 1h)
+  clock UTC+0
+}
+setup {
+  type: clock range breakout
+  range 00:00 to 03:00
+  orders expire 06:00
+  range width at least 0.5 daily ATR 1
+  trade with prior day candle
+  cancel when opposite side triggers first
+}
+risk {
+  stop beyond opposite range edge
+}
+target {
+  target 2R
+}
+management {
+  close positions at 09:00
+}
+execution {
+  risk: 100 USD
+}
