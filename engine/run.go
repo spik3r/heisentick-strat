@@ -119,6 +119,9 @@ func SharedContextKey(request RunRequest) (string, error) {
 	if isTimedReturn(request.Config) {
 		return "", fmt.Errorf("timed return does not support shared/grid contexts")
 	}
+	if isScheduledTrade(request.Config) {
+		return "", fmt.Errorf("scheduled trade does not support shared/grid contexts")
+	}
 	if err := validateRunRequest(request); err != nil {
 		return "", err
 	}
@@ -172,6 +175,9 @@ func PrepareSharedRunContext(request RunRequest) (*SharedRunContext, error) {
 	}
 	if isTimedReturn(request.Config) {
 		return nil, fmt.Errorf("timed return does not support shared/grid contexts")
+	}
+	if isScheduledTrade(request.Config) {
+		return nil, fmt.Errorf("scheduled trade does not support shared/grid contexts")
 	}
 	if sourceEntryRequest(request) {
 		return nil, errors.New("XAUUSD source-entry execution is not supported by shared grid contexts; use PrepareRun/report or refuse the route")
@@ -233,6 +239,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	}
 	if isTimedReturn(cfg) {
 		return nil, fmt.Errorf("timed return does not support shared/grid variants")
+	}
+	if isScheduledTrade(cfg) {
+		return nil, fmt.Errorf("scheduled trade does not support shared/grid variants")
 	}
 	if s == nil {
 		return nil, errors.New("shared run context is required")
@@ -366,6 +375,9 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 	}
 	if isTimedReturn(request.Config) {
 		return nil, fmt.Errorf("timed return requires engine.Run or timed-report; ordinary report, prepared and prefix paths are unsupported")
+	}
+	if isScheduledTrade(request.Config) {
+		return nil, fmt.Errorf("scheduled trade requires engine.Run; ordinary report, prepared and prefix paths are unsupported")
 	}
 	if sourceEntryRequest(request) {
 		if err := validateRunRequest(request); err != nil {
@@ -733,6 +745,9 @@ func Run(request RunRequest) (RunResult, error) {
 	}
 	if isTimedReturn(request.Config) {
 		return runTimedReturn(request)
+	}
+	if isScheduledTrade(request.Config) {
+		return runScheduledTrade(request)
 	}
 	prepared, err := PrepareRun(request)
 	if err != nil {

@@ -271,6 +271,14 @@
       "since": 7
     },
     {
+      "id": "scheduledTrade",
+      "canonicalSpelling": "scheduled trade",
+      "canonicalExample": "type: scheduled trade\n  scheduled timezone UTC\n  scheduled calendar japan-settlement\n  scheduled entry 00:55\n  scheduled exit 01:30\n  scheduled side short\n  scheduled stop 20 pips\n  scheduled quantity 1 unit",
+      "classification": "go-only",
+      "reason": "Native scheduled-clock execution uses a reviewed, bounded holiday calendar and explicit open/stop/time-exit semantics; browser adoption is separate.",
+      "since": 7
+    },
+    {
       "id": "clockRangeBreakout",
       "canonicalSpelling": "clock range breakout",
       "canonicalExample": "type: clock range breakout\n  range 11:05 to 14:05\n  orders expire 03:00\n  buffer 0 pips",
@@ -1773,6 +1781,24 @@
       "since": 7
     },
     {
+      "id": "alias.go-inline-setup-type.scheduled-trade",
+      "source": "go-inline-setup-type",
+      "spelling": "scheduled trade",
+      "familyId": "scheduledTrade",
+      "classification": "go-only",
+      "reason": "Native scheduled-clock execution uses a reviewed, bounded holiday calendar and explicit open/stop/time-exit semantics; browser adoption is separate.",
+      "since": 7
+    },
+    {
+      "id": "alias.go-canonical-setup-type.scheduled-trade",
+      "source": "go-canonical-setup-type",
+      "spelling": "scheduled trade",
+      "familyId": "scheduledTrade",
+      "classification": "go-only",
+      "reason": "Native scheduled-clock execution uses a reviewed, bounded holiday calendar and explicit open/stop/time-exit semantics; browser adoption is separate.",
+      "since": 7
+    },
+    {
       "id": "alias.go-canonical-setup-type.timed-return",
       "source": "go-canonical-setup-type",
       "spelling": "timed return",
@@ -2510,6 +2536,13 @@
       "spelling": "timed",
       "classification": "go-only",
       "reason": "Native offline timed-return execution requires an explicit calendar sidecar; browser adoption is separate.",
+      "since": 7
+    },
+    {
+      "id": "directive.scheduled",
+      "spelling": "scheduled",
+      "classification": "go-only",
+      "reason": "Native scheduled-clock execution uses a reviewed, bounded holiday calendar; browser adoption is separate.",
       "since": 7
     },
     {

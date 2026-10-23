@@ -1,0 +1,66 @@
+{
+  "case": "family-scheduled-trade",
+  "costs": {
+    "feePerUnit": 0.0075,
+    "fillOn": "nextOpen",
+    "slippage": 0,
+    "startEquity": 10000
+  },
+  "higherTimeframe": null,
+  "rangeMethod": "zone",
+  "scheduledTrade": {
+    "calendarSha256": "e24f88cd62388e8fa8ce0b4ef55d573af9f372a570a7b29fd74926103450d0d6",
+    "coverageFromDate": "2021-01-01",
+    "coverageToDateExclusive": "2027-01-01",
+    "executionModel": "exact-scheduled-open-with-open-gap-stop-and-first-open-at-or-after-time-exit",
+    "feeModel": "two-sided fixed fee per unit; broker slippage applied at each fill",
+    "gapBars": 0,
+    "gapObservations": 0,
+    "openPosition": null,
+    "rows": [
+      {
+        "date": "2021-01-05",
+        "entryIndex": 1,
+        "exitIndex": 8,
+        "status": "time-exit",
+        "stopPrice": 110.2
+      }
+    ],
+    "schema": "strat-scheduled-trade-audit-v1"
+  },
+  "schema": "dsl-conformance-trades-v1",
+  "strategyId": "family-scheduled-trade",
+  "symbol": "USDJPY",
+  "timeframe": "5m",
+  "tradeCount": 1,
+  "trades": [
+    {
+      "entry": 110,
+      "entryIndex": 1,
+      "entryT": 1609808100000,
+      "exit": 109.9,
+      "exitIndex": 8,
+      "exitT": 1609810200000,
+      "initialSl": 110.2,
+      "initialTp": null,
+      "meta": {
+        "calendarSha256": "e24f88cd62388e8fa8ce0b4ef55d573af9f372a570a7b29fd74926103450d0d6",
+        "date": "2021-01-05",
+        "pipSize": 0.01,
+        "scheduledEntryT": 1609808100000,
+        "scheduledExitT": 1609810200000,
+        "setup": "scheduledTrade",
+        "stopPips": 20
+      },
+      "pnl": 0.0849999999999943,
+      "points": 0.0999999999999943,
+      "reason": "rule",
+      "rule": "scheduled-time-exit",
+      "side": "short",
+      "size": 1,
+      "sl": 110.2,
+      "tag": "DSL-SCHEDULED-TRADE",
+      "tp": null
+    }
+  ]
+}

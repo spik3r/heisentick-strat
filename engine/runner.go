@@ -68,6 +68,29 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	if err := validateTimedCalendarFamily(parsed.Config, fixture.TimedCalendar); err != nil {
 		return RunResult{}, err
 	}
+	if isScheduledTrade(parsed.Config) {
+		if len(fixture.RawSourceBars) != 0 || len(fixture.RawHTFBars) != 0 || len(fixture.RawSourceHTFBars) != 0 || len(fixture.SourceBars) != 0 || len(fixture.HTFBars) != 0 || len(fixture.SourceHTFBars) != 0 {
+			return RunResult{}, fmt.Errorf("scheduled trade fixture rejects source/HTF rows")
+		}
+		if fixture.rawRowDefect != "" {
+			return RunResult{}, fmt.Errorf("scheduled trade malformed series: %s", fixture.rawRowDefect)
+		}
+		if fixture.RawBars != nil {
+			for _, row := range fixture.RawBars {
+				if len(row) != 6 {
+					return RunResult{}, fmt.Errorf("scheduled trade requires six-value OHLCV rows")
+				}
+			}
+			if len(fixture.RawBars) != len(fixture.Bars) {
+				return RunResult{}, fmt.Errorf("scheduled trade fixture has malformed raw bars")
+			}
+		}
+		result, err := Run(RunRequest{Config: parsed.Config, Series: marketdata.SeriesFromBars(fixture.Bars), Symbol: fixture.Symbol, Timeframe: fixture.Timeframe, StrategyID: fixture.StrategyID, Costs: fixture.Costs, RangeMethod: fixture.RangeMethod, SourceTimeframe: fixture.SourceTimeframe, HigherTimeframe: fixture.HigherTimeframe})
+		if err == nil {
+			result.Case = fixture.Case
+		}
+		return result, err
+	}
 	if isTimedReturn(parsed.Config) {
 		if len(fixture.RawSourceBars) != 0 || len(fixture.RawHTFBars) != 0 || len(fixture.RawSourceHTFBars) != 0 {
 			return RunResult{}, fmt.Errorf("timed fixture rejects source/HTF rows")
@@ -268,6 +291,7 @@ func runSourceRetestSeriesWithOptions(fixture RunFixture, cfg dsl.Config, params
 func implementedFamily(setupType string) bool {
 	switch setupType {
 	case string(dsl.FamilyDownShockRebound),
+		string(dsl.FamilyScheduledTrade),
 		string(dsl.FamilyFlagContinuation),
 		string(dsl.FamilyRangeBreakFake),
 		string(dsl.FamilyOpeningRangeBreakout),

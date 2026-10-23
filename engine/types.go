@@ -67,18 +67,19 @@ type RunResult struct {
 	// SequentialFull reports only this synthetic family; omitted for every existing family.
 	SequentialFull *SequentialFullAudit `json:"sequentialFull,omitempty"`
 	// ClockRangeDays is an execution audit, excluded from the conformance envelope.
-	ClockRangeDays  []ClockRangeDay   `json:"-"`
-	TimedAudit      *TimedReturnAudit `json:"timedReturn,omitempty"`
-	Case            string            `json:"case"`
-	Costs           Costs             `json:"costs"`
-	HigherTimeframe string            `json:"higherTimeframe"`
-	RangeMethod     string            `json:"rangeMethod"`
-	Schema          string            `json:"schema"`
-	StrategyID      string            `json:"strategyId"`
-	Symbol          string            `json:"symbol"`
-	Timeframe       string            `json:"timeframe"`
-	TradeCount      int               `json:"tradeCount"`
-	Trades          []Trade           `json:"trades"`
+	ClockRangeDays  []ClockRangeDay      `json:"-"`
+	TimedAudit      *TimedReturnAudit    `json:"timedReturn,omitempty"`
+	ScheduledAudit  *ScheduledTradeAudit `json:"scheduledTrade,omitempty"`
+	Case            string               `json:"case"`
+	Costs           Costs                `json:"costs"`
+	HigherTimeframe string               `json:"higherTimeframe"`
+	RangeMethod     string               `json:"rangeMethod"`
+	Schema          string               `json:"schema"`
+	StrategyID      string               `json:"strategyId"`
+	Symbol          string               `json:"symbol"`
+	Timeframe       string               `json:"timeframe"`
+	TradeCount      int                  `json:"tradeCount"`
+	Trades          []Trade              `json:"trades"`
 }
 
 const (
