@@ -68,7 +68,28 @@ no arithmetic operation, operand value, or operation order changed. The full
 manifest remains a strict instruction-stream pin; this review does not add an
 exception or relax a proof check.
 
-The renewed sequential schedule manifest SHA-256 is
+Before the header-validation follow-up, the sequential schedule manifest
+SHA-256 was
 `8055cfadb457e02e9524af46e6d0cc074b15848dd1bf2db45facf3761b3f6514`.
-The ordinary arithmetic proof reports this current manifest digest in its
-compiler receipt; it is not a separately allowlisted output.
+That digest was reported in the ordinary arithmetic proof compiler receipt; it
+was not a separately allowlisted output.
+
+## Header validation follow-up
+
+Commit `3699f1b2d80d8f5cb077d5f770c224669f3b9901` changes only the scheduled
+DSL validator and its regression test. The validator rejects trailing tokens
+after quoted `strategy`/`description` metadata and after `dsl v7`, which the
+legacy normalizer otherwise drops. CI correctly refused the stale source
+inventory before reaching codegen. The renewed inventory records the exact new
+SHA-256 for `dsl/scheduled_trade.go`; each Linux AMD64, Linux ARM64 and WASM
+build-input closure changes only that same file hash, with no package or input
+count changes.
+
+Using the exact Go 1.22.12 compiler on Darwin/ARM64, I regenerated all three
+target instruction streams. Every pinned function stream matches the manifest
+byte-for-byte on Linux AMD64, Linux ARM64 and WASM. No instruction pin,
+arithmetic operation, allowance, or proof check changes in this follow-up.
+This cross-compile comparison is not Linux-native execution evidence; the
+refreshed strict proof and downstream parity checks still require exact-head
+Linux CI. The updated schedule manifest SHA-256 is
+`76962b3c69049162709ed1b471e4ffe0e4230ee9457d103e88efdfb58ea48088`.

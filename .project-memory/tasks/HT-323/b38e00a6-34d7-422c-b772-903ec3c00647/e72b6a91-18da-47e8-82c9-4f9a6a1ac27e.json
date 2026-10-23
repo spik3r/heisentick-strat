@@ -1,0 +1,31 @@
+{
+  "formatVersion": 2,
+  "eventId": "e72b6a91-18da-47e8-82c9-4f9a6a1ac27e",
+  "runId": "b38e00a6-34d7-422c-b772-903ec3c00647",
+  "kind": "start",
+  "parents": [
+    "593a0bff-0022-4e62-a74f-aec93677a5e7"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "0bd04aa92a17c28577143c3bd0964a2cda1f6fe7",
+    "blob": "8060e4df8b93c01f1cd87d1fac17ff1321e1c925",
+    "claim": {
+      "heading": "Claim — 2026-10-23 runnable scheduled strategy",
+      "digest": "981637165695a928f36f1c1f8c64f1881dda8bf082316a32bee6cc8a3f45837e"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/scheduled-calendar-trade",
+  "pullRequest": null,
+  "at": "2026-10-23T12:38:47.407Z",
+  "summary": "Renew exact strict arithmetic source and dependency pins after scheduled-header validation",
+  "next": "Run source, dependency and instruction comparisons, then complete memory snapshot and await exact-head CI",
+  "files": [
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md"
+  ]
+}
