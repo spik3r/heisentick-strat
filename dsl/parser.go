@@ -161,6 +161,7 @@ func (p *parser) parse() {
 	p.validateRMVSourceTimeframe()
 	p.validateParabolicSAR()
 	p.validateTimedReturn()
+	p.validateScheduledTrade()
 	p.validateClockRangeBreakout()
 }
 
@@ -199,6 +200,8 @@ func (p *parser) apply(line logicalLine, tokens []string) {
 	switch head {
 	case "timed":
 		p.parseTimedReturn(line, tokens)
+	case "scheduled":
+		p.parseScheduledTrade(line, tokens)
 	case "dsl":
 		p.parseVersion(line, tokens)
 	case "strategy", "name":

@@ -36,6 +36,7 @@ var parserDirectiveHandlerBindings = map[string]string{
 	"directive.regime-timeframe":   "regimeSourceParser.directive",
 
 	"directive.timed":          "parser.apply:parseTimedReturn",
+	"directive.scheduled":      "parser.apply:parseScheduledTrade",
 	"directive.shock":          "parser.apply:parseDownShockRebound",
 	"directive.strategy":       "parser.apply:setString",
 	"directive.name":           "parser.apply:setString",
@@ -118,6 +119,7 @@ var parserFamilyHandlerBindings = map[string]string{
 	"masterStructural":        "parseMasterStructuralSource",
 	"regimeEngine":            "parseRegimeEngineSource",
 	"timedReturn":             "parser.parseSetupType",
+	"scheduledTrade":          "parser.parseSetupType",
 	"downShockRebound":        "parser.parseSetupType",
 	"failedBreakout":          "parser.parseSetupType",
 	"flagContinuation":        "parser.parseSetupType",

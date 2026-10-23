@@ -13,6 +13,7 @@ const (
 	FamilyRegimeEngine            FamilyID = "regimeEngine"
 	FamilyFrozenLevelBreakout     FamilyID = "frozenLevelBreakout"
 	FamilyTimedReturn             FamilyID = "timedReturn"
+	FamilyScheduledTrade          FamilyID = "scheduledTrade"
 	FamilyDownShockRebound        FamilyID = "downShockRebound"
 	FamilyFailedBreakout          FamilyID = "failedBreakout"
 	FamilyFlagContinuation        FamilyID = "flagContinuation"

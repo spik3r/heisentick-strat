@@ -1,0 +1,47 @@
+{
+  "formatVersion": 2,
+  "eventId": "27184323-6b31-4c27-8e52-8ada6fa05e98",
+  "runId": "83d0d6a0-cc8f-46da-b23f-0598882df6fe",
+  "kind": "complete",
+  "parents": [
+    "1bd35090-94f0-4380-a4d3-7a2d122715cd"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "0bd04aa92a17c28577143c3bd0964a2cda1f6fe7",
+    "blob": "8060e4df8b93c01f1cd87d1fac17ff1321e1c925",
+    "claim": {
+      "heading": "Claim — 2026-10-23 runnable scheduled strategy",
+      "digest": "981637165695a928f36f1c1f8c64f1881dda8bf082316a32bee6cc8a3f45837e"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/scheduled-calendar-trade",
+  "pullRequest": null,
+  "at": "2026-10-23T11:32:16.888Z",
+  "summary": "Reviewed scheduled-family dispatch and refreshed the exact ordinary arithmetic source/build/compiler snapshot; ordinary accounting and report streams remain unchanged.",
+  "next": "Review the committed snapshot, then let exact-head Linux CI run the full ordinary arithmetic proof.",
+  "files": [
+    "scripts/checks/ordinary-backtest-arithmetic-proof.py",
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md"
+  ],
+  "validation": "Go 1.22.12 go test ./... passed; go vet ./... passed; conformance passed (173 parse, 123 run, 0 TODO); gofmt -l . empty; git diff --check passed. CPython 3.12 sequential proof tests passed 19/19 with TMPDIR=/private/tmp. Exact Go 1.22.12 cross-target closure and all three ordinary instruction streams matched on Linux AMD64, Linux ARM64, and JS/WASM. Same-compiler comparison against origin/main found one static-string symbol operand change in applyPartialManagement per target; both ordinary report projection streams were identical. Linux-host exact codegen CI remains required.",
+  "snapshot": {
+    "scripts/checks/ordinary-backtest-arithmetic-proof.py": {
+      "blob": "43c57e85e90e8de6b8f03c7e61637c09ac296b08",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "0559ff085f3f7b388affce993448a391c68d64f5",
+      "mode": "100644"
+    },
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md": {
+      "blob": "bc1988150b5bf69779cf17fa3f9af542587e534e",
+      "mode": "100644"
+    }
+  }
+}

@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"regexp"
 	"sort"
 	"strings"
 	"testing"
@@ -102,6 +103,31 @@ func TestVersionedStratContractSchemas(t *testing.T) {
 	}
 }
 
+func TestScheduledTradeAuditSchemaAllowsUnavailableIndices(t *testing.T) {
+	schema, path := loadContractSchema(t, "scheduled-trade-audit-v1.schema.json")
+	base := map[string]any{
+		"schema": "strat-scheduled-trade-audit-v1", "calendarSha256": strings.Repeat("a", 64),
+		"coverageFromDate": "2021-01-01", "coverageToDateExclusive": "2027-01-01",
+		"executionModel": "open", "feeModel": "fixed", "gapBars": float64(0),
+		"gapObservations": float64(0), "rows": []any{}, "openPosition": nil,
+	}
+	for _, row := range []map[string]any{
+		{"date": "2021-01-05", "status": "missing-entry-bar"},
+		{"date": "2021-01-05", "status": "open-terminal", "entryIndex": float64(1), "stopPrice": float64(110.2)},
+	} {
+		candidate := cloneContractObject(base)
+		candidate["rows"] = []any{row}
+		if err := validateContract(candidate, schema, path, schema, "scheduledTrade"); err != nil {
+			t.Fatalf("valid audit rejected: %v", err)
+		}
+	}
+	badHash := cloneContractObject(base)
+	badHash["calendarSha256"] = strings.Repeat("A", 64)
+	if err := validateContract(badHash, schema, path, schema, "scheduledTrade"); err == nil {
+		t.Fatal("accepted uppercase calendar hash")
+	}
+}
+
 func TestGoSchemaValidationRejectsMalformedContractMutations(t *testing.T) {
 	diagnostic, diagnosticPath := loadContractSchema(t, "diagnostic-v1.schema.json")
 	parseResult, parseResultPath := loadContractSchema(t, "parse-result-v1.schema.json")
@@ -182,7 +208,7 @@ var supportedContractSchemaKeywords = map[string]bool{
 	"$defs": true, "$id": true, "$ref": true, "$schema": true,
 	"additionalProperties": true, "anyOf": true, "const": true,
 	"description": true, "enum": true, "items": true, "maxItems": true,
-	"minItems": true, "minLength": true, "minProperties": true,
+	"minItems": true, "minLength": true, "minProperties": true, "pattern": true,
 	"maximum": true, "exclusiveMinimum": true, "minimum": true, "properties": true, "required": true, "title": true,
 	"type": true,
 }
@@ -387,6 +413,12 @@ func validateContract(value any, schema contractSchema, schemaPath string, root 
 	case string:
 		if minimum, ok := schema["minLength"].(float64); ok && utf8.RuneCountInString(typed) < int(minimum) {
 			return fmt.Errorf("%s: too short", location)
+		}
+		if pattern, ok := schema["pattern"].(string); ok {
+			matched, err := regexp.MatchString(pattern, typed)
+			if err != nil || !matched {
+				return fmt.Errorf("%s: pattern mismatch", location)
+			}
 		}
 	case []any:
 		if minimum, ok := schema["minItems"].(float64); ok && len(typed) < int(minimum) {

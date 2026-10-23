@@ -6,6 +6,22 @@ version and is named here.
 
 ## [Unreleased]
 
+### Scheduled settlement-clock trade family (HT-323; additive minor semantics)
+
+- Add a native Go-only `scheduled trade` family for one fixed-clock FX entry,
+  pip stop and time exit, using an embedded official Japan settlement calendar
+  with explicit 2021–2026 coverage. The family records missing entries, held
+  data gaps and terminal open exposure; it rejects generic prepared, prefix,
+  report, shared-grid and transfer paths.
+- Entry requires the exact scheduled open and a contiguous prior bar. Stops
+  anchor to the slipped fill, gaps fill at the worse open, and a scheduled
+  time-exit open precedes that bar's intrabar extremes. The family accounts
+  for entry and exit fees in its exported trade PnL without changing shared
+  broker semantics.
+- Add one invented run fixture plus native execution tests and the
+  `heisentick scheduled-trade-fixture` command. The family remains Go-only; app and WASM
+  adoption requires a tagged release and consumer pin update.
+
 ### Clock range breakout optional gates (additive minor semantics)
 
 - Add opt-in `clock range breakout` phrases: `range width at least <X> daily
