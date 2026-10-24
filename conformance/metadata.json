@@ -90,6 +90,7 @@
       "family-price-momentum-guarded",
       "family-range-break-fake",
       "family-scheduled-trade",
+      "family-scheduled-trade-2027",
       "family-sequential-full-e1-long",
       "family-sequential-full-e1-short",
       "family-sequential-full-e2-long",
@@ -146,6 +147,6 @@
     "filters": 21,
     "setup-family": 58
   },
-  "runCases": 123,
+  "runCases": 124,
   "schema": "dsl-conformance-metadata-v1"
 }

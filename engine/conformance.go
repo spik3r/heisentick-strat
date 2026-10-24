@@ -17,6 +17,7 @@ var implementedRunCases = []string{
 	"family-timed-return",
 	"family-timed-return-predecessor",
 	"family-scheduled-trade",
+	"family-scheduled-trade-2027",
 	"rmv-named-level-allow",
 	"rmv-named-level-block",
 	"rmv-named-level-warmup",

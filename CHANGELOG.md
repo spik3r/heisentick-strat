@@ -6,6 +6,18 @@ version and is named here.
 
 ## [Unreleased]
 
+### Scheduled settlement calendar through 2027 (HT-323; v0.40.0 additive minor semantics)
+
+- Extend the official Cabinet Office Japan holiday calendar from 2026-12-31
+  through 2027-12-31, keeping all 2021–2026 dates unchanged.
+  This admits 2027 scheduled-trade data and changes the calendar digest
+  recorded in scheduled-trade audit results; 2028 remains outside coverage
+  until its official holidays are published. The CSV digest is
+  `cec37a743c96995cdb9cb52b685c9003634682a9b0e1a640a6b9b96881fe964a`.
+- Add 2027 checks for the March 22 substitute holiday, May 5 and September 20
+  holidays, weekend rollback, and refusal beyond the published bound. Regenerate
+  only the scheduled-trade run goldens affected by the calendar digest.
+
 ### Scheduled settlement-clock trade family (HT-323; additive minor semantics)
 
 - Add a native Go-only `scheduled trade` family for one fixed-clock FX entry,

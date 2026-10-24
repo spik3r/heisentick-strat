@@ -1,0 +1,15 @@
+dsl v7
+strategy "Scheduled synthetic 2027"
+market conditions {
+  slices(USDJPY 5m)
+}
+setup {
+  type: scheduled trade
+  scheduled timezone UTC
+  scheduled calendar japan-settlement
+  scheduled entry 00:55
+  scheduled exit 01:30
+  scheduled side short
+  scheduled stop 20 pips
+  scheduled quantity 1 unit
+}

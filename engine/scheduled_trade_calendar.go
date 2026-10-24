@@ -17,7 +17,15 @@ type japanHolidaySource struct {
 }
 
 const japanCalendarFrom = "2021-01-01"
-const japanCalendarThrough = "2026-12-31"
+const japanCalendarThrough = "2027-12-31"
+
+func japanCalendarEndExclusive() time.Time {
+	through, err := time.Parse("2006-01-02", japanCalendarThrough)
+	if err != nil {
+		panic("invalid Japan settlement calendar bound")
+	}
+	return through.AddDate(0, 0, 1)
+}
 
 var japanHolidayDates = func() map[string]bool {
 	var source japanHolidaySource
@@ -67,8 +75,7 @@ func scheduledDateRange(seriesMin, seriesMax float64) (time.Time, time.Time, err
 	from := time.UnixMilli(int64(seriesMin)).UTC()
 	to := time.UnixMilli(int64(seriesMax)).UTC()
 	lo, _ := time.Parse("2006-01-02", japanCalendarFrom)
-	hi, _ := time.Parse("2006-01-02", japanCalendarThrough)
-	if from.Before(lo) || !to.Before(hi.AddDate(0, 0, 1)) {
+	if from.Before(lo) || !to.Before(japanCalendarEndExclusive()) {
 		return time.Time{}, time.Time{}, fmt.Errorf("scheduled data falls outside reviewed Japan calendar coverage %s..%s", japanCalendarFrom, japanCalendarThrough)
 	}
 	return from, to, nil
