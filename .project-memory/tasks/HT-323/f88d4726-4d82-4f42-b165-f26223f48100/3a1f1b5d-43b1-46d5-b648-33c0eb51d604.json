@@ -1,0 +1,45 @@
+{
+  "formatVersion": 2,
+  "eventId": "3a1f1b5d-43b1-46d5-b648-33c0eb51d604",
+  "runId": "f88d4726-4d82-4f42-b165-f26223f48100",
+  "kind": "start",
+  "parents": [
+    "e8636120-19c7-4801-9180-83f9c93fc1a2"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "5fe782067d094af16042b34eafbf7591d1d4d5d4",
+    "blob": "e1ca83151a2652b593ab07068ed171e9f182fc9f",
+    "claim": {
+      "heading": "Active claim — 2026-10-24 official calendar renewal",
+      "digest": "2990945eca0e73f1f06610e2bfe760196171bee09d4e0a69e0ed4048150cf8da"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/tokyo-calendar-2027",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/152",
+  "at": "2026-10-24T04:37:00.010Z",
+  "summary": "Review exact source inventory after calendar-only changes without weakening arithmetic qualification",
+  "next": "Compare all pinned Go1.22.12 streams, renew only reviewed hashes and rerun Oracle qualification",
+  "files": [
+    "engine/scheduled_trade_calendar.go",
+    "engine/japan-settlement-holidays.json",
+    "engine/family_scheduled_trade.go",
+    "engine/family_scheduled_trade_test.go",
+    "engine/conformance.go",
+    "cmd/conformance/main_test.go",
+    "conformance/metadata.json",
+    "conformance/run/family-scheduled-trade.trades.json",
+    "conformance/run/family-scheduled-trade-2027.fixture.json",
+    "conformance/run/family-scheduled-trade-2027.strat",
+    "conformance/run/family-scheduled-trade-2027.trades.json",
+    "scripts/update-japan-settlement-holidays.mjs",
+    "spec/dsl-spec-families/scheduledTrade.md",
+    "CHANGELOG.md",
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "docs/ordinary-backtest-arithmetic-review-calendar-2027.md"
+  ]
+}
