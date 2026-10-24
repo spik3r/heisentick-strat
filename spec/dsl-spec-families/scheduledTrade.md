@@ -28,7 +28,24 @@ Settlement candidates fall on the 5th, 10th, 15th, 20th, 25th and last
 calendar day of each month. Weekend dates roll back to Friday; a Japanese
 national holiday or the Jan 1–3 / Dec 31 closures then exclude the date without
 another roll. The embedded official Cabinet Office holiday list covers
-2021-01-01 through 2026-12-31. Runs whose bars fall outside that span fail.
+2021-01-01 through 2027-12-31. Runs whose bars fall outside that span fail;
+the engine does not infer holiday dates for unpublished years. The source CSV
+is [published by the Cabinet Office](https://www8.cao.go.jp/chosei/shukujitsu/syukujitsu.csv);
+`scripts/update-japan-settlement-holidays.mjs` checks or regenerates the
+embedded dates from a downloaded copy while preserving earlier years. Before
+extending coverage, compare the target year's CSV rows with the Cabinet Office
+holiday page, then add the reviewed full-file SHA-256 to
+`REVIEWED_CSV_SHA256` in the tool. The tool accepts only a pinned source hash;
+the hash records which bytes were reviewed but does not itself establish that
+the official list is complete. It rejects unreviewed coverage years and never
+estimates unpublished future holidays. Cabinet Office says 2028 dates will be
+published in February 2027.
+
+For this renewal, save the CSV and run
+`node scripts/update-japan-settlement-holidays.mjs --csv FILE --through-year 2027 --check`.
+After reviewing a newly published year against the Cabinet Office page, add
+the full CSV's SHA-256 under that coverage year in `REVIEWED_CSV_SHA256` before
+extending coverage.
 
 Entry requires an observed bar at the exact scheduled open and a contiguous
 preceding bar. There is no catch-up entry. The stop is anchored to the actual

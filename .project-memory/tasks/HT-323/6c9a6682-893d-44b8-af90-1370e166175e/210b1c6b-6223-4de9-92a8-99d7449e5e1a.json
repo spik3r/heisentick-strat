@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "210b1c6b-6223-4de9-92a8-99d7449e5e1a",
+  "runId": "6c9a6682-893d-44b8-af90-1370e166175e",
+  "kind": "start",
+  "parents": [
+    "14a70037-a1cc-4146-981f-e37f33444179"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "589fdb7d169c390dc2a4adde97c1dae38c8c3752",
+    "blob": "76e11035ef56fe95dd243219aedb743007fe7649",
+    "claim": {
+      "heading": "Active claim — 2026-10-24 official calendar renewal",
+      "digest": "2abe01b3d3dd1eaa7ef32d627f75bcd893292a8ed1119fa5712909544109b8da"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/tokyo-calendar-2027",
+  "pullRequest": null,
+  "at": "2026-10-24T04:15:30.631Z",
+  "summary": "Extend the scheduled calendar to the official 2027 dates with reproducible renewal tooling and native/WASM fixtures",
+  "next": "Validate independent review and publish the immutable scheduled calendar release",
+  "files": [
+    "engine/scheduled_trade_calendar.go",
+    "engine/japan-settlement-holidays.json",
+    "engine/family_scheduled_trade_test.go",
+    "engine/conformance.go",
+    "cmd/conformance/main_test.go",
+    "conformance/metadata.json",
+    "conformance/run/family-scheduled-trade.trades.json",
+    "conformance/run/family-scheduled-trade-2027.fixture.json",
+    "conformance/run/family-scheduled-trade-2027.strat",
+    "conformance/run/family-scheduled-trade-2027.trades.json",
+    "scripts/update-japan-settlement-holidays.mjs",
+    "spec/dsl-spec-families/scheduledTrade.md",
+    "CHANGELOG.md"
+  ]
+}

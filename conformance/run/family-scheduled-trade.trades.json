@@ -9,9 +9,9 @@
   "higherTimeframe": null,
   "rangeMethod": "zone",
   "scheduledTrade": {
-    "calendarSha256": "e24f88cd62388e8fa8ce0b4ef55d573af9f372a570a7b29fd74926103450d0d6",
+    "calendarSha256": "ab0bd1f693e129aa0bef7a0db0f6f7ab75f8b4ce44b8e5594c7a43ca0e54cc21",
     "coverageFromDate": "2021-01-01",
-    "coverageToDateExclusive": "2027-01-01",
+    "coverageToDateExclusive": "2028-01-01",
     "executionModel": "exact-scheduled-open-with-open-gap-stop-and-first-open-at-or-after-time-exit",
     "feeModel": "two-sided fixed fee per unit; broker slippage applied at each fill",
     "gapBars": 0,
@@ -44,7 +44,7 @@
       "initialSl": 110.2,
       "initialTp": null,
       "meta": {
-        "calendarSha256": "e24f88cd62388e8fa8ce0b4ef55d573af9f372a570a7b29fd74926103450d0d6",
+        "calendarSha256": "ab0bd1f693e129aa0bef7a0db0f6f7ab75f8b4ce44b8e5594c7a43ca0e54cc21",
         "date": "2021-01-05",
         "pipSize": 0.01,
         "scheduledEntryT": 1609808100000,

@@ -62,6 +62,48 @@ func TestScheduledTradeCalendarRollAndSkip(t *testing.T) {
 	}
 }
 
+func TestScheduledTradeCalendarOfficial2027AndCoverage(t *testing.T) {
+	for _, tc := range []struct {
+		date string
+		want bool
+	}{
+		{"2027-01-29", true},  // Jan 31 is Sunday; month-end rolls back to Friday.
+		{"2027-03-19", true},  // Mar 20 is Saturday; it rolls back despite the later holiday.
+		{"2027-03-22", false}, // Cabinet Office substitute holiday.
+		{"2027-05-05", false},
+		{"2027-09-20", false},
+	} {
+		d, err := time.Parse("2006-01-02", tc.date)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got := isJapanSettlementDate(d); got != tc.want {
+			t.Fatalf("%s settlement=%v want %v", tc.date, got, tc.want)
+		}
+	}
+
+	through2027 := float64(time.Date(2027, time.December, 31, 0, 0, 0, 0, time.UTC).UnixMilli())
+	if _, _, err := scheduledDateRange(through2027, through2027); err != nil {
+		t.Fatalf("2027 calendar end rejected: %v", err)
+	}
+	bars := scheduledBars(5, []float64{110, 110, 109.99, 109.97, 109.95, 109.93, 109.91, 109.92, 109.9}, nil, nil)
+	firstBar := time.Date(2027, time.January, 29, 0, 50, 0, 0, time.UTC).UnixMilli()
+	for index := range bars {
+		bars[index].T = float64(firstBar + int64(index)*5*60*1000)
+	}
+	result, err := Run(scheduledRequest(t, bars))
+	if err != nil {
+		t.Fatalf("2027 settlement run rejected: %v", err)
+	}
+	if result.ScheduledAudit == nil || result.ScheduledAudit.CoverageToDateExclusive != "2028-01-01" {
+		t.Fatalf("2027 audit coverage = %+v; want exclusive end 2028-01-01", result.ScheduledAudit)
+	}
+	start2028 := float64(time.Date(2028, time.January, 1, 0, 0, 0, 0, time.UTC).UnixMilli())
+	if _, _, err := scheduledDateRange(start2028, start2028); err == nil || !strings.Contains(err.Error(), "coverage") {
+		t.Fatalf("2028 dates must remain outside the published calendar: %v", err)
+	}
+}
+
 func TestScheduledTradeExactEntryTimeExitAndTwoSidedFee(t *testing.T) {
 	bars := scheduledBars(5, []float64{110, 110, 109.99, 109.95, 109.9, 109.8, 109.7, 109.8, 109.9}, nil, nil)
 	r, err := Run(scheduledRequest(t, bars))

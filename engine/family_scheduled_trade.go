@@ -98,7 +98,7 @@ func runScheduledTrade(request RunRequest) (RunResult, error) {
 	}
 	calendarHash := sha256.Sum256(japanHolidayJSON)
 	fileHash := hex.EncodeToString(calendarHash[:])
-	audit := &ScheduledTradeAudit{Schema: "strat-scheduled-trade-audit-v1", CalendarSHA256: fileHash, CoverageFromDate: japanCalendarFrom, CoverageToDateExclusive: "2027-01-01", ExecutionModel: "exact-scheduled-open-with-open-gap-stop-and-first-open-at-or-after-time-exit", FeeModel: "two-sided fixed fee per unit; broker slippage applied at each fill", Rows: []ScheduledTradeRow{}}
+	audit := &ScheduledTradeAudit{Schema: "strat-scheduled-trade-audit-v1", CalendarSHA256: fileHash, CoverageFromDate: japanCalendarFrom, CoverageToDateExclusive: japanCalendarEndExclusive().Format("2006-01-02"), ExecutionModel: "exact-scheduled-open-with-open-gap-stop-and-first-open-at-or-after-time-exit", FeeModel: "two-sided fixed fee per unit; broker slippage applied at each fill", Rows: []ScheduledTradeRow{}}
 	var b broker
 	b.series = request.Series
 	b.costs = request.Costs.normalized()
