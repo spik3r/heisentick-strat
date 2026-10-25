@@ -14,7 +14,7 @@ func TestSequentialInspectionBridgeMatchesNative(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(paths) != 170 {
+	if len(paths) != 173 {
 		t.Fatalf("corpus count: %d", len(paths))
 	}
 	for _, path := range paths {

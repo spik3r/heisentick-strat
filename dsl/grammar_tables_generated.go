@@ -4,7 +4,7 @@ package dsl
 
 const (
 	GrammarGeneratorVersion = "dsl-grammar-generator/v1"
-	GrammarManifestSHA256   = "27759dac684005cb24b5a7e42d0aba6d9b5099b5c0c0ff2fb3fb7a861439827d"
+	GrammarManifestSHA256   = "97afe44347216a3ddc47ea9184a7de19e1af31326f2eabe879b4dca767b852c8"
 )
 
 var generatedSectionAliases = map[string]string{
@@ -106,6 +106,7 @@ var generatedDirectiveHeads = []string{
 	"no",
 	"shock",
 	"timed",
+	"scheduled",
 	"clock",
 	"orders",
 	"buffer",
@@ -212,6 +213,7 @@ var inlineSetupTypePhrases = []string{
 	"namedlevelsweep",
 	"down shock rebound",
 	"timed return",
+	"scheduled trade",
 	"clock range breakout",
 	"frozen level breakout",
 	"regime engine",
@@ -221,6 +223,7 @@ var inlineSetupTypePhrases = []string{
 }
 
 var generatedCanonicalSetupFamilies = map[string]string{
+	"scheduled trade":           "scheduledTrade",
 	"sequential full":           "sequentialFull",
 	"legacy setup 9":            "legacySetup9",
 	"named level flag":          "namedLevelFlag",

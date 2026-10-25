@@ -1,0 +1,182 @@
+{
+  "formatVersion": 2,
+  "eventId": "719f929c-9adf-474e-95e3-154c247a867d",
+  "runId": "f97deb66-a7e7-41ba-9940-b2ff6dd22272",
+  "kind": "complete",
+  "parents": [
+    "396d1dbf-dff9-4933-b69c-078843fe1659"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-314",
+    "path": "tasks/HT-314-clock-range-breakout-gates.md",
+    "revision": "20b929736c3889cda14086092d85551b5311aa63",
+    "blob": "ce88bd0c7aebb6cf8651546b6401fddc0a830d0e",
+    "claim": {
+      "heading": "Claim — 2026-10-22",
+      "digest": "8f0a0c70fd482636c9c7814049d35663cca15324973a1561a7fcd33c55ba7248"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "claude/clock-range-colour-gates",
+  "pullRequest": null,
+  "at": "2026-10-22T11:12:21.646Z",
+  "summary": "Gates kept behind a same-size pointer; v1 broker layout and pinned instruction schedules unchanged; behaviour unchanged",
+  "next": "Independent semantic review",
+  "files": [
+    "CHANGELOG.md",
+    "cmd/conformance/main_test.go",
+    "cmd/enginewasm/sequential_inspection_bridge_test.go",
+    "conformance/metadata.json",
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.cfg.json",
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.strat",
+    "conformance/parse/setup-clock-range-breakout-gates.cfg.json",
+    "conformance/parse/setup-clock-range-breakout-gates.strat",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.strat",
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.trades.json",
+    "conformance/run/family-clock-range-breakout-gates-target.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-target.strat",
+    "conformance/run/family-clock-range-breakout-gates-target.trades.json",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.fixture.json",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.strat",
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.trades.json",
+    "docs/clock-range-breakout.md",
+    "dsl/clock_range_breakout.go",
+    "dsl/parser_clock_range_breakout.go",
+    "dsl/parser_clock_range_gates_test.go",
+    "engine/clock_range_breakout_gates_test.go",
+    "engine/conformance.go",
+    "engine/family_clock_range_breakout.go",
+    "engine/parabolic_sar.go",
+    "engine/run.go",
+    "engine/runner.go",
+    "engine/sequential_inspection_test.go",
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "spec/dsl-spec-families/clockRangeBreakout.md"
+  ],
+  "validation": "gofmt, go vet ./..., go test ./... pass; conformance check 172 parse / 122 run match; clock parity native vs WASM pass; go1.22.12 cross-compiled pins for linux-amd64, linux-arm64 and js-wasm match the renewed manifest and leave every instruction pin unchanged (method reproduces main's pins exactly); XAUUSD 15m 336 trades PF 1.61, 334 entry matches with arb.py",
+  "snapshot": {
+    "CHANGELOG.md": {
+      "blob": "c2ecee616aeabdb2e594548895400ccabcb29a84",
+      "mode": "100644"
+    },
+    "cmd/conformance/main_test.go": {
+      "blob": "3b19015fa412d9d81cc02ba07e2b5583c3191416",
+      "mode": "100644"
+    },
+    "cmd/enginewasm/sequential_inspection_bridge_test.go": {
+      "blob": "141aeb9da3567def8eca6f20c9311384124b0b6f",
+      "mode": "100644"
+    },
+    "conformance/metadata.json": {
+      "blob": "3af49d6eb47b4268b75d518c7d2255c1490aac3a",
+      "mode": "100644"
+    },
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.cfg.json": {
+      "blob": "d115d7c83870ce014493ca48ce7125a9e822aafb",
+      "mode": "100644"
+    },
+    "conformance/parse/diagnostic-clock-range-breakout-cancel-without-prior-day.strat": {
+      "blob": "c9532d651774f4b8d716441364fb9ea1703ec392",
+      "mode": "100644"
+    },
+    "conformance/parse/setup-clock-range-breakout-gates.cfg.json": {
+      "blob": "dbddc827fcb7db4ef468a886c50fb345d219e3ab",
+      "mode": "100644"
+    },
+    "conformance/parse/setup-clock-range-breakout-gates.strat": {
+      "blob": "0f4d6c7e1a291f3938adc1bfa7a9e9ae77d2ec15",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.fixture.json": {
+      "blob": "a058fe9f944921876a57fdbd399fd486b7ffff8c",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.strat": {
+      "blob": "cdc27f823139cb5be4a7d3453d7bbd2a3d1e83a8",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-opposite-first.trades.json": {
+      "blob": "5e3af6c9f993f091c518e26b179c602d5fdf935b",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-target.fixture.json": {
+      "blob": "6aae64a1dc2ef507041b8fd33989e621ebaee2f8",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-target.strat": {
+      "blob": "e8a11054b3bcd777200d5f769125c1b743223561",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-target.trades.json": {
+      "blob": "5748ec51fbe081d56f80299873618698f8f65445",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.fixture.json": {
+      "blob": "5714439c242ebf5ee4e8f51b11cd1810e4ae8255",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.strat": {
+      "blob": "b170117176efd5c1c7086273c87aa1cabe79231b",
+      "mode": "100644"
+    },
+    "conformance/run/family-clock-range-breakout-gates-width-narrow.trades.json": {
+      "blob": "124b9a32cd452656952f9faab94ae08ca5bfd568",
+      "mode": "100644"
+    },
+    "docs/clock-range-breakout.md": {
+      "blob": "46ad8b7b61a17955fd4a9e72235cccfd8585fd9a",
+      "mode": "100644"
+    },
+    "dsl/clock_range_breakout.go": {
+      "blob": "49a0057f92f7ba1cef32047b4ff402f36556ff0e",
+      "mode": "100644"
+    },
+    "dsl/parser_clock_range_breakout.go": {
+      "blob": "846b55edee1575bd389d4787c0571ac0ffa4fdc3",
+      "mode": "100644"
+    },
+    "dsl/parser_clock_range_gates_test.go": {
+      "blob": "f2e419d10bdbf0a9c8730f632e96ae5e9e55d1e9",
+      "mode": "100644"
+    },
+    "engine/clock_range_breakout_gates_test.go": {
+      "blob": "4a70d804d7b705f486d9c7013911f258f52bed30",
+      "mode": "100644"
+    },
+    "engine/conformance.go": {
+      "blob": "a6dbcef70d43b89c75896e3b984a9b658de9dbd7",
+      "mode": "100644"
+    },
+    "engine/family_clock_range_breakout.go": {
+      "blob": "d7d4a9af2c6361b77bd46bad31b2f580ccab5ac2",
+      "mode": "100644"
+    },
+    "engine/parabolic_sar.go": {
+      "blob": "bf0cf7345abba04c6ac217c964419dba2731168c",
+      "mode": "100644"
+    },
+    "engine/run.go": {
+      "blob": "15e252ced84790e6ecd13a251ec562f3ab12b0ff",
+      "mode": "100644"
+    },
+    "engine/runner.go": {
+      "blob": "05fe02bf6592301b506f7f0269c25b198a2c75de",
+      "mode": "100644"
+    },
+    "engine/sequential_inspection_test.go": {
+      "blob": "7414b748cd9676c22a0af83c77eabce87c28c649",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "5e6bdefc39f2a79e55ac141f54df0bac88751b46",
+      "mode": "100644"
+    },
+    "spec/dsl-spec-families/clockRangeBreakout.md": {
+      "blob": "9ec0940ec7fb7c18b3d2b181e837a8e0e4351f2a",
+      "mode": "100644"
+    }
+  }
+}

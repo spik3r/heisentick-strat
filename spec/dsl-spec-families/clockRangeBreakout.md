@@ -14,6 +14,10 @@ backlog ID collision. Deferred extras are HT-168, originally proposed as
 HT-134. Earlier commits and branch names retain those historical IDs. The
 identifier-only correction was separate from this reviewed v1 contract.
 
+Status of the optional gates: v2 additions, opt-in and Go-only like v1. A
+program that writes none of them compiles and runs exactly as under v1; every
+v1 golden is unchanged. See "Optional gates, range-edge stop and target (v2)".
+
 ## Type phrase and purpose
 
 ```
@@ -42,6 +46,11 @@ conformance goldens retain their existing semantics.
 | `stop <N> percent` (in `risk`) | Finite percent of the actual post-slippage fill, `0 < N <= 100` | Required | `stop.type = percent`, `stop.percent` |
 | `close positions at <HH:MM>` (in `management`) | Required clock liquidation of an open position | Required | `clockRangeBreakout.closeMinute` |
 | `side long only`, `side short only`, `side both` (in `filters`) | Static side allowance; only allowed sides receive an order | Both | `allowLong`, `allowShort` |
+| `range width at least <X> daily ATR <N>` (v2) | Skip a day whose range width is below `X` times the trading-day ATR of the `N` prior trading days; `X > 0`, whole `1 <= N <= 1000` | Off | `clockRangeBreakout.widthMinAtr`, `clockRangeBreakout.widthAtrDays` |
+| `trade with prior day candle` (v2) | Only the side of the prior trading day's candle receives an order | Off | `clockRangeBreakout.priorDayCandle = 1` |
+| `cancel when opposite side triggers first` (v2) | Keep the other edge as a cancel-only trigger; requires `trade with prior day candle` | Off | `clockRangeBreakout.cancelOnOpposite = 1` |
+| `stop beyond opposite range edge` (v2, in `risk`) | Stop at the range low for a long and the range high for a short; replaces `stop <N> percent` | Off | `stop.type = oppositeRangeEdge` |
+| `target <N>R` (v2) | Profit target at `N` times the stop distance; needs `stop beyond opposite range edge` | None | `clockRangeBreakout.targetR` |
 
 ## Family defaults and supported directives
 
@@ -69,6 +78,64 @@ for each permitted side, using only information available then. The completed
 fill bar's candle quality, context, high/low or close cannot retroactively
 admit an earlier intrabar order. V1 has no bar-derived admission filters;
 a future extension must define their placement-time causal inputs explicitly.
+
+## Optional gates, range-edge stop and target (v2)
+
+These additions are placement-time causal inputs, as the paragraph above
+requires. Each is off unless written, and none changes a v1 program.
+
+**Trading days.** The gates read a trading-day OHLC series built from the
+route's own bars on the declared clock. Group bars by clock date. A date
+whose bars span less than four hours (last bar open plus one timeframe minus
+first bar open) is merged into the next date that has bars: that trading day
+takes the merged date's open and the wider of the two highs and lows, and is
+filed under the later date. This folds the weekend reopen and one-hour
+holiday reopens into the following day. A date with no later bars is kept.
+The prior trading days of a range date `D` are those filed under a date before
+`D`. Their bars all precede `D`'s range, and whether a date is merged depends
+only on its own bars, so no future data is read.
+
+**Range width.** The true range of trading day `j` is
+`max(H_j - L_j, |H_j - C_(j-1)|, |L_j - C_(j-1)|)` and needs day `j - 1`. The
+daily ATR at `D` is the mean true range of the `N` most recent prior trading
+days; fewer than `N + 1` prior days, or a non-positive ATR, rejects the day
+(`no-daily-atr`). After a valid range is formed, a day with
+`rangeHigh - rangeLow < X * ATR` is rejected (`range-too-narrow`). Equality
+passes.
+
+**Prior-day candle.** With `trade with prior day candle`, the prior trading
+day's `close - open` picks the side: positive long, negative short. No prior
+day rejects the day (`no-prior-day`); a zero difference rejects it
+(`no-direction`). The phrase picks the side itself, so it cannot be combined
+with `side long only` or `side short only`.
+
+**Cancel trigger.** With `cancel when opposite side triggers first`, the
+other edge's trigger stays live as a cancel-only level for the same
+`[rangeEnd, expiry)` bars. Touch tests and the both-touched nearer-to-open
+rule are unchanged; if the cancel trigger wins, the day ends with no trade
+(`opposite-triggered-first`). Without the phrase only the chosen side's order
+exists and the other edge is ignored.
+
+**Range-edge stop.** With `stop beyond opposite range edge`, SL is
+`rangeLow` for a long and `rangeHigh` for a short (the unbuffered edges).
+Distance is `sign * (p - SL)` with `p` the post-slippage fill and must be
+finite and positive. Size is `riskUsd / distance`. It is an error to write
+both stops.
+
+**Target.** `target <N>R` (positive `N`) is allowed only with the range-edge
+stop; with a percent stop it remains the v1 unsupported directive. The target
+is `p + sign * N * distance`. On bars after the entry bar, the stop is tested
+first (an open beyond SL exits at that open), then the target: a touch,
+including a bar opening beyond it, exits at the target level, never better
+(reason `tp`, exit reason `target`). The target is not tested on the entry
+bar, because a favourable extreme there may have come before the fill. The
+clock close still applies first at each bar open.
+
+Conformance: run `family-clock-range-breakout-gates-target`,
+`-gates-opposite-first`, `-gates-width-narrow`; parse
+`setup-clock-range-breakout-gates`,
+`diagnostic-clock-range-breakout-cancel-without-prior-day`. Hand-derived
+engine tests: `engine/clock_range_breakout_gates_test.go`.
 
 ## Clock, day key and alignment
 

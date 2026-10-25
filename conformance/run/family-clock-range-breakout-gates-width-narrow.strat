@@ -1,0 +1,23 @@
+dsl v7
+strategy "family-clock-range-breakout-gates-width-narrow" {
+  description "synthetic clock range breakout gates case: range width 1.5 is below 0.5 x daily ATR 4, so the day is rejected and no trade is made"
+}
+market conditions {
+  slices(XAUUSD 1h)
+  clock UTC+0
+}
+setup {
+  type: clock range breakout
+  range 00:00 to 03:00
+  orders expire 06:00
+  range width at least 0.5 daily ATR 1
+}
+risk {
+  stop beyond opposite range edge
+}
+management {
+  close positions at 09:00
+}
+execution {
+  risk: 100 USD
+}

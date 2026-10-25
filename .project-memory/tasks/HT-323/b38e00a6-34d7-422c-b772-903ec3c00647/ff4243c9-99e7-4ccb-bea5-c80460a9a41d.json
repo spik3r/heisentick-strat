@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "eventId": "ff4243c9-99e7-4ccb-bea5-c80460a9a41d",
+  "runId": "b38e00a6-34d7-422c-b772-903ec3c00647",
+  "kind": "complete",
+  "parents": [
+    "e72b6a91-18da-47e8-82c9-4f9a6a1ac27e"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "0bd04aa92a17c28577143c3bd0964a2cda1f6fe7",
+    "blob": "8060e4df8b93c01f1cd87d1fac17ff1321e1c925",
+    "claim": {
+      "heading": "Claim — 2026-10-23 runnable scheduled strategy",
+      "digest": "981637165695a928f36f1c1f8c64f1881dda8bf082316a32bee6cc8a3f45837e"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/scheduled-calendar-trade",
+  "pullRequest": null,
+  "at": "2026-10-23T12:39:34.844Z",
+  "summary": "Renew strict arithmetic source and build-input hashes for the reviewed header correction; pinned function streams unchanged",
+  "next": "Commit the exact strict-pin refresh, validate committed memory against origin/main, and wait for exact-head Linux CI",
+  "files": [
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md"
+  ],
+  "validation": "Go 1.22.12 go test ./dsl and go test ./... passed; go vet ./... passed; conformance: 173 parse, 123 run, 0 TODO; Python 3.12 exact source inventory and all three build closures match; all pinned instructions match byte-for-byte for linux-amd64, linux-arm64 and js-wasm using Go 1.22.12 cross-compile; git diff --check passed",
+  "snapshot": {
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "e437aa6d1eb4cdff3b7c2a3e534e188c67b0df75",
+      "mode": "100644"
+    },
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md": {
+      "blob": "9dac49d7214a1860083cbf0cf2c7ad6a48cf5ceb",
+      "mode": "100644"
+    }
+  }
+}

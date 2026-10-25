@@ -1,0 +1,212 @@
+{
+  "formatVersion": 2,
+  "eventId": "e793126f-583b-4c58-ac60-a820ffd37eb2",
+  "runId": "bfee03ad-74a4-42df-8c45-23fb7a84e2d2",
+  "kind": "complete",
+  "parents": [
+    "ba58c382-4cee-4890-bc44-7462e3747325"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "0bd04aa92a17c28577143c3bd0964a2cda1f6fe7",
+    "blob": "8060e4df8b93c01f1cd87d1fac17ff1321e1c925",
+    "claim": {
+      "heading": "Claim — 2026-10-23 runnable scheduled strategy",
+      "digest": "981637165695a928f36f1c1f8c64f1881dda8bf082316a32bee6cc8a3f45837e"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/scheduled-calendar-trade",
+  "pullRequest": null,
+  "at": "2026-10-23T11:48:55.567Z",
+  "summary": "Renewed only the three strict ProjectSequentialMetrics target pins after checking ABI-only compiler changes and replaying the CI capture.",
+  "next": "Commit and push the reviewed proof-pin update; wait for fresh CI before merge or release.",
+  "files": [
+    "CHANGELOG.md",
+    "cmd/conformance/main_test.go",
+    "cmd/enginewasm/sequential_inspection_bridge_test.go",
+    "cmd/heisentick/scheduled_trade_fixture.go",
+    "cmd/heisentick/scheduled_trade_fixture_test.go",
+    "conformance/metadata.json",
+    "conformance/parse/setup-scheduled-trade.cfg.json",
+    "conformance/parse/setup-scheduled-trade.strat",
+    "conformance/run/family-scheduled-trade.fixture.json",
+    "conformance/run/family-scheduled-trade.strat",
+    "conformance/run/family-scheduled-trade.trades.json",
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md",
+    "dsl/contract_schemas_test.go",
+    "dsl/grammar_tables_generated.go",
+    "dsl/handler_bindings.go",
+    "dsl/parser.go",
+    "dsl/parser_setups.go",
+    "dsl/scheduled_trade.go",
+    "dsl/scheduled_trade_test.go",
+    "dsl/types.go",
+    "engine/conformance.go",
+    "engine/family_scheduled_trade.go",
+    "engine/family_scheduled_trade_test.go",
+    "engine/japan-settlement-holidays.json",
+    "engine/run.go",
+    "engine/runner.go",
+    "engine/scheduled_trade_calendar.go",
+    "engine/sequential_inspection_test.go",
+    "engine/types.go",
+    "report/sequential_accounting_corpus_test.go",
+    "scripts/checks/ordinary-backtest-arithmetic-proof.py",
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "spec/dsl-spec-families/scheduledTrade.md",
+    "spec/manifest.json",
+    "spec/schemas/scheduled-trade-audit-v1.schema.json",
+    "spec/schemas/trade-envelope-v1.schema.json"
+  ],
+  "validation": "CPython 3.12 sequential-accounting-proof-test.py: 19/19 pass. CPython 3.12 replay of CI 39946935449 capture: 44 cases, 242 exact arithmetic checks, 15 mutation refusals pass. Go 1.22.12 target stream check: all 10 pinned functions match on linux-amd64, linux-arm64, js-wasm. Source hashes and 268/268/277 dependency closures match the manifest. Base origin/main streams match old ProjectSequentialMetrics pins. git diff --check pass. Native Linux proof codegen unavailable on this Darwin host; exact-head CI still required.",
+  "snapshot": {
+    "CHANGELOG.md": {
+      "blob": "78111a8926937642ce070aa5e3aadc00633a307e",
+      "mode": "100644"
+    },
+    "cmd/conformance/main_test.go": {
+      "blob": "7ae0d18ccdba1d3e1aaaae87025f132578b6f07d",
+      "mode": "100644"
+    },
+    "cmd/enginewasm/sequential_inspection_bridge_test.go": {
+      "blob": "3a4d9f566dfafcd641d06a71d832ef7fc1729d18",
+      "mode": "100644"
+    },
+    "cmd/heisentick/scheduled_trade_fixture.go": {
+      "blob": "49f8fc053332119a759353c5d2df2d6719074fda",
+      "mode": "100644"
+    },
+    "cmd/heisentick/scheduled_trade_fixture_test.go": {
+      "blob": "aba8681821f00c73307f75df4fd65f417f25b3b1",
+      "mode": "100644"
+    },
+    "conformance/metadata.json": {
+      "blob": "587fe90042ff2296d195089d9d1137740daf1539",
+      "mode": "100644"
+    },
+    "conformance/parse/setup-scheduled-trade.cfg.json": {
+      "blob": "fce931b2e232293d8eefd0f543acd8ff7237fcd4",
+      "mode": "100644"
+    },
+    "conformance/parse/setup-scheduled-trade.strat": {
+      "blob": "d599fd9283decfc046ece14b5f8839d03ada1c12",
+      "mode": "100644"
+    },
+    "conformance/run/family-scheduled-trade.fixture.json": {
+      "blob": "38338693fae188e3960f277b0316604fb7a68f03",
+      "mode": "100644"
+    },
+    "conformance/run/family-scheduled-trade.strat": {
+      "blob": "16ac09c7ee501d528e4ca7b079ce52600e66238c",
+      "mode": "100644"
+    },
+    "conformance/run/family-scheduled-trade.trades.json": {
+      "blob": "8e019e87fcea4e2dd2c46a9daa145bf85cc07ef7",
+      "mode": "100644"
+    },
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md": {
+      "blob": "9119057f3636abb4817248f446368971edb76012",
+      "mode": "100644"
+    },
+    "dsl/contract_schemas_test.go": {
+      "blob": "395a6b53fce2e207b5322d78a1c393c764986ad1",
+      "mode": "100644"
+    },
+    "dsl/grammar_tables_generated.go": {
+      "blob": "587e3f2b244e96c54abc8a23649cb7b24b41f08f",
+      "mode": "100644"
+    },
+    "dsl/handler_bindings.go": {
+      "blob": "ef26066d5e7057fdcb65208bb5e6e547bf671570",
+      "mode": "100644"
+    },
+    "dsl/parser.go": {
+      "blob": "7b010ac3e8e227d29511f1f990369f5ab74e7ccd",
+      "mode": "100644"
+    },
+    "dsl/parser_setups.go": {
+      "blob": "b3fc85028bfe5c22eabd01beca95b252e617fb4d",
+      "mode": "100644"
+    },
+    "dsl/scheduled_trade.go": {
+      "blob": "6abe54ad47f0e522dfec8346fbd62f1d7564e38e",
+      "mode": "100644"
+    },
+    "dsl/scheduled_trade_test.go": {
+      "blob": "e0a06d38cd23316deb13a400d7e1af72b190027f",
+      "mode": "100644"
+    },
+    "dsl/types.go": {
+      "blob": "692536012bfaeaa10275407ca730a16263b4a885",
+      "mode": "100644"
+    },
+    "engine/conformance.go": {
+      "blob": "439e99807a9a286e680cc95e464b576716c6a580",
+      "mode": "100644"
+    },
+    "engine/family_scheduled_trade.go": {
+      "blob": "a4ddf10c506e056d7c28c8bd87854138401ec7bf",
+      "mode": "100644"
+    },
+    "engine/family_scheduled_trade_test.go": {
+      "blob": "49969df17ac34af19e47a3d01207736207066198",
+      "mode": "100644"
+    },
+    "engine/japan-settlement-holidays.json": {
+      "blob": "f3b6004e5308887cc7826d90ea296d6e4fd19b28",
+      "mode": "100644"
+    },
+    "engine/run.go": {
+      "blob": "6a9510831c7487d999267a84e72c758da1b22ac9",
+      "mode": "100644"
+    },
+    "engine/runner.go": {
+      "blob": "45641989f16a3d8e3f697055315a8f19f56fe469",
+      "mode": "100644"
+    },
+    "engine/scheduled_trade_calendar.go": {
+      "blob": "296a7bff8f03980e6aebef9a5aa1b3b96d928bee",
+      "mode": "100644"
+    },
+    "engine/sequential_inspection_test.go": {
+      "blob": "c14a7edffecef3ee958b3ffe040a470aca5f1e37",
+      "mode": "100644"
+    },
+    "engine/types.go": {
+      "blob": "7bfd11e7bf89da4b57ee6889c6ef752e7a3535d9",
+      "mode": "100644"
+    },
+    "report/sequential_accounting_corpus_test.go": {
+      "blob": "6f533520f1fd9a59da476b2e3531dc0f0294f795",
+      "mode": "100644"
+    },
+    "scripts/checks/ordinary-backtest-arithmetic-proof.py": {
+      "blob": "43c57e85e90e8de6b8f03c7e61637c09ac296b08",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "917ffd32b61ffd3ebbe38b1479f470012041a51a",
+      "mode": "100644"
+    },
+    "spec/dsl-spec-families/scheduledTrade.md": {
+      "blob": "09681d9258184387fbd8d5d0b51fd02125f10e66",
+      "mode": "100644"
+    },
+    "spec/manifest.json": {
+      "blob": "4daf68f89368d6289c0b440f1dbda55c27619e81",
+      "mode": "100644"
+    },
+    "spec/schemas/scheduled-trade-audit-v1.schema.json": {
+      "blob": "1ddaaea279992cebd67a5deaea92067ba2415556",
+      "mode": "100644"
+    },
+    "spec/schemas/trade-envelope-v1.schema.json": {
+      "blob": "14e29fa228e3311681cef07d08109d7fbef233c5",
+      "mode": "100644"
+    }
+  }
+}

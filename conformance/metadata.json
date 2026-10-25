@@ -28,6 +28,9 @@
       "family-clock-range-breakout-fractional-offset-plus-5-30",
       "family-clock-range-breakout-gap-through-long",
       "family-clock-range-breakout-gap-through-short",
+      "family-clock-range-breakout-gates-opposite-first",
+      "family-clock-range-breakout-gates-target",
+      "family-clock-range-breakout-gates-width-narrow",
       "family-clock-range-breakout-later-gap-stop",
       "family-clock-range-breakout-later-touch-stop",
       "family-clock-range-breakout-leap-day",
@@ -86,6 +89,8 @@
       "family-price-momentum-atr-stop",
       "family-price-momentum-guarded",
       "family-range-break-fake",
+      "family-scheduled-trade",
+      "family-scheduled-trade-2027",
       "family-sequential-full-e1-long",
       "family-sequential-full-e1-short",
       "family-sequential-full-e2-long",
@@ -134,14 +139,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 170,
+  "parseCases": 173,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 64,
+    "diagnostic": 65,
     "family": 20,
     "filters": 21,
-    "setup-family": 56
+    "setup-family": 58
   },
-  "runCases": 119,
+  "runCases": 124,
   "schema": "dsl-conformance-metadata-v1"
 }

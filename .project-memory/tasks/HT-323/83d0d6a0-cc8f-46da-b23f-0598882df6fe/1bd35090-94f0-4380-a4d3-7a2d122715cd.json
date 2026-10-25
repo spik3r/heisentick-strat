@@ -1,0 +1,32 @@
+{
+  "formatVersion": 2,
+  "eventId": "1bd35090-94f0-4380-a4d3-7a2d122715cd",
+  "runId": "83d0d6a0-cc8f-46da-b23f-0598882df6fe",
+  "kind": "start",
+  "parents": [
+    "bf61b2d1-24dd-4bfc-bce1-37ad0932d1a9"
+  ],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-323",
+    "path": "tasks/HT-323-intraday-small-target-regime-research.md",
+    "revision": "0bd04aa92a17c28577143c3bd0964a2cda1f6fe7",
+    "blob": "8060e4df8b93c01f1cd87d1fac17ff1321e1c925",
+    "claim": {
+      "heading": "Claim — 2026-10-23 runnable scheduled strategy",
+      "digest": "981637165695a928f36f1c1f8c64f1881dda8bf082316a32bee6cc8a3f45837e"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/scheduled-calendar-trade",
+  "pullRequest": null,
+  "at": "2026-10-23T11:31:49.636Z",
+  "summary": "Review scheduled-trade source admission and renew the ordinary arithmetic source/compiler pins without changing arithmetic scope.",
+  "next": "Run the full pinned qualification on exact-head Linux CI.",
+  "files": [
+    "scripts/checks/ordinary-backtest-arithmetic-proof.py",
+    "scripts/checks/sequential-arithmetic-schedules.json",
+    "docs/ordinary-backtest-arithmetic-review-scheduled-trade.md"
+  ]
+}

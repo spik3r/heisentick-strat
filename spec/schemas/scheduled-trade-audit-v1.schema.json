@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scheduled-trade-audit-v1.schema.json",
+  "title": "Scheduled trade audit v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "calendarSha256", "coverageFromDate", "coverageToDateExclusive",
+    "executionModel", "feeModel", "gapBars", "gapObservations", "rows", "openPosition"
+  ],
+  "properties": {
+    "schema": { "const": "strat-scheduled-trade-audit-v1" },
+    "calendarSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "coverageFromDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "coverageToDateExclusive": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "executionModel": { "type": "string", "minLength": 1 },
+    "feeModel": { "type": "string", "minLength": 1 },
+    "gapBars": { "type": "integer", "minimum": 0 },
+    "gapObservations": { "type": "integer", "minimum": 0 },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["date", "status"],
+        "properties": {
+          "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+          "status": { "type": "string", "enum": ["missing-entry-bar", "busy-at-entry", "missing-contiguous-prior", "stopped", "time-exit", "open-terminal"] },
+          "entryIndex": { "type": "integer", "minimum": 0 },
+          "exitIndex": { "type": "integer", "minimum": 0 },
+          "stopPrice": { "type": "number" },
+          "gapStop": { "type": "boolean" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "openPosition": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["date", "side", "entry", "stop", "entryIndex", "lastIndex"],
+          "properties": {
+            "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+            "side": { "type": "string", "enum": ["long", "short"] },
+            "entry": { "type": "number" },
+            "stop": { "type": "number" },
+            "entryIndex": { "type": "integer", "minimum": 0 },
+            "lastIndex": { "type": "integer", "minimum": 0 }
+          }
+        }
+      ]
+    }
+  }
+}

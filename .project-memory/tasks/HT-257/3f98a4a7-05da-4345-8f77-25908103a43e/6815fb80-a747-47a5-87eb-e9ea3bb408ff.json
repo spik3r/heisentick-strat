@@ -1,0 +1,77 @@
+{
+  "formatVersion": 2,
+  "eventId": "6815fb80-a747-47a5-87eb-e9ea3bb408ff",
+  "runId": "3f98a4a7-05da-4345-8f77-25908103a43e",
+  "kind": "complete",
+  "parents": [
+    "5d848d52-6756-4b80-a7c6-05d4004e6c36"
+  ],
+  "sequence": 1,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-257",
+    "path": "tasks/HT-257-native-cli-next-open-fixture-coverage.md",
+    "revision": "276db2688f53cd7b562499221d1c97ddb64ad6f0",
+    "blob": "757897be7f0deed7bdb9042be2322779cb64cd74",
+    "claim": {
+      "heading": "Prospective cloud qualification continuation claim — 2026-10-25",
+      "digest": "329671e3b54d43f429bcc11c534fab61611be930b10a3d271359e423c409ab0c"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht257-report-fill",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/149",
+  "at": "2026-10-25T10:34:22.406Z",
+  "summary": "Reconciled current main into PR149 with exactly ten reviewed inventory hash replacements; eight inherited CLI and diagnostic paths stay byte-identical; baseline native checks pass",
+  "next": "Qualify this clean exact committed source once on cloud; preserve unchanged hosted20min gate and root release hold",
+  "files": [
+    "cmd/heisentick/main.go",
+    "cmd/heisentick/main_test.go",
+    "cmd/heisentick/report.go",
+    "report/build.go",
+    "report/build_test.go",
+    "report/run.go",
+    "report/run_test.go",
+    "scripts/checks/paper-bidask-parity.mjs",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ],
+  "validation": "Official Go1.22.12 Linux AMD64: gofmt -l . empty, go vet ./... pass, uncached go test ./... pass, go run ./cmd/conformance check pass, four focused fill-mode/original-nextOpen test groups pass, both unchanged nextOpen fixtures pass, git diff --check and cached diff check pass. Independent manifest union review accepted tree06a8fbed. Ordinary stamped native/public-WASM and full sampled bid/ask qualification have not run and remain pending.",
+  "snapshot": {
+    "cmd/heisentick/main.go": {
+      "blob": "9691ee62018e6c64c96316126bcb3b5fd9c1ac3c",
+      "mode": "100644"
+    },
+    "cmd/heisentick/main_test.go": {
+      "blob": "1206af5564c283a143903ff753895d9430112629",
+      "mode": "100644"
+    },
+    "cmd/heisentick/report.go": {
+      "blob": "d612fdbb586c8d493c032e5824bd68f1ad479e27",
+      "mode": "100644"
+    },
+    "report/build.go": {
+      "blob": "f7b2e3e97a431617903378d079f0074714f14ef4",
+      "mode": "100644"
+    },
+    "report/build_test.go": {
+      "blob": "d06d0ebe991ce0e526a76f62ee240350fa680074",
+      "mode": "100644"
+    },
+    "report/run.go": {
+      "blob": "c6eeae7314f3b01ffad75bdc3eaa7e2ebef37c8b",
+      "mode": "100644"
+    },
+    "report/run_test.go": {
+      "blob": "8d8c12ac2920cfbf34e09e4d35f6a7eadb5e6c3c",
+      "mode": "100644"
+    },
+    "scripts/checks/paper-bidask-parity.mjs": {
+      "blob": "faf4855c3ccee5773fb67443bbea29f89b8b7b44",
+      "mode": "100644"
+    },
+    "scripts/checks/sequential-arithmetic-schedules.json": {
+      "blob": "d9bd6f4abdd96c9a9a796667eb3debe4a5c3f80e",
+      "mode": "100644"
+    }
+  }
+}

@@ -18,7 +18,31 @@ var (
 	clockWallPattern   = regexp.MustCompile(`^([01][0-9]|2[0-3]):([0-5][0-9])$`)
 	clockOffsetPattern = regexp.MustCompile(`(?i)^clock\s+UTC([+-])([0-9]{1,2})(?::([0-9]{2}))?$`)
 	clockNumberPattern = regexp.MustCompile(`^[0-9]+(?:\.[0-9]+)?$`)
+	clockTargetPattern = regexp.MustCompile(`(?i)^([0-9]+(?:\.[0-9]+)?)r$`)
 )
+
+// Fixed spellings of the optional gate phrases, lower case.
+var (
+	clockPriorDayCandlePhrase = []string{"trade", "with", "prior", "day", "candle"}
+	clockCancelPhrase         = []string{"cancel", "when", "opposite", "side", "triggers", "first"}
+	clockEdgeStopPhrase       = []string{"stop", "beyond", "opposite", "range", "edge"}
+)
+
+func clockTokensEqual(tokens, phrase []string) bool {
+	if len(tokens) != len(phrase) {
+		return false
+	}
+	for i := range tokens {
+		if !strings.EqualFold(tokens[i], phrase[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func isClockTargetPhrase(tokens []string) bool {
+	return len(tokens) == 2 && strings.EqualFold(tokens[0], "target") && clockTargetPattern.MatchString(tokens[1])
+}
 
 // clockRangeInlineStarts are directive heads that only begin a new directive
 // in an inline `{ ... }` body when followed by their family-specific keyword.
@@ -44,11 +68,17 @@ type clockRangeParse struct {
 	buffer  []clockRangeDirective
 	closeAt []clockRangeDirective
 	stop    []clockRangeDirective
+	// Optional gates.
+	width    []clockRangeDirective
+	priorDay []clockRangeDirective
+	cancel   []clockRangeDirective
+	edgeStop []clockRangeDirective
+	target   []clockRangeDirective
 }
 
 func (c clockRangeParse) familyLines() []logicalLine {
 	var lines []logicalLine
-	for _, group := range [][]clockRangeDirective{c.clock, c.rng, c.expire, c.buffer, c.closeAt} {
+	for _, group := range [][]clockRangeDirective{c.clock, c.rng, c.expire, c.buffer, c.closeAt, c.width, c.priorDay, c.cancel} {
 		for _, directive := range group {
 			lines = append(lines, directive.line)
 		}
@@ -72,11 +102,23 @@ func (p *parser) recordClockRangeDirective(line logicalLine, tokens []string) bo
 		p.clockRange.buffer = append(p.clockRange.buffer, directive)
 	case head == "range" && len(tokens) > 1 && startsWithDigit(tokens[1]):
 		p.clockRange.rng = append(p.clockRange.rng, directive)
+	case head == "range" && len(tokens) > 1 && strings.EqualFold(tokens[1], "width"):
+		p.clockRange.width = append(p.clockRange.width, directive)
+	case head == "trade" && len(tokens) > 1 && strings.EqualFold(tokens[1], "with"):
+		p.clockRange.priorDay = append(p.clockRange.priorDay, directive)
+	case head == "cancel":
+		p.clockRange.cancel = append(p.clockRange.cancel, directive)
 	case head == "close" && len(tokens) > 1 && strings.EqualFold(tokens[1], "positions"):
 		p.clockRange.closeAt = append(p.clockRange.closeAt, directive)
 	case head == "stop" && len(tokens) == 3 && strings.EqualFold(tokens[2], "percent"):
 		// Not family-exclusive: other families treat this line as before.
 		p.clockRange.stop = append(p.clockRange.stop, directive)
+		return false
+	case clockTokensEqual(tokens, clockEdgeStopPhrase):
+		p.clockRange.edgeStop = append(p.clockRange.edgeStop, directive)
+		return false
+	case isClockTargetPhrase(tokens):
+		p.clockRange.target = append(p.clockRange.target, directive)
 		return false
 	default:
 		return false
@@ -146,20 +188,22 @@ func (p *parser) validateClockRangeBreakout() {
 		expire, expireOK = p.parseClockExpire()
 	}
 	buffer, bufferOK := p.parseClockBuffer()
-	percent, percentOK := p.parseClockStopPercent()
-	if !clockOK || !rangeOK || !closeOK || !expireOK || !bufferOK || !percentOK {
+	stop, stopOK := p.parseClockStop()
+	gates, gatesOK := p.parseClockGates()
+	if !clockOK || !rangeOK || !closeOK || !expireOK || !bufferOK || !stopOK || !gatesOK {
 		return
 	}
 
 	p.config["clock"] = map[string]any{"utcOffsetMinutes": clock}
-	p.config["clockRangeBreakout"] = map[string]any{
+	family := map[string]any{
 		"rangeStartMinute": start, "rangeEndMinute": end,
 		"expireMinute": expire, "closeMinute": closeMinute, "bufferPips": buffer,
 	}
-	p.config["stop"] = map[string]any{
-		"type": "percent", "percent": percent,
-		"extremeCandles": 0, "maxAtr": nil, "minAtr": 0, "paddingAtr": 0,
+	for key, value := range gates {
+		family[key] = value
 	}
+	p.config["clockRangeBreakout"] = family
+	p.config["stop"] = stop
 	spec, err := DecodeClockRangeBreakout(p.config)
 	if err != nil {
 		p.errorAt(nil, nil, "clock range breakout: "+err.Error(), "")
@@ -197,6 +241,13 @@ func (p *parser) scanClockRangeSource() {
 		reject := func(detail string) {
 			p.err(line, fmt.Sprintf("clock range breakout does not support %s", detail), "")
 		}
+		rejectDirective := func() {
+			section := line.section
+			if section == "" {
+				section = "top level"
+			}
+			reject(fmt.Sprintf("directive %q (section %s)", head, section))
+		}
 		switch head {
 		case "dsl", "strategy", "name", "description", "clock", "orders", "buffer":
 		case "slices":
@@ -213,7 +264,7 @@ func (p *parser) scanClockRangeSource() {
 				reject("setup type directive " + strconv.Quote(strings.Join(tokens, " ")) + "; use exactly one type: clock range breakout")
 			}
 		case "range":
-			if len(tokens) < 2 || !startsWithDigit(tokens[1]) {
+			if len(tokens) < 2 || !(startsWithDigit(tokens[1]) || strings.EqualFold(tokens[1], "width")) {
 				reject(`directive "range ` + strings.Join(tokens[1:], " ") + `"; use range <HH:MM> to <HH:MM>`)
 			}
 		case "close":
@@ -221,8 +272,20 @@ func (p *parser) scanClockRangeSource() {
 				reject(`directive "close"; use close positions at <HH:MM>`)
 			}
 		case "stop":
-			if !(len(tokens) == 3 && strings.EqualFold(tokens[2], "percent")) {
+			if !(len(tokens) == 3 && strings.EqualFold(tokens[2], "percent")) && !clockTokensEqual(tokens, clockEdgeStopPhrase) {
 				reject(`stop "` + strings.Join(tokens[1:], " ") + `"; use stop <N> percent`)
+			}
+		case "trade":
+			// Only the prior-day gate; trade window directives stay forbidden.
+			if len(tokens) < 2 || !strings.EqualFold(tokens[1], "with") {
+				rejectDirective()
+			}
+		case "cancel":
+		case "target":
+			// A target needs the range-edge stop; with a percent stop it stays
+			// outside the family as in v1.
+			if !isClockTargetPhrase(tokens) || len(p.clockRange.edgeStop) == 0 {
+				rejectDirective()
 			}
 		case "side":
 			text := strings.ToLower(strings.Join(tokens[1:], " "))
@@ -238,11 +301,7 @@ func (p *parser) scanClockRangeSource() {
 				reject(`riskUsd "` + strings.Join(tokens[1:], " ") + `"; use a finite nonnegative number`)
 			}
 		default:
-			section := line.section
-			if section == "" {
-				section = "top level"
-			}
-			reject(fmt.Sprintf("directive %q (section %s)", head, section))
+			rejectDirective()
 		}
 	}
 }
@@ -394,6 +453,103 @@ func (p *parser) parseClockBuffer() (float64, bool) {
 	return 0, false
 }
 
+// parseClockStop returns the stop config: exactly one of stop <N> percent or
+// stop beyond opposite range edge.
+func (p *parser) parseClockStop() (map[string]any, bool) {
+	stop := map[string]any{"extremeCandles": 0, "maxAtr": nil, "minAtr": 0, "paddingAtr": 0}
+	if len(p.clockRange.edgeStop) == 0 {
+		percent, ok := p.parseClockStopPercent()
+		stop["type"], stop["percent"] = ClockStopPercent, percent
+		return stop, ok
+	}
+	if _, ok := p.singleClockDirective(p.clockRange.edgeStop, "stop beyond opposite range edge"); !ok {
+		return nil, false
+	}
+	if len(p.clockRange.stop) > 0 {
+		p.err(p.clockRange.stop[0].line, "use either stop <N> percent or stop beyond opposite range edge, not both", "")
+		return nil, false
+	}
+	stop["type"] = ClockStopOppositeRangeEdge
+	return stop, true
+}
+
+// parseClockGates reads the optional placement gates and target into the
+// family config keys. Only authored gates produce keys, so v1 configs are
+// unchanged.
+func (p *parser) parseClockGates() (map[string]any, bool) {
+	gates := map[string]any{}
+	ok := true
+	if len(p.clockRange.width) > 0 {
+		if directive, single := p.singleClockDirective(p.clockRange.width, "range width"); single {
+			multiple, days, valid := p.parseClockWidth(directive)
+			if valid {
+				gates["widthMinAtr"], gates["widthAtrDays"] = multiple, days
+			}
+			ok = ok && valid
+		} else {
+			ok = false
+		}
+	}
+	for _, flag := range []struct {
+		group  []clockRangeDirective
+		phrase []string
+		key    string
+	}{
+		{p.clockRange.priorDay, clockPriorDayCandlePhrase, "priorDayCandle"},
+		{p.clockRange.cancel, clockCancelPhrase, "cancelOnOpposite"},
+	} {
+		if len(flag.group) == 0 {
+			continue
+		}
+		directive, single := p.singleClockDirective(flag.group, strings.Join(flag.phrase, " "))
+		if !single {
+			ok = false
+			continue
+		}
+		if !clockTokensEqual(directive.tokens, flag.phrase) {
+			p.err(directive.line, "write exactly "+strings.Join(flag.phrase, " "), "")
+			ok = false
+			continue
+		}
+		gates[flag.key] = 1
+	}
+	// Without the range-edge stop the source scan has already rejected the
+	// target as in v1, so it contributes no config.
+	if len(p.clockRange.target) > 0 && len(p.clockRange.edgeStop) > 0 {
+		directive, single := p.singleClockDirective(p.clockRange.target, "target")
+		if !single {
+			return gates, false
+		}
+		value, kind := parseClockNumber(clockTargetPattern.FindStringSubmatch(directive.tokens[1])[1])
+		if kind != clockNumberOK || !(value > 0) {
+			p.err(directive.line, "target must be a positive multiple of R, for example target 4R", "")
+			return gates, false
+		}
+		gates["targetR"] = value
+	}
+	return gates, ok
+}
+
+func (p *parser) parseClockWidth(directive clockRangeDirective) (float64, int, bool) {
+	tokens := directive.tokens
+	if len(tokens) != 8 || !strings.EqualFold(tokens[2], "at") || !strings.EqualFold(tokens[3], "least") ||
+		!strings.EqualFold(tokens[5], "daily") || !strings.EqualFold(tokens[6], "atr") {
+		p.err(directive.line, "range width must be written range width at least <X> daily ATR <N>", "")
+		return 0, 0, false
+	}
+	multiple, kind := parseClockNumber(tokens[4])
+	if kind != clockNumberOK || !(multiple > 0) {
+		p.err(directive.line, fmt.Sprintf("range width multiple %q must be a positive number", tokens[4]), "")
+		return 0, 0, false
+	}
+	days, kind := parseClockNumber(tokens[7])
+	if kind != clockNumberOK || days != math.Trunc(days) || days < 1 || days > ClockMaxWidthATRDays {
+		p.err(directive.line, fmt.Sprintf("range width daily ATR days %q must be a whole number from 1 to %d", tokens[7], ClockMaxWidthATRDays), "")
+		return 0, 0, false
+	}
+	return multiple, int(days), true
+}
+
 func (p *parser) parseClockStopPercent() (float64, bool) {
 	directive, ok := p.singleClockDirective(p.clockRange.stop, "stop")
 	if len(p.clockRange.stop) == 0 {
@@ -459,6 +615,17 @@ var clockInlineKnownHeads = func() map[string]bool {
 	return known
 }()
 
+// clockInlineGateAllowed admits an inline segment that is exactly one of the
+// optional gate phrases whose head is not otherwise allowed. Range and stop
+// heads are already allowed and checked by the line scan.
+func clockInlineGateAllowed(fields []string) bool {
+	tokens := make([]string, len(fields))
+	for i, field := range fields {
+		tokens[i] = strings.TrimRight(field, ":")
+	}
+	return clockTokensEqual(tokens, clockPriorDayCandlePhrase) || clockTokensEqual(tokens, clockCancelPhrase) || isClockTargetPhrase(tokens)
+}
+
 var clockQuotedMetadata = regexp.MustCompile(`^(?:"[^"]*"|'[^']*')$`)
 
 // auditClockRangeInlineBodies checks the original text of every inline block.
@@ -487,7 +654,7 @@ func (p *parser) auditClockRangeInlineBodies() {
 		for _, segment := range segments {
 			fields := strings.Fields(strings.NewReplacer("(", " ", ")", " ").Replace(segment))
 			head := strings.ToLower(strings.TrimRight(fields[0], ":"))
-			if !clockAllowedHeads[head] {
+			if !clockAllowedHeads[head] && !clockInlineGateAllowed(fields) {
 				p.err(line, fmt.Sprintf("clock range breakout does not support inline directive %q", strings.TrimSpace(segment)), "")
 				continue
 			}

@@ -19,6 +19,10 @@ func (p *parser) parseSetupType(tokens []string) {
 		p.config["breakeven"] = map[string]any{"atR": 0.75, "offsetAtr": 0.02}
 		p.config["cooldownCandles"] = 3
 		p.config["timedReturn"] = map[string]any{}
+	case string(FamilyScheduledTrade):
+		p.config["breakeven"] = map[string]any{"atR": 0.75, "offsetAtr": 0.02}
+		p.config["cooldownCandles"] = 3
+		p.config["scheduledTrade"] = map[string]any{}
 	case string(FamilyDownShockRebound):
 		p.config["downShockRebound"] = map[string]any{"entry": "immediate", "targetMode": "off", "targetValue": 0.0}
 		p.config["allowLong"] = 1
