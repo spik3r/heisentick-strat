@@ -1,0 +1,36 @@
+{
+  "formatVersion": 2,
+  "eventId": "5d848d52-6756-4b80-a7c6-05d4004e6c36",
+  "runId": "3f98a4a7-05da-4345-8f77-25908103a43e",
+  "kind": "start",
+  "parents": [],
+  "sequence": 0,
+  "task": {
+    "repository": "spik3r/heisentick-backlog",
+    "id": "HT-257",
+    "path": "tasks/HT-257-native-cli-next-open-fixture-coverage.md",
+    "revision": "276db2688f53cd7b562499221d1c97ddb64ad6f0",
+    "blob": "757897be7f0deed7bdb9042be2322779cb64cd74",
+    "claim": {
+      "heading": "Prospective cloud qualification continuation claim — 2026-10-25",
+      "digest": "329671e3b54d43f429bcc11c534fab61611be930b10a3d271359e423c409ab0c"
+    }
+  },
+  "repository": "spik3r/heisentick-strat",
+  "branch": "codex/ht257-report-fill",
+  "pullRequest": "https://github.com/spik3r/heisentick-strat/pull/149",
+  "at": "2026-10-25T10:29:33.235Z",
+  "summary": "Preserve eight inherited PR149 paths and reconcile only reviewed source inventory hashes with current main, leaving all instruction pins and previous history unchanged",
+  "next": "Obtain independent exact reconciliation review before the one bounded cloud qualification",
+  "files": [
+    "cmd/heisentick/main.go",
+    "cmd/heisentick/main_test.go",
+    "cmd/heisentick/report.go",
+    "report/build.go",
+    "report/build_test.go",
+    "report/run.go",
+    "report/run_test.go",
+    "scripts/checks/paper-bidask-parity.mjs",
+    "scripts/checks/sequential-arithmetic-schedules.json"
+  ]
+}
