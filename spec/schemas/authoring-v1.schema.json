@@ -1,0 +1,511 @@
+{
+  "$defs": {
+    "argument": {
+      "additionalProperties": false,
+      "properties": {
+        "enum": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 0,
+          "type": "array"
+        },
+        "exclusiveMinimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lexical": {
+          "enum": [
+            "family-alias",
+            "legacy-number",
+            "finite-decimal"
+          ]
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+          "type": "string"
+        },
+        "position": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "required": {
+          "const": true
+        },
+        "type": {
+          "enum": [
+            "integer",
+            "number",
+            "enum"
+          ]
+        },
+        "unit": {
+          "enum": [
+            "none",
+            "bars",
+            "ATR"
+          ]
+        },
+        "unitToken": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "upperBound": {
+          "enum": [
+            "not-applicable",
+            "go-int-roundtrip",
+            "no-parser-maximum"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "lexical",
+        "required",
+        "enum",
+        "unit",
+        "unitToken",
+        "exclusiveMinimum",
+        "maximum",
+        "upperBound",
+        "position"
+      ],
+      "type": "object"
+    },
+    "constraint": {
+      "additionalProperties": false,
+      "properties": {
+        "directives": {
+          "items": {
+            "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+            "type": "string"
+          },
+          "minItems": 2,
+          "type": "array"
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "less-than",
+            "all-or-none"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "directives"
+      ],
+      "type": "object"
+    },
+    "directive": {
+      "additionalProperties": false,
+      "properties": {
+        "after": {
+          "items": {
+            "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+            "type": "string"
+          },
+          "minItems": 0,
+          "type": "array"
+        },
+        "arguments": {
+          "items": {
+            "$ref": "#/$defs/argument"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "arity": {
+          "items": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "configPath": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deprecated": {
+          "const": false
+        },
+        "example": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "family": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "help": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+          "type": "string"
+        },
+        "prefix": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "presence": {
+          "enum": [
+            "family-selector",
+            "optional-default",
+            "optional-bundle"
+          ]
+        },
+        "section": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sourcePaths": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "summary": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "family",
+        "section",
+        "prefix",
+        "arguments",
+        "arity",
+        "presence",
+        "default",
+        "configPath",
+        "after",
+        "deprecated",
+        "summary",
+        "sourcePaths",
+        "help",
+        "example"
+      ],
+      "type": "object"
+    },
+    "example": {
+      "additionalProperties": false,
+      "properties": {
+        "expected": {
+          "additionalProperties": false,
+          "properties": {
+            "atrLen": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fastSmaLen": {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            "slowSmaLen": {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            "stopAtr": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "targetAtr": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "fastSmaLen",
+            "slowSmaLen",
+            "atrLen",
+            "stopAtr",
+            "targetAtr"
+          ],
+          "type": "object"
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "source",
+        "expected"
+      ],
+      "type": "object"
+    },
+    "family": {
+      "additionalProperties": false,
+      "properties": {
+        "coverage": {
+          "enum": [
+            "partial",
+            "unknown"
+          ]
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "coverage"
+      ],
+      "type": "object"
+    },
+    "section": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "coverage": {
+          "enum": [
+            "partial",
+            "unknown"
+          ]
+        },
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$",
+          "type": "string"
+        },
+        "spelling": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "spelling",
+        "canonical",
+        "coverage"
+      ],
+      "type": "object"
+    },
+    "source": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://github.com/spik3r/heisentick-strat/spec/schemas/authoring-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "const": "./schemas/authoring-v1.schema.json"
+    },
+    "constraints": {
+      "items": {
+        "$ref": "#/$defs/constraint"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "coverage": {
+      "const": "partial"
+    },
+    "directives": {
+      "items": {
+        "$ref": "#/$defs/directive"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "distribution": {
+      "additionalProperties": false,
+      "properties": {
+        "archive": {
+          "const": "conformance.tar.gz"
+        },
+        "path": {
+          "const": "spec/authoring-v1.json"
+        },
+        "releaseIdentity": {
+          "const": "external-verified-archive"
+        },
+        "tag": {
+          "const": null
+        }
+      },
+      "required": [
+        "archive",
+        "path",
+        "releaseIdentity",
+        "tag"
+      ],
+      "type": "object"
+    },
+    "dslVersions": {
+      "const": [
+        7
+      ]
+    },
+    "examples": {
+      "items": {
+        "$ref": "#/$defs/example"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "families": {
+      "items": {
+        "$ref": "#/$defs/family"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "grammarSource": {
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "pattern": "^[a-f0-9]{40}$",
+          "type": "string"
+        },
+        "files": {
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "repository": {
+          "const": "https://github.com/spik3r/heisentick-strat"
+        }
+      },
+      "required": [
+        "repository",
+        "commit",
+        "files"
+      ],
+      "type": "object"
+    },
+    "kind": {
+      "const": "strat-authoring"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/section"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "semantics": {
+      "const": "syntax-only"
+    },
+    "unlisted": {
+      "const": "unknown"
+    }
+  },
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "kind",
+    "semantics",
+    "coverage",
+    "unlisted",
+    "dslVersions",
+    "grammarSource",
+    "distribution",
+    "sections",
+    "families",
+    "directives",
+    "constraints",
+    "examples"
+  ],
+  "title": "Strat passive authoring metadata v1",
+  "type": "object"
+}
