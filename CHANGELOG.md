@@ -6,6 +6,13 @@ version and is named here.
 
 ## [Unreleased]
 
+### Passive SMA authoring metadata
+
+- Add a partial, syntax-only authoring descriptor for the SMA golden-cross
+  setup directives. Other families and arguments remain unknown; the metadata
+  does not grant runtime execution support. Existing consumers can ignore the
+  new files and continue using their pinned parser and manifest.
+
 ### Scheduled settlement calendar through 2027 (HT-323; v0.40.0 additive minor semantics)
 
 - Extend the official Cabinet Office Japan holiday calendar from 2026-12-31

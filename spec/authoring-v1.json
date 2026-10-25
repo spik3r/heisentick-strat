@@ -1,0 +1,642 @@
+{
+  "$schema": "./schemas/authoring-v1.schema.json",
+  "constraints": [
+    {
+      "directives": [
+        "setup.smaGoldenCross.fast",
+        "setup.smaGoldenCross.slow"
+      ],
+      "id": "smaGoldenCross.fast-less-than-slow",
+      "kind": "less-than"
+    },
+    {
+      "directives": [
+        "setup.smaGoldenCross.atr",
+        "setup.smaGoldenCross.stop",
+        "setup.smaGoldenCross.target"
+      ],
+      "id": "smaGoldenCross.protected-bundle",
+      "kind": "all-or-none"
+    }
+  ],
+  "coverage": "partial",
+  "directives": [
+    {
+      "after": [
+        "setup.smaGoldenCross.type"
+      ],
+      "arguments": [
+        {
+          "enum": [],
+          "exclusiveMinimum": 0,
+          "lexical": "finite-decimal",
+          "maximum": null,
+          "name": "length",
+          "position": 0,
+          "required": true,
+          "type": "integer",
+          "unit": "bars",
+          "unitToken": null,
+          "upperBound": "no-parser-maximum"
+        }
+      ],
+      "arity": [
+        3
+      ],
+      "configPath": "smaGoldenCross.atrLen",
+      "default": null,
+      "deprecated": false,
+      "example": "sma atr 14",
+      "family": "smaGoldenCross",
+      "help": "spec/authoring-metadata.md#atr",
+      "id": "setup.smaGoldenCross.atr",
+      "prefix": [
+        "sma",
+        "atr"
+      ],
+      "presence": "optional-bundle",
+      "section": "section.setup",
+      "sourcePaths": [
+        "dsl/parser_sma_golden_cross.go",
+        "dsl/parser_sma_golden_cross_validation.go"
+      ],
+      "summary": "Optional ATR length; atr, stop and target must be authored together."
+    },
+    {
+      "after": [
+        "setup.smaGoldenCross.type"
+      ],
+      "arguments": [
+        {
+          "enum": [],
+          "exclusiveMinimum": 0,
+          "lexical": "legacy-number",
+          "maximum": null,
+          "name": "length",
+          "position": 0,
+          "required": true,
+          "type": "integer",
+          "unit": "bars",
+          "unitToken": null,
+          "upperBound": "go-int-roundtrip"
+        }
+      ],
+      "arity": [
+        3
+      ],
+      "configPath": "smaGoldenCross.fastSmaLen",
+      "default": 50,
+      "deprecated": false,
+      "example": "sma fast 20",
+      "family": "smaGoldenCross",
+      "help": "spec/authoring-metadata.md#fast",
+      "id": "setup.smaGoldenCross.fast",
+      "prefix": [
+        "sma",
+        "fast"
+      ],
+      "presence": "optional-default",
+      "section": "section.setup",
+      "sourcePaths": [
+        "dsl/parser_sma_golden_cross.go",
+        "dsl/parser_sma_golden_cross_validation.go"
+      ],
+      "summary": "Positive integral fast SMA length; must remain less than the effective slow length."
+    },
+    {
+      "after": [
+        "setup.smaGoldenCross.type"
+      ],
+      "arguments": [
+        {
+          "enum": [],
+          "exclusiveMinimum": 0,
+          "lexical": "legacy-number",
+          "maximum": null,
+          "name": "length",
+          "position": 0,
+          "required": true,
+          "type": "integer",
+          "unit": "bars",
+          "unitToken": null,
+          "upperBound": "go-int-roundtrip"
+        }
+      ],
+      "arity": [
+        3
+      ],
+      "configPath": "smaGoldenCross.slowSmaLen",
+      "default": 200,
+      "deprecated": false,
+      "example": "sma slow 80",
+      "family": "smaGoldenCross",
+      "help": "spec/authoring-metadata.md#slow",
+      "id": "setup.smaGoldenCross.slow",
+      "prefix": [
+        "sma",
+        "slow"
+      ],
+      "presence": "optional-default",
+      "section": "section.setup",
+      "sourcePaths": [
+        "dsl/parser_sma_golden_cross.go",
+        "dsl/parser_sma_golden_cross_validation.go"
+      ],
+      "summary": "Positive integral slow SMA length; must exceed the effective fast length."
+    },
+    {
+      "after": [
+        "setup.smaGoldenCross.type"
+      ],
+      "arguments": [
+        {
+          "enum": [],
+          "exclusiveMinimum": 0,
+          "lexical": "finite-decimal",
+          "maximum": null,
+          "name": "multiple",
+          "position": 0,
+          "required": true,
+          "type": "number",
+          "unit": "ATR",
+          "unitToken": "ATR",
+          "upperBound": "no-parser-maximum"
+        }
+      ],
+      "arity": [
+        4
+      ],
+      "configPath": "smaGoldenCross.stopAtr",
+      "default": null,
+      "deprecated": false,
+      "example": "sma stop 2 ATR",
+      "family": "smaGoldenCross",
+      "help": "spec/authoring-metadata.md#stop",
+      "id": "setup.smaGoldenCross.stop",
+      "prefix": [
+        "sma",
+        "stop"
+      ],
+      "presence": "optional-bundle",
+      "section": "section.setup",
+      "sourcePaths": [
+        "dsl/parser_sma_golden_cross.go",
+        "dsl/parser_sma_golden_cross_validation.go"
+      ],
+      "summary": "Optional finite positive stop ATR multiple, with mandatory ATR token."
+    },
+    {
+      "after": [
+        "setup.smaGoldenCross.type"
+      ],
+      "arguments": [
+        {
+          "enum": [],
+          "exclusiveMinimum": 0,
+          "lexical": "finite-decimal",
+          "maximum": null,
+          "name": "multiple",
+          "position": 0,
+          "required": true,
+          "type": "number",
+          "unit": "ATR",
+          "unitToken": "ATR",
+          "upperBound": "no-parser-maximum"
+        }
+      ],
+      "arity": [
+        4
+      ],
+      "configPath": "smaGoldenCross.targetAtr",
+      "default": null,
+      "deprecated": false,
+      "example": "sma target 3 ATR",
+      "family": "smaGoldenCross",
+      "help": "spec/authoring-metadata.md#target",
+      "id": "setup.smaGoldenCross.target",
+      "prefix": [
+        "sma",
+        "target"
+      ],
+      "presence": "optional-bundle",
+      "section": "section.setup",
+      "sourcePaths": [
+        "dsl/parser_sma_golden_cross.go",
+        "dsl/parser_sma_golden_cross_validation.go"
+      ],
+      "summary": "Optional finite positive target ATR multiple, with mandatory ATR token."
+    },
+    {
+      "after": [],
+      "arguments": [
+        {
+          "enum": [
+            "sma golden cross",
+            "smagoldencross"
+          ],
+          "exclusiveMinimum": null,
+          "lexical": "family-alias",
+          "maximum": null,
+          "name": "family",
+          "position": 0,
+          "required": true,
+          "type": "enum",
+          "unit": "none",
+          "unitToken": null,
+          "upperBound": "not-applicable"
+        }
+      ],
+      "arity": [
+        2,
+        4
+      ],
+      "configPath": "setupType",
+      "default": null,
+      "deprecated": false,
+      "example": "type: sma golden cross",
+      "family": "smaGoldenCross",
+      "help": "spec/authoring-metadata.md#type",
+      "id": "setup.smaGoldenCross.type",
+      "prefix": [
+        "type"
+      ],
+      "presence": "family-selector",
+      "section": "section.setup",
+      "sourcePaths": [
+        "dsl/parser_setups.go",
+        "dsl/parser.go"
+      ],
+      "summary": "Selects this family and resets its parameters to fast 50, slow 200; protected fields are absent."
+    }
+  ],
+  "distribution": {
+    "archive": "conformance.tar.gz",
+    "path": "spec/authoring-v1.json",
+    "releaseIdentity": "external-verified-archive",
+    "tag": null
+  },
+  "dslVersions": [
+    7
+  ],
+  "examples": [
+    {
+      "expected": {
+        "atrLen": null,
+        "fastSmaLen": 50,
+        "slowSmaLen": 200,
+        "stopAtr": null,
+        "targetAtr": null
+      },
+      "id": "sma-defaults",
+      "source": "dsl v7\nstrategy \"Authoring example\" { description \"Static syntax example\" }\nmarket conditions { slices(XAUUSD 1d) }\nsetup {\n type: sma golden cross\n}\nfilters { side long only }\n"
+    },
+    {
+      "expected": {
+        "atrLen": null,
+        "fastSmaLen": 20,
+        "slowSmaLen": 80,
+        "stopAtr": null,
+        "targetAtr": null
+      },
+      "id": "sma-lengths",
+      "source": "dsl v7\nstrategy \"Authoring example\" { description \"Static syntax example\" }\nmarket conditions { slices(XAUUSD 1d) }\nsetup {\n type: sma golden cross\n sma fast 20\n sma slow 80\n}\nfilters { side long only }\n"
+    },
+    {
+      "expected": {
+        "atrLen": 14,
+        "fastSmaLen": 20,
+        "slowSmaLen": 80,
+        "stopAtr": 2,
+        "targetAtr": 3
+      },
+      "id": "sma-protected",
+      "source": "dsl v7\nstrategy \"Authoring example\" { description \"Static syntax example\" }\nmarket conditions { slices(XAUUSD 1d) }\nsetup {\n type: sma golden cross\n sma fast 20\n sma slow 80\n sma atr 14\n sma stop 2 ATR\n sma target 3 ATR\n}\nfilters { side long only }\n"
+    }
+  ],
+  "families": [
+    {
+      "coverage": "unknown",
+      "id": "adaptiveVolumeFlag"
+    },
+    {
+      "coverage": "unknown",
+      "id": "breakRetest"
+    },
+    {
+      "coverage": "unknown",
+      "id": "channelBreakHold"
+    },
+    {
+      "coverage": "unknown",
+      "id": "clockRangeBreakout"
+    },
+    {
+      "coverage": "unknown",
+      "id": "dailyFlushFailure"
+    },
+    {
+      "coverage": "unknown",
+      "id": "dayOpenReclaim"
+    },
+    {
+      "coverage": "unknown",
+      "id": "donchianBreakout"
+    },
+    {
+      "coverage": "unknown",
+      "id": "doubleTopBottom"
+    },
+    {
+      "coverage": "unknown",
+      "id": "downShockRebound"
+    },
+    {
+      "coverage": "unknown",
+      "id": "dualEmaResumption"
+    },
+    {
+      "coverage": "unknown",
+      "id": "elderTripleScreen"
+    },
+    {
+      "coverage": "unknown",
+      "id": "emaRibbon"
+    },
+    {
+      "coverage": "unknown",
+      "id": "failedBreakout"
+    },
+    {
+      "coverage": "unknown",
+      "id": "fairValueGap"
+    },
+    {
+      "coverage": "unknown",
+      "id": "fibContinuation"
+    },
+    {
+      "coverage": "unknown",
+      "id": "flagContinuation"
+    },
+    {
+      "coverage": "unknown",
+      "id": "frozenLevelBreakout"
+    },
+    {
+      "coverage": "unknown",
+      "id": "goldFlagReference"
+    },
+    {
+      "coverage": "unknown",
+      "id": "insideDayExpansion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "intraHourRunExhaustion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "keltnerExpansion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "keltnerReversion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "legacySetup9"
+    },
+    {
+      "coverage": "unknown",
+      "id": "masterStructural"
+    },
+    {
+      "coverage": "unknown",
+      "id": "namedLevelFlag"
+    },
+    {
+      "coverage": "unknown",
+      "id": "namedLevelSweep"
+    },
+    {
+      "coverage": "unknown",
+      "id": "openingRangeBreakout"
+    },
+    {
+      "coverage": "unknown",
+      "id": "priceMomentum"
+    },
+    {
+      "coverage": "unknown",
+      "id": "rangeBreakFake"
+    },
+    {
+      "coverage": "unknown",
+      "id": "rangeReversion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "regimeEngine"
+    },
+    {
+      "coverage": "unknown",
+      "id": "scheduledTrade"
+    },
+    {
+      "coverage": "unknown",
+      "id": "sequentialFull"
+    },
+    {
+      "coverage": "unknown",
+      "id": "sessionBreakHold"
+    },
+    {
+      "coverage": "partial",
+      "id": "smaGoldenCross"
+    },
+    {
+      "coverage": "unknown",
+      "id": "smaRegimeHold"
+    },
+    {
+      "coverage": "unknown",
+      "id": "supplyDemand"
+    },
+    {
+      "coverage": "unknown",
+      "id": "timedReturn"
+    },
+    {
+      "coverage": "unknown",
+      "id": "trendPullback"
+    },
+    {
+      "coverage": "unknown",
+      "id": "triplePushExhaustion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "volumeAnomalyExhaustion"
+    },
+    {
+      "coverage": "unknown",
+      "id": "vwapExtensionFade"
+    },
+    {
+      "coverage": "unknown",
+      "id": "weekendExtremeFade"
+    }
+  ],
+  "grammarSource": {
+    "commit": "f2c1aa3ba27902f9f2662b31ef4139ae6c0ab997",
+    "files": [
+      {
+        "path": "dsl/grammar_tables_generated.go",
+        "sha256": "105c64f3a628cdbf791dc6a695e7de1204df4631d13974afbfc0c71e5acc1f22"
+      },
+      {
+        "path": "dsl/parser.go",
+        "sha256": "a913d273a3d93a3e9e491eb0007e08ad5f2b1fd3901631970bb3ea18d79ebb52"
+      },
+      {
+        "path": "dsl/parser_lexing.go",
+        "sha256": "d9131a4e2fb36b19c00e85cfb9e064da724c20af62c2fd4a710ae59b3d84c618"
+      },
+      {
+        "path": "dsl/parser_setups.go",
+        "sha256": "4e05c97ac1f72c833802098d3f2e56dafc4fb23a52ef32a3a7bd012b5d4c09f5"
+      },
+      {
+        "path": "dsl/parser_sma_golden_cross.go",
+        "sha256": "6aa32f2eed90df590657bf50751cf78ea9ca2469ffdcee83c970db9947e1de77"
+      },
+      {
+        "path": "dsl/parser_sma_golden_cross_validation.go",
+        "sha256": "11f89c6ca6c07a290a15f3d8fbbc44de92b8808831c19dba5245a2c4e929c46d"
+      },
+      {
+        "path": "dsl/parser_values.go",
+        "sha256": "a8153b3942dbfbb9fe8353fd636b0e96234e3f90a8f208572bc1e05479bd6939"
+      },
+      {
+        "path": "spec/manifest.json",
+        "sha256": "97afe44347216a3ddc47ea9184a7de19e1af31326f2eabe879b4dca767b852c8"
+      }
+    ],
+    "repository": "https://github.com/spik3r/heisentick-strat"
+  },
+  "kind": "strat-authoring",
+  "schemaVersion": 1,
+  "sections": [
+    {
+      "canonical": "market",
+      "coverage": "unknown",
+      "id": "section.conditions",
+      "spelling": "conditions"
+    },
+    {
+      "canonical": "context",
+      "coverage": "unknown",
+      "id": "section.context",
+      "spelling": "context"
+    },
+    {
+      "canonical": "entry",
+      "coverage": "unknown",
+      "id": "section.entry",
+      "spelling": "entry"
+    },
+    {
+      "canonical": "execution",
+      "coverage": "unknown",
+      "id": "section.execution",
+      "spelling": "execution"
+    },
+    {
+      "canonical": "filters",
+      "coverage": "unknown",
+      "id": "section.filters",
+      "spelling": "filters"
+    },
+    {
+      "canonical": "grade",
+      "coverage": "unknown",
+      "id": "section.grade",
+      "spelling": "grade"
+    },
+    {
+      "canonical": "levels",
+      "coverage": "unknown",
+      "id": "section.levels",
+      "spelling": "levels"
+    },
+    {
+      "canonical": "management",
+      "coverage": "unknown",
+      "id": "section.management",
+      "spelling": "management"
+    },
+    {
+      "canonical": "market",
+      "coverage": "unknown",
+      "id": "section.market",
+      "spelling": "market"
+    },
+    {
+      "canonical": "market",
+      "coverage": "unknown",
+      "id": "section.market-conditions",
+      "spelling": "market conditions"
+    },
+    {
+      "canonical": "risk",
+      "coverage": "unknown",
+      "id": "section.risk",
+      "spelling": "risk"
+    },
+    {
+      "canonical": "setup",
+      "coverage": "partial",
+      "id": "section.setup",
+      "spelling": "setup"
+    },
+    {
+      "canonical": "strategy",
+      "coverage": "unknown",
+      "id": "section.strategy",
+      "spelling": "strategy"
+    },
+    {
+      "canonical": "target",
+      "coverage": "unknown",
+      "id": "section.target",
+      "spelling": "target"
+    },
+    {
+      "canonical": "context",
+      "coverage": "unknown",
+      "id": "section.time",
+      "spelling": "time"
+    },
+    {
+      "canonical": "trigger",
+      "coverage": "unknown",
+      "id": "section.trigger-candles",
+      "spelling": "triggerCandles"
+    },
+    {
+      "canonical": "trigger",
+      "coverage": "unknown",
+      "id": "section.triggers",
+      "spelling": "triggers"
+    },
+    {
+      "canonical": "volume profile",
+      "coverage": "unknown",
+      "id": "section.volume-profile",
+      "spelling": "volume profile"
+    }
+  ],
+  "semantics": "syntax-only",
+  "unlisted": "unknown"
+}
