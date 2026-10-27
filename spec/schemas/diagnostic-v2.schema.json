@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "diagnostic-v2.schema.json",
+  "title": "Strat diagnostic source envelope v2 (proposal)",
+  "description": "Opt-in source-bound envelope; reject malformed UTF-8 and unpaired surrogate escapes before JSON decoding. Semantic source and edit checks are required in addition to schema validation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "diagnostic",
+    "source",
+    "range",
+    "edit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "strat-diagnostic-v2"
+    },
+    "diagnostic": {
+      "$ref": "diagnostic-v1.schema.json"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string",
+              "minLength": 1
+            }
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "range": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/range"
+        }
+      ]
+    },
+    "edit": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "range",
+            "expectedText",
+            "newText"
+          ],
+          "properties": {
+            "range": {
+              "$ref": "#/$defs/range"
+            },
+            "expectedText": {
+              "type": "string",
+              "minLength": 1
+            },
+            "newText": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startByte",
+        "endByte"
+      ],
+      "properties": {
+        "startByte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "endByte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      }
+    }
+  }
+}
