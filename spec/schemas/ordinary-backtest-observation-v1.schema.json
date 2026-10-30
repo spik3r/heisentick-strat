@@ -1,0 +1,442 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:heisentick:strat:ordinary-backtest-observation:v1",
+  "$comment": "PROPOSAL ONLY. Synthetic reference-consumer probes do not establish runtime observation. Structural schema plus the mandatory semantic and trusted-context rules in ../ordinary-backtest-observations.md are required. No existing entry point accepts/emits this document.",
+  "$ref": "#/$defs/envelope",
+  "$defs": {
+    "digest": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "commit": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40,
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sha256",
+        "utf8Bytes"
+      ],
+      "properties": {
+        "sha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "utf8Bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2097152
+        }
+      }
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo",
+        "tag",
+        "sourceCommit",
+        "sourceTree",
+        "target",
+        "goVersion",
+        "schemaSetSha256"
+      ],
+      "properties": {
+        "repo": {
+          "const": "spik3r/heisentick-strat"
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "sourceCommit": {
+          "$ref": "#/$defs/commit"
+        },
+        "sourceTree": {
+          "$ref": "#/$defs/commit"
+        },
+        "target": {
+          "enum": [
+            "linux/amd64",
+            "linux/arm64",
+            "js/wasm"
+          ]
+        },
+        "goVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "schemaSetSha256": {
+          "$ref": "#/$defs/digest"
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invocationId",
+        "source",
+        "request",
+        "data",
+        "configSha256",
+        "reportSha256",
+        "producer"
+      ],
+      "properties": {
+        "invocationId": {
+          "$ref": "#/$defs/token"
+        },
+        "source": {
+          "$ref": "#/$defs/identity"
+        },
+        "request": {
+          "$ref": "#/$defs/identity"
+        },
+        "data": {
+          "$ref": "#/$defs/identity"
+        },
+        "configSha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "reportSha256": {
+          "$ref": "#/$defs/digest"
+        },
+        "producer": {
+          "$ref": "#/$defs/producer"
+        }
+      }
+    },
+    "counters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bars",
+        "candidates",
+        "orders"
+      ],
+      "properties": {
+        "bars": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visited",
+            "managingPosition",
+            "cooldown",
+            "signalUnavailable",
+            "noSignal",
+            "candidates"
+          ],
+          "properties": {
+            "visited": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "managingPosition": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "cooldown": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "signalUnavailable": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "noSignal": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "candidates": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          }
+        },
+        "candidates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "created",
+            "rejectedSide",
+            "rejectedATR",
+            "rejectedStop",
+            "rejectedEntryGates",
+            "acceptedOrders"
+          ],
+          "properties": {
+            "created": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "rejectedSide": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "rejectedATR": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "rejectedStop": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "rejectedEntryGates": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "acceptedOrders": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            }
+          }
+        },
+        "orders": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "accepted",
+            "filled",
+            "pendingAtEnd"
+          ],
+          "properties": {
+            "accepted": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "filled": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10000
+            },
+            "pendingAtEnd": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startByte",
+        "endByte"
+      ],
+      "properties": {
+        "startByte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 262144
+        },
+        "endByte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 262144
+        }
+      }
+    },
+    "example": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "barIndex",
+        "barT",
+        "signalIndex",
+        "candidateId",
+        "side",
+        "consumed",
+        "sourceRange"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "signal-unavailable",
+            "no-signal",
+            "managing-position",
+            "cooldown",
+            "rejected-side",
+            "rejected-atr",
+            "rejected-stop",
+            "rejected-entry-gates",
+            "accepted-order",
+            "filled-order",
+            "pending-at-end"
+          ]
+        },
+        "barIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999
+        },
+        "barT": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "signalIndex": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9999
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "candidateId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32,
+              "pattern": "^pm:[0-9]+:(long|short)$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "side": {
+          "enum": [
+            null,
+            "long",
+            "short"
+          ]
+        },
+        "consumed": {
+          "enum": [
+            null,
+            false,
+            true
+          ]
+        },
+        "sourceRange": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/range"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema",
+        "status",
+        "reason",
+        "binding",
+        "profile",
+        "family",
+        "barCount",
+        "exampleLimit",
+        "counters",
+        "examples",
+        "omittedExampleKinds"
+      ],
+      "properties": {
+        "schema": {
+          "const": "strat-ordinary-backtest-observation-v1"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "not-requested",
+            "unsupported",
+            "incomplete"
+          ]
+        },
+        "reason": {
+          "enum": [
+            null,
+            "not-requested",
+            "coverage-unavailable",
+            "observer-limit",
+            "observer-failed"
+          ]
+        },
+        "binding": {
+          "$ref": "#/$defs/binding"
+        },
+        "profile": {
+          "const": "price-momentum-original-v1"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+        },
+        "barCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "exampleLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "counters": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/counters"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "examples": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/example"
+          }
+        },
+        "omittedExampleKinds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 11
+        }
+      }
+    }
+  }
+}

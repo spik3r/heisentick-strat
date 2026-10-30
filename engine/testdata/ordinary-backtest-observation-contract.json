@@ -1,0 +1,2553 @@
+{
+  "purpose": "synthetic-contract-reference-only; no engine calls or observed market outcomes",
+  "source": "# Invented — 😀\r\nsetup: price momentum\n",
+  "requestJSON": "{\"synthetic\":\"not-an-engine-request\",\"data\":\"invented\"}",
+  "dataJSON": "{\"synthetic\":true,\"times\":[0,3600000,7200000,10800000,14400000,18000000,21600000,25200000,28800000,32400000]}",
+  "configJSON": "{\"synthetic\":\"not-parser-output\",\"family\":\"priceMomentum\"}",
+  "reportJSON": "{\"synthetic\":\"not-a-runtime-report\",\"noRuntimeEvidence\":true}",
+  "base": {
+    "schema": "strat-ordinary-backtest-observation-v1",
+    "status": "complete",
+    "reason": null,
+    "binding": {
+      "invocationId": "synthetic.invocation.1",
+      "source": {
+        "sha256": "05ead5fb6c5907d487b91704b8fe1c0cd400c013e2e4a5f6a2780f3e37da7ae6",
+        "utf8Bytes": 43
+      },
+      "request": {
+        "sha256": "71ba9cbaa32ee1b116db1a3227029a9fb62dc8975ed7c6cbc4296034291d0109",
+        "utf8Bytes": 55
+      },
+      "data": {
+        "sha256": "c794d452cad785008bb6f07ad14165455dc7f18107533bd700923045ab499310",
+        "utf8Bytes": 109
+      },
+      "configSha256": "a165fef54efb672feeeced01c5d51009b2a940ed8ced3d85827409787a824fdb",
+      "reportSha256": "696b23a2f715fd9675b4d1e377a8d2652038ff6a0eea67167684643d0f5d3166",
+      "producer": {
+        "repo": "spik3r/heisentick-strat",
+        "tag": "synthetic-test-only",
+        "sourceCommit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "sourceTree": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "target": "linux/amd64",
+        "goVersion": "go1.22.12",
+        "schemaSetSha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    },
+    "profile": "price-momentum-original-v1",
+    "family": "priceMomentum",
+    "barCount": 10,
+    "exampleLimit": 16,
+    "counters": {
+      "bars": {
+        "visited": 10,
+        "managingPosition": 1,
+        "cooldown": 1,
+        "signalUnavailable": 1,
+        "noSignal": 1,
+        "candidates": 6
+      },
+      "candidates": {
+        "created": 6,
+        "rejectedSide": 1,
+        "rejectedATR": 1,
+        "rejectedStop": 1,
+        "rejectedEntryGates": 1,
+        "acceptedOrders": 2
+      },
+      "orders": {
+        "accepted": 2,
+        "filled": 1,
+        "pendingAtEnd": 1
+      }
+    },
+    "examples": [
+      {
+        "kind": "signal-unavailable",
+        "barIndex": 0,
+        "barT": 0,
+        "signalIndex": null,
+        "candidateId": null,
+        "side": null,
+        "consumed": null,
+        "sourceRange": null
+      },
+      {
+        "kind": "no-signal",
+        "barIndex": 1,
+        "barT": 3600000,
+        "signalIndex": null,
+        "candidateId": null,
+        "side": null,
+        "consumed": null,
+        "sourceRange": null
+      },
+      {
+        "kind": "rejected-atr",
+        "barIndex": 2,
+        "barT": 7200000,
+        "signalIndex": 2,
+        "candidateId": "pm:2:long",
+        "side": "long",
+        "consumed": false,
+        "sourceRange": null
+      },
+      {
+        "kind": "rejected-entry-gates",
+        "barIndex": 3,
+        "barT": 10800000,
+        "signalIndex": 3,
+        "candidateId": "pm:3:short",
+        "side": "short",
+        "consumed": false,
+        "sourceRange": null
+      },
+      {
+        "kind": "accepted-order",
+        "barIndex": 4,
+        "barT": 14400000,
+        "signalIndex": 4,
+        "candidateId": "pm:4:long",
+        "side": "long",
+        "consumed": true,
+        "sourceRange": null
+      },
+      {
+        "kind": "managing-position",
+        "barIndex": 5,
+        "barT": 18000000,
+        "signalIndex": null,
+        "candidateId": null,
+        "side": null,
+        "consumed": null,
+        "sourceRange": null
+      },
+      {
+        "kind": "filled-order",
+        "barIndex": 5,
+        "barT": 18000000,
+        "signalIndex": 4,
+        "candidateId": "pm:4:long",
+        "side": "long",
+        "consumed": true,
+        "sourceRange": null
+      },
+      {
+        "kind": "cooldown",
+        "barIndex": 6,
+        "barT": 21600000,
+        "signalIndex": null,
+        "candidateId": null,
+        "side": null,
+        "consumed": null,
+        "sourceRange": null
+      },
+      {
+        "kind": "rejected-side",
+        "barIndex": 7,
+        "barT": 25200000,
+        "signalIndex": 7,
+        "candidateId": "pm:7:short",
+        "side": "short",
+        "consumed": false,
+        "sourceRange": null
+      },
+      {
+        "kind": "rejected-stop",
+        "barIndex": 8,
+        "barT": 28800000,
+        "signalIndex": 8,
+        "candidateId": "pm:8:long",
+        "side": "long",
+        "consumed": false,
+        "sourceRange": null
+      },
+      {
+        "kind": "pending-at-end",
+        "barIndex": 9,
+        "barT": 32400000,
+        "signalIndex": 9,
+        "candidateId": "pm:9:long",
+        "side": "long",
+        "consumed": true,
+        "sourceRange": null
+      }
+    ],
+    "omittedExampleKinds": 0
+  },
+  "cases": [
+    {
+      "name": "complete-synthetic-partitions",
+      "expected": "ok",
+      "changes": []
+    },
+    {
+      "name": "bounded-earliest-example-prefix",
+      "expected": "ok",
+      "changes": [
+        {
+          "path": [
+            "exampleLimit"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            }
+          ]
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 9
+        }
+      ],
+      "context": {
+        "exampleLimit": 2
+      }
+    },
+    {
+      "name": "zero-example-budget-is-explicit",
+      "expected": "ok",
+      "changes": [
+        {
+          "path": [
+            "exampleLimit"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 11
+        }
+      ],
+      "context": {
+        "exampleLimit": 0
+      }
+    },
+    {
+      "name": "known-exact-source-byte-range",
+      "expected": "ok",
+      "changes": [
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-atr",
+              "barIndex": 2,
+              "barT": 7200000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": {
+                "startByte": 28,
+                "endByte": 42
+              }
+            },
+            {
+              "kind": "rejected-entry-gates",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": 3,
+              "candidateId": "pm:3:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "cooldown",
+              "barIndex": 6,
+              "barT": 21600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-side",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 7,
+              "candidateId": "pm:7:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-stop",
+              "barIndex": 8,
+              "barT": 28800000,
+              "signalIndex": 8,
+              "candidateId": "pm:8:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "not-requested-not-requested",
+      "expected": "unavailable",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "not-requested"
+        },
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "not-requested"
+        },
+        {
+          "path": [
+            "counters"
+          ],
+          "value": null
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 0
+        }
+      ],
+      "context": {
+        "requested": false
+      }
+    },
+    {
+      "name": "unsupported-coverage-unavailable",
+      "expected": "unavailable",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "unsupported"
+        },
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "coverage-unavailable"
+        },
+        {
+          "path": [
+            "counters"
+          ],
+          "value": null
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 0
+        }
+      ],
+      "context": {
+        "requested": true
+      }
+    },
+    {
+      "name": "incomplete-observer-limit",
+      "expected": "unavailable",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "incomplete"
+        },
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "observer-limit"
+        },
+        {
+          "path": [
+            "counters"
+          ],
+          "value": null
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 0
+        }
+      ],
+      "context": {
+        "requested": true
+      }
+    },
+    {
+      "name": "incomplete-observer-failed",
+      "expected": "unavailable",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "incomplete"
+        },
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "observer-failed"
+        },
+        {
+          "path": [
+            "counters"
+          ],
+          "value": null
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 0
+        }
+      ],
+      "context": {
+        "requested": true
+      }
+    },
+    {
+      "name": "complete-measured-no-candidates",
+      "expected": "ok",
+      "changes": [
+        {
+          "path": [
+            "counters"
+          ],
+          "value": {
+            "bars": {
+              "visited": 10,
+              "managingPosition": 0,
+              "cooldown": 0,
+              "signalUnavailable": 3,
+              "noSignal": 7,
+              "candidates": 0
+            },
+            "candidates": {
+              "created": 0,
+              "rejectedSide": 0,
+              "rejectedATR": 0,
+              "rejectedStop": 0,
+              "rejectedEntryGates": 0,
+              "acceptedOrders": 0
+            },
+            "orders": {
+              "accepted": 0,
+              "filled": 0,
+              "pendingAtEnd": 0
+            }
+          }
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "accepted-but-unfilled-is-not-rejection",
+      "expected": "ok",
+      "changes": [
+        {
+          "path": [
+            "counters"
+          ],
+          "value": {
+            "bars": {
+              "visited": 10,
+              "managingPosition": 0,
+              "cooldown": 0,
+              "signalUnavailable": 1,
+              "noSignal": 8,
+              "candidates": 1
+            },
+            "candidates": {
+              "created": 1,
+              "rejectedSide": 0,
+              "rejectedATR": 0,
+              "rejectedStop": 0,
+              "rejectedEntryGates": 0,
+              "acceptedOrders": 1
+            },
+            "orders": {
+              "accepted": 1,
+              "filled": 0,
+              "pendingAtEnd": 1
+            }
+          }
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unknown-root-field",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "surprise"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "unknown-nested-field",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "extra"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "name": "unknown-status",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "success"
+        }
+      ]
+    },
+    {
+      "name": "missing-status",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "delete": true
+        }
+      ]
+    },
+    {
+      "name": "missing-nullable",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "reason"
+          ],
+          "delete": true
+        }
+      ]
+    },
+    {
+      "name": "unknown-gate",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "0",
+            "kind"
+          ],
+          "value": "would-have-won"
+        }
+      ]
+    },
+    {
+      "name": "fractional-counter",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "visited"
+          ],
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "name": "negative-counter",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "visited"
+          ],
+          "value": -1
+        }
+      ]
+    },
+    {
+      "name": "counter-cap",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "visited"
+          ],
+          "value": 10001
+        }
+      ]
+    },
+    {
+      "name": "string-counter",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "visited"
+          ],
+          "value": "10"
+        }
+      ]
+    },
+    {
+      "name": "null-counter",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "visited"
+          ],
+          "value": null
+        }
+      ]
+    },
+    {
+      "name": "example-cap",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-atr",
+              "barIndex": 2,
+              "barT": 7200000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-entry-gates",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": 3,
+              "candidateId": "pm:3:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "cooldown",
+              "barIndex": 6,
+              "barT": 21600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-side",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 7,
+              "candidateId": "pm:7:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-stop",
+              "barIndex": 8,
+              "barT": 28800000,
+              "signalIndex": 8,
+              "candidateId": "pm:8:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-atr",
+              "barIndex": 2,
+              "barT": 7200000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-entry-gates",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": 3,
+              "candidateId": "pm:3:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "cooldown",
+              "barIndex": 6,
+              "barT": 21600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-side",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 7,
+              "candidateId": "pm:7:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-stop",
+              "barIndex": 8,
+              "barT": 28800000,
+              "signalIndex": 8,
+              "candidateId": "pm:8:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bad-source-digest",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "binding",
+            "source",
+            "sha256"
+          ],
+          "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      ]
+    },
+    {
+      "name": "unknown-producer-field",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "binding",
+            "producer",
+            "admitted"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "wrong-profile",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "profile"
+          ],
+          "value": "all-families"
+        }
+      ]
+    },
+    {
+      "name": "bar-conservation",
+      "expected": "conservation",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "bars",
+            "noSignal"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "candidate-conservation",
+      "expected": "conservation",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "candidates",
+            "rejectedATR"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "created-link",
+      "expected": "conservation",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "candidates",
+            "created"
+          ],
+          "value": 5
+        }
+      ]
+    },
+    {
+      "name": "accepted-link",
+      "expected": "conservation",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "orders",
+            "accepted"
+          ],
+          "value": 3
+        }
+      ]
+    },
+    {
+      "name": "fill-conservation",
+      "expected": "conservation",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "orders",
+            "filled"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "invalid-complete-reason",
+      "expected": "conservation",
+      "changes": [
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "observer-limit"
+        }
+      ]
+    },
+    {
+      "name": "stale-source",
+      "expected": "binding",
+      "changes": [],
+      "context": {
+        "sourceSuffix": " "
+      }
+    },
+    {
+      "name": "stale-request",
+      "expected": "binding",
+      "changes": [],
+      "context": {
+        "requestSuffix": " "
+      }
+    },
+    {
+      "name": "stale-data",
+      "expected": "binding",
+      "changes": [],
+      "context": {
+        "dataSuffix": " "
+      }
+    },
+    {
+      "name": "stale-config",
+      "expected": "binding",
+      "changes": [],
+      "context": {
+        "configSuffix": " "
+      }
+    },
+    {
+      "name": "stale-report",
+      "expected": "binding",
+      "changes": [],
+      "context": {
+        "reportSuffix": " "
+      }
+    },
+    {
+      "name": "stale-invocation",
+      "expected": "binding",
+      "changes": [
+        {
+          "path": [
+            "binding",
+            "invocationId"
+          ],
+          "value": "old.run"
+        }
+      ]
+    },
+    {
+      "name": "untrusted-producer",
+      "expected": "binding",
+      "changes": [
+        {
+          "path": [
+            "binding",
+            "producer",
+            "sourceTree"
+          ],
+          "value": "dddddddddddddddddddddddddddddddddddddddd"
+        }
+      ]
+    },
+    {
+      "name": "wrong-family",
+      "expected": "binding",
+      "changes": [
+        {
+          "path": [
+            "family"
+          ],
+          "value": "donchianBreakout"
+        }
+      ]
+    },
+    {
+      "name": "wrong-example-budget",
+      "expected": "binding",
+      "changes": [
+        {
+          "path": [
+            "exampleLimit"
+          ],
+          "value": 15
+        }
+      ]
+    },
+    {
+      "name": "coverage-not-complete",
+      "expected": "binding",
+      "changes": [
+        {
+          "path": [
+            "barCount"
+          ],
+          "value": 9
+        }
+      ]
+    },
+    {
+      "name": "unsupported-wrong-bar-count",
+      "expected": "binding",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "unsupported"
+        },
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "coverage-unavailable"
+        },
+        {
+          "path": [
+            "counters"
+          ],
+          "value": null
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": []
+        },
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "barCount"
+          ],
+          "value": 9
+        }
+      ]
+    },
+    {
+      "name": "filled-from-rejected-candidate",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "6",
+            "signalIndex"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "examples",
+            "6",
+            "candidateId"
+          ],
+          "value": "pm:2:long"
+        }
+      ]
+    },
+    {
+      "name": "cancelled-cannot-publish",
+      "expected": "inactive",
+      "changes": [],
+      "context": {
+        "active": false
+      }
+    },
+    {
+      "name": "superseded-cannot-publish",
+      "expected": "inactive",
+      "changes": [],
+      "context": {
+        "currentInvocation": "new.run"
+      }
+    },
+    {
+      "name": "deadline-equality-refuses",
+      "expected": "deadline",
+      "changes": [],
+      "context": {
+        "now": 100,
+        "deadline": 100
+      }
+    },
+    {
+      "name": "deadline-passed-refuses",
+      "expected": "deadline",
+      "changes": [],
+      "context": {
+        "now": 101,
+        "deadline": 100
+      }
+    },
+    {
+      "name": "complete-without-opt-in",
+      "expected": "status",
+      "changes": [],
+      "context": {
+        "requested": false
+      }
+    },
+    {
+      "name": "incomplete-does-not-publish-partial-counts",
+      "expected": "status",
+      "changes": [
+        {
+          "path": [
+            "status"
+          ],
+          "value": "incomplete"
+        },
+        {
+          "path": [
+            "reason"
+          ],
+          "value": "observer-limit"
+        }
+      ]
+    },
+    {
+      "name": "absent-is-not-zero",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters"
+          ],
+          "delete": true
+        }
+      ]
+    },
+    {
+      "name": "duplicate-example-kind",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-atr",
+              "barIndex": 2,
+              "barT": 7200000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-entry-gates",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": 3,
+              "candidateId": "pm:3:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "cooldown",
+              "barIndex": 6,
+              "barT": 21600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-side",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 7,
+              "candidateId": "pm:7:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-stop",
+              "barIndex": 8,
+              "barT": 28800000,
+              "signalIndex": 8,
+              "candidateId": "pm:8:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "zero-counter-example",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "0",
+            "kind"
+          ],
+          "value": "rejected-side"
+        },
+        {
+          "path": [
+            "counters",
+            "candidates",
+            "rejectedSide"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "counters",
+            "candidates",
+            "rejectedStop"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "bad-omitted-count",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "omittedExampleKinds"
+          ],
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "out-of-order",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-stop",
+              "barIndex": 8,
+              "barT": 28800000,
+              "signalIndex": 8,
+              "candidateId": "pm:8:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-side",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 7,
+              "candidateId": "pm:7:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "cooldown",
+              "barIndex": 6,
+              "barT": 21600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-entry-gates",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": 3,
+              "candidateId": "pm:3:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-atr",
+              "barIndex": 2,
+              "barT": 7200000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "bar-out-of-range",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "0",
+            "barIndex"
+          ],
+          "value": 10
+        }
+      ]
+    },
+    {
+      "name": "wrong-bar-time",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "0",
+            "barT"
+          ],
+          "value": 1
+        }
+      ]
+    },
+    {
+      "name": "pre-candidate-claimed-identity",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "0",
+            "candidateId"
+          ],
+          "value": "pm:0:long"
+        }
+      ]
+    },
+    {
+      "name": "wrong-candidate-identity",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "2",
+            "candidateId"
+          ],
+          "value": "pm:3:long"
+        }
+      ]
+    },
+    {
+      "name": "rejection-consumed",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "2",
+            "consumed"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "name": "acceptance-not-consumed",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "4",
+            "consumed"
+          ],
+          "value": false
+        }
+      ]
+    },
+    {
+      "name": "fill-before-signal",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "6",
+            "signalIndex"
+          ],
+          "value": 6
+        },
+        {
+          "path": [
+            "examples",
+            "6",
+            "candidateId"
+          ],
+          "value": "pm:6:long"
+        }
+      ]
+    },
+    {
+      "name": "pending-not-terminal",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "10",
+            "barIndex"
+          ],
+          "value": 8
+        },
+        {
+          "path": [
+            "examples",
+            "10",
+            "barT"
+          ],
+          "value": 28800000
+        }
+      ]
+    },
+    {
+      "name": "range-reversed",
+      "expected": "range",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "2",
+            "sourceRange"
+          ],
+          "value": {
+            "startByte": 42,
+            "endByte": 28
+          }
+        }
+      ]
+    },
+    {
+      "name": "range-outside-source",
+      "expected": "range",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "2",
+            "sourceRange"
+          ],
+          "value": {
+            "startByte": 0,
+            "endByte": 262144
+          }
+        }
+      ]
+    },
+    {
+      "name": "range-splits-utf8",
+      "expected": "range",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "2",
+            "sourceRange"
+          ],
+          "value": {
+            "startByte": 16,
+            "endByte": 28
+          }
+        }
+      ]
+    },
+    {
+      "name": "range-splits-crlf",
+      "expected": "range",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "2",
+            "sourceRange"
+          ],
+          "value": {
+            "startByte": 20,
+            "endByte": 28
+          }
+        }
+      ]
+    },
+    {
+      "name": "equivalent-integer-lexemes",
+      "expected": "ok",
+      "changes": [],
+      "wire": "integer-exponent"
+    },
+    {
+      "name": "multiple-pending-orders-refused",
+      "expected": "schema",
+      "changes": [
+        {
+          "path": [
+            "counters",
+            "orders",
+            "pendingAtEnd"
+          ],
+          "value": 2
+        }
+      ]
+    },
+    {
+      "name": "opposite-side-same-signal",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "6",
+            "side"
+          ],
+          "value": "short"
+        },
+        {
+          "path": [
+            "examples",
+            "6",
+            "candidateId"
+          ],
+          "value": "pm:4:short"
+        }
+      ]
+    },
+    {
+      "name": "two-handler-outcomes-one-bar",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "3",
+            "barIndex"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "examples",
+            "3",
+            "barT"
+          ],
+          "value": 7200000
+        },
+        {
+          "path": [
+            "examples",
+            "3",
+            "signalIndex"
+          ],
+          "value": 2
+        },
+        {
+          "path": [
+            "examples",
+            "3",
+            "candidateId"
+          ],
+          "value": "pm:2:short"
+        }
+      ]
+    },
+    {
+      "name": "pending-older-than-last-signal",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "10",
+            "signalIndex"
+          ],
+          "value": 8
+        },
+        {
+          "path": [
+            "examples",
+            "10",
+            "candidateId"
+          ],
+          "value": "pm:8:long"
+        }
+      ]
+    },
+    {
+      "name": "filled-from-no-signal-handler",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "6",
+            "signalIndex"
+          ],
+          "value": 1
+        },
+        {
+          "path": [
+            "examples",
+            "6",
+            "candidateId"
+          ],
+          "value": "pm:1:long"
+        }
+      ]
+    },
+    {
+      "name": "filled-from-warmup-handler",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "6",
+            "signalIndex"
+          ],
+          "value": 0
+        },
+        {
+          "path": [
+            "examples",
+            "6",
+            "candidateId"
+          ],
+          "value": "pm:0:long"
+        }
+      ]
+    },
+    {
+      "name": "filled-from-managing-handler",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples",
+            "6",
+            "signalIndex"
+          ],
+          "value": 5
+        },
+        {
+          "path": [
+            "examples",
+            "6",
+            "candidateId"
+          ],
+          "value": "pm:5:long"
+        }
+      ]
+    },
+    {
+      "name": "same-order-both-filled-and-pending",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-atr",
+              "barIndex": 2,
+              "barT": 7200000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-entry-gates",
+              "barIndex": 3,
+              "barT": 10800000,
+              "signalIndex": 3,
+              "candidateId": "pm:3:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "cooldown",
+              "barIndex": 6,
+              "barT": 21600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-side",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 7,
+              "candidateId": "pm:7:short",
+              "side": "short",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "rejected-stop",
+              "barIndex": 8,
+              "barT": 28800000,
+              "signalIndex": 8,
+              "candidateId": "pm:8:long",
+              "side": "long",
+              "consumed": false,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "accepted-order-before-earliest-representative",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "counters"
+          ],
+          "value": {
+            "bars": {
+              "visited": 10,
+              "managingPosition": 0,
+              "cooldown": 0,
+              "signalUnavailable": 1,
+              "noSignal": 6,
+              "candidates": 3
+            },
+            "candidates": {
+              "created": 3,
+              "rejectedSide": 0,
+              "rejectedATR": 0,
+              "rejectedStop": 0,
+              "rejectedEntryGates": 0,
+              "acceptedOrders": 3
+            },
+            "orders": {
+              "accepted": 3,
+              "filled": 2,
+              "pendingAtEnd": 1
+            }
+          }
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 2,
+              "candidateId": "pm:2:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sampled-accepted-identities-exceed-count",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "counters"
+          ],
+          "value": {
+            "bars": {
+              "visited": 10,
+              "managingPosition": 0,
+              "cooldown": 0,
+              "signalUnavailable": 1,
+              "noSignal": 7,
+              "candidates": 2
+            },
+            "candidates": {
+              "created": 2,
+              "rejectedSide": 0,
+              "rejectedATR": 0,
+              "rejectedStop": 0,
+              "rejectedEntryGates": 0,
+              "acceptedOrders": 2
+            },
+            "orders": {
+              "accepted": 2,
+              "filled": 1,
+              "pendingAtEnd": 1
+            }
+          }
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 7,
+              "barT": 25200000,
+              "signalIndex": 6,
+              "candidateId": "pm:6:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "managing-handler-contradiction-isolated",
+      "expected": "examples",
+      "changes": [
+        {
+          "path": [
+            "counters"
+          ],
+          "value": {
+            "bars": {
+              "visited": 10,
+              "managingPosition": 1,
+              "cooldown": 0,
+              "signalUnavailable": 1,
+              "noSignal": 5,
+              "candidates": 3
+            },
+            "candidates": {
+              "created": 3,
+              "rejectedSide": 0,
+              "rejectedATR": 0,
+              "rejectedStop": 0,
+              "rejectedEntryGates": 0,
+              "acceptedOrders": 3
+            },
+            "orders": {
+              "accepted": 3,
+              "filled": 2,
+              "pendingAtEnd": 1
+            }
+          }
+        },
+        {
+          "path": [
+            "examples"
+          ],
+          "value": [
+            {
+              "kind": "signal-unavailable",
+              "barIndex": 0,
+              "barT": 0,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "no-signal",
+              "barIndex": 1,
+              "barT": 3600000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "accepted-order",
+              "barIndex": 4,
+              "barT": 14400000,
+              "signalIndex": 4,
+              "candidateId": "pm:4:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "managing-position",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": null,
+              "candidateId": null,
+              "side": null,
+              "consumed": null,
+              "sourceRange": null
+            },
+            {
+              "kind": "filled-order",
+              "barIndex": 5,
+              "barT": 18000000,
+              "signalIndex": 5,
+              "candidateId": "pm:5:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            },
+            {
+              "kind": "pending-at-end",
+              "barIndex": 9,
+              "barT": 32400000,
+              "signalIndex": 9,
+              "candidateId": "pm:9:long",
+              "side": "long",
+              "consumed": true,
+              "sourceRange": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wire-duplicate",
+      "expected": "wire",
+      "changes": [],
+      "wire": "duplicate"
+    },
+    {
+      "name": "wire-escaped-duplicate",
+      "expected": "wire",
+      "changes": [],
+      "wire": "escaped-duplicate"
+    },
+    {
+      "name": "wire-lone-surrogate",
+      "expected": "wire",
+      "changes": [],
+      "wire": "lone-surrogate"
+    },
+    {
+      "name": "wire-invalid-utf8",
+      "expected": "wire",
+      "changes": [],
+      "wire": "invalid-utf8"
+    },
+    {
+      "name": "wire-trailing-document",
+      "expected": "wire",
+      "changes": [],
+      "wire": "trailing-document"
+    },
+    {
+      "name": "wire-over-bytes",
+      "expected": "wire",
+      "changes": [],
+      "wire": "over-bytes"
+    },
+    {
+      "name": "wire-over-depth",
+      "expected": "wire",
+      "changes": [],
+      "wire": "over-depth"
+    },
+    {
+      "name": "wire-over-nodes",
+      "expected": "wire",
+      "changes": [],
+      "wire": "over-nodes"
+    },
+    {
+      "name": "wire-fractional-lexeme",
+      "expected": "schema",
+      "changes": [],
+      "wire": "fractional-lexeme"
+    },
+    {
+      "name": "wire-nonfinite",
+      "expected": "wire",
+      "changes": [],
+      "wire": "nonfinite"
+    }
+  ]
+}
