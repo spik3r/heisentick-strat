@@ -29,7 +29,8 @@
     "0121f4fa42e8ee7861f80ab68b84a0b09554d8aa",
     "fe267e72b6194adbfc4af69264b7df087fb2950f",
     "6c7dabf117569a805f8d9d757afdbcd8710c4c13",
-    "eac7a7d6a99a320264adf02f39d75b998084c42e"
+    "eac7a7d6a99a320264adf02f39d75b998084c42e",
+    "c60c751cd669774f5c6646cd5936965e77a80668"
   ],
   "build": {
     "CGO_ENABLED": "0",
@@ -274,6 +275,7 @@
     "engine/master/run.go": "f4add9f006f68e76074c442ebd00891c978b5eeb32745e2335a8bcca2656366c",
     "engine/master/types.go": "5f945abc3906bf046bd35683fb5ffcef466f232d40c9dfd92f17f7f3d796738d",
     "engine/master_admission.go": "be52a792017cc5a176962098171f4d95b347965bd4e6a12097d47d0ed40e3d20",
+    "engine/operationalsmoke/smoke.go": "214cae81801efd47a0c1809b9d22e2290da8b73ed6717675be3e9181dfe124d5",
     "engine/ordinary_backtest_accounting.go": "c35b21f79e6cf028c4702af7caefb2ad53f532727bdbffbf4012aa544dcbdd25",
     "engine/ordinary_backtest_admission.go": "c426e9b83c2a07a62df3e76fbcf6af64db293f9a0a9dc5892536cafc6f6445cd",
     "engine/ordinary_backtest_contract.go": "69125a18b9971bc490bd2ada120098405325c8afcaff885d4eb41934acbaea64",
