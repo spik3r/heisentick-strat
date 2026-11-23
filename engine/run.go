@@ -274,6 +274,9 @@ func (s *SharedRunContext) PrepareVariant(cfg dsl.Config) (*PreparedRun, error) 
 	if err := validateEMARibbonConfig(cfg); err != nil {
 		return nil, err
 	}
+	if err := validateClockFadeConfig(cfg); err != nil {
+		return nil, err
+	}
 	if err := validateRMVConfig(cfg); err != nil {
 		return nil, err
 	}
@@ -350,6 +353,9 @@ func PrepareRun(request RunRequest) (*PreparedRun, error) {
 		return nil, err
 	}
 	if err := validateEMARibbonConfig(request.Config); err != nil {
+		return nil, err
+	}
+	if err := validateClockFadeConfig(request.Config); err != nil {
 		return nil, err
 	}
 	if dsl.IsSequentialFullReserved(request.Config) {
@@ -471,6 +477,9 @@ func validateRunRequest(request RunRequest) error {
 		return err
 	}
 	if err := validateEMARibbonConfig(request.Config); err != nil {
+		return err
+	}
+	if err := validateClockFadeConfig(request.Config); err != nil {
 		return err
 	}
 	if err := validateParabolicSARRoute(request.Config, request.Timeframe, request.SourceTimeframe); err != nil {
@@ -716,6 +725,9 @@ func Run(request RunRequest) (RunResult, error) {
 		return RunResult{}, err
 	}
 	if err := validateEMARibbonConfig(request.Config); err != nil {
+		return RunResult{}, err
+	}
+	if err := validateClockFadeConfig(request.Config); err != nil {
 		return RunResult{}, err
 	}
 	if dsl.IsSequentialFullReserved(request.Config) {

@@ -1,0 +1,25 @@
+dsl v7
+strategy "Clock Fade Missing Clock" {
+  description "Refused: no signal clock."
+}
+
+market conditions {
+  slices(XAUUSD 5m)
+}
+
+setup {
+  type: clock fade
+  lookback 3 candles
+}
+
+risk {
+  stop 3 ATR
+}
+
+management {
+  maxHoldCandles 1
+}
+
+execution {
+  risk 200 USD
+}

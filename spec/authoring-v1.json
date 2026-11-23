@@ -328,6 +328,10 @@
     },
     {
       "coverage": "unknown",
+      "id": "clockFade"
+    },
+    {
+      "coverage": "unknown",
       "id": "clockRangeBreakout"
     },
     {
@@ -492,11 +496,11 @@
     "files": [
       {
         "path": "dsl/grammar_tables_generated.go",
-        "sha256": "105c64f3a628cdbf791dc6a695e7de1204df4631d13974afbfc0c71e5acc1f22"
+        "sha256": "11a08945a950376b4accbaaafdf1efeb952f074b961f53f02c676d591e26dc2a"
       },
       {
         "path": "dsl/parser.go",
-        "sha256": "a913d273a3d93a3e9e491eb0007e08ad5f2b1fd3901631970bb3ea18d79ebb52"
+        "sha256": "822709bf974cc127504999251993838701f049b8268c88549b01e8b615d54c1d"
       },
       {
         "path": "dsl/parser_lexing.go",
@@ -504,7 +508,7 @@
       },
       {
         "path": "dsl/parser_setups.go",
-        "sha256": "4e05c97ac1f72c833802098d3f2e56dafc4fb23a52ef32a3a7bd012b5d4c09f5"
+        "sha256": "d11ac8726b621109c850b2597c04a6682f806aaeec7733e1428e5fa7be6ed7e4"
       },
       {
         "path": "dsl/parser_sma_golden_cross.go",
@@ -520,7 +524,7 @@
       },
       {
         "path": "spec/manifest.json",
-        "sha256": "97afe44347216a3ddc47ea9184a7de19e1af31326f2eabe879b4dca767b852c8"
+        "sha256": "2e4683351e83e9e1952ba36ef7d0544db43bc97abd972870eb29d36ffb662a19"
       }
     ],
     "repository": "https://github.com/spik3r/heisentick-strat"

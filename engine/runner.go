@@ -137,6 +137,9 @@ func runFixtureCase(fixture RunFixture, source string, capture *sequentialAccoun
 	if err := validateEMARibbonConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
+	if err := validateClockFadeConfig(parsed.Config); err != nil {
+		return RunResult{}, err
+	}
 	if err := validateRMVConfig(parsed.Config); err != nil {
 		return RunResult{}, err
 	}
@@ -312,6 +315,7 @@ func implementedFamily(setupType string) bool {
 		string(dsl.FamilyPriceMomentum),
 		string(dsl.FamilyDonchianBreakout),
 		string(dsl.FamilyEMARibbon),
+		string(dsl.FamilyClockFade),
 		string(dsl.FamilyDailyFlushFailure),
 		string(dsl.FamilyFairValueGap),
 		string(dsl.FamilyWeekendExtremeFade),

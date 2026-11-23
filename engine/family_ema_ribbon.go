@@ -446,6 +446,13 @@ func computeSetupColumns(series marketdata.Series, params flagParams, cfg dsl.Co
 		}
 		return computeEMARibbonColumns(series, spec, emaRibbonBarMs[timeframe])
 	}
+	if params.SetupType == string(dsl.FamilyClockFade) {
+		spec, err := decodeClockFadeSpec(cfg)
+		if err != nil {
+			return make([]float64, series.Len()), make([]float64, series.Len())
+		}
+		return computeClockFadeColumns(series, spec)
+	}
 	return computeSetupEMA(series, params)
 }
 
