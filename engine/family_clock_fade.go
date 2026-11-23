@@ -19,7 +19,16 @@ type clockFadeSpec struct {
 	stopATR  float64
 }
 
-var errClockFadeConfig = errors.New("clock fade: lookback N candles, signal at new york HH:MM and stop N ATR are required")
+// clockFadeSetupName and clockFadeTag are variables so the trade meta needs no
+// boxed constants. This file still adds compiler static temporaries, which
+// renumber later ones; the pinned stream of applyPartialManagement records that
+// (scripts/checks/ordinary-backtest-arithmetic-proof.py).
+var clockFadeSetupName = "clockFade"
+var clockFadeTag = "DSL-CF"
+
+func clockFadeConfigError() error {
+	return errors.New("clock fade: lookback N candles, signal at new york HH:MM and stop N ATR are required")
+}
 
 // validateClockFadeConfig refuses a malformed clock-fade config. It reads the
 // raw parsed config, so a hand-built config cannot skip the parser's checks.
@@ -32,18 +41,18 @@ func validateClockFadeConfig(cfg dsl.Config) error {
 	}
 	family := mapValue(cfg, "clockFade")
 	if _, ok := donchianCount(family["lookbackBars"]); !ok {
-		return errClockFadeConfig
+		return clockFadeConfigError()
 	}
 	minute, ok := donchianNumber(family["newYorkMinute"])
 	if !ok || minute < 0 || minute > 1439 || minute != float64(int(minute)) {
-		return errClockFadeConfig
+		return clockFadeConfigError()
 	}
 	stop := mapValue(cfg, "stop")
 	if stop["type"] != "atr" {
-		return errClockFadeConfig
+		return clockFadeConfigError()
 	}
 	if multiple, ok := donchianNumber(stop["atrMult"]); !ok || !(multiple > 0) {
-		return errClockFadeConfig
+		return clockFadeConfigError()
 	}
 	hold, ok := donchianCount(cfg["maxHoldCandles"])
 	if !ok || hold < 1 {
@@ -150,17 +159,11 @@ func (b *broker) onClockFadeBar(i int) {
 	if !isFinite(stop) || sign*(entry-stop) <= 0 {
 		return
 	}
-	setup := setupPlan{
-		Side:     s,
-		Stop:     stop,
-		Tag:      "DSL-CF",
-		NoTarget: true,
-		Meta: gradeMeta(TradeMeta{
-			"setup":        "clockFade",
-			"side":         s.String(),
-			"trailingMove": b.emaSlope[i],
-			"signalIndex":  float64(i),
-		}),
-	}
+	meta := TradeMeta{}
+	meta["setup"] = clockFadeSetupName
+	meta["side"] = s.String()
+	meta["trailingMove"] = b.emaSlope[i]
+	meta["signalIndex"] = float64(i)
+	setup := setupPlan{Side: s, Stop: stop, Tag: clockFadeTag, NoTarget: true, Meta: gradeMeta(meta)}
 	b.enterSetup(i, setup)
 }

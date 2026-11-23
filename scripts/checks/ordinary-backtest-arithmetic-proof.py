@@ -55,20 +55,24 @@ EXTRA_FUNCTIONS = [exact.MODULE + name for name in (
 # and stmp_204 -> stmp_208 on WASM. Go 1.22.12 cross-compilation confirms the
 # same exact one-operand change; counts and all other streams are equal.
 # Only those three hashes are renewed; complete stream comparison stays strict.
+# Integrating clock fade then renumbers stmp_209 -> stmp_213 on Linux and
+# stmp_208 -> stmp_212 on WASM. Go 1.22.12 cross-compilation of main and the
+# change on linux-amd64, linux-arm64 and js-wasm shows that stmp operand is the
+# only differing instruction; counts and all other pinned streams are equal.
 EXTRA_PINS = {'js-wasm': {'github.com/spik3r/heisentick-strat/engine.(*broker).applyPartialManagement': {'instructionCount': 1578,
-                                                                                            'sha256': 'e1dbd7a462bd0239170d803fe06e5299de693ca8264cb455f5feebae7cb4944d'},
+                                                                                            'sha256': '80ebe2bcc6ec77e2d3a1c838903de494772fba12ea4e72d29d89fd8be6679958'},
              'github.com/spik3r/heisentick-strat/report.ProjectOrdinaryBacktestFinancials': {'instructionCount': 5410,
                                                                                              'sha256': '75db7ad8d357e0c00c42cdbb00538c3400fe06d46c81bd2324ed36a1918ac20b'},
              'github.com/spik3r/heisentick-strat/report.validateOrdinaryFinancials': {'instructionCount': 6776,
                                                                                       'sha256': '2f023f81a779d45f5e9363cd9a08f88c6345da82e15b9ee4351d0abf626afb5c'}},
  'linux-amd64': {'github.com/spik3r/heisentick-strat/engine.(*broker).applyPartialManagement': {'instructionCount': 335,
-                                                                                                'sha256': '376fd7d14437c5af9d64791638c956b9cffce93f81a96ab668429e9ac80d4871'},
+                                                                                                'sha256': 'caeb8b2a62b908ce10fa91b22c1fe17d979bf6571a2d974ce6bc96aaac45843c'},
                  'github.com/spik3r/heisentick-strat/report.ProjectOrdinaryBacktestFinancials': {'instructionCount': 1632,
                                                                                                  'sha256': '23e2b270976cc2d8d073c622a42582d272e8ef17d0da93cdcfc4b9138b099e8c'},
                  'github.com/spik3r/heisentick-strat/report.validateOrdinaryFinancials': {'instructionCount': 1452,
                                                                                           'sha256': 'eb610779d3ef7fe3186a85d69c17930c8df8b38893aad682941442b71d3dfaf0'}},
  'linux-arm64': {'github.com/spik3r/heisentick-strat/engine.(*broker).applyPartialManagement': {'instructionCount': 312,
-                                                                                                'sha256': '4f89bf084db7376fb4ea8c49a3e21b9779a2137dacd69f60cfcd3b6874f31df8'},
+                                                                                                'sha256': 'df2cbabdddf32c56aaae3648ca8aee816c57613bbef15b74aaa424414e79826c'},
                  'github.com/spik3r/heisentick-strat/report.ProjectOrdinaryBacktestFinancials': {'instructionCount': 1626,
                                                                                                  'sha256': 'a3235f046f777238b9513f524a25968e3969d79633086d7ef0eaee940146b01b'},
                  'github.com/spik3r/heisentick-strat/report.validateOrdinaryFinancials': {'instructionCount': 1377,
