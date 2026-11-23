@@ -1,0 +1,19 @@
+{
+  "schema": "dsl-conformance-semantic-expected-v1",
+  "case": "cf-fade-ny-close",
+  "trades": [
+    {
+      "side": "short",
+      "entryIndex": 35,
+      "entryT": 1767646500000,
+      "entry": 2012,
+      "initialSl": 2042,
+      "initialTp": 0,
+      "exitIndex": 36,
+      "exitT": 1767646800000,
+      "exit": 2006,
+      "reason": "time"
+    }
+  ],
+  "notes": []
+}

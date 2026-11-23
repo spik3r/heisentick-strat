@@ -1,0 +1,26 @@
+dsl v7
+strategy "Semantic clock fade NY close" {
+  description "Semantic fixture: fade the 3-candle move into 16:00 New York, 3 ATR stop, exit after 1 candle."
+}
+
+market conditions {
+  slices(XAUUSD 5m)
+}
+
+setup {
+  type: clock fade
+  lookback 3 candles
+  signal at new york 15:55
+}
+
+risk {
+  stop 3 ATR
+}
+
+management {
+  maxHoldCandles 1
+}
+
+execution {
+  risk 200 USD
+}

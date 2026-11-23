@@ -73,6 +73,7 @@ type flagParams struct {
 	ElderTripleScreen          elderTripleScreenParams
 	PriceMomentum              priceMomentumParams
 	DonchianBreakout           donchianBreakoutParams
+	ClockFade                  clockFadeParams
 	DailyFlushFailure          dailyFlushFailureParams
 	FairValueGap               fairValueGapParams
 	WeekendExtremeFade         weekendExtremeFadeParams
@@ -205,6 +206,7 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 	elderTripleScreen := mapValue(cfg, "elderTripleScreen")
 	priceMomentum := mapValue(cfg, "priceMomentum")
 	donchianBreakout := mapValue(cfg, "donchianBreakout")
+	clockFade := mapValue(cfg, "clockFade")
 	dailyFlushFailure := mapValue(cfg, "dailyFlushFailure")
 	keltner := mapValue(cfg, "keltnerReversion")
 	fairValueGap := mapValue(cfg, "fairValueGap")
@@ -425,6 +427,11 @@ func paramsFromConfig(cfg dsl.Config) flagParams {
 			ChannelBars: donchianCountValue(donchianBreakout, "channelBars", 0),
 			TrendEMALen: donchianCountValue(donchianBreakout, "trendEmaLen", 0),
 			StopATR:     numberValue(stop, "atrMult", 2),
+		},
+		ClockFade: clockFadeParams{
+			LookbackBars:  donchianCountValue(clockFade, "lookbackBars", 0),
+			NewYorkMinute: intValue(clockFade, "newYorkMinute", -1),
+			StopATR:       numberValue(stop, "atrMult", 3),
 		},
 		DailyFlushFailure: dailyFlushFailureParams{
 			ATRLength:             20,

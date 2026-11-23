@@ -38,6 +38,7 @@ const (
 	FamilyPriceMomentum           FamilyID = "priceMomentum"
 	FamilyDonchianBreakout        FamilyID = "donchianBreakout"
 	FamilyEMARibbon               FamilyID = "emaRibbon"
+	FamilyClockFade               FamilyID = "clockFade"
 	FamilyDailyFlushFailure       FamilyID = "dailyFlushFailure"
 	FamilyFairValueGap            FamilyID = "fairValueGap"
 	FamilyWeekendExtremeFade      FamilyID = "weekendExtremeFade"

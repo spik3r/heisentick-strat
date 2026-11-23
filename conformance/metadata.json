@@ -13,6 +13,7 @@
       "deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",
       "family-break-retest",
       "family-channel-break-hold",
+      "family-clock-fade",
       "family-clock-range-breakout-clock-close-before-extremes",
       "family-clock-range-breakout-coverage-32-rejected",
       "family-clock-range-breakout-coverage-33-accepted",
@@ -139,14 +140,14 @@
     "The Institutional Liquidity Sweep parity source is parse-only; it does not count as executable Go strategy coverage.",
     "Inline setup `type: ...` bodies split after known setup-family phrases so compact setup sections match multiline setup sections."
   ],
-  "parseCases": 173,
+  "parseCases": 177,
   "parseCategories": {
     "deployed-book-dsl": 9,
-    "diagnostic": 65,
+    "diagnostic": 68,
     "family": 20,
     "filters": 21,
-    "setup-family": 58
+    "setup-family": 59
   },
-  "runCases": 124,
+  "runCases": 125,
   "schema": "dsl-conformance-metadata-v1"
 }

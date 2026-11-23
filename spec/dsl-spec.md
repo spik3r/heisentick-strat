@@ -514,6 +514,7 @@ are errors. The `type` value itself is written in trading language
 | `price momentum` | priceMomentum |
 | `donchian breakout` | donchianBreakout |
 | `ema ribbon` | emaRibbon |
+| `clock fade` | clockFade |
 | `daily flush failure` | dailyFlushFailure |
 | `keltner reversion` | keltnerReversion |
 | `keltner expansion` | keltnerExpansion |

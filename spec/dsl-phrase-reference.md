@@ -118,6 +118,8 @@ own phrases.
 | `type: donchian breakout` | Close beyond the prior N-bar high or low. | `type: donchian breakout` |
 | `channel N candles` | Sets the donchian-breakout channel length (setup section). | `channel 55 candles` |
 | `trend ema N` | Requires the close on the trend side of EMA(N). | `trend ema 300` |
+| `type: clock fade` | Fades the trailing move into one New York clock minute. | `type: clock fade` |
+| `signal at new york HH:MM` | Sets the clock-fade signal bar open time (setup section). | `signal at new york 15:55` |
 | `type: ema ribbon` | Trend following while a ribbon of EMAs stays in order. | `type: ema ribbon` |
 | `ribbon ema N1 N2 ...` | Sets the ema-ribbon EMA lengths, fastest first (setup section). | `ribbon ema 8 13 21 34 55` |
 | `pullback ema N` | Re-enters an aligned ribbon after a close past EMA(N). | `pullback ema 13` |

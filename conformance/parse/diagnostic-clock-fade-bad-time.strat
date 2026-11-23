@@ -1,0 +1,26 @@
+dsl v7
+strategy "Clock Fade Bad Time" {
+  description "Refused: 25:00 is not a time."
+}
+
+market conditions {
+  slices(XAUUSD 5m)
+}
+
+setup {
+  type: clock fade
+  lookback 3 candles
+  signal at new york 25:00
+}
+
+risk {
+  stop 3 ATR
+}
+
+management {
+  maxHoldCandles 1
+}
+
+execution {
+  risk 200 USD
+}

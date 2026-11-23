@@ -128,3 +128,18 @@ func floorDiv(a int64, b int64) int64 {
 	}
 	return q
 }
+
+// NewYorkMinuteOfDay is the wall-clock minute after midnight (0..1439) in
+// America/New_York at t (milliseconds since the epoch), including EST/EDT
+// transitions. Unlike NewYorkHour it keeps the minute.
+func NewYorkMinuteOfDay(t int64) int {
+	newYorkLocationOnce.Do(func() {
+		loc, err := time.LoadLocation("America/New_York")
+		if err != nil {
+			loc = time.FixedZone("EST", -5*int(HourMS))
+		}
+		newYorkLocation = loc
+	})
+	local := time.UnixMilli(t).In(newYorkLocation)
+	return local.Hour()*60 + local.Minute()
+}

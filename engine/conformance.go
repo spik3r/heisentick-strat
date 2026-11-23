@@ -60,6 +60,7 @@ var implementedRunCases = []string{
 	"family-donchian-breakout-two-sided",
 	"family-ema-ribbon",
 	"family-ema-ribbon-ribbon-filter-target",
+	"family-clock-fade",
 	"family-fair-value-gap",
 	"family-weekend-extreme-fade",
 	"deployed-dsl-weekend-extreme-fade-btcusdt-four-hour",

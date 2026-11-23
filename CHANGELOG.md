@@ -6,6 +6,17 @@ version and is named here.
 
 ## [Unreleased]
 
+### Clock fade setup family (HT-433; additive minor semantics)
+
+- Add a native Go-only `clock fade` family: at the close of the bar that opens
+  at one America/New_York `HH:MM`, fade the trailing `N`-candle close-to-close
+  move, with a fixed `stop N ATR` and the shared `maxHoldCandles` time exit.
+  No target. Windows that are not `N` equally spaced bars give no signal.
+  The legacy JS runtime refuses the family. New parse cases `setup-clock-fade`
+  and three diagnostics, run case `family-clock-fade` (XAUUSD 5m, 2025-03-05
+  to 2025-03-14, which crosses the US DST change), and semantic case
+  `cf-fade-ny-close`. No existing golden changes.
+
 ### Passive SMA authoring metadata
 
 - Add a partial, syntax-only authoring descriptor for the SMA golden-cross

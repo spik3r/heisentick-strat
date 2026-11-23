@@ -1,0 +1,32 @@
+dsl v7
+strategy "Clock Fade Refused Gates" {
+  description "Refused: shared gates, target and trail."
+}
+
+market conditions {
+  slices(XAUUSD 5m)
+  sessions(ny)
+}
+
+setup {
+  type: clock fade
+  lookback 3 candles
+  signal at new york 15:55
+}
+
+risk {
+  stop 3 ATR
+}
+
+target {
+  target 2R
+}
+
+management {
+  trail 2 ATR
+  maxHoldCandles 1
+}
+
+execution {
+  risk 200 USD
+}
