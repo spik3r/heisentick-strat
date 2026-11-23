@@ -73,7 +73,6 @@ type flagParams struct {
 	ElderTripleScreen          elderTripleScreenParams
 	PriceMomentum              priceMomentumParams
 	DonchianBreakout           donchianBreakoutParams
-	ClockFade                  clockFadeParams
 	DailyFlushFailure          dailyFlushFailureParams
 	FairValueGap               fairValueGapParams
 	WeekendExtremeFade         weekendExtremeFadeParams
@@ -178,6 +177,7 @@ type flagParams struct {
 	LegacySetup9               legacySetup9Params
 	NLSUseTrigger              bool
 	ClockRange                 dsl.ClockRangeSpec
+	ClockFade                  clockFadeParams
 }
 
 func paramsFromConfig(cfg dsl.Config) flagParams {
