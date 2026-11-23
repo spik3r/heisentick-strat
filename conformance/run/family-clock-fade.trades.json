@@ -26,7 +26,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "long",
         "signalIndex": 251,
@@ -53,7 +52,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "long",
         "signalIndex": 527,
@@ -80,7 +78,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "long",
         "signalIndex": 803,
@@ -107,7 +104,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "long",
         "signalIndex": 1079,
@@ -134,7 +130,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "long",
         "signalIndex": 1355,
@@ -161,7 +156,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "long",
         "signalIndex": 1631,
@@ -188,7 +182,6 @@
       "meta": {
         "gradeRequired": 0,
         "gradeScore": 0,
-        "lookbackBars": 3,
         "setup": "clockFade",
         "side": "short",
         "signalIndex": 1907,

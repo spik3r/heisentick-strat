@@ -5,14 +5,18 @@ import (
 
 	"github.com/spik3r/heisentick-strat/contextcols"
 	"github.com/spik3r/heisentick-strat/dsl"
+	"github.com/spik3r/heisentick-strat/marketdata"
 )
 
-// clockFadeParams are the clock-fade family settings. The family fades the
-// trailing LookbackBars-candle move at one New York wall-clock minute.
-type clockFadeParams struct {
-	LookbackBars  int
-	NewYorkMinute int
-	StopATR       float64
+// clockFadeSpec is the decoded clock-fade configuration. The family adds no
+// flagParams or broker fields: a field there shifts the offsets of every later
+// broker field and changes the pinned instruction streams of unrelated
+// functions. Decisions are precomputed once per run into the existing setup
+// columns instead (see computeClockFadeColumns).
+type clockFadeSpec struct {
+	lookback int
+	minute   int
+	stopATR  float64
 }
 
 var errClockFadeConfig = errors.New("clock fade: lookback N candles, signal at new york HH:MM and stop N ATR are required")
@@ -80,6 +84,39 @@ func clockFadeDirection(t, closes []float64, i, lookback int) (side, float64, bo
 	return 0, 0, false
 }
 
+// decodeClockFadeSpec reads a validated config.
+func decodeClockFadeSpec(cfg dsl.Config) (clockFadeSpec, error) {
+	if err := validateClockFadeConfig(cfg); err != nil {
+		return clockFadeSpec{}, err
+	}
+	family := mapValue(cfg, "clockFade")
+	lookback, _ := donchianCount(family["lookbackBars"])
+	minute, _ := donchianNumber(family["newYorkMinute"])
+	stopATR, _ := donchianNumber(mapValue(cfg, "stop")["atrMult"])
+	return clockFadeSpec{lookback: lookback, minute: int(minute), stopATR: stopATR}, nil
+}
+
+// computeClockFadeColumns precomputes one decision per bar from that bar and
+// earlier bars only. Column 1 holds side x stop multiple at a signal bar (long
+// positive, short negative) and 0 elsewhere; column 2 holds the trailing move.
+func computeClockFadeColumns(series marketdata.Series, spec clockFadeSpec) ([]float64, []float64) {
+	n := series.Len()
+	decision := make([]float64, n)
+	move := make([]float64, n)
+	for i := 0; i < n; i++ {
+		if contextcols.NewYorkMinuteOfDay(int64(series.T[i])) != spec.minute {
+			continue
+		}
+		s, m, ok := clockFadeDirection(series.T, series.C, i, spec.lookback)
+		if !ok {
+			continue
+		}
+		decision[i] = float64(s) * spec.stopATR
+		move[i] = m
+	}
+	return decision, move
+}
+
 // onClockFadeBar evaluates bar i. The signal bar is the bar that opens at the
 // configured New York minute; its close is the decision time. The trade fades
 // the trailing move with a fixed ATR stop, no target, and the shared
@@ -89,20 +126,19 @@ func (b *broker) onClockFadeBar(i int) {
 		b.exitAfterBars(i)
 		return
 	}
-	p := b.params
-	cf := p.ClockFade
-	if contextcols.NewYorkMinuteOfDay(int64(b.series.T[i])) != cf.NewYorkMinute {
+	if i >= len(b.ema) || i >= len(b.emaSlope) || b.ema[i] == 0 {
 		return
 	}
-	s, move, ok := clockFadeDirection(b.series.T, b.series.C, i, cf.LookbackBars)
-	if !ok {
-		return
+	p := b.params
+	s, stopATR := sideLong, b.ema[i]
+	if stopATR < 0 {
+		s, stopATR = sideShort, -stopATR
 	}
 	if s == sideLong && !p.AllowLong || s == sideShort && !p.AllowShort {
 		return
 	}
 	atr := finiteOrZero(b.cols.ATR[i])
-	if atr <= 0 || !isFinite(cf.StopATR) || !(cf.StopATR > 0) {
+	if atr <= 0 || !isFinite(stopATR) || !(stopATR > 0) {
 		return
 	}
 	entry := b.series.C[i]
@@ -110,7 +146,7 @@ func (b *broker) onClockFadeBar(i int) {
 		return
 	}
 	sign := float64(s)
-	stop := entry - sign*cf.StopATR*atr
+	stop := entry - sign*stopATR*atr
 	if !isFinite(stop) || sign*(entry-stop) <= 0 {
 		return
 	}
@@ -122,8 +158,7 @@ func (b *broker) onClockFadeBar(i int) {
 		Meta: gradeMeta(TradeMeta{
 			"setup":        "clockFade",
 			"side":         s.String(),
-			"lookbackBars": float64(cf.LookbackBars),
-			"trailingMove": move,
+			"trailingMove": b.emaSlope[i],
 			"signalIndex":  float64(i),
 		}),
 	}
